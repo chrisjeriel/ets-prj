@@ -92,7 +92,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   claimsOffset: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cummulative Payment','Paid Amount',' Paid Amount (Php)'],
+    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cumulative Payment','Paid Amount',' Paid Amount (Php)'],
     dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
     nData: {
       showMG:1,
@@ -190,10 +190,10 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.totalTrtyBal = 0;
       if(data.negativeTrty.length != 0){
         this.claimsOffset.disableAdd = false;
-        this.passData.disableAdd = false;
+        this.passData.disableAdd  = false;
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
-        this.jvDetails.ceding = data.negativeTrty[0].cedingId;
-        this.passLov.cedingId = this.jvDetails.ceding;
+        this.jvDetails.ceding     = data.negativeTrty[0].cedingId;
+        this.passLov.cedingId     = this.jvDetails.ceding;
         this.check(this.jvDetails);
         for (var i = 0; i < data.negativeTrty.length; i++) {
            this.passData.tableData.push(data.negativeTrty[i]);
@@ -402,7 +402,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.jvDetails.deleteClmOffset = [];
     var quarterNo = null;
     var actualBalPaid = 0;
-    console.log(this.claimsOffset.tableData)
     for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveNegTrty.push(this.passData.tableData[i]);
@@ -411,7 +410,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
-        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
+        
         if(this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo === ''){
           quarterNo = this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding.split('T');
           quarterNo = quarterNo[0].split('-');
@@ -440,6 +439,9 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
+      }
+      if(!this.passData.tableData[i].deleted){
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
       }
     }
 

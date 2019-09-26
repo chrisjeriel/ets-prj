@@ -1306,5 +1306,47 @@ export class MaintenanceService{
     		.set('treatyTag', (treatyTag === null || treatyTag === undefined ? '' : treatyTag))
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeCeding', {params});
     }
+
+    getMtnAcitCheckSeries(bank?, bankAcct?, checkNo?){
+    	const params = new HttpParams()
+    		.set('bank', (bank === null || bank === undefined ? '' : bank))
+    		.set('bankAcct', (bankAcct === null || bankAcct === undefined ? '' : bankAcct))
+    		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcitCheckSeries', {params});
+    }
+
+    getMtnAcseTranType(tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
+    	const params = new HttpParams()
+    				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    	     		.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+    	     		.set('typePrefix', (typePrefix === null || typePrefix === undefined ? '' : typePrefix))
+    	     		.set('autoTag', (autoTag === null || autoTag === undefined ? '' : autoTag))
+    	     		.set('baeTag', (baeTag === null || baeTag === undefined ? '' : baeTag))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseTranType", {params});
+    }
+
+	getMtnAcseDCBNo(dcbYear?, dcbNo?, dcbDate?, dcbStatus?){
+    	const params = new HttpParams()
+    				.set('dcbYear', (dcbYear === null || dcbYear === undefined ? '' : dcbYear))
+    	     		.set('dcbNo', (dcbNo === null || dcbNo === undefined ? '' : dcbNo))
+    	     		.set('dcbDate', (dcbDate === null || dcbDate === undefined ? '' : dcbDate))
+    	     		.set('dcbStatus', (dcbStatus === null || dcbStatus === undefined ? '' : dcbStatus))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseDCBNo", {params});
+    }
+
+    saveMtnAcseDCBNo(delDCBNo, saveDCBNo){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         let params : any = {
+         	delDCBNo: delDCBNo,
+         	saveDCBNo: saveDCBNo
+         }
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcseDCBNo', JSON.stringify(params), header);
+
+	}
     
 }

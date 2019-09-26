@@ -74,7 +74,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2">Adjuster File No</label>
-                        <input name="input16"  type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.adjFileNo" [readonly]="claimData?.adjName == null || claimData?.adjName == ''">
+                        <input name="input16"  type="text" class="form-control form-control-sm col-sm" style="margin-left: 3px;" [(ngModel)]="claimData.adjFileNo" [readonly]="claimData?.adjName == null || claimData?.adjName == '' || isInquiry" maxlength="50">
                         <button type="button" class="cust-btn" (click)="openAdjustersModal();" style="margin-left: 2px; max-height: 21px; padding: 0 10px; margin-right: 0; z-index: 1 !important;" [disabled]="disableAdjusterBtn"><a>Adjusters</a></button>
                     </div>
                     <div class="input-group" [class.d-none]="!showUnpaidMsg">

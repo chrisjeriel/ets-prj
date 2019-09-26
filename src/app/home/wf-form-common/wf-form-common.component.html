@@ -1,16 +1,18 @@
 <div>
 	<fieldset class="scheduler-border">
+		<button (click)="switchScreen();">Switch</button>
+
 		<legend class="scheduler-border">Notes & Reminders </legend>
 		<div class="row">
-			<div style="padding-top: 8px; padding-bottom: 10px;" class="col-sm-9">
+			<div style="padding-top: 8px; padding-bottom: 10px;" class="col-sm-6">
 	        	<div>
-			        <div *ngIf=mode layout="row" layout-wrap layout-align="center center">
+			        <div *ngIf="mode == 'reminder'" layout="row" layout-wrap layout-align="center center">
 			            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>REMINDER</b></p>
 			        </div>
-			        <div *ngIf=!mode layout="row" layout-wrap layout-align="center center">
+			        <div *ngIf="mode == 'note'" layout="row" layout-wrap layout-align="center center">
 			            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>NOTE</b></p>
 			        </div>
-			        <div *ngIf=mode layout="row" layout-wrap layout-align="center center">
+			        <div *ngIf="mode == 'reminder'" layout="row" layout-wrap layout-align="center center">
 			            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
 			                <fieldset class="scheduler-border col-sm" style="width: 550px">
 			                		<div class="form-row custom-row-inline-inset">
@@ -33,7 +35,7 @@
 			                </fieldset>
 			            </div>
 			        </div>
-			        <div *ngIf=!mode layout="row" layout-wrap layout-align="center center">
+			        <div *ngIf="mode == 'note'" layout="row" layout-wrap layout-align="center center">
 			            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
 			                <fieldset class="scheduler-border col-sm" style="width: 550px">
 			                		<div class="form-row custom-row-inline-inset">
@@ -41,9 +43,13 @@
 											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
 											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleNote">
 										</div>
-										<div class="input-group" style="margin: -10px 0 -20px 0 ! important;">
+										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
 											<textarea id="inputNotes" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="notes"> </textarea>
+										</div>
+										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
+											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="'Quotation Number : ' + policyInfo.quotationNo">
 										</div>
 									</div>
 			                </fieldset>
@@ -56,21 +62,21 @@
 			                	<div class="form-row custom-row-inline-inset">
 										<div class="input-group">
 											<input id="radio1" class="form-control-sm" type="radio" name="reminderOption" value="1" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm">Assign to me</label>
+											<label class="form-control-sm" for="radio1">Assign to me</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
 											<input id="radio2" class="form-control-sm" type="radio" name="reminderOption" value="2" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm">Assign to</label>
+											<label class="form-control-sm" for="radio2">Assign to</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
 											<!-- <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired> -->
 											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" appRequired>
-											<div id=search class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
+											<div id="search" class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
 											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]= disableAssignTo readonly [(ngModel)]="userInfo.userName">
 										</div>
 										<div class="input-group" style="margin: 10px 0 0 0;">
 											<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm">Assign to many</label>
+											<label class="form-control-sm" for="radio3">Assign to many</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
 											 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
@@ -78,7 +84,7 @@
 										</div>
 										<div class="input-group" style="margin: 10px 0 0 0;">
 											<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm">Assign to all</label>
+											<label class="form-control-sm" for="radio4">Assign to all</label>
 										</div>
 										<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 											 <button style="z-index: 20 !important;" type="button" class="cust-btn"><a>Clear</a></button>
@@ -130,8 +136,8 @@
 				<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar,this.mode);"></app-sucess-dialog> TRBT#PROD_GRADE -->
 				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 			</div>
-			<div class="col-sm-3" style="padding-top: 8px; padding-bottom: 10px;">
-				<app-cust-editable-non-datatable id="recipientsTable" [passData]="recipientsData" class="d-block py-2">
+			<div class="col-sm-6" style="padding-top: 8px; padding-bottom: 10px;">
+				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" class="d-block py-2">
 			</app-cust-editable-non-datatable>
 			</div>
 		</div> <!-- End of row class -->
@@ -151,7 +157,7 @@
         </fieldset>
     </div>
     <div footer class="w-100 text-right">
+    	<button  class="cust-btn" type="button" (click)="saveNotesAndReminders();modalService.dismissAll();"><a>Yes</a></button>
     	<button  class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
-        <button  class="cust-btn" type="button" (click)="saveNotesAndReminders();modalService.dismissAll();"><a>Yes</a></button>
     </div>
 </app-modal>

@@ -39,14 +39,14 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       userGrpDesc: '',
       userGrpTran: []
     },
-    disableGeneric: true,
-    genericBtn: 'Delete',
     pageID: 'userGroup',
     addFlag: true,
     pageLength:10,
     magnifyingGlass:['userGroup'],
     searchFlag: true,
     widths: [],
+    paginateFlag: true,
+    genericBtn: 'Delete',
   }
 
   PassDataModuleTrans: any = {
@@ -127,11 +127,14 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   }
   transData: any = {};
   fromLOV:string = "";
+  saveUserGrpList:any = [];
+  delUserGrpList:any = [];
   saveTranList:any = [];
   saveModuleList:any = [];
   dialogIcon: string = "";
   dialogMessage: string = "";
   cancelFlag: boolean = false;
+  saveMtnUserGrpParams:any = [];
 
   ngOnInit() {
     this.getMtnUserGrp();
@@ -215,6 +218,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       this.passLOVData.from = from;
       this.passLOVData.selector = 'mtnModules';
       this.passLOVData.tranCd = this.transData.tranCd;
+      console.log("passLOVData : " + this.passLOVData);
       this.userGroupModules.tableData.filter((a)=>{return !a.deleted}).map(a=>a.moduleId);
       
       setTimeout(() => {
@@ -419,6 +423,65 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     
     console.log("this.saveModuleList");
     console.log(this.saveModuleList);
+  }
+
+  onClickSaveMain() {
+    try {
+      this.prepareData();
+
+      this.saveMtnUserGrpParams = {
+        userGrpList : this.saveUserGrpList,
+        delUserGrpList : this.delUserGrpList
+      }
+
+      this.userService.saveMtnUserGrp(this.saveMtnUserGrpParams).subscribe((data:any)=>{
+          console.log("saveMtnUserGrp return data");
+          console.log(data);
+          if(data['returnCode'] == 0) {
+            this.dialogIcon = "error";
+            this.successDialog.open();
+          } else{
+            this.dialogIcon = "";
+            this.successDialog.open();
+            this.getMtnUserGrp();
+          }
+      },
+      (err) => {
+        alert("Exception when calling services.");
+      });
+
+    } catch (e) {
+      alert("Error in e : " + e);
+      /*throw new Error("Error in e : " + e);*/
+    }
+    
+  }
+
+  prepareData() {
+    this.saveUserGrpList = [];
+    this.delUserGrpList = [];
+    for (var i = 0; i < this.passDataUserGroup.tableData.length; i++) {
+
+      if (this.passDataUserGroup.tableData[i].deleted == true) {
+        this.delUserGrpList.push(this.passDataUserGroup.tableData[i]);
+      } else if (this.passDataUserGroup.tableData[i].edited == true) {
+        this.passDataUserGroup.tableData[i].createDate = this.ns.toDateTimeString(0);
+        this.passDataUserGroup.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
+        this.passDataUserGroup.tableData[i].updateDate = this.ns.toDateTimeString(0);
+        this.passDataUserGroup.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        
+        this.saveUserGrpList.push(this.passDataUserGroup.tableData[i]);
+      }
+    }
+  }
+
+  deleteUserGrp(){
+    this.userGroups.selected  = [this.userGroups.indvSelect];
+    this.userGroups.confirmDelete();
+  }
+
+  onClickSaveConfirmation() {
+    $('#confirm-save #modalBtn2').trigger('click');
   }
 
 }

@@ -100,8 +100,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   extract() {
     // this.extractedPolicies = this.underWritingService.extractExpiringPolicies(this.expiryParameters);
-    
-    this.prepareExtractParameters();
+    // bydate, bymoyo, bypolno    
+
     this.extractedPolicies = 0;
     console.log("this.expiryParameters : " + JSON.stringify(this.expiryParameters));
 
@@ -111,12 +111,10 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           this.successDiag.open();
-          this.clearAll();  
         } else {
           this.extractedPolicies = data['recordCount'];
           $('#extractMsgModal > #modalBtn').trigger('click');
-          this.clearAll();  
-          this.getPolListing()
+          this.getPolListing();
         }
     });
 
@@ -256,6 +254,8 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   clearDates() {
+    this.expiryParameters.fromExpiryDate = "";
+    this.expiryParameters.toExpiryDate = "";
     this.fromExpiryDate = "";
     this.toExpiryDate = "";
     this.fromMonth = null;
@@ -291,6 +291,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
             if(this.cedingId !== ''){
               this.cedingLov.checkCode(String(this.cedingId).padStart(3, '0'), ev);
             }else{
+              this.cedingName = "";
               this.ns.lovLoader(ev,0);
             }        
         } /*else if(field === 'risk') {
@@ -334,7 +335,57 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   }
 
   onClickExtract(){
-    $('#extractModal > #modalBtn').trigger('click');
+    var proceedExtract = true;
+    this.prepareExtractParameters();
+    if (this.radioVal == 'bydate') {
+      if ((this.expiryParameters.fromExpiryDate == null || this.expiryParameters.toExpiryDate == null) || (this.expiryParameters.fromExpiryDate == '' || this.expiryParameters.toExpiryDate == '')) {
+        console.log("Extract : ");
+        console.log(this.radioVal);
+        console.log(this.expiryParameters.fromExpiryDate);
+        console.log(this.expiryParameters.toExpiryDate);
+        proceedExtract = false;
+      }
+    } else if (this.radioVal == 'bymoyo') {
+      if ((this.fromYear == '' || this.fromYear == null || this.toYear == '' || this.toYear == null) || (this.fromMonth == '' || this.fromMonth == null || this.toMonth == '' || this.toMonth == null)) {
+        console.log("Extract : ");
+        console.log(this.radioVal);
+        console.log(this.expiryParameters.fromExpiryDate);
+        console.log(this.expiryParameters.toExpiryDate);
+        proceedExtract = false;
+      }
+    } else if (this.radioVal == 'bypolno') {
+        console.log("Extract : ");
+        console.log(this.radioVal);
+        console.log(" polLineCd : " + this.expiryParameters.polLineCd);
+        console.log(" polYear : " + this.expiryParameters.polYear);
+        console.log(" polSeqNo : " + this.expiryParameters.polSeqNo);
+        console.log(" polCedingId : " + this.expiryParameters.polCedingId);
+        console.log(" coSeriesNo : " + this.expiryParameters.coSeriesNo);
+        console.log(" altNo : " + this.expiryParameters.altNo);
+
+
+        if ((this.expiryParameters.polLineCd == '' &&
+            this.expiryParameters.polYear == '' &&
+            this.expiryParameters.polSeqNo == '' &&
+            this.expiryParameters.polCedingId == '' &&
+            this.expiryParameters.coSeriesNo == '' &&
+            this.expiryParameters.altNo == '') || 
+            (this.expiryParameters.polLineCd === undefined &&
+            this.expiryParameters.polYear === undefined &&
+            this.expiryParameters.polSeqNo === undefined &&
+            this.expiryParameters.polCedingId === undefined &&
+            this.expiryParameters.coSeriesNo === undefined &&
+            this.expiryParameters.altNo === undefined))   {
+          proceedExtract = false;
+        }
+    }
+
+    if (proceedExtract) {
+      $('#extractModal > #modalBtn').trigger('click');
+    } else {
+      this.dialogIcon = "error";
+      this.successDiag.open();
+    }
   }
 
 

@@ -101,7 +101,6 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   ngOnInit() {
     this.getPolPurging();
-    console.log(this.radioVal)
   }
 
   getPolPurging(){
@@ -121,6 +120,9 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     if(event.target.checked){
       this.baseOnParam = true
       this.disabledFlag = false;
+      this.unProcess = false;
+      this.expiredAndProcessed = false;
+      this.allProcess = false;
     }else {
       this.baseOnParam = false;
       this.disabledFlag = true;

@@ -44,8 +44,8 @@
         <div class="form-group col-sm"> 
             <div class="col-md-12 text-center">
                 <div class="cust-btn-container">
-                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>

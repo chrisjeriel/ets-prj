@@ -92,7 +92,7 @@ export class ArClaimCashCallComponent implements OnInit {
   constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
+    this.titleService.setTitle("Acct-IT | Claim Cash Call");
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true ];

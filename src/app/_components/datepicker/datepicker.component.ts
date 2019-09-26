@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
 import { NotesService } from '@app/_services'
 import { NgForm } from '@angular/forms';
+import { Calendar } from 'primeng/calendar';
 
 @Component({
   selector: 'datepicker',
@@ -9,7 +10,7 @@ import { NgForm } from '@angular/forms';
 })
 export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterViewInit {
 
-  constructor(private ns: NotesService) { }
+  constructor(private ns: NotesService, private renderer: Renderer2) { }
 
   private datepickerVal: any = null;
   private minimumDate: any = null;
@@ -49,6 +50,12 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   @Input() tabindex: any = null;
   @Input() formName: string = 'dp' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
   @Input() table: boolean = false;
+
+  @ViewChild(Calendar) cal: Calendar;
+
+  markAsPristine(){
+    this.renderer.removeClass(this.cal.el.nativeElement,'ng-dirty');
+  }
 
   ngOnInit() {
     this.minimumDate = new Date(this.minDate);
@@ -158,6 +165,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   			dateString = this.datepickerVal == null ? '' : dateString.split('T')[1];
   			break;
   	}
+
+    this.renderer.addClass(this.cal.el.nativeElement,'ng-dirty');
 
   	this.valueChange.emit(dateString);
   }

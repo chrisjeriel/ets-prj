@@ -15,6 +15,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-cv-entry',
@@ -36,6 +37,7 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
   @ViewChild('printmMdl') printmMdl           : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
+  @ViewChild('myForm') form                   : NgForm;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -89,7 +91,8 @@ export class CvEntryComponent implements OnInit {
   isTotPrlEqualCvAmt   : boolean = false;
   isTotDebCredBalanced : boolean = false;
   bankAcctList         : any;
-  existsInCvDtl         : boolean = false;
+  checkSeriesList      : any;
+  existsInCvDtl        : boolean = false;
 
   passDataLov  : any = {
     selector     : '',
@@ -123,16 +126,19 @@ export class CvEntryComponent implements OnInit {
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),subRes)
-                            .pipe(map(([prl,ae,ba,sub1]) => { return { prl, ae, ba, sub1 }; }));
+    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcitCheckSeries(),subRes)
+                            .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
 
     subRes2.subscribe(data => {
       console.log(data);
-      var recPn = data['sub1']['pn']['printableNames'];
-      var recCl = data['sub1']['cl']['refCodeList'];
+      var recPn   = data['sub1']['pn']['printableNames'];
+      var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
       var recPrt  = data['sub1']['prt']['refCodeList'];
-      this.cvStatList = recStat;
+      var recCn   = data['cn']['checkSeriesList'];
+
+      this.cvStatList      = recStat;
+      this.checkSeriesList = recCn;
 
       this.bankAcctList = data['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
@@ -174,6 +180,11 @@ export class CvEntryComponent implements OnInit {
               e.preparedByName = e2.printableName;
               this.saveAcitCv.preparedBy = e2.userId;
               e.preparedByDes = e2.designation;
+            }
+            if(e.certifiedBy == e2.userId){
+              e.certifiedByName = e2.printableName;
+              this.saveAcitCv.certifiedBy = e2.userId;
+              e.certifiedByDes = e2.designation;
             }
           });
           return e;
@@ -399,6 +410,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.tranId = data['tranIdOut'];
       this.saveAcitCv.mainTranId = data['mainTranIdOut'];
       this.getAcitCv();
+      this.form.control.markAsPristine();
     });
   }
 
@@ -431,7 +443,8 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    $('input').addClass('ng-dirty');
+    // $('input').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'payee'){
       this.saveAcitCv.payee   = data.data.payeeName;
@@ -445,11 +458,19 @@ export class CvEntryComponent implements OnInit {
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcitCv.bankAcct = ba[0].bankAcctCd; 
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+          this.saveAcitCv.checkNo = chkNo[0].checkNo;
+        } 
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
+      var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        this.saveAcitCv.checkNo = chkNo[0].checkNo;
+      }
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
@@ -506,7 +527,6 @@ export class CvEntryComponent implements OnInit {
   disableFlds(con:boolean){
     $('.warn').prop('readonly',con);
     this.removeIcon = (con)?true:false;
-    console.log(this.removeIcon + ' >>> removeIcon');
   }
 
   setBankAcctData(){
@@ -526,9 +546,6 @@ export class CvEntryComponent implements OnInit {
       this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
       this.warnMdl.openNoClose();
     }else{
-      // window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-      //                 this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
-      // this.printmMdl.openNoClose();
       this.fromBtn = 'approve-req';
       this.confirmMdl.openNoClose();
     }
