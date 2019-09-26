@@ -522,7 +522,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.recPrqTrans.forEach(e => {
         this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
                                                               .map(e2 => { 
-                                                                e2.paymentFor = e.paymentFor; 
+                                                                e2.paymentFor = this.requestData.particulars; 
                                                                 e2.createUser = e.createUser;
                                                                 e2.updateUser = e.updateUser;
                                                                 e2.createDate = e.createDate;
@@ -589,6 +589,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
       this.passData.currCd = this.requestData.currCd;
+      this.passData.payeeNo = this.requestData.payeeCd;
       this.passData.hide = this.investmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtId});
       this.invtLov.openLOV();
     }
