@@ -725,7 +725,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isEmpty = 0;
-
+    this.params.savePrqTrans = [];
     this.unappliedColData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
       if(e.transdtlTypeDesc == '' || e.transdtlTypeDesc == null || e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
@@ -738,8 +738,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){
-          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlType != e.transdtlType && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
-                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
+          // this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.transdtlType != e.transdtlType && i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
+          //                                                            i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
@@ -801,6 +801,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isEmpty = 0;
+    this.params.savePrqTrans = [];
 
     this.othersData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
@@ -815,14 +816,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
       }else{
         e.fromCancel = true;
         if(e.edited && !e.deleted){
-          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.itemName != e.itemName && i.refNo != e.refNo && i.remarks != e.remarks && 
-                                                                     i.currCd != e.currCd && i.currRate != e.currRate && i.currAmt != e.currAmt && i.localAmt != e.localAmt);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
+          //this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.reqId != e.reqId && i.tranTypeCd != e.tranTypeCd && i.itemNo != e.itemNo);
           this.params.savePrqTrans.push(e);
         }else if(e.edited && e.deleted){ 
           this.params.deletePrqTrans.push(e);  
@@ -834,6 +834,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     var totalAmt = this.othersData.tableData.filter(e => e.deleted != true && e.newRec == 1).reduce((a,b)=>a+(b.currAmt != null ?parseFloat(b.currAmt):0),0);
     console.log(currAmt);
     console.log(this.othersData.tableData);
+    console.log(this.params.savePrqTrans);
 
     if(isEmpty == 1){
       this.dialogIcon = 'error';

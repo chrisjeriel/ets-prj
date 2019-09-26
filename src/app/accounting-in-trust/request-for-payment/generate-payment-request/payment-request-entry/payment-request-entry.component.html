@@ -95,17 +95,17 @@
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels">Prepared By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'prep-user')" [(ngModel)]="saveAcitPaytReq.preparedBy" maxlength="10" appRequired>
+   		                    	<input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'prep-user')" [(ngModel)]="saveAcitPaytReq.preparedName" maxlength="10" appRequired>
    		                    	<div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels">Requested By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'req-user')" [(ngModel)]="saveAcitPaytReq.requestedBy" maxlength="10" appRequired>
+   		                    	<input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'req-user')" [(ngModel)]="saveAcitPaytReq.requestedName" maxlength="10" appRequired>
    		                    	<div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('req-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input name="input14" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy">
+   		                    	<input name="input14" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedName">
                             <div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                </div>
