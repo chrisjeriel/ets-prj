@@ -22,7 +22,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() required: boolean = false;
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
-  @Input() formName: string = 'formName' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
+  @Input() formName: string = 'te' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -67,7 +67,6 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   showTextEditorModal(content) {
     this.oldValue = this.editorContent;
-    // this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     this.edtrMdl.openNoClose();
   }
 
@@ -75,6 +74,10 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   	this.emitValue();
   	this.modalService.dismissAll();
     this.edtrMdlForm.form.markAsPristine();
+
+    if(this.oldValue !== this.editorContent) {
+      this.ns.formGroup.get(this.formName).markAsDirty();
+    }
   }
 
   checkStyle() {
@@ -99,7 +102,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   onClickYes() {
     this.editorContent = this.oldValue;
-    this.closeTextEditorModal('');
+    this.closeTextEditorModal(1);
   }
 
   onClickNo() {

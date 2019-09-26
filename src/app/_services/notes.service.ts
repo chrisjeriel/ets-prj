@@ -89,8 +89,12 @@ export class NotesService {
     }
   }
 
-  getFormGroup() {
-    return this.formGroup;
+  clearFormGroup() {
+    Object.keys(this.formGroup.controls).forEach(a => {
+      this.formGroup.removeControl(a);
+    });
+
+    this.formGroup.reset();
   }
   
 }

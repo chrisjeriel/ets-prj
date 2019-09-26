@@ -155,7 +155,7 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Event</label>
                                 <input name="input24"  type="text" class="form-control form-control-sm col-sm" [(ngModel)]="claimData.eventDesc" [readonly]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" (change)="checkCode($event, 'event')" appRequired>
-                                <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" class="text-search-ico" style="margin-right: 5px !important;">
+                                <div [class.d-none]="claimData?.eventTypeCd == null || claimData?.eventTypeCd == '' || isInquiry" class="text-search-ico" style="margin-right: 5px !important; height: 0;">
                                     <a><i class="fa fa-search" (click)="showClmEventLOV()"></i></a>
                                 </div>
                             </div>
@@ -913,5 +913,3 @@
         <button *ngIf="mdlType == 'ref'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
-
-<button (click)="testMe()">test</button>

@@ -98,7 +98,7 @@
 												<label class="form-control-sm col-sm-4">Membership Date</label>
 												<!-- <input type="date" class="form-control form-control-sm col-sm-4" [ngModel]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (ngModelChange)="companyData.membershipDate = $event" name="membershipDate"> -->
 												<div class="col-sm dp-cont">
-													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.membershipTag === 'N' || companyData.membershipTag === null" [value]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (valueChange)="companyData.membershipDate = $event" [name]="'membershipDate'"></datepicker>
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.membershipTag === 'N' || companyData.membershipTag === null" [value]="companyData.membershipDate === '' ? '' : ns.toDateTimeString(companyData.membershipDate).split('T')[0]" (valueChange)="companyData.membershipDate = $event" [formName]="'membershipDate'"></datepicker>
 												</div>
 												
 											</div>
@@ -106,13 +106,13 @@
 												<label class="form-control-sm col-sm-4">Inactive Date</label>
 												<!-- <input type="date" class="form-control form-control-sm col-sm" [ngModel]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (ngModelChange)="companyData.inactiveDate = $event" name="inactiveDate"> -->
 												<div class="col-sm dp-cont">
-													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.activeTag === 'Y' || companyData.activeTag === null" [value]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (valueChange)="companyData.inactiveDate = $event" [name]="'inactiveDate'"></datepicker>
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.activeTag === 'Y' || companyData.activeTag === null" [value]="companyData.inactiveDate === '' ? '' : ns.toDateTimeString(companyData.inactiveDate).split('T')[0]" (valueChange)="companyData.inactiveDate = $event" [formName]="'inactiveDate'"></datepicker>
 												</div>
 											</div>
 											<div class="input-group cust-ig">
 												<label class="form-control-sm col-sm-4">Withdrawal Date</label>
 												<div class="col-sm dp-cont">
-													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.withdrawTag === 'N' || companyData.withdrawTag === null" [value]="companyData.withdrawDate === '' ? '' : ns.toDateTimeString(companyData.withdrawDate).split('T')[0]" (valueChange)="companyData.withdrawDate = $event" [name]="'withdrawDate'"></datepicker>
+													<datepicker [type]="'date'" [required]="true" [disabled]="companyData.withdrawTag === 'N' || companyData.withdrawTag === null" [value]="companyData.withdrawDate === '' ? '' : ns.toDateTimeString(companyData.withdrawDate).split('T')[0]" (valueChange)="companyData.withdrawDate = $event" [formName]="'withdrawDate'"></datepicker>
 												</div>
 												<!-- <div class="cust-div col-sm cust-checkbox-pos">
 													<input type="checkbox" [ngModel]="companyData.activeTag === 'Y'" (ngModelChange)="$event ? companyData.activeTag = 'Y' : companyData.activeTag = 'N'; $event ? companyData.inactiveDate = '' : ''" name="activeTag" [disabled]="companyData.withdrawTag === 'Y'">&nbsp;<span class="cust-span">Active</span>

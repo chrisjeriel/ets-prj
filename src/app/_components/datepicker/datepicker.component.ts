@@ -1,12 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, AfterViewInit } from '@angular/core';
 import { NotesService } from '@app/_services'
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css']
 })
-export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
+export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterViewInit {
 
   constructor(private ns: NotesService) { }
 
@@ -29,6 +30,8 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	backgroundColor: 'transparent',
   }
 
+  @ViewChild('dtPckrForm') dtPckrForm:  NgForm;
+
   @Input() value: string = null;
   @Output() valueChange = new EventEmitter<any>();
   @Output() onFocus = new EventEmitter<any>();
@@ -44,7 +47,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() disabledDates: any[] = null;
   @Input() disabledDays: any[] = null;
   @Input() tabindex: any = null;
-  @Input() name: any = null;
+  @Input() formName: string = 'dp' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
   @Input() table: boolean = false;
 
   ngOnInit() {
@@ -72,6 +75,10 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['marginTop'] = '-6px';  	
   	}
+  }
+
+  ngAfterViewInit() {
+    this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);
   }
 
   ngOnChanges(changes: SimpleChanges) {
