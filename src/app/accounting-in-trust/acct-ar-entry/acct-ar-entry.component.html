@@ -213,7 +213,8 @@ padding-right: 0px !important;">
 	<div header>Confirmation</div>
 	<div body>
 	  <div style="text-align: center">
-	  	<p style="margin: 0px">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px" *ngIf="isPrinted">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this AR with an AR No of <strong>{{arInfo.arNo !== null && arInfo.arNo.length !== 0 ? pad(arInfo.arNo, 'arNo') : generatedArNo}}</strong> ?</p>
 	  </div>
 	</div>
 	<div footer>

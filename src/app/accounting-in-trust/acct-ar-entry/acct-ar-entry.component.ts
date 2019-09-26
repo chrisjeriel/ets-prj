@@ -102,6 +102,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
+  generatedArNo: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -741,16 +742,45 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
+    }else if(this.checkArInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+      $('.required').focus().blur();
+      $('table input').focus().blur();
+      $('table select').focus().blur();
+    }
+    else if(this.arAmtEqualsPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Total amount of payment details is not equal to the AR Amount.';
+      this.successDiag.open();
+    }else if(this.dcbStatusCheck()){
+
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
     }else{
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+      if(this.isPrinted){
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
-      this.printMdl.openNoClose();
+        this.printMdl.openNoClose();
+      }else{
+        this.retrieveMtnAcitArSeries();
+      }
     }
   }
 
   updateArStatus(){
     if(!this.isPrinted){
       this.loading = true;
+      //Save Ar Entry first
+      if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
+        this.arInfo.arNo = parseInt(this.generatedArNo);
+      }
+      this.save();
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
+      //Update Transactions to Closed and AR Status to Printed
       let params: any = {
         tranId: this.arInfo.tranId,
         arNo: this.arInfo.arNo,
@@ -763,6 +793,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.dialogIcon = 'error-message';
             this.dialogIcon = 'An error has occured when updating AR status';
           }else{
+            console.log(data);
+            console.log('printed');
             this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
           }
         }
@@ -928,6 +960,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       },
       (error: any)=>{
 
+      }
+    );
+  }
+
+  retrieveMtnAcitArSeries(){
+    this.ms.getMtnAcitArSeries('N', 1).subscribe(
+      (data:any)=>{
+        if(data.arSeriesList.length !== 0){
+          this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
+          this.printMdl.openNoClose();
+        }
       }
     );
   }
