@@ -8,7 +8,7 @@
 					<div class="col-sm-12">
 						<fieldset class="scheduler-border" style="margin-top: 10px !important; padding-top: 3px !important; padding-bottom: 15px !important;">
 							<div class="input-group text-center" style="margin-bottom: -14px !important;">
-								<div class="col-sm">
+								<!-- <div class="col-sm">
 									<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
 									<label for="statNw" class="text-left">&nbsp;New</label>
 								</div>
@@ -20,10 +20,6 @@
 									<input type="radio" name="tranStat" id="statPd" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
 									<label for="statPd" class="text-left">&nbsp;Printed</label>
 								</div>
-								<!-- <div class="col-sm">
-									<input type="radio" name="tranStat" id="statCn" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
-									<label for="statCn" class="text-left">&nbsp;Cancelled</label>
-								</div> -->
 								<div class="col-sm">
 									<input type="radio" name="tranStat" id="statFa" value="for approval" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
 									<label for="statFa" class="text-left">&nbsp;For Approval</label>
@@ -39,6 +35,21 @@
 								<div class="col-sm-2">
 									<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
 									<label for="statDl" class="text-left">&nbsp;Cancelled / Deleted</label>
+								</div> -->
+
+								<div class="w-100 text-center">
+									<input type="radio" name="tranStat" id="statNw" value="new" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statNw" class="text-left cust-mg">&nbsp;New</label>
+									<input type="radio" name="tranStat" id="statFa" value="for approval" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statFa" class="text-left cust-mg">&nbsp;For Approval</label>
+									<input type="radio" name="tranStat" id="statAp" value="approved" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statAp" class="text-left cust-mg">&nbsp;Approved</label>
+									<input type="radio" name="tranStat" id="statPd" value="printed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statPd" class="text-left cust-mg">&nbsp;Printed</label>
+									<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statPs" class="text-left cust-mg">&nbsp;Posted</label>
+									<input type="radio" name="tranStat" id="statDl" value="cancelled" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveJVlist()">
+									<label for="statDl" class="text-left">&nbsp;Cancelled</label>
 								</div>
 							</div>
 						</fieldset>

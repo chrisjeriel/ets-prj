@@ -43,17 +43,20 @@
     <legend class="scheduler-border">JV Accounting Entries</legend>
      <div class="row">
         <div class="col-sm-12" style="margin-top: 14px">
-            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tabChange)="onTabChange($event)">
-                <ng-container controls-r>
-                    <div class="align" style="position: absolute;left: 130px">
-                        <label class="form-control-sm">For Approval</label> 
-                        <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
-                    </div>
+            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)" (newClick)="onRowclick($event)">
+                <ng-container controls-l>
+                    <label class="form-control-sm">For Approval</label> 
+                    <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
                 </ng-container>
             </app-cust-editable-non-datatable>
         </div>
      </div>
-     <div class="form-row custom-row-inline-inset">
+     <div class="input-group" style="margin-top: 7px;">
+         <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
+         <label class="form-control-sm col-sm-2" >Variance</label>
+         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" disabled="disabled" name="jvDetails.variance">
+     </div>
+     <!-- <div class="form-row custom-row-inline-inset">
          <div class="col-sm-12">
              <div class="input-group">
                 <label class="form-control-sm col-sm">Total Debit and Credit</label>
@@ -65,7 +68,7 @@
                 <input type="text" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.variance">
             </div>
         </div>
-     </div>
+     </div> -->
      <div class="form-row" style="margin-top: 13px !important;">
          <div class="form-group col-sm">
              <div class="col-md-12 text-center">
@@ -81,19 +84,18 @@
     <div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.createUser" [ngModel]="rowData?.createUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.createDate" [ngModel]="rowData?.createDate" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-            <input type="text" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.updateUser" [ngModel]="rowData?.updateUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" disabled>
+            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.updateDate" [ngModel]="rowData?.updateDate" disabled>
         </div>
     </div>
 </fieldset>
 </form>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
-<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveAcctEntries()"></app-confirm-save>
 <app-cancel-button (onYes)="saveAcctEntries()" [url]="'/journal-voucher'" ></app-cancel-button>

@@ -9,7 +9,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-year-table" class="col-sm-6">
-									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear()" (onDelete)="treatyYearTable.onClickDelete('force'); onTreatyYearClickDelete();">
+									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear(true)" (onDelete)="treatyYearTable.onClickDelete('force'); onTreatyYearClickDelete();">
 										<ng-container controls-l>
 											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>

@@ -6,6 +6,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 
 @Component({
@@ -23,6 +25,8 @@ export class UsersComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
+  @ViewChild('lovComponent') lovComponent: LovComponent;
   
   passDataUsers: any = {
     tableData: [],
@@ -153,6 +157,13 @@ export class UsersComponent implements OnInit {
   fromLOV:string = "";
   saveTranList:any = [];
   saveModuleList:any = [];
+  confirmMethod:any;
+  confirmationMessage:string = "";
+  changePass:any = {
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  }
 
   constructor(private securityService: SecurityService, private ns: NotesService, public modalService: NgbModal, private userService: UserService) { }
 
@@ -166,7 +177,7 @@ export class UsersComponent implements OnInit {
         for(var i =0; i < data.usersList.length;i++){
           this.passDataUsers.tableData.push(data.usersList[i]);
           this.passDataUsers.tableData[i].showMG = 1;
-          this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrpDesc'];
+          this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrp', 'userGrpDesc'];
         }
 
         this.usersList.refreshTable();
@@ -283,7 +294,7 @@ export class UsersComponent implements OnInit {
       this.usersList.tableData.filter((a)=>{return !a.deleted}).map(a=>a.userGrp);
       
       setTimeout(() => {
-        $('#lov #modalBtn2').trigger('click');
+        this.lovComponent.openLOV();
       });
 
       this.selRecordRow = data.index;
@@ -293,7 +304,7 @@ export class UsersComponent implements OnInit {
       this.userTransactions.tableData.filter((a)=>{return !a.deleted}).map(a=>a.tranCd);
       
       setTimeout(() => {
-        $('#lov #modalBtn2').trigger('click');
+        this.lovComponent.openLOV();
       });
 
       this.selRecordRow = data.index;
@@ -304,7 +315,7 @@ export class UsersComponent implements OnInit {
       this.userModules.tableData.filter((a)=>{return !a.deleted}).map(a=>a.moduleId);
       
       setTimeout(() => {
-        $('#lov #modalBtn2').trigger('click');
+        this.lovComponent.openLOV();
       });
 
       this.selRecordRow = data.index;
@@ -476,6 +487,18 @@ export class UsersComponent implements OnInit {
     console.log(this.saveModuleList);
   }
 
+  onClickConfirmation(method) {
+    console.log("onClickConfirmation : " + method);
+    this.confirmMethod = method;
+    if (method == 'resetPassword') {
+      this.confirmationMessage = "Are you sure you want to reset password for selected user?";
+      this.warningConfirmation.openNoClose();
+    } else if (method == 'changePassword') {
+      this.confirmationMessage = "Are you sure you want to change password for selected user?";
+      this.warningConfirmation.openNoClose();
+    }
+  }
+
   onClickSaveConfirmation() {
     $('#confirm-save #modalBtn2').trigger('click');
   }
@@ -489,28 +512,27 @@ export class UsersComponent implements OnInit {
         usersList : this.saveUsersList
       }
 
-      this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
-          console.log("saveMtnUser return data");
-          console.log(data);
-          if(data['returnCode'] == 0) {
-            this.dialogIcon = "error";
-            this.successDialog.open();
-          } else{
-            this.dialogIcon = "";
-            this.successDialog.open();
-            this.getMtnUsers();
-          }
-      },
-      (err) => {
-        alert("Exception when calling services.");
-      });
-
+      if (this.saveMtnUserParams.usersList.length > 0) {
+        this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
+            console.log("saveMtnUser return data");
+            console.log(data);
+            if(data['returnCode'] == 0) {
+              this.dialogIcon = "error";
+              this.successDialog.open();
+            } else{
+              this.dialogIcon = "";
+              this.successDialog.open();
+              this.getMtnUsers();
+            }
+        },
+        (err) => {
+          alert("Exception when calling services.");
+        });
+      }      
     } catch (e) {
       alert("Error in e : " + e);
       /*throw new Error("Error in e : " + e);*/
     }
-    
-
     
   }
 
@@ -528,8 +550,64 @@ export class UsersComponent implements OnInit {
     console.log(this.saveUsersList);
   }
 
-  resetPassword(){
-    $('#resetPassword #modalBtn').trigger('click');
+  confirmResetPassword() {
+    this.usersList.indvSelect.edited = true;
+    this.usersList.indvSelect.password = this.usersList.indvSelect.userId;
+
+    this.saveUsersList = [];
+    this.saveUsersList.push(this.usersList.indvSelect);
+    this.saveMtnUserParams = {
+        usersList : this.saveUsersList
+    }
+
+    if (this.saveMtnUserParams.usersList.length > 0) {
+      this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
+          console.log("saveMtnUser return data");
+          console.log(data);
+          if(data['returnCode'] == 0) {
+            this.dialogIcon = "error";
+            this.successDialog.open();
+          } else{
+            this.dialogIcon = "success-message";
+            this.dialogMessage = 'Password reset successfully!';
+            this.successDialog.open();
+            this.getMtnUsers();
+          }
+      },
+      (err) => {
+        alert("Exception when calling services.");
+      });
+    }
+  }
+
+  confirmChangePassword() {
+    this.usersList.indvSelect.edited = true;
+    this.usersList.indvSelect.password = this.changePass.newPassword;
+
+    this.saveUsersList = [];
+    this.saveUsersList.push(this.usersList.indvSelect);
+    this.saveMtnUserParams = {
+        usersList : this.saveUsersList
+    }
+
+    if (this.saveMtnUserParams.usersList.length > 0) {
+      this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
+          console.log("saveMtnUser return data");
+          console.log(data);
+          if(data['returnCode'] == 0) {
+            this.dialogIcon = "error";
+            this.successDialog.open();
+          } else{
+            this.dialogIcon = "success-message";
+            this.dialogMessage = 'Password changed successfully!';
+            this.successDialog.open();
+            this.getMtnUsers();
+          }
+      },
+      (err) => {
+        alert("Exception when calling services.");
+      });
+    }
   }
 
   changePassword(){
@@ -537,8 +615,8 @@ export class UsersComponent implements OnInit {
   }
 
   userAccess(){
-    this.getTransactions('USER');
     $('#userAccess #modalBtn').trigger('click');
+    this.getTransactions('USER');
   }
 
   userGroupAccess(){

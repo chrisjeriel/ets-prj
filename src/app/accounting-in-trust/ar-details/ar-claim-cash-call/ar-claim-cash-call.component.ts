@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { ARInwdPolBalDetails } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -26,9 +27,8 @@ export class ArClaimCashCallComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeaderWithColspan: [{header:'', span:1, pinLeft: true},{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}],
-    tHeader: ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Reserve', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local'],
-    dataTypes: ["text", "number", "text", "text","text","text", "checkbox", "text", "percent", "currency", "currency", "currency", "currency"],
+    tHeader: ['Claim No', 'Co. Claim No.', 'Policy No.', 'Loss Date', 'Remarks', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes: ["text","text", "text", "date", "text", "text", "percent", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
     infoFlag: true,
@@ -40,38 +40,39 @@ export class ArClaimCashCallComponent implements OnInit {
         tranId: '',
         billId: '',
         itemNo: '',
-        projId: '',
         claimId: '',
         claimNo: '',
-        exGratia: '',
-        insuredDesc: '',
-        histNo: '',
-        histCategory: '',
-        histCategoryDesc: '',
-        histType: '',
-        histTypeDesc: '',
-        paymentFor: '',
-        reserveAmt: '',
-        paytAmt: '',
+        policyId: '',
         policyNo: '',
         coClmNo: '',
         lossDate: '',
         currCd: '',
         currRate: '',
-        recOverAmt: '',
+        remarks: '',
+        cashcallAmt: '',
         localAmt: '',
         showMG: 1
     },
-    total: [null,null,null,null,null,null,null,null, 'Total', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
-    widths: [120,1,130,120, 150, 250, 1,1, 120, 120, 120, 120, 120, 120],
-    keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
-    pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
-    uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
-    small: true
+    total: [null,null,null,null, null, null, 'Total', 'cashcallAmt', 'localAmt'],
+    widths: [ 130, 130, 180,1, 250, 1, 100, 120, 120],
+    keys: ['claimNo', 'coClmNo', 'policyNo', 'lossDate', 'remarks', 'currCd', 'currRate', 'cashcallAmt', 'localAmt'],
+    uneditable: [false,true,true,true,false,true,true,false,true],
+    opts:[
+      {
+        selector: 'paytType',
+        vals: [],
+        prev: []
+      },
+      {
+        selector: 'currCd',
+        vals: [],
+        prev: []
+      }
+    ]
   };
 
   passLov: any = {
-    selector: 'clmResHistPayts',
+    selector: 'acitArClmCashCall',
     payeeNo: '',
     currCd: '',
     hide: []
@@ -80,7 +81,7 @@ export class ArClaimCashCallComponent implements OnInit {
   cancelFlag: boolean;
 
   totalLocalAmt: number = 0;
-  clmCashCallIndex: number = 0;
+  clmRecoverIndex: number = 0;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -92,40 +93,58 @@ export class ArClaimCashCallComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Cash Call");
-    console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
-      this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
-      this.passData.tHeaderWithColspan= [{header: 'Claim Information', span: 11, pinLeft: true}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true ];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
     }
+    //this.retrievePaytType();
     this.retrieveClmRecover();
-
+    //this.getCurrency();
   }
 
-  openClmCashCallLov(data){
+  retrievePaytType(){
+    this.ms.getRefCode('ACIT_AR_CLMRECOVER.PAYT_TYPE').subscribe(
+      (data:any)=>{
+        for(var i of data.refCodeList){
+          this.passData.opts[0].vals.push(i.code);
+          this.passData.opts[0].prev.push(i.description);
+        }
+      }
+    );
+  }
+
+  getCurrency(){
+    this.ms.getMtnCurrency('','Y').subscribe(
+       (data: any)=>{
+         for(var i of data.currency){
+           this.passData.opts[1].vals.push(i.currencyCd+'T'+i.currencyRt);
+           this.passData.opts[1].prev.push(i.currencyCd);
+         }
+       }
+    );
+  }
+
+  openClmRecoverLov(data){
     this.passLov.payeeNo = this.record.payeeNo;
     this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
     console.log(this.passLov.hide);
-    this.clmCashCallIndex = data.index;
+    this.clmRecoverIndex = data.index;
     this.lovMdl.openLOV();
   }
 
   retrieveClmRecover(){
     this.passData.tableData = [];
-    //this.accountingService.getAcitArClmCashCall(this.record.tranId, 1).subscribe( //billId for Claim Cash Call is always 1
-    this.accountingService.getAcitArClmRecover(this.record.tranId, 1).subscribe( //billId for Claim Cash Call is always 1
+    this.accountingService.getAcitArClmCashCall(this.record.tranId, 1).subscribe( //billId for Claim Recovery / Overpayment is always 1
       (data: any)=>{
-        if(data.arClmRecover.length !== 0){
-          /*for(var i of data.arClmRecover){
-            i.currCd = i.currCd+'T'+i.currRate;
-            i.uneditable = ['paytType', 'claimNo'];
+        if(data.clmCashCallList.length !== 0){
+          for(var i of data.clmCashCallList){
+            i.uneditable = ['claimNo'];
             this.passData.tableData.push(i);
-          }*/
-          this.passData.tableData = data.arClmRecover;
+          }
           this.table.refreshTable();
         }
       }
@@ -137,24 +156,18 @@ export class ArClaimCashCallComponent implements OnInit {
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-      this.passData.tableData[this.passData.tableData.length - 1].projId = selected[i].projId;
+      this.passData.tableData[this.passData.tableData.length - 1].policyId = selected[i].policyId;
       this.passData.tableData[this.passData.tableData.length - 1].policyNo = selected[i].policyNo;
       this.passData.tableData[this.passData.tableData.length - 1].claimNo = selected[i].claimNo;
       this.passData.tableData[this.passData.tableData.length - 1].claimId = selected[i].claimId;
-      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = selected[i].insuredDesc;
+      this.passData.tableData[this.passData.tableData.length - 1].coClmNo = selected[i].coClmNo;
       this.passData.tableData[this.passData.tableData.length - 1].lossDate = selected[i].lossDate;
-      this.passData.tableData[this.passData.tableData.length - 1].histNo = selected[i].histNo;
-      this.passData.tableData[this.passData.tableData.length - 1].histCategory = selected[i].histCategory;
-      this.passData.tableData[this.passData.tableData.length - 1].histCategoryDesc = selected[i].histCategoryDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].histType = selected[i].histType;
-      this.passData.tableData[this.passData.tableData.length - 1].histTypeDesc = selected[i].histTypeDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].exGratia = selected[i].exGratia;
-      this.passData.tableData[this.passData.tableData.length - 1].reserveAmt = selected[i].reserveAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].cumulativeAmt = selected[i].cumulativeAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currencyCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currencyRt;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt = selected[i].reserveAmt == null ? selected[i].tsiAmt : selected[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt * selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['claimNo'];
     }
     this.table.refreshTable();
@@ -177,8 +190,7 @@ export class ArClaimCashCallComponent implements OnInit {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
           this.savedData[this.savedData.length-1].tranId = this.record.tranId;
-          this.savedData[this.savedData.length-1].billId = 1; //1 for Claim Cash Call
-          this.savedData[this.savedData.length-1].exGratia = this.savedData[this.savedData.length-1].exGratia === null ? 'N' : this.savedData[this.savedData.length-1].exGratia;
+          this.savedData[this.savedData.length-1].billId = 1; //1 for Claim Recovery / Overpayment Transaction Type
           this.savedData[this.savedData.length-1].currCd = this.savedData[this.savedData.length-1].currCd.split('T')[0];
           this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
           this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
@@ -188,27 +200,26 @@ export class ArClaimCashCallComponent implements OnInit {
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
          this.deletedData.push(this.passData.tableData[i]);
          this.deletedData[this.deletedData.length-1].tranId = this.record.tranId;
-         this.deletedData[this.deletedData.length-1].billId = 1; //1 for Claim Cash Call
+         this.deletedData[this.deletedData.length-1].billId = 1; //1 for Claim Recovery / Overpayment Transaction Type
          this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
          this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
       }
     }
     let params: any = {
       tranId: this.record.tranId,
-      billId: 1, //1 for Claim Cash Call
+      billId: 1, //1 for Claim Recovery / Overpayment Transaction Type
       billType: this.record.tranTypeCd,
       totalLocalAmt: this.totalLocalAmt,
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-      saveClmRecover: this.savedData,
-      delClmRecover: this.deletedData
+      saveClmCashCall: this.savedData,
+      delClmCashCall: this.deletedData
     }
     console.log(params);
 
-    //this.accountingService.saveAcitArClmCashCall(params).subscribe(
-    this.accountingService.saveAcitArClmRecover(params).subscribe(
+    this.accountingService.saveAcitArClmCashCall(params).subscribe(
       (data:any)=>{
        if(data.returnCode === -1){
           this.dialogIcon = '';
@@ -222,8 +233,8 @@ export class ArClaimCashCallComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          //this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
-          this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          //this.dialogMessage = 'Total Amount of Recoveries/Overpayment must not exceed the AR Amount.';
+          this.dialogMessage = 'Total Amount of Claim Cash Call Payments must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;
@@ -250,9 +261,14 @@ export class ArClaimCashCallComponent implements OnInit {
     }
   }
   onTableDataChange(data){
-    if(data.key === 'recOverAmt'){
+    if(data.key === 'cashcallAmt'){
       for(var i = 0; i < data.length; i++){
-        data[i].localAmt = data[i].recOverAmt * data[i].currRate;
+        data[i].localAmt = data[i].cashcallAmt * data[i].currRate;
+      }
+    }else if(data.key === 'currCd'){
+      for(var j = 0; j < data.length; j++){
+        data[j].currRate = data[j].currCd.split('T')[1];
+        data[j].localAmt = data[j].cashcallAmt * data[j].currRate;
       }
     }
     this.passData.tableData = data;

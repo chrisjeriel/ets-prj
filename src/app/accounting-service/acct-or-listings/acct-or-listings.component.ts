@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { AccountingService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-acct-or-listings',
@@ -8,23 +10,14 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./acct-or-listings.component.css']
 })
 export class AcctOrListingsComponent implements OnInit {
+@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
 
   passData: any = {
-    tableData: [
-    ['VAT','1','AFP GENERAL INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',1642857.14],
-    ['VAT','2','ALLIEDBANKERS INSURANCE CORP.',new Date('2018-10-1'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',200000],
-    ['VAT','3','BLUE CROSS INSURANCE, INC.',new Date('2018-10-3'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',100000],
-    ['VAT','4','BF GENERAL INSURANCE CO., INC.',new Date('2018-10-4'),'Official Receipt','Printed','Representing payment for 09/15/2018 transactions',1000000],
-    ['Non-VAT','5','CCC INSURANCE CORPORATION',new Date('2018-10-4'),'Official Receipt','New','Representing payment for 09/15/2018 transactions',710716.12],
-    ['VAT','6','CIBELES INSURANCE CORP.',new Date('2018-10-5'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',756929],
-    ['VAT','7','COMMONWEALTH INSURANCE CO.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',30000],
-    ['VAT','8','CICI GENERAL INSURANCE CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',10000],
-    ['VAT','9','DEVELOPMENT INSURANCE AND SURETY CORP.',new Date('2018-10-7'),'Official Receipt Service Fee Local','Printed','Service fee for the quarter ending 09/30/2018',230000],
-    ['VAT','10','DOMESTIC INS. CO. OF THE PHIL.',new Date('2018-10-7'),'Official Receipt Service Fee Local','New','Service fee for the quarter ending 09/30/2018',1500000],
-    ],
-    tHeader: ['O.R. Type','O.R. No.','Payor','OR Date','Payment Type','Status','Particulars','Amount'],
-    dataTypes: ['text','sequence-6','text','date','text','text','text','currency'],
-    resizable: [false,false,true,false,true,false,true,true],
+    tableData: [],
+    tHeader: ['O.R. Type','O.R. No.','Payor','OR Date','Payment Type','Particulars','Amount'],
+    dataTypes: ['text','sequence-6','text','date','text','text','currency'],
+    keys: ['orType','orNo', 'payor', 'orDate', 'tranTypeName', 'particulars', 'orAmt'],
+    colSize:['25px','25px', '80px', '40px', '100px', '200px', '125px'],
     filters: [
         {
           key: 'orType',
@@ -42,29 +35,35 @@ export class AcctOrListingsComponent implements OnInit {
           dataType: 'text'
         },
         {
-          key: 'orDate',
+          keys: {
+            from: 'orDateFrom',
+            to: 'orDateTo'
+          },
           title: 'OR Date',
-          dataType: 'date'
+          dataType: 'datespan'
         },
         {
-          key: 'paymentType',
+          key: 'tranTypeName',
           title: 'Payment Type',
           dataType: 'text'
         },
-        {
-          key: 'status',
+        /*{
+          key: 'arStatDesc',
           title: 'Status',
           dataType: 'text'
-        },
+        },*/
         {
           key: 'particulars',
           title: 'Particulars',
           dataType: 'text'
         },
         {
-          key: 'amount',
+          keys: {
+            from: 'orAmtFrom',
+            to: 'orAmtTo'
+          },
           title: 'Amount',
-          dataType: 'text'
+          dataType: 'textspan'
         }
     ],
     pageLength: 10,
@@ -73,11 +72,13 @@ export class AcctOrListingsComponent implements OnInit {
     addFlag: true,
     editFlag: true,
     pageID: 1,
-    btnDisabled: true
+    btnDisabled: true,
+    exportFlag: true
   }
 
   record: any = {
-      arNo: null,
+      orType: null,
+      orNo: null,
       payor: null,
       arDate: null,
       paymentType: null,
@@ -86,38 +87,135 @@ export class AcctOrListingsComponent implements OnInit {
       amount: null
     }
 
-  constructor(private router: Router, private titleService: Title) { }
-
-  ngOnInit() {
-    this.titleService.setTitle("Acct-Service | Official Receipt");
+  searchParams: any[] = [];
+  selected: any;
+  otherInfo: any = {
+    createUser: '',
+    createDate: '',
+    updateUser: '',
+    updateDate: ''
   }
 
+  tranStat: string = 'open';
+
+  constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
+
+  ngOnInit() {
+    this.titleService.setTitle("Acct-Se | Official Receipt");
+    this.as.cvFilter = '';
+    this.as.jvFilter = '';
+    this.as.prqFilter = '';
+
+    if(this.as.arFilter != '') {
+      this.tranStat = this.as.arFilter;
+    }
+
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.retrieveOrList();
+    }, 0);
+  }
+
+  retrieveOrList(){
+    this.table.overlayLoader = true;
+    this.as.getAcseOrList(this.searchParams).subscribe(
+      (data: any)=>{
+        console.log(data);
+        if(data.orList.length !== 0) {
+          // this.passData.tableData = data.ar;
+          this.passData.tableData = data.orList.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
+        }
+        this.table.refreshTable();
+      },
+      (error)=>{
+        this.passData.tableData = [];
+        this.table.refreshTable();
+      }
+    )
+  }
+
+  searchQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passData.tableData = [];
+        //this.passData.btnDisabled = true;
+        this.passData.btnDisabled = true;
+        this.retrieveOrList();
+
+   }
+
   toGenerateORAdd() {
+    this.as.arFilter = this.tranStat;
     this.router.navigate(['/accounting-service', { action: 'add' }], { skipLocationChange: true });
+  }
+
+  toGenerateOREdit(data) {
+    this.as.arFilter = this.tranStat;
+    console.log(data);
+    this.record = {
+      tranId: data.tranId,
+      arNo: data.arNo == null ? '' : data.arNo,
+      payor: data.payor,
+      arDate: data.arDate,
+      paymentType: data.tranTypeName,
+      status: data.arStatDesc,
+      particulars: data.particulars,
+      amount: data.arAmt
+    }
+
+    this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit', tranStat: this.tranStat }], { skipLocationChange: true });
+  }
+
+  onRowClick(data){
+    if(data === null || (data !== null && Object.keys(data).length === 0)){
+      this.otherInfo.createUser = '';
+      this.otherInfo.createDate = '';
+      this.otherInfo.updateUser = '';
+      this.otherInfo.updateDate = '';
+      this.selected = {};
+    }else{
+      this.selected = data;
+      this.otherInfo.createUser = this.selected.createUser;
+      this.otherInfo.createDate = this.ns.toDateTimeString(this.selected.createDate);
+      this.otherInfo.updateUser = this.selected.updateUser;
+      this.otherInfo.updateDate = this.ns.toDateTimeString(this.selected.updateDate);
+    }
     
   }
 
-  toGenerateOREdit(event) {
-    var selectedRow = event.target.closest('tr').children;
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AckgtReceipt'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}
+      };
 
-    this.record = {
-      arNo: selectedRow[1].innerText,
-      payor: selectedRow[2].innerText,
-      arDate: selectedRow[3].innerText,
-      paymentType: selectedRow[4].innerText.trim(),
-      status: selectedRow[5].innerText,
-      particulars: selectedRow[6].innerText,
-      amount: selectedRow[7].innerText
-    }
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
 
-    this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit' }], { skipLocationChange: true });
-  }
-  
-  onRowClick(data){
-      if(data[4] == 'Printed'){
-        this.passData.btnDisabled = true;
-      }else{
-        this.passData.btnDisabled = false;
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+      var tableData: any[] = [];
+      for(var i of this.passData.tableData){
+        i.orNo = i.orNo == null ? '' : i.formattedOrNo.split('-')[1];
+        tableData.push(i);
       }
+      //alasql('SELECT paytReqNo AS PaytReqNo, payee AS Payee, tranTypeDesc AS PaymentType, reqStatusDesc AS Status, datetime(reqDate) AS RequestedDate, particulars AS Particulars, currCd AS Curr, reqAmt AS Amount, requestedBy AS RequestedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    alasql('SELECT orType AS [O.R. Type], orNo AS [O.R. No.], payor AS [Payor], datetime(orDate) AS [A.R. Date], tranTypeName AS [Payment Type], particulars AS [Particulars], currency(orAmt) AS [Amount] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,tableData]);
   }
 }

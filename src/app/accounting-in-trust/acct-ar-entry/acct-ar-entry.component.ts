@@ -27,13 +27,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
         widths: [130,70,100,130,180,1,150,100,180,210],
         keys: ['paytMode', 'currCd', 'currRate', 'paytAmt', 'bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass', 'remarks'],
-        uneditable: [false,false,false,false,false,false,false,false,false, false],
+        uneditable: [false,true,true,false,false,false,false,false,false, false],
         pageID: 1,
         addFlag: true,
         genericBtn: 'Delete',
@@ -101,6 +101,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   dialogIcon: string = '';
   dialogMessage: string = '';
+  dcbStatus: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -111,10 +112,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     arDate: '',
     arStatus: '',
     tranStat: '',
-    arStatDesc: '',
+    arStatDesc: 'New',
+    tranStatDesc: '',
     dcbYear: '',
     dcbUserCd: '',
     dcbNo: '',
+    dcbStatus: '',
     dcbBank: '',
     dcbBankName: '',
     dcbBankAcct: '',
@@ -126,6 +129,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     prDate: '',
     prPreparedBy: '',
     payeeNo: '',
+    payeeClassCd: '',
     payor: '',
     mailAddress: '',
     bussTypeCd: '',
@@ -141,6 +145,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     rstrctTranUp: '',
     arDtlSum: '',
     acctEntriesSum: '',
+    allocTag: 'N'
   }
 
   arDate: any = {
@@ -254,10 +259,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arDate: '',
       arStatus: '',
       tranStat: '',
-      arStatDesc: '',
+      arStatDesc: 'New',
+      tranStatDesc: '',
       dcbYear: '',
       dcbUserCd: '',
       dcbNo: '',
+      dcbStatus: '',
       dcbBank: '',
       dcbBankName: '',
       dcbBankAcct: '',
@@ -269,6 +276,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       prDate: '',
       prPreparedBy: '',
       payeeNo: '',
+      payeeClassCd: '',
       payor: '',
       mailAddress: '',
       bussTypeCd: '',
@@ -287,6 +295,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       rstrctTranUp: '',
       arDtlSum: '',
       acctEntriesSum: '',
+      allocTag: ''
     }
     this.prDate = {
       date: '',
@@ -310,10 +319,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   openLOV(type){
     if(type === 'payor'){
       this.passLov.selector = 'payee';
-      if(this.arInfo.tranTypeCd == '5'){
+      if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
         this.passLov.payeeClassCd = 3;
+      }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
+        this.passLov.payeeClassCd = null;
       }else{
-        this.passLov.payeeClassCd = 1;
+        this.passLov.payeeClassCd = 1; //get only cedants
       }
     }else if(type === 'business'){
       this.passLov.selector = 'mtnBussType';
@@ -354,17 +365,35 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   changeCurrency(data){
     this.selectedCurrency = data;
+    this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
     for(var i of this.currencies){
       if(i.currencyCd == data){
         this.arInfo.currRate = i.currencyRt;
+        this.passData.nData.currRate = i.currencyRt;
         setTimeout(()=>{
           $('.rate').focus().blur();
         },0);
         break;
       }
     }
+    //apply changes to payment details
+    for(var j = 0; j < this.passData.tableData.length; j++){
+      this.passData.tableData[j].currCd = this.selectedCurrency;
+      this.passData.tableData[j].currRate = this.arInfo.currRate;
+      this.passData.tableData[j].edited = true;
+    }
+    this.paytDtlTbl.refreshTable();
     this.retrieveMtnBankAcct();
+  }
+
+  changeCurrencyRt(){
+    for(var i = 0; i < this.passData.tableData.length; i++){
+      this.passData.tableData[i].currRate = this.arInfo.currRate;
+      this.passData.nData.currRate = this.arInfo.currRate;
+      this.passData.tableData[i].edited = true;
+    }
+    this.paytDtlTbl.refreshTable();
   }
 
   changeDcbBank(data){
@@ -390,6 +419,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     console.log(data);
     if(data.selector === 'payee'){
       this.arInfo.payeeNo = data.data.payeeNo;
+      this.arInfo.payeeClassCd = data.data.payeeClassCd;
       this.arInfo.payor = data.data.payeeName;
       this.arInfo.tin = data.data.tin;
       this.arInfo.bussTypeCd = data.data.bussTypeCd;
@@ -413,7 +443,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveArEntry(tranId, arNo){
     var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
-                        this.ms.getMtnBank(),
+                        this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
                         this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
@@ -435,10 +465,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arDate.time           = this.arInfo.arDate.split('T')[1];
           this.arInfo.arStatus       = data.ar.arStatus;
           this.arInfo.tranStat       = data.ar.tranStat;
-          this.arInfo.arStatDesc     = data.ar.arStatDesc;
+          this.arInfo.arStatDesc     = data.ar.tranStat == 'P' ? data.ar.tranStatDesc : data.ar.arStatDesc;
           this.arInfo.dcbYear        = data.ar.dcbYear;
           this.arInfo.dcbUserCd      = data.ar.dcbUserCd;
           this.arInfo.dcbNo          = data.ar.dcbNo;
+          this.arInfo.dcbStatus      = data.ar.dcbStatus;
+          this.dcbStatus             = data.ar.dcbStatus;
           this.arInfo.dcbBank        = data.ar.dcbBank;
           this.arInfo.dcbBankName    = data.ar.dcbBankName;
           this.arInfo.dcbBankAcct    = data.ar.dcbBankAcct;
@@ -452,6 +484,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.prDate.time           = this.arInfo.prDate.split('T')[1];
           this.arInfo.prPreparedBy   = data.ar.prPreparedBy;
           this.arInfo.payeeNo        = data.ar.payeeNo;
+          this.arInfo.payeeClassCd   = data.ar.payeeClassCd;
           this.arInfo.payor          = data.ar.payor;
           this.arInfo.mailAddress    = data.ar.mailAddress;
           this.arInfo.bussTypeCd     = data.ar.bussTypeCd;
@@ -478,7 +511,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isCancelled = true;
-          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED'){
+          }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED' || this.arInfo.arStatDesc.toUpperCase() === 'POSTED'){
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
@@ -493,6 +526,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
           //currencies
           this.currencies = [];
+          this.passData.opts[1].vals = [];
+          this.passData.opts[1].prev = [];
           if(curr.currency.length !== 0){
             for(var l of curr.currency){
               if(this.isAdd && 'PHP' === l.currencyCd){
@@ -507,16 +542,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
           console.log(data.ar.paytDtl);
           //this.passData.tableData          = data.ar.paytDtl;
+          //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
+          //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
           this.passData.tableData = [];
           for(var i of data.ar.paytDtl){
             i.uneditable = [];
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
+              this.passData.dataTypes[4] = 'select';
+              this.passData.dataTypes[5] = 'text'; 
             }
             if(i.paytMode !== 'CK'){
               if(i.paytMode !== 'CR'){
                 i.uneditable.push('checkNo');
+                this.passData.dataTypes[5] = 'text'; 
               }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
@@ -556,7 +596,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             updateDate: this.arInfo.updateDate,
             cedingId: this.arInfo.payeeNo,
             bussTypeName: this.arInfo.bussTypeName,
-            refCd: this.arInfo.refCd
+            refCd: this.arInfo.refCd,
+            from: 'ar'
           }
           this.emitArInfo.emit(arDetailParams);
 
@@ -572,11 +613,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         //bank
         if(bankData.bankList.length !== 0){
           for(var i of bankData.bankList){
-            this.banks.push(i);
+            //this.banks.push(i);
             this.passData.opts[2].vals.push(i.bankCd);
             this.passData.opts[2].prev.push(i.officialName);
           }
-          this.banks = bankData.bankList;
+          this.banks = bankData.bankList.filter(a=>{return a.dcbTag == 'Y'});
         }
         //bankAcct
         if(bankAcctData.bankAcctList.length !== 0){
@@ -620,6 +661,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Total amount of payment details is not equal to the AR Amount.';
       this.successDiag.open();
+    }else if(this.dcbStatusCheck()){
+
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
     }
     else{
       $('#confirm-save #modalBtn2').trigger('click');
@@ -639,7 +686,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
           this.deletedData.push(this.passData.tableData[i]);
-          this.savedData[this.savedData.length-1].checkDate = this.ns.toDateTimeString(this.savedData[this.savedData.length-1].checkDate);
+          this.deletedData[this.deletedData.length-1].checkDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].checkDate);
       }
     }
 
@@ -666,8 +713,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.returnCode === 0){
           if(data.errorList !== undefined || (data.errorList !== undefined && data.errorList.length !== 0)){
-            this.dialogMessage = data.errorList[0].errorMessage === undefined ? '' : data.errorList[0].errorMessage;
-            this.dialogIcon = data.errorList[0].errorMessage === undefined  ? 'error' : 'error-message';
+            this.dialogMessage = data.errorList[0] === undefined ? '' : data.errorList[0].errorMessage;
+            this.dialogIcon = data.errorList[0] === undefined  ? 'error' : 'error-message';
           }else{
             this.dialogIcon = 'error';
           }
@@ -703,6 +750,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   updateArStatus(){
     if(!this.isPrinted){
+      this.loading = true;
       let params: any = {
         tranId: this.arInfo.tranId,
         arNo: this.arInfo.arNo,
@@ -725,7 +773,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
   retrievePaymentType(){
     this.paymentTypes = [];
-    this.ms.getMtnAcitTranType('AR').subscribe(
+    this.ms.getMtnAcitTranType('AR',null,null,null,null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
@@ -763,17 +811,28 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveMtnBank(){
     
-    this.banks = [];
+    //this.banks = [];
     this.passData.opts[2].vals = [];
     this.passData.opts[2].prev = [];
-    this.ms.getMtnBank().subscribe(
+    this.ms.getMtnBank(null,null,'Y', null).subscribe(
       (data:any)=>{
         if(data.bankList.length !== 0){
           for(var i of data.bankList){
-            this.banks.push(i);
+            //this.banks.push(i);
             this.passData.opts[2].vals.push(i.bankCd);
             this.passData.opts[2].prev.push(i.officialName);
           }
+          //this.banks = data.bankList;
+        }
+      }
+    );
+  }
+
+  retrieveDCBBanks(){
+    this.banks = [];
+    this.ms.getMtnBank(null,null, 'Y', 'Y').subscribe(
+      (data:any)=>{
+        if(data.bankList.length !== 0){
           this.banks = data.bankList;
         }
       }
@@ -782,11 +841,16 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   retrieveMtnBankAcct(){
     this.bankAccts = [];
-    this.ms.getMtnBankAcct(this.selectedBank.bankCd).subscribe(
+    this.ms.getMtnBankAcct(this.selectedBank.bankCd,null,null,'Y').subscribe(
         (data:any)=>{
           if(data.bankAcctList.length !== 0){
             this.bankAccts = data.bankAcctList;
             this.bankAccts = this.bankAccts.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null });
+          }
+          if(this.bankAccts.length == 1){
+            this.selectedBankAcct = this.bankAccts[0];
+            this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+            this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
           }
           if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
             this.arInfo.dcbBankAcct = '';
@@ -809,6 +873,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }else{
           this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
           this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus;
         }
       }
     );
@@ -902,9 +967,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank.length === 0 || i.bankAcct.length === 0)){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bankAcct == null || i.bank.length === 0 || i.bankAcct.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
         return true;
       }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
         return true;
@@ -916,9 +981,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   arAmtEqualsPayt(): boolean{
     let totalPayts = 0;
     for(var i of this.passData.tableData){
-      totalPayts += i.paytAmt;
+      if(!i.deleted){
+        totalPayts += i.paytAmt * i.currRate;
+      }
     }
-    if(this.arInfo.arAmt !== totalPayts){
+    if(this.arInfo.arAmt * this.arInfo.currRate !== totalPayts){
+      console.log(this.arInfo.arAmt * this.arInfo.currRate);
+      console.log(totalPayts);
       return true;
     }else{
       return false;
@@ -926,7 +995,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   arAmtEqualsArDtlPayt(): boolean{
-    if(this.arInfo.arDtlSum != this.arInfo.arAmt){
+    if(this.arInfo.arDtlSum != this.arInfo.arAmt * this.arInfo.currRate){
       return true;
     }
     return false;
@@ -934,6 +1003,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   balanceAcctEntries(): boolean{
     if(this.arInfo.acctEntriesSum != 0){
+      return true;
+    }
+    return false;
+  }
+
+  dcbStatusCheck(): boolean {
+    if(this.dcbStatus !== 'O'){
       return true;
     }
     return false;
@@ -947,7 +1023,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //this.arInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
     for(var i of this.paymentTypes){
       if(i.tranTypeCd == data){
-        this.arInfo.particulars = i.defaultParticulars;
+        this.arInfo.particulars = i.defaultParticulars == null ? '' : i.defaultParticulars;
         break;
       }
     }
@@ -956,6 +1032,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.ms.getMtnPayee().subscribe(
         (data:any)=>{
           data.payeeList = data.payeeList.filter(a=>{return a.payeeName == 'Philippine Machinery Management Services Corporation'});
+          this.arInfo.payeeClassCd = data.payeeList[0].payeeClassCd;
           this.arInfo.payeeNo = data.payeeList[0].payeeNo;
           this.arInfo.payor = data.payeeList[0].payeeName;
           this.arInfo.mailAddress = data.payeeList[0].mailAddress;
@@ -1062,7 +1139,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.banks = [];
     this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
-                        this.ms.getMtnBank(),
+                        this.ms.getMtnBank(null,null, 'Y'),
                         this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
@@ -1084,15 +1161,20 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
              this.passData.opts[2].vals = [];
              this.passData.opts[2].prev = [];
              for(var i of data.bank.bankList){
-               this.banks.push(i);
+               //this.banks.push(i);
                this.passData.opts[2].vals.push(i.bankCd);
                this.passData.opts[2].prev.push(i.officialName);
              }
-             //this.banks = data.bank.bankList;
+             this.banks = data.bank.bankList.filter(a=>{return a.dcbTag == 'Y'});
            }
            //bankAcct
            if(data.bankAcct.bankAcctList.length !== 0){
-               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null});
+               this.bankAccts = data.bankAcct.bankAcctList.filter(a=>{return a.bankCd == this.selectedBank.bankCd && a.currCd == this.selectedCurrency && a.acSeGlDepNo === null && a.acItGlDepNo !== null && a.dcbTag == 'Y'});
+               if(this.bankAccts.length == 1){
+                 this.selectedBankAcct = this.bankAccts[0];
+                 this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
+                 this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
+               }
                if(this.bankAccts.map(a=>{return a.accountNo}).indexOf(this.selectedBankAcct.accountNo) == -1){
                  this.arInfo.dcbBankAcct = '';
                  this.arInfo.dcbBankAcctNo = '';

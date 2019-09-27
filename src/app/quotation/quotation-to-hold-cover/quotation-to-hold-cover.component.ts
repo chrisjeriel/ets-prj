@@ -192,7 +192,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 				  		this.disableApproval = (this.holdCoverNo == '')?true:false;
 
-						if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED'){
+						if(this.holdCover.status.toUpperCase() == 'EXPIRED' || this.holdCover.status.toUpperCase() == 'CONVERTED' || this.holdCover.status.toUpperCase() == 'REPLACED VIA HOLD COVER MODIFICATION'|| this.holdCover.status.toUpperCase() == 'CANCELLED'){
 							this.newHc(true);
 							this.disableCancelHc = true;
 							this.disableApproval = true;

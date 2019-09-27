@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angu
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-cancel-button',
@@ -14,13 +15,14 @@ export class CancelButtonComponent implements OnInit {
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() no: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() onCancel: EventEmitter<any[]> = new EventEmitter<any[]>();
-  constructor(private router:Router, private modalService: NgbModal) { }
+  @Input()form : NgForm;
+  constructor(private router:Router, private modalService: NgbModal) { }  
 
   ngOnInit() {
   }
 
   clickCancel(){
-  	if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+  	if((this.form == undefined && $('.ng-dirty:not([type="search"]):not(.not-form)').length != 0) || (this.form!= undefined && this.form.dirty)){
       this.saveModal.openNoClose();
   	} else {
       if (this.url != null) {
@@ -33,8 +35,8 @@ export class CancelButtonComponent implements OnInit {
   }
 
   onNo(){
-    $('.ng-dirty').removeClass('ng-dirty');
     if (this.url != null) {
+      $('.ng-dirty').removeClass('ng-dirty');
       this.router.navigate([this.url]);
     } else {
       this.saveModal.closeModal();

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NotesService, WorkFlowManagerService } from '@app/_services';
 
 @Component({
   selector: 'app-wf-transactions',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WfTransactionsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+     private ns: NotesService,
+     private workFlowService: WorkFlowManagerService) { }
+
+  transactionList:any = [];
 
   ngOnInit() {
+  	this.retrieveTransactions();
   }
 
+  retrieveTransactions() {
+  	this.transactionList = [];
+    this.workFlowService.retrieveWfmTransactions('').subscribe((data: any) =>{
+        if (data.transactionList.length > 0) {
+        	this.transactionList = data.transactionList;
+        }
+    });
+  }
 }

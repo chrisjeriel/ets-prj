@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, EventEmitter, Output, Input, ViewChildren, QueryList } from '@angular/core';
 import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -11,6 +11,7 @@ import * as alasql from 'alasql';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-distribution-by-risk',
@@ -35,6 +36,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   @ViewChild('retLimitReached') retLimitReached: ModalComponent;
   @ViewChild('warningNegVals') warningNegVals: ModalComponent;
   
+  @ViewChildren(CustEditableNonDatatableComponent) tables: QueryList<CustEditableNonDatatableComponent>;
+  @ViewChild('myForm') myForm:  NgForm;
   
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -524,6 +527,8 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         }else{
           this.wparam.markAsPristine();
           this.dialogIcon = '';
+          this.tables.forEach(a=>a.markAsPristine());
+          this.myForm.control.markAsPristine();
           this.successDiag.open();
           this.retrieveRiskDistribution();
         }

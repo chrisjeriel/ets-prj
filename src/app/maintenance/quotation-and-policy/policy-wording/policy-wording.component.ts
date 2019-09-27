@@ -160,6 +160,8 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
 			this.table.refreshTable();
     	}
 
+    	this.table.markAsPristine();
+
     	setTimeout(() => { if(data.ev) {
     			$(data.ev.target).removeClass('ng-dirty');
     		}

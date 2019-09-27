@@ -29,7 +29,7 @@
                 </div>
                 <div class="input-group">
                   <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly>
+                  <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly> 
                   <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt | number:'1.2-2'" readonly>
                 </div>
               </div>
@@ -41,7 +41,7 @@
               <div class="input-group">
                 <div class="col-sm"></div>
                 <div class="col-sm-12">
-                  <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)"  (tableDataChange)="passDataPaytReqList.tableData=$event;">
+                  <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)" (tableDataChange)="passDataPaytReqList.tableData=$event;">
                     <!-- <ng-container controls-r>
                       <div class="align" style="position: absolute;left: 130px">
                           <label class="form-control-sm">For Certification</label> 
@@ -53,20 +53,19 @@
                 <div class="col-sm"></div>
               </div>
             </div>
-            <div class="form-row">
+            <div class="form-row" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'">
               <div class="form-group col-sm">
                 <div class="text-center">
                   <div class="cust-btn-container">
                     <button type="button" class="cust-btn"><a>Cancel</a></button>
                     <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-                    <button type="button" class="cust-btn"><a>View Details</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickViewDetails()" [disabled]="!paytData.enabViewDtl">View Details</button>
                   </div>
                 </div>
               </div>
             </div>
           </fieldset>
-          <div class="col-sm-12">
-           
+          <div class="col-sm-12" style="padding-left: 0px !important;padding-right: 0px !important;">
             <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
               <div class="row">
                 <div class="col-sm-12">

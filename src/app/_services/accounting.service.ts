@@ -10,6 +10,88 @@ import { ARDetails, AccountingEntries, CVListing, AmountDetailsCV, AccountingEnt
 })
 export class AccountingService {
 
+	//Inward Policy Balances - ACCT_IN_TRUST
+	  passDataInwPolBal: any = {
+	    tableData: [],
+	    tHeaderWithColspan: [{header:'', span:1},{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+	    //pinKeysLeft: ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance'],
+	    tHeader: ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
+	              'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance'],
+	    dataTypes: ["text","text", "text", "date", "text", "percent", "currency", "currency", "currency", "currency", "currency", "currency", "currency","currency","currency","currency","currency","currency","currency","currency"],
+	    addFlag: true,
+	    deleteFlag: true,
+	    infoFlag: true,
+	    //paginateFlag: true,
+	    checkFlag: true,
+	    magnifyingGlass: ['policyNo'],
+	    pageLength: 'unli',
+	    nData: {
+	        tranId: '',
+	        billId: '',
+	        itemNo: '',
+	        policyId: '',
+	        policyNo: '',
+	        coRefNo: '',
+	        instNo: '',
+	        dueDate: '',
+	        currCd: '',
+	        currRate: '',
+	        balPremDue: '',
+	        balRiComm: '',
+	        balChargesDue: '',
+	        netDue: '',
+	        totalPayments: '',
+	        balance: '',
+	        balOverdueInt: '',
+	        showMG: 1
+	    },
+	    total: [],
+	/*    opts: [{ selector: 'type', vals: ["Payment", "Refund"] }],*/
+	    widths: [170, 100, 1, 1, 30, 85,1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,],
+	    keys: [],
+	    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
+	    small: false,
+	  };
+	//END
+
+	passDataAccEntries: any = {
+	    tableData: [],
+	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
+	    uneditable:[true,true,true,true,true,true,false,false],
+	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
+	    dataTypes: ['text','text','text','text','currency','currency','currency','currency'],
+	    nData: {
+	        tranId: '',
+	        entryId: '',
+	        glAcctId: '',
+	        glShortCd: '',
+	        glShortDesc:'',
+	        slTypeCd: '',
+	        slTypeName: '',
+	        slCd: '',
+	        slName: '',
+	        creditAmt: 0,
+	        debitAmt: 0,
+	        foreignDebitAmt: 0,
+	        foreignCreditAmt: 0,
+	        autoTag: '',
+	        createUser: '',
+	        createDate: '',
+	        updateUser: '',
+	        updateDate: '',
+	        showMG:1,
+	        edited: true
+	      },
+	    addFlag: true,
+	    deleteFlag: true,
+	    editFlag: false,
+	    pageLength: 10,
+	    widths: [105,240,125,170,120,120,120,120],
+	    checkFlag: true,
+	    magnifyingGlass: ['glShortCd','slTypeName','slName'],
+	    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt','foreignDebitAmt','foreignCreditAmt']
+  	};
+
 	arDetails: ARDetails[] = [];
 	accountingEntries: AccountingEntries[] = [];
 	cvListing: CVListing[] = [];
@@ -112,7 +194,31 @@ export class AccountingService {
 	accJvInPolBalAgainstLoss: AccJvInPolBalAgainstLoss[] = [];
 	accJvOutAccOffset:    AccJvOutAccOffset[] = [];
 
+	arFilter: string = '';
+	cvFilter: string = '';
+	jvFilter: string = '';
+	prqFilter: string = '';
+
 	constructor(private http: HttpClient) { }
+
+	getInwardPolicyKeys(tranClass){
+		if('AR' == tranClass){
+			this.passDataInwPolBal.keys = ['policyNo', 'coRefNo', 'instNo', 'dueDate', 'currCd', 'currRate', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+			this.passDataInwPolBal.total = [null,null,null, null, null, 'Total', 'prevPremAmt', 'prevRiComm', 'prevRiCommVat', 'prevCharges', 'prevNetDue', 'cumPayment', 'prevBalance','balPaytAmt','premAmt', 'riComm', 'riCommVat', 'charges','totalPayments', 'netDue'];
+		}else if('JV' == tranClass){
+			this.passDataInwPolBal.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+    		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+		}else if('PRQ' == tranClass){
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+		}
+		return Object.create(this.passDataInwPolBal);
+	}
+
+	getAccEntriesPassData() {
+		return Object.create(this.passDataAccEntries);
+	}
 
 	getAmountDetails() {
 		this.arDetails = [
@@ -2183,4 +2289,155 @@ export class AccountingService {
 			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroAltLOV",{params});
 	}
+
+	getTrtyInv(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvInvmtOffset",{params});
+	}
+
+	saveTrtyInv(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVTrtyInvt',JSON.stringify(params),header);
+	}
+
+	getInvPlacement(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJvInvPlacement",{params});
+	}
+
+	saveInvPlacement(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVInvPlacement',JSON.stringify(params),header);
+	}
+
+	getSoaOverdue(policyId,instNo,cedingId,currCd){
+		const params = new HttpParams()
+		.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+		.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		.set('currCd', currCd);
+		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
+	}
+
+	saveAcitQsoa(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+	}
+
+	/*
+	 *
+	 *
+	 *	ACCOUNTING SERVICE STARTS HERE
+     *
+     *
+     */
+
+     getAcseOrList(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+          		 .set('orType', '')
+                 .set('orNo','')
+                 .set('payor', '')
+                 .set('orDateFrom', '')
+                 .set('orDateTo','')
+                 .set('tranTypeName','')
+                 .set('orStatDesc','')
+                 .set('particulars','')
+                 .set('orAmtFrom','')
+                 .set('orAmtTo','')
+                 // .set('paginationRequest.position',null)
+                 // .set('paginationRequest.count',null)
+                 // .set('sortRequest.sortKey',null)
+                 // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrList',{params});
+	}
+
+	getAcseOrEntry(tranId, orNo?){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('orNo', (orNo == null || orNo == undefined ? '' : orNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrEntry',{params});
+	}
+
+	saveAcseOrEntry(params){
+    	 let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrEntry',params,header);
+    }
+
+	getAcsePaytReqList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('reqId','')
+				.set('paytReqNo','')
+				.set('tranTypeDesc','')
+				.set('reqDateFrom','')
+				.set('reqDateTo','')
+				.set('reqStatusDesc','')
+				.set('payee','')
+				.set('currCd','')
+				.set('reqAmt','')
+				.set('particulars','')
+				.set('requestedBy','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	getAcsePaytReq(reqId?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePaytReq',{params});	
+	}
+
+	saveAcsePaytReq(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePaytReq',params,header);
+    }
+
+    updateAcsePaytReqStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
+    }
 }

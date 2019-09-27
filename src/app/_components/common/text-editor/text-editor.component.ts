@@ -14,7 +14,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
   @Input() readonly: boolean = false;
   @Input() required: boolean = false;
   @Input() table: boolean = false;
-  @Input() editablePrev: boolean = false;
+  @Input() editablePrev: boolean = true;
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -36,9 +36,9 @@ export class TextEditorComponent implements OnInit, OnChanges {
       this.style['border'] = '0';
     }
 
-    if(this.readonly && !this.required) {
+    if(this.readonly && !this.required && !this.table) {
       this.style['background'] = '#f5f5f5';
-    } else if(this.required && !this.readonly) {
+    } else if(this.required && !this.readonly && !this.table) {
       this.style['background'] = '#fffacd85';
     }
 
@@ -94,7 +94,7 @@ export class TextEditorComponent implements OnInit, OnChanges {
     this.modalRef.close();
   }
 
-  emitValue() {
-    this.fetchContent.next(this.editorContent);
+  emitValue(blurEv?) {
+    this.fetchContent.next(blurEv === undefined ? this.editorContent : blurEv.range == null && this.editorContent != null ? this.editorContent.trim() : this.editorContent);
   }
 }

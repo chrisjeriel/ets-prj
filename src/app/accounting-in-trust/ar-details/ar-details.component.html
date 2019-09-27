@@ -98,14 +98,15 @@
 							</ng-container>
 							<ng-container *ngSwitchCase="'2'">
 								<!-- <app-claim-recovery [record]="record"></app-claim-recovery> -->
-								<app-ar-claim-cash-call [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-claim-cash-call>
+								<app-claim-recovery [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-claim-recovery>
+								
 							</ng-container>
 							<ng-container *ngSwitchCase="'3'">
 								<app-ar-details-qsoa [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-details-qsoa>
 							</ng-container>
 							<ng-container *ngSwitchCase="'4'">
 								<!-- <app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call> -->
-								<app-claim-recovery [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-claim-recovery>
+								<app-ar-claim-cash-call [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-claim-cash-call>
 							</ng-container>
 							<ng-container *ngSwitchCase="'5'">
 								<app-ar-details-investments [record]="record" (emitCreateUpdate)="createUpdate = $event" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>

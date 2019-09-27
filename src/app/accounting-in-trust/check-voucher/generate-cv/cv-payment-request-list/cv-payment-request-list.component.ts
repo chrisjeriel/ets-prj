@@ -11,6 +11,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cv-payment-request-list',
@@ -56,6 +57,7 @@ export class CvPaymentRequestListComponent implements OnInit {
   @Input() passData: any = {
     tranId : ''
   };
+  
   passDataLov  : any = {
     selector  : '',
     payeeCd   : '',
@@ -77,11 +79,13 @@ export class CvPaymentRequestListComponent implements OnInit {
     currCd   : ''
   };
 
-  paytData: any ={
+  paytData: any = {
+    reqId      : '',
     createUser : '',
     createDate : '',
     updateUser : '',
-    updateDate : ''
+    updateDate : '',
+    enabViewDtl : false
   };
 
   cancelFlag     : boolean;
@@ -91,7 +95,8 @@ export class CvPaymentRequestListComponent implements OnInit {
   limitContent   : any[] = [];
 
 
-  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, public modalService: NgbModal) { }
+  constructor(private titleService: Title,private accountingService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
+              public modalService: NgbModal, private router : Router) { }
 
   ngOnInit() {
     this.titleService.setTitle(" Acct | CV | Payment Request List");
@@ -115,12 +120,15 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.passDataLov.currCd  = this.cvInfo.currCd;
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();
-
+      if(this.cvInfo.cvStatus != 'N' && this.cvInfo.cvStatus != 'F'){
+        this.passDataPaytReqList.addFlag = false;
+        this.passDataPaytReqList.deleteFlag = false;
+        this.passDataPaytReqList.checkFlag = false;
+      }
     });
   }
 
   onSavePaytReqList(){
-    //this.paytReqTbl.overlayLoader = true;
     console.log(this.params);
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
@@ -136,11 +144,20 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    var isEmpty = 0;
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
-      e.cvStatus  = (this.cvInfo.cvStatusUp)?'C':((this.cvInfo.cvStatus == 'C')?'N':this.cvInfo.cvStatus);
-
+      e.cvStatus  = this.cvInfo.cvStatus;
+      if(e.paytReqNo == '' || e.paytReqNo == null){
+        if(!e.deleted){
+          isEmpty = 1;
+          e.fromCancel = false;
+        }else{
+          this.params.deletePaytReqList.push(e);
+        }
+      }
       if(e.edited && !e.deleted){
+        e.fromCancel = true;
         this.params.savePaytReqList = this.params.savePaytReqList.filter(i => i.reqId != e.reqId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
         e.createDate    = this.ns.toDateTimeString(e.createDate);
@@ -153,14 +170,12 @@ export class CvPaymentRequestListComponent implements OnInit {
       }
     });
   
-    var reqAmt = this.passDataPaytReqList.tableData.filter(e => e.deleted != true).reduce((a,b)=>a+(b.reqAmt != null ?parseFloat(b.reqAmt):0),0);
- 
-    if(Number(this.cvInfo.cvAmt) < Number(reqAmt)){
-        this.warnMsg = 'The Total of listed Payment Requests must not exceed the CV Amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePaytReqList   = [];
-        this.params.deletePaytReqList = [];
-    }else{
+    console.log(this.passDataPaytReqList.tableData);
+      if(isEmpty){
+        this.dialogIcon = 'error';
+        this.suc.open();
+        this.params.savePaytReqList = [];
+      }else{
         if(this.params.savePaytReqList.length == 0 && this.params.deletePaytReqList.length == 0){
             if($('input').hasClass('ng-dirty')){
               this.chkCerti();
@@ -170,7 +185,6 @@ export class CvPaymentRequestListComponent implements OnInit {
               this.params.deletePaytReqList = [];
               this.passDataPaytReqList.tableData = this.passDataPaytReqList.tableData.filter(e => e.reqId != '');
             }
-            
             this.con.confirmModal();
         }else{
           if(this.cancelFlag == true){
@@ -180,7 +194,7 @@ export class CvPaymentRequestListComponent implements OnInit {
             this.con.confirmModal();
           }
         }
-    }
+      }
   }
 
   addDirty(){
@@ -197,14 +211,18 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
   showLov(){
-    console.log(this.passDataLov);
-    this.limitContent = [];
+    // this.limitContent = [];
     
-    this.passDataPaytReqList.tableData.forEach(e => {
-      this.limitContent.push(e);
-    });
+    // this.passDataPaytReqList.tableData.forEach(e => {
+    //   this.limitContent.push(e);
+    // });
     this.passDataLov.selector = 'paytReqList';
+    this.passDataLov.hide = this.passDataPaytReqList.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.reqId});
+    console.log(this.cvInfo.paytReqType);
+    this.passDataLov.paytReqType = this.cvInfo.paytReqType;
     this.paytReqLov.openLOV();
+    console.log(this.passDataLov);
+
   }
 
   setData(data){
@@ -231,11 +249,16 @@ export class CvPaymentRequestListComponent implements OnInit {
   }
 
    onRowClick(event){
+     console.log(event);
     if(event != null){
+      this.paytData.reqId = event.reqId;
       this.paytData.createUser = event.createUser;
       this.paytData.createDate = this.ns.toDateTimeString(event.createDate);
       this.paytData.updateUser = event.updateUser;
       this.paytData.updateDate = this.ns.toDateTimeString(event.updateDate);
+      this.paytData.enabViewDtl = (event.paytReqNo != '')?true:false;
+    }else{
+      this.paytData.enabViewDtl = false;
     }
   }
 
@@ -247,4 +270,9 @@ export class CvPaymentRequestListComponent implements OnInit {
     }
   }
 
+  onClickViewDetails(){
+    setTimeout(() => {
+      this.router.navigate(['/generate-payt-req', { tranId : this.passData.tranId ,reqId : this.paytData.reqId , from: 'cv-paytreqlist' }], { skipLocationChange: true });
+    },100);
+  }
 }

@@ -1,7 +1,9 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-confirm-save',
@@ -15,6 +17,9 @@ export class ConfirmSaveComponent implements OnInit {
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() onNo: EventEmitter<any[]> = new EventEmitter<any[]>();
 
+  @Input() form: NgForm;
+
+
   dialogMessage:string;
   dialogIcon: string;
   showBool : boolean = true;
@@ -25,7 +30,8 @@ export class ConfirmSaveComponent implements OnInit {
   }
 
   confirmModal(){
-  	if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+  	if((this.form == undefined && $('.ng-dirty:not([type="search"]):not(.not-form)').length != 0)|| (this.form != undefined && this.form.dirty)
+        ){
   		this.saveModal.openNoClose();
   	}else{
   	  this.dialogMessage = "Nothing to save.";

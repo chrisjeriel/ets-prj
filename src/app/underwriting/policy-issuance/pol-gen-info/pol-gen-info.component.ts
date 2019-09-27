@@ -16,8 +16,16 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
+
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import {NgForm} from '@angular/forms';
+
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
 
 @Component({
   selector: 'app-pol-gen-info',
@@ -26,6 +34,7 @@ import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.co
 })
 export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('main') cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form:  NgForm;
   //add by paul for deductibles
   @ViewChild('dedCancel') dedCancelBtn : CancelButtonComponent;
   @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
@@ -34,12 +43,15 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MtnObjectComponent) objectLov: MtnObjectComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
+  @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
   @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
   @ViewChild(MtnCurrencyComponent) currencyLov: MtnCurrencyComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild('dedLov') lov : LovComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
+  @ViewChild('genInfoConSave') genInfoConSave: ConfirmSaveComponent;
+  @ViewChild('dedConSave') dedConSave: ConfirmSaveComponent;
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -284,6 +296,11 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   ]
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
+  forkSub: any;
+
+  minBookingDate:any = '1970-01-01';
+  altBookingDate:any ='';
+  earliestBookingDate: any = '1970-01-01';
 
   constructor(private route: ActivatedRoute, public modalService: NgbModal,
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
@@ -324,10 +341,27 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     this.getPolGenInfo();
 
     if(this.newAlt) {
-      setTimeout(() => { $('.req').addClass('ng-dirty') }, 0);
-    } else {
-      setTimeout(() => { $('.ng-dirty').removeClass('ng-dirty') }, 1000);
+      this.form.control.markAsDirty();
+    } 
+    //else {
+      //setTimeout(() => { this.form.control.markAsPristine() }, 1000);
+    //}
+ 
+    this.getValidBookingMth();
+  }
+
+  getValidBookingMth(date1?,date2?){
+    this.underwritingService.getValidBookingDate({date1:date1==undefined ? this.ns.toDateTimeString(0) : date1, 
+                                                  date2:date2==undefined? this.ns.toDateTimeString(0) : date2}).subscribe((a:any)=>{
+      
+      //this.minBookingDate = this.ns.toDateTimeString(date1==undefined ? a.dates.minDate : a.dates.suggestedDate);
+      if(this.newAlt && date1 !== undefined){
+        this.policyInfo.acctDate = this.ns.toDateTimeString(a.dates.suggestedDate);
+      }
+      this.earliestBookingDate = this.ns.toDateTimeString(a.dates.minDate);
+      this.updateMinBookingDate();
     }
+    )
   }
 
   ngOnDestroy() {
@@ -492,6 +526,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.prevExpiryDate = this.policyInfo.expiryDate;
         this.policyInfo.issueDate = this.ns.toDateTimeString(0);
         this.policyInfo.effDate = this.ns.toDateTimeString(0);
+        this.policyInfo.acctDate = '';
         this.policyInfo.createUser = "";
         this.policyInfo.createDate = "";
         this.policyInfo.updateUser = "";
@@ -514,15 +549,29 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
         this.policyInfo.effDate = this.policyInfo.inceptDate;
-
+        this.form.control.markAsDirty();
+        this.getValidBookingMth(this.policyInfo.issueDate,this.policyInfo.effDate);
+      }else{
+        setTimeout(a=>this.form.control.markAsPristine(),0);
+        this.updateMinBookingDate();
       }
+
+      
+      //this.getValidBookingMth(this.policyInfo.issueDate, this.policyInfo.effDate);
     });
+
+  }
+
+  updateMinBookingDate(){
+    let lowerDate = this.ns.toDate(this.policyInfo.issueDate) > this.ns.toDate(this.policyInfo.effDate) ? this.policyInfo.effDate : this.policyInfo.issueDate;
+    console.log(lowerDate)
+    this.minBookingDate = lowerDate!=undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
 
   }
 
   showLineClassLOV(){  
     $('#lineClassLOV #modalBtn').trigger('click');
-    $('#lineClassLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setLineClass(data){
@@ -533,7 +582,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showRiskLOV(){
     $('#riskLOV #modalBtn').trigger('click');
-    $('#riskLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setRisk(data){
@@ -545,7 +594,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showOpeningWordingLov(){
     $('#wordingOpeningIdLov #modalBtn').trigger('click');
-    $('#wordingOpeningIdLov #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   setOpeningWording(data) {
@@ -555,7 +604,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   checkCode(ev, field) {
     this.ns.lovLoader(ev, 1);
-      $(ev.target).addClass('ng-dirty');
+      this.form.control.markAsDirty();
 
       if(field === 'cedingCo') {
         this.policyInfo.cedingId = this.pad(this.policyInfo.cedingId);
@@ -602,18 +651,18 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   showPrincipalLOV() {
     this.insuredLovs.first.openLOV();
     //$('#principalLOV #modalBtn').trigger('click');
-    $('#principalLOV #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   showContractorLOV(){
     this.insuredLovs.last.openLOV();
     $('#contractorLOV #modalBtn').trigger('click');
-    $('#contractorLOV #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   showObjectLOV() {
     $('#objIdLov #modalBtn').trigger('click');
-    $('#objIdLov #modalBtn').addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   setPrincipal(data){
@@ -683,7 +732,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               });  */
 
               this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-                   this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+                   this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
                    this.emitPolicyInfoId.emit({
                     refPolicyId: this.refPolicyId,
@@ -730,7 +779,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         });  */
 
         this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
-             this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
+             this.policyInfo.coInsuranceFlag = (data.policy.length > 1)? true : false;
 
              this.emitPolicyInfoId.emit({
               refPolicyId: this.refPolicyId,
@@ -806,12 +855,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "intmId"          : this.policyInfo.intmId,
       "ipl"             : this.policyInfo.project.ipl,
       "issueDate"       : this.policyInfo.issueDate,
-      "lapseFrom"       : this.policyInfo.lapseFrom == 'T' ? '' : this.policyInfo.lapseFrom,
-      "lapseTo"         : this.policyInfo.lapseTo == 'T' ? '' : this.policyInfo.lapseTo,
+      "lapseFrom"       : this.policyInfo.lapseFrom == 'T' ? '' : this.policyInfo.lapseFrom.replace('undefined',''),
+      "lapseTo"         : this.policyInfo.lapseTo == 'T' ? '' : this.policyInfo.lapseTo.replace('undefined',''),
       "lineCd"          : this.policyInfo.lineCd,
       "lineClassCd"     : this.policyInfo.lineClassCd,
-      "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom,
-      "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo,
+      "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom.replace('undefined',''),
+      "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo.replace('undefined',''),
       "mbiRefNo"        : this.policyInfo.mbiRefNo,
       "minDepTag"       : this.policyInfo.minDepTag,
       "noClaimPd"       : this.policyInfo.project.noClaimPd,
@@ -903,8 +952,42 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        
      }
 
-     this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
-       if(data.returnCode === 0){
+     // this.underwritingService.savePolGenInfo(savePolGenInfoParam).subscribe((data: any) => {
+     //   if(data.returnCode === 0){
+     //     this.dialogMessage="The system has encountered an unspecified error.";
+     //     this.dialogIcon = "error";
+     //     $('#polGenInfo > #successModalBtn').trigger('click');
+     //   }else{
+     //     this.policyId = data['policyId'];
+     //     this.policyNo = data['policyNo'];
+
+     //     if(this.newAlt) {
+     //       this.newAlt = false;
+     //       this.underwritingService.fromCreateAlt = false;
+     //     }
+
+     //     this.dialogMessage = "";
+     //     this.dialogIcon = "";
+     //     $('#polGenInfo > #successModalBtn').trigger('click');
+     //     /*this.form.control.markAsPristine();*/
+     //     this.forceExt = 0;
+
+
+     //     this.checkAlopInfo();
+     //     this.getPolGenInfo('noLoading');
+     //   }
+     // });
+
+
+     var sub$ = forkJoin(this.underwritingService.savePolGenInfo(savePolGenInfoParam),
+                        this.underwritingService.getPolAlop(this.policyId)
+                        ).pipe(map(([data, a]) => { return { data, a}; }));
+     this.forkSub = sub$.subscribe(
+      (forkData:any)=>{
+        let data = forkData.data;
+        let a = forkData.a;
+
+        if(data.returnCode === 0){
          this.dialogMessage="The system has encountered an unspecified error.";
          this.dialogIcon = "error";
          $('#polGenInfo > #successModalBtn').trigger('click');
@@ -920,14 +1003,38 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogMessage = "";
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
-         /*this.form.control.markAsPristine();*/
+         this.form.control.markAsPristine();
+         this.dps.forEach(a=>a.markAsPristine());
          this.forceExt = 0;
 
 
-         this.checkAlopInfo();
+         // this.checkAlopInfo();
          this.getPolGenInfo('noLoading');
        }
-     });
+
+       if(a.policy!=null){
+          this.alopInfo = a.policy.alop;
+          this.alopInfo.issueDate  = this.ns.toDateTimeString(this.alopInfo.issueDate);
+          this.alopInfo.expiryDate  = this.ns.toDateTimeString(this.alopInfo.expiryDate);
+          this.alopInfo.indemFromDate  = this.ns.toDateTimeString(this.alopInfo.indemFromDate);
+          this.alopInfo.createDate  = this.ns.toDateTimeString(this.alopInfo.createDate);
+          this.alopInfo.updateDate  = this.ns.toDateTimeString(this.alopInfo.updateDate);
+
+          if(this.alopInfo.issueDate != this.policyInfo.effDate || this.alopInfo.expiryDate != this.policyInfo.expiryDate){
+            this.tempAlopFrom = this.ns.toDate(this.policyInfo.effDate);
+            this.tempAlopTo = this.ns.toDate(this.policyInfo.expiryDate);
+            this.currAlopFrom = this.ns.toDate(this.alopInfo.issueDate);
+            this.currAlopTo = this.ns.toDate(this.alopInfo.expiryDate); 
+            this.checkAlopFlag = true;
+          }else{
+            this.checkAlopFlag = false;
+          }
+        }else{
+          this.checkAlopFlag = false;
+        }
+      })
+
+
    }else{
      this.dialogMessage = "Please check field values.";
      this.dialogIcon = "error";
@@ -945,7 +1052,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       $('.globalLoading').css('display','block');
       this.onExpiryChange();
     } else  {
-      $('#confirm-save #modalBtn2').trigger('click');
+      this.genInfoConSave.confirmModal()
     }
   }
 
@@ -961,7 +1068,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   getDeductibles(){
-    this.deductiblesTable.loadingFlag = true;
+    //this.deductiblesTable.loadingFlag = true;
     let params : any = {
       policyId:this.policyId,
       policyNo:'',
@@ -981,6 +1088,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       else
         this.passDataDeductibles.tableData = [];
       this.deductiblesTable.refreshTable();
+      this.deductiblesTable.markAsPristine();
     });
   }
 
@@ -992,12 +1100,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     };
     params.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
     params.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
-    if(params.saveDeductibleList.length==0 && params.deleteDeductibleList.length==0){
-      this.dialogMsg = 'Nothing to save.'
-      this.dialogIcon = 'info'
-      this.successDlg.open();
-      return;
-    }
+    
     for(let ded of params.saveDeductibleList){
       if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
         this.dialogIcon = "error";
@@ -1005,7 +1108,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         return null;
       }
     }
-    this.deductiblesTable.loadingFlag = true;
+    //this.deductiblesTable.loadingFlag = true;
     this.underwritingService.savePolDeductibles(params).subscribe(data=>{
         if(data['returnCode'] == -1){
           this.dialogIcon = '';
@@ -1081,7 +1184,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }else{
 
     }
-    $('#lov').addClass('ng-dirty');
+    this.form.control.markAsDirty();
     this.lov.openLOV();
   }
 
@@ -1091,7 +1194,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   cbToggle(ev) {
-    $(ev.target).addClass('ng-dirty');
+    this.form.control.markAsDirty();
   }
 
   //validates params before going to web service
@@ -1149,7 +1252,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   showIntLOV(){
     $('#intLOV #modalBtn').trigger('click');
-    $('#intLOV #modalBtn').addClass('ng-dirty')
+    this.form.control.markAsDirty();
   }
 
   setInt(event){
@@ -1169,7 +1272,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   // ----------------------------from risk-----------------------------------------------------------
   oldValue:any;
   checkCodeLoc(ev, field){
-        $(ev).addClass('ng-dirty');
+        this.form.control.markAsDirty();
         if(field === 'region'){
             this.oldValue = this.policyInfo.project.regionCd;
             if (this.policyInfo.project.regionCd == null || this.policyInfo.project.regionCd == '') {
@@ -1528,10 +1631,16 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     }
 
     onClickOk(){
-      if(this.checkAlopFlag){
+      if(this.checkAlopFlag && this.dialogIcon != 'error'){
         this.changeAlopMdl.openNoClose();
-      }else if(this.cancelFlag){
+      }else if(this.cancelFlag && this.dialogIcon != 'error'){
        this.cancelBtn.onNo()
+      }
+    }
+
+    onClickOkDed(){
+      if(this.cancelFlag && this.dialogIcon != 'error'){
+       this.dedCancelBtn.onNo()
       }
     }
 }

@@ -437,4 +437,11 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
+  updateExpiryDate() {
+    var d = new Date(this.inceptionDateParams.date);
+    d.setFullYear(d.getFullYear() + 1);
+
+    this.expiryDateParams.date = this.ns.toDateTimeString(d).split('T')[0];
+  }
+
 }

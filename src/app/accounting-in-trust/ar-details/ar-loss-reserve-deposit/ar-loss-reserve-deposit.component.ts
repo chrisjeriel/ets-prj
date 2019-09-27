@@ -40,6 +40,7 @@ export class ArLossReserveDepositComponent implements OnInit, AfterViewInit {
         data.cedingCompany[0].cedingRepresentative = data.cedingCompany[0].cedingRepresentative.filter(a=>{return a.defaultTag === 'Y'});
         this.payorData = data.cedingCompany[0];
         this.payorData.business = this.record.bussTypeName;
+        console.log(data);
       }
     );
     

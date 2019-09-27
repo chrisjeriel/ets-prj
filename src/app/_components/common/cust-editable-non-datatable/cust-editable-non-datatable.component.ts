@@ -9,6 +9,8 @@ import { DummyInfo } from '../../../_models';
 import { FormsModule }   from '@angular/forms';
 import { NotesService, UploadService } from '@app/_services';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { NgForm } from '@angular/forms';
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
 
 @Component({
     selector: 'app-cust-editable-non-datatable',
@@ -18,7 +20,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 })
 export class CustEditableNonDatatableComponent implements OnInit {
     @ViewChild("deleteModal") deleteModal:ModalComponent;
-    @ViewChildren('myForm') form: QueryList<any>;
+    @ViewChildren('myForm') form: QueryList<NgForm>;
+    @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
     @ViewChild('api') pagination: any;
     @ViewChild('table') table: ElementRef;
     @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
@@ -390,11 +393,11 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     onRowDblClick(event) {
-        this.rowDblClick.next(event);
+        this.rowDblClick.emit(event);
     }
 
     onNewDblClick(event) {
-        this.newDblClick.next(event);
+        this.newDblClick.emit(event);
     }
 
     sort(str,sortBy){
@@ -618,16 +621,16 @@ export class CustEditableNonDatatableComponent implements OnInit {
             delete this.passData.tableData.ev;
             delete this.passData.tableData.index;
             delete this.passData.tableData.lovInput;
-
-        this.markAsDirty();
-        data.edited = true;
-        setTimeout(() => {
-            this.tableDataChange.emit(this.passData.tableData),0
-            delete this.passData.tableData.ev;
-            delete this.passData.tableData.index;
-            delete this.passData.tableData.lovInput;
-        });
-    }
+            this.markAsDirty();
+            data.edited = true;
+            setTimeout(() => {
+                this.tableDataChange.emit(this.passData.tableData),0
+                delete this.passData.tableData.ev;
+                delete this.passData.tableData.index;
+                delete this.passData.tableData.lovInput;
+            });
+        }
+        this.passData.tableData.lastEditedRow = data;
     }
 
     onClickLOV(data,key){
@@ -773,6 +776,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     markAsPristine(){
         $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty');
         this.form.forEach(a=>a.control.markAsPristine());
+        this.dps.forEach(a=>a.markAsPristine());
     }
 
     markAsDirty(){

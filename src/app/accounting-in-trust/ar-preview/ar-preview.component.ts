@@ -63,7 +63,7 @@ export class ArPreviewComponent implements OnInit {
     }]
   }
 
-  accEntriesData: any = {
+  /*accEntriesData: any = {
     tableData: [],
     tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
     uneditable:[true,true,true,true,false,false],
@@ -97,7 +97,9 @@ export class ArPreviewComponent implements OnInit {
     checkFlag:true,
     magnifyingGlass: ['glShortCd','slTypeName','slName'],
     total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt']
-  };
+  };*/
+
+  accEntriesData: any = {};
 
   /*accEntriesData: any = {
     tableData: [
@@ -158,7 +160,8 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
+    console.log(this.record.currRate);
+    this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -213,7 +216,12 @@ export class ArPreviewComponent implements OnInit {
           a.showMG = 1;
           //F is full, L is limited, N is restricted
           if(a.updateLevel == 'N'){
-            a.uneditable = ['glShortCd','debitAmt','creditAmt']
+            a.uneditable = ['glShortCd','debitAmt','creditAmt', 'foreignDebitAmt', 'foreignCreditAmt'];
+            a.showMG = 0;
+          }else if(a.updateLevel == 'L'){
+            a.uneditable = ['glShortCd'];
+            a.colMG = ['glShortCd'];
+            a.showMG = 1;
           }
         })
         this.computeTotals();
@@ -223,6 +231,10 @@ export class ArPreviewComponent implements OnInit {
 
   onClickSave(){
      this.confirm.confirmModal();
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 
   save(cancelFlag?){
@@ -287,7 +299,11 @@ export class ArPreviewComponent implements OnInit {
         }
       );*/
    // }else if(this.currentTab === 'acctEntries'){
-      this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted);
+      this.savedData = this.accEntriesData.tableData.filter(a=>a.edited && !a.deleted).map(b=>{b.createUser = this.ns.getCurrentUser();
+                                                                                               b.createDate = this.ns.toDateTimeString(0);
+                                                                                               b.updateUser = this.ns.getCurrentUser();
+                                                                                               b.updateDate = this.ns.toDateTimeString(0);
+                                                                                               return b;});
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
       console.log(this.savedData);
       console.log(this.deletedData);
@@ -310,6 +326,7 @@ export class ArPreviewComponent implements OnInit {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.acctEntryTbl.markAsPristine();
+          console.log('marked as pristine');
           this.retrieveAcctEntry();
         }else{
           this.dialogIcon = 'error';
@@ -380,6 +397,8 @@ export class ArPreviewComponent implements OnInit {
     if(data.selector == 'slType'){
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
@@ -427,10 +446,13 @@ export class ArPreviewComponent implements OnInit {
   }
 
   tickChckbx(data){
-    if(data.checked && data.autoTag == 'Y'){
+    console.log(data)
+    if(data.checked && data.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')){
       this.warnDeleteAuto.openNoClose();
+        this.acctEntryTbl.selected = this.acctEntryTbl.selected.filter(a=>(data.updateLevel != 'L' && data.updateLevel != 'N'));
+        console.log(this.acctEntryTbl.selected);
     }
-    this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y').length > 0;
+    this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')).length > 0;
   }
 
   computeTotals(){   
@@ -438,6 +460,15 @@ export class ArPreviewComponent implements OnInit {
     this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
     this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
+  }
+
+  acctEntriesTableDataChange(data){
+    if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
+      for(var i = 0; i < this.accEntriesData.tableData.length; i++){
+        this.accEntriesData.tableData[i].debitAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignDebitAmt;
+        this.accEntriesData.tableData[i].creditAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignCreditAmt;
+      }
+    }
   }
 
    export(){

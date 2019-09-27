@@ -44,6 +44,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Output() gnrc1: EventEmitter<any> = new EventEmitter();
     @Output() gnrc2: EventEmitter<any> = new EventEmitter();
     @Output() export: EventEmitter<any> = new EventEmitter();
+    @Input() preventDefault: boolean = false;;
 
     @ViewChild('paw') page: any;
 
@@ -225,7 +226,7 @@ export class CustNonDatatableComponent implements OnInit {
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
         this.overlayLoader = false;
-        this.selected = [];
+        // this.selected = [];
 
         //select the first row
         if(this.passData.tableData.length !== 0 && this.currentIndex !== 0){
@@ -411,8 +412,12 @@ export class CustNonDatatableComponent implements OnInit {
              for (let data of this.displayData) {
                 if(data != this.fillData){
                     console.log('test');
-                    data.checked = value;
-                    this.selected.push(data);
+                    if(data.preventDefault !== undefined && data.preventDefault){
+                        this.selected.push(data);
+                    }else{
+                        data.checked = value;
+                        this.selected.push(data);
+                    }
                 }
             }
             this.rowClick.emit(this.selected);
@@ -429,24 +434,29 @@ export class CustNonDatatableComponent implements OnInit {
             this.selected = [];
             this.refreshTable();
         }
-         
+        
     }
     
     highlight(data){
         
         this.selected.push(data);
     }
-    removeSelected(event, data){
-        
-        data.checked = event.target.checked;
-        if(!event.target.checked){
-            this.selected.splice(this.selected.indexOf(data), 1);
-        }else{
+
+    removeSelected(event, data, preventDefault?){
+        if(preventDefault !== undefined && preventDefault){
             this.selected.push(data);
+            event.preventDefault();
+        }else{
+            data.checked = event.target.checked;
+            if(!event.target.checked){
+                this.selected.splice(this.selected.indexOf(data), 1);
+            }else{
+                this.selected.push(data);
+            }
         }
         this.rowClick.emit(this.selected);
-        
     }
+
     onRowDblClick(event,data) {
         
         if(!this.nullRow){

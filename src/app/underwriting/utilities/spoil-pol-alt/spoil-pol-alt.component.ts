@@ -324,23 +324,25 @@ export class SpoilPolAltComponent implements OnInit {
 			$('.dirty').blur();
 			this.cancelFlag = false;
 		}else{
-			this.underwritingService.getAlterationsPerPolicy(this.polId,'')
-			.subscribe(data => {
-				console.log(data);
-				var rec = data['policyList'];
-				rec.sort((a,b) => a.altNo - b.altNo);
+			this.validPolicyAlt(); // validations made at the db
 
-				if(rec.length == 0){
-					this.validPolicyAlt();
-				}else{
-					if(rec.some(i => i.statusDesc.toUpperCase() == 'IN PROGRESS') == true){
-						this.warnMsg1 = msgA;
-						this.showWarnLov();
-					}else{
-						this.warnMsg1 = msgB;
-						this.showWarnLov();
-					}
-				}
+			// this.underwritingService.getAlterationsPerPolicy(this.polId,'')
+			// .subscribe(data => {
+			// 	console.log(data);
+			// 	var rec = data['policyList'];
+			// 	rec.sort((a,b) => a.altNo - b.altNo);
+
+			// 	if(rec.length == 0){
+			// 		this.validPolicyAlt();
+			// 	}else{
+			// 		if(rec.some(i => i.statusDesc.toUpperCase() == 'IN PROGRESS') == true){
+			// 			this.warnMsg1 = msgA;
+			// 			this.showWarnLov();
+			// 		}else{
+			// 			this.warnMsg1 = msgB;
+			// 			this.showWarnLov();
+			// 		}
+			// 	}
 
 				// for(var i=0;i<rec.length;i++){
 				// 	if(parseInt(this.spoilPolRecord.altNo) === 0){
@@ -377,7 +379,7 @@ export class SpoilPolAltComponent implements OnInit {
 				// 	}
 				// }
 
-			});
+			//});
 		}
 
 	}
@@ -402,9 +404,19 @@ export class SpoilPolAltComponent implements OnInit {
 
 		this.underwritingService.updatePolGenInfoSpoilage(JSON.stringify(this.postSpoilage))
 		.subscribe(data => {
-			console.log(data);
+			if(data['returnCode']==-1){
+	          this.dialogIcon = 'success';
+			  this.getPolicyList();
+			}
+	        else if(data['returnCode']==20000){
+	          for(let msg of data['errorList']){
+	            this.dialogMessage = msg.errorMessage;
+	          }
+	          this.dialogIcon="error-message";
+	        }else{
+	          this.dialogIcon="error";
+	        }
 			$('app-sucess-dialog #modalBtn').trigger('click');
-			this.getPolicyList();
 		});
 	}
 

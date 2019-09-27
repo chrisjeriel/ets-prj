@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -16,6 +16,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { tap, mergeMap, map } from 'rxjs/operators';
+import { NgForm } from '@angular/forms';
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -36,6 +38,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('successDialog') successDialog: SucessDialogComponent;
   @ViewChild('cancelBtn') cancelBtn: CancelButtonComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
+  @ViewChild('usersLov') usersLov: MtnUsersComponent;
+  @ViewChild(NgForm) myForm: NgForm;
+  @ViewChildren(DatepickerComponent) dps : QueryList<DatepickerComponent>;
 
   line: string;
   sub: any;
@@ -193,6 +198,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   adjLOVRow: number;
   dialogIcon: string = "";
   dialogMessage: string = "";
+  cancelAdj: boolean = false;
   cancel: boolean = false;
 
   claimId: number = 0;
@@ -220,7 +226,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   subscription: Subscription = new Subscription();
 
   constructor(private actRoute: ActivatedRoute, public modalService: NgbModal, private titleService: Title,
-    private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router, private ms: MaintenanceService) { }
+    private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService, private router: Router, private ms: MaintenanceService,
+    private cd: ChangeDetectorRef) { }
+
+  ngAfterViewInit() {
+        this.cd.detectChanges();
+  }
 
   ngOnInit() {
     this.maxDate = this.ns.toDateTimeString(0).split('T')[0];
@@ -441,7 +452,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setLossCd(ev) {
     this.ns.lovLoader(ev.ev, 0);
-    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    this.myForm.control.markAsDirty();
 
     if(this.lossCdType == 'C' || ev.lossCdType == 'C') {
       this.claimData.lossCd = ev.lossCd;
@@ -458,6 +469,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setProcessedBy(ev) {
     this.claimData.processedBy = ev.userId;
+    this.ns.lovLoader(ev.ev, 0);
   }
 
   showClmEventLOV() {
@@ -471,7 +483,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setClmEvent(ev) {
     this.ns.lovLoader(ev.ev, 0);
-    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    this.myForm.control.markAsDirty();
 
     this.claimData.eventCd = ev.eventCd;
     this.claimData.eventDesc = ev.eventDesc;
@@ -484,7 +496,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setClmEventType(ev) {
     this.ns.lovLoader(ev.ev, 0);
-    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    this.myForm.control.markAsDirty();
 
     this.claimData.eventTypeCd = ev.eventTypeCd;
     this.claimData.eventTypeDesc = ev.eventTypeDesc;
@@ -557,7 +569,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   setSelectedMainAdjuster(data) {
     this.ns.lovLoader(data.ev, 0);
-    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    this.myForm.control.markAsDirty();
 
     this.claimData.adjId = data.adjId;
     this.claimData.adjName = data.adjName;
@@ -597,7 +609,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   setStatus(ev) {
-    $('#hiddenInpClm').addClass('ng-touched ng-dirty');
+    this.myForm.control.markAsDirty();
 
     if(this.claimData.claimId != null) {
       this.claimData.statusChanged = 1;
@@ -608,7 +620,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   onAdjClickCancel() {
-    if($('#adj-table .ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+    if(this.adjTable.form.first.dirty){
       this.adjCancelBtn.saveModal.openNoClose();
     } else {
       this.modalService.dismissAll();
@@ -622,11 +634,11 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.adjSuccessDialog.open();
 
-      this.cancel = false;
+      this.cancelAdj = false;
       return;
     }
 
-    if(!this.cancel) {
+    if(!this.cancelAdj) {
       this.adjConfirmSave.confirmModal();  
     } else {
       this.adjSave(false);
@@ -634,9 +646,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   adjSave(cancel?) {
-    this.cancel = cancel !== undefined;
+    this.cancelAdj = cancel !== undefined;
 
-    if(this.cancel && cancel) {
+    if(this.cancelAdj && cancel) {
       this.onAdjClickSave();
       return;
     }
@@ -675,6 +687,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
           this.claimData.adjName = '';
           this.claimData.adjFileNo = '';
         }
+        this.adjTable.markAsPristine();
       } else {
         this.dialogIcon = "error";
         this.adjSuccessDialog.open();
@@ -757,6 +770,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
+        this.myForm.control.markAsPristine();
+        this.dps.forEach(a=>a.markAsPristine());
       } else if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -992,6 +1007,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.clmEventLOV.checkCode(eventTypeCd, this.claimData.eventDesc, ev, d, filt);
       } else if(str === 'mainAdj') {
         this.adjusterLOVMain.checkCode(this.claimData.adjId, ev);
+      } else if(str === 'processedBy') {
+        this.usersLov.checkCode(this.claimData.processedBy, ev);
       }
     });
   }

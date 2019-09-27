@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, Input} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject, forkJoin } from 'rxjs';
 import { ClaimsService, MaintenanceService, NotesService, UserService } from '@app/_services';
@@ -33,7 +33,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         addFlag:true,
   };
 
-  claimInfo = {
+  claimInfo:any = {
         claimId: '',
         claimNo: '',
         projId: '',
@@ -69,6 +69,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
   @ViewChild('tabset') tabset: any;
 
+  activeIdString:string = 'geninfo';
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(
@@ -77,6 +78,15 @@ export class ClaimComponent implements OnInit, OnDestroy {
           this.isInquiry = true;
         }else{
           this.isInquiry = false;
+        }
+
+        if(params['tab']!=undefined){
+          console.log(params)
+          this.activeIdString=params['tab'];
+          this.claimInfo = params;
+          this.disableClmHistory = false;
+          this.disableNextTabs = false;
+          this.disablePaytReq = false;
         }
       }
     );
@@ -89,9 +99,11 @@ export class ClaimComponent implements OnInit, OnDestroy {
   onTabChange($event: NgbTabChangeEvent) {
 
       if ($event.nextId === 'Exit' && this.isInquiry) {
+        console.log('here 1');
         $event.preventDefault();
         this.router.navigateByUrl('/claims-inquiry');
       } else if($event.nextId === 'Exit' && !this.isInquiry && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0){
+        console.log('here 2');
         $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');
       } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
@@ -103,6 +115,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
       }
 
       if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
+        console.log('here 3');
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -114,11 +127,14 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
         subject.subscribe(a=>{
           if(a){
+            console.log('here 4');
             $('.ng-dirty').removeClass('ng-dirty');
 
             if($event.nextId === 'Exit' && !this.isInquiry) {
+              console.log('here 5');
               this.router.navigateByUrl('/clm-claim-processing');
             } else {
+              console.log('here 6');
               this.tabset.select($event.nextId);
             }
           }
@@ -139,7 +155,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
     this.disableClmHistory = ev.disableClmHistory;
     this.disableNextTabs = ev.disableNextTabs;
     this.disablePaytReq = ev.disablePaytReq;
-
+    console.log(this.claimInfo);
   }
   
   showWarnMdl(event) {
