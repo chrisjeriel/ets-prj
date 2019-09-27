@@ -1,38 +1,76 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AccORSerFeeLoc } from '@app/_models';
-import { AccountingService } from '@app/_services';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { DatePipe } from '@angular/common'
+import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-or-service-fee-local',
   templateUrl: './or-service-fee-local.component.html',
-  styleUrls: ['./or-service-fee-local.component.css']
+  styleUrls: ['./or-service-fee-local.component.css'],
+  providers: [DatePipe]
 })
 export class OrServiceFeeLocalComponent implements OnInit {
+
+  @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
+  @ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   passData: any = {
 		tableData:[],
-		tHeader: ['Ceding Company','Quarter Ending','Curr','Curr Rate','Amount','Amount(PHP)'],
-		widths:['auto',1,1,100,100,100],
-		nData: new AccORSerFeeLoc(null,null,null,null,null,null),
-		total:[null,null,null,'Total','amount','amountPHP'],
-		dataTypes: ['text','date','text','percent','currency','currency'],
+		tHeader: ['Quarter Ending','Curr','Curr Rate','Amount','Amount(PHP)'],
+		widths:[1,1,100,100,100],
+		nData: {
+			tranId: '',
+			billId: '',
+			itemNo: '',
+			quarterEnding: '',
+			currCd: '',
+			currRate: '',
+			servFeeAmt: '',
+			localAmt: '',
+			createUser: '',
+			createDate: '',
+			updateUser: '',
+			updateDate: '',
+			showMG: 1
+		},
+		total:[null,null,'Total','servFeeAmt','localAmt'],
+		dataTypes: ['text','text','percent','currency','currency'],
 		addFlag:true,
 		deleteFlag: true,
-		genericBtn: 'Save',
 		checkFlag: true,
 		infoFlag:true,
 		paginateFlag: true,
-		magnifyingGlass:['cedingCompany']
+		magnifyingGlass:['quarterEnding'],
+		keys: ['quarterEnding', 'curr', 'currRate', 'servFeeAmt', 'localAmt']
 	}
-  constructor(private accountingService: AccountingService ) { }
 
-	@Input() paymentType;
+	quarterEndingIndex: number = 0;
+
+  constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe ) { }
+
+  @Input() paymentType;
 
   ngOnInit() {
-		this.passData.tableData = this.accountingService.getAccORSerFeeLoc();
-		if(this.paymentType == null){
-      this.paymentType = "";
-		}
-		console.log(this.paymentType);
+	
+  }
+
+  openLOV(event){
+  	console.log(event.index);
+    this.quarterEndingIndex = event.index;
+    this.lovMdl.modal.openNoClose();
+  }
+
+  setSelectedData(data){
+  	console.log(this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy'));
+    this.passData.tableData[this.quarterEndingIndex].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+    this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+    //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 
 }

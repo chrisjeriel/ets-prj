@@ -4,6 +4,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-or-only',
@@ -13,6 +14,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class OrOnlyComponent implements OnInit {
 
 	@Input() record: any;
+	@ViewChild('taxAlloc') taxAllocMdl : ModalComponent;
 
 	 passData : any = {
 	    tableData: [],
@@ -43,8 +45,72 @@ export class OrOnlyComponent implements OnInit {
 	        updateDate: ''
 	    },
 	    keys: ['itemName', 'refNo', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-	    widths: ['auto',120,1,100,120,120]
+	    widths: ['auto',120,1,100,120,120],
+	    pageID: 'mainTbl'
 	  }
+
+	  passDataGenTax : any = {
+	  	tableData: [],
+	    tHeader : ["Tax Code","Description","Rate","Amount"],
+	    dataTypes: ["text","text","percent","currency"],
+	    addFlag: true,
+	    deleteFlag: true,
+	    checkFlag: true,
+	    pageLength: 5,
+	    //uneditable: [false,false,true,true,false,true],
+	    magnifyingGlass: ['taxCd'],
+	    nData: {
+	        tranId: '',
+	        billId: '',
+	        itemNo: '',
+	        taxType: 'G', //for General Tax, Tax Type
+	        taxCd: '',
+	        taxName: '',
+	        taxRate: '',
+	        taxAmt: 0,
+	        createUser: '',
+	        createDate: '',
+	        updateUser: '',
+	        updateDate: '',
+	        showMG: 1
+	    },
+	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
+	    widths: [1,150,120,120],
+	    pageID: 'genTaxTbl'
+	  }
+
+	  passDataWhTax : any = {
+	  	tableData: [],
+	    tHeader : ["Tax Code","Description","Rate","Amount"],
+	    dataTypes: ["text","text","percent","currency"],
+	    addFlag: true,
+	    deleteFlag: true,
+	    checkFlag: true,
+	    pageLength: 5,
+	    //uneditable: [false,false,true,true,false,true],
+	    magnifyingGlass: ['taxCd'],
+	    nData: {
+	        tranId: '',
+	        billId: '',
+	        itemNo: '',
+	        taxType: 'W', //for Witholding Tax, Tax Type
+	        taxCd: '',
+	        taxName: '',
+	        taxRate: '',
+	        taxAmt: 0,
+	        createUser: '',
+	        createDate: '',
+	        updateUser: '',
+	        updateDate: '',
+	        showMG: 1
+	    },
+	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
+	    widths: [1,150,120,120],
+	    pageID: 'whTaxTbl'
+	  }
+
+	  selectedItem: any;
+	  disableTaxBtn: boolean = true;
 
   constructor(private as: AccountingService, private ns: NotesService) { }
 
@@ -52,7 +118,22 @@ export class OrOnlyComponent implements OnInit {
   }
 
   openTaxAllocation(){
-   $('#taxAlloc #modalBtn').trigger('click');
- }
+  	this.taxAllocMdl.openNoClose();
+  }
+
+  onRowClick(data){
+  	console.log(data);
+  	if(data === null){
+  		this.disableTaxBtn = true;
+  	}else{
+  		this.disableTaxBtn = false;
+  		this.passDataGenTax.nData.tranId = data.tranId;
+  		this.passDataGenTax.nData.billId = data.billId;
+  		this.passDataGenTax.nData.itemNo = data.itemNo;
+  		this.passDataWhTax.nData.tranId = data.tranId;
+  		this.passDataWhTax.nData.billId = data.billId;
+  		this.passDataWhTax.nData.itemNo = data.itemNo;
+  	}
+  }
 
 }
