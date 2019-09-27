@@ -22,6 +22,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
+  @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
 
   passData: any = {
@@ -239,6 +240,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
+  confirmNewAr(){
+    if(this.form.dirty){
+      this.leaveMdl.openNoClose();
+    }else{
+      this.newAr();
+    }
+  }
+
   newAr(){
     this.loading = true;
     this.isAdd = true;
@@ -308,6 +317,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.retrieveCurrency();
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
+    this.form.control.markAsPristine();
   }
 
   ngOnDestroy(){
