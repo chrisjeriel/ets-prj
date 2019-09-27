@@ -62,7 +62,9 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
+    if(!this.table) {
+      this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
+    }
   }
 
   showTextEditorModal(content) {

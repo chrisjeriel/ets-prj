@@ -85,7 +85,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   }
 
   ngAfterViewInit() {
-    this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);
+    if(!this.table) {
+      this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
