@@ -99,48 +99,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
   };
 
-  /*inwardPolBalData: any = {
-    tHeaderWithColspan : [{ header: "", span: 1 },
-                          { header: "Policy Information", span: 14 },
-                          { header: "Payment Details", span: 5 },
-                          { header: "", span: 2 }],
-    tableData     : [],
-    tHeader: ['Policy No.','Inst  No.','Co Ref No','Eff Date','Due Date','Curr','Curr Rate','Premium','RI Comm','RI Comm Vat','Charges','Net Due','Cumulative Payment','Balance',' Payment Amount','Premium','RI Comm','RI Comm VAT','Charges','Total Payments','Remaining Balance'],
-    dataTypes: ['text','sequence-2','text','date','date','text','percent','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency','currency'],
-    magnifyingGlass : ['policyNo'],
-    nData: {
-      newRec         : 1,
-      policyNo       : '',
-      instNo         : '',
-      dueDate        : '',
-      currCd         : '',
-      currRate       : '',
-      netDue         : '',
-      prevPaytAmt    : '',
-      premAmt        : '',
-      riComm         : '',
-      riCommVat      : '',
-      charges        : '',
-      returnAmt      : '',
-      showMG         : 1
-    },
-    //paginateFlag  : false,
-    infoFlag      : true,
-    // uneditableKeys: ['returnAmt'], 
-    // pageID        : 'inwardPolBalData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-    checkFlag     : true,
-    addFlag       : true,
-    deleteFlag    : true,
-    pageLength: 'unli',
-    // uneditable    : [true,true,true,true,true,true,true,true,true,true,true,false],
-    // total         : [null, null, null, null, 'Total', 'netDue', 'prevPaytAmt', 'premAmt', 'riComm', null, 'charges', 'returnAmt'],
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true],
-    total:[null,null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-    // widths        : [200,1,110,1,110,120,120,120,120,120,120,120,120],
-    // keys          : ['policyNo','instNo','dueDate','currCd','currRate','netDue','prevPaytAmt','premAmt','riComm','riCommVat','charges','returnAmt']
-    keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
-  };*/
-
   inwardPolBalData: any = {};
 
   treatyBalanceData: any = {
@@ -485,32 +443,41 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcitPrqInwPol(){
-    var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtlNew(this.requestData.currCd))
-                         .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
+    // var subRec = forkJoin(this.acctService.getAcitPrqInwPol(this.rowData.reqId,''), this.acctService.getAcitSoaDtlNew(this.requestData.currCd))
+    //                      .pipe(map(([inwPol,soaDtl]) => { return { inwPol,soaDtl }; }));
 
-    subRec.subscribe(data => {
+    // subRec.subscribe(data => {
+    //   console.log(data);
+    //   var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
+    //   var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
+
+    //   this.inwardPolBalData.tableData = [];
+    //   this.recPrqTrans.forEach(e => {
+    //       this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo && e2.reqId == e.reqId)
+    //                                                                   .map(e2 => {
+    //                                                                     e2.policyId = e.policyId;
+    //                                                                     e2.instNo   = e.instNo;
+    //                                                                     e2.itemNo   = e.itemNo;
+    //                                                                     e2.reqId    = e.reqId;
+    //                                                                     return e2;
+    //                                                                   }));
+    //   });
+    //   this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
+    //   console.log(this.inwardPolBalData.tableData);
+    //   recAcitSoaDtl.forEach(e => {
+    //     this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
+    //   });
+    //   console.log(this.inwardPolBalData.tableData);
+    //   this.inwardTbl.refreshTable();
+    //   this.reCompInw();
+    // });
+
+    this.acctService.getAcitPrqInwPol(this.rowData.reqId,'')
+    .subscribe(data => {
       console.log(data);
-      var recAcitPrqInwPol = data['inwPol']['acitPrqInwPolList'];
-      var recAcitSoaDtl    = data['soaDtl']['soaDtlList'];
-
-      this.inwardPolBalData.tableData = [];
-      this.recPrqTrans.forEach(e => {
-          this.inwardPolBalData.tableData.push(recAcitPrqInwPol.filter(e2 => e2.itemNo == e.itemNo && e2.reqId == e.reqId)
-                                                                      .map(e2 => {
-                                                                        e2.policyId = e.policyId;
-                                                                        e2.instNo   = e.instNo;
-                                                                        e2.itemNo   = e.itemNo;
-                                                                        e2.reqId    = e.reqId;
-                                                                        return e2;
-                                                                      }));
-      });
-      this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.flatMap(e => { return e });
-      recAcitSoaDtl.forEach(e => {
-        this.inwardPolBalData.tableData.filter(e2 => e.policyId == e2.policyId && e.instNo == e2.instNo).map(e2 => Object.assign(e2,e));
-      });
-      console.log(this.inwardPolBalData.tableData);
+      var rec = data['acitPrqInwPolList'];
+      this.inwardPolBalData.tableData = rec;
       this.inwardTbl.refreshTable();
-      this.reCompInw();
     });
   }
 
@@ -599,10 +566,17 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.warn = [];
     console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
-      e.premAmt      = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
-      e.riComm       = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
-      e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
-      e.charges      = isNaN(Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100)?0:Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
+      // e.premAmt      = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
+      // e.riComm       = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
+      // e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
+      // e.charges      = isNaN(Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100)?0:Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
+      // e.totalPayt    = isNaN(Math.round((e.returnAmt + e.cumPayment) * 100)/100)?0:Math.round((e.returnAmt + e.cumPayment) * 100)/100;
+      // e.remainingBal = isNaN(Math.round((e.prevNetDue - e.totalPayt) * 100)/100)?0:Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
+
+      e.premAmt      = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevPremAmt) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevPremAmt) * 100)/100;
+      e.riComm       = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiComm) * 100)/100;
+      e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiCommVat) * 100)/100;
+      e.charges      = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevCharges) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevCharges) * 100)/100;
       e.totalPayt    = isNaN(Math.round((e.returnAmt + e.cumPayment) * 100)/100)?0:Math.round((e.returnAmt + e.cumPayment) * 100)/100;
       e.remainingBal = isNaN(Math.round((e.prevNetDue - e.totalPayt) * 100)/100)?0:Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
 
@@ -651,6 +625,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                           e.edited = true; e.checked = false; e.createDate = ''; e.createUser = ''; 
                                           return e; });
       this.cedCompTbl.refreshTable();
+      this.cedCompTbl.markAsDirty();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       var recAgingSoaDtl = data['data'];
       recAgingSoaDtl.forEach(e => {
@@ -672,9 +647,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                                 return e;
                                             });
       this.inwardTbl.refreshTable();
+      this.inwardTbl.markAsDirty();
       this.reCompInw();
     }else if(from.toUpperCase() == 'LOVTRTYTBL'){
       this.treatyBalanceData.tableData[this.trtyIndx].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+      this.treatyTbl.markAsDirty();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       var recInvt = data['data'];
       recInvt.forEach(e => {
@@ -689,6 +666,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                             return e;
                                           }); 
       this.invtTbl.refreshTable();
+      this.invtTbl.markAsDirty();
     }
   }
 
@@ -1138,21 +1116,19 @@ export class PaymentRequestDetailsComponent implements OnInit {
     else{
       if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
         // (!this.allotedChanged)?$('.ng-dirty').removeClass('ng-dirty'):'';
-        (!this.allotedChanged)?this.inwardTbl.markAsPristine():'';
+        //(!this.allotedChanged)?
+        this.inwardTbl.markAsPristine();
+        //$('.ng-dirty').removeClass('ng-dirty');
         this.conInw.confirmModal();
         this.params.savePrqTrans   = [];
         this.params.deletePrqTrans = [];
         this.inwardPolBalData.tableData = this.inwardPolBalData.tableData.filter(e => e.policyNo != '');
-      }
-      // else if(this.inwardPolBalData.tableData.some(e => e.returnAmt == 0)){
-      //   this.warnMsg = 'Please enter a Payment Amount.';
-      //   this.warnMdl.openNoClose();
-      //   this.params.savePrqTrans = [];
-      // }
-      else{
+      }else{
         if(this.cancelFlagInw == true){
           this.conInw.showLoading(true);
-          setTimeout(() => { try{this.conInw.onClickYes();}catch(e){}},500);
+          setTimeout(() => { try{
+            this.conInw.onClickYes();
+          }catch(e){}},500);
         }else{
           this.conInw.confirmModal();
         }
@@ -1244,6 +1220,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucUnCol.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.unColTbl.markAsPristine();
     });
   }
 
@@ -1260,6 +1237,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucOth.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.othTbl.markAsPristine();
     });
   }
 
@@ -1278,6 +1256,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucTrty.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.treatyTbl.markAsPristine();
     });
   }
 
@@ -1295,6 +1274,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucInvt.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.invtTbl.markAsPristine();
     });
   }
 
@@ -1313,7 +1293,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         netDue      : e.netDue,
         premAmt     : e.premAmt,
         prevPaytAmt : e.cumPayment,
-        prevBalance : e.balance,
+        prevBalance : e.prevBalance,
         newPaytAmt  : e.totalPayt,
         newBalance  : e.remainingBal,
         reqId       : this.requestData.reqId,
@@ -1358,6 +1338,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucInw.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.inwardTbl.markAsPristine();
     });
   }
 
@@ -1373,6 +1354,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.sucClm.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
+      this.cedCompTbl.markAsPristine();
     });
   }
 

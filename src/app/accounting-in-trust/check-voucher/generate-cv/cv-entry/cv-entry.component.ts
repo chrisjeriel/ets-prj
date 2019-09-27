@@ -418,6 +418,13 @@ export class CvEntryComponent implements OnInit {
     console.log(fromUser);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
+      if(this.saveAcitCv.paytReqType == 'S'){
+        this.passDataLov.payeeClassCd = 2;
+      }else if(this.saveAcitCv.paytReqType == 'I'){
+        this.passDataLov.payeeClassCd = 3;
+      }else{
+        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null)?'':1;
+      }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'mtnBank';

@@ -210,8 +210,8 @@ export class AccountingService {
 			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
 		}else if('PRQ' == tranClass){
-			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
-			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','prevBalance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','prevBalance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
 		}
 		return Object.create(this.passDataInwPolBal);
 	}
