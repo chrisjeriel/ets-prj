@@ -1195,10 +1195,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
-                        this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
+                        this.ms.getMtnBankAcct(),
+                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS')).pipe(map(([dcb, bank, bankAcct, arNoDigits]) => { return { dcb, bank, bankAcct, arNoDigits }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
            this.arInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
+           this.arInfo.arNoDigits = parseInt(data.arNoDigits.parameters[0].paramValueN);
         //set default dcb bank
            this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultArBank;
            this.selectedBank.officialName = data.dcb.dcbUserList[0].arBankName;
