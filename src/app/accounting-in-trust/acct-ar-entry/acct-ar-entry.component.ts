@@ -402,9 +402,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrencyRt(){
+    this.passData.nData.currRate = this.arInfo.currRate;
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.arInfo.currRate;
-      this.passData.nData.currRate = this.arInfo.currRate;
       this.passData.tableData[i].edited = true;
     }
     this.paytDtlTbl.refreshTable();
