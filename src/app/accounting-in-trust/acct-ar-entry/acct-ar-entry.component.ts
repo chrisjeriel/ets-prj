@@ -260,6 +260,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
     this.arDate.time = this.ns.toDateTimeString(0).split('T')[1];
     this.isCancelled = false;
+    this.isPrinted = false;
     this.passData.uneditable = [];
     this.passData.addFlag = true;
     this.passData.genericBtn = 'Delete';
