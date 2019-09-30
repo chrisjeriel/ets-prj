@@ -295,8 +295,18 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   updateClaim(data){
+    var table = '';
+    var deletedFlag = false;
     for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].deleted){
+        deletedFlag = true;
+      }
       this.passData.tableData[i].localAmt = this.passData.tableData[i].clmPaytAmt * this.jvDetail.currRate;
+    }
+
+    if(deletedFlag){
+      table = this.passData.tableData.filter((a)=>{return !a.deleted});
+      this.clmTable.onRowClick(null, table[0]);
     }
     this.clmTable.refreshTable();
   }
@@ -469,7 +479,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       }
 
       for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
-        if(this.passData.tableData[i].inwPolBal[j].edited && !this.passData.tableData[i].inwPolBal[j].deleted){
+        if(this.passData.tableData[i].inwPolBal[j].edited && !this.passData.tableData[i].inwPolBal[j].deleted && !this.passData.tableData[i].deleted){
           this.jvDetails.saveInwPol.push(this.passData.tableData[i].inwPolBal[j]);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].tranId = this.jvDetail.tranId;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
@@ -510,6 +520,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   update(){
-    console.log('pasok')
+
   }
 }

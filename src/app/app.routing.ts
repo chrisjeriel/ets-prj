@@ -176,6 +176,7 @@ import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component'
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+
 const appRoutes: Routes = [
 
 
@@ -241,7 +242,7 @@ const appRoutes: Routes = [
     { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent , canDeactivate: [UnsavedChangesGuard]},
-    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard] },
+    { path: 'generate-jv', component: GenerateJvComponent },
     { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'trial-balance', component: TrialBalanceComponent },
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },

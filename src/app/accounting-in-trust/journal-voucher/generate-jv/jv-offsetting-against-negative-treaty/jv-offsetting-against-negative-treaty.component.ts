@@ -267,8 +267,18 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   updateTreatyBal(data){
+    var deletedFlag = false;
+    var table = ''
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
+      if(this.passData.tableData[i].deleted){
+        deletedFlag = true;
+      }
+    }
+
+    if(deletedFlag){
+      table = this.passData.tableData.filter((a)=>{return !a.deleted});
+      this.quarterTable.onRowClick(null, table[0]);
     }
     this.quarterTable.refreshTable();
   }
@@ -406,6 +416,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveNegTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].tranId = this.jvDetail.tranId;
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].qsoaId = null;
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].cedingId = this.jvDetails.ceding;
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
@@ -424,7 +435,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       }
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){
-        if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted){
+        if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted && !this.passData.tableData[i].deleted){
           console.log(this.passData.tableData[i].clmOffset[j].clmPaytAmt);
           actualBalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           this.jvDetails.saveClmOffset.push(this.passData.tableData[i].clmOffset[j]);

@@ -107,6 +107,7 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
+    this.passData.nData = { tranId: '', entryId: '', glAcctId: '', glShortCd: '', glShortDesc:'', slTypeCd: '', slTypeName: '', slCd: '', slName: '', creditAmt: 0, debitAmt: 0, foreignDebitAmt: 0, foreignCreditAmt: 0, autoTag: 'N', createUser: '', createDate: '', updateUser: '', updateDate: '', showMG:1, edited: true };
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
@@ -150,6 +151,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
 
       this.variance = this.debitTotal - this.creditTotal;
+      this.variance = Math.round(this.variance * 100)/100;
       if(this.variance === 0 && this.jvDetails.statusType == 'N'){
         this.notBalanced = false;
       }

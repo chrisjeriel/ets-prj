@@ -134,7 +134,7 @@
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" (click)="onClickSave()"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" (click)="cancel()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Approve</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Print</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat "><a>Upload Acct. Ent</a></button>
@@ -151,13 +151,13 @@
             <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
                 <div class="input-group" style="margin-bottom: -15px !important;">
                     <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.createUser">
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createUser" name="entryData.createUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly name="entryData.createDate">
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate" name="entryData.createDate">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.updateUser">
+                    <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateUser" name="entryData.updateUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly name="entryData.updateDate">
+                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate" name="entryData.updateDate">
                 </div>
             </div>
         </fieldset>
@@ -166,3 +166,7 @@
 </form>
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
 <app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-confirm-save id="JVEntry" (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-mtn-acse-trantype id="jvTypeModal" (selectedData)="setTranType($event)"></app-mtn-acse-trantype>

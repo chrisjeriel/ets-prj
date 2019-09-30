@@ -2453,4 +2453,13 @@ export class AccountingService {
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
 		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVEntry",{params});
 	}
+
+	saveAcseJVEntry(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseJVEntry',params,header);
+    }
 }

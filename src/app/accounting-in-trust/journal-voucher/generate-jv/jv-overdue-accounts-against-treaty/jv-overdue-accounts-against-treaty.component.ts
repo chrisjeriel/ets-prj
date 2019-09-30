@@ -243,8 +243,19 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   updateTreatyBal(data){
+    var deletedFlag = false;
+    var table = ''
+
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
+      if(this.passData.tableData[i].deleted){
+        deletedFlag = true;
+      }
+    }
+
+    if(deletedFlag){
+      table = this.passData.tableData.filter((a)=>{return !a.deleted});
+      this.quarterTable.onRowClick(null, table[0]);
     }
     this.quarterTable.refreshTable();
   }
@@ -423,7 +434,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       }
 
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
-        if(this.passData.tableData[i].acctOffset[j].edited && !this.passData.tableData[i].acctOffset[j].deleted){
+        if(this.passData.tableData[i].acctOffset[j].edited && !this.passData.tableData[i].acctOffset[j].deleted && !this.passData.tableData[i].deleted){
           this.jvDetails.saveInwPolOffset.push(this.passData.tableData[i].acctOffset[j]);
           actualBalPaid += this.passData.tableData[i].acctOffset[j].paytAmt;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].balPaytAmt = this.passData.tableData[i].acctOffset[j].remainingBal;

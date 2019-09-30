@@ -10,23 +10,42 @@ import { AccountingService } from '@app/_services';
 export class JvAttachmentsServiceComponent implements OnInit {
   
   @Input() jvType: string = "";
-  
-  passData:any = {
-  	tableData:[],
-  	tHeader: ['File Path','Description', 'Actions'],
-  	checkFlag: true,
-  	addFlag:true,
-  	deleteFlag:true,
-  	infoFlag:true,
-  	paginateFlag: true,
-  	widths:['auto','auto',71],
-  	nData: new AttachmentInfo(null,null),
+  @Input() jvData: any;
 
+  passData: any = {
+      tableData: [],
+      tHeader: ['File Name', 'Description', 'Actions'],
+      dataTypes: ['string', 'string'],
+      nData: {tranId: '', fileNo: '', fileName: '', description: ''},
+      checkFlag: true,
+      addFlag: true,
+      deleteFlag: true,
+      searchFlag: true,
+      infoFlag: true,
+      paginateFlag: true,
+      pageLength: 10,
+      uneditable: [true, false],
+      keys: ['fileName', 'description'],
+      widths: [463, 606, 1]
+  };
+
+  jvDetails : any = {
+     jvNo: '', 
+     jvYear: '', 
+     jvDate: '', 
+     jvType: '',
+     jvStatus: '',
+     refnoDate: '',
+     refnoTranId: '',
+     currCd: '',
+     currRate: '',
+     jvAmt: '',
+     localAmt: ''
   };
 
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-  	this.passData.tableData = this.accountingService.getAttachmentInfo();
+    this.jvDetails = this.jvData;
   }
 }

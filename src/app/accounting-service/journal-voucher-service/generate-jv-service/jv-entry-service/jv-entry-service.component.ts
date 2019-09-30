@@ -21,6 +21,7 @@ export class JvEntryServiceComponent implements OnInit {
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @Output() emitData = new EventEmitter<any>();
 
   entryData:any = {
     jvYear:'',
@@ -38,7 +39,7 @@ export class JvEntryServiceComponent implements OnInit {
     preparedDate:'',
     approvedBy:'',
     approvedDate:''
-  }
+  };
 
   jvDatas: any = {
     closeDate : '', 
@@ -54,7 +55,7 @@ export class JvEntryServiceComponent implements OnInit {
     tranYear : '', 
     updateDate : '', 
     updateUser : '', 
-  }
+  };
 
   passLov:any = {
     selector:'',
@@ -65,6 +66,7 @@ export class JvEntryServiceComponent implements OnInit {
   tranId: any;
   dialogIcon : any;
   dialogMessage : any;
+  from: any = '';
 
   constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute) { }
 
@@ -73,9 +75,11 @@ export class JvEntryServiceComponent implements OnInit {
     this.route.params.subscribe(params => {
       console.log(params)
       if(params.from === 'add'){
+        this.from = 'add';
         this.newJV();
       }else{
         this.tranId = params.tranId;
+        this.from = 'jvList';
       }
     });
     this.retrieveJVEntry();
@@ -88,7 +92,7 @@ export class JvEntryServiceComponent implements OnInit {
   retrieveJVEntry(){
     this.accountingService.getACSEJvEntry(this.tranId).subscribe((data:any) => {
       console.log(data);
-      if(data.jvEntry.length !== 0){
+      if(data.jvEntry !== null){
         this.entryData = data.jvEntry; 
         this.entryData.jvDate       = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
         this.entryData.refnoDate    = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
@@ -98,9 +102,46 @@ export class JvEntryServiceComponent implements OnInit {
         this.entryData.jvAmt        = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt     = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.entryData.currRate     = this.decimal.transform(this.entryData.currRate,'1.6-6');
+
+        if(this.from !== 'add'){
+          this.jvDatas.closeDate      = this.entryData.closeDate === "" ? null:this.ns.toDateTimeString(this.entryData.closeDate);
+          this.jvDatas.createDate     = this.ns.toDateTimeString(this.entryData.createDateTran);
+          this.jvDatas.createUser     = this.entryData.createUserTran;
+          this.jvDatas.deleteDate     = this.ns.toDateTimeString(this.entryData.deleteDate);
+          this.jvDatas.postDate       = this.ns.toDateTimeString(this.entryData.postDate); 
+          this.jvDatas.tranClass      = this.entryData.tranClass;
+          this.jvDatas.tranClassNo    = this.entryData.tranClassNo;
+          this.jvDatas.tranDate       = this.ns.toDateTimeString(this.entryData.tranDate);
+          this.jvDatas.tranId         = this.entryData.tranIdTran;
+          this.jvDatas.tranStat       = this.entryData.tranStat;
+          this.jvDatas.tranYear       = this.entryData.tranYear;
+          this.jvDatas.updateDate     = this.ns.toDateTimeString(this.entryData.updateDateTran);
+          this.jvDatas.updateUser     = this.entryData.updateUserTran;
+          this.jvDatas.tranTypeCd     = this.entryData.tranTypeCd;
+        }
+        this.check(this.entryData)
       }
     });
   }
+
+  check(ev){
+    this.emitData.emit({ jvTranId: ev.tranId,
+                         jvNo: ev.jvNo, 
+                         jvYear: ev.jvYear, 
+                         jvDate: ev.jvDate, 
+                         jvStatus: ev.jvStatusName,
+                         statusType: ev.jvStatus,
+                         refnoDate: ev.refnoDate,
+                         refnoTranId: ev.refNo,
+                         currCd: ev.currCd,
+                         currRate: ev.currRate,
+                         jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
+                         localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
+                         jvType: ev.tranTypeName,
+                         tranType: ev.tranTypeCd
+                       });
+  }
+
 
   newJV(){
     this.getDefName();
@@ -123,7 +164,7 @@ export class JvEntryServiceComponent implements OnInit {
         this.entryData.jvYear = '';
         this.entryData.jvNo =  '';
         this.entryData.jvStatus =  'N';
-        this.entryData.jvStatusName =  'New';
+        this.entryData.statusName =  'New';
         this.entryData.tranTypeName = '';
         this.entryData.jvDate = this.ns.toDateTimeString(0);
         this.entryData.autoTag = 'N';
@@ -172,7 +213,12 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   openJVType(){
+    $('#jvTypeModal #modalBtn').trigger('click');
+  }
 
+  setTranType(data){
+    this.entryData.tranTypeName = data.tranTypeName;
+    this.entryData.tranTypeCd = data.tranTypeCd;
   }
 
   setCurrency(data){
@@ -240,6 +286,57 @@ export class JvEntryServiceComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  prepareData(){
+    this.jvDatas.tranIdJv       = this.tranId;
+    this.jvDatas.jvYear         = this.entryData.jvYear;
+    this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);
+    this.jvDatas.jvDate         = this.entryData.jvDate;
+    this.jvDatas.jvStatus       = this.entryData.jvStatus;
+    this.jvDatas.jvTranTypeCd   = this.entryData.tranTypeCd;
+    this.jvDatas.tranTypeName   = this.entryData.tranTypeName;
+    this.jvDatas.autoTag        = this.entryData.autoTag;
+    this.jvDatas.refnoTranId    = this.entryData.refnoTranId == null ? '': this.entryData.refNoTranId;
+    this.jvDatas.refnoDate      = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
+    this.jvDatas.particulars    = this.entryData.particulars;
+    this.jvDatas.currCd         = this.entryData.currCd;
+    this.jvDatas.currRate       = (parseFloat(this.entryData.currRate.toString().split(',').join(''))),
+    this.jvDatas.jvAmt          = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
+    this.jvDatas.localAmt       = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
+    this.jvDatas.allocTag       = this.entryData.allocTag;
+    this.jvDatas.allocTranId    = this.entryData.allocTranId;
+    this.jvDatas.preparedBy     = this.entryData.preparedBy;
+    this.jvDatas.preparedDate   = this.entryData.preparedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.preparedDate);
+    this.jvDatas.approvedBy     = this.entryData.approvedBy;
+    this.jvDatas.approvedDate   = this.entryData.approvedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.approvedDate);
+    this.jvDatas.createUserJv   = this.ns.getCurrentUser();
+    this.jvDatas.createDateJv   = this.ns.toDateTimeString(0);
+    this.jvDatas.updateUserJv   = this.ns.getCurrentUser();
+    this.jvDatas.updateDateJv   = this.ns.toDateTimeString(0);
+  }
+
+  saveData(cancel?){
+    this.prepareData();
+    console.log(this.jvDatas);
+    this.accountingService.saveAcseJVEntry(this.jvDatas).subscribe((data:any) =>{
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.tranId = data.tranIdOut;
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  cancel(){
+    this.prepareData();
+    console.log(this.jvDatas);
   }
 }
 
