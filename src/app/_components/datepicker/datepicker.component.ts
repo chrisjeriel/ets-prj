@@ -208,4 +208,10 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   	this.onFocus.emit();
   }
+
+  onTodayClick() {
+    setTimeout(() => {
+      this.value = this.ns.toDateTimeString(0);
+    }, 0);
+  }
 }
