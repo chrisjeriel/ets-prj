@@ -21,6 +21,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('reprintModal') reprintMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
@@ -104,6 +105,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
+  printMethod: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -771,13 +773,33 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.successDiag.open();
     }else{
       if(this.isPrinted){
-        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+        /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
-        this.printMdl.openNoClose();
+        this.printMdl.openNoClose();*/
+        this.reprintMdl.openNoClose();
       }else{
         this.loading = true;
         this.retrieveMtnAcitArSeries();
       }
+    }
+  }
+
+  reprintMethod(){
+    if(this.printMethod == '1'){
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                            this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
+      //this.printMdl.openNoClose();
+    }else if(this.printMethod == '2'){
+      this.as.acitGenerateReport('ACITR_AR', this.arInfo.tranId).subscribe(
+        (data:any)=>{
+          var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+                       var downloadURL = window.URL.createObjectURL(data);
+                       const iframe = document.createElement('iframe');
+                       iframe.style.display = 'none';
+                       iframe.src = downloadURL;
+                       document.body.appendChild(iframe);
+                       iframe.contentWindow.print();
+        });
     }
   }
 
@@ -789,8 +811,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         this.arInfo.arNo = parseInt(this.generatedArNo);
       }
       this.save();
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
+      /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
+      this.reprintMethod();
       //Update Transactions to Closed and AR Status to Printed
       let params: any = {
         tranId: this.arInfo.tranId,
@@ -798,18 +821,20 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       }
-      this.as.printAr(params).subscribe(
-        (data:any)=>{
-          if(data.returnCode == 0){
-            this.dialogIcon = 'error-message';
-            this.dialogIcon = 'An error has occured when updating AR status';
-          }else{
-            console.log(data);
-            console.log('printed');
-            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+      setTimeout(()=>{
+        this.as.printAr(params).subscribe(
+          (data:any)=>{
+            if(data.returnCode == 0){
+              this.dialogIcon = 'error-message';
+              this.dialogIcon = 'An error has occured when updating AR status';
+            }else{
+              console.log(data);
+              console.log('printed');
+              this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+            }
           }
-        }
-      );
+        );
+      },0);
     }
   }
 
