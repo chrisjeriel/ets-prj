@@ -84,6 +84,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   warnMsg           : string = '';
   existsInReqDtl    : boolean = false;
   removeIcon        : boolean = false;
+  fromSave          : boolean = false;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
@@ -118,6 +119,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   getAcitPaytReq(){
+    this.loadingFunc(true);
     var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS'), this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
                          .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
 
@@ -128,12 +130,10 @@ export class PaymentRequestEntryComponent implements OnInit {
       var recPrq = data['prq']['acitPrqTrans'];
       var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
 
-      //Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
-
       console.log(totalReqAmts);
       this.prqStatList = recStat;
       
-      $('.globalLoading').css('display','none');
+      this.loadingFunc(false);
       if(!this.initDisabled){
          var recPr =  data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
@@ -170,7 +170,12 @@ export class PaymentRequestEntryComponent implements OnInit {
         (this.saveAcitPaytReq.tranTypeCd == 1 || this.saveAcitPaytReq.tranTypeCd == 2 || this.saveAcitPaytReq.tranTypeCd == 3)
             ?this.disableFlds(true)
             :((this.saveAcitPaytReq.reqStatus == 'N' || this.saveAcitPaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
-        
+        if(this.fromSave){
+          this.dialogIcon = '';
+          this.dialogMessage = '';
+          this.success.open();
+          this.fromSave = false;
+        }
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
@@ -190,7 +195,6 @@ export class PaymentRequestEntryComponent implements OnInit {
         console.log(this.saveAcitPaytReq);
       }
 
-      // this.paytData.emit({reqId: this.saveAcitPaytReq.reqId});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
       if(this.saveAcitPaytReq.tranTypeCd == 5){
@@ -208,7 +212,6 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   onClickNewReq(){
-    $('.globalLoading').css('display','block');
     this.rowData.reqId = '';
     this.saveAcitPaytReq  = {
       paytReqNo       : '',
@@ -282,9 +285,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.acctService.saveAcitPaytReq(JSON.stringify(this.acitPaytReq))
     .subscribe(data => {
       console.log(data);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.fromSave = true;
       this.saveAcitPaytReq.reqId =  data['reqIdOut'];
       this.paytData.emit({reqId: data['reqIdOut']});
       this.saveAcitPaytReq.paytReqNo = data['paytReqNo'];
@@ -342,6 +343,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   setDefPar(){
     this.saveAcitPaytReq.particulars = String(this.tranTypeList.filter(e => e.tranTypeCd == this.saveAcitPaytReq.tranTypeCd).map(e => e.defaultParticulars));
     this.removeRedBackShad('particulars');
+    this.saveAcitPaytReq.payee = '';
   }
 
   cancelledStats(){
@@ -446,7 +448,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   // }
 
   onClickYesConfirmed(stat){
-    $('.globalLoading').css('display','block');
+    this.loadingFunc(true);
     this.confirmMdl.closeModal();
     var updatePaytReqStats = {
       approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
@@ -460,12 +462,10 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
     .subscribe(data => {
       console.log(data);
-      $('.globalLoading').css('display','none');
+      this.loadingFunc(false);
       // this.saveAcitPaytReq.reqStatus = stat;
       // this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.fromSave = true;
       this.disableFlds(true);
       //this.initDisabled = (stat == 'X')?true:false;
       this.getAcitPaytReq();
@@ -482,7 +482,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   // onYesCancelReq(){
-  //   $('.globalLoading').css('display','block');
+  //   this.loadingFunc(true);
   //   this.confirmMdl.closeModal();
   //   var updatePaytReqStats = {
   //     approvedBy   : this.savePrintables.approvedBy,
@@ -496,7 +496,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   //   this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
   //   .subscribe(data => {
   //     console.log(data);
-  //     $('.globalLoading').css('display','none');
+  //     this.loadingFunc(false);
   //     this.saveAcitPaytReq.reqStatusDesc = 'Cancelled';
   //     this.saveAcitPaytReq.reqStatus = 'X';
   //     this.dialogIcon = '';
@@ -507,7 +507,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   // }
 
   // onYesAppby(){   
-  //     $('.globalLoading').css('display','block');
+  //     this.loadingFunc(true);
   //     this.confirmMdl.closeModal();
   //     var updatePaytReqStats = {
   //       approvedBy   : (this.saveAcitPaytReq.approvedBy == '' || this.saveAcitPaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcitPaytReq.approvedBy,
@@ -521,7 +521,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   //     this.acctService.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
   //     .subscribe(data => {
   //       console.log(data);
-  //       $('.globalLoading').css('display','none');
+  //       this.loadingFunc(false);
   //       this.saveAcitPaytReq.reqStatus = 'A';
   //       this.saveAcitPaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcitPaytReq.reqStatus).map(e => e.description);
   //       this.dialogIcon = '';
@@ -564,13 +564,17 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-
-      if($event.nextId === 'Exit'){
-        $event.preventDefault();
+    if($event.nextId === 'Exit'){
+      $event.preventDefault();
       this.router.navigateByUrl('/maintenance-qu-pol');
-      }
+    }
 
    }
+
+   loadingFunc(bool){
+    var str = bool?'block':'none';
+    $('.globalLoading').css('display',str);
+  }
 
    //added by Neco 09/04/2019
    onClickPrint(){

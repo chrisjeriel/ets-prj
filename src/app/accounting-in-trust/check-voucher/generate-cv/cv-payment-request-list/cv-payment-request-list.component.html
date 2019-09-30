@@ -53,12 +53,12 @@
                 <div class="col-sm"></div>
               </div>
             </div>
-            <div class="form-row" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'">
+            <div class="form-row">
               <div class="form-group col-sm">
                 <div class="text-center">
                   <div class="cust-btn-container">
-                    <button type="button" class="cust-btn"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button type="button" class="cust-btn" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'" (click)="onClickSave()"><a>Save</a></button>
                     <button type="button" class="cust-btn" (click)="onClickViewDetails()" [disabled]="!paytData.enabViewDtl">View Details</button>
                   </div>
                 </div>
