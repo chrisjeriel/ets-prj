@@ -775,6 +775,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
         this.printMdl.openNoClose();
       }else{
+        this.loading = true;
         this.retrieveMtnAcitArSeries();
       }
     }
@@ -981,6 +982,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
           this.printMdl.openNoClose();
         }
+        this.loading = false;
       }
     );
   }
