@@ -34,7 +34,7 @@
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd">
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly value="PHP">
                 <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;" readonly>
             </div>
         </div>
@@ -83,7 +83,7 @@
 	<div class="form-group col-sm">
 		<div class="col-md-13 text-center">
 			<div class="cust-btn-container" style="margin-top: 10px;">
-			<button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" ><a>Cancel</a></button>
+			<button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="cancel()" ><a>Cancel</a></button>
             <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
 		</div>
 		</div>

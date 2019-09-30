@@ -417,6 +417,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveAcctTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].tranId = this.jvDetail.tranId;
+        this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].qsoaId = null;
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].cedingId = this.jvDetails.ceding;
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);

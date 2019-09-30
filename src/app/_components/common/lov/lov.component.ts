@@ -95,6 +95,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'acitInvt'){
             this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'acitArInvPullout'){
+            this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             console.log(data);
             this.passData.data = data;

@@ -2462,4 +2462,13 @@ export class AccountingService {
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseJVEntry',params,header);
     }
+
+    approveJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/approveJV',params,header);
+    }
 }

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-jv-entry-service',
@@ -17,11 +18,13 @@ export class JvEntryServiceComponent implements OnInit {
    
   @Input() data: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
+  @Output() emitData = new EventEmitter<any>();
+  @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-  @Output() emitData = new EventEmitter<any>();
+  
 
   entryData:any = {
     jvYear:'',
@@ -60,6 +63,14 @@ export class JvEntryServiceComponent implements OnInit {
   passLov:any = {
     selector:'',
     params:{}
+  };
+
+  sendData:any = {
+    tranId:null,
+    jvNo: null,
+    jvYear: null,
+    updateUser: null,
+    updateDate: null
   };
 
   approvedStat: boolean = false;
@@ -335,8 +346,43 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDatas);
+
+  }
+
+  onClickApprove(){
+    this.accountingService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
+      console.log(data);
+      this.entryData.approver = data.employee.employeeName;
+      this.entryData.approvedBy = data.employee.userName;
+      this.entryData.approverDate = this.ns.toDateTimeString(0);
+    });
+    this.approveJV.openNoClose();
+  }
+
+  approveJVStatus(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.approvedBy  = this.entryData.approvedBy;
+    this.sendData.approvedDate = this.entryData.approverDate === '' ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+    this.accountingService.approveJvService(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickApproval(){
+    
   }
 }
 
