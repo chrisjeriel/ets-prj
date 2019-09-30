@@ -16,11 +16,11 @@
         	<div class="col-sm" style="padding: 7px 4em 5px 3em;">
 	        	<div class="input-group cust-ig">
 	        	    <label class="form-control-sm col-sm-2">Quotation No</label>
-	        	    <input type="text" [ngModel]="quNo[0]" (ngModelChange)="quNo[0]=$event.toUpperCase()" class="form-control form-control-sm col-sm-2 req" ngbTooltip="Line" (change)="search('lineCd',$event)" mask="SSS" appRequired>
-	        	    <input type="text" [(ngModel)]="quNo[1]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row col-sm text-right req" ngbTooltip="Year" mask="9999" appRequired>
-	        	    <input type="text" [(ngModel)]="quNo[2]" (blur)="quNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Sequence No" mask="99999" appRequired>
-	        	    <input type="text" [(ngModel)]="quNo[3]" (blur)="quNo[3]=pad($event,2)" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Revision No" mask="99" appRequired>
-	        	    <input type="text" [(ngModel)]="quNo[4]" (blur)="quNo[4]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Company No" mask="999" appRequired>
+	        	    <input type="text" [ngModel]="quNo[0]" (change)="search('lineCd',$event)" (ngModelChange)="quNo[0]=$event.toUpperCase()" class="form-control form-control-sm col-sm-2 req" ngbTooltip="Line" mask="SSS" appRequired>
+	        	    <input type="text" [ngModel]="quNo[1]" (change)="search('year',$event)" class="form-control form-control-sm input-ig-row col-sm text-right req" ngbTooltip="Year" mask="9999" appRequired>
+	        	    <input type="text" [ngModel]="quNo[2]" (blur)="quNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Sequence No" mask="99999" appRequired>
+	        	    <input type="text" [ngModel]="quNo[3]" (blur)="quNo[3]=pad($event,2)" (change)="search('revNo',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Revision No" mask="99" appRequired>
+	        	    <input type="text" [ngModel]="quNo[4]" (blur)="quNo[4]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm input-ig-row text-right req" ngbTooltip="Company No" mask="999" appRequired>
 	        	    <span>&nbsp;</span>
 	        	    <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV()"></i></a></div>
 	        	</div>
@@ -55,7 +55,7 @@
 <app-modal hidden [btnTitle]="'List Of Values'" id="quModifLovMdl">
     <div header>List Of Values</div>
     <div body>
-       <app-cust-non-datatable #quModifLov [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+       <app-loading-table #quModifLov [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-loading-table>
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">

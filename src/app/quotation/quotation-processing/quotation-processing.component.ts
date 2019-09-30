@@ -70,6 +70,7 @@ export class QuotationProcessingComponent implements OnInit {
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        sortKeys:['QUOTATION_NO','CESSION_DESCRIPTION','CLASS_DESCRIPTION','STATUS','CEDING_NAME','PRINCIPAL_NAME','CONTRACTOR_NAME','RISK_NAME','OBJECT_DESCRIPTION','SITE','CURRENCY_CD','TOTAL_SI','OPTION_RT','ISSUE_DATE','EXPIRY_DATE','REQ_BY','CREATE_USER'],
         dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [
@@ -269,7 +270,7 @@ export class QuotationProcessingComponent implements OnInit {
                                                        'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
 
             
-            this.table.refreshTable();
+            //this.table.refreshTable();
             this.table.placeData(records//.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
                                              .map(i => {
                                                  if(i.project != null){

@@ -113,7 +113,7 @@ export class LoadingTableComponent implements OnInit {
     checked:boolean;
     selected: any[] = [];
     indvSelect: any;
-    fillData:any = {};
+    fillData:any;
     nullKey: any;
     keyCounter: number = 0;
 
@@ -124,7 +124,7 @@ export class LoadingTableComponent implements OnInit {
     loadingTableFlag: boolean = false;
     overlayLoader: boolean = false;
 
-    count: Number = 0;
+    prevLength:any;
 
 
     constructor(config: NgbDropdownConfig, public renderer: Renderer, private appComponent: AppComponent) {
@@ -191,9 +191,9 @@ export class LoadingTableComponent implements OnInit {
             this.loadingFlag = true;
         }
        
-        for(var i = 0 ;i<this.passData.tableData.length;i++){
-             this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
-        }
+        // for(var i = 0 ;i<this.passData.tableData.length;i++){
+        //      this.passData.tableData[i].checked = this.passData.tableData[i].checked ? true : false;
+        // }
 
         if (this.passData.tableData.length > 0 && this.dataKeys.length == 0 ) {
             this.dataKeys = Object.keys(this.passData.tableData[0]);
@@ -202,7 +202,6 @@ export class LoadingTableComponent implements OnInit {
         }
 
         this.unliTableLength();
-        this.addFiller();
         //this.appComponent.ngOnInit();
         this.loadingTableFlag = false;
         this.overlayLoader = false;
@@ -217,11 +216,19 @@ export class LoadingTableComponent implements OnInit {
     }
 
     placeData(items){
+    	if(this.passData.count != this.prevLength){
+    		this.addFiller();
+    		this.prevLength = this.passData.count;
+    	}
+
         var start = (this.p - 1) * this.passData.pageLength;
         for(let itm of items){
             this.passData.tableData[start] = itm;
             start++;
         }
+        this.loadingFlag = false;
+        this.overlayLoader = false;
+
     }
 
     
@@ -249,7 +256,7 @@ export class LoadingTableComponent implements OnInit {
         if(this.passData.tableData.length != 0)
             this.loadingFlag = false;
         this.refreshTable("first");
-        this.fillData = null;  //delete this if something bad happens
+        //this.fillData = null;  //delete this if something bad happens
 
         for(var filt in this.filterObj){
             this.filterObj[filt].search='';
@@ -280,8 +287,22 @@ export class LoadingTableComponent implements OnInit {
             }
         }
 
+
+        if(this.fillData == null || this.fillData == undefined){
+            this.fillData = {};
+            for(let key of this.passData.keys){
+                this.fillData[key] = null;
+            }
+            this.fillData.filler = true;
+        }
+
+        this.addFiller();
+
+        
+
         //temporary fix delete this later
-        setTimeout(()=>{this.loadingFlag = false;},2000)
+        this.loadingFlag = false;
+        //setTimeout(()=>{this.loadingFlag = false;},2000)
     }
 
     processData(key: any, data: any) {
@@ -420,17 +441,22 @@ export class LoadingTableComponent implements OnInit {
 
     sort(str,sortBy){
         
-        this.passData.tableData = this.passData.tableData.sort(function(a, b) {
-            if(sortBy){
-                if(a[str] < b[str]) { return -1; }
-                if(a[str] > b[str]) { return 1; }
-            }else{
-                if(a[str] < b[str]) { return 1; }
-                if(a[str] > b[str]) { return -1; }
-            }
-        });
+        // this.passData.tableData = this.passData.tableData.sort(function(a, b) {
+        //     if(sortBy){
+        //         if(a[str] < b[str]) { return -1; }
+        //         if(a[str] > b[str]) { return 1; }
+        //     }else{
+        //         if(a[str] < b[str]) { return 1; }
+        //         if(a[str] > b[str]) { return -1; }
+        //     }
+        // });
+        this.addFiller();
         this.sortBy = !this.sortBy;
-        this.filterDisplay(this.filterObj, this.searchString);
+        this.searchQuery['sortRequest.sortKey'] = str;
+        this.searchQuery['sortRequest.order'] = !sortBy ? 'DESC' : 'ASC';
+        //this.searchQuery['paginationRequest.position'] = 1;
+        //this.p = 1;
+        this.dbQuery();
     }
 
     showSort(sortBy,i){
@@ -440,110 +466,74 @@ export class LoadingTableComponent implements OnInit {
 
     
     filterDisplay(filterObj,searchString){
-        
-        
+    	this.p = 1;
+        this.searchQuery['paginationRequest.position'] = 1;
+        delete this.searchQuery['sortRequest.sortKey'];
+        delete this.searchQuery['sortRequest.order'];
+        this.searchQuery['search.value'] = this.searchString;
+        this.searchQuery['search.searchCols'] = this.passData.sortKeys;
+        this.dbQuery();
     }
 
     pressEnterFilter(){
         $('#okFilter').trigger('click');
     }
 
-    dbQuery(filterObj){
+    dbQuery(filterObj?){
         
         //console.log(filterObj);
         //this.searchQuery = [];
-        for(var e of filterObj){
-            if(e.enabled){
-                //if(e.search !== undefined){
-                    if(e.dataType === 'seq'){
-                        let seqNo:string = "";
-                          seqNo = e.search.split(/[-]/g)[0]
-                          for (var i = 1; i < e.search.split(/[-]/g).length; i++) {
-                           seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
-                         }
-                         e.search = seqNo;
-                         this.searchQuery[e.key] = e.search;
-                    }
-                    else if(e.dataType === 'datespan' ){
-                        this.searchQuery[e.keys.from] = (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search;
-                        this.searchQuery[e.keys.to] = (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2;
-                    }
-                     else if(e.dataType === 'textspan' ){
-                        this.searchQuery[e.keys.from] = (e.keys.search === undefined || !e.enabled || e.keys.search === '') ? '' : (e.keys.search).replace(/[^\d\.\-]/g, "") * 1;
-                        this.searchQuery[e.keys.to] = (e.keys.search2 === undefined || !e.enabled || e.keys.search2 === '') ? '' : (e.keys.search2).replace(/[^\d\.\-]/g, "") * 1;
-                    }
-                    else{
-                    	this.searchQuery[e.key] = (e.search === undefined || !e.enabled) ? '' : e.search;
+        if(this.passData.filter != undefined || this.passData.filters != null){
+	        for(var e of this.passData.filters){
+	            if(e.enabled){
+	                //if(e.search !== undefined){
+	                    if(e.dataType === 'seq'){
+	                        let seqNo:string = "";
+	                          seqNo = e.search.split(/[-]/g)[0]
+	                          for (var i = 1; i < e.search.split(/[-]/g).length; i++) {
+	                           seqNo += '-' + parseInt(e.search.split(/[-]/g)[i]);
+	                         }
+	                         e.search = seqNo;
+	                         this.searchQuery[e.key] = e.search;
+	                    }
+	                    else if(e.dataType === 'datespan' ){
+	                        this.searchQuery[e.keys.from] = (e.keys.search === undefined || !e.enabled) ? '' : e.keys.search;
+	                        this.searchQuery[e.keys.to] = (e.keys.search2 === undefined || !e.enabled) ? '' : e.keys.search2;
+	                    }
+	                     else if(e.dataType === 'textspan' ){
+	                        this.searchQuery[e.keys.from] = (e.keys.search === undefined || !e.enabled || e.keys.search === '') ? '' : (e.keys.search).replace(/[^\d\.\-]/g, "") * 1;
+	                        this.searchQuery[e.keys.to] = (e.keys.search2 === undefined || !e.enabled || e.keys.search2 === '') ? '' : (e.keys.search2).replace(/[^\d\.\-]/g, "") * 1;
+	                    }
+	                    else{
+	                    	this.searchQuery[e.key] = (e.search === undefined || !e.enabled) ? '' : e.search;
 
-                    }
-                    
-                //}
-                /*else{
-                    this.searchQuery.push(
-                        {
-                            key: e.key,
-                            search: (e.search === undefined || !e.enabled) ? '' : e.search,
-                        }
-                    );
-                }*/
-            }
-        //     else if(!e.enabled && e.dataType === 'datespan'){
-        //            this.searchQuery.push(
-        //                {
-        //                    key: e.keys.from,
-        //                    search: '',
-        //                },
-        //                 {
-        //                    key: e.keys.to,
-        //                    search: '',
-        //                }
-        //            );
-        //     }
-        //     else if(!e.enabled && e.dataType === 'textspan'){
-        //            this.searchQuery.push(
-        //                {
-        //                    key: e.keys.from,
-        //                    search: '',
-        //                },
-        //                 {
-        //                    key: e.keys.to,
-        //                    search: '',
-        //                }
-        //            );
-        //     }
-        //     else{
-        //         if(e.dataType === 'expire'){
-        //             e.search = (this.expireValue === undefined || 
-        //                         this.expireValue === null || 
-        //                         this.expireValue === '') ? '' : this.expireValue;
-        //             this.searchQuery.push(
-        //                 {
-        //                     key: e.key,
-        //                     search: e.search.toString(),
-        //                 }
-        //             );
-        //         }
-        //         else{
-        //             this.searchQuery.push(
-        //                 {
-        //                     key: e.key,
-        //                     search: (e.search === undefined || !e.enabled) ? '' : e.search,
-        //                 }
-        //             );
-        //         }
-        //     }
-        // }
-    	}
-    	this.searchQuery['paginationRequest.count'] = this.passData.pageLength;
-    	this.searchQuery['paginationRequest.position'] = this.p,   
+	                    }
+	            }else{
+	            	this.searchQuery[e.key] = '';
+	            }
+	    	}
+	    }
+    	
 
         this.searchToDb.emit(this.searchQuery);
         this.overlayLoader = true;
     }
 
     addFiller(){
-        
-        this.passData.tableData = Array(this.passData.count + this.passData.pageLength - (this.passData.count%this.passData.pageLength)).fill(this.fillData);
+        if(this.fillData == null || this.fillData == undefined){
+            this.fillData = {};
+        }
+        for(let key of this.passData.keys){
+            this.fillData[key] = null;
+        }
+        this.fillData.filler = true;
+        let c:Number = 0;
+        if(this.passData.count == undefined || this.passData.count == null){
+            c = this.passData.pageLength
+        }else{
+            c = this.passData.count + (this.passData.count%this.passData.pageLength == 0 ? 0 : this.passData.pageLength) - (this.passData.count%this.passData.pageLength);
+        }
+        this.passData.tableData = Array(c==0?this.passData.pageLength : c).fill(this.fillData);
     }
 
     addCheckFlag(cell){
@@ -637,5 +627,15 @@ export class LoadingTableComponent implements OnInit {
         } else {
             return fromVal === undefined || fromVal === '' ? toVal : '';
         }
+    }
+
+
+    changePage(page){
+    	if(this.passData.tableData[((page-1)*this.passData.pageLength)].filler){
+    		this.searchQuery['paginationRequest.count'] = this.passData.pageLength;
+    		this.searchQuery['paginationRequest.position'] = page;   
+    		this.dbQuery(this.passData.filters)
+    	}
+
     }
 }
