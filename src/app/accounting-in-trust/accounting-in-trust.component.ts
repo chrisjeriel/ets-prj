@@ -92,7 +92,7 @@ export class AccountingInTrustComponent implements OnInit {
   }*/
 
   onTabChange($event: NgbTabChangeEvent) {
-    if ($event.nextId === 'Exit') {
+    if ($event.nextId === 'Exit' && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0) {
      this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
     }
 
