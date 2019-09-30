@@ -252,7 +252,7 @@ export class InvestmentsComponent implements OnInit {
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost'];
                                       } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
-                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','priceCost'];
+                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
                                       } else {
                                         a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
