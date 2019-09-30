@@ -7,7 +7,7 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-						style="z-index: 1 !important;" readonly [ngModel]="pad(record.arNo, 'arNo')">
+						style="z-index: 1 !important;" readonly [ngModel]="record?.formattedArNo.split('-')[1]">
 						<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
 						<div class="col-sm" style="padding: 0px">
 						    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.arDate"></datepicker>

@@ -20,7 +20,8 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
     infoFlag: true,
     pageLength: 10,
     paginateFlag: true,
-    total: [null,null,null,'Total','amount','amountPHP'],
+    total: [null,null,null,'Total','currAmt','localAmt'],
+    uneditable: [false,false,true,true,false,false],
     nData: {
         tranId: '',
         billId: '',
@@ -37,6 +38,7 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
         updateUser: '',
         updateDate: ''
     },
+    keys: ['itemName', 'refNo', 'currCd', 'currRate', 'currAmt', 'localAmt'],
     widths: ['auto',120,1,100,120,120]
   }
 

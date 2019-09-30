@@ -8,14 +8,14 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
-  selector: 'app-or-service-fee-local',
-  templateUrl: './or-service-fee-local.component.html',
-  styleUrls: ['./or-service-fee-local.component.css'],
+  selector: 'app-or-service-fee-munich-re',
+  templateUrl: './or-service-fee-munich-re.component.html',
+  styleUrls: ['./or-service-fee-munich-re.component.css'],
   providers: [DatePipe]
 })
-export class OrServiceFeeLocalComponent implements OnInit {
+export class OrServiceFeeMunichReComponent implements OnInit {
 
-  @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
+@ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
   @ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;

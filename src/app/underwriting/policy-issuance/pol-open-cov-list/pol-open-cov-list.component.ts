@@ -145,7 +145,7 @@ export class PolOpenCovListComponent implements OnInit {
    }
    
    gotoAdd(){
-   	this.router.navigate(['/create-policy'], { skipLocationChange: false });
+   	this.router.navigate(['/create-open-cover'], { skipLocationChange: false });
    }
 
    gotoInfo(){

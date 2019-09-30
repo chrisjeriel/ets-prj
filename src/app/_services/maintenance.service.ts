@@ -1348,5 +1348,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcseDCBNo', JSON.stringify(params), header);
 
 	}
+
+	getMtnAcitArSeries(usedTag?, rowNum?){
+		const params = new HttpParams()
+						.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag))
+    	     			.set('rowNum', (rowNum === null || rowNum === undefined ? '' : rowNum));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitArSeries", {params});
+	}
     
 }
