@@ -260,10 +260,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
     hide       : []
   };
 
-  tranTypeList       : any;
-  tabTitle           : string = '';
+  //currentTbl         : any;
+  //tabTitle           : string = '';
   limitClmHistTbl    : any[] = [];
   limitHistCat       : string = '';
+  allotedAmt         : any;
+  allotedChanged     : boolean = false;
+  totalBal           : any;
+  variance           : any;
+  
+  tranTypeList       : any;
   cancelFlag         : boolean;
   cancelFlagInw      : boolean;
   cancelFlagTrty     : boolean;
@@ -278,11 +284,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   activeOthTab       : boolean = false;
   activeUnColTab     : boolean = false;
   trtyIndx           : number;
-  allotedAmt         : any;
-  totalBal           : any;
-  variance           : any;
-  allotedChanged     : boolean = false;
-  currentTbl         : any;
+
 
   params : any =  {
     savePrqTrans     : [],
@@ -315,9 +317,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      $('.globalLoading').removeClass('globalLoading;');
-    },0);
+    // setTimeout(() => {
+    //   $('.globalLoading').removeClass('globalLoading;');
+    // },0);
     
     var d = new Date();
     this.qtrParam = Math.floor((d.getMonth() / 3) + 1);

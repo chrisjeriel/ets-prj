@@ -2380,4 +2380,24 @@ export class AccountingService {
    		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
  
     } 
+
+    getAcsePrqTrans(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePrqTrans',{params});	
+	}
+
+	saveAcsePrqTrans(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePrqTrans',params,header);
+ 
+    } 
+
+
 }

@@ -9,12 +9,20 @@
 					<app-acc-s-request-entry (paytData)="rowData=$event" [rowData]="rowData"></app-acc-s-request-entry>
 				</ng-template>
 			</ngb-tab>
-			<!-- <ngb-tab [disabled]="rowData?.reqId == ''">
+			<ngb-tab [disabled]="rowData?.reqId == ''">
 				<ng-template ngbTabTitle>
 					<div>Request Details</div>
 				</ng-template>
 				<ng-template ngbTabContent>
 					<app-acc-s-request-details (paytData)="rowData=$event" [rowData]="rowData"></app-acc-s-request-details>
+				</ng-template>
+			</ngb-tab>
+			<!-- <ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Request Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acc-s-request-details></app-acc-s-request-details>
 				</ng-template>
 			</ngb-tab> -->
 			<ngb-tab id="Exit">
