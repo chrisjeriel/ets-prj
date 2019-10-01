@@ -320,6 +320,7 @@ export class JvEntryComponent implements OnInit {
     console.log(data);
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
+    console.log(this.entryData.jvAmt)
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);

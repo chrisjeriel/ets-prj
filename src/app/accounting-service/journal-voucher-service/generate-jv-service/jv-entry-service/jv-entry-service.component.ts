@@ -24,7 +24,7 @@ export class JvEntryServiceComponent implements OnInit {
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-  
+  @ViewChild('CancelEntries') cancelEntries: ModalComponent;
 
   entryData:any = {
     jvYear:'',
@@ -140,7 +140,7 @@ export class JvEntryServiceComponent implements OnInit {
                          jvNo: ev.jvNo, 
                          jvYear: ev.jvYear, 
                          jvDate: ev.jvDate, 
-                         jvStatus: ev.jvStatusName,
+                         jvStatus: ev.statusName,
                          statusType: ev.jvStatus,
                          refnoDate: ev.refnoDate,
                          refnoTranId: ev.refNo,
@@ -361,8 +361,6 @@ export class JvEntryServiceComponent implements OnInit {
 
   approveJVStatus(){
     this.sendData.tranId = this.tranId;
-    this.sendData.jvNo = parseInt(this.entryData.jvNo);
-    this.sendData.jvYear = this.entryData.jvYear;
     this.sendData.approvedBy  = this.entryData.approvedBy;
     this.sendData.approvedDate = this.entryData.approverDate === '' ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
     this.sendData.updateUser = this.ns.getCurrentUser();
@@ -381,6 +379,32 @@ export class JvEntryServiceComponent implements OnInit {
     });
   }
 
+  cancelJV(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.tranType = this.entryData.tranTypeCd;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+
+    this.accountingService.cancelJvService(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  onClickCancelJV(){
+    this.cancelEntries.openNoClose();
+  }
+  
   onClickApproval(){
     
   }
