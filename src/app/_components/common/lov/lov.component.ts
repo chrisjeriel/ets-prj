@@ -1084,7 +1084,30 @@ export class LovComponent implements OnInit {
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'mtnGenTax'){
+      this.passTable.tHeader = ['Tax Code', 'Description', 'Rate', 'Amount'];
+      this.passTable.widths = [77,'auto', 77,100]
+      this.passTable.dataTypes = [ 'text','text', 'percent', 'currency'];
+      this.passTable.keys = [ 'taxCd','taxName', 'taxRate', 'amount'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnGenTax(this.passData.taxCd, this.passData.taxName, this.passData.chargeType, this.passData.fixedTag, this.passData.activeTag).subscribe((a:any)=>{
+        this.passTable.tableData = a["genTaxList"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnWhTax'){
+      this.passTable.tHeader = ['Tax Code', 'Description', 'Rate', 'Amount'];
+      this.passTable.widths = [77,'auto', 77,100]
+      this.passTable.dataTypes = [ 'text','text', 'percent', 'currency'];
+      this.passTable.keys = [ 'taxCd','taxName', 'taxRate', 'amount'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnWhTax(this.passData.taxCd, this.passData.taxName, this.passData.taxType, this.passData.creditableTag, this.passData.fixedTag, this.passData.activeTag).subscribe((a:any)=>{
+        this.passTable.tableData = a["whTaxList"];
+        //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
+        this.table.refreshTable();
+      });
     }
+
 
     this.modalOpen = true;
 	}

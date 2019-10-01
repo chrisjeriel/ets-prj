@@ -218,7 +218,7 @@ padding-right: 0px !important;">
 	  	<div class="input-group" style="margin-top: 12px">
 	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
 	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
-	  			<option [value]="'1'">SCREEN</option>
+	  			<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
 	  			<option [value]="'2'">PRINTER</option>
 	  		</select>
 	  	</div>
@@ -243,7 +243,7 @@ padding-right: 0px !important;">
 	  	<div class="input-group">
 	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
 	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
-	  			<option [value]="'1'">SCREEN</option>
+	  			<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
 	  			<option [value]="'2'">PRINTER</option>
 	  		</select>
 	  	</div>

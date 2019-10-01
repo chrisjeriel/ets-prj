@@ -100,12 +100,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   disablePayor: boolean = false;
   isPrinted: boolean = false;
   loading: boolean = false;
+  screenPrint: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
-  printMethod: string = '';
+  printMethod: string = '2';
 
   arInfo: any = {
     tranId: '',
@@ -747,6 +748,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   print(){
+    this.canPrintScreen();
     if(this.arAmtEqualsArDtlPayt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'AR cannot be printed. Total Payments in AR Details must be equal to AR Amount';
@@ -1097,6 +1099,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   //UTILITIES STARTS HERE
+
+  canPrintScreen(){
+    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+        (data:any)=>{
+          if(data.parameters.length !== 0){
+            this.screenPrint = data.parameters[0].paramValueV == 'Y';
+            this.printMethod = '2';
+          }
+        }
+    );
+  }
 
   changeTranType(data){
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
