@@ -142,6 +142,10 @@ export class UnderwritingService {
         //return 100;
     }
 
+    newGetParListing(params) {
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing',{params:params});
+    }
+
     getParListing(searchParams: any []) {
   /*      this.parListingData = [
             new PARListing("CAR-2018-000002-099-0001-000", "Direct","Malayan", "5K Builders/ABE International Corp", "ABC Building", "Cooling Towers", "Region IV, Laguna Calamba","PHP",10000000,131000, new Date("02-09-2018"), new Date("02-09-2018"), new Date("02-28-2018"), new Date(), "In Progress"),

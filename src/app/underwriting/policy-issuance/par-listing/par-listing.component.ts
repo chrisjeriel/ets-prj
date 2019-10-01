@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChildren,QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { PARListing } from '@app/_models'
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import * as alasql from 'alasql';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 
 @Component({
@@ -13,7 +13,7 @@ import * as alasql from 'alasql';
     styleUrls: ['./par-listing.component.css']
 })
 export class ParListingComponent implements OnInit {
-    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
@@ -25,7 +25,13 @@ export class ParListingComponent implements OnInit {
     selectedPolicy: any = null;
     policyNo: string = "";
     policyId: any;
-    searchParams: any[] = [];
+    searchParams: any = {
+        statusArr:['1','A','P','R'],
+        'paginationRequest.count':20,
+        'paginationRequest.position':1,   
+        altNo:0
+    };
+
     fetchedData: any;
     btnDisabled: boolean;
     statusDesc: any;
@@ -39,6 +45,7 @@ export class ParListingComponent implements OnInit {
         tHeader: [
            "Policy No", "Type of Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
         ],
+        sortKeys : ['POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
         resizable: [
             false, false, true, true, true, true, true, false, true, true, false,
             false, false, false, false
@@ -162,45 +169,43 @@ export class ParListingComponent implements OnInit {
     }
 
    retrievePolListing(){
-       this.uwService.getParListing(this.searchParams).subscribe(data => {
+       this.uwService.newGetParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
-          console.log(data);
+          let recs:any[] = [];
           this.fetchedData = records;
-               for(let rec of records){
-                   if(rec.altNo === 0){
-                      if ( rec.statusDesc === 'In Progress' || rec.statusDesc === 'Approved' || rec.statusDesc === 'Pending Approval' || rec.statusDesc === 'Rejected') {
-                         this.passDataListing.tableData.push(
-                                                    {
-                                                        policyId: rec.policyId,
-                                                        policyNo: rec.policyNo,
-                                                        cessionDesc: rec.cessionDesc,
-                                                        cedComp: rec.cedingName, 
-                                                        insured: rec.insuredDesc,
-                                                        risk: (rec.project == null) ? '' : rec.project.riskName,
-                                                        object: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                        site: (rec.project == null) ? '' : rec.project.site,
-                                                        currency: rec.currencyCd,
-                                                        sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
-                                                        premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
-                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                        inceptDate: this.ns.toDateTimeString(rec.inceptDate),
-                                                        expiryDate: this.ns.toDateTimeString(rec.expiryDate),
-                                                        accDate: this.ns.toDateTimeString(rec.acctDate),
-                                                        status: rec.statusDesc
-                                                    }
-                                                );  
-                     }
-                   }
-               }
-                this.table.forEach(table => { table.refreshTable() });
-       });
+          this.passDataListing.count = data['length'];
+          for(let rec of records){
+            recs.push(
+                        {
+                            policyId: rec.policyId,
+                            policyNo: rec.policyNo,
+                            cessionDesc: rec.cessionDesc,
+                            cedComp: rec.cedingName, 
+                            insured: rec.insuredDesc,
+                            risk: (rec.project == null) ? '' : rec.project.riskName,
+                            object: (rec.project == null) ? '' : rec.project.objectDesc,
+                            site: (rec.project == null) ? '' : rec.project.site,
+                            currency: rec.currencyCd,
+                            sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+                            premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+                            issueDate: this.ns.toDateTimeString(rec.issueDate),
+                            inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+                            expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+                            accDate: this.ns.toDateTimeString(rec.acctDate),
+                            status: rec.statusDesc
+                        }
+                    );  
+           }
+           this.table.placeData(recs);
+
+       }
+       );
    }
     //Method for DB query
     searchQuery(searchParams){
-        this.searchParams = searchParams;
-        console.log(this.searchParams);
-        this.passDataListing.tableData = [];
-        this.selectedPolicy = {};
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
         this.passDataListing.btnDisabled = true;
         this.retrievePolListing();
     }
@@ -264,7 +269,7 @@ export class ParListingComponent implements OnInit {
     }
 
     onRowClick(event){
-      if(this.selectedPolicy === event || event === null){
+      if(this.selectedPolicy === event || event === null || event.filler || Object.keys(event).length == 0){
             this.selectedPolicy = {};
             this.passDataListing.btnDisabled = true;
         }else{

@@ -4,7 +4,7 @@ import { CreateAlterationParInfo } from '../../../_models/CreateAlterationPolicy
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
   selector: 'app-pol-create-alteration-par',
@@ -12,7 +12,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
   styleUrls: ['./pol-create-alteration-par.component.css']
 })
 export class PolCreateAlterationPARComponent implements OnInit {
-  @ViewChild('altPolLov') lovTable: CustNonDatatableComponent;
+  @ViewChild('altPolLov') lovTable: LoadingTableComponent;
 
   private createAlterationPar: CreateAlterationParInfo;
   tableData: any[] = [];
@@ -30,9 +30,18 @@ export class PolCreateAlterationPARComponent implements OnInit {
   loading: boolean = false;
   warningMsg: any = null;
 
+  searchParams: any = {
+        statusArr:['2'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        altNo:0        
+    };
+
+
   passDataLOV: any = {
     tableData: [],
     tHeader:["Policy No", "Ceding Company", "Insured", "Risk"],  
+    sortKeys : ['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
     dataTypes: ["text","text","text","text"],
     pageLength: 10,
     resizable: [false,false,false,false],
@@ -40,7 +49,28 @@ export class PolCreateAlterationPARComponent implements OnInit {
     keys: ['policyNo','cedingName','insuredDesc','riskName'],
     pageStatus: true,
     pagination: true,
-    filters: [],
+    filters: [
+      {
+          key: 'policyNo',
+          title: 'Policy No.',
+          dataType: 'text'
+      },
+      {
+          key: 'cedingName',
+          title: 'Ceding Company',
+          dataType: 'text'
+      },
+      {
+          key: 'insuredDesc',
+          title: 'Insured',
+          dataType: 'text'
+      },
+      {
+          key: 'riskName',
+          title: 'Risk',
+          dataType: 'text'
+      },
+    ],
     pageID: 'createAltPolLov'
   }
 
@@ -81,14 +111,14 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   getPolListing(param?) {
-    this.lovTable.loadingFlag = true;
-    this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+    this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       var polList = data['policyList'];
 
       polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
                        .map(p => { p.riskName = p.project.riskName; return p; });
-      this.passDataLOV.tableData = polList;
-      this.lovTable.refreshTable();
+
+      this.passDataLOV.count = data['length'];                 
+      this.lovTable.placeData(polList);
 
       if(param !== undefined) {
         if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  
@@ -244,4 +274,11 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
     return str === '' ? '' : String(str).padStart(num, '0');
   }
+
+  searchQuery(searchParams){
+      for(let key of Object.keys(searchParams)){
+          this.searchParams[key] = searchParams[key]
+      }
+      this.getPolListing();
+    }
 }

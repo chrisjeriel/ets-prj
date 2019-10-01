@@ -3,7 +3,7 @@
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Policy List">
 			<ng-template ngbTabContent>
-				<app-cust-non-datatable [passData]="passDataListing"  (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable>
+				<app-loading-table [passData]="passDataListing"  (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-loading-table>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

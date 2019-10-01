@@ -27,7 +27,7 @@
     
     <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
-        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled"[disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
         <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
          <button *ngIf="passData.saveFlag" class="cust-btn" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
@@ -94,7 +94,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="input-group">
-                                <button id="okFilter" class="cust-filter cust-tbl-submit" (click)="dbQuery(passData.filters); drop.close();"><a>Ok</a></button>
+                                <button id="okFilter" class="cust-filter cust-tbl-submit" (click)="addFiller();changePage(1); drop.close();"><a>Ok</a></button>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let data of passData.tableData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect" >
+                        <tr *ngFor="let data of passData.tableData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect && !data.filler" >
                             <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
                             <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
                                 <div *ngIf="!(data===fillData)">
@@ -209,7 +209,7 @@
                     </thead>
                     <tbody>
 
-                        <tr *ngFor="let data of passData.tableData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
+                        <tr *ngFor="let data of passData.tableData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="!data.filler && (data === indvSelect || selected.includes(data) || data?.checked)" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
                             <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (click)="data.preventDefault ? removeSelected($event, data, true) : null;" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
                             <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngClass]="{'d-none': pinKeys.indexOf(key) != -1, 'checkbox-padding': passData.dataTypes[i] === 'checkbox'}" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
                                 <div *ngIf="!(data===fillData)">

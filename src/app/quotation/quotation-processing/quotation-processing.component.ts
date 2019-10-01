@@ -342,7 +342,11 @@ export class QuotationProcessingComponent implements OnInit {
         for(let key of Object.keys(searchParams)){
             this.searchParams[key] = searchParams[key]
         }
+        this.passData.btnDisabled = true;
         //this.passData.tableData = [];
+        this.passData.btnDisabled = true;
+        this.disabledEditBtn = true;
+        this.disabledCopyBtn = true;
         this.retrieveQuoteListingMethod();
     }
 
@@ -431,9 +435,19 @@ export class QuotationProcessingComponent implements OnInit {
             }    
         }
 
-        this.selectedQuotation = event;
-        this.disabledEditBtn = false;
+        
+        if(this.selectedQuotation === event || event === null || event.filler || Object.keys(event).length == 0){
+            this.passData.btnDisabled = true;
+            this.disabledEditBtn = true;
+        this.disabledCopyBtn = true;
+        }else{
+            this.passData.btnDisabled = false;
+            this.disabledEditBtn = false;
         this.disabledCopyBtn = false;
+        }
+
+
+        this.selectedQuotation = event;
     }
 
     onRowDblClick() {

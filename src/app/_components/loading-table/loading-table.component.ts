@@ -301,7 +301,7 @@ export class LoadingTableComponent implements OnInit {
         
 
         //temporary fix delete this later
-        this.loadingFlag = false;
+        this.overlayLoader = true;
         //setTimeout(()=>{this.loadingFlag = false;},2000)
     }
 
@@ -355,11 +355,12 @@ export class LoadingTableComponent implements OnInit {
     }
 
     onRowClick(event, data, index?) {
+        console.log(data)
         this.currentIndex = index + ((this.p - 1) * this.passData.pageLength );   //this.p is the current page number
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
             if(data !== null){
                 this.nullRow = false;
-                if( Object.entries(data).length !== 0){
+                if( Object.entries(data).length !== 0 && !data.filler){
                     //if(data[this.nullKey] !== null){
                         this.btnDisabled = false;
                         if(this.indvSelect == data){
@@ -372,6 +373,7 @@ export class LoadingTableComponent implements OnInit {
                         }
                 }
                 else{
+                     this.btnDisabled = true;
                      this.indvSelect = "";
                  }
             }
@@ -513,7 +515,7 @@ export class LoadingTableComponent implements OnInit {
 	            }
 	    	}
 	    }
-    	
+    	this.btnDisabled = true;
 
         this.searchToDb.emit(this.searchQuery);
         this.overlayLoader = true;
@@ -631,6 +633,7 @@ export class LoadingTableComponent implements OnInit {
 
 
     changePage(page){
+        this.p = page;
     	if(this.passData.tableData[((page-1)*this.passData.pageLength)].filler){
     		this.searchQuery['paginationRequest.count'] = this.passData.pageLength;
     		this.searchQuery['paginationRequest.position'] = page;   

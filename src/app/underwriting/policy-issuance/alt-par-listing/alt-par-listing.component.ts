@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewChildren,QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingService, NotesService} from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import * as alasql from 'alasql';
 
 
@@ -12,13 +12,19 @@ import * as alasql from 'alasql';
     styleUrls: ['./alt-par-listing.component.css']
 })
 export class AltParListingComponent implements OnInit {
-    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     tableData: any[] = [];
     tHeader: any[] = [];
     dataTypes: any[] = [];
     filters: any[] = [];
     line: string = "";
-    searchParams: any[] = [];
+    searchParams: any = {
+        statusArr:['1','2','P','R'],
+        'paginationRequest.count':20,
+        'paginationRequest.position':1,   
+        altNo:1        
+    };
+
     selectedPolicy: any = null;
     fetchedData: any;
     policyNo: string = "";
@@ -33,6 +39,7 @@ export class AltParListingComponent implements OnInit {
         tHeader: [
            "Alteration Policy No", "Type of Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
         ],
+        sortKeys : ['POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
         resizable: [
             false, false, true, true, true, true, true, false, true, true, false,
             false, false, false, false
@@ -156,44 +163,43 @@ export class AltParListingComponent implements OnInit {
     }
 
     retrievePolAltListing(){
-       this.uwService.getAltParListing(this.searchParams).subscribe(data => {
+       this.uwService.newGetParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
+          let recs:any[] = [];
           this.fetchedData = records;
-               for(let rec of records){
-                      if(rec.altNo === 0){
-                      } else {
-                           if ( rec.statusDesc === 'In Progress' && rec.altNo !== 0) {
-                                 this.altParListData.tableData.push(
-                                                    {
-                                                        policyId: rec.policyId,
-                                                        policyNo: rec.policyNo,
-                                                        cessionDesc: rec.cessionDesc,
-                                                        cedComp: rec.cedingName, 
-                                                        insured: rec.insuredDesc,
-                                                        risk: (rec.project == null) ? '' : rec.project.riskName,
-                                                        object: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                        site: (rec.project == null) ? '' : rec.project.site,
-                                                        currency: rec.currencyCd,
-                                                        sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
-                                                        premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
-                                                        issueDate: this.ns.toDateTimeString(rec.issueDate),
-                                                        inceptDate: this.ns.toDateTimeString(rec.inceptDate),
-                                                        expiryDate: this.ns.toDateTimeString(rec.expiryDate),
-                                                        accDate: this.ns.toDateTimeString(rec.acctDate),
-                                                        status: rec.statusDesc
-                                                    }
-                                                );  
-                          }
-                    }         
+          this.altParListData.count = data['length'];
+          for(let rec of records){
+                 recs.push(
+                            {
+                                policyId: rec.policyId,
+                                policyNo: rec.policyNo,
+                                cessionDesc: rec.cessionDesc,
+                                cedComp: rec.cedingName, 
+                                insured: rec.insuredDesc,
+                                risk: (rec.project == null) ? '' : rec.project.riskName,
+                                object: (rec.project == null) ? '' : rec.project.objectDesc,
+                                site: (rec.project == null) ? '' : rec.project.site,
+                                currency: rec.currencyCd,
+                                sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+                                premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+                                issueDate: this.ns.toDateTimeString(rec.issueDate),
+                                inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+                                expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+                                accDate: this.ns.toDateTimeString(rec.acctDate),
+                                status: rec.statusDesc
+                            }
+                        );  
              } 
-             this.table.forEach(table => { table.refreshTable() });            
+             this.table.placeData(recs);
        });
     }
 
      //Method for DB query
     searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.altParListData.tableData = [];
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+
         this.selectedPolicy = {};
         this.altParListData.btnDisabled = true;
         this.retrievePolAltListing();
@@ -253,10 +259,12 @@ export class AltParListingComponent implements OnInit {
     }
 
      onRowClick(event){
-      if(this.selectedPolicy === event || event === null){
+        if(this.selectedPolicy === event || event === null || event.filler || Object.keys(event).length == 0){
             this.selectedPolicy = {};
+            this.altParListData.btnDisabled = true;
         }else{
             this.selectedPolicy = event;
+            this.altParListData.btnDisabled = false;
         }
     }
 
