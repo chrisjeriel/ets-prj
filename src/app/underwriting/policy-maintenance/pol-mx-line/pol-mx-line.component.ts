@@ -107,6 +107,7 @@ export class PolMxLineComponent implements OnInit {
 		.subscribe(data => {
 			console.log(data);
 			this.getMtnLine();
+			this.table.markAsPristine();
 			this.success.open();
 			this.params.saveLine 	= [];
 			this.passData.disableGeneric = true;
@@ -168,7 +169,8 @@ export class PolMxLineComponent implements OnInit {
 				this.params.saveLine = [];
         	}else{
         		if(this.params.saveLine.length == 0 && this.params.deleteLine.length == 0){
-        			$('.ng-dirty').removeClass('ng-dirty');
+        			// $('.ng-dirty').removeClass('ng-dirty');
+        			this.table.markAsPristine();
 					this.cs.confirmModal();
 					this.params.saveLine 	= [];
 					this.passData.tableData = this.passData.tableData.filter(a => a.lineCd != '');
@@ -242,7 +244,7 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
-		if($('.ng-dirty').length != 0 ){
+		if($('.ng-dirty').length != 0 ) {
 			$event.preventDefault();
 			const subject = new Subject<boolean>();
 			const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -254,7 +256,8 @@ export class PolMxLineComponent implements OnInit {
 
 			subject.subscribe(a=>{
 			    if(a){
-			        $('.ng-dirty').removeClass('ng-dirty');
+			        // $('.ng-dirty').removeClass('ng-dirty');
+			        this.table.markAsPristine();
 			        this.tabset.select($event.nextId)
 			    }
 			})
