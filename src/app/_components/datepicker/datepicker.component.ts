@@ -23,7 +23,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   	width: '100%',
   	position: 'absolute',
   	display: 'contents',
-    'background-color': 'red'
+    // 'background-color': 'red'
   }
 
   private inputStyle: any = {
