@@ -203,7 +203,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
       var datas = data.inwPolBal;
       this.passData.tableData = [];
       this.totalBalance = 0;
-      console.log(datas.length)
       if(datas.length != 0){
         if(this.jvDetail.statusType == 'N'){
           this.passData.disableAdd = false;

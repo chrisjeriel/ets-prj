@@ -110,6 +110,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.disable = false;
     }else {
       this.passData.checkFlag =  false;
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true];
       this.disable = true;
       this.passData.btnDisabled = true;
@@ -252,6 +254,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+    var overdueDate = new Date();
+    console.log((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime()));
   }
 
   update(data){

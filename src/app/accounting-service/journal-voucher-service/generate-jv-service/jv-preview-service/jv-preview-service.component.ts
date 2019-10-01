@@ -73,12 +73,24 @@ amountDetailsData: any = {
     infoFlag:true
   }
 
+  jvDetails : any = {
+     jvNo: '', 
+     jvYear: '', 
+     jvDate: '', 
+     jvType: '',
+     jvStatus: '',
+     refnoDate: '',
+     refnoTranId: '',
+     currCd: '',
+     currRate: '',
+     jvAmt: '',
+     localAmt: ''
+  };
+
   constructor(private accountingService: AccountingService) { }
 
   ngOnInit() {
-    if(this.jvType === null){
-      this.jvType = "";
-    }
+    this.jvType === 'MISCELLANEOUS / OTHERS';
     console.log(this.jvType);
   }
 

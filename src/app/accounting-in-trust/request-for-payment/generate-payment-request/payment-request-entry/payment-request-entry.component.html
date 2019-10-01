@@ -14,7 +14,13 @@
    		                    	<input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 3px !important; text-align: right" [(ngModel)]="saveAcitPaytReq.reqMm" readonly>
    		                    	<input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm-4" style="text-align: right" [(ngModel)]="saveAcitPaytReq.reqSeqNo" readonly>
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1">Request Date</label>
+                          <label class="form-control-sm col-sm-1">Payment Type</label>
+                              <div class="input-group col-sm-3" style="padding: 0px;">
+                                 <select name="select1" class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
+                                   <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
+                                 </select>
+                              </div>
+   		                   <!--  <label class="form-control-sm col-sm-1">Request Date</label>
                           <div class="input-group col-sm-3" style="padding: 0px;">
                             <div class="col-sm-8 dp-cont">
                               <datepicker  [type]="'date'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
@@ -22,7 +28,7 @@
                             <div class="col-sm dp-cont">
                               <datepicker  [type]="'time'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
                             </div>
-                          </div>
+                          </div> -->
    		                    <label class="form-control-sm col-sm-1">Status</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
    		                    	<input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.reqStatusDesc" readonly>
@@ -35,12 +41,21 @@
                                 <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="existsInReqDtl">
                                 <div *ngIf="!removeIcon && !existsInReqDtl" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                               </div>
-   		                    <label class="form-control-sm col-sm-1">Payment Type</label>
+                          <label class="form-control-sm col-sm-1" style="margin-left: -2px !important;">Request Date</label>
+                          <div class="input-group col-sm-3" style="padding: 0px;">
+                            <div class="col-sm-8 dp-cont">
+                              <datepicker  [type]="'date'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                            </div>
+                            <div class="col-sm dp-cont" style="margin-right: -2px !important;">
+                              <datepicker  [type]="'time'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
+                            </div>
+                          </div>
+   		                    <!-- <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
                                  <select name="select1" class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
                                    <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
                                  </select>
-      		                    </div>
+      		                    </div> -->
    		                    
    		                </div>
 

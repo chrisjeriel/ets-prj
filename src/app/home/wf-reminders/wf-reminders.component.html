@@ -115,6 +115,30 @@
 						<p style="font-size: 12px">Assigned to <b>{{ reminder.assignedTo }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
 					    </div>
 
+					    <div *ngIf="reminder.relatedRecordList != null" style="width: 98% !important;">
+					    	<p>
+						    	<ngb-accordion #acc="ngbAccordion">
+								  	<ngb-panel>
+			                            <ng-template ngbPanelTitle>
+			                                <fa name="list-ul"></fa>&nbsp;Related Records
+			                            </ng-template>
+			                            <ng-template ngbPanelContent>
+			                            	<div *ngFor="let relRecord of reminder.relatedRecordList;">
+			                            		<button *ngIf="relRecord.module == 'QUOTATION'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'QUOTATION'" />
+
+			                                	<button *ngIf="relRecord.module == 'POLICY'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'POLICY'" />
+
+			                                	<button *ngIf="relRecord.module == 'CLAIM'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'CLAIM'" />
+			                            	</div>
+			                            </ng-template>
+			                    	</ngb-panel>
+							    </ngb-accordion>
+						    </p>
+					    </div>
+
 			        </li>
 			        <li *ngIf="reminderNull">
 			        	<div>

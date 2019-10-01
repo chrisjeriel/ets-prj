@@ -55,7 +55,6 @@ export class GenerateJvComponent implements OnInit {
   		if ($event.nextId === 'Exit') {
     		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
   		} 
-  
   }
 
   checkTabs(event) {
