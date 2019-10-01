@@ -2480,4 +2480,12 @@ export class AccountingService {
     	};
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelJV',params,header);
     }
+
+    acitGenerateReport(reportName : string, tranId? : string,  reqId? : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			 .set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
 }

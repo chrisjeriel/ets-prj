@@ -234,7 +234,7 @@ const appRoutes: Routes = [
     { path: 'pol-util-installment', component: UpdateInstallmentComponent },
     /*{ path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },*/
     { path: 'accounting', component: AccountingComponent },
-    { path: 'accounting-in-trust', component: AccountingInTrustComponent },
+    { path: 'accounting-in-trust', component: AccountingInTrustComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },

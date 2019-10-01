@@ -1,9 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService } from '@app/_services';
 import { ARTaxDetailsVAT, ARTaxDetailsWTAX, AccARInvestments} from '@app/_models';
 import { ActivatedRoute} from '@angular/router';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ar-details',
@@ -50,6 +53,7 @@ export class ArDetailsComponent implements OnInit {
 
   @Input() paymentType: string = "";
   @Input() record: any = {};
+    @ViewChild(NgbTabset) tabset: any;
 
   investmentData: any;
   createUpdate: any;
@@ -94,6 +98,30 @@ export class ArDetailsComponent implements OnInit {
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }
+    }
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+
+    if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
+      console.log('here 3');
+      $event.preventDefault();
+      const subject = new Subject<boolean>();
+      const modal = this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+      modal.componentInstance.subject = subject;
+
+      subject.subscribe(a=>{
+        if(a){
+          console.log('here 4');
+          $('.ng-dirty').removeClass('ng-dirty');
+          this.tabset.select($event.nextId);
+        }
+      })
+    
     }
   }
 }

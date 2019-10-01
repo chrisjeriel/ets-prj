@@ -91,6 +91,14 @@ export class WfFormCommonComponent implements OnInit {
   //Notes Variables
   titleNote: string = "";
   notes: string = "";
+
+  //Reminders Variables
+  titleReminder: string = "";
+  alarmTime: string;
+  reminder: string;
+  reminderDate: any;
+
+
   @Input() quotationInfo: any = {};
   @Input() policyInfo: any = {
     policyId : null,
@@ -107,7 +115,7 @@ export class WfFormCommonComponent implements OnInit {
   dialogIcon:string  = "";
   dialogMessage:string  = "";
   onOkVar: any;
-  mode:string = "reminder";
+  mode:string = "note";
   referenceId:string = "";
   details:string = "";
 
@@ -128,14 +136,6 @@ export class WfFormCommonComponent implements OnInit {
     console.log(this.claimInfo);
     this.referenceId = (this.moduleSource == 'Quotation') ? this.quotationInfo.quoteId : (this.moduleSource == 'Policy' ? this.policyInfo.policyId : this.claimInfo.claimId);
     this.details = (this.moduleSource == 'Quotation') ? this.quotationInfo.quotationNo : (this.moduleSource == 'Policy' ? this.policyInfo.policyNo : this.claimInfo.claimNo);
-
-    if (this.mode == 'note') {
-      this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
-      this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
-    } else if (this.mode == 'reminder') {
-      this.recipientsData.keys = ['type', 'title', 'reminder', 'assignedTo','createDate'];
-      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Assigned To', 'Date Assigned'];
-    }
 
     this.loadTable();
   }
@@ -295,6 +295,15 @@ export class WfFormCommonComponent implements OnInit {
 
     } else if (this.mode == 'reminder') {
 
+      this.workFlowManagerService.saveWfmReminders(this.saveReminderParams).subscribe((data: any)=>{
+          if (data.errorList.length > 0) {
+            alert("Error during saving");
+          } else {
+            alert("Saved successfully.");
+            this.loadTable();
+          }
+      });
+
     }
 
   }
@@ -311,8 +320,8 @@ export class WfFormCommonComponent implements OnInit {
 
     var noteList = [];
     var delNoteList = [];
-    var reminderList : [];
-    var delReminderList : [];
+    var reminderList = [];
+    var delReminderList = [];
 
     if (this.mode == 'note') {
 
@@ -389,6 +398,40 @@ export class WfFormCommonComponent implements OnInit {
 
     } else if (this.mode == 'reminder') {
 
+      if (this.boolValue == 1) {
+        //Assign to me
+        var reminder = {};
+
+        reminder = {
+          "reminderId"   : null,
+          "title"        : this.titleReminder,
+          "reminder"     : this.reminder,
+          "module"       : this.moduleSource,
+          "referenceId"  : this.referenceId,
+          "details"      : this.details,
+          "alarmTime"    : null,
+          "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
+          "createDate"   : null,
+          "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "reminderDate"  : this.reminderDate,
+          "status"       : "A",
+          "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "updateDate"   : null,
+        }
+
+        reminderList.push(reminder);
+
+      } else if (this.boolValue == 2) {
+        //Assign to user userInfo.userId
+
+
+      } else if (this.boolValue == 3) {
+        //Assign to many this.selects
+
+      } else {
+
+      }
+
     }
 
     this.saveNotesParams = {
@@ -403,24 +446,31 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   switchScreen() {
-    if (this.mode == 'reminder') {
-      this.mode = 'note';
-    } else {
-      this.mode = 'reminder';
-    }
     this.loadTable();
   }
 
   loadTable() {
+
+    if (this.mode == 'note') {
+      this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
+      this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
+      this.recipientsData.dataTypes = ['text','text', 'text', 'text', 'date'];
+      this.recipientsData.uneditable = [true,true,true,true,true];
+    } else if (this.mode == 'reminder') {
+      this.recipientsData.keys = ['type', 'title', 'reminder', 'reminderDate', 'assignedTo','createDate'];
+      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Reminder Date', 'Assigned To', 'Date Assigned'];
+      this.recipientsData.dataTypes = ['text','text', 'text', 'date', 'text', 'date'];
+      this.recipientsData.uneditable = [true,true,true,true,true,true];
+    }
+
     this.recipientsData.tableData = [];
+    var createUser = JSON.parse(window.localStorage.currentUser).username;
 
     if (this.mode == 'note') {
       try {
 
-        var createUser = JSON.parse(window.localStorage.currentUser).username;
-
         this.workFlowManagerService.retrieveWfmNotes('', '', createUser, this.moduleSource, this.referenceId).subscribe((data: any)=>{
-            if (data.noteList.length > 0) {          
+            if (data.noteList != null) {          
               for(let rec of data.noteList){
                 rec.type = 'Note';
                 this.recipientsData.tableData.push(rec);
@@ -432,10 +482,32 @@ export class WfFormCommonComponent implements OnInit {
             }
         });
       } catch(e) {
-        alert("Error calling WFM Services in loadTable(): " + e);
+        alert("Error calling WFM Services in NOTE loadTable(): " + e);
       } finally {
 
       }
+    } else if (this.mode == 'reminder') {
+
+      try {
+
+        this.workFlowManagerService.retrieveWfmReminders('', '', createUser, this.moduleSource, this.referenceId).subscribe((data: any)=>{
+            if (data.reminderList != null) {          
+              for(let rec of data.reminderList){
+                rec.type = 'Reminder';
+                this.recipientsData.tableData.push(rec);
+              }
+
+              this.recipientsTable.refreshTable();
+            } else {
+              //alert("Saved successfully.");
+            }
+        });
+      } catch(e) {
+        alert("Error calling WFM Services in REMINDER loadTable(): " + e);
+      } finally {
+
+      }
+
     }
 
     this.recipientsTable.refreshTable();

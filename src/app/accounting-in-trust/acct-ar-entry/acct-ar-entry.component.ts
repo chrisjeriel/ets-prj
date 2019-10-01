@@ -21,7 +21,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('reprintModal') reprintMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
+  @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
 
   passData: any = {
@@ -102,6 +104,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
+  generatedArNo: string = '';
+  printMethod: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -238,6 +242,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
+  confirmNewAr(){
+    if(this.form.dirty){
+      this.leaveMdl.openNoClose();
+    }else{
+      this.newAr();
+    }
+  }
+
   newAr(){
     this.loading = true;
     this.isAdd = true;
@@ -248,6 +260,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
     this.arDate.time = this.ns.toDateTimeString(0).split('T')[1];
     this.isCancelled = false;
+    this.isPrinted = false;
     this.passData.uneditable = [];
     this.passData.addFlag = true;
     this.passData.genericBtn = 'Delete';
@@ -307,6 +320,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.retrieveCurrency();
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
+    this.form.control.markAsPristine();
   }
 
   ngOnDestroy(){
@@ -388,9 +402,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrencyRt(){
+    this.passData.nData.currRate = this.arInfo.currRate;
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.arInfo.currRate;
-      this.passData.nData.currRate = this.arInfo.currRate;
       this.passData.tableData[i].edited = true;
     }
     this.paytDtlTbl.refreshTable();
@@ -741,32 +755,87 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'AR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
+    }else if(this.checkArInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+      $('.required').focus().blur();
+      $('table input').focus().blur();
+      $('table select').focus().blur();
+    }
+    else if(this.arAmtEqualsPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Total amount of payment details is not equal to the AR Amount.';
+      this.successDiag.open();
+    }else if(this.dcbStatusCheck()){
+
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
     }else{
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+      if(this.isPrinted){
+        /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
-      this.printMdl.openNoClose();
+        this.printMdl.openNoClose();*/
+        this.reprintMdl.openNoClose();
+      }else{
+        this.loading = true;
+        this.retrieveMtnAcitArSeries();
+      }
+    }
+  }
+
+  reprintMethod(){
+    if(this.printMethod == '1'){
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                            this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
+      //this.printMdl.openNoClose();
+    }else if(this.printMethod == '2'){
+      this.as.acitGenerateReport('ACITR_AR', this.arInfo.tranId).subscribe(
+        (data:any)=>{
+          var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+                       var downloadURL = window.URL.createObjectURL(data);
+                       const iframe = document.createElement('iframe');
+                       iframe.style.display = 'none';
+                       iframe.src = downloadURL;
+                       document.body.appendChild(iframe);
+                       iframe.contentWindow.print();
+        });
     }
   }
 
   updateArStatus(){
     if(!this.isPrinted){
       this.loading = true;
+      //Save Ar Entry first
+      if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
+        this.arInfo.arNo = parseInt(this.generatedArNo);
+      }
+      this.save();
+      /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
+      this.reprintMethod();
+      //Update Transactions to Closed and AR Status to Printed
       let params: any = {
         tranId: this.arInfo.tranId,
         arNo: this.arInfo.arNo,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       }
-      this.as.printAr(params).subscribe(
-        (data:any)=>{
-          if(data.returnCode == 0){
-            this.dialogIcon = 'error-message';
-            this.dialogIcon = 'An error has occured when updating AR status';
-          }else{
-            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+      setTimeout(()=>{
+        this.as.printAr(params).subscribe(
+          (data:any)=>{
+            if(data.returnCode == 0){
+              this.dialogIcon = 'error-message';
+              this.dialogIcon = 'An error has occured when updating AR status';
+            }else{
+              console.log(data);
+              console.log('printed');
+              this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+            }
           }
-        }
-      );
+        );
+      },0);
     }
   }
 
@@ -928,6 +997,18 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       },
       (error: any)=>{
 
+      }
+    );
+  }
+
+  retrieveMtnAcitArSeries(){
+    this.ms.getMtnAcitArSeries('N', 1).subscribe(
+      (data:any)=>{
+        if(data.arSeriesList.length !== 0){
+          this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
+          this.printMdl.openNoClose();
+        }
+        this.loading = false;
       }
     );
   }
@@ -1140,10 +1221,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
-                        this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
+                        this.ms.getMtnBankAcct(),
+                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS')).pipe(map(([dcb, bank, bankAcct, arNoDigits]) => { return { dcb, bank, bankAcct, arNoDigits }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
            this.arInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
+           this.arInfo.arNoDigits = parseInt(data.arNoDigits.parameters[0].paramValueN);
         //set default dcb bank
            this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultArBank;
            this.selectedBank.officialName = data.dcb.dcbUserList[0].arBankName;

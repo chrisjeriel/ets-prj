@@ -451,7 +451,8 @@ import { JvTreatyPullOutComponent } from './accounting-in-trust/journal-voucher/
 import { DistributionByInsComponent } from './underwriting/policy-distribution/distribution-by-ins/distribution-by-ins.component';
 import { MtnAcseTrantypeComponent } from './maintenance/mtn-acse-trantype/mtn-acse-trantype.component';
 import { JvAcctEntriesServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-acct-entries-service/jv-acct-entries-service.component';
-
+import { OrServiceFeeMunichReComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-service-fee-munich-re/or-service-fee-munich-re.component';
+import { OrOnlyComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-only/or-only.component';
 
 @NgModule({
     imports: [
@@ -909,6 +910,8 @@ import { JvAcctEntriesServiceComponent } from './accounting-service/journal-vouc
         DistributionByInsComponent,
         MtnAcseTrantypeComponent,
         JvAcctEntriesServiceComponent,
+        OrServiceFeeMunichReComponent,
+        OrOnlyComponent,
     ],
 
   	providers: [

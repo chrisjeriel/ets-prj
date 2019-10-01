@@ -463,52 +463,6 @@ export class AccSRequestEntryComponent implements OnInit {
     }
   }
 
-  // onYesCancelReq(){
-  //   $('.globalLoading').css('display','block');
-  //   this.confirmMdl.closeModal();
-  //   var updatePaytReqStats = {
-  //     reqId       : this.saveAcsePaytReq.reqId,
-  //     reqStatus   : 'X',
-  //     updateUser  : this.ns.getCurrentUser()
-  //   };
-
-  //   console.log(JSON.stringify(updatePaytReqStats));
-  //   this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
-  //   .subscribe(data => {
-  //     console.log(data);
-  //     $('.globalLoading').css('display','none');
-  //     this.saveAcsePaytReq.reqStatusDesc = 'Cancelled';
-  //     this.saveAcsePaytReq.reqStatus = 'X';
-  //     this.dialogIcon = '';
-  //     this.dialogMessage = '';
-  //     this.success.open();
-  //     this.cancelledStats();
-  //   });
-  // }
-
-  // onYesAppby(){   
-  //   $('.globalLoading').css('display','block');
-  //   this.confirmMdl.closeModal();
-  //     var updatePaytReqStats = {
-  //       reqId       : this.saveAcsePaytReq.reqId,
-  //       reqStatus   : 'A',
-  //       updateUser  : (this.saveAcsePaytReq.approvedBy == '' || this.saveAcsePaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcsePaytReq.approvedBy
-  //   };
-
-  //     console.log(JSON.stringify(updatePaytReqStats));
-  //     this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
-  //     .subscribe(data => {
-  //       console.log(data);
-  //       $('.globalLoading').css('display','none');
-  //       this.saveAcsePaytReq.reqStatus = 'A';
-  //       this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
-  //       this.dialogIcon = '';
-  //       this.dialogMessage = '';
-  //       this.success.open();
-  //       this.disableFlds(true);
-  //     });
-  // }
-
   checkCancel(){
     if(this.cancelFlag == true){
       if(this.fromCancel){

@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WorkFlowManagerService, NotesService } from '@app/_services';
+import { WorkFlowManagerService, NotesService, QuotationService, UnderwritingService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { WfNotesFormComponent } from '@app/home/wf-notes/wf-notes-form/wf-notes-form.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { Router } from '@angular/router';
 
 
 interface Country {
@@ -86,7 +87,12 @@ export class WfNotesComponent implements OnInit {
   dialogMessage:string  = "";
   onOkVar: string = "";
 
-  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService,private modalService: NgbModal) { }
+  constructor(private workFlowManagerService: WorkFlowManagerService, 
+              private ns: NotesService,
+              private modalService: NgbModal,
+              private quotationService: QuotationService,
+              private router: Router,
+              private uwService: UnderwritingService) { }
 
   ngOnInit() {
     this.selectedNotes = 'atm';
@@ -103,7 +109,7 @@ export class WfNotesComponent implements OnInit {
        this.loadingFlag = true;
        this.noteNull = false;
        $("#noteDiv").css({"height": "auto"});
-       this.workFlowManagerService.retrieveWfmNotes('',this.currentUser,'').pipe(finalize(() => this.setNoteList()))
+       this.workFlowManagerService.retrieveWfmNotes('',this.currentUser,'','','').pipe(finalize(() => this.setNoteList()))
        .subscribe((data)=>{
            var records = data['noteList'];
                for(let rec of records){
@@ -320,4 +326,90 @@ export class WfNotesComponent implements OnInit {
     +":" + ("00" + d.getSeconds()).slice(-2) 
   }
 
+
+  redirectToQuoteGenInfo(data) {
+    console.log("redirectToQuoteGenInfo");
+    console.log(data);
+    var line = data.referenceNo.split("-")[0];
+
+    this.quotationService.toGenInfo = [];
+    this.quotationService.toGenInfo.push("edit", line);
+    this.quotationService.savingType = 'normal';
+
+    setTimeout(() => {
+        this.router.navigate(['/quotation', { line: line,  quotationNo : data.referenceNo, quoteId: data.referenceId, from: 'quo-processing'}], { skipLocationChange: true });
+    },100);
+  }
+
+
+  redirectToPolGenInfo(relData) {
+
+    /*for(let rec of this.fetchedData){
+          if(rec.policyNo === this.uwService.rowData[0]) {
+            this.policyId = rec.policyId;
+            this.statusDesc = rec.statusDesc;
+            this.riskName = rec.project.riskName;
+            this.insuredDesc = rec.insuredDesc;
+            this.quoteId = rec.quoteId; 
+            this.quotationNo = rec.quotationNo; 
+          }
+    }
+    this.polLine = this.uwService.rowData[0].split("-")[0];
+    this.policyNo = this.uwService.rowData[0];*/
+
+    console.log('redirectToPolGenInfo');
+    console.log(relData);
+
+    var fetchedData = null;
+    var searchParams = [];
+
+    searchParams.push({ key: "policyNo",
+                       search: relData.referenceNo
+                     });
+    this.uwService.getParListing(searchParams).subscribe(data => {
+          var records = data['policyList'];
+
+          for (var i = 0; i < records.length; i++) {
+            console.log("Relate if : ");
+            console.log(relData.referenceNo);
+            console.log(records[i].policyNo);
+            console.log("-----------")
+
+            if (relData.referenceNo == records[i].policyNo) {
+              fetchedData = records[i];
+            }
+          }
+          console.log("records");
+          console.log(records);
+
+          console.log("fetchedData");
+          console.log(fetchedData);
+
+          if (fetchedData != null) {
+            var polLine = fetchedData.policyNo.split("-")[0];
+            var policyId = fetchedData.policyId;
+            var statusDesc = fetchedData.statusDesc;
+            var riskName = fetchedData.project.riskName;
+            var insuredDesc = fetchedData.insuredDesc;
+            var quoteId = fetchedData.quoteId; 
+            var quotationNo = fetchedData.quotationNo; 
+
+
+            this.uwService.getPolAlop(fetchedData.policyId, fetchedData.policyNo).subscribe((data: any) => {
+                this.uwService.fromCreateAlt = false;
+                if (statusDesc === 'In Progress' || statusDesc === 'Approved'){
+                    this.uwService.toPolInfo = [];
+                    this.uwService.toPolInfo.push("edit", polLine);
+                    this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: polLine, policyNo: fetchedData.policyNo, policyId: fetchedData.policyId, editPol: true, statusDesc: statusDesc ,riskName: riskName, insured: insuredDesc, quoteId: quoteId, quotationNo: quotationNo }], { skipLocationChange: true });
+                } else if (statusDesc === 'In Force' || statusDesc === 'Pending Approval' || statusDesc === 'Rejected') {
+                    this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: polLine, policyNo: fetchedData.policyNo, policyId: fetchedData.policyId, editPol: false, statusDesc: statusDesc, riskName: riskName, insured: insuredDesc, quoteId: quoteId, quotationNo: quotationNo }], { skipLocationChange: true }); 
+                }
+            });
+          }
+    });
+
+    
+
+    /**/
+  }
 }

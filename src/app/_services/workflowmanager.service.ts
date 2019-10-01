@@ -32,7 +32,7 @@ export class WorkFlowManagerService {
                 'Content-Type': 'application/json'
             })
         }
-        return this.http.post(environment.prodApiUrl +'/work-flow-service/saveReminders',JSON.stringify(params),header);
+        return this.http.post(environment.prodApiUrl +'/work-flow-service/saveReminders',params,header);
     }
 
     retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string){
