@@ -91,7 +91,7 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
 
   payorData: any;
 
-  constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  constructor(private titleService: Title, private accountingService: AccountingService, public ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
     /*this.titleService.setTitle("Acct-IT | Claim Cash Call");
