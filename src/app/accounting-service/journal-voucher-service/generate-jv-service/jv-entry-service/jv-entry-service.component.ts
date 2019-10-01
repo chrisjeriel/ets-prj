@@ -130,6 +130,10 @@ export class JvEntryServiceComponent implements OnInit {
           this.jvDatas.updateUser     = this.entryData.updateUserTran;
           this.jvDatas.tranTypeCd     = this.entryData.tranTypeCd;
         }
+
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P'){
+          this.approvedStat = true;
+        }
         this.check(this.entryData)
       }
     });
@@ -404,7 +408,7 @@ export class JvEntryServiceComponent implements OnInit {
   onClickCancelJV(){
     this.cancelEntries.openNoClose();
   }
-  
+
   onClickApproval(){
     
   }

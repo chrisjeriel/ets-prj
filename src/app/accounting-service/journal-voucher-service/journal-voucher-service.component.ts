@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild} from '@angular/core';
-import { AccountingService } from '../../_services';
+import { AccountingService, NotesService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -28,9 +28,17 @@ export class JournalVoucherServiceComponent implements OnInit {
       keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvAmt']
   };
 
+  dataInfo : any = {
+    tranId: '',
+    createUser:'',
+    createDate:'',
+    updateUser:'',
+    updateDate:''
+  }
+
   tranStat: string = 'new';
 
-  constructor(private accountingService: AccountingService,private router: Router, private titleService: Title) { }
+  constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-Service | Journal Voucher");
@@ -84,14 +92,20 @@ export class JournalVoucherServiceComponent implements OnInit {
   }
 
   onRowClick(data){
-      this.type = data.jvType;
-      this.status = data.jvStatus;
-      this.routeData = data;
-      if(data.jvStatus == 'Printed' || data.jvStatus == 'Cancelled'){
-        this.passDataJVListing.btnDisabled = true;
-      }else{
-        this.passDataJVListing.btnDisabled = false; 
-      }
+    if(data != null){
+      this.dataInfo            = data;
+      this.dataInfo.tranId     = data.tranId;
+      this.dataInfo.createUser = data.createUser;
+      this.dataInfo.createDate = this.ns.toDateTimeString(data.createDate);
+      this.dataInfo.updateUser = data.updateUser;
+      this.dataInfo.updateDate = this.ns.toDateTimeString(data.updateDate);
+      this.passDataJVListing.disableEdit = false;
+    }else{
+      this.dataInfo.createUser = '';
+      this.dataInfo.createDate = '';
+      this.dataInfo.updateUser = '';
+      this.dataInfo.updateDate = '';
+    }
   }
 
   onRowDblClick(data) {

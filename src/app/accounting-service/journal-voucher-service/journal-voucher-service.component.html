@@ -31,13 +31,13 @@
 						<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
 							<div class="input-group" style="margin-top: -10px !important;">
 								<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2"  [(ngModel)]="dataInfo.createUser" disabled>
 								<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.createDate"  disabled>
 								<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled> 
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.updateUser"  disabled> 
 								<label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
-								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+								<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="dataInfo.updateDate"  disabled>
 							</div>
 						</div>
 					</div>
