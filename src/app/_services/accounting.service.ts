@@ -2462,4 +2462,11 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
+    getAcseOrTransDtl(tranId, billId){
+    	const params = new HttpParams()
+    		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+    		.set('billId', (billId == null || billId == undefined ? '' : billId));
+    	return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveAcseOrTransDtl",{params});
+    }
+
 }

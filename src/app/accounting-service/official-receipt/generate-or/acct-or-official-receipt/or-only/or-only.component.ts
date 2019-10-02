@@ -128,10 +128,31 @@ export class OrOnlyComponent implements OnInit {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
+  	this.retrieveOrTransDtl();
   }
 
   openTaxAllocation(){
   	this.taxAllocMdl.openNoClose();
+  }
+
+  retrieveOrTransDtl(){
+  	this.passData.tableData = [];
+  	this.as.getAcseOrTransDtl(this.record.tranId, 1).subscribe(
+  		(data:any)=>{
+  			console.log(data.orDtlList);
+  			if(data.orDtlList.length !== 0){
+  				//this.passData.tableData = data.orDtList;
+  				for(var i  of data.orDtlList){
+  					this.passData.tableData.push(i);
+  				}
+  			}
+  			this.mainTbl.refreshTable();
+  		},
+  		(error)=>{
+  			console.log('An error occured');
+  			console.log(error);
+  		}
+    );
   }
 
   onRowClick(data){
@@ -146,6 +167,10 @@ export class OrOnlyComponent implements OnInit {
   		this.passDataWhTax.nData.tranId = data.tranId;
   		this.passDataWhTax.nData.billId = data.billId;
   		this.passDataWhTax.nData.itemNo = data.itemNo;
+  		this.passDataGenTax.tableData = data.taxAllocation.filter(a=>{return a.taxType == 'G'});
+  		this.passDataWhTax.tableData = data.taxAllocation.filter(a=>{return a.taxType == 'W'});
+  		this.genTaxTbl.refreshTable();
+  		this.whTaxTbl.refreshTable();
   	}
   }
 
