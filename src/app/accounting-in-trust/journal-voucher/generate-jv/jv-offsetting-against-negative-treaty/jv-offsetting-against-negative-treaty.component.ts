@@ -436,7 +436,13 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       }
 
       if(this.passData.tableData[i].deleted){
-        this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
+        for (var a = 0; a < this.passData.tableData[i].clmOffset.length; a++) {
+          this.jvDetails.deleteNegTrty.push(this.passData.tableData[i].clmOffset[a]);
+          this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].cedingId  =  this.jvDetails.ceding;
+          this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
+          this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+        }
+        //this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
       }
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){

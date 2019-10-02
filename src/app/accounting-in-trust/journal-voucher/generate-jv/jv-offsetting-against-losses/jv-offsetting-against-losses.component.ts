@@ -480,7 +480,15 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       }
 
       if(this.passData.tableData[i].deleted){
-        this.jvDetails.delClmOffset.push(this.passData.tableData[i]);
+        //this.jvDetails.delClmOffset.push(this.passData.tableData[i]);
+        for (var a = 0; a < this.passData.tableData[i].inwPolBal.length; a++) {
+          this.jvDetails.delClmOffset.push(this.passData.tableData[i].inwPolBal[a]);
+          this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].cedingId    =  this.jvDetails.ceding;
+          this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].claimId     =  this.passData.tableData[i].claimId;
+          this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].projId     =  this.passData.tableData[i].projId;
+          this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].histNo     =  this.passData.tableData[i].histNo;
+          this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+        }
       }
 
       for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
