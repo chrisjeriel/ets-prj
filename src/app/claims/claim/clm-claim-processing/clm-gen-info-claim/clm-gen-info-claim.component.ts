@@ -234,8 +234,6 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    setTimeout(() => { console.log(this.ns.formGroup); }, 8000);
-
     this.maxDate = this.ns.toDateTimeString(0).split('T')[0];
 
     this.titleService.setTitle("Clm | General Info");
