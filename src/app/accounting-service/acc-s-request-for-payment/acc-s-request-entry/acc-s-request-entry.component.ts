@@ -89,7 +89,8 @@ export class AccSRequestEntryComponent implements OnInit {
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
-    reqId : ''
+    reqId : '',
+    tranTypeCd: ''
   };
 
   paymentData  : any = {};
@@ -104,15 +105,16 @@ export class AccSRequestEntryComponent implements OnInit {
               private activatedRoute: ActivatedRoute,  private router: Router,private decPipe: DecimalPipe) { }
 
   ngOnInit() {
-    this.titleService.setTitle('Acct-IT | Request Entry');
+    this.titleService.setTitle('Acct-Serv | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcsePaytReq.reqId = (Object.keys(params).length != 0)?params['reqId']:this.rowData.reqId;
+        this.saveAcsePaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
         this.initDisabled = false;
       }else{
         this.initDisabled = true;
       }
+
 
       this.getAcsePaytReq();
     });
@@ -123,18 +125,18 @@ export class AccSRequestEntryComponent implements OnInit {
   getAcsePaytReq(){
     this.loadingFunc(true);
     console.log(this.saveAcsePaytReq.reqId);
-    // var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
-    //                      .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
-    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS'))
-                         .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat}; }));
+    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
+                         .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
+    // var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS'))
+    //                      .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat}; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
-      //var recPrq = data['prq']['acsePrqTrans'];
-      //var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
-      var totalReqAmts = 0;
+      var recPrq = data['prq']['acsePrqTrans'];
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
+      //var totalReqAmts = 0;
       this.prqStatList = recStat;
 
       this.loadingFunc(false);
@@ -198,7 +200,7 @@ export class AccSRequestEntryComponent implements OnInit {
         console.log(this.saveAcsePaytReq);
       }
 
-      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId});
+      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId, tranTypeCd:this.saveAcsePaytReq.tranTypeCd});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
@@ -293,7 +295,7 @@ export class AccSRequestEntryComponent implements OnInit {
       console.log(data);
       this.fromSave = true;
       this.saveAcsePaytReq.reqId =  data['reqIdOut'];
-      this.paytData.emit({reqId: data['reqIdOut']});
+      this.paytData.emit({reqId: data['reqIdOut'], tranTypeCd: this.saveAcsePaytReq.tranTypeCd});
       this.saveAcsePaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
       this.initDisabled = false;
@@ -462,8 +464,6 @@ export class AccSRequestEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
-      // this.saveAcsePaytReq.reqStatus = stat;
-      // this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
       this.fromSave = true;
       this.disableFlds(true);
       this.getAcsePaytReq();

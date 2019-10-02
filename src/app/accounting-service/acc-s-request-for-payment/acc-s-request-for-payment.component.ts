@@ -50,7 +50,8 @@ export class AccSRequestForPaymentComponent implements OnInit {
   };
 
   rowData : any = {
-    reqId : ''
+    reqId : '',
+    tranTypeCd : ''
   };
 
   searchParams: any[] = [];
@@ -139,7 +140,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
   onClickEdit(event){
     this.acctService.prqFilter = this.tranStat;
     setTimeout(() => {
-      this.router.navigate(['/acc-s-generate-request', { reqId : this.rowData.reqId , from: 'acc-s-req-payt-list' }], { skipLocationChange: true });
+      this.router.navigate(['/acc-s-generate-request', { reqId : this.rowData.reqId ,tranTypeCd: this.rowData.tranTypeCd, from: 'acc-s-req-payt-list' }], { skipLocationChange: true });
     },100);
   }
 
@@ -158,7 +159,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
     console.log(data);
     if(data !== null){
       setTimeout(() => {
-        this.router.navigate(['/acc-s-generate-request', { reqId : data.reqId , from: 'acc-s-req-payt-list' }], { skipLocationChange: true });
+        this.router.navigate(['/acc-s-generate-request', { reqId : data.reqId ,tranTypeCd: data.tranTypeCd, from: 'acc-s-req-payt-list' }], { skipLocationChange: true });
       },100);
     }  
   }

@@ -1296,7 +1296,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.canTrty.clickCancel();
     }else if(this.requestData.tranTypeCd == 7){
       this.canInvt.clickCancel();
-    }else if(this.requestData.tranTypeCd == 7){
+    }else if(this.requestData.tranTypeCd == 8){
       this.canOth.clickCancel();
     }
   }

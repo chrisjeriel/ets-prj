@@ -24,9 +24,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class AccSRequestDetailsComponent implements OnInit {
   @ViewChild('cvTbl') cvTbl         : CustEditableNonDatatableComponent;
+  @ViewChild('pcvTbl') pcvTbl       : CustEditableNonDatatableComponent;
   @ViewChild('can') can             : CancelButtonComponent;
   @ViewChild('con') con             : ConfirmSaveComponent;
   @ViewChild('suc') suc             : SucessDialogComponent;
+  @ViewChild('lov') lov             : LovComponent;
+
 
   @Input() rowData : any = {
     reqId : ''
@@ -58,6 +61,36 @@ export class AccSRequestDetailsComponent implements OnInit {
     keys          : ['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
   };
 
+  pcvData: any = {
+    tableData     : [],
+    tHeader       : ['GL Account Code', 'GL Account Name', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes     : ['text','text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    magnifyingGlass : ['acctCd'],
+    nData: {
+      glAcctId  : '',
+      acctCd    : '',
+      itemName  : '',
+      refNo     : '',
+      remarks   : '',
+      currCd    : '',
+      currRate  : '',
+      currAmt   : 0,
+      localAmt  : 0,
+      newRec    : 1,
+      showMG    : 1
+    },
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'pcvDataTbl',
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    uneditable    : [true,true,false,false,true,true,false,true],
+    total         : [null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto',300,'auto','auto',1,'auto','auto','auto'],
+    keys          : ['acctCd','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+  };
+
   tranTypeList       : any;
   cancelFlag         : boolean;
   dialogIcon         : string;
@@ -71,7 +104,8 @@ export class AccSRequestDetailsComponent implements OnInit {
   passData : any = {
     selector   : '',
     payeeNo    : '',
-    hide       : []
+    hide       : [],
+    params     : {}
   };
 
   params : any =  {
@@ -99,11 +133,19 @@ export class AccSRequestDetailsComponent implements OnInit {
       console.log(this.requestData);
       console.log(this.recPrqTrans);
 
-      if(this.requestData.tranTypeCd == 1){
+      if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
         this.cvData.tableData = [];
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.cvData):'';
         this.cvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.cvTbl.refreshTable();
+        },0);
+      }else if(this.requestData.tranTypeCd == 2){
+        this.pcvData.tableData = [];
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.pcvData):'';
+        this.pcvData.tableData = this.recPrqTrans;
+        setTimeout(() => {
+          this.pcvTbl.refreshTable();
         },0);
       }
     });
@@ -115,11 +157,18 @@ export class AccSRequestDetailsComponent implements OnInit {
     this.dialogMessage = '';
     this.params.savePrqTrans = [];
     var isEmpty = 0;
+    var tbl;
 
-    this.cvData.tableData.forEach(e => {
+    if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
+      tbl = this.cvData.tableData;
+    }else if(this.requestData.tranTypeCd == 2){
+      tbl = this.pcvData.tableData;
+    }
+
+    tbl.forEach(e => {
       e.reqId    = this.rowData.reqId;
       e.reqId    = this.rowData.reqId;
-      if(e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
+      if((this.requestData.tranTypeCd == 2?((e.glAcctId == '')?true:false):false) || e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
          e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
         if(!e.deleted){
           isEmpty = 1;
@@ -132,7 +181,6 @@ export class AccSRequestDetailsComponent implements OnInit {
         if(e.edited && !e.deleted){
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
-          e.quarterEnding = '';
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
@@ -149,7 +197,7 @@ export class AccSRequestDetailsComponent implements OnInit {
       this.params.savePrqTrans   = [];
     }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
-          this.cvTbl.markAsPristine();
+          (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
           this.con.confirmModal();
           this.params.savePrqTrans   = [];
           this.params.deletePrqTrans = [];
@@ -179,9 +227,48 @@ export class AccSRequestDetailsComponent implements OnInit {
       this.suc.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
-      this.cvTbl.markAsPristine();
+      (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
     });
   }
+
+  showLOV(event, from){
+    if(from.toUpperCase() == 'PCVDATA'){
+      this.passData.selector = 'acitChartAcct';
+      this.lov.openLOV();
+    }
+  }
+
+  setData(data, from){
+    if(from.toUpperCase() == 'PCVDATA'){
+      var rec = data['data'];
+      rec.forEach(e => {
+        (this.pcvData.tableData.some(e2 => e2.glAcctId != e.glAcctId))?this.pcvData.tableData.push(e):'';
+      });
+      this.pcvData.tableData = this.pcvData.tableData.filter(e => e.glAcctId != '').map(e => {
+        if(e.newRec == 1){
+          e.acctCd = e.shortCode; 
+          e.itemName = e.shortDesc;
+          e.createDate = '';
+          e.createUser = ''; 
+          e.updateUser = ''; 
+        }
+        e.checked=false;
+        return e;
+      });
+      console.log(this.pcvData.tableData);
+      this.pcvTbl.refreshTable();
+      this.pcvTbl.markAsDirty();
+      this.onDataChange('pcv');
+    }
+  }
+
+  removeAddDelBtn(tbl){
+    tbl.addFlag = false;
+    tbl.deleteFlag = false;
+    tbl.checkFlag = this.requestData.tranTypeCd == 4 ? true : false;
+    tbl.uneditable = tbl.uneditable.map(e => e = true);
+  }
+
 
   checkCancel(){
     if(this.cancelFlag){
@@ -195,17 +282,23 @@ export class AccSRequestDetailsComponent implements OnInit {
     this.can.clickCancel();
   }
 
-  onChangeCurr(from){
+  onDataChange(from){
     var tbl;
     if(from.toLowerCase() == 'cv'){
       tbl = this.cvData.tableData;
+    }else if(from.toLowerCase() == 'pcv'){
+      tbl = this.pcvData.tableData;
     }
     
-    tbl.forEach(e => {
+    tbl.map(e => {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
+      return e;
     });
+    // tbl.forEach(e => {
+      
+    // });
 
   }
 
