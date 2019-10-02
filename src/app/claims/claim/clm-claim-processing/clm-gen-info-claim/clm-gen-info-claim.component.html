@@ -56,7 +56,7 @@
                     </div>
                     <div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
                         <label class="form-control-sm col-sm-2">MBI Ref No</label>
-                        <input name="input11"  type="text" class="form-control form-control-sm" [ngModel]="claimData.mbiRefNo">
+                        <input name="input11"  type="text" class="form-control form-control-sm" [ngModel]="claimData.mbiRefNo" [readonly]="isInquiry">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2">Type of Cession</label>

@@ -104,7 +104,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');
       } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
-        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo) }], { skipLocationChange: true });
+        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo), readonly: this.isInquiry }], { skipLocationChange: true });
       }
 
       if($event.nextId === 'clmHistoryId') {
