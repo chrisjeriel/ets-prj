@@ -303,8 +303,10 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
+    console.log(data);
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
+    this.entryData.particulars = data.defaultParticulars;
     this.tabController(this.entryData.tranTypeCd);
     this.form.control.markAsDirty();
     setTimeout(()=>{
@@ -362,6 +364,7 @@ export class JvEntryComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
+      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";

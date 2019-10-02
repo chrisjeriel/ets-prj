@@ -239,10 +239,12 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       quarterNo = quarterNo[0].split('-');
       quarterNo = quarterNo[0]+quarterNo[1];
       this.passData.tableData[this.passData.tableData.length - 1].quarterNo = parseInt(quarterNo); 
+      this.quarterTable.onRowClick(null, this.passData.tableData[0]);
       this.quarterTable.refreshTable();
   }
 
   updateTreatyBal(data){
+    console.log(this.passData.tableData)
     var deletedFlag = false;
     var table = ''
 
@@ -255,7 +257,12 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
     if(deletedFlag){
       table = this.passData.tableData.filter((a)=>{return !a.deleted});
-      this.quarterTable.onRowClick(null, table[0]);
+      if(table.length != 0){
+        this.quarterTable.onRowClick(null, table[0]);
+      }else{
+        this.passDataOffsetting.tableData = [];
+        this.trytytrans.refreshTable();
+      }
     }
     this.quarterTable.refreshTable();
   }
@@ -431,7 +438,20 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       }
 
       if(this.passData.tableData[i].deleted){
-        this.jvDetails.delAcctTrty.push(this.passData.tableData[i]);
+        //this.jvDetails.delAcctTrty.push(this.passData.tableData[i]);
+        for (var a = 0; a < this.passData.tableData[i].acctOffset.length; a++) {
+          this.jvDetails.delAcctTrty.push(this.passData.tableData[i].acctOffset[a]);
+           this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].cedingId  =  this.jvDetails.ceding;
+           this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+          /*this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].policyId  =  this.passData.tableData[i].acctOffset[a].policyId;  
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].itemNo    =  this.passData.tableData[i].acctOffset[a].itemNo;  
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].instNo    =  this.passData.tableData[i].acctOffset[a].instNo;
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].premAmt   =  this.passData.tableData[i].acctOffset[a].premAmt;
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].riComm    =  this.passData.tableData[i].acctOffset[a].riComm;
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].riCommVat =  this.passData.tableData[i].acctOffset[a].riCommVat;
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].charges   =  this.passData.tableData[i].acctOffset[a].charges;
+          this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].paytAmt   =  this.passData.tableData[i].acctOffset[a].paytAmt;*/
+        }
       }
 
       for (var j = 0; j < this.passData.tableData[i].acctOffset.length; j++) {
@@ -479,7 +499,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   cancel(){
-   this.cancelBtn.clickCancel();
+   //this.cancelBtn.clickCancel();
+   this.prepareData();
+   console.log(this.jvDetails);
   }
 
   getMtnRate(){

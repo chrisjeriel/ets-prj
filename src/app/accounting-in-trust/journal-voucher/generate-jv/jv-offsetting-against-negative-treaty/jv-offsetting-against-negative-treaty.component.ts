@@ -278,7 +278,12 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
     if(deletedFlag){
       table = this.passData.tableData.filter((a)=>{return !a.deleted});
-      this.quarterTable.onRowClick(null, table[0]);
+      if(table.length != 0){
+        this.quarterTable.onRowClick(null, table[0]);
+      }else{
+        this.claimsOffset.tableData = [];
+        this.trytytransTable.refreshTable();
+      }
     }
     this.quarterTable.refreshTable();
   }

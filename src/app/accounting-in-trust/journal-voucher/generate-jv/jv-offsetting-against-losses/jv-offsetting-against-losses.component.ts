@@ -306,7 +306,12 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
 
     if(deletedFlag){
       table = this.passData.tableData.filter((a)=>{return !a.deleted});
-      this.clmTable.onRowClick(null, table[0]);
+      if(table.length != 0){
+        this.clmTable.onRowClick(null, table[0]);
+      }else{
+        this.InwPolBal.tableData = [];
+        this.inwTable.refreshTable();
+      }
     }
     this.clmTable.refreshTable();
   }

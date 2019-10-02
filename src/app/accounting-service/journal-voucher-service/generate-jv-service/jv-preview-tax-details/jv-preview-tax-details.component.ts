@@ -10,38 +10,72 @@ import { ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 export class JvPreviewTaxDetailsComponent implements OnInit {
      @Input() jvDetail:any;
 
-     passData: any = {
-      tableData: [],
-      tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
-      //tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-      dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
-      //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
-  	  nData: {},//new ORPreVATDetails(null,null,null,null,null),
-      pageID: 3,
-      addFlag: true,
-      deleteFlag: true,
-      //total: [null, null, null, 'Total', 'vatAmount'],
-      pageLength:5,
-      //widths: [150,250,'auto',150,150,],
-      paginateFlag:true,
-      infoFlag:true
-    }
+      passData: any = {
+       tableData: [],
+       tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
+       dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
+       //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
+       nData: {
+               tranId: '',
+               taxType: 'G',
+               taxSeqNo: '',
+               taxCd: '',
+               genType: 'M',
+               taxName: '',
+               purchaseType: '',
+               taxRate: '',
+               payor: '',
+               baseAmt: 0,
+               taxAmt: 0,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: ''
+       },
+       keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'purchaseType', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+       pageID: 'genTax',
+       addFlag: true,
+       deleteFlag: true,
+       total: [null,null,null,null, null, null, 'Total', 'baseAmt', 'taxAmt'],
+       pageLength:5,
+       widths: [1,1,50,150,'auto',100,200,150,150],
+       paginateFlag:true,
+       infoFlag:true,
+       checkFlag: true
+     };
 
-    passDataCreditable: any = {
-     tableData: [],
-     tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
-      //tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-     dataTypes: ['number', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
-     nData: {}, //new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
-     pageID: 4,
-     addFlag: true,
-     deleteFlag: true,
-     pageLength:5,
-     //total: [null, null, null, null,'Total', 'wTaxAmount'],
-     widths: [130,200,150,'auto',150,150,],
-     paginateFlag:true,
-     infoFlag:true
-    }
+     passDataCreditable: any = {
+      tableData: [],
+       tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
+       dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
+       nData: {
+               tranId: '',
+               taxType: 'W',
+               taxSeqNo: '',
+               taxCd: '',
+               genType: 'M',
+               taxName: '',
+               purchaseType: '',
+               taxRate: '',
+               payor: '',
+               baseAmt: 0,
+               taxAmt: 0,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: ''
+       },
+       keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+       pageID: 'whTax',
+       addFlag: true,
+       deleteFlag: true,
+       pageLength:5,
+       total: [null,null,null,null, null, 'Total', 'baseAmt', 'taxAmt'],
+       widths: [1,1,50,200,100,200,150,150],
+       paginateFlag:true,
+       infoFlag:true,
+       checkFlag: true
+     };
 
     jvDetails : any = {
      jvNo: '', 
