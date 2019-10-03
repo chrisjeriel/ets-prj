@@ -6,6 +6,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-clm-claim-payment-request',
@@ -18,6 +19,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild(SucessDialogComponent) diag: SucessDialogComponent;
+  @ViewChild('genMdl')genMdl: ModalComponent;
+  @ViewChild('canMdl')canMdl: ModalComponent;
 
   passData: any = {
     tableData: [],
