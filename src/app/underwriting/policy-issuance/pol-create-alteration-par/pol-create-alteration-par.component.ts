@@ -111,6 +111,12 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   getPolListing(param?) {
+    if(param!=undefined){
+      this.passDataLOV.filters[0].search = param[0].search;
+      this.passDataLOV.filters[0].enabled =true;
+      this.searchParams.policyNo = param[0].search;
+    }
+
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       var polList = data['policyList'];
 

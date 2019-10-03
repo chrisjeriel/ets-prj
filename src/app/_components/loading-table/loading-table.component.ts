@@ -218,6 +218,7 @@ export class LoadingTableComponent implements OnInit {
     placeData(items){
     	if(this.passData.count != this.prevLength){
     		this.addFiller();
+            this.p = 1;
     		this.prevLength = this.passData.count;
     	}
 

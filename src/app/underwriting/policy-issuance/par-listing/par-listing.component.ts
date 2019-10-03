@@ -26,7 +26,7 @@ export class ParListingComponent implements OnInit {
     policyNo: string = "";
     policyId: any;
     searchParams: any = {
-        statusArr:['1','A','P','R'],
+        statusArr:['1'],
         'paginationRequest.count':20,
         'paginationRequest.position':1,   
         altNo:0

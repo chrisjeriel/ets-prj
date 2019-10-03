@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+
 
 @Component({
 	selector: 'app-spoil-pol-alt',
@@ -15,7 +17,7 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./spoil-pol-alt.component.css']
 })
 export class SpoilPolAltComponent implements OnInit {
-	@ViewChild('p') table: CustNonDatatableComponent;
+	@ViewChild('p') table: LoadingTableComponent;
 	@ViewChild('spoil') spoil: CustNonDatatableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild('tabset') tabset: any;
@@ -24,6 +26,7 @@ export class SpoilPolAltComponent implements OnInit {
 	passData : any = {
 		tableData: [],
 		tHeader:["Policy No", "Ceding Company", "Insured", "Risk"],
+		sortKeys : ['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
 		dataTypes: ["text","text","text","text"],
 		pageLength: 10,
 		resizable: [false,false,false,false],
@@ -84,7 +87,11 @@ export class SpoilPolAltComponent implements OnInit {
 
 	rowRec				: any;
 	rowRecSpoil			: any;
-	searchParams		: any[] = [];
+	searchParams: any = {
+        statusArr:['2'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,
+    };
 	type				: string;
 	postBtnEnabled		: boolean = false;
 	reasonLovEnabled	: boolean = false;
@@ -134,27 +141,20 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	getPolicyList(param?){
-		console.log(param);
-		var parameter;
-		this.passData.tableData = [];
+		if(param!=undefined){
+	      this.passData.filters[0].search = param[0].search;
+	      this.passData.filters[0].enabled =true;
+	      this.searchParams.policyNo = param[0].search;
+	    }
 
-		if(param !== undefined){
-			parameter = param;		
-		}else{
-			parameter = this.searchParams;
-		}
+		//if(this.table) { this.table.loadingFlag = true; }
 
-		if(this.table) { this.table.loadingFlag = true; }
-
-		this.underwritingService.getParListing(parameter)
+		this.underwritingService.getParListing(this.searchParams)
 		.subscribe(data => {
-			this.passData.tableData = [];
 			var rec = data['policyList'];
-			rec = rec.filter(data => data.statusDesc.toUpperCase() === 'IN FORCE' || data.statusDesc.toUpperCase() === 'DISTRIBUTED')
-					 .map(data => {data.riskName = data.project.riskName; return data;});
-			this.passData.tableData = rec;
-			this.table.refreshTable();
-			console.log(rec);
+			this.passData.count = data['length'];
+			rec = rec.map(data => {data.riskName = data.project.riskName; return data;});
+			this.table.placeData(rec);
 			if(rec.length === 0){
 				this.clearAll();
 				this.getPolicyList();
@@ -249,8 +249,9 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	searchQuery(searchParams){
-		this.searchParams = searchParams;
-		this.passData.tableData = [];
+		for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
 		this.getPolicyList();
 	}
 
