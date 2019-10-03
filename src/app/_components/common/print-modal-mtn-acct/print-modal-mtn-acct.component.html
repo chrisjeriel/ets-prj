@@ -1,0 +1,41 @@
+<!-- <button id="printModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button> -->
+<button id="printModalBtn" class="cust-btn d-none" (click)="open()"><a></a></button>
+<app-modal id="showPrintMenu" class="d-none" [modalSize]="'success-modal-size'" #modal>
+	   <div header>Print</div>
+	    <div body style="width: 300px">
+            <div class="container-fluid">
+                <fieldset class="scheduler-border" style="padding-left : 10px ! important; padding-right : 10px ! important; padding-bottom: 10px ! important">
+                    <div class="custom-row-inline-inset">
+                        <ng-container >
+                                    <div class="input-group" style="margin-bottom : -12px ! important">
+                                    	<div class="col-sm-4" style="padding: 0">
+                                    		<div *ngIf="default"  class="input-group" style="margin-bottom : -14px ! important">
+                                    			 <label class="form-control-sm" for="xx">Report</label>
+                                    		</div>
+                                    		<div class="input-group" style="margin-bottom : -14px ! important">
+                                    			 <label class="form-control-sm" for="xx">Destination</label>
+                                    		</div>
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
+                                    			<label class="form-control-sm" for="xx">Wordings</label>
+                                    		</div>
+                                    	</div>
+                                    </div>
+                        </ng-container>
+                    </div>
+                </fieldset>
+                <div class ="col-sm" style="padding: 0">
+                    <div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
+                        <select class="form-control form-control-sm cust-sm" [(ngModel)]="printType" appRequired>
+                            <option value="CSV">CSV</option>
+                        </select>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        <div footer class="text-center w-100">
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();okBtnClick($event);" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled"><a>Print</a></button>
+        </div>
+                       
+                        
+</app-modal>

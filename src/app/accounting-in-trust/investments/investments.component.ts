@@ -238,7 +238,6 @@ export class InvestmentsComponent implements OnInit {
                 this.mtnService.getMtnCurrency('','Y')).pipe(map(([investments, type, status, duration,amortized,bank,invtSecType,currency ]) => { return { investments, type, status, duration,amortized,bank, invtSecType, currency  }; }));
 
       this.subscription = sub$.subscribe(data => {
-        
         var td = data['investments']['invtList'].sort((a, b) => b.createDate - a.createDate).map(a => { 
                                       
                                       a.matDate = this.ns.toDateTimeString(a.matDate);
@@ -246,6 +245,7 @@ export class InvestmentsComponent implements OnInit {
                                       a.createDate = this.ns.toDateTimeString(a.createDate);
                                       a.updateDate = this.ns.toDateTimeString(a.updateDate);
                                       a.edited = false;
+                                      a.currRate =  a.currRate;
                                       var res = a.invtCd.split("-");
                                       a.currSeq = parseInt(res[4]);
                                          
@@ -902,8 +902,8 @@ export class InvestmentsComponent implements OnInit {
 
   onClickSave(){
       if(this.checkFields()){
-         this.confirmSave.confirmModal();
-        /*let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
+         //this.confirmSave.confirmModal();
+        let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
           if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
             this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
             this.dialogIcon = 'error-message';
@@ -911,7 +911,7 @@ export class InvestmentsComponent implements OnInit {
             return;
           } else {
              this.confirmSave.confirmModal();
-          }*/
+          }
       }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
