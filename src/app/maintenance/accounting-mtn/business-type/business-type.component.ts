@@ -29,18 +29,18 @@ export class BusinessTypeComponent implements OnInit {
 
   passTable:any={
   	tableData:[],
-  	widths:[100,1,1,1],
+  	widths:[50,200,300,50],
   	tHeader:['Business Type Code','Business Type','Description','Active'],
-  	dataTypes:['number','text','text','checkbox'],
+  	dataTypes:['text','text','text','checkbox'],
   	tooltip:[],
   	uneditable:[false,false,false,false],
   	keys:['bussTypeCd','bussTypeName','description','activeTag'],
   	addFlag: true,
   	genericBtn:'Delete',
-  	paginateFlag:true,
+  	paginateFlag:true, 
+  	pageLength: 10,
   	infoFlag:true,
   	searchFlag:true,
-  	pageLength: 10,
   	nData:{
       bussTypeCd: null,
       bussTypeName : null,
@@ -51,15 +51,168 @@ export class BusinessTypeComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
   	},
-    disableGeneric: true,
-    disableAdd:true,
-  }  
+    disableGeneric: true
+  } 
+   cancelFlag: boolean; 
 
 
   constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
 
   ngOnInit() {
   	 this.titleService.setTitle('Mtn | Business Type');
+  	 this.getBussType();
+  }
+
+
+
+
+  delete(){
+  	if(this.table.indvSelect.okDelete == 'N'){
+  		this.dialogIcon = 'info';
+  		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
+  		this.successDialog.open();
+  	}else{
+  		this.table.indvSelect.deleted = true;
+  		this.table.selected  = [this.table.indvSelect]
+  		this.table.confirmDelete();
+  	}
+  }
+
+  onClickCancel(){
+  	this.cnclBtn.clickCancel();
+  }
+
+  onTableClick(data){
+    this.info = data;
+    this.passTable.disableGeneric = data == null;
+  }
+
+  onClickSave(cancelFlag?){
+	  if(this.checkFields()){
+	       let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
+	          if(busTypeCds.some((a,i)=>busTypeCds.indexOf(a)!=i)){
+	            this.cancelFlag = false;
+	            this.dialogMessage = 'Unable to save the record. Business Type Code must be unique for every business type.';
+	            this.dialogIcon = 'error-message';
+	            this.successDialog.open();
+	            return;
+	          } else {
+	          	 this.conSave.confirmModal();
+	          }
+	   }else{
+	        this.dialogMessage="Please check field values.";
+	        this.dialogIcon = "error";
+	        this.successDialog.open();
+	        this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
+	 
+  	   }
+  }
+
+  onClickSaveCancel(cancelFlag?){
+  	this.cancelFlag = cancelFlag !== undefined;
+    console.log(this.cancelFlag);
+     if(this.cancelFlag){
+	   if(this.checkFields()){
+	       let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
+	          if(busTypeCds.some((a,i)=>busTypeCds.indexOf(a)!=i)){
+	            this.cancelFlag = false;
+	            this.dialogMessage = 'Unable to save the record. Business Type Code must be unique for every business type.';
+	            this.dialogIcon = 'error-message';
+	            this.successDialog.open();
+	            return;
+	          } else {
+	          	this.save();
+	          }
+	   }else{
+	        this.dialogMessage="Please check field values.";
+	        this.dialogIcon = "error";
+	        this.successDialog.open();
+	        this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
+	   }
+	}else {
+		this.save();
+	}
+  }
+
+  save(){
+  	let params: any = {
+  		saveList:[],
+  		delList:[]
+  	}
+  	params.saveList = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
+  	params.saveList.forEach(a=>{
+  		a.updateUser = this.ns.getCurrentUser();
+  		a.updateDate = this.ns.toDateTimeString(0)
+  	});
+  	params.delList = this.passTable.tableData.filter(a=>a.deleted);
+   
+    if(params.saveList.length === 0 && params.delList.length === 0 ){    
+          this.conSave.showBool = false;
+          this.dialogIcon = "success";
+          this.successDialog.open();
+           $('.ng-dirty').removeClass('ng-dirty');
+    }else {
+    	console.log(params);
+    }
+  	/*this.ms.saveMtnBankAcct(params).subscribe(a=>{
+  		if(a['returnCode'] == -1){
+            this.form.control.markAsPristine();
+            this.dialogIcon = "success";
+            this.successDialog.open();
+            this.getBankAcct();
+            $('.ng-dirty').removeClass('ng-dirty');
+        }else{
+            this.dialogIcon = "error";
+            this.successDialog.open();
+        }
+  	});*/
+  }
+
+  checkFields(){
+      for(let check of this.passTable.tableData){
+         if( check.bussTypeCd === null || check.bussTypeCd === '' ||
+             check.bussTypeName === null || check.bussTypeName === '' 
+          ) {   
+            return false;
+          }   
+      }
+       return true;
+   }
+
+   tblHighlightReq(el, dataTypes, reqInd) {
+    setTimeout(() => {
+      $(el).find('tbody').children().each(function() {
+        $(this).children().each(function(i) {
+          if(reqInd.includes(i)) {
+            var val;
+            if(dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time' || dataTypes[i] === 'number') {
+              val = $(this).find('input').val();
+              highlight($(this), val);
+            }
+          }
+        });
+      });
+
+      function highlight(td, val) {
+        td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+      }
+    }, 0);
+  }
+
+  getBussType(){
+  	this.ms.getMtnBussType().subscribe(a=>{
+  		console.log(a['bussTypeList']);
+  		this.passTable.tableData = a['bussTypeList'];
+  		this.passTable.tableData.forEach(a=>{
+	  			a.createDate = this.ns.toDateTimeString(a.createDate);
+	  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
+	  			a.uneditable = ['bussTypeCd'];
+	  	})
+	    this.table.refreshTable();
+        this.table.overlayLoader = false;
+	  	this.passTable.distableGeneric = false;
+    });
+  
   }
 
 }
