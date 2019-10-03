@@ -4,6 +4,7 @@ import { ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-jv-preview-tax-details',
@@ -14,6 +15,8 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
      @Input() jvDetail:any;
      @ViewChild('genTable') genTable: CustEditableNonDatatableComponent;
      @ViewChild('wthTable') wthTable: CustEditableNonDatatableComponent;
+     @ViewChild('genlovMdl') genlovMdl: LovComponent;
+     @ViewChild('wthlovMdl') wthlovMdl: LovComponent;
 
       passData: any = {
        tableData: [],
@@ -21,6 +24,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
        dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
        //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
        nData: {
+               showMG:1,
                tranId: '',
                taxType: 'G',
                taxSeqNo: '',
@@ -37,6 +41,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
                updateUser: '',
                updateDate: ''
        },
+       magnifyingGlass: ['taxCd'],
        keys: ['taxSeqno', 'genType', 'taxCd', 'genTaxDesc', 'genBirRlf', 'genTaxRate', 'payor', 'baseAmt', 'taxAmt'],
        pageID: 'genTax',
        addFlag: true,
@@ -96,6 +101,22 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
      localAmt: ''
   };
 
+  passLov: any = {
+    selector: 'mtnGenTax',
+    taxCd: '',
+    taxName:'',
+    chargeType : '',
+    fixedTag:'',
+    activeTag:'',
+    hide: []
+  }
+
+  passLovWTH: any = {
+    selector: 'mtnWhTax',
+    cedingId: '',
+    hide: []
+  }
+
   forkSub: any;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
@@ -119,16 +140,27 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
       this.genTable.refreshTable();
       this.wthTable.refreshTable();
     });
-
-
-    /*this.accountingService.acseTaxDetails(this.jvDetails.tranId,'G').subscribe((data:any) => {
-      this.passData.tableData = [];
-      for (var i = 0; i < data.taxDetails.length; i++) {
-        this.passData.tableData.push(data.taxDetails[i]);
-      }
-      this.table.refreshTable();
-    });*/
   }
      
+  setGenTax(data){
+    console.log(data.data);
+    this.passData.tableData = this.passData.tableData.filter((a) => a.showMG != 1);
+    for (var i = 0; i < data.data.length; i++) {
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].taxCd = data.data[i].taxCd;
+      this.passData.tableData[this.passData.tableData.length - 1].genTaxDesc = data.data[i].taxName;
+      this.passData.tableData[this.passData.tableData.length - 1].baseAmt = data.data[i].amount == null? 0:data.data[i].amount;
+    }
+    this.genTable.refreshTable();
+  }
 
+  setWHTax(data){
+
+  }
+
+  openLOV(data){
+    console.log(data)
+    this.genlovMdl.openLOV();
+  }
 }

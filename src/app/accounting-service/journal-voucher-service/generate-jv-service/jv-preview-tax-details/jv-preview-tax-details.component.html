@@ -4,7 +4,7 @@
             <fieldset class="scheduler-border" style="padding-top: 5px !important; margin-top: -12px !important;">
                 <legend class="scheduler-border">General Taxes</legend>
                 <div class="custom-row-inline-inset">
-                    <app-cust-editable-non-datatable #genTable [passData]="passData"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #genTable (clickLOV)="openLOV($event)" [passData]="passData"></app-cust-editable-non-datatable>
                 </div>
             </fieldset>
         </div>
@@ -35,3 +35,6 @@
         </div>
     </div>
 </div>
+
+<app-lov #genlovMdl [passData]="passLov" (selectedData)="setGenTax($event)">
+<app-lov #wthlovMdl [passData]="passLovWTH" (selectedData)="setWHTax($event)">
