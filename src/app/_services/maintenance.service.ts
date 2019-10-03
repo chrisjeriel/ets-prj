@@ -1054,9 +1054,10 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimReason', params, header);
      }
 
-    getMtnPoolRetHist(retHistId){
+    getMtnPoolRetHist(retHistId,currencyCd){
 		const params = new HttpParams()
-		     		.set('retHistId', (retHistId === null || retHistId === undefined ? '' : retHistId));
+		     		.set('retHistId', (retHistId === null || retHistId === undefined ? '' : retHistId))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPoolRetHist", {params});
 	}
