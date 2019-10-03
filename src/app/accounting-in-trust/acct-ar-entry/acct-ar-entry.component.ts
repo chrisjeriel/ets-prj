@@ -100,12 +100,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   disablePayor: boolean = false;
   isPrinted: boolean = false;
   loading: boolean = false;
+  screenPrint: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
-  printMethod: string = '';
+  printMethod: string = '2';
 
   arInfo: any = {
     tranId: '',
@@ -747,6 +748,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   print(){
+    this.canPrintScreen();
     if(this.arAmtEqualsArDtlPayt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'AR cannot be printed. Total Payments in AR Details must be equal to AR Amount';
@@ -1076,7 +1078,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   arAmtEqualsArDtlPayt(): boolean{
-    if(this.arInfo.arDtlSum != this.arInfo.arAmt * this.arInfo.currRate){
+    console.log(Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100);
+    console.log(this.arInfo.arDtlSum);
+    if(this.arInfo.arDtlSum != Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100){
       return true;
     }
     return false;
@@ -1097,6 +1101,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   //UTILITIES STARTS HERE
+
+  canPrintScreen(){
+    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+        (data:any)=>{
+          if(data.parameters.length !== 0){
+            this.screenPrint = data.parameters[0].paramValueV == 'Y';
+            this.printMethod = '2';
+          }
+        }
+    );
+  }
 
   changeTranType(data){
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));

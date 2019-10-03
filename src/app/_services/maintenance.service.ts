@@ -1356,4 +1356,24 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitArSeries", {params});
 	}
     
+    getMtnGenTax(taxCd?, taxName?, chargeType?, fixedTag?, activeTag?){
+    	const params = new HttpParams()
+						.set('taxCd', (taxCd === null || taxCd === undefined ? '' : taxCd))
+						.set('taxName', (taxName === null || taxName === undefined ? '' : taxName))
+						.set('chargeType', (chargeType === null || chargeType === undefined ? '' : chargeType))
+						.set('fixedTag', (fixedTag === null || fixedTag === undefined ? '' : fixedTag))
+    	     			.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGenTax", {params});
+    }
+
+    getMtnWhTax(taxCd?, taxName?, taxType?, creditableTag?, fixedTag?, activeTag?){
+    	const params = new HttpParams()
+						.set('taxCd', (taxCd === null || taxCd === undefined ? '' : taxCd))
+						.set('taxName', (taxName === null || taxName === undefined ? '' : taxName))
+						.set('taxType', (taxType === null || taxType === undefined ? '' : taxType))
+						.set('creditableTag', (creditableTag === null || creditableTag === undefined ? '' : creditableTag))
+						.set('fixedTag', (fixedTag === null || fixedTag === undefined ? '' : fixedTag))
+    	     			.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnWhTax", {params});
+    }
 }
