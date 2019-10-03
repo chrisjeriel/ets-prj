@@ -1,6 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { AccountingService, NotesService } from '@app/_services';
 import { ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-jv-preview-tax-details',
@@ -9,6 +12,8 @@ import { ORPreVATDetails , ORPreCreditableWTaxDetails } from '@app/_models';
 })
 export class JvPreviewTaxDetailsComponent implements OnInit {
      @Input() jvDetail:any;
+     @ViewChild('genTable') genTable: CustEditableNonDatatableComponent;
+     @ViewChild('wthTable') wthTable: CustEditableNonDatatableComponent;
 
       passData: any = {
        tableData: [],
@@ -32,7 +37,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
                updateUser: '',
                updateDate: ''
        },
-       keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'purchaseType', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+       keys: ['taxSeqno', 'genType', 'taxCd', 'genTaxDesc', 'genBirRlf', 'genTaxRate', 'payor', 'baseAmt', 'taxAmt'],
        pageID: 'genTax',
        addFlag: true,
        deleteFlag: true,
@@ -44,7 +49,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
        checkFlag: true
      };
 
-     passDataCreditable: any = {
+     passDataWHT: any = {
       tableData: [],
        tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
        dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
@@ -65,7 +70,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
                updateUser: '',
                updateDate: ''
        },
-       keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+       keys: ['taxSeqno', 'genType', 'taxCd', 'whtTaxDesc', 'whtRate', 'payor', 'baseAmt', 'taxAmt'],
        pageID: 'whTax',
        addFlag: true,
        deleteFlag: true,
@@ -91,16 +96,38 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
      localAmt: ''
   };
 
+  forkSub: any;
+
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.jvDetails = this.jvDetail;
+    this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
+    this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
   	this.retrieveJVDetails();
   }
 
   retrieveJVDetails(){
-    this.jvDetails = this.jvDetail;
-    this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
-    this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
+    var join = forkJoin(this.accountingService.acseTaxDetails(this.jvDetails.tranId,'G'),
+                        this.accountingService.acseTaxDetails(this.jvDetails.tranId,'W')).pipe(map(([genTax, whTax]) => {return {genTax, whTax}; }));
+
+    this.forkSub = join.subscribe((data: any) =>{
+      this.passData.tableData = [];
+      this.passData.tableData = data.genTax.taxDetails;
+      this.passDataWHT.tableData = [];
+      this.passDataWHT.tableData = data.whTax.taxDetails;
+      this.genTable.refreshTable();
+      this.wthTable.refreshTable();
+    });
+
+
+    /*this.accountingService.acseTaxDetails(this.jvDetails.tranId,'G').subscribe((data:any) => {
+      this.passData.tableData = [];
+      for (var i = 0; i < data.taxDetails.length; i++) {
+        this.passData.tableData.push(data.taxDetails[i]);
+      }
+      this.table.refreshTable();
+    });*/
   }
      
 

@@ -2488,4 +2488,11 @@ export class AccountingService {
 			 .set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
+
+    acseTaxDetails(tranId : string,  taxType : string){
+         const params = new HttpParams()
+             .set('taxType', taxType)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveTaxDetails',{params});
+    }
 }

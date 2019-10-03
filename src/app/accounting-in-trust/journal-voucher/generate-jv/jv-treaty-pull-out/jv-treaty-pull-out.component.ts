@@ -133,6 +133,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   dialogMessage : any;
   quarterNo: any = '';
   cancelFlag: boolean = false;
+  cedingFlag: boolean = false;
 
   constructor(private ns: NotesService, private accountingService: AccountingService) { }
 
@@ -153,7 +154,9 @@ export class JvTreatyPullOutComponent implements OnInit {
     this.accountingService.getTrtyInv(this.jvDetail.tranId).subscribe((data:any) =>{
       console.log(data)
       this.passData.tableData = [];
+      this.cedingFlag = false;
       if(data.acctTreatyBal.length != 0){
+        this.cedingFlag = true;
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName
         this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
         for (var i = 0; i < data.acctTreatyBal.length; i++) {
