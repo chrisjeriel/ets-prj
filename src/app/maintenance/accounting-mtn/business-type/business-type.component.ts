@@ -53,6 +53,12 @@ export class BusinessTypeComponent implements OnInit {
   	},
     disableGeneric: true
   } 
+
+   allRecords:any = {
+    tableData:[],
+    keys:['bussTypeCd','bussTypeName','description','activeTag'],
+   }
+
    cancelFlag: boolean; 
 
 
@@ -62,9 +68,6 @@ export class BusinessTypeComponent implements OnInit {
   	 this.titleService.setTitle('Mtn | Business Type');
   	 this.getBussType();
   }
-
-
-
 
   delete(){
   	if(this.table.indvSelect.okDelete == 'N'){
@@ -110,7 +113,6 @@ export class BusinessTypeComponent implements OnInit {
 
   onClickSaveCancel(cancelFlag?){
   	this.cancelFlag = cancelFlag !== undefined;
-    console.log(this.cancelFlag);
      if(this.cancelFlag){
 	   if(this.checkFields()){
 	       let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
@@ -153,19 +155,20 @@ export class BusinessTypeComponent implements OnInit {
            $('.ng-dirty').removeClass('ng-dirty');
     }else {
     	console.log(params);
+    	this.ms.saveMtnBussType(params).subscribe(a=>{
+	  		if(a['returnCode'] == -1){
+	            this.form.control.markAsPristine();
+	            this.dialogIcon = "success";
+	            this.successDialog.open();
+	             this.getBussType();
+	            $('.ng-dirty').removeClass('ng-dirty');
+	        }else{
+	            this.dialogIcon = "error";
+	            this.successDialog.open();
+	        }
+  		});
     }
-  	/*this.ms.saveMtnBankAcct(params).subscribe(a=>{
-  		if(a['returnCode'] == -1){
-            this.form.control.markAsPristine();
-            this.dialogIcon = "success";
-            this.successDialog.open();
-            this.getBankAcct();
-            $('.ng-dirty').removeClass('ng-dirty');
-        }else{
-            this.dialogIcon = "error";
-            this.successDialog.open();
-        }
-  	});*/
+  	
   }
 
   checkFields(){
@@ -201,7 +204,6 @@ export class BusinessTypeComponent implements OnInit {
 
   getBussType(){
   	this.ms.getMtnBussType().subscribe(a=>{
-  		console.log(a['bussTypeList']);
   		this.passTable.tableData = a['bussTypeList'];
   		this.passTable.tableData.forEach(a=>{
 	  			a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -214,5 +216,57 @@ export class BusinessTypeComponent implements OnInit {
     });
   
   }
+
+  print(){
+    this.printModal.open();
+  }
+
+  printPreview(data){
+   console.log(data);
+   this.allRecords.tableData = [];
+   if(data[0].basedOn === 'curr'){
+      this.getRecords(this.info.bussTypeCd);
+   } else if (data[0].basedOn === 'all') {
+      this.getRecords();
+   }
+  }
+
+  getRecords(bussTypeCd?){
+     this.ms.getMtnBussType(bussTypeCd).pipe(
+           finalize(() => this.finalGetRecords() )
+           ).subscribe(a=>{
+      this.allRecords.tableData = a['bussTypeList'];
+        this.allRecords.tableData.forEach(a=>{
+          if (a.description === null){
+            a.description = '';
+          }
+        });
+     });
+  }
+
+  finalGetRecords(){
+    this.export(this.allRecords.tableData);
+  };
+
+  export(record?){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'BusinessType'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+    alasql('SELECT bussTypeCd AS [Business Type Code], bussTypeName AS [Business Type], description AS Description,activeTag AS Active INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
+  }
+
 
 }
