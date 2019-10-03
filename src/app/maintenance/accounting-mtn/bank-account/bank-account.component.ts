@@ -98,6 +98,7 @@ export class BankAccountComponent implements OnInit {
   constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
 
   ngOnInit() {
+    this.form.control.markAsPristine();
     this.titleService.setTitle('Mtn | Bank Account');
     setTimeout(a=>this.table.refreshTable(),0);
     this.ms.getRefCode('MTN_BANK_ACCT.ACCT_STATUS').subscribe(a=>{
@@ -156,8 +157,7 @@ export class BankAccountComponent implements OnInit {
   	}
   }
 
-  save(can?){
-  	this.cancelFlag = can !== undefined;
+  save(){
   	let params: any = {
   		saveList:[],
   		delList:[]
@@ -192,6 +192,7 @@ export class BankAccountComponent implements OnInit {
         this.glItDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
         this.glSrvDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1])) ||
         this.glSrvDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))){
+        this.cancelFlag = false;
         this.dialogMessage = 'Unable to save the record. GL Dep No must be unique in every currency code.';
         this.dialogIcon = 'error-message';
         this.successDialog.open();
@@ -206,6 +207,35 @@ export class BankAccountComponent implements OnInit {
    }
   	
   }
+
+
+  onClickSaveCancel(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    console.log(this.cancelFlag);
+    if(this.cancelFlag){
+       if(this.checkFields()){
+         if(this.glItDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
+            this.glItDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
+            this.glSrvDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1])) ||
+            this.glSrvDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))){
+            this.cancelFlag = false;
+            this.dialogMessage = 'Unable to save the record. GL Dep No must be unique in every currency code.';
+            this.dialogIcon = 'error-message';
+            this.successDialog.open();
+         } else {
+            this.save();
+         }
+       }else{
+            this.dialogMessage="Please check field values.";
+            this.dialogIcon = "error";
+            this.successDialog.open();
+            this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,3,4,6]);
+       }
+    } else {
+      this.save();
+    }
+  }
+
 
   onClickCancel(){
   	this.cnclBtn.clickCancel();
