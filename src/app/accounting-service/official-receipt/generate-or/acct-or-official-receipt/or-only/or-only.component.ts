@@ -6,6 +6,8 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 
 @Component({
   selector: 'app-or-only',
@@ -22,7 +24,8 @@ export class OrOnlyComponent implements OnInit {
 	@ViewChild('whTaxTbl') whTaxTbl: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
-  	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  	@ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
+  	@ViewChild('taxAllocCancel') taxCancelBtn : CancelButtonComponent;
 
 	 passData : any = {
 	    tableData: [],
@@ -134,10 +137,13 @@ export class OrOnlyComponent implements OnInit {
 
 	  savedData: any = [];
 	  deletedData: any = [];
+	  deletedTaxData: any = [];
 
-  constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+  	this.passData.nData.currCd = this.record.currCd;
+  	this.passData.nData.currRate = this.record.currRate;
   	this.retrieveOrTransDtl();
   }
 
@@ -219,7 +225,7 @@ export class OrOnlyComponent implements OnInit {
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].billId = 1;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].showMG = 0;
-	      this.passDataGenTax.tableData[this.passData.tableData.length - 1].uneditable = ['taxCd'];
+	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].uneditable = ['taxCd'];
     	}
     	this.genTaxTbl.refreshTable();
     }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
@@ -256,6 +262,7 @@ export class OrOnlyComponent implements OnInit {
   	this.cancelFlag = cancelFlag !== undefined;
   	this.savedData = [];
   	this.deletedData = [];
+  	this.deletedTaxData = [];
   	for (var i = 0 ; this.passData.tableData.length > i; i++) {
   	  if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
   	      this.savedData.push(this.passData.tableData[i]);
@@ -265,6 +272,8 @@ export class OrOnlyComponent implements OnInit {
   	      this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
   	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
   	      this.savedData[this.savedData.length-1].updateUser = this.ns.getCurrentUser();
+  	      this.deletedTaxData = this.savedData[this.savedData.length-1].taxAllocation.filter(a=>{return a.deleted});
+  	      this.savedData[this.savedData.length-1].taxAllocation = this.savedData[this.savedData.length-1].taxAllocation.filter(a=>{return a.edited && !a.deleted});
   	  }
   	  else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
   	     this.deletedData.push(this.passData.tableData[i]);
@@ -272,6 +281,7 @@ export class OrOnlyComponent implements OnInit {
   	     this.deletedData[this.deletedData.length-1].billId = 1; //1 for Official Receipt Transaction Type
   	     this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
   	     this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+  	     this.deletedTaxData = this.deletedData[this.deletedData.length-1].taxAllocation;
   	  }
   	}
   	this.passData.tableData.filter(a=>{return !a.deleted}).forEach(b=>{
@@ -287,7 +297,8 @@ export class OrOnlyComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       saveOrTransDtl: this.savedData,
-      delOrTransDtl: this.deletedData
+      delOrTransDtl: this.deletedData,
+      delOrItemTaxes: this.deletedTaxData
     }
 
     this.as.saveAcseOrTransDtl(params).subscribe(
@@ -301,6 +312,12 @@ export class OrOnlyComponent implements OnInit {
           this.passData.tableData = [];
           this.retrieveOrTransDtl();
           this.mainTbl.refreshTable();
+          this.mainTbl.markAsPristine();
+          this.genTaxTbl.markAsPristine();
+          this.whTaxTbl.markAsPristine();
+          if(this.cancelFlag && this.taxAllocMdl !== undefined){
+          	this.taxAllocMdl.closeModal();
+          }
         }
       },
       (error: any)=>{
@@ -308,5 +325,27 @@ export class OrOnlyComponent implements OnInit {
       }
     );
   }
+
+  confirmLeaveTaxAlloc(){
+  	for(var i of this.passDataGenTax.tableData){
+  		if(i.add || i.edited || i.deleted){
+  			return true;
+  		}
+  	}
+  	for(var i of this.passDataWhTax.tableData){
+  		if(i.add || i.edited || i.deleted){
+  			return true;
+  		}
+  	}
+  	return false;
+  }
+
+  /*openLeaveTaxConfirmation(){
+  	this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+  }*/
 
 }
