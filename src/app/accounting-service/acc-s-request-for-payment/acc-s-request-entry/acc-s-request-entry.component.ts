@@ -204,11 +204,9 @@ export class AccSRequestEntryComponent implements OnInit {
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
-      if(this.saveAcsePaytReq.tranTypeCd == 5){
-        this.isReqAmtEqDtlAmts = true;
-      }else{
-        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
-      }
+      
+      this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
+      
     });
   }
 
