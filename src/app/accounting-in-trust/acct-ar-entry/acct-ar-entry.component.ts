@@ -1078,7 +1078,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   arAmtEqualsArDtlPayt(): boolean{
-    if(this.arInfo.arDtlSum != this.arInfo.arAmt * this.arInfo.currRate){
+    console.log(Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100);
+    console.log(this.arInfo.arDtlSum);
+    if(this.arInfo.arDtlSum != Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100){
       return true;
     }
     return false;

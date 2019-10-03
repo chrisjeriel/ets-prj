@@ -20,6 +20,9 @@ export class OrOnlyComponent implements OnInit {
 	@ViewChild('mainTbl') mainTbl: CustEditableNonDatatableComponent;
 	@ViewChild('genTaxTbl') genTaxTbl: CustEditableNonDatatableComponent;
 	@ViewChild('whTaxTbl') whTaxTbl: CustEditableNonDatatableComponent;
+	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  	@ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
 	 passData : any = {
 	    tableData: [],
@@ -47,7 +50,8 @@ export class OrOnlyComponent implements OnInit {
 	        createUser: '',
 	        createDate: '',
 	        updateUser: '',
-	        updateDate: ''
+	        updateDate: '',
+	        taxAllocation: []
 	    },
 	    keys: ['itemName', 'refNo', 'currCd', 'currRate', 'currAmt', 'localAmt'],
 	    widths: ['auto',120,1,100,120,120],
@@ -116,14 +120,20 @@ export class OrOnlyComponent implements OnInit {
 
 	  selectedItem: any;
 	  disableTaxBtn: boolean = true;
+	  cancelFlag: boolean = false;
 	  genTaxIndex: number;
 	  whTaxIndex: number;
+	  dialogMessage: string = '';
+	  dialogIcon: string = '';
 
 	  passLov: any = {
 	    selector: '',
 	    activeTag: '',
 	    hide: []
 	  }
+
+	  savedData: any = [];
+	  deletedData: any = [];
 
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
@@ -159,6 +169,7 @@ export class OrOnlyComponent implements OnInit {
   	console.log(data);
   	if(data === null){
   		this.disableTaxBtn = true;
+  		this.selectedItem = null;
   	}else{
   		this.disableTaxBtn = false;
   		this.passDataGenTax.nData.tranId = data.tranId;
@@ -171,6 +182,7 @@ export class OrOnlyComponent implements OnInit {
   		this.passDataWhTax.tableData = data.taxAllocation.filter(a=>{return a.taxType == 'W'});
   		this.genTaxTbl.refreshTable();
   		this.whTaxTbl.refreshTable();
+  		this.selectedItem = data;
   	}
   }
 
@@ -227,6 +239,74 @@ export class OrOnlyComponent implements OnInit {
     	}
     	this.whTaxTbl.refreshTable();
     }
+    this.selectedItem.edited = true;
+    this.selectedItem.taxAllocation = this.passDataGenTax.tableData.concat(this.passDataWhTax.tableData);
+  }
+
+  onClickSave(){
+  	this.confirm.confirmModal();
+  }
+
+  onClickCancel(){
+  	this.cancelBtn.clickCancel();
+  }
+
+  save(cancelFlag?){
+  	var totalLocalAmt: number = 0;
+  	this.cancelFlag = cancelFlag !== undefined;
+  	this.savedData = [];
+  	this.deletedData = [];
+  	for (var i = 0 ; this.passData.tableData.length > i; i++) {
+  	  if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+  	      this.savedData.push(this.passData.tableData[i]);
+  	      this.savedData[this.savedData.length-1].tranId = this.record.tranId;
+  	      this.savedData[this.savedData.length-1].billId = 1; //1 for Official Receipt Transaction Type
+  	      this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
+  	      this.savedData[this.savedData.length-1].createUser = this.ns.getCurrentUser();
+  	      this.savedData[this.savedData.length-1].updateDate = this.ns.toDateTimeString(0);
+  	      this.savedData[this.savedData.length-1].updateUser = this.ns.getCurrentUser();
+  	  }
+  	  else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
+  	     this.deletedData.push(this.passData.tableData[i]);
+  	     this.deletedData[this.deletedData.length-1].tranId = this.record.tranId;
+  	     this.deletedData[this.deletedData.length-1].billId = 1; //1 for Official Receipt Transaction Type
+  	     this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
+  	     this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+  	  }
+  	}
+  	this.passData.tableData.filter(a=>{return !a.deleted}).forEach(b=>{
+  		totalLocalAmt += b.localAmt;
+  	});
+  	let params: any = {
+      tranId: this.record.tranId,
+      billId: 1, //1 for Official Receipt Transaction Type
+      billType: this.record.tranTypeCd,
+      totalLocalAmt: totalLocalAmt,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0),
+      saveOrTransDtl: this.savedData,
+      delOrTransDtl: this.deletedData
+    }
+
+    this.as.saveAcseOrTransDtl(params).subscribe(
+      (data:any)=>{
+        if(data.returnCode === 0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.dialogIcon = '';
+          this.successDiag.open();
+          this.passData.tableData = [];
+          this.retrieveOrTransDtl();
+          this.mainTbl.refreshTable();
+        }
+      },
+      (error: any)=>{
+
+      }
+    );
   }
 
 }

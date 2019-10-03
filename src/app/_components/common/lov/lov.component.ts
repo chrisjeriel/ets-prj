@@ -188,6 +188,7 @@ export class LovComponent implements OnInit {
     let selects:any[] = [];
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
+      console.log(this.passData);
     }
     else{
       selects = this.passTable.tableData.filter(a=>a.checked);
