@@ -450,6 +450,7 @@ import { JvInvestmentPlacementComponent } from './accounting-in-trust/journal-vo
 import { JvTreatyPullOutComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-treaty-pull-out/jv-treaty-pull-out.component';
 import { DistributionByInsComponent } from './underwriting/policy-distribution/distribution-by-ins/distribution-by-ins.component';
 import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 
 
 @NgModule({
@@ -907,6 +908,7 @@ import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn
         JvTreatyPullOutComponent,
         DistributionByInsComponent,
         PrintModalMtnAcctComponent,
+        BusinessTypeComponent,
     ],
 
   	providers: [

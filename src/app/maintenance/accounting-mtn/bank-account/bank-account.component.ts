@@ -6,6 +6,10 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component'
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import * as alasql from 'alasql';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-bank-account',
@@ -20,10 +24,18 @@ export class BankAccountComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(MtnBankComponent) bankLov: MtnBankComponent;
   @ViewChild('myForm') form:any;
+  @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
+
 
   dialogIcon:string = '';
   dialogMessage: string = '';
   info:any ;
+
+  allRecords:any = {
+    tableData:[],
+    keys:['bankAcctCd','accountNo','accountName','acctStatus','currCd','bankBranch','accountType','openDate','closeDate','acItGlDepNo','acSeGlDepNo','dcbTag']
+  }
+
   passTable:any={
   	tableData:[],
   	widths:[1,130,220,80,70,220,130,1,1,1,1,1],
@@ -73,19 +85,20 @@ export class BankAccountComponent implements OnInit {
               vals: [],
           }],
 
-  }
+  }  
   cancelFlag:boolean;
   glItDepNoPHP = [];
   glItDepNoUSD = [];
   glSrvDepNoPHP = [];
   glSrvDepNoUSD = [];
+  boolPrint: boolean = true;
 
   bank:any = {};
 
   constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
 
   ngOnInit() {
-    this.titleService.setTitle('Mtn | Bank');
+    this.titleService.setTitle('Mtn | Bank Account');
     setTimeout(a=>this.table.refreshTable(),0);
     this.ms.getRefCode('MTN_BANK_ACCT.ACCT_STATUS').subscribe(a=>{
     	this.passTable.opts[0].prev = a['refCodeList'].map(a=>a.description);
@@ -126,6 +139,7 @@ export class BankAccountComponent implements OnInit {
         this.table.overlayLoader = false;
 	  		this.passTable.distableGeneric = false;
     		this.passTable.disableAdd = false;
+        this.boolPrint = false;
 	  	})
 	  }
   }
@@ -188,7 +202,7 @@ export class BankAccountComponent implements OnInit {
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
         this.successDialog.open();
-        this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,4,6]);
+        this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,3,4,6]);
    }
   	
   }
@@ -198,7 +212,6 @@ export class BankAccountComponent implements OnInit {
   }
 
   onTableClick(data){
-    console.log(data);
     this.info = data;
     this.passTable.disableGeneric = data == null;
   }
@@ -213,6 +226,7 @@ export class BankAccountComponent implements OnInit {
   checkCode(ev){
     $('.ng-dirty').removeClass('ng-dirty');
     this.passTable.tableData = [];
+    this.boolPrint = false;
     this.table.refreshTable();
     this.ns.lovLoader(ev, 1);
     this.table.overlayLoader = true;
@@ -277,8 +291,6 @@ export class BankAccountComponent implements OnInit {
               val = $(this).find('select').val();    
               highlight($(this), val);
             }else if(dataTypes[i] == 'text-editor') {
-              console.log($(this));
-              //console.log($(this).find('.align-middle.ng-star-inserted').length);
              if($(this).find('.align-middle.ng-star-inserted').length === 1){
               val = $(this).find('text-editor').text();
               highlight($(this), val);
@@ -296,6 +308,78 @@ export class BankAccountComponent implements OnInit {
     }, 0);
   }
 
+  print(){
+    this.printModal.open();
+  }
 
+  printPreview(data){
+   this.allRecords.tableData = [];
+   if(data[0].basedOn === 'curr'){
+      this.getRecords(this.bank.bankCd);
+   } else if (data[0].basedOn === 'all') {
+      this.getRecords(null);
+   }
+  }
 
+  getRecords(bank?){
+     this.ms.getMtnBankAcct(bank).pipe(
+           finalize(() => this.finalGetRecords() )
+           ).subscribe(a=>{
+      this.allRecords.tableData = a['bankAcctList'];
+        this.allRecords.tableData.forEach(a=>{
+          if (a.openDate === null){
+            a.openDate = '';
+          }else {
+            a.openDate = this.ns.toDateTimeString(a.openDate);
+          };
+
+          if (a.closeDate === null){
+            a.closeDate = '';
+          }else {
+            a.closeDate = this.ns.toDateTimeString(a.closeDate);
+          };
+
+          if (a.bankBranch === null){
+            a.bankBranch = '';
+          }
+
+        });
+     });
+  }
+
+  finalGetRecords(selection?){
+    this.export(this.allRecords.tableData);
+  };
+
+  export(record?){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'BankAccount'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+        for(var prop in dateStr) {
+           if (dateStr.hasOwnProperty(prop)) {
+              var newdate = new Date(dateStr);
+              return newdate.toLocaleString();
+           } else {
+              var date = "";
+              return date;
+           }
+        } 
+      };
+
+    alasql('SELECT bankName AS Bank,bankAcctCd AS Code, accountNo AS [Account No], accountName AS [Account Name], acctStatusName AS [Account Status],currCd AS Currency, bankBranch AS [Bank Branch], acctTypeName AS [Account Type], datetime(openDate) AS [Open Date], datetime(closeDate) AS [Close Date], dcbTag AS [Dcb Tag] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
+  }
 }
