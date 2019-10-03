@@ -184,6 +184,9 @@ export class TreatyShareComponent implements OnInit {
 
  	first: boolean = true;
 
+ 	currencyCd:String = 'PHP';
+ 	currencyList:any[] = [];
+
 	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
@@ -195,11 +198,23 @@ export class TreatyShareComponent implements OnInit {
 			
 			this.getMtnTreatyComm();
 		}, 0);
+
+		this.getCurrencyList();
+	}
+
+	changCurr(data){
+		this.getMtnTreatyComm();
+	}
+
+	getCurrencyList(){
+		this.ms.getMtnCurrencyList(null).subscribe(a=>{
+			this.currencyList = a['currency'].map(a=>{a.name = a.currencyCd+ ' - '+ a.description;return a;});
+		})
 	}
 
 	getMtnTreatyComm() {
 		this.treatyYearTable.overlayLoader = true;
-		this.ms.getMtnTreatyComm(null).subscribe(data => {
+		this.ms.getMtnTreatyComm(null,this.currencyCd).subscribe(data => {
 			this.mtnTreatyComm = data['treatyList'];
 			var td = data['treatyList'].map(a => a.treatyYear);
 			td = td.sort((a, b) => b - a)
@@ -713,7 +728,7 @@ export class TreatyShareComponent implements OnInit {
 				});
 			}
 		});
-
+		this.params.currencyCd = this.currencyCd;
 		this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
 			if(data['returnCode'] == -1) {
 				this.dialogIcon = "success";

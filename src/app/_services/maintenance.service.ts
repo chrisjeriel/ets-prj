@@ -690,9 +690,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
 	}
 
-	getMtnTreatyComm(year) {
+	getMtnTreatyComm(year,currencyCd) {
 		const params = new HttpParams()
-		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
+		     		.set('quoteYear', (year === null || year === undefined ? '' : year))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
 	}

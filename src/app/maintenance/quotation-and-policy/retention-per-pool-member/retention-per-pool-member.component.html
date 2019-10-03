@@ -10,7 +10,6 @@
 								<div class="input-group justify-content-md-center" style="margin-bottom: 0px !important;">
 									<select class="form-control form-control-sm cust-sm col-sm-3 not-form" [(ngModel)]="currencyCd" (ngModelChange)="changCurr($event)" (change)="onCurrChange($event)">
 										<option *ngFor="let curr of currencyList" [value]="curr.currencyCd">{{curr.name}}</option>
-
 									</select>
 								</div>
 							</div>
