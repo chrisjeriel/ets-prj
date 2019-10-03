@@ -8,7 +8,7 @@
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
                         <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" (change)="checkCode($event)" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()"> TRBT#PROD_GRADE -->
                         <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [ngModel]="jvDetails.cedingName" (ngModelChange)="jvDetails.ceding = $event.toUpperCase()">
-                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+                        <div *ngIf = "!cedingFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
                     </div>
                 </div>
                 <div class="col-sm-2"></div>

@@ -141,6 +141,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   readOnly: boolean = false;
   cancelFlag: boolean = false;
   passDataOffsetting: any = {};
+  cedingFlag: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -179,9 +180,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
+      this.cedingFlag = false;
       if( data.acctTreatyBal.length!=0){
         this.passDataOffsetting.disableAdd = false;
         this.passData.disableAdd = false;
+        this.cedingFlag = true;
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName;
         this.jvDetails.ceding = data.acctTreatyBal[0].cedingId;
         this.passLov.cedingId = this.jvDetails.ceding;
@@ -424,7 +427,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveAcctTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].tranId = this.jvDetail.tranId;
-        this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].qsoaId = null;
+        this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].cedingId = this.jvDetails.ceding;
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
         this.jvDetails.saveAcctTrty[this.jvDetails.saveAcctTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
@@ -439,11 +442,15 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
       if(this.passData.tableData[i].deleted){
         //this.jvDetails.delAcctTrty.push(this.passData.tableData[i]);
-        for (var a = 0; a < this.passData.tableData[i].acctOffset.length; a++) {
-          this.jvDetails.delAcctTrty.push(this.passData.tableData[i].acctOffset[a]);
+        if(this.passData.tableData[i].acctOffset.length == 0){
+          this.jvDetails.delAcctTrty.push(this.passData.tableData[i]);
+        }else{
+          for (var a = 0; a < this.passData.tableData[i].acctOffset.length; a++) {
+           this.jvDetails.delAcctTrty.push(this.passData.tableData[i].acctOffset[a]);
            this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].cedingId    =  this.jvDetails.ceding;
            this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].qsoaId      =  this.passData.tableData[i].qsoaId;
            this.jvDetails.delAcctTrty[this.jvDetails.delAcctTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+          }
         }
       }
 
