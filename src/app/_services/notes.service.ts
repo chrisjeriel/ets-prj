@@ -3,12 +3,15 @@ import { HttpClient } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { NotesReminders } from '@app/_models';
+import { FormGroup } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotesService {
   notesRemindersData : NotesReminders[] = [];
+
+  formGroup: FormGroup = new FormGroup({});
 
   constructor(private http: HttpClient) {
 
@@ -84,6 +87,14 @@ export class NotesService {
     } else {
       return type == 'd' ? ev + 'T' : type == 't' ? 'T' + ev : '';
     }
+  }
+
+  clearFormGroup() {
+    Object.keys(this.formGroup.controls).forEach(a => {
+      this.formGroup.removeControl(a);
+    });
+
+    this.formGroup.reset();
   }
   
 }

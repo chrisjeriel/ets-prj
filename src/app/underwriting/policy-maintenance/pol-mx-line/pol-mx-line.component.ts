@@ -24,8 +24,9 @@ export class PolMxLineComponent implements OnInit {
 
 	passData: any = {
 		tableData:[],
-		tHeader				:["Line Code", "Description", "Menu Line", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "Ref", "Sort Seq", "Remarks"],
-		dataTypes			:["pk-cap", "text", "req-select", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
+		tHeader				:["Line Code", "Description", "Menu Line", "Cut-off Time","Active", "With CAT","Renewal",  "Open Cover", "ALOP", "With Ret Limit", "Ref", "Sort Seq", "Remarks"],
+		dataTypes			:["pk-cap", "text", "req-select", "time", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "checkbox", "number", "number", "text", "time-string"],
+		tooltip				:[null,null,null,null,null,null,null,null,null,'With Retention Line Amount Limit',null,null,null],
 		nData:{ 
 			newRec			: 1,
 			lineCd          : '',
@@ -37,6 +38,7 @@ export class PolMxLineComponent implements OnInit {
 			renewalTag      : 'N',
 			openCoverTag    : 'N',	
 			alopTag         : 'N',
+			retAmtTag       : 'N',
 			referenceNo     : '',
 			sortSeq         : '',
 			remarks         : '',
@@ -50,9 +52,9 @@ export class PolMxLineComponent implements OnInit {
 		paginateFlag		: true,
 		infoFlag			: true,
 		pageLength			: 10,
-		resizable			: [true, true, true, true, false, true, true, false,true, true,true,true],
-		uneditable			: [false,false,false,false,false,false,false,false,false,false,false,false],
-		widths				: ['auto','350',1,1,1,1,1,1,1,'auto','auto','auto'],
+		resizable			: [true, true, true, true, false, true, true, false,true,true, true,true,true],
+		uneditable			: [false,false,false,false,false,false,false,false,false,false,false,false,false],
+		widths				: ['auto','350',1,1,1,1,1,1,1,1,'auto','auto','auto'],
 		pageID				: 'line-mtn-line',
 		opts: [{
             selector        : 'menuLineCd',
@@ -69,7 +71,7 @@ export class PolMxLineComponent implements OnInit {
 	  		sortSeq		: 3,
 	  		remarks		: 100
 	  	},
-		keys				: ['lineCd','description','menuLineCd','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag','referenceNo','sortSeq','remarks','timeString'],
+		keys				: ['lineCd','description','menuLineCd','cutOffTime','activeTag','catTag','renewalTag','openCoverTag','alopTag', 'retAmtTag', 'referenceNo','sortSeq','remarks','timeString'],
 	};
 
 	cancelFlag				: boolean;
@@ -105,6 +107,7 @@ export class PolMxLineComponent implements OnInit {
 		.subscribe(data => {
 			console.log(data);
 			this.getMtnLine();
+			this.table.markAsPristine();
 			this.success.open();
 			this.params.saveLine 	= [];
 			this.passData.disableGeneric = true;
@@ -166,7 +169,8 @@ export class PolMxLineComponent implements OnInit {
 				this.params.saveLine = [];
         	}else{
         		if(this.params.saveLine.length == 0 && this.params.deleteLine.length == 0){
-        			$('.ng-dirty').removeClass('ng-dirty');
+        			// $('.ng-dirty').removeClass('ng-dirty');
+        			this.table.markAsPristine();
 					this.cs.confirmModal();
 					this.params.saveLine 	= [];
 					this.passData.tableData = this.passData.tableData.filter(a => a.lineCd != '');
@@ -240,7 +244,7 @@ export class PolMxLineComponent implements OnInit {
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
-		if($('.ng-dirty').length != 0 ){
+		if($('.ng-dirty').length != 0 ) {
 			$event.preventDefault();
 			const subject = new Subject<boolean>();
 			const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -252,7 +256,8 @@ export class PolMxLineComponent implements OnInit {
 
 			subject.subscribe(a=>{
 			    if(a){
-			        $('.ng-dirty').removeClass('ng-dirty');
+			        // $('.ng-dirty').removeClass('ng-dirty');
+			        this.table.markAsPristine();
 			        this.tabset.select($event.nextId)
 			    }
 			})

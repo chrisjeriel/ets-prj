@@ -222,7 +222,7 @@ export class PolOcInquiryComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'PolPoolDist_'+currDate+'.xls'
+    var filename = 'PolicyOCInquiry_'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"}}}
@@ -230,11 +230,17 @@ export class PolOcInquiryComponent implements OnInit {
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
-            return date.toLocaleString();
+            // return date.toLocaleString();
+            var dArr = date.toLocaleString().split(', ');
+            var dDateArr = dArr[0].split('/');
+            dDateArr[0] = dDateArr[0].toString().padStart(2, '0');
+            dDateArr[1] = dDateArr[1].toString().padStart(2, '0');
+            dArr[0] = dDateArr.join('/');
+
+            return dArr.join(' ');
       };
-      //tHeader: ['Treaty', 'Treaty Company', '1st Ret Line', '1st Ret SI Amt', '1st Ret Prem Amt', '2nd Ret Line', '2nd Ret SI Amt', '2nd Ret Prem Amt', 'Comm Rate (%)', 'Comm Amount', 'VAT on R/I Comm', 'Net Due'],
-      //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
-     alasql('SELECT openPolicyNo AS OpenCoverPolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, totalSi AS MaxSi, issueDate AS IssueDate, inceptDate AS InceptionDate, expiryDate AS ExpiryDate, acctDate AS AccountingDate, statusDesc AS Status ' +
+      
+     alasql('SELECT openPolicyNo AS [Open Cover Policy No], cessionDesc AS [Type of Cession], cedingName AS [Ceding Company], insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, totalSi AS [Max SI], datetime(issueDate) AS [Issue Date], datetime(inceptDate) AS [Inception Date], datetime(expiryDate) AS [Expiry Date], datetime(acctDate) AS [Accounting Date], statusDesc AS Status ' +
             'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 

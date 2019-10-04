@@ -142,8 +142,11 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   getMtnUserGrp() {
       this.passDataUserGroup.tableData = [];
-      this.maintenanceService.getMtnUserGrp(null).subscribe((data: any) => {
-        console.log(data);
+
+      this.userGroups.overlayLoader = true;
+
+      this.maintenanceService.getMtnUserGrp(null).subscribe((data: any) => {  
+
         for(var i =0; i < data.userGroups.length;i++){
           this.passDataUserGroup.tableData.push(data.userGroups[i]);
           this.passDataUserGroup.tableData[i].uneditable = ['userGrp'];
@@ -174,18 +177,22 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   }
 
   userGroupAccess(){
-    this.clearTranModuleTables();
     this.getTransactions();
     $('#userGroupAccess #modalBtn').trigger('click');
   }
 
-  clearTranModuleTables() {
-    this.PassDataModuleTrans.tableData = [];
-    this.PassDataModule.tableData = [];
+  clearPopupData() {
+      this.PassDataModuleTrans.tableData = [];
+      this.PassDataModule.tableData = [];
+
+      this.userGroupTransactions.refreshTable();
+      this.userGroupModules.refreshTable();
   }
 
   getTransactions() {
       this.PassDataModuleTrans.tableData = [];
+
+      this.userGroupTransactions.overlayLoader = true;
 
       this.securityService.getTransactions('USER_GROUP', null, this.userGroupData.userGrp, null).subscribe((data: any) => {
         for(var i =0; i < data.transactions.length;i++){
@@ -253,8 +260,11 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   userListingModal(){
     this.passDataUserListing.tableData = [];
+
+    this.userListing.overlayLoader = true;
+
     this.userService.retMtnUsers(null, this.userGroupData.userGrp).subscribe((data: any) => {
-        console.log(data);
+
         for(var i =0; i < data.usersList.length;i++){
           this.passDataUserListing.tableData.push(data.usersList[i]);
           this.passDataUserListing.tableData[i].uneditable = ['userId', 'userName', 'activeTag'];
@@ -280,7 +290,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   getModules() {
     this.PassDataModule.tableData = [];
     
+    this.userGroupModules.overlayLoader = true;
+
     this.securityService.getModules('USER_GROUP', null, this.userGroupData.userGrp, this.transData.tranCd).subscribe((data: any) => {
+
       for(var i =0; i < data.modules.length;i++){
         this.PassDataModule.tableData.push(data.modules[i]);
         this.PassDataModule.tableData[i].showMG = 1;

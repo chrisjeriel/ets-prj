@@ -93,7 +93,7 @@ export class CvEntryComponent implements OnInit {
   bankAcctList         : any;
   checkSeriesList      : any;
   existsInCvDtl        : boolean = false;
-
+  fromSave             : boolean = false;
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -123,6 +123,7 @@ export class CvEntryComponent implements OnInit {
   }
 
   getAcitCv(){
+    this.loadingFunc(true);
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
@@ -131,6 +132,7 @@ export class CvEntryComponent implements OnInit {
 
     subRes2.subscribe(data => {
       console.log(data);
+      this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
@@ -147,7 +149,7 @@ export class CvEntryComponent implements OnInit {
       var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
-        $('.globalLoading').css('display','none');
+        this.loadingFunc(false);
         this.saveAcitCv.cvStatus = 'N';
         this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
         this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
@@ -194,110 +196,26 @@ export class CvEntryComponent implements OnInit {
         console.log(recCv);
         console.log(this.saveAcitCv);
         this.existsInCvDtl = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
+
+        this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
+        this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+
+        if(this.fromSave){
+          this.dialogIcon = '';
+          this.dialogMessage = '';
+          this.success.open();
+          this.fromSave = false;
+        }
       }
 
       this.saveAcitCv['from'] = 'cv';
       this.cvData.emit(this.saveAcitCv);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
-
-      if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
-        this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
-        this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
-        console.log(totalCredit);
-        console.log(totalDebit);
-      }
     });
   }
 
-  // getAcitCv(){
-  //   console.log(this.saveAcitCv.tranId);
-  //   var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
-  //                         .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
-
-  //   subRes.subscribe(data => {
-  //     console.log(data);
-  //     var recPn = data['pn']['printableNames'];
-  //     var recCl = data['cl']['refCodeList'];
-  //     var recStat = data['stat']['refCodeList'];
-  //     var recPrt  = data['prt']['refCodeList'];
-  //     this.cvStatList = recStat;
-
-  //     if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
-  //       $('.globalLoading').css('display','none');
-  //       this.saveAcitCv.cvStatus = 'N';
-  //       this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
-  //       this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
-  //       this.saveAcitCv.cvAmt = 0;
-  //       this.saveAcitCv.currCd = 'PHP';
-  //       this.saveAcitCv.currRate = 1;
-  //       this.saveAcitCv.checkClass = 'LC';
-  //       this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
-  //       this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
-  //       this.saveAcitCv.checkDate = this.ns.toDateTimeString(0);
-
-  //       recPn.forEach(e => {
-  //         if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
-  //           this.saveAcitCv.preparedByName  = e.printableName;
-  //           this.saveAcitCv.preparedBy   = e.userId;
-  //           this.saveAcitCv.preparedByDes = e.designation;
-  //         }
-  //       });
-  //     }else{
-  //       var recCv = data['cv']['acitCvList'].map(e => {
-  //         e.createDate = this.ns.toDateTimeString(e.createDate);
-  //         e.updateDate = this.ns.toDateTimeString(e.updateDate);
-  //         e.cvDate     = this.ns.toDateTimeString(e.cvDate);
-  //         e.checkDate  = this.ns.toDateTimeString(e.checkDate);
-  //         e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
-  //         e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
-  //         e.cvNo = e.cvNo.toString().padStart(6,'0');
-  //         recPn.forEach(e2 => {
-  //           if(e.preparedBy.toUpperCase() == e2.userId.toUpperCase()){
-  //             e.preparedByName = e2.printableName;
-  //             this.saveAcitCv.preparedBy = e2.userId;
-  //             e.preparedByDes = e2.designation;
-  //           }
-  //         });
-  //         return e;
-  //       });
-
-  //       this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
-  //       console.log(recCv);
-  //       console.log(this.saveAcitCv);
-        
-  //     }
-
-  //     this.saveAcitCv['from'] = 'cv';
-  //     this.cvData.emit(this.saveAcitCv);
-  //     ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
-  //     this.setLocalAmt();
-
-  //     ///for print button
-  //     var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct())
-  //                           .pipe(map(([prl,ae,ba]) => { return { prl, ae, ba }; }));
-
-  //     subRes2.subscribe(data2 => {
-  //       console.log(data2);
-  //       this.bankAcctList = data2['ba']['bankAcctList'];
-  //       var arrSum = function(arr){
-  //         return arr.reduce((a,b) => a+b,0);
-  //       };
-  //       var totalPrl = arrSum(data2['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-  //       var totalCredit = arrSum(data2['ae']['list'].map(e => e.creditAmt));
-  //       var totalDebit = arrSum(data2['ae']['list'].map(e => e.debitAmt));
-  //       if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null){
-  //         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
-  //         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
-  //       }
-  //       this.existsInCvDtl = ((data2['prl']['acitCvPaytReqList']).length == 0)?false:true;
-  //     });
-  //   });
-  // }
-
-
   onClickNewCv(){
-    $('.globalLoading').css('display','block');
     this.saveAcitCv  = {
       bank          : '',
       bankAcct      : '',
@@ -404,9 +322,7 @@ export class CvEntryComponent implements OnInit {
     this.accountingService.saveAcitCv(JSON.stringify(saveCv))
     .subscribe(data => {
       console.log(data);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.fromSave = true;
       this.saveAcitCv.tranId = data['tranIdOut'];
       this.saveAcitCv.mainTranId = data['mainTranIdOut'];
       this.getAcitCv();
@@ -418,6 +334,13 @@ export class CvEntryComponent implements OnInit {
     console.log(fromUser);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
+      if(this.saveAcitCv.paytReqType == 'S'){
+        this.passDataLov.payeeClassCd = 2;
+      }else if(this.saveAcitCv.paytReqType == 'I'){
+        this.passDataLov.payeeClassCd = 3;
+      }else{
+        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null)?'':1;
+      }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'mtnBank';
@@ -443,7 +366,7 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    // $('input').addClass('ng-dirty');
+    this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'payee'){
@@ -529,6 +452,11 @@ export class CvEntryComponent implements OnInit {
     this.removeIcon = (con)?true:false;
   }
 
+  removeRedBackShad(fromClass){
+    $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+  }
+
+
   setBankAcctData(){
     this.saveAcitCv.bankAcctDesc = '';
     this.saveAcitCv.bankAcct = '';
@@ -557,7 +485,7 @@ export class CvEntryComponent implements OnInit {
   }
 
   onClickYesConfirmed(stat){
-    $('.globalLoading').css('display','block');
+    this.loadingFunc(true);
     this.confirmMdl.closeModal();
     var updateAcitCvStat = {
       tranId       : this.saveAcitCv.tranId,
@@ -568,12 +496,14 @@ export class CvEntryComponent implements OnInit {
     this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
     .subscribe(data => {
       console.log(data);
-      $('.globalLoading').css('display','none');
-      this.saveAcitCv.cvStatus = stat;
-      this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.loadingFunc(false);
+      // this.saveAcitCv.cvStatus = stat;
+      // this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
+      // this.dialogIcon = '';
+      // this.dialogMessage = '';
+      // this.success.open();
+      this.fromSave = true;
+      this.getAcitCv();
       this.disableFlds(true);
     });
   }
@@ -589,4 +519,8 @@ export class CvEntryComponent implements OnInit {
     }
   }
 
+  loadingFunc(bool){
+    var str = bool?'block':'none';
+    $('.globalLoading').css('display',str);
+  }
 }

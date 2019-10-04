@@ -97,17 +97,14 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-
       if ($event.nextId === 'Exit' && this.isInquiry) {
-        console.log('here 1');
         $event.preventDefault();
         this.router.navigateByUrl('/claims-inquiry');
       } else if($event.nextId === 'Exit' && !this.isInquiry && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0){
-        console.log('here 2');
         $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');
       } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
-        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo) }], { skipLocationChange: true });
+        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo), readonly: this.isInquiry }], { skipLocationChange: true });
       }
 
       if($event.nextId === 'clmHistoryId') {
@@ -115,7 +112,6 @@ export class ClaimComponent implements OnInit, OnDestroy {
       }
 
       if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
-        console.log('here 3');
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -127,19 +123,15 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
         subject.subscribe(a=>{
           if(a){
-            console.log('here 4');
             $('.ng-dirty').removeClass('ng-dirty');
 
             if($event.nextId === 'Exit' && !this.isInquiry) {
-              console.log('here 5');
               this.router.navigateByUrl('/clm-claim-processing');
             } else {
-              console.log('here 6');
               this.tabset.select($event.nextId);
             }
           }
-        })
-  
+        });
       }
   }
 

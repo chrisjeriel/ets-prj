@@ -4,7 +4,17 @@
 		<ngb-tab class="ngb-tab" title="Treaty Year">
 			<ng-template ngbTabContent>
 				<div class="row">
-					<div class="col-sm-12">
+					<div class="col-sm-12 pt-3">
+						<fieldset class="scheduler-border">
+							<div class="my-1">
+								<div class="input-group justify-content-md-center" style="margin-bottom: 0px !important;">
+									<select class="form-control form-control-sm cust-sm col-sm-3 not-form" [(ngModel)]="currencyCd" (ngModelChange)="changCurr($event)">
+										<option *ngFor="let curr of currencyList" [value]="curr.currencyCd">{{curr.name}}</option>
+									</select>
+								</div>
+							</div>
+						</fieldset>
+
 						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>

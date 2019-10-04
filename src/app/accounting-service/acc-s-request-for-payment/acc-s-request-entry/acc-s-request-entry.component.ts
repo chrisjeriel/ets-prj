@@ -7,6 +7,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
@@ -84,10 +85,12 @@ export class AccSRequestEntryComponent implements OnInit {
   warnMsg           : string = '';
   existsInReqDtl      : boolean = false;
   removeIcon        : boolean = false;
+  fromSave          : boolean = false;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
-    reqId : ''
+    reqId : '',
+    tranTypeCd: ''
   };
 
   paymentData  : any = {};
@@ -97,24 +100,21 @@ export class AccSRequestEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
-  // savePrintables : any = {
-  //   preparedBy  : '',
-  //   requestedBy : '',
-  //   approvedBy  : ''
-  // };
+
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,
               private activatedRoute: ActivatedRoute,  private router: Router,private decPipe: DecimalPipe) { }
 
   ngOnInit() {
-    this.titleService.setTitle('Acct-IT | Request Entry');
+    this.titleService.setTitle('Acct-Serv | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcsePaytReq.reqId = (Object.keys(params).length != 0)?params['reqId']:this.rowData.reqId;
+        this.saveAcsePaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
         this.initDisabled = false;
       }else{
         this.initDisabled = true;
       }
+
 
       this.getAcsePaytReq();
     });
@@ -123,22 +123,23 @@ export class AccSRequestEntryComponent implements OnInit {
   }
 
   getAcsePaytReq(){
+    this.loadingFunc(true);
     console.log(this.saveAcsePaytReq.reqId);
-    // var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
-    //                      .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
-    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS'))
-                         .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat}; }));
+    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
+                         .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
+    // var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS'))
+    //                      .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat}; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
-      //var recPrq = data['prq']['acsePrqTrans'];
-      //var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
-      var totalReqAmts = 0;
+      var recPrq = data['prq']['acsePrqTrans'];
+      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
+      //var totalReqAmts = 0;
       this.prqStatList = recStat;
 
-      $('.globalLoading').css('display','none');
+      this.loadingFunc(false);
       if(!this.initDisabled){
          var recPr =  data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
@@ -174,6 +175,12 @@ export class AccSRequestEntryComponent implements OnInit {
         console.log(this.existsInReqDtl);
         //console.log(recPrq.length);
         ((this.saveAcsePaytReq.reqStatus == 'N' || this.saveAcsePaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+        if(this.fromSave){
+          this.dialogIcon = '';
+          this.dialogMessage = '';
+          this.success.open();
+          this.fromSave = false;
+        }
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];
@@ -193,15 +200,13 @@ export class AccSRequestEntryComponent implements OnInit {
         console.log(this.saveAcsePaytReq);
       }
 
-      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId});
+      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId, tranTypeCd:this.saveAcsePaytReq.tranTypeCd});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
-      if(this.saveAcsePaytReq.tranTypeCd == 5){
-        this.isReqAmtEqDtlAmts = true;
-      }else{
-        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
-      }
+      
+      this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
+      
     });
   }
 
@@ -212,7 +217,6 @@ export class AccSRequestEntryComponent implements OnInit {
   }
 
   onClickNewReq(){
-    $('.globalLoading').css('display','block');
     this.saveAcsePaytReq  = {
       paytReqNo       : '',
       approvedName    : '',
@@ -251,6 +255,7 @@ export class AccSRequestEntryComponent implements OnInit {
     this.disableFlds(false);
     this.getAcsePaytReq();
     this.getTranType();
+    this.removeRedBackShad('warn');
   }
 
   onSaveAcsePaytReq(){
@@ -286,10 +291,9 @@ export class AccSRequestEntryComponent implements OnInit {
     this.acctService.saveAcsePaytReq(JSON.stringify(this.acsePaytReq))
     .subscribe(data => {
       console.log(data);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.fromSave = true;
       this.saveAcsePaytReq.reqId =  data['reqIdOut'];
+      this.paytData.emit({reqId: data['reqIdOut'], tranTypeCd: this.saveAcsePaytReq.tranTypeCd});
       this.saveAcsePaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
       this.initDisabled = false;
@@ -314,7 +318,7 @@ export class AccSRequestEntryComponent implements OnInit {
         $('.warn').blur();
         this.fromCancel = false;
     }else{
-      if(this.saveAcsePaytReq.reqAmt < 0){
+      if(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) < 0){
         this.warnMsg = 'Request Amount should be positive.';
         this.warnMdl.openNoClose();
         this.fromCancel = false;
@@ -341,6 +345,8 @@ export class AccSRequestEntryComponent implements OnInit {
 
   setDefPar(){
     this.saveAcsePaytReq.particulars = String(this.tranTypeList.filter(e => e.tranTypeCd == this.saveAcsePaytReq.tranTypeCd).map(e => e.defaultParticulars));
+    this.removeRedBackShad('particulars');
+    this.saveAcsePaytReq.payee = '';
   }
 
   cancelledStats(){
@@ -370,7 +376,12 @@ export class AccSRequestEntryComponent implements OnInit {
     this.saveAcsePaytReq.currRate = (Number(currRate) == 0)? '' : currRate;
   }
 
+  removeRedBackShad(fromClass){
+    $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+  }
+
   setData(data,from){
+    this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
     if(from.toLowerCase() == 'curr'){
@@ -420,6 +431,13 @@ export class AccSRequestEntryComponent implements OnInit {
       this.appUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
+      // if(this.saveAcsePaytReq.tranTypeCd == 5){
+      //   this.passDataLov.payeeClassCd = 2;
+      // }else if(this.saveAcsePaytReq.tranTypeCd == 7){
+      //   this.passDataLov.payeeClassCd = 3;
+      // }else{
+      //   this.passDataLov.payeeClassCd = (this.saveAcsePaytReq.tranTypeCd == '' || this.saveAcsePaytReq.tranTypeCd == null)?'':1;
+      // }
       this.mainLov.openLOV();
     }
   }
@@ -429,7 +447,7 @@ export class AccSRequestEntryComponent implements OnInit {
   // }
 
   onClickYesConfirmed(stat){
-    $('.globalLoading').css('display','block');
+    this.loadingFunc(true);
     this.confirmMdl.closeModal();
     var updatePaytReqStats = {
       approvedBy   : (this.saveAcsePaytReq.approvedBy == '' || this.saveAcsePaytReq.approvedBy == null)?this.ns.getCurrentUser():this.saveAcsePaytReq.approvedBy,
@@ -443,12 +461,8 @@ export class AccSRequestEntryComponent implements OnInit {
     this.acctService.updateAcsePaytReqStat(JSON.stringify(updatePaytReqStats))
     .subscribe(data => {
       console.log(data);
-      $('.globalLoading').css('display','none');
-      // this.saveAcsePaytReq.reqStatus = stat;
-      // this.saveAcsePaytReq.reqStatusDesc = this.prqStatList.filter(e => e.code == this.saveAcsePaytReq.reqStatus).map(e => e.description);
-      this.dialogIcon = '';
-      this.dialogMessage = '';
-      this.success.open();
+      this.loadingFunc(false);
+      this.fromSave = true;
       this.disableFlds(true);
       this.getAcsePaytReq();
     });
@@ -495,6 +509,11 @@ export class AccSRequestEntryComponent implements OnInit {
       }
 
    }
+
+  loadingFunc(bool){
+    var str = bool?'block':'none';
+    $('.globalLoading').css('display',str);
+  }
 
    //added by Neco 09/04/2019
    onClickPrint(){

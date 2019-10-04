@@ -94,9 +94,9 @@ export class WfFormCommonComponent implements OnInit {
 
   //Reminders Variables
   titleReminder: string = "";
-  alarmTime: string;
+  alarmTime: any;
   reminder: string;
-  reminderDate: any;
+  reminderDate: any = this.ns.toDateTimeString(0);
 
 
   @Input() quotationInfo: any = {};
@@ -280,15 +280,18 @@ export class WfFormCommonComponent implements OnInit {
 
     console.log("saveNotesAndReminders");
     console.log(this.saveNotesParams);
+    console.log(this.saveReminderParams);
     console.log("---------------------");
 
     if (this.mode == 'note') {
 
       this.workFlowManagerService.saveWfmNotes(this.saveNotesParams).subscribe((data: any)=>{
           if (data.errorList.length > 0) {
-            alert("Error during saving");
+            this.dialogIcon = "error";
+            this.successDiag.open();
           } else {
-            alert("Saved successfully.");
+            this.dialogIcon = "success";
+            this.successDiag.open();
             this.loadTable();
           }
       });
@@ -297,9 +300,11 @@ export class WfFormCommonComponent implements OnInit {
 
       this.workFlowManagerService.saveWfmReminders(this.saveReminderParams).subscribe((data: any)=>{
           if (data.errorList.length > 0) {
-            alert("Error during saving");
+            this.dialogIcon = "error";
+            this.successDiag.open();
           } else {
-            alert("Saved successfully.");
+            this.dialogIcon = "success";
+            this.successDiag.open();
             this.loadTable();
           }
       });
@@ -413,7 +418,7 @@ export class WfFormCommonComponent implements OnInit {
           "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
           "createDate"   : null,
           "createUser"   : JSON.parse(window.localStorage.currentUser).username,
-          "reminderDate"  : this.reminderDate,
+          "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
           "status"       : "A",
           "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
           "updateDate"   : null,
@@ -423,11 +428,53 @@ export class WfFormCommonComponent implements OnInit {
 
       } else if (this.boolValue == 2) {
         //Assign to user userInfo.userId
+        var reminder = {};
 
+        reminder = {
+          "reminderId"   : null,
+          "title"        : this.titleReminder,
+          "reminder"     : this.reminder,
+          "module"       : this.moduleSource,
+          "referenceId"  : this.referenceId,
+          "details"      : this.details,
+          "alarmTime"    : null,
+          "assignedTo"   : this.userInfo.userId,
+          "createDate"   : null,
+          "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
+          "status"       : "A",
+          "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "updateDate"   : null,
+        }
+
+        reminderList.push(reminder);
 
       } else if (this.boolValue == 3) {
         //Assign to many this.selects
+        for (var i = 0; i < this.selects.length; i++) {
+          var note = {};
 
+          reminder = {
+            "reminderId"   : null,
+            "title"        : this.titleReminder,
+            "reminder"     : this.reminder,
+            "module"       : this.moduleSource,
+            "referenceId"  : this.referenceId,
+            "details"      : this.details,
+            "alarmTime"    : null,
+            "assignedTo"   : this.selects[i].userId,
+            "createDate"   : null,
+            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
+            "status"       : "A",
+            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateDate"   : null,
+          }
+
+          reminderList.push(reminder);
+        }
+
+        
       } else {
 
       }
@@ -445,26 +492,35 @@ export class WfFormCommonComponent implements OnInit {
 
   }
 
+  setSec(d) {
+    d = new Date(d);
+    return d.setSeconds(0);
+  }
+
   switchScreen() {
     this.loadTable();
   }
 
   loadTable() {
 
+    this.recipientsData.tableData = [];
+
     if (this.mode == 'note') {
+      this.recipientsData.dataTypes = ['text','text', 'text', 'text', 'date'];
       this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
       this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
-      this.recipientsData.dataTypes = ['text','text', 'text', 'text', 'date'];
       this.recipientsData.uneditable = [true,true,true,true,true];
     } else if (this.mode == 'reminder') {
+      this.recipientsData.dataTypes = ['text','text', 'text', 'date', 'text', 'date'];
       this.recipientsData.keys = ['type', 'title', 'reminder', 'reminderDate', 'assignedTo','createDate'];
       this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Reminder Date', 'Assigned To', 'Date Assigned'];
-      this.recipientsData.dataTypes = ['text','text', 'text', 'date', 'text', 'date'];
       this.recipientsData.uneditable = [true,true,true,true,true,true];
     }
 
-    this.recipientsData.tableData = [];
+    
     var createUser = JSON.parse(window.localStorage.currentUser).username;
+
+    this.recipientsTable.overlayLoader = true;
 
     if (this.mode == 'note') {
       try {
@@ -510,6 +566,5 @@ export class WfFormCommonComponent implements OnInit {
 
     }
 
-    this.recipientsTable.refreshTable();
   }
 }

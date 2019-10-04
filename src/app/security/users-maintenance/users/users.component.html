@@ -146,7 +146,7 @@
         </div> 
     </div>
   	<div footer class="d-flex justify-content-center w-100">                    
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="onClickSaveTranModules();"><a>Save</a></button>
     </div> 
 </app-modal>
@@ -180,7 +180,7 @@
         </div> 
     </div>
   	<div footer class="d-flex justify-content-center w-100">                    
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Return</a></button>
     </div> 
 </app-modal>
 

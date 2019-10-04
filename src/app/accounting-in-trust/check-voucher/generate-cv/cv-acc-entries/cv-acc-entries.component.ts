@@ -98,7 +98,6 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.cvAcctEntData = this.as.getAccEntriesPassData();
     this.cvAcctEntData.nData.autoTag = 'N';
-    setTimeout(() => { this.table.refreshTable(); }, 0);
     this.getAcctEntries();
   }
 
@@ -107,22 +106,25 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
   }
 
   getAcctEntries() {
-    var sub$ = forkJoin(this.as.getAcitCv(this.passData.tranId),
-                        this.as.getAcitAcctEntries(this.passData.tranId)).pipe(map(([cv, en]) => { return { cv, en }; }));
+    var subRes = forkJoin(this.as.getAcitCv(this.passData.tranId),this.as.getAcitAcctEntries(this.passData.tranId))
+                         .pipe(map(([cv, en]) => { return { cv, en }; }));
 
-    this.table.overlayLoader = true;
-    this.subscription = sub$.subscribe(data => {
+    this.subscription = subRes.subscribe(data => {
+      var recCvAcctEntData = data['en']['list'];
       this.cvData = data['cv']['acitCvList'][0];
       this.cvData.cvDate = this.ns.toDateTimeString(this.cvData.cvDate);
+      if(this.cvData.cvStatus != 'N' && this.cvData.cvStatus != 'F'){
+        this.cvAcctEntData.addFlag = false;
+        this.cvAcctEntData.deleteFlag = false;
+        this.cvAcctEntData.uneditable = this.cvAcctEntData.uneditable.map(e => e = true);
+        this.cvAcctEntData.magnifyingGlass = [];
+        this.cvAcctEntData.checkFlag = false;
+      }
       console.log(this.cvData);
-      this.cvAcctEntData.tableData = data['en']['list'];
-      this.cvAcctEntData.tableData.forEach(a => {
+      recCvAcctEntData.forEach(a => {
         a.createDate = this.ns.toDateTimeString(a.createDate);
         a.updateDate = this.ns.toDateTimeString(a.updateDate);
         a.showMG = 1;
-        /*if(a.autoTag == 'Y'){
-          a.uneditable = ['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt'];
-        }*/
 
         if(a.updateLevel == 'N') {
           a.uneditable = ['glShortCd','foreignDebitAmt','foreignCreditAmt'];
@@ -133,17 +135,10 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
           a.showMG = 1;
         }
       });
+      this.cvAcctEntData.tableData = recCvAcctEntData;
+      this.table.refreshTable();
       console.log(this.cvAcctEntData);
       this.computeTotals();
-      this.table.refreshTable();
-
-      if(this.cvData.cvStatus != 'N' && this.cvData.cvStatus != 'F'){
-        this.cvAcctEntData.addFlag = false;
-        this.cvAcctEntData.deleteFlag = false;
-        this.cvAcctEntData.uneditable = this.cvAcctEntData.uneditable.map(e => e = true);
-        this.cvAcctEntData.magnifyingGlass = [];
-        this.cvAcctEntData.checkFlag = false;
-      }
     });
   }
 

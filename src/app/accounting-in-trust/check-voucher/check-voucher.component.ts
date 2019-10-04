@@ -149,7 +149,7 @@ export class CheckVoucherComponent implements OnInit {
     };
 
 
-    alasql('SELECT cvGenNo AS CvNo, payee AS Payee, datetime(cvDate) AS CvDate, cvStatusDesc AS Status, particulars AS Particulars, cvAmt AS Amount, INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    alasql('SELECT cvGenNo AS [C.V. No], payee AS Payee, datetime(cvDate) AS [C.V. Date], cvStatusDesc AS Status, particulars AS Particulars, cvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
 
