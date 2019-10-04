@@ -162,6 +162,8 @@ export class OrOthersComponent implements OnInit {
             this.passData.tableData.push(i);
           }*/
           this.mainTbl.refreshTable();
+          this.mainTbl.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
+                            this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
         }
       },
       (error)=>{

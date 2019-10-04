@@ -121,7 +121,7 @@ export class OrOnlyComponent implements OnInit {
 	    pageID: 'whTaxTbl'
 	  }
 
-	  selectedItem: any;
+	  selectedItem: any = {};
 	  disableTaxBtn: boolean = true;
 	  cancelFlag: boolean = false;
 	  genTaxIndex: number;
@@ -162,6 +162,8 @@ export class OrOnlyComponent implements OnInit {
   					this.passData.tableData.push(i);
   				}*/
   				this.mainTbl.refreshTable();
+  				this.mainTbl.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
+  						    				  this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
   			}
   			
   		},
@@ -177,7 +179,7 @@ export class OrOnlyComponent implements OnInit {
   	console.log(data);
   	if(data === null){
   		this.disableTaxBtn = true;
-  		this.selectedItem = null;
+  		this.selectedItem = {};
   	}else{
   		this.disableTaxBtn = false;
   		this.passDataGenTax.nData.tranId = data.tranId;
