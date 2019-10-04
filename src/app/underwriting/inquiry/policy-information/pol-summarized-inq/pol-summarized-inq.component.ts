@@ -12,6 +12,7 @@ export class PolSummarizedInqComponent implements OnInit {
   showPolicyNo:string;
   policyId:string;
   clmInfo: any = null;
+  clmInq: boolean = false;
 
   ngOnInit() {
   	this.route.params.subscribe(params => {
@@ -20,6 +21,7 @@ export class PolSummarizedInqComponent implements OnInit {
             this.policyId = params['policyId'];
             if(params['clmInfo']) {
               this.clmInfo = JSON.parse(params['clmInfo']);
+              this.clmInq = params['isInquiry'];
             }
   	});   
   }
@@ -39,6 +41,9 @@ export class PolSummarizedInqComponent implements OnInit {
 
         if(this.clmInfo != null) {
           routeParams['clmInfo'] = JSON.stringify(this.clmInfo);
+          routeParams['readonly'] = this.clmInq;
+
+          this.clmInq = false;
         }
 
         this.router.navigate(['/policy-information', routeParams], { skipLocationChange: true });
