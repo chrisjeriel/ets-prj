@@ -456,6 +456,7 @@ import { OrOnlyComponent } from './accounting-service/official-receipt/generate-
 import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
+import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.component';
 
 @NgModule({
     imports: [
@@ -918,6 +919,7 @@ import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user
         PrintModalMtnAcctComponent,
         BusinessTypeComponent,
         DcbUserComponent,
+        MtnBankAcctComponent,
     ],
 
   	providers: [
