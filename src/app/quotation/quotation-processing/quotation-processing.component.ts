@@ -265,10 +265,12 @@ export class QuotationProcessingComponent implements OnInit {
 
             this.passData.tableData = records.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
                                              .map(i => {
-                                                 i.riskId = i.project.riskId;
-                                                 i.riskName = i.project.riskName;
-                                                 i.objectDesc = i.project.objectDesc;
-                                                 i.site = i.project.site;
+                                                 if(i.project != null){
+                                                     i.riskId = i.project.riskId;
+                                                     i.riskName = i.project.riskName;
+                                                     i.objectDesc = i.project.objectDesc;
+                                                         i.site = i.project.site;
+                                                 }
                                                  i.issueDate = this.ns.toDateTimeString(i.issueDate);
                                                  i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
                                                  return i;
