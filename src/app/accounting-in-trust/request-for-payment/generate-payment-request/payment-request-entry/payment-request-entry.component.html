@@ -143,7 +143,7 @@
 	            	<div class="form-group col-sm" style="margin-bottom: 8px;">
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
-	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
+	            				<button type="button" class="cust-btn" (click)="showConfirmMdl('new-req')">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
@@ -199,6 +199,11 @@
       <div *ngIf="fromBtn == 'cancel-req'">
         <div class="input-group">
           <p class="col-sm-12">Are you sure you want to cancel this Payment Request?</p>
+        </div>
+      </div>
+      <div *ngIf="fromBtn == 'new-req'">
+        <div class="input-group">
+          <p class="col-sm-12">There are unsaved changes. Do you want to proceed?</p>
         </div>
       </div>
     </div>
@@ -264,7 +269,7 @@
 
 <app-confirm-save (onYes)="onSaveAcitPaytReq()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+<!-- <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/payt-req'" ></app-cancel-button> -->
 
 <app-lov #mainLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>

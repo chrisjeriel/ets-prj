@@ -480,6 +480,10 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'new-req'){
+      this.confirmMdl.closeModal();
+      this.form.control.markAsPristine();
+      this.onClickNewReq();
     }
   }
 
@@ -500,6 +504,13 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.saveAcitPaytReq.reqStatusNew = '';
       this.warnMsg = 'Requested Amount must be equal to the total payment amounts in Request Details.';
       this.warnMdl.openNoClose();
+    }else if(from.toLowerCase() == 'new-req'){
+      if(this.form.dirty){
+        this.confirmMdl.openNoClose();
+        this.fromBtn = from; 
+      }else{
+        this.onClickNewReq();
+      }
     }else{
       this.confirmMdl.openNoClose();
       this.fromBtn = from;
@@ -523,7 +534,7 @@ export class PaymentRequestEntryComponent implements OnInit {
 
    }
 
-   loadingFunc(bool){
+  loadingFunc(bool){
     var str = bool?'block':'none';
     $('.globalLoading').css('display',str);
   }
