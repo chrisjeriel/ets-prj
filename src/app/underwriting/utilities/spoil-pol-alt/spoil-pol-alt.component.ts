@@ -149,7 +149,7 @@ export class SpoilPolAltComponent implements OnInit {
 
 		//if(this.table) { this.table.loadingFlag = true; }
 
-		this.underwritingService.getParListing(this.searchParams)
+		this.underwritingService.newGetParListing(this.searchParams)
 		.subscribe(data => {
 			var rec = data['policyList'];
 			this.passData.count = data['length'];

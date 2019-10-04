@@ -115,6 +115,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
       this.passDataLOV.filters[0].search = param[0].search;
       this.passDataLOV.filters[0].enabled =true;
       this.searchParams.policyNo = param[0].search;
+      this.passDataLOV.p = 1;
+
+      this.searchParams['paginationRequest.count']=10;
+      this.searchParams['paginationRequest.position']=1;  
     }
 
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
