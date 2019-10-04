@@ -186,8 +186,8 @@ export class BankAccountComponent implements OnInit {
   	});
   }
 
-  onClickSave(){
-   if(this.checkFields()){
+  checkValidation(){
+    if(this.checkFields()){
      if(this.glItDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
         this.glItDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
         this.glSrvDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1])) ||
@@ -195,17 +195,24 @@ export class BankAccountComponent implements OnInit {
         this.cancelFlag = false;
         this.dialogMessage = 'Unable to save the record. GL Dep No must be unique in every currency code.';
         this.dialogIcon = 'error-message';
-        this.successDialog.open();
+        return false;
      } else {
-       this.conSave.confirmModal();
+        return true;
      }
    }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
+        return false;
+   }
+  }
+
+  onClickSave(){
+   if (this.checkValidation()){
+        this.conSave.confirmModal();
+   }else {
         this.successDialog.open();
         this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,3,4,6]);
    }
-  	
   }
 
 
@@ -213,24 +220,12 @@ export class BankAccountComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     console.log(this.cancelFlag);
     if(this.cancelFlag){
-       if(this.checkFields()){
-         if(this.glItDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
-            this.glItDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))  ||
-            this.glSrvDepNoPHP.slice().sort().some((item,index,ar)=>(item === ar[index+1])) ||
-            this.glSrvDepNoUSD.slice().sort().some((item,index,ar)=>(item === ar[index+1]))){
-            this.cancelFlag = false;
-            this.dialogMessage = 'Unable to save the record. GL Dep No must be unique in every currency code.';
-            this.dialogIcon = 'error-message';
-            this.successDialog.open();
-         } else {
-            this.save();
+         if (this.checkValidation()){
+              this.save();
+         }else {
+              this.successDialog.open();
+              this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,3,4,6]);
          }
-       }else{
-            this.dialogMessage="Please check field values.";
-            this.dialogIcon = "error";
-            this.successDialog.open();
-            this.tblHighlightReq('#mtn-bankaccttable',this.passTable.dataTypes,[1,2,3,4,6]);
-       }
     } else {
       this.save();
     }

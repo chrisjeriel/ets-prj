@@ -90,50 +90,45 @@ export class BusinessTypeComponent implements OnInit {
     this.passTable.disableGeneric = data == null;
   }
 
+  checkValidation(){
+      if(this.checkFields()){
+         let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
+            if(busTypeCds.some((a,i)=>busTypeCds.indexOf(a)!=i)){
+              this.cancelFlag = false;
+              this.dialogMessage = 'Unable to save the record. Business Type Code must be unique for every business type.';
+              this.dialogIcon = 'error-message';
+              return false;
+            } else {
+              return true;
+            }
+     }else{
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          return false;
+       }
+  }
+
   onClickSave(cancelFlag?){
-	  if(this.checkFields()){
-	       let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
-	          if(busTypeCds.some((a,i)=>busTypeCds.indexOf(a)!=i)){
-	            this.cancelFlag = false;
-	            this.dialogMessage = 'Unable to save the record. Business Type Code must be unique for every business type.';
-	            this.dialogIcon = 'error-message';
-	            this.successDialog.open();
-	            return;
-	          } else {
-	          	 this.conSave.confirmModal();
-	          }
-	   }else{
-	        this.dialogMessage="Please check field values.";
-	        this.dialogIcon = "error";
-	        this.successDialog.open();
-	        this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
-	 
-  	   }
+   if (this.checkValidation()){
+        this.conSave.confirmModal();
+   }else {
+       this.successDialog.open();
+       this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
+   }
   }
 
   onClickSaveCancel(cancelFlag?){
   	this.cancelFlag = cancelFlag !== undefined;
-     if(this.cancelFlag){
-	   if(this.checkFields()){
-	       let busTypeCds:string[] = this.passTable.tableData.map(a=>parseInt(a.bussTypeCd));
-	          if(busTypeCds.some((a,i)=>busTypeCds.indexOf(a)!=i)){
-	            this.cancelFlag = false;
-	            this.dialogMessage = 'Unable to save the record. Business Type Code must be unique for every business type.';
-	            this.dialogIcon = 'error-message';
-	            this.successDialog.open();
-	            return;
-	          } else {
-	          	this.save();
-	          }
-	   }else{
-	        this.dialogMessage="Please check field values.";
-	        this.dialogIcon = "error";
-	        this.successDialog.open();
-	        this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
-	   }
-	}else {
-		this.save();
-	}
+    if(this.cancelFlag){
+  	   if (this.checkValidation()){
+           this.save();
+       }else {
+           this.successDialog.open();
+           this.tblHighlightReq('#mtn-businesstype',this.passTable.dataTypes,[0,1]);
+       }
+  	}else {
+  		this.save();
+  	}
   }
 
   save(){
