@@ -2399,5 +2399,18 @@ export class AccountingService {
  
     } 
 
+    getAcseCv(tranId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
+	}
 
+	saveAcseCv(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCv',params,header);
+    }
 }
