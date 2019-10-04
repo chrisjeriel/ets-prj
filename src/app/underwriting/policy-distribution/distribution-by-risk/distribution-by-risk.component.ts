@@ -581,15 +581,23 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
   //END
 
+  distInProg:boolean = false;
   distribute(){
+    if(this.distInProg){
+      return;
+    }
+    this.distInProg = true;
+
     if(this.undistAlt.length != 0){
       this.warningUndistAltMdl.openNoClose();
+      this.distInProg = false
       return;
     }
     console.log(this.treatyDistData.tableData);
     console.log(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0}))
     if(this.treatyDistData.tableData.some(a=>{return a['pctShare'] < 0 || a['siAmt'] < 0 || a['premAmt'] < 0 || a['commRt'] < 0 || a['commAmt'] < 0 || a['vatRiComm'] < 0 || a['netDue'] < 0})){
       this.warningNegVals.openNoClose();
+      this.distInProg = false
       return;
     }
 
@@ -603,16 +611,19 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
            if(data.returnCode === 0){
             this.dialogIcon = 'error';
             this.successDiag.open();
+            this.distInProg = false;
           }else{
             this.wparam.markAsPristine();
             this.dialogIcon = '';
             this.successDiag.open();
             this.retrieveRiskDistribution();
+            this.distInProg = false
           }
         }
         );
     }else{
       this.warningUnsvdedMdl.openNoClose();
+      this.distInProg = false
     }
   }
 

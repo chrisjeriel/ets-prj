@@ -176,6 +176,8 @@ import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component'
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
+
 const appRoutes: Routes = [
 
 
@@ -240,8 +242,8 @@ const appRoutes: Routes = [
     { path: 'payt-req', component: RequestForPaymentComponent },
     { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
-    { path: 'journal-voucher', component: JournalVoucherComponent , canDeactivate: [UnsavedChangesGuard]},
-    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard] },
+    { path: 'journal-voucher', component: JournalVoucherComponent },
+    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'trial-balance', component: TrialBalanceComponent },
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
@@ -362,6 +364,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-acct', component: AccountingMtnComponent},
     { path: 'mtn-bank-acct', component: BankAccountComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

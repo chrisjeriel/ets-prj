@@ -55,8 +55,8 @@
   <div class="form-group col-sm">
     <div class="col-md-13 text-center">
       <div class="cust-btn-container">
-        <button type="button" class="cust-btn" (click)="generateRequest()" [disabled]="disableGenerateBtn" *ngIf="!isInquiry"><a>Generate Request</a></button>
-        <button type="button" class="cust-btn" (click)="cancelRequest()" [disabled]="disableCancelBtn" *ngIf="!isInquiry"><a>Cancel Request</a></button>
+        <button type="button" class="cust-btn" (click)="genMdl.openNoClose()" [disabled]="disableGenerateBtn" *ngIf="!isInquiry"><a>Generate Request</a></button>
+        <button type="button" class="cust-btn" (click)="canMdl.openNoClose()" [disabled]="disableCancelBtn" *ngIf="!isInquiry"><a>Cancel Request</a></button>
         <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
       </div>
     </div>
@@ -66,3 +66,21 @@
 <app-cancel-button (onYes)="null" [url]="'/clm-claim-processing'" ></app-cancel-button>
 <app-lov [passData]="passLOV" (selectedData)="setPayee($event)"></app-lov>
 <app-sucess-dialog [icon]="diagIcon"></app-sucess-dialog>
+
+<app-modal class="d-none" #genMdl>
+  <div header>Confirmation</div>
+  <div body>Are you sure you want to generate payment request?</div>
+  <div footer>
+    <button class="cust-btn" (click)="generateRequest();genMdl.closeModal()">Yes</button>
+    <button class="cust-btn" (click)="genMdl.closeModal()">No</button>
+  </div>
+</app-modal>
+
+<app-modal class="d-none" #canMdl>
+  <div header>Confirmation</div>
+  <div body>Are you sure you want to cancel payment request?</div>
+  <div footer>
+    <button class="cust-btn" (click)="cancelRequest();canMdl.closeModal()">Yes</button>
+    <button class="cust-btn" (click)="canMdl.closeModal()">No</button>
+  </div>
+</app-modal>

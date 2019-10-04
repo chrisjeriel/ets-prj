@@ -1,23 +1,40 @@
-<div class="input-group cust-border" style="padding-top: 0.6em">
-    <div class="col-sm-12">
-        <fieldset class="scheduler-border" style="padding-top: 5px !important; margin-top: -12px !important;">
-            <legend class="scheduler-border">General Taxes</legend>
-            <div class="custom-row-inline-inset">
-                <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-            </div>
-        </fieldset>
+<div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-sm-12">
+            <fieldset class="scheduler-border" style="padding-top: 5px !important; margin-top: -12px !important;">
+                <legend class="scheduler-border">General Taxes</legend>
+                <div class="custom-row-inline-inset">
+                    <app-cust-editable-non-datatable #genTable (clickLOV)="openLOV($event)" [passData]="passData"></app-cust-editable-non-datatable>
+                </div>
+            </fieldset>
+        </div>
     </div>
-    <div class="col-sm-12">
-        <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 5px !important;">
-            <legend class="scheduler-border">Creditable WTax Details</legend>
-            <div class="custom-row-inline-inset">
-                <!-- <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)"> TRBT#PROD_GRADE -->
-                <app-cust-editable-non-datatable [passData]="passDataCreditable">
-                    <ng-container controls-r>
-                        <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
-                    </ng-container>
-                </app-cust-editable-non-datatable>
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 5px !important;">
+                <legend class="scheduler-border">Creditable WTax Details</legend>
+                <div class="custom-row-inline-inset">
+                    <!-- <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)"> TRBT#PROD_GRADE -->
+                    <app-cust-editable-non-datatable #wthTable [passData]="passDataWHT">
+                        <ng-container controls-r>
+                            <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
+                        </ng-container>
+                    </app-cust-editable-non-datatable>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-row" style="margin-top: 13px !important;">
+        <div class="form-group col-sm">
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn"><a>Save</a></button>
+                </div>
             </div>
-        </fieldset>
+        </div>
     </div>
 </div>
+
+<app-lov #genlovMdl [passData]="passLov" (selectedData)="setGenTax($event)">
+<app-lov #wthlovMdl [passData]="passLovWTH" (selectedData)="setWHTax($event)">

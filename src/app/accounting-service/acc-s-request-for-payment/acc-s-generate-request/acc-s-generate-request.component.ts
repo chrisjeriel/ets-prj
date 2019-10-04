@@ -11,7 +11,8 @@ export class AccSGenerateRequestComponent implements OnInit {
 
   private sub: any;
   rowData: any = {
-    reqId : ''
+    reqId : '',
+    tranTypeCd : ''
   };
 
   checkData : any = { 
@@ -26,10 +27,13 @@ export class AccSGenerateRequestComponent implements OnInit {
       if(Object.keys(params).length != 0){
         console.log(params);
         this.rowData.reqId = params['reqId'];
+        this.rowData.tranTypeCd = params['tranTypeCd'];
         this.checkData.from = params['from'];
         this.checkData.tranId = params['tranId'];
       }
     });
+
+    console.log(this.rowData);
   }
 
 

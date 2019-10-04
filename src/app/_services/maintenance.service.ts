@@ -690,9 +690,10 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnRetAmt", {params});
 	}
 
-	getMtnTreatyComm(year) {
+	getMtnTreatyComm(year,currencyCd) {
 		const params = new HttpParams()
-		     		.set('quoteYear', (year === null || year === undefined ? '' : year));
+		     		.set('quoteYear', (year === null || year === undefined ? '' : year))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnTreatyCommission", {params});
 	}
@@ -1054,9 +1055,10 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClaimReason', params, header);
      }
 
-    getMtnPoolRetHist(retHistId){
+    getMtnPoolRetHist(retHistId,currencyCd){
 		const params = new HttpParams()
-		     		.set('retHistId', (retHistId === null || retHistId === undefined ? '' : retHistId));
+		     		.set('retHistId', (retHistId === null || retHistId === undefined ? '' : retHistId))
+		     		.set('currencyCd', (currencyCd === null || currencyCd === undefined ? '' : currencyCd));
 
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPoolRetHist", {params});
 	}
@@ -1375,5 +1377,14 @@ export class MaintenanceService{
 						.set('fixedTag', (fixedTag === null || fixedTag === undefined ? '' : fixedTag))
     	     			.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnWhTax", {params});
+    }
+
+    saveMtnBussType(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBussType', JSON.stringify(params), header);
     }
 }

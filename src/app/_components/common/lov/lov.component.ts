@@ -95,6 +95,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'acitInvt' || this.passData.selector == 'acitArInvPullout'){
             this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'acitArInvPullout'){
+            this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             console.log(data);
             this.passData.data = data;
@@ -749,8 +752,9 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'shortCode','shortDesc'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode));
+        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
+        console.log(this.passTable.tableData);
       })
     }else if(this.passData.selector == 'slType'){
       this.passTable.tHeader = ['SL Type Code','SL Type Name'];
@@ -893,7 +897,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag  = true;
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
-        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd);
+        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd && e.bank == this.passData.payeeNo);
         this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){

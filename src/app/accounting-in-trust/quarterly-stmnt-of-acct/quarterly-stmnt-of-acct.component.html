@@ -229,4 +229,8 @@
 
 <app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)"></app-ceding-company>
 <app-ceding-company #gnrtCedingCoLOV (selectedData)="setGnrtCedingCo($event)"></app-ceding-company>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll()"></app-sucess-dialog>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="qsoaLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 9999;display: none">
+<div class="qsoaLoader" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 9999;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>

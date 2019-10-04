@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, Renderer2 } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
 import { NotesService } from '@app/_services'
+import { NgForm } from '@angular/forms';
 import { Calendar } from 'primeng/calendar';
 
 @Component({
@@ -7,7 +8,7 @@ import { Calendar } from 'primeng/calendar';
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.css']
 })
-export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
+export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterViewInit {
 
   constructor(private ns: NotesService, private renderer: Renderer2) { }
 
@@ -22,13 +23,15 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	width: '100%',
   	position: 'absolute',
   	display: 'contents',
-    'background-color': 'red'
+    // 'background-color': 'red'
   }
 
   private inputStyle: any = {
   	position: 'relative',
   	backgroundColor: 'transparent',
   }
+
+  @ViewChild('dtPckrForm') dtPckrForm:  NgForm;
 
   @Input() value: string = null;
   @Output() valueChange = new EventEmitter<any>();
@@ -45,7 +48,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   @Input() disabledDates: any[] = null;
   @Input() disabledDays: any[] = null;
   @Input() tabindex: any = null;
-  @Input() name: any = null;
+  @Input() formName: string = 'dp' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
   @Input() table: boolean = false;
 
   @ViewChild(Calendar) cal: Calendar;
@@ -79,6 +82,12 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   		this.spanStyle['position'] = 'relative';
   		this.spanStyle['marginTop'] = '-6px';  	
   	}
+  }
+
+  ngAfterViewInit() {
+    if(!this.table) {
+      this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -198,5 +207,11 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck {
   	}, 0);*/ //REMOVED BECAUSE OF STYLE BUG
 
   	this.onFocus.emit();
+  }
+
+  onTodayClick() {
+    setTimeout(() => {
+      this.value = this.ns.toDateTimeString(0);
+    }, 0);
   }
 }
