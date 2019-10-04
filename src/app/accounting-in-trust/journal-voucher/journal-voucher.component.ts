@@ -133,7 +133,6 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onClickEdit(event){
-    console.log(event)
     this.accountingService.jvFilter = this.tranStat;
     this.router.navigate(['/generate-jv', { tranId            : this.dataInfo.tranId,
                                                 tranTypeCd        : this.dataInfo.trantypeCd,
@@ -156,7 +155,6 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   toGenerateJVEdit(event) {
-    console.log(event)
     this.accountingService.jvFilter = this.tranStat;
     this.router.navigate(['/generate-jv', { tranId            : event.tranId,
                                             tranTypeCd        : event.trantypeCd,
@@ -179,7 +177,6 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data)
     if(data != null){
       this.dataInfo            = data;
       this.dataInfo.tranId     = data.tranId;
