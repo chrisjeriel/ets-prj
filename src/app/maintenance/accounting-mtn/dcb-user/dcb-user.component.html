@@ -1,0 +1,43 @@
+<form #myForm="ngForm">
+<div class="cust-tabs-container">
+    <h4>Maintenance / Accounting / DCB User</h4>
+    <ngb-tabset>
+        <ngb-tab title="DCB User Maintenance">
+            <ng-template ngbTabContent>
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="row">
+                        <div class="col-sm" id="mtn-dcbuser">
+	                	  <app-cust-editable-non-datatable #dcbuser [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+                        </div>
+                    </div>
+	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                        <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input  name="updateDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+</form>
+
+<app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null;"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
