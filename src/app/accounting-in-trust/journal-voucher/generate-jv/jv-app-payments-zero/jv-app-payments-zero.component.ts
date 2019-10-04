@@ -72,6 +72,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   dialogMessage : any;
   totalOverpayment: number = 0;
   cancelFlag: boolean = false;
+  cedingFlag: boolean = false;
 
   constructor(private ns: NotesService, private accService: AccountingService) { }
 
@@ -97,11 +98,12 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       console.log(data)
       this.passData.tableData= [];
       this.totalOverpayment = 0;
-
+      this.cedingFlag = false;
       if(data.zeroBal.length!=0){
         if(this.jvDetail.statusType == 'N'){
           this.passData.disableAdd = false;
         }
+        this.cedingFlag = true;
         this.jvDetails.cedingName = data.zeroBal[0].cedingName;
         this.jvDetails.ceding = data.zeroBal[0].cedingId;
         this.passLov.cedingId = data.zeroBal[0].cedingId;

@@ -152,6 +152,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   dialogMessage : any;
   readOnly:boolean = false;
   cancelFlag: boolean = false;
+  cedingFlag : boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title , private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
@@ -187,7 +188,9 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       console.log(data)
       this.passData.tableData = [];
       this.InwPolBal.tableData = [];
+      this.cedingFlag = false;
       if(data.receivables.length!=0){
+        this.cedingFlag = true;
         this.jvDetails.cedingName = data.receivables[0].cedingName;
         this.jvDetails.cedingId = data.receivables[0].cedingId;
         this.passLov.cedingId = data.payeeCd;
@@ -295,8 +298,23 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   updateClaim(data){
+    var table = '';
+    var deletedFlag = false;
     for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].deleted){
+        deletedFlag = true;
+      }
       this.passData.tableData[i].localAmt = this.passData.tableData[i].clmPaytAmt * this.jvDetail.currRate;
+    }
+
+    if(deletedFlag){
+      table = this.passData.tableData.filter((a)=>{return !a.deleted});
+      if(table.length != 0){
+        this.clmTable.onRowClick(null, table[0]);
+      }else{
+        this.InwPolBal.tableData = [];
+        this.inwTable.refreshTable();
+      }
     }
     this.clmTable.refreshTable();
   }
@@ -320,22 +338,22 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].dueDate          = data.data[i].dueDate;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currCd           = data.data[i].currCd;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].currRate         = data.data[i].currRate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPremAmt      = data.data[i].balPremDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiComm       = data.data[i].balRiComm;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiCommVat    = data.data[i].balRiCommVat;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevCharges      = data.data[i].balChargesDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPremAmt      = data.data[i].prevPremAmt;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiComm       = data.data[i].prevRiComm;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevRiCommVat    = data.data[i].prevRiCommVat;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevCharges      = data.data[i].prevCharges;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevNetDue       = data.data[i].prevNetDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].prevPaytAmt      = data.data[i].totalPayments;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].cumPayment       = data.data[i].cumPayment;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].balance          = data.data[i].prevBalance;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].paytAmt          = data.data[i].balAmtDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].localAmt         = data.data[i].balAmtDue * this.jvDetail.currRate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].balPremDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].balRiComm;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].balRiCommVat;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].balChargesDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].balAmtDue;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].balance - (data.data[i].cumPayment + data.data[i].balAmtDue);
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].paytAmt          = data.data[i].prevBalance;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].localAmt         = data.data[i].prevBalance * this.jvDetail.currRate;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].prevPremAmt;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].prevRiComm;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].prevRiCommVat;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].prevCharges;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].prevBalance;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
     }
     this.inwTable.refreshTable();
     this.clmTable.onRowClick(null,this.clmTable.indvSelect);
@@ -465,11 +483,23 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       }
 
       if(this.passData.tableData[i].deleted){
-        this.jvDetails.delClmOffset.push(this.passData.tableData[i]);
+        //this.jvDetails.delClmOffset.push(this.passData.tableData[i]);
+        if(this.passData.tableData[i].inwPolBal.length == 0){
+          this.jvDetails.delClmOffset.push(this.passData.tableData[i]);
+        }else{
+          for (var a = 0; a < this.passData.tableData[i].inwPolBal.length; a++) {
+            this.jvDetails.delClmOffset.push(this.passData.tableData[i].inwPolBal[a]);
+            this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].cedingId    =  this.jvDetails.ceding;
+            this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].claimId     =  this.passData.tableData[i].claimId;
+            this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].projId     =  this.passData.tableData[i].projId;
+            this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].histNo     =  this.passData.tableData[i].histNo;
+            this.jvDetails.delClmOffset[this.jvDetails.delClmOffset.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+          }
+        }
       }
 
       for (var j = 0; j < this.passData.tableData[i].inwPolBal.length; j++) {
-        if(this.passData.tableData[i].inwPolBal[j].edited && !this.passData.tableData[i].inwPolBal[j].deleted){
+        if(this.passData.tableData[i].inwPolBal[j].edited && !this.passData.tableData[i].inwPolBal[j].deleted && !this.passData.tableData[i].deleted){
           this.jvDetails.saveInwPol.push(this.passData.tableData[i].inwPolBal[j]);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].tranId = this.jvDetail.tranId;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
@@ -510,6 +540,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   update(){
-    console.log('pasok')
+
   }
 }

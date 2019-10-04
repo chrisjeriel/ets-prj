@@ -2454,12 +2454,46 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVEntry",{params});
 	}
 
+	saveAcseJVEntry(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseJVEntry',params,header);
+    }
+
+    approveJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/approveJV',params,header);
+    }
+
+    cancelJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelJV',params,header);
+    }
+
     acitGenerateReport(reportName : string, tranId? : string,  reqId? : string){
          const params = new HttpParams()
              .set('reportName', reportName)
              .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
 			 .set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    acseTaxDetails(tranId : string,  taxType : string){
+         const params = new HttpParams()
+             .set('taxType', taxType)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveTaxDetails',{params});
     }
 
     getAcseOrTransDtl(tranId, billId){

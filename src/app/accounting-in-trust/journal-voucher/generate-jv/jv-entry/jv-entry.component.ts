@@ -303,8 +303,10 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
+    console.log(data);
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
+    this.entryData.particulars = data.defaultParticulars;
     this.tabController(this.entryData.tranTypeCd);
     this.form.control.markAsDirty();
     setTimeout(()=>{
@@ -320,6 +322,7 @@ export class JvEntryComponent implements OnInit {
     console.log(data);
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
+    console.log(this.entryData.jvAmt)
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
@@ -361,6 +364,7 @@ export class JvEntryComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
+      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -561,7 +565,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickCMDM(){
-    this.router.navigate(['/acc-s-credit-debit-memo', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
   onClickAlloc(){
