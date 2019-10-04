@@ -301,7 +301,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             }
             this.selectAllFlag = false;
             this.markAsDirty();
-            $('#cust-scroll').addClass('ng-dirty');
+            //$('#cust-scroll').addClass('ng-dirty');
             this.selected = [];
             this.refreshTable(undefined, true);
             this.search(this.searchString);
@@ -780,7 +780,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     markAsDirty(){
-        $('#cust-scroll form').addClass('ng-dirty');
+        //$('#cust-scroll form').addClass('ng-dirty');
         this.form.forEach(a=>a.control.markAsDirty());
         //this.form.control.markAsDirty();
     }

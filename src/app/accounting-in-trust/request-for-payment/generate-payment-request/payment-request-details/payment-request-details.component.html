@@ -105,7 +105,7 @@
                     <div class="d-flex p-0">
                       <div class="col-sm-2"></div>
                       <div class="col-sm">
-                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr();"
+                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr('tbd');"
                         (clickLOV)="showLOV($event,'lovTrtyTbl')"></app-cust-editable-non-datatable>
                       </div>
                       <div class="col-sm-2"></div>
@@ -115,7 +115,7 @@
                     <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (newClick)="onRowClick($event)" (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" ></app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 8">
-                    <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr('oth');"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
               <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
@@ -139,7 +139,7 @@
         <ng-template ngbTabContent>
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
-              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;defaultData();addDirty('unColTbl');"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;onChangeCurr('unc');addDirty('unColTbl');"></app-cust-editable-non-datatable>
             </div>
             <div class="form-row col-sm-12" style="margin-top: 40px !important;">
               <div class="form-group col-sm-12">
@@ -162,7 +162,7 @@
         <ng-template ngbTabContent>
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
-              <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr();"></app-cust-editable-non-datatable>
+              <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr('oth');"></app-cust-editable-non-datatable>
             </div>
             <div class="form-row col-sm-12" style="margin-top: 40px !important;">
               <div class="form-group col-sm-12">
