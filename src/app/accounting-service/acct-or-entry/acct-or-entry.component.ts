@@ -1135,10 +1135,12 @@ export class AcctOrEntryComponent implements OnInit {
     this.bankAccts = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
-                        this.ms.getMtnBankAcct()).pipe(map(([dcb, bank, bankAcct]) => { return { dcb, bank, bankAcct }; }));
+                        this.ms.getMtnBankAcct(),
+                        this.ms.getMtnParameters('N', 'OR_NO_DIGITS')).pipe(map(([dcb, bank, bankAcct, orNoDigits]) => { return { dcb, bank, bankAcct, orNoDigits }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
            this.orInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
+           this.orInfo.orNoDigits = parseInt(data.orNoDigits.parameters[0].paramValueN);
         //set default dcb bank
            this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultOrBank;
            this.selectedBank.officialName = data.dcb.dcbUserList[0].orBankName;

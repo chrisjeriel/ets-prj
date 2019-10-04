@@ -210,8 +210,8 @@ export class AccountingService {
 			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
     		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
 		}else if('PRQ' == tranClass){
-			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
-			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','prevBalance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
+			this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','prevBalance','returnAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'];
 		}
 		return Object.create(this.passDataInwPolBal);
 	}
@@ -2453,4 +2453,79 @@ export class AccountingService {
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
 		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVEntry",{params});
 	}
+
+	saveAcseJVEntry(params){
+         let header : any = {
+         	headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseJVEntry',params,header);
+    }
+
+    getAcsePrqTrans(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePrqTrans',{params});	
+	}
+
+	saveAcsePrqTrans(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+        };
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePrqTrans',params,header);
+    } 
+
+    approveJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/approveJV',params,header);
+    }
+
+    cancelJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelJV',params,header);
+    }
+
+    acitGenerateReport(reportName : string, tranId? : string,  reqId? : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			 .set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    acseTaxDetails(tranId : string,  taxType : string){
+         const params = new HttpParams()
+             .set('taxType', taxType)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveTaxDetails',{params});
+    }
+
+    getAcseOrTransDtl(tranId, billId){
+    	const params = new HttpParams()
+    		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+    		.set('billId', (billId == null || billId == undefined ? '' : billId));
+    	return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveAcseOrTransDtl",{params});
+    }
+
+    saveAcseOrTransDtl(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrTransDtl',params,header);
+    }
+
 }

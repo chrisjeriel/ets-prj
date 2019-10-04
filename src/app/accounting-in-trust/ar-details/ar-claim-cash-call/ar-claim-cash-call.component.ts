@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { ARInwdPolBalDetails } from '@app/_models';
@@ -13,7 +13,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
   templateUrl: './ar-claim-cash-call.component.html',
   styleUrls: ['./ar-claim-cash-call.component.css']
 })
-export class ArClaimCashCallComponent implements OnInit {
+export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
@@ -89,10 +89,12 @@ export class ArClaimCashCallComponent implements OnInit {
   savedData: any[] = [];
   deletedData: any[] = [];
 
-  constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  payorData: any;
+
+  constructor(private titleService: Title, private accountingService: AccountingService, public ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Claim Cash Call");
+    /*this.titleService.setTitle("Acct-IT | Claim Cash Call");
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true ];
@@ -102,7 +104,19 @@ export class ArClaimCashCallComponent implements OnInit {
     }
     //this.retrievePaytType();
     this.retrieveClmRecover();
-    //this.getCurrency();
+    //this.getCurrency();*/
+    this.ms.getCedingCompany(this.record.cedingId).subscribe(
+      (data:any)=>{
+        data.cedingCompany[0].cedingRepresentative = data.cedingCompany[0].cedingRepresentative.filter(a=>{return a.defaultTag === 'Y'});
+        this.payorData = data.cedingCompany[0];
+        this.payorData.business = this.record.bussTypeName;
+        console.log(data);
+      }
+    );
+  }
+
+  ngAfterViewInit(){
+    setTimeout(()=>{this.emitCreateUpdate.emit(this.record);},0);
   }
 
   retrievePaytType(){
@@ -166,7 +180,7 @@ export class ArClaimCashCallComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt = selected[i].reserveAmt == null ? selected[i].tsiAmt : selected[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt = selected[i].reserveAmt == null ? 0 : selected[i].reserveAmt;
       this.passData.tableData[this.passData.tableData.length - 1].localAmt = this.passData.tableData[this.passData.tableData.length - 1].cashcallAmt * selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['claimNo'];
     }

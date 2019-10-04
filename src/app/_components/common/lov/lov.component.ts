@@ -92,8 +92,11 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'paytReqList'){
             this.dialogMessage = 'This Payment Request is being processed for payment in another transaction. Please finalize the transaction with Check Voucher No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
-          }else if(this.passData.selector == 'acitInvt'){
+          }else if(this.passData.selector == 'acitInvt' || this.passData.selector == 'acitArInvPullout'){
             this.dialogMessage = 'This Investment (Placement) is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'acitArInvPullout'){
+            this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             console.log(data);
@@ -188,6 +191,7 @@ export class LovComponent implements OnInit {
     let selects:any[] = [];
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
+      console.log(this.passData);
     }
     else{
       selects = this.passTable.tableData.filter(a=>a.checked);
@@ -748,8 +752,9 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'shortCode','shortDesc'];
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
-        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode));
+        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
+        console.log(this.passTable.tableData);
       })
     }else if(this.passData.selector == 'slType'){
       this.passTable.tHeader = ['SL Type Code','SL Type Name'];
@@ -892,7 +897,7 @@ export class LovComponent implements OnInit {
       this.passTable.checkFlag  = true;
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
-        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd);
+        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd && e.bank == this.passData.payeeNo);
         this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
@@ -1084,7 +1089,30 @@ export class LovComponent implements OnInit {
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'mtnGenTax'){
+      this.passTable.tHeader = ['Tax Code', 'Description', 'Rate', 'Amount'];
+      this.passTable.widths = [77,'auto', 77,100]
+      this.passTable.dataTypes = [ 'text','text', 'percent', 'currency'];
+      this.passTable.keys = [ 'taxCd','taxName', 'taxRate', 'amount'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnGenTax(this.passData.taxCd, this.passData.taxName, this.passData.chargeType, this.passData.fixedTag, this.passData.activeTag).subscribe((a:any)=>{
+        //this.passTable.tableData = a["genTaxList"];
+        this.passTable.tableData = a.genTaxList.filter((data)=>{return  this.passData.hide.indexOf(data.taxCd)==-1});
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'mtnWhTax'){
+      this.passTable.tHeader = ['Tax Code', 'Description', 'Rate', 'Amount'];
+      this.passTable.widths = [77,'auto', 77,100]
+      this.passTable.dataTypes = [ 'text','text', 'percent', 'currency'];
+      this.passTable.keys = [ 'taxCd','taxName', 'taxRate', 'amount'];
+      this.passTable.checkFlag = true;
+      this.mtnService.getMtnWhTax(this.passData.taxCd, this.passData.taxName, this.passData.taxType, this.passData.creditableTag, this.passData.fixedTag, this.passData.activeTag).subscribe((a:any)=>{
+        //this.passTable.tableData = a["whTaxList"];
+        this.passTable.tableData = a.whTaxList.filter((data)=>{return  this.passData.hide.indexOf(data.taxCd)==-1});
+        this.table.refreshTable();
+      });
     }
+
 
     this.modalOpen = true;
 	}

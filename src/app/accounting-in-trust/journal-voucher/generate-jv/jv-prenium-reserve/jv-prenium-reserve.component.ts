@@ -82,6 +82,7 @@ export class JvPreniumReserveComponent implements OnInit {
 	dataIndex: any = null;
 	intRate: number;
 	whtaxRate: number;
+	cedingFlag: boolean = false;
 
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
@@ -106,10 +107,12 @@ export class JvPreniumReserveComponent implements OnInit {
 			this.passData.tableData = [];
 			this.totalInterestAmt = 0;
 			this.totalWhtaxAmt = 0;
+			this.cedingFlag = false;
 			if(data.premResRel.length!= 0){
 				if(this.jvDetail.statusType == 'N'){
 					this.passData.disableAdd = false;
 				}
+				this.cedingFlag = true;
 				this.premResData.cedingName = data.premResRel[0].cedingName;
 				this.premResData.cedingId = data.premResRel[0].cedingId;
 				this.check(this.premResData);
@@ -243,10 +246,10 @@ export class JvPreniumReserveComponent implements OnInit {
     }
 
     setCurrency(data){
-    	this.passData.tableData[this.dataIndex].colMG.push('currCd');
+    	//this.passData.tableData[this.dataIndex].colMG.push('currCd');
     	this.passData.tableData[this.dataIndex].edited = true;
     	this.passData.tableData[this.dataIndex].currCd = data.currencyCd;
-    	this.passData.tableData[this.dataIndex].currRt = data.currencyRt;
+    	this.passData.tableData[this.dataIndex].currRate = data.currencyRt;
     	this.table.refreshTable();
     }
 

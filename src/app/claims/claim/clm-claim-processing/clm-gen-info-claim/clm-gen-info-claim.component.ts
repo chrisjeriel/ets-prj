@@ -275,6 +275,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.ns.clearFormGroup();
   }
 
   retrieveClmGenInfo() {
@@ -770,8 +771,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
+
+        this.ns.formGroup.markAsPristine();
         this.myForm.control.markAsPristine();
-        this.dps.forEach(a=>a.markAsPristine());
+        // this.dps.forEach(a=>a.markAsPristine());
       } else if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
         this.dialogMessage = data['errorList'][0].errorMessage;

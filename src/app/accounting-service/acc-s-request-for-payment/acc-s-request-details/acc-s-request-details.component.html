@@ -4,191 +4,92 @@
         <div class="col-sm-8">
             <div class="input-group">
                 <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-3"
-                placeholder="CSR-2018-09-0001" disabled>
-                <label class="form-control-sm col-sm-2">Request Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-3" [value]="date" disabled>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3 dirty" [ngModel]="requestData?.paytReqNo" readonly>
+                <label class="form-control-sm col-sm-2 no-margin">Request Date</label>
+                <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
+                    <datepicker type="datetime" [showIcon]="false" [disabled]="true" [value]="requestData?.reqDate"></datepicker>
+                </div>
                 <label class="form-control-sm col-sm-1">Status</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" placeholder="New" disabled>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="requestData?.reqStatusDesc" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-1">Payee</label>
-                <input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="Engineering Builders Inc." disabled>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" maxlength="500" [ngModel]="requestData?.payee" readonly>
             </div>
         </div>
         <div class="col-sm-4">
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2" disabled>
-                        <option value="PHP">PHP</option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"placeholder="10,000,000.00" disabled="">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-                <select class="form-control form-control-sm cust-sm col-sm-2" disabled>
-                        <option value="PHP">PHP</option>
-                        <option value="EUR">EUR</option>
-                        <option value="USD">USD</option>
-                </select>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" placeholder="10,000,000.00" disabled>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" value="PHP" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.localAmt | number:'1.2-2'" readonly>
             </div>
         </div>
     </div>
 </fieldset>
 
-<!-- <div class="cust-tabs-container border-tab" style="margin-top: 10px;">
-	<ngb-tabset>
-		<ngb-tab *ngIf="paymentType == 'Claim Expense Payment to Adjusters'">
-			<ng-template ngbTabTitle>
-				<div>Claim Expense Payment to Adjuster</div>
-			</ng-template>
-			<ng-template ngbTabContent>
-                <div class="contain">
-				    <app-cust-editable-non-datatable [passData]="AdjustersData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Claim Expense Payment to Other Parties'">
-            <ng-template ngbTabTitle>
-                <div>Claim Expense Payment to Other Parties</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="contain">
-                    <app-cust-editable-non-datatable [passData]="OtherPartyData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Claim Payment to Ceding Company'">
-            <ng-template ngbTabTitle>
-                <div>Claim Payment to Ceding Company</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="contain">
-                    <app-cust-editable-non-datatable [passData]="CedingCompanyData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Inward Policy Balances - Returns'">
-            <ng-template ngbTabTitle>
-                <div>Inward Policy Balances - Return</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="contain">
-                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab *ngIf="paymentType == 'Payment of Service Fee by In-Trust to Service Accounting'">
-            <ng-template ngbTabTitle>
-                <div>Payment of Service Fee</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <div class="contain">
-                    <app-cust-editable-non-datatable [passData]="PremiumReturnData"></app-cust-editable-non-datatable>
-                </div>
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab>
-            <ng-template ngbTabTitle>
-                <div>Others</div>
-            </ng-template>
-            <ng-template ngbTabContent>
-                <app-ar-others></app-ar-others>
-            </ng-template>
-		</ngb-tab>
-    </ngb-tabset>
-</div>
- -->
 
 <div class="cust-tabs-container" style="margin-top:10px !important">
-    <ngb-tabset>
-      <ngb-tab *ngIf="paymentType != 'Others'">
-        <ng-template ngbTabTitle>
-          <ng-container [ngSwitch]="paymentType.toUpperCase()">
-           <div *ngSwitchCase ="'CHECK VOUCHER'">Check Voucher</div>
-              <div *ngSwitchCase ="'PETTY CASH VOUCHER'">Petty Cash Voucher</div>
-              <!-- <div *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">Payment of Risk Management Fee to Employees</div> -->
-              <!-- <div *ngSwitchCase ="'INWARD POLICY BALANCES - RETURNS'">Inward Policy Balances - Returns</div> -->
-          </ng-container>
-        </ng-template>
-        <ng-template ngbTabContent>
-          <div class="input-group cust-border" style="padding-top: 0.6em">
-            <div class="col-sm-12">
-              <ng-container [ngSwitch]="paymentType.toUpperCase()">
-                <ng-container *ngSwitchCase ="'CHECK VOUCHER'">
-                    <app-cust-editable-non-datatable [passData]="checkVoucherData"></app-cust-editable-non-datatable>
-                </ng-container>
-                <ng-container *ngSwitchCase ="'PETTY CASH VOUCHER'">
-                    <div style="position: relative;">
-                      <div style="position: absolute; right: -7px; top: -4px;">
-                        <div class="custom-row-inline-inset" style="margin-top: 0px !important">
-                          <div class="input-group"><!-- 
-                            <label class="form-control-sm col-sm-2">PCV Date:</label>
-                              <label class="form-control-sm col-sm-1">From</label>
-                              <input type="date" class="form-control form-control-sm col-sm-3" [value]="'2019-01-03'">
-                              <label class="form-control-sm col-sm-1">To</label>
-                              <input type="date" class="form-control form-control-sm col-sm-3" [value]="'2019-03-03'"> -->
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <app-cust-editable-non-datatable [passData]="pettyCashVoucherData"></app-cust-editable-non-datatable>
-                </ng-container>
-                <!-- <ng-container *ngSwitchCase ="'PAYMENT OF RISK MANAGEMENT FEE TO EMPLOYEES'">
-                  <div class="row">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10 disabled">
-                      <app-cust-editable-non-datatable [passData]="PRMFEData"></app-cust-editable-non-datatable>
-                    </div>
-                    <div class="col-sm-1"></div>
-                  </div>
-                </ng-container> -->
-              </ng-container>
+    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+        <ngb-tab>
+            <ng-template ngbTabTitle>
+                <div>{{ requestData?.tranTypeDesc }}</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+               <div class="input-group cust-border" style="padding-top: 0.6em">
+                <div class="col-sm-12">
+                    <ng-container [ngSwitch]="true">
+                        <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 5">
+                            <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl></app-cust-editable-non-datatable>
+                        </ng-container>
+                        <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 2">
+                            <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl></app-cust-editable-non-datatable>
+                        </ng-container>
+                    </ng-container>
+                </div>
             </div>
-          </div>
         </ng-template>
-      </ngb-tab>
-      <ngb-tab *ngIf="paymentType.toUpperCase() === 'INWARD POLICY BALANCES'" class="ngb-tab" title="Unapplied Collection">
-        <ng-template ngbTabContent>
-          <div class="input-group cust-border" style="padding-top: 0.6em">
-            <div class="col-sm-12">
-              <app-unapplied-collection></app-unapplied-collection>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab class="ngb-tab" title="Others">
-        <ng-template ngbTabContent>
-          <div class="input-group cust-border" style="padding-top: 0.6em">
-            <div class="col-sm-12">
-              <app-cust-editable-non-datatable [passData]="othersData"></app-cust-editable-non-datatable>
-            </div>
-          </div>
-        </ng-template>
-      </ngb-tab>
-    </ngb-tabset>
-  </div>
+    </ngb-tab>
+</ngb-tabset>
+</div>
 
-
-  <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
-  padding-right: 0px !important;">
-  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-    <div class="custom-row-inline-inset">
-      <div class="form-row" style="margin-bottom: -10px;">
-        <div class="input-group">
-          <label class="form-control-sm col-sm-1">Created By</label>
-          <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-          <label class="form-control-sm col-sm-1">Date Created</label>
-          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
-          <label class="form-control-sm col-sm-1">Last Update By</label>
-          <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-          <label class="form-control-sm col-sm-1">Last Update</label>
-          <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
+<div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="(requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+    <div class="form-group col-sm-12">
+        <div class="text-center">
+          <div class="cust-btn-container">
+            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
         </div>
-      </div>
     </div>
-  </fieldset>
-  </div>
+</div>
+</div>
+
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;padding-right: 0px !important;">
+    <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+        <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+            <label class="form-control-sm col-sm-1">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedTblData?.createUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+            <div class="col-sm dp-cont">
+                <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="selectedTblData?.createDate"></datepicker>
+            </div>
+            <label class="form-control-sm col-sm-1">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedTblData?.updateUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+            <div class="col-sm dp-cont">
+                <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="selectedTblData?.updateDate"></datepicker>
+            </div>
+        </div>
+    </fieldset>
+</div>
+
+
+<app-confirm-save  #con (onYes)="onSave()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/acc-s-request-for-payment'" ></app-cancel-button>
+
+<app-lov #lov [passData]="passData" (selectedData)="setData($event,'pcvdata')" [lovCheckBox]="true"></app-lov>
