@@ -287,9 +287,11 @@ export class WfFormCommonComponent implements OnInit {
 
       this.workFlowManagerService.saveWfmNotes(this.saveNotesParams).subscribe((data: any)=>{
           if (data.errorList.length > 0) {
-            alert("Error during saving");
+            this.dialogIcon = "error";
+            this.successDiag.open();
           } else {
-            alert("Saved successfully.");
+            this.dialogIcon = "success";
+            this.successDiag.open();
             this.loadTable();
           }
       });
@@ -298,9 +300,11 @@ export class WfFormCommonComponent implements OnInit {
 
       this.workFlowManagerService.saveWfmReminders(this.saveReminderParams).subscribe((data: any)=>{
           if (data.errorList.length > 0) {
-            alert("Error during saving");
+            this.dialogIcon = "error";
+            this.successDiag.open();
           } else {
-            alert("Saved successfully.");
+            this.dialogIcon = "success";
+            this.successDiag.open();
             this.loadTable();
           }
       });
