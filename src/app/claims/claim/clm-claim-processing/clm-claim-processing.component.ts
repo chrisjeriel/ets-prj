@@ -8,6 +8,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
   selector: 'app-clm-claim-processing',
@@ -161,6 +162,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   policyListingData: any = {
     tableData: [],
     tHeader: ['Policy No', 'Ceding Company', 'Insured', 'Risk'],
+    sortKeys : ['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
     dataTypes: ['text', 'text', 'text', 'text'],
     keys: ['policyNo', 'cedingName', 'insuredDesc', 'riskName'],
     pageID: 'polList',
@@ -257,7 +259,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     this.polListTbl.overlayLoader = true;
     this.policyListingData.tableData = [];
     this.us.getParListing([/*{key: 'statusDesc', search: 'IN FORCE'},*/ 
-                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '%-000' : this.tempPolNo.join('%-%')},
+                           {key: 'statusArr' , search : ['3','2']},
+                           {key: 'altNo' , search:'0'},
+                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%')},
                            {key: 'riskName', search: !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase()}]).subscribe((data: any)=>{
       //this.clearAddFields();
       console.log(data.policyList.length);
