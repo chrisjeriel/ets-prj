@@ -86,4 +86,13 @@ export class SecurityService {
         };
         return this.http.post(environment.prodApiUrl + '/security-service/saveModules',params,header);
     }
+
+    secEncryption(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/security-service/secEncryption',params,header);
+    }
 }

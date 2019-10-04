@@ -1,8 +1,10 @@
 <style type="text/css">
 	select {
 		position: absolute;
-    	margin-top: 10px;
+    	margin-top: 16px;
     	z-index: 20;
+    	font-size: 13px;
+    	font-weight: 500;
 	}
 
 </style>
@@ -36,7 +38,7 @@
 
 											<div class="input-group col-sm-6" style="padding: 0px;">
 												<label class="form-control-sm col-sm-4">Reminder Date</label>
-												<div class="col-sm dp-cont">
+												<div class="col-sm dp-cont" style="margin-left: 0px !important;">
 													<datepicker [type]="'date'" [showIcon]="true" [value]="reminderDate?.split('T')[0]" (valueChange)="reminderDate=$event+'T'+reminderDate.split('T')[1];"></datepicker>
 												</div>
 												<div class="col-sm-3 dp-cont">
@@ -51,17 +53,25 @@
 											<div class="col-sm-3 dp-cont">
 												<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 											</div> -->
-											
-											<label class="form-control-sm col-sm-2" for="inputAlarm" style="margin: 0 0 0 -5px;">Alarm Time</label>
-											<input type="time" id="inputAlarm" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="alarmDate" (change)=checkValidTime($event); [disabled]="disableAlarmTime">
+
+											<div class="input-group col-sm-6" style="padding: 0px;">
+												<label class="form-control-sm col-sm-4">Alarm Time</label>
+												<div class="col-sm-4 p-cont">
+													<datepicker [type]="'time'" [value]="alarmTime?.split('T')[1]" (valueChange)="alarmTime=alarmTime.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+												</div>
+											</div>
 										</div>
-										<div class="input-group" style="margin: -10px 0 0 0;">
+										<div class="input-group" style="margin: -2px 0 0 0;">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
 											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleReminder">
 										</div>
-										<div class="input-group" style="margin: -10px 0 -20px 0 ! important;">
+										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
 											<textarea id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="reminder"> </textarea>
+										</div>
+										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
+											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="'Quotation Number : ' + policyInfo.quotationNo">
 										</div>
 									</div>
 			                </fieldset>

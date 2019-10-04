@@ -207,8 +207,9 @@ export class UsersComponent implements OnInit {
     // transData
     if(data != null){
       this.transData = data;
-
-      this.getModules(accessLevel);
+      if (data.tranCd != null) {
+        this.getModules(accessLevel);
+      }
     }else{
       this.transData = {};
     }
@@ -219,6 +220,8 @@ export class UsersComponent implements OnInit {
     this.PassDataModuleUserGroup.tableData = [];
 
     if (accessLevel == 'USER') {
+      this.userModules.overlayLoader = true;
+
       this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModule.tableData.push(data.modules[i]);
@@ -229,6 +232,8 @@ export class UsersComponent implements OnInit {
         this.userModules.refreshTable();
       });
     } else if (accessLevel == 'USER_GROUP') {
+      this.userGroupModules.overlayLoader = true;
+
       this.securityService.getModules(accessLevel, null, this.userData.userGrp, this.transData.tranCd, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModuleUserGroup.tableData.push(data.modules[i]);
@@ -241,12 +246,25 @@ export class UsersComponent implements OnInit {
     }
   }
 
+  clearPopupData() {
+      this.PassDataModule.tableData = [];
+      this.PassDataModuleUserGroup.tableData = [];
+      this.PassDataModuleTrans.tableData = [];
+      this.PassDataModuleTransUserGroup.tableData = [];
+      this.userModules.refreshTable();
+      this.userGroupModules.refreshTable();
+      this.userTransactions.refreshTable();
+      this.userGroupTransactions.refreshTable();
+  }
+
   getTransactions(accessLevel) {
       this.PassDataModuleTrans.tableData = [];
       this.PassDataModuleTransUserGroup.tableData = [];
 
 
       if (accessLevel == 'USER') {
+        this.userTransactions.overlayLoader = true;
+
         this.securityService.getTransactions(accessLevel, this.userData.userId, null, null).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTrans.tableData.push(data.transactions[i]);
@@ -257,6 +275,8 @@ export class UsersComponent implements OnInit {
           this.userTransactions.refreshTable();
         });
       } else if (accessLevel == 'USER_GROUP') {
+        this.userGroupTransactions.overlayLoader = true;
+
         this.securityService.getTransactions(accessLevel, null, this.userData.userGrp, null).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTransUserGroup.tableData.push(data.transactions[i]);
@@ -581,33 +601,76 @@ export class UsersComponent implements OnInit {
   }
 
   confirmChangePassword() {
-    this.usersList.indvSelect.edited = true;
-    this.usersList.indvSelect.password = this.changePass.newPassword;
 
-    this.saveUsersList = [];
-    this.saveUsersList.push(this.usersList.indvSelect);
-    this.saveMtnUserParams = {
-        usersList : this.saveUsersList
-    }
+    console.log("this.changePass.oldPassword : " + this.changePass.oldPassword);
+    console.log("this.usersList.indvSelect.password : " + this.usersList.indvSelect.password);
+    console.log("this.changePass.newPassword : " + this.changePass.newPassword);
+    console.log("this.changePass.confirmPassword : " + this.changePass.confirmPassword);
 
-    if (this.saveMtnUserParams.usersList.length > 0) {
-      this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
-          console.log("saveMtnUser return data");
+    if (this.changePass.oldPassword == '' || this.changePass.newPassword == '' || this.changePass.confirmPassword == '') {
+      this.dialogIcon = "error";
+      this.successDialog.open();
+    } else {
+
+      this.securityService.secEncryption(this.changePass.oldPassword).subscribe((data:any)=>{
+          console.log("secEncryption");
           console.log(data);
-          if(data['returnCode'] == 0) {
-            this.dialogIcon = "error";
+
+          if (data.password != this.usersList.indvSelect.password) {
+            this.dialogIcon = "error-message";
+            this.dialogMessage = 'Old password mismatched.';
             this.successDialog.open();
-          } else{
-            this.dialogIcon = "success-message";
-            this.dialogMessage = 'Password changed successfully!';
+            return;
+          }
+
+          if (this.changePass.newPassword != this.changePass.confirmPassword) {
+            this.dialogIcon = "error-message";
+            this.dialogMessage = 'Confirm password mismatched.';
             this.successDialog.open();
-            this.getMtnUsers();
+            return;
+          }
+
+          this.usersList.indvSelect.edited = true;
+          this.usersList.indvSelect.password = this.changePass.newPassword;
+
+          this.saveUsersList = [];
+          this.saveUsersList.push(this.usersList.indvSelect);
+          this.saveMtnUserParams = {
+              usersList : this.saveUsersList
+          }
+
+          if (this.saveMtnUserParams.usersList.length > 0) {
+            this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
+                console.log("saveMtnUser return data");
+                console.log(data);
+                if (data["errorList"].length > 0) {
+                  this.dialogIcon = "error";
+                  this.dialogMessage = data["errorList"][0].errorMessage;
+                  this.successDialog.open();
+                } else {
+                  this.changePass.oldPassword = "";
+                  this.changePass.newPassword = "";
+                  this.changePass.confirmPassword = "";
+                  this.modalService.dismissAll();
+
+                  this.dialogIcon = "success-message";
+                  this.dialogMessage = 'Password changed successfully!';
+                  this.successDialog.open();
+                  this.getMtnUsers();
+                }
+            },
+            (err) => {
+              alert("Exception when calling services.");
+            });
           }
       },
       (err) => {
-        alert("Exception when calling services.");
+          console.log(err);
+          alert("Exception when calling services.");
       });
+
     }
+
   }
 
   changePassword(){
@@ -615,8 +678,8 @@ export class UsersComponent implements OnInit {
   }
 
   userAccess(){
-    $('#userAccess #modalBtn').trigger('click');
     this.getTransactions('USER');
+    $('#userAccess #modalBtn').trigger('click');
   }
 
   userGroupAccess(){
