@@ -152,21 +152,23 @@ export class OrOnlyComponent implements OnInit {
   }
 
   retrieveOrTransDtl(){
-  	this.passData.tableData = [];
+  	//this.passData.tableData = [];
   	this.as.getAcseOrTransDtl(this.record.tranId, 1).subscribe(
   		(data:any)=>{
   			console.log(data.orDtlList);
   			if(data.orDtlList.length !== 0){
-  				//this.passData.tableData = data.orDtList;
-  				for(var i  of data.orDtlList){
+  				this.passData.tableData = data.orDtlList;
+  				/*for(var i  of data.orDtlList){
   					this.passData.tableData.push(i);
-  				}
+  				}*/
+  				this.mainTbl.refreshTable();
   			}
-  			this.mainTbl.refreshTable();
+  			
   		},
   		(error)=>{
   			console.log('An error occured');
   			console.log(error);
+  			this.mainTbl.refreshTable();
   		}
     );
   }
@@ -249,6 +251,14 @@ export class OrOnlyComponent implements OnInit {
     this.selectedItem.taxAllocation = this.passDataGenTax.tableData.concat(this.passDataWhTax.tableData);
   }
 
+  onTableDataChange(data){
+    if(data.key == 'currAmt'){
+      for(var i of this.passData.tableData){
+        i.localAmt = i.currAmt * i.currRate;
+      }
+    }
+  }
+
   onClickSave(){
   	this.confirm.confirmModal();
   }
@@ -309,7 +319,6 @@ export class OrOnlyComponent implements OnInit {
         }else{
           this.dialogIcon = '';
           this.successDiag.open();
-          this.passData.tableData = [];
           this.retrieveOrTransDtl();
           this.mainTbl.refreshTable();
           this.mainTbl.markAsPristine();
@@ -327,17 +336,20 @@ export class OrOnlyComponent implements OnInit {
   }
 
   confirmLeaveTaxAlloc(){
-  	for(var i of this.passDataGenTax.tableData){
-  		if(i.add || i.edited || i.deleted){
-  			return true;
-  		}
-  	}
-  	for(var i of this.passDataWhTax.tableData){
-  		if(i.add || i.edited || i.deleted){
-  			return true;
-  		}
-  	}
-  	return false;
+    /*for(var i of this.passDataGenTax.tableData){
+      if(i.add || i.edited || i.deleted){
+        return true;
+      }
+    }
+    for(var i of this.passDataWhTax.tableData){
+      if(i.add || i.edited || i.deleted){
+        return true;
+      }
+    }*/
+    if(this.genTaxTbl.form.first.dirty || this.whTaxTbl.form.first.dirty){
+      return true;
+    }
+    return false;
   }
 
   /*openLeaveTaxConfirmation(){
