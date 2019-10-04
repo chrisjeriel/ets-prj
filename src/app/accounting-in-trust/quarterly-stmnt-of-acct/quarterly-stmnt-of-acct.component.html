@@ -9,10 +9,10 @@
             			<div class="form-row custom-row-inline-inset">
             				<div class="input-group" style="margin-bottom: -14px ! important">
             					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
-            					<label class="form-control-sm" style="padding-left:20px">Period:</label>
-            					<label class="form-control-sm" style="margin-left: 5px !important">From</label>
+            					<label class="form-control-sm col-sm-1">Period:</label>
+            					<label class="form-control-sm">From</label>
             					<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtFromQtr">
 									<option value="1">1st Quarter</option>
 									<option value="2">2nd Quarter</option>
@@ -20,7 +20,9 @@
 									<option value="4">4th Quarter</option>
 								</select>
 								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtFromYear">
-									<option value="2018">2018</option>
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
 								</select>
 								<label class="form-control-sm" style="margin-left: 5px ! important">To</label>
 						   		<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtToQtr">
@@ -30,7 +32,9 @@
 									<option value="4">4th Quarter</option>
 								</select>
 								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtToYear">
-									<option value="2018">2018</option>
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
 								</select>
 								<button type="button" class="cust col-sm-1" style="margin-left: 20px !important;" (click)="onClickSearch()">Search</button>
 	    					</div>
@@ -75,15 +79,12 @@
 	<div class="modal-body" style="max-width: 1090px !important;">
 		<div *ngIf="!summary" class="custom-row-inline-inset">
 			<div class="input-group">
-				<div class="col-sm-2"></div>
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4"
-				placeholder="Charter Ping An">
-				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Quarter Ending</label>
-				<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-2"
-				value="2018-03-31"> -->
+				<div class="col-sm-1"></div>
+				<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="Charter Ping An" disabled>
+				<label class="form-control-sm col-sm-2">Quarter Ending</label>
 				<div class="dp-cont col-sm-2">
-					<datepicker [type]="'date'" [value]="'2018-03-31'"></datepicker>
+					<datepicker [type]="'date'" [disabled]="true" [value]="'2018-03-31'"></datepicker>
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
@@ -111,15 +112,13 @@
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Company Share on Outstanding Claims</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
-						value="4,703,270.49" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="4,703,270.49" numbers-only readonly>
 						<div class="col-sm-1"></div>
 					</div>
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Loss Reserve Deposit</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"
-						value="581,859.90" numbers-only>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="581,859.90" numbers-only readonly>
 						<div class="col-sm-1"></div>
 					</div>
 				</fieldset>
@@ -128,21 +127,20 @@
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event">
+						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px; font-weight: bold; z-index: 3;" readonly>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" numbers-only style="margin-left: 3px !important; min-width: 142px; font-weight: bold; z-index: 3;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event" readonly>
 					</div>
-					<div class="input-group" style="margin-bottom: -25px !important;margin-top: -20px !important;">
-						<div class="col-sm-6"></div>
-						<div class="col-sm">------------------------------------------------------------------------</div>
+					<div class="input-group" style="margin-bottom: 10px !important; margin-top: -30px !important;">
+						<div class="col-sm-5"></div>
+						<div class="col-sm" style="padding-left: 0; padding-right: 0; border-bottom: 1px dashed; margin-right: 1em;">&nbsp;</div>
 					</div>
 					<div class="input-group">
 						<div class="col-sm-1"></div>
 						<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px;margin-left: 14px; font-weight: bold;">
+						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px; font-weight: bold;" readonly>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event">
+						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event" readonly>
 					</div>
 				</div>
 			</div>
@@ -180,12 +178,12 @@
         <fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 20px !important;">
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Company</label>
-            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired placeholder="All">
-				<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired placeholder="All" [(ngModel)]="gnrtCedingName">
+				<div class="text-search-ico"><a><i class="fa fa-search" (click)="showGnrtCedingCoLOV()"></i></a></div>
             </div>
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Quarter</label>
-            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired>
+            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtQtr">
 					<option value="1">First Quarter</option>
 					<option value="2">Second Quarter</option>
 					<option value="3">Third Quarter</option>
@@ -193,17 +191,16 @@
 				</select>
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-2">Year</label>
-				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired>
-					<option value="2017">2017</option>
-					<option value="2018">2018</option>
-					<option value="2019">2019</option>
-					<option value="2020">2020</option>
+				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtYear">
+					<ng-container *ngFor="let y of yearParamOpts">
+						<option [value]="y">{{ y }}</option>
+					</ng-container>
 				</select>
             </div>
         </fieldset>
     </div>
     <div footer class="w-100 text-center">
-    	<button class="cust-btn" type="button" (click)="showConfModal()"><a>Generate QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="saveAcitQsoa()"><a>Generate QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>View QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
     </div>
@@ -231,3 +228,9 @@
 </app-modal>
 
 <app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)"></app-ceding-company>
+<app-ceding-company #gnrtCedingCoLOV (selectedData)="setGnrtCedingCo($event)"></app-ceding-company>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll()"></app-sucess-dialog>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="qsoaLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 9999;display: none">
+<div class="qsoaLoader" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 9999;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>

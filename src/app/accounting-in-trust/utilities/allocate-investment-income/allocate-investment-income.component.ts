@@ -171,7 +171,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
+  	this.titleService.setTitle("Acct-IT | Allocate Investment Income");
   	this.getYearList();
   }
 

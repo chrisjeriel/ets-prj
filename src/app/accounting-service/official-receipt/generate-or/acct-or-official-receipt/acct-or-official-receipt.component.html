@@ -4,45 +4,46 @@
     <div class="col-sm-6">
       <div class="input-group">
         <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">O.R. No.</label>
-        <input type="text" value="000001" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
-        style="z-index: 1 !important;">
+        <input type="text" [ngModel]="record.formattedOrNo" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+        style="z-index: 1 !important;" readonly>
         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">O.R. Date</label>
-        <input type="datetime-local" value="2018-10-01T10:45" class="form-control form-control-sm cust-sm col-sm"
-        style="z-index: 1 !important;">
+        <div class="col-sm" style="padding: 0px">
+            <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.orDate"></datepicker>
+        </div>
         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
-        <input type="text" value="2018-001-55" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
-        style="z-index: 1 !important;">
+        <input type="text" [ngModel]="record.dcbNo" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+        style="z-index: 1 !important;" readonly>
       </div>
       <div class="input-group">
         <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
-        <input type="text" value="AFP GENERAL INSURANCE CORP." class="form-control form-control-sm cust-sm col-sm"
-        placeholder=""  >
+        <input type="text" [ngModel]="record.payor" class="form-control form-control-sm cust-sm col-sm"
+        placeholder="" readonly>
       </div>
     </div>
     <div class="col-sm-3">
       <div class="input-group">
         <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment
         Type</label>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" [value]="paymentType">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" [ngModel]="record.tranTypeName" readonly>
       </div>
       <div class="input-group">
         <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
-        <input type="text" value="New" class="form-control form-control-sm cust-sm col-sm" placeholder="">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="record.orStatDesc" readonly>
       </div>
     </div>
     
     <div class="col-sm-3">
       <div class="input-group">
         <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
-        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-        placeholder="">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [ngModel]="record.currCd" readonly>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+        placeholder="" [ngModel]="record.orAmt | number: '1.2-2'" readonly>
       </div>
       <div class="input-group">
         <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-        <input type="text" value="PHP" class="form-control form-control-sm cust-sm col-sm-2" placeholder="">
-        <input type="text" value="1,642,857.14" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-        placeholder="">
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+        placeholder="" [ngModel]="record.orAmt * record.currRate | number: '1.2-2'" readonly>
       </div>
     </div>
   </div>
@@ -85,42 +86,24 @@
       <ngb-tabset>
         <ngb-tab>
           <ng-template ngbTabTitle>
-            <ng-container [ngSwitch]="paymentType.toUpperCase()">
-              <div *ngSwitchCase="'OFFICIAL RECEIPT'">Official Receipt</div>
-              <div *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">Official Receipt Service Fee Local</div>
-              <div *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE MUNICH RE'">Official Receipt Service Fee Munich Re</div>
+            <ng-container [ngSwitch]="paymentType">
+              <div *ngSwitchCase="'1'">Official Receipt</div>
+              <div *ngSwitchCase="'2'">Official Receipt Service Fee Local</div>
+              <div *ngSwitchCase="'3'">Official Receipt Service Fee Munich Re</div>
             </ng-container>
           </ng-template>
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">
-                <ng-container [ngSwitch]="paymentType.toUpperCase()">
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT'">
-                    <div class="input-group">
-                      <div class="col-sm">
-                          <app-cust-editable-non-datatable [passData]="passDataOfficialReceipt">
-                            <button controls-r class="cust-btn" (click)="openTaxAllocation()" class="cust cust-btn" style="min-width: 130px !important;">Tax Allocation</button>
-                          </app-cust-editable-non-datatable>
-                      </div>
-                    </div>
+                <ng-container [ngSwitch]="paymentType">
+                  <ng-container *ngSwitchCase="'1'">
+                    <app-or-only [record]="record"></app-or-only>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE LOCAL'">
-                    <div class="input-group">
-                        <div class="col-sm-2"></div>
-                        <div class="col-sm-8">
-                            <app-cust-editable-non-datatable [passData]="passDataServiceFeeLocal"></app-cust-editable-non-datatable>
-                        </div>
-                        <div class="col-sm-2"></div>
-                    </div>
+                  <ng-container *ngSwitchCase="'2'">
+                    <app-or-service-fee-local></app-or-service-fee-local>
                   </ng-container>
-                  <ng-container *ngSwitchCase="'OFFICIAL RECEIPT SERVICE FEE MUNICH RE'">
-                      <div class="input-group">
-                          <div class="col-sm-2"></div>
-                          <div class="col-sm-8">
-                              <app-cust-editable-non-datatable [passData]="passDataServiceFeeMunichRe"></app-cust-editable-non-datatable>
-                          </div>
-                          <div class="col-sm-2"></div>
-                      </div>
+                  <ng-container *ngSwitchCase="'3'">
+                    <app-or-service-fee-munich-re></app-or-service-fee-munich-re>
                   </ng-container>
                 </ng-container>
               </div>
@@ -163,7 +146,7 @@
  </fieldset>
 </div>
 
-<app-modal id="taxAlloc" class="d-none" [modalSize]="'sm'">
+<!-- <app-modal id="taxAlloc" class="d-none" [modalSize]="'sm'">
   <div header>Tax Allocation</div>
   <div body>
     <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
@@ -184,4 +167,4 @@
         </div>
     </div>
   </div>
-</app-modal>  
+</app-modal>   -->

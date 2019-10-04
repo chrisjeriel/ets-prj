@@ -223,7 +223,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.loading = true;
 		}
 		this.us.retrievePolHoldCover(policyId,'', holdCovId).subscribe((data: any)=>{
-			console.log(data.policy.holdCoverList);
+			console.log(data.policy);
 			for(let rec of data.policy.holdCoverList){
 				//if(rec.status !== '6' && rec.status !== '5'){
 					this.polHoldCoverParams.policyId				= rec.policyId;

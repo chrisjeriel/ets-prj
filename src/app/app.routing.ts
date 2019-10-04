@@ -176,6 +176,8 @@ import { BankComponent } from './maintenance/accounting-mtn/bank/bank.component'
 import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/bank-account.component';
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
+import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
+
 const appRoutes: Routes = [
 
 
@@ -233,7 +235,7 @@ const appRoutes: Routes = [
     { path: 'pol-util-installment', component: UpdateInstallmentComponent },
     /*{ path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },*/
     { path: 'accounting', component: AccountingComponent },
-    { path: 'accounting-in-trust', component: AccountingInTrustComponent },
+    { path: 'accounting-in-trust', component: AccountingInTrustComponent, canDeactivate: [UnsavedChangesGuard]  },
     { path: 'acct-ar-listings', component: AcctArListingsComponent },
     { path: 'check-voucher', component: CheckVoucherComponent },
     { path: 'generate-cv', component: GenerateCvComponent },
@@ -241,8 +243,8 @@ const appRoutes: Routes = [
     { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
     { path: 'journal-voucher', component: JournalVoucherComponent },
-    { path: 'generate-jv', component: GenerateJvComponent },
-    { path: 'accounting-entries', component: AccountingEntriesComponent },
+    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
+    { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'trial-balance', component: TrialBalanceComponent },
     { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     { path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard] },
@@ -362,6 +364,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-acct', component: AccountingMtnComponent},
     { path: 'mtn-bank-acct', component: BankAccountComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

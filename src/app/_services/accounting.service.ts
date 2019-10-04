@@ -2329,6 +2329,75 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitSoaDue",{params});
 	}
 
+
+	getACSEJvList(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params});
+	}
+
+	saveAcitQsoa(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+	}
+
+	/*
+	 *
+	 *
+	 *	ACCOUNTING SERVICE STARTS HERE
+     *
+     *
+     */
+
+     getAcseOrList(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+          		 .set('orType', '')
+                 .set('orNo','')
+                 .set('payor', '')
+                 .set('orDateFrom', '')
+                 .set('orDateTo','')
+                 .set('tranTypeName','')
+                 .set('orStatDesc','')
+                 .set('particulars','')
+                 .set('orAmtFrom','')
+                 .set('orAmtTo','')
+                 // .set('paginationRequest.position',null)
+                 // .set('paginationRequest.count',null)
+                 // .set('sortRequest.sortKey',null)
+                 // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrList',{params});
+	}
+
+	getAcseOrEntry(tranId, orNo?){
+		const params = new HttpParams()
+			.set('tranId', tranId)
+			.set('orNo', (orNo == null || orNo == undefined ? '' : orNo));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrEntry',{params});
+	}
+
+	saveAcseOrEntry(params){
+    	 let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrEntry',params,header);
+    }
+
 	getAcsePaytReqList(searchParams: any[]){
 		var params;
 			if(searchParams.length < 1){
@@ -2368,7 +2437,6 @@ export class AccountingService {
              })
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePaytReq',params,header);
- 
     }
 
     updateAcsePaytReqStat(params){
@@ -2378,8 +2446,22 @@ export class AccountingService {
              })
          };
    		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcsePaytReqStat',params,header);
- 
-    } 
+    }
+
+    getACSEJvEntry(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVEntry",{params});
+	}
+
+	saveAcseJVEntry(params){
+         let header : any = {
+         	headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseJVEntry',params,header);
+    }
 
     getAcsePrqTrans(reqId?,itemNo?){
 		const params = new HttpParams()
@@ -2393,18 +2475,65 @@ export class AccountingService {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
-         };
-
-         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePrqTrans',params,header);
- 
+        };
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePrqTrans',params,header);
     } 
 
-    getAcseCv(tranId?){
+    approveJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/approveJV',params,header);
+    }
+
+    cancelJvService(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	        'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelJV',params,header);
+    }
+
+    acitGenerateReport(reportName : string, tranId? : string,  reqId? : string){
+         const params = new HttpParams()
+             .set('reportName', reportName)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			 .set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+        return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
+    }
+
+    acseTaxDetails(tranId : string,  taxType : string){
+         const params = new HttpParams()
+             .set('taxType', taxType)
+             .set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+        return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveTaxDetails',{params});
+    }
+
+    getAcseOrTransDtl(tranId, billId){
+    	const params = new HttpParams()
+    		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+    		.set('billId', (billId == null || billId == undefined ? '' : billId));
+    	return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveAcseOrTransDtl",{params});
+    }
+
+    saveAcseOrTransDtl(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrTransDtl',params,header);
+    }
+
+	getAcseCv(tranId?){
 		const params = new HttpParams()
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
 	}
-
+	
 	saveAcseCv(params){
          let header : any = {
              headers: new HttpHeaders({

@@ -214,6 +214,11 @@ export class JvInvestmentRollOverComponent implements OnInit {
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].tranId = this.jvDetail.tranId;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].destInvtId = this.passData.tableData[i].invtId;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].invtId = this.passData.tableData[i].srcInvtId
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].invtAmt = this.passData.tableData[i].srcInvtAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].incomeAmt = this.passData.tableData[i].srcIncomeAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].bankCharge = this.passData.tableData[i].srcBankCharge;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].whtaxAmt = this.passData.tableData[i].srcWhtaxAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].maturityValue = this.passData.tableData[i].srcMaturityValue;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].localAmt = this.passData.tableData[i].maturityValue * this.jvDetail.currRate;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);

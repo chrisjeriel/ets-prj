@@ -412,8 +412,12 @@ export class CustNonDatatableComponent implements OnInit {
              for (let data of this.displayData) {
                 if(data != this.fillData){
                     console.log('test');
-                    data.checked = value;
-                    this.selected.push(data);
+                    if(data.preventDefault !== undefined && data.preventDefault){
+                        this.selected.push(data);
+                    }else{
+                        data.checked = value;
+                        this.selected.push(data);
+                    }
                 }
             }
             this.rowClick.emit(this.selected);

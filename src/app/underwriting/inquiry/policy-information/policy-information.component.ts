@@ -58,6 +58,7 @@ export class PolicyInformationComponent implements OnInit {
   policyNo:string;
   fromClm: boolean = false;
   clmInfo: any = null;
+  clmInq: boolean = false;
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
@@ -69,6 +70,7 @@ export class PolicyInformationComponent implements OnInit {
       if(data['clmInfo']) {
         this.fromClm = true;
         this.clmInfo = JSON.parse(data['clmInfo']);
+        this.clmInq = data['isInquiry'];
       }
     })
 
@@ -144,6 +146,7 @@ export class PolicyInformationComponent implements OnInit {
           this.router.navigate(
                     ['/claims-claim', {
                         from: this.clmInfo.claimId == '' ? 'add' : 'edit',
+                        readonly: this.clmInq,
                         claimId: this.clmInfo.claimId,
                         claimNo: this.clmInfo.claimNo,
                         policyId: this.policyInfo.policyId,
@@ -154,6 +157,8 @@ export class PolicyInformationComponent implements OnInit {
                     }],
                     { skipLocationChange: true }
           );
+
+          this.clmInq = false;
         }
    }
  }

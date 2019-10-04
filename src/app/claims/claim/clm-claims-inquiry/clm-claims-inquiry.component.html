@@ -28,7 +28,7 @@
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Co Claim No</label>
-									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coClaimNo">
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coClmNo">
 								</div>
 								<div class="input-group cust-ig" >
 									<label class="form-control-sm col-sm-2">Type of Cession</label>
@@ -56,6 +56,10 @@
 									<label class="form-control-sm col-sm-2">Risk</label>
 									<textarea  readonly class="form-control form-control-sm col-sm" readonly style="font-size: 11px; min-height: 38px;">{{ selected?.riskName }}</textarea>
 								</div>
+								<div class="input-group cust-ig" *ngIf="selected.reasonCd != null && selected.reasonCd != undefined" style="margin-top: 3px !important; margin-bottom: -34px !important;">
+			                        <label class="form-control-sm col-sm-2" style="margin-bottom: 0;"></label>
+			                        <i style="font-size: 13px; color: red;">{{selected?.reasonCd+' - '+selected?.reasonDesc}}</i>
+			                    </div>
 							</div>
 						</fieldset>
 					</div>

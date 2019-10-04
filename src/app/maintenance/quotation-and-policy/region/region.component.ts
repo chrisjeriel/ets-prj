@@ -30,7 +30,7 @@ export class RegionComponent implements OnInit {
   passData: any = {
 		tableData:[],
 		tHeader				:["Region Code", "Description","Active","Remarks"],
-		dataTypes			:["reqNumber", "reqText", "checkbox", "text"],
+		dataTypes			:["number", "text", "checkbox", "text"],
 		nData:{
 			regionCd        : null,
 			description     : null,
@@ -150,7 +150,8 @@ export class RegionComponent implements OnInit {
   onClickSave(cancelFlag?){
 
       if(this.checkFields()){
-        let regionCds:string[] = this.regionTable.passData.tableData.map(a=>a.regionCd);
+        let regionCds:string[] = this.regionTable.passData.tableData.map(a=>parseInt(a.regionCd));
+        console.log(regionCds);
           if(regionCds.some((a,i)=>regionCds.indexOf(a)!=i)){
             this.dialogMessage = 'Unable to save the record. Region Code must be unique.';
             this.dialogIcon = 'error-message';
@@ -163,6 +164,7 @@ export class RegionComponent implements OnInit {
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
         this.successDialog.open();
+        this.tblHighlightReq('#mtn-region',this.passData.dataTypes,[0,1]);
       }
   }
 
@@ -183,7 +185,7 @@ export class RegionComponent implements OnInit {
     console.log(this.cancelFlag);
      if(this.cancelFlag){
         if(this.checkFields()){
-          let regionCds:string[] = this.regionTable.passData.tableData.map(a=>a.regionCd);
+          let regionCds:string[] = this.regionTable.passData.tableData.map(a=>parseInt(a.regionCd));
           if(regionCds.some((a,i)=>regionCds.indexOf(a)!=i)){
             this.cancelFlag = false;
             this.dialogMessage = 'Unable to save the record. Region Code must be unique.';
@@ -198,6 +200,7 @@ export class RegionComponent implements OnInit {
           this.dialogMessage="Please fill up required fields.";
           this.dialogIcon = "error";
           this.successDialog.open();
+          this.tblHighlightReq('#mtn-region',this.passData.dataTypes,[0,1]);
         }
      } else {
        this.saveDataRegion();
@@ -237,6 +240,7 @@ export class RegionComponent implements OnInit {
                   this.dialogIcon = "success";
                   this.successDialog.open();
                   this.getMtnRegion();
+                  $('.ng-dirty').removeClass('ng-dirty');
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();
@@ -310,6 +314,26 @@ export class RegionComponent implements OnInit {
 
   change(event){
     $('#cust-table-container').addClass('ng-dirty');
+  }
+
+   tblHighlightReq(el, dataTypes, reqInd) {
+    setTimeout(() => {
+      $(el).find('tbody').children().each(function() {
+        $(this).children().each(function(i) {
+          if(reqInd.includes(i)) {
+            var val;
+            if(dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time' || dataTypes[i] === 'number') {
+              val = $(this).find('input').val();
+              highlight($(this), val);
+            }
+          }
+        });
+      });
+
+      function highlight(td, val) {
+        td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+      }
+    }, 0);
   }
 
 

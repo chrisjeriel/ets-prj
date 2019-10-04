@@ -101,19 +101,21 @@ export class JvAccountingEntriesComponent implements OnInit {
   cancelFlag: boolean = false;
   rowData:any;
   detailDatas :any;
+  errorMessage: any;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
+    this.passData.nData = { tranId: '', entryId: '', glAcctId: '', glShortCd: '', glShortDesc:'', slTypeCd: '', slTypeName: '', slCd: '', slName: '', creditAmt: 0, debitAmt: 0, foreignDebitAmt: 0, foreignCreditAmt: 0, autoTag: 'N', createUser: '', createDate: '', updateUser: '', updateDate: '', showMG:1, edited: true };
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
-    console.log(this.jvDetails)
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
       this.readOnly = false;
     }else {
+      this.notBalanced = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -149,7 +151,8 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
 
       this.variance = this.debitTotal - this.creditTotal;
-      if(this.variance === 0){
+      this.variance = Math.round(this.variance * 100)/100;
+      if(this.variance === 0 && this.jvDetails.statusType == 'N'){
         this.notBalanced = false;
       }
       this.table.refreshTable();
@@ -166,17 +169,18 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
       }
       this.variance = this.debitTotal - this.creditTotal;
+      this.variance = Math.round(this.variance * 100)/100
 
       if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(!this.validDetailPayment()){
-        this.dialogMessage = 'Payment for selected claim is not proportion to payment for Treaty Balance.';
+        this.dialogMessage = this.errorMessage;
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(!this.validPaytAmt()){
-        this.dialogMessage = 'Paid Amount must not greater than Hist Amount.';
+        this.dialogMessage = this.errorMessage;
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(this.errorFlag){
@@ -257,7 +261,26 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   validDetailPayment() : boolean{
-    if(this.jvType === 5){
+    
+    if(this.jvType === 1){
+        var errorFlag = false;
+        for(var i = 0 ; i < this.detailDatas.length; i++){
+          if(!this.detailDatas[i].deleted && this.detailDatas[i].prevNetDue < this.detailDatas[i].totalPayt){
+            errorFlag = true;
+            break;
+          }
+        }
+
+        if(errorFlag){
+          this.errorMessage = 'Total payment amount for Policy cannot be greater than Net Due.';
+          return false;
+        }else{
+          return true;
+        }
+
+    }else if(this.jvType === 2){
+      return true;
+    }else if(this.jvType === 5){
       var totalPaid = 0;
       for (var i = 0; i < this.detailDatas.length; i++) {
         totalPaid = 0;
@@ -269,6 +292,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           break;
         }
       }
+      this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
     }else if(this.jvType === 6){
       var inwPayment = 0;
@@ -277,11 +301,11 @@ export class JvAccountingEntriesComponent implements OnInit {
         for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
           inwPayment += this.detailDatas[i].acctOffset[j].paytAmt;
         }
-
-        if(inwPayment - this.detailDatas[i].balanceAmt == 0){
+        if(Math.round((this.detailDatas[i].balanceAmt - inwPayment)  * 100)/100 == 0){
           return true;
         }
       }
+      this.errorMessage = 'Payment for selected policy is not proportional to payment for Treaty Balance.';
       return false;
     }else if(this.jvType === 7){
       var inwPayment = 0;
@@ -294,42 +318,97 @@ export class JvAccountingEntriesComponent implements OnInit {
           return true;
         }
       }
+      this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
     }
+    return true;
   }
 
   validPaytAmt() : boolean{
-    if(this.jvType === 5){
+    var errorFlag = false;
+    if(this.jvType === 1){
       for (var i = 0; i < this.detailDatas.length; i++) {
-        for (var j = 0; j < this.detailDatas[i].clmOffset.length; j++) {
-          if(this.detailDatas[i].clmOffset[j].clmPaytAmt <= this.detailDatas[i].clmOffset[j].reserveAmt){
-            return true;
+        if(!this.detailDatas[i].deleted){
+          if((this.detailDatas[i].prevNetDue > 0 &&  this.detailDatas[i].paytAmt < 0 &&
+              this.detailDatas[i].paytAmt + this.detailDatas[i].cumPayment < 0)  ||
+             
+             (this.detailDatas[i].prevNetDue < 0 && this.detailDatas[i].paytAmt > 0 &&
+              this.detailDatas[i].paytAmt + this.detailDatas[i].cumPayment > 0)
+            ){
+            errorFlag = true;
             break;
           }
         }
       }
-       return false;
-    }else if(this.jvType === 6){
-      /*var inwPayment = 0;
+
+      if(errorFlag){
+        this.errorMessage = 'Refund must not exceed cummulative payments.';
+        return false;
+      }else{
+        return true;
+      }
+    }else if(this.jvType === 5){
       for (var i = 0; i < this.detailDatas.length; i++) {
-        inwPayment = 0;
-        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
-          inwPayment += this.detailDatas[i].acctOffset[j].paytAmt;
+        for (var j = 0; j < this.detailDatas[i].clmOffset.length; j++) {
+          if(this.detailDatas[i].clmOffset[j].clmPaytAmt > this.detailDatas[i].clmOffset[j].reserveAmt){
+            errorFlag = true;
+            break;
+          }
         }
 
-        if(inwPayment - this.detailDatas[i].balanceAmt == 0){
+        if(errorFlag){
+          this.errorMessage = 'Paid Amount must not greater than Hist Amount.';
+          return false;
+        }else{
           return true;
         }
       }
-      return false;*/
+    }else if(this.jvType === 6){
+
+      /*for (var i = 0; i < this.detailDatas.length; i++) {
+        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
+          if(!this.detailDatas[i].acctOffset[j].deleted){
+            if((this.detailDatas[i].acctOffset[j].prevNetDue > 0 &&  this.detailDatas[i].acctOffset[j].paytAmt < 0 &&
+                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment < 0)  ||
+               
+               (this.detailDatas[i].acctOffset[j].prevNetDue < 0 && this.detailDatas[i].acctOffset[j].paytAmt > 0 &&
+                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > 0)
+              ){
+                errorFlag = true;
+                break;
+            }
+          }
+        }
+      }*/
+
+      for (var i = 0; i < this.detailDatas.length; i++) {
+        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
+          if(!this.detailDatas[i].acctOffset[j].deleted){
+            if(this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > this.detailDatas[i].acctOffset[j].prevNetDue){
+              errorFlag = true;
+              break;
+            }
+          }
+        }
+      }
+
+      if(errorFlag){
+        this.errorMessage = 'Paid Amount must not greater than Net Due.';
+        return false;
+      }else{
+        return true;
+      }
+
     }else if(this.jvType === 7){
       for (var i = 0; i < this.detailDatas.length; i++) {
         if(this.detailDatas[i].clmPaytAmt <= this.detailDatas[i].reserveAmt){
           return true;
         }
       }
+      this.errorMessage = 'Paid Amount must not greater than Hist Amount.';
       return false;
     }
+    return true;
   }
 
   retrieveJVDetails(){
@@ -339,18 +418,17 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(this.jvType === 1){
       this.accountingService.getJVInwPolBal(this.jvDetails.tranId,'').subscribe((data:any) => {
         var datas = data.inwPolBal;
-
+        this.detailDatas = data.inwPolBal;
         for(var i = 0; i < datas.length; i++){
           total += datas[i].paytAmt;
         }
-
+        console.log(total);
         if(total != this.jvDetails.jvAmt){
           this.errorFlag = true;
         }
       });
     }else if(this.jvType === 2){
       this.accountingService.getAcitJVZeroBal(this.jvDetails.tranId,'').subscribe((data:any) => {
-        console.log(data)
         var datas = data.zeroBal;
         for (var i = 0; i < datas.length; i++) {
           total += datas[i].paytAmt;
@@ -389,7 +467,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].balanceAmt
         }
 
-        if(total !== this.jvDetails.jvAmt){
+        if(total + this.jvDetails.jvAmt !== 0){
           this.errorFlag = true;
         }
       });
@@ -397,7 +475,6 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getAcctTrtyBal(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.acctTreatyBal;
         this.detailDatas = data.acctTreatyBal;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }
@@ -409,7 +486,6 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getRecievableLosses(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.receivables;
         this.detailDatas = data.receivables;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].clmPaytAmt
           }
@@ -420,7 +496,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 8){
       this.accountingService.getJvInvRollOver(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invtRollOver;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].maturityValue
           }
@@ -431,9 +506,8 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 9){
       this.accountingService.getJvInvPullout(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.pullOut;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
-            total += datas[i].maturityValue
+            total += datas[i].srcMaturityValue
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;
@@ -442,7 +516,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 10){
       this.accountingService.getInvPlacement(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invPlacement;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].invtAmt
           }
@@ -453,7 +526,6 @@ export class JvAccountingEntriesComponent implements OnInit {
     }else if(this.jvType === 11){
       this.accountingService.getTrtyInv(this.jvDetails.tranId).subscribe((data:any) =>{
         var datas = data.acctTreatyBal;
-        console.log(datas);
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }

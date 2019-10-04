@@ -61,6 +61,26 @@
     	font-weight: 400;
 	}
 
+	.accordion .card {
+	  width: 98% !important;
+	}
+
+	div.card {
+	  width: 98% !important;
+	}
+
+	.ngbAccordion {
+	  width: 98% !important;
+	}
+
+	#relRecordsGrp {
+		margin-right: 10px !important;
+	}
+
+	#relRecordsGrp:hover {
+		background-color: #79797936 !important;
+	}
+
 </style>
 
 <div id="noteDiv" style="border: 1px solid #c5c3c3; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll ">
@@ -91,7 +111,6 @@
 						<a class="note-title" href="#">{{ notes.title }}</a>
 						<br/>
 						<a class="note-date-time" href="#">{{ notes.createDate | date:'MMM dd, yyyy hh:mm a' }}</a>
-
 						<div class="float-right" *ngIf="noteBool">
 								<button class="btn-action"(click)="updateNoteModal(   notes.noteId,
 																					  notes.title,
@@ -153,13 +172,39 @@
 						</div>
 
 						<p style="margin: 0 0 0px 0 ! important">{{ notes.note }}</p>
+
+
 					  </div>
-					    <div  *ngIf="noteBool">
-						<p style="font-size: 12px">Assigned by <b>{{ notes.createUser }}</b> - {{ notes.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    <div  *ngIf="noteBool && notes.createUser != null">
+						<p style="font-size: 12px; margin-bottom: 0px !important;">Assigned by <b>{{ notes.createUser }}</b> - {{ notes.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
 					    </div>
 
-					    <div  *ngIf="!noteBool">
-						<p style="font-size: 12px">Assigned to <b>{{ notes.assignedTo }}</b> - {{ notes.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    <div  *ngIf="!noteBool && notes.assignedTo != null">
+						<p style="font-size: 12px; margin-bottom: 0px !important;">Assigned to <b>{{ notes.assignedTo }}</b> - {{ notes.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    </div>
+
+					    <div *ngIf="notes.relatedRecordList != null" style="width: 98% !important;">
+					    	<p style="border-bottom: 1px solid #00000020;">
+						    	<ngb-accordion #acc="ngbAccordion">
+								  	<ngb-panel>
+			                            <ng-template ngbPanelTitle>
+			                                <fa name="folder-open"></fa>&nbsp;Related Records
+			                            </ng-template>
+			                            <ng-template ngbPanelContent>
+			                            	<div *ngFor="let relRecord of notes.relatedRecordList;" id="relRecordsGrp">
+			                            		<button *ngIf="relRecord.module == 'QUOTATION'" (click)="redirectToQuoteGenInfo(relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'QUOTATION'" />
+
+			                                	<button *ngIf="relRecord.module == 'POLICY'" (click)="redirectToPolGenInfo(relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'POLICY'" />
+
+			                                	<button *ngIf="relRecord.module == 'CLAIM'" [routerLink]="['users-maintenance']" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'CLAIM'" />
+			                            	</div>
+			                            </ng-template>
+			                    	</ngb-panel>
+							    </ngb-accordion>
+						    </p>
 					    </div>
 					    <hr/>
 					</li>

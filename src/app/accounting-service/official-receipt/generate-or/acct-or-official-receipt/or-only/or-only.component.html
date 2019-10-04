@@ -1,0 +1,46 @@
+<div class="input-group">
+  <div class="col-sm">
+      <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" #mainTbl>
+        <button controls-r class="cust-btn" [disabled]="disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+      </app-cust-editable-non-datatable>
+  </div>
+</div>
+
+<div class="form-row" style="margin-top: 10px !important">
+    <div class="form-group col-sm">
+      <div class="col-md-13 text-center">
+        <br>
+        <div class="cust-btn-container">
+          <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+          <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<app-modal id="taxAlloc" class="d-none" #taxAlloc>
+  <div header>Tax Allocation</div>
+  <div body>
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">General Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="openGenTaxLOV($event)" [passData]="passDataGenTax" #genTaxTbl ></app-cust-editable-non-datatable>
+    </fieldset>
+
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">Withholding Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="openWhTaxLOV($event)" [passData]="passDataWhTax" #whTaxTbl></app-cust-editable-non-datatable>
+    </fieldset>
+  </div>
+  <div footer class="w-100">
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container" >
+            <button type="button" class="cust-btn" (click)="taxAlloc.closeModal()"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="taxAlloc.closeModal()"><a>Return</a></button>
+        </div>
+    </div>
+  </div>
+</app-modal>
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" ></app-cancel-button>

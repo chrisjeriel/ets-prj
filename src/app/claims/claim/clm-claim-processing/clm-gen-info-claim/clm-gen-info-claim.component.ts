@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy, ChangeDetectorRef, ViewChildren, QueryList } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -17,6 +17,7 @@ import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lo
 import { forkJoin, Subscription } from 'rxjs';
 import { tap, mergeMap, map } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
+import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
 
 @Component({
   selector: 'app-clm-gen-info-claim',
@@ -39,6 +40,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
   @ViewChild('usersLov') usersLov: MtnUsersComponent;
   @ViewChild(NgForm) myForm: NgForm;
+  @ViewChildren(DatepickerComponent) dps : QueryList<DatepickerComponent>;
 
   line: string;
   sub: any;
@@ -273,6 +275,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.ns.clearFormGroup();
   }
 
   retrieveClmGenInfo() {
@@ -768,7 +771,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.disableAdjusterBtn = false;
 
         this.retrieveClmGenInfo();
+
+        this.ns.formGroup.markAsPristine();
         this.myForm.control.markAsPristine();
+        // this.dps.forEach(a=>a.markAsPristine());
       } else if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
         this.dialogMessage = data['errorList'][0].errorMessage;

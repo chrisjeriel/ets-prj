@@ -66,7 +66,7 @@ export class ClaimRecoveryComponent implements OnInit {
     widths: [100,1,1,1, 150, 250, 1,1, 100, 120, 120, 120, 120, 120],
     keys: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt', 'recOverAmt', 'localAmt'],
     //pinKeysLeft: ['claimNo', 'histNo', 'histCategoryDesc', 'histTypeDesc', 'paymentFor', 'insuredDesc', 'exGratia', 'currCd', 'currRate', 'reserveAmt', 'cumulativeAmt'],
-    uneditable: [false,true,true,true,false,true,true,true, true, true,true,false, true],
+    uneditable: [false,true,true,true,false,true,true,true, true, true,true,true, true],
     //small: true
   };
 
@@ -91,7 +91,7 @@ export class ClaimRecoveryComponent implements OnInit {
   constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-IT | Claim Cash Call");
+    this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
     console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){

@@ -159,53 +159,53 @@ export class JvEntryComponent implements OnInit {
     this.accService.getJVEntry(this.tranId).subscribe((data:any) => {
       console.log(data)
       if(data.transactions != null){
-        this.entryData = data.transactions.jvListings;
-        this.tranId = this.entryData.tranId;
-        this.jvDatas.tranId = data.transactions.tranId;
-        this.jvDatas.tranYear = data.transactions.tranYear;
-        this.jvDatas.tranClassNo  = data.transactions.tranClassNo;
-        this.entryData.jvDate = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
-        this.entryData.refnoDate = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
+        this.entryData              = data.transactions.jvListings;
+        this.tranId                 = this.entryData.tranId;
+        this.jvDatas.tranId         = data.transactions.tranId;
+        this.jvDatas.tranYear       = data.transactions.tranYear;
+        this.jvDatas.tranClassNo    = data.transactions.tranClassNo;
+        this.entryData.jvDate       = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
+        this.entryData.refnoDate    = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
         this.entryData.approvedDate = this.entryData.approvedDate == null ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
-        this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
-        this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
-        this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+        this.entryData.jvAmt        = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
+        this.entryData.localAmt     = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+        this.entryData.currRate     = this.decimal.transform(this.entryData.currRate,'1.6-6');
 
         //this.entryData.jvNo = this.entryData.jvNo;
         //this.entryData.jvNo = String(this.entryData.jvNo).padStart(8,'0');
-        this.entryData.createDate = this.ns.toDateTimeString(this.entryData.createDate);
-        this.entryData.updateDate = this.ns.toDateTimeString(this.entryData.updateDate);
+        this.entryData.createDate   = this.ns.toDateTimeString(this.entryData.createDate);
+        this.entryData.updateDate   = this.ns.toDateTimeString(this.entryData.updateDate);
 
         this.cancelJVBut = false;
-        this.UploadBut = false;
-        this.allocBut = false;
-        this.dcBut = false;
+        this.UploadBut   = false;
+        this.allocBut    = false;
+        this.dcBut       = false;
 
         if(this.entryData.jvStatus == 'A'){
           this.approvedStat = true;
-          this.disableBut = true;
-          this.printBut = false;
+          this.disableBut   = true;
+          this.printBut     = false;
         }
 
         if(this.entryData.jvStatus == 'F'){
           this.approvedStat = true;
-          this.disableBut = true;
-          this.approveBut = false;
-          this.printBut = false;
+          this.disableBut   = true;
+          this.approveBut   = false;
+          this.printBut     = false;
         }
         
         if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P'){
           this.approvedStat = true;
-          this.disableBut = true;
-          this.approveBut = true;
+          this.disableBut   = true;
+          this.approveBut   = true;
         }
 
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
         this.disableTab.emit(false);
       }else{
-        this.entryData.jvDate = this.ns.toDateTimeString(0);
+        this.entryData.jvDate   = this.ns.toDateTimeString(0);
         this.entryData.jvStatus = 'New';
         this.tabController(0);
         this.onChange.emit({ type: ''});
@@ -303,8 +303,10 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
+    console.log(data);
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
+    this.entryData.particulars = data.defaultParticulars;
     this.tabController(this.entryData.tranTypeCd);
     this.form.control.markAsDirty();
     setTimeout(()=>{
@@ -320,6 +322,7 @@ export class JvEntryComponent implements OnInit {
     console.log(data);
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
+    console.log(this.entryData.jvAmt)
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
@@ -361,6 +364,7 @@ export class JvEntryComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
+      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -445,6 +449,7 @@ export class JvEntryComponent implements OnInit {
     this.sendData.tranId = this.tranId;
     this.sendData.jvNo = parseInt(this.entryData.jvNo);
     this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.tranType = this.entryData.tranTypeCd;
     this.sendData.updateUser = this.ns.getCurrentUser();
     this.sendData.updateDate = this.ns.toDateTimeString(0);
 
@@ -560,7 +565,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickCMDM(){
-    this.router.navigate(['/acc-s-credit-debit-memo', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 
   onClickAlloc(){

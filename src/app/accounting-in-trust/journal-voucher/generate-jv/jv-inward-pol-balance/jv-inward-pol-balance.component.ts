@@ -176,6 +176,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   soaIndex: number;
   disable: boolean = true;
   totalBalance: number = 0;
+  cedingFlag: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -203,11 +204,12 @@ export class JvInwardPolBalanceComponent implements OnInit {
       var datas = data.inwPolBal;
       this.passData.tableData = [];
       this.totalBalance = 0;
-      console.log(datas.length)
+      this.cedingFlag = false;
       if(datas.length != 0){
         if(this.jvDetail.statusType == 'N'){
           this.passData.disableAdd = false;
         }
+        this.cedingFlag = true;
         this.jvDetails.cedingName = datas[0].cedingName;
         this.jvDetails.ceding = datas[0].cedingId;
         this.passLov.cedingId = datas[0].cedingId;
@@ -222,10 +224,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
              this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paytAmt'];
           }
         }
-
-          this.table.refreshTable();
       }
-      
+      this.table.refreshTable();
     });
   }
 
@@ -304,24 +304,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    var errorFlag = false;
-    for(var i = 0 ; i < this.passData.tableData.length; i++){
-      if(!this.passData.tableData[i].deleted && this.passData.tableData[i].prevNetDue < this.passData.tableData[i].paytAmt){
-        errorFlag = true;
-      }
-    }
-
-    if(errorFlag){
-      this.dialogMessage = 'Payment amount cannot be greater than Net Due.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.refundError()){
-      this.dialogMessage = 'Refund must not exceed cummulative payments.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else{
-      this.confirm.confirmModal();
-    }
+    this.confirm.confirmModal();
   }
 
   update(data){
@@ -394,8 +377,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
   }
-  keys:['policyNo','instNo','coRefNo','effDate','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
- 
+
   refundError():boolean{
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(!this.passData.tableData[i].deleted){
