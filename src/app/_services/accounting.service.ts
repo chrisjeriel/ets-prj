@@ -2534,6 +2534,28 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
 	}
 
+	getAcseCvList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranId','')
+				.set('cvGenNo','')
+				.set('cvDateFrom','')
+				.set('cvDateTo','')
+				.set('cvStatusDesc','')
+				.set('payee','')
+				.set('particulars','')
+				.set('cvAmt','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
+	}
+
 	saveAcseCv(params){
          let header : any = {
              headers: new HttpHeaders({
@@ -2550,5 +2572,22 @@ export class AccountingService {
              })
          };
    		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcseCvStat',params,header);
+    }
+
+    getAcseCvPaytReqList(tranId?,itemNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCvPaytReqList',{params});	
+	}
+
+	saveAcseCvPaytReqList(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
     }	
 }
