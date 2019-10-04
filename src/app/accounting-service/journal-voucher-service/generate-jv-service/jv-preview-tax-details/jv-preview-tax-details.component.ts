@@ -5,6 +5,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-jv-preview-tax-details',
@@ -17,6 +19,8 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
      @ViewChild('wthTable') wthTable: CustEditableNonDatatableComponent;
      @ViewChild('genlovMdl') genlovMdl: LovComponent;
      @ViewChild('wthlovMdl') wthlovMdl: LovComponent;
+     @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
       passData: any = {
        tableData: [],
@@ -36,9 +40,9 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
                payor: '',
                baseAmt: 0,
                taxAmt: 0,
-               createUser: '',
+               createUser: this.ns.getCurrentUser(),
                createDate: '',
-               updateUser: '',
+               updateUser: this.ns.getCurrentUser(),
                updateDate: ''
        },
        magnifyingGlass: ['taxCd'],
@@ -46,6 +50,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
        pageID: 'genTax',
        addFlag: true,
        deleteFlag: true,
+       uneditable:[true,true,true,true,true,true,false,false,false],
        total: [null,null,null,null, null, null, 'Total', 'baseAmt', 'taxAmt'],
        pageLength:5,
        widths: [1,1,50,150,'auto',100,200,150,150],
@@ -59,6 +64,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
        tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
        dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
        nData: {
+               showMG:1,
                tranId: '',
                taxType: 'W',
                taxSeqNo: '',
@@ -70,11 +76,13 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
                payor: '',
                baseAmt: 0,
                taxAmt: 0,
-               createUser: '',
+               createUser: this.ns.getCurrentUser(),
                createDate: '',
-               updateUser: '',
+               updateUser: this.ns.getCurrentUser(),
                updateDate: ''
        },
+       magnifyingGlass: ['taxCd'],
+       uneditable:[true,true,true,true,true,false,false,false],
        keys: ['taxSeqno', 'genType', 'taxCd', 'whtTaxDesc', 'whtRate', 'payor', 'baseAmt', 'taxAmt'],
        pageID: 'whTax',
        addFlag: true,
@@ -113,11 +121,23 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
 
   passLovWTH: any = {
     selector: 'mtnWhTax',
-    cedingId: '',
+    taxCd: '',
+    taxName:'',
+    taxType:'',
+    creditableTag:'',
+    fixedTag:'',
+    activeTag:'',
     hide: []
   }
 
+  taxDetailsParams : any = {
+    saveTaxDtl: []
+  }
+
   forkSub: any;
+  dialogIcon : any;
+  dialogMessage : any;
+  cancelFlag: boolean = false;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -156,11 +176,72 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
   }
 
   setWHTax(data){
-
+    this.passDataWHT.tableData = this.passDataWHT.tableData.filter((a) => a.showMG != 1);
+    for (var i = 0; i < data.data.length; i++) {
+      this.passDataWHT.tableData.push(JSON.parse(JSON.stringify(this.passDataWHT.nData)));
+      this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].showMG = 0;
+      this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].taxCd = data.data[i].taxCd;
+      this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].whtTaxDesc = data.data[i].taxName;
+      this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].baseAmt = data.data[i].amount == null? 0:data.data[i].amount;
+    }
+    this.wthTable.refreshTable();
   }
 
   openLOV(data){
-    console.log(data)
     this.genlovMdl.openLOV();
+  }
+
+  openWHT(data){
+    this.wthlovMdl.openLOV();
+  }
+
+  onClickSave(){
+    $('#SaveTax #confirm-save #modalBtn2').trigger('click');
+  }
+
+  prepareData(){
+    this.taxDetailsParams.saveTaxDtl = [];
+
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+        this.taxDetailsParams.saveTaxDtl.push(this.passData.tableData[i]);
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].tranId = this.jvDetails.tranId;
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+    }
+
+    for (var j = 0; j < this.passDataWHT.tableData.length; j++) {
+      if(this.passDataWHT.tableData[j].edited && !this.passDataWHT.tableData[j].deleted){
+        this.taxDetailsParams.saveTaxDtl.push(this.passDataWHT.tableData[j]);
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].tranId = this.jvDetails.tranId;
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].createDate = this.ns.toDateTimeString(this.passDataWHT.tableData[j].createDate);
+        this.taxDetailsParams.saveTaxDtl[this.taxDetailsParams.saveTaxDtl.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+    }
+  }
+
+  saveTaxDtl(cancel?){
+    this.cancelFlag = cancel !== undefined;
+    this.prepareData();
+
+    this.accountingService.saveAcseTaxDetails(this.taxDetailsParams).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVDetails();
+      }
+    });
+  }
+
+  cancel(){
+    this.prepareData();
+    console.log(this.taxDetailsParams)
+    //this.cancelBtn.clickCancel();
   }
 }
