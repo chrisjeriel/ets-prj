@@ -133,28 +133,30 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onClickEdit(event){
+    console.log(event)
     this.accountingService.jvFilter = this.tranStat;
-    this.router.navigate(['/generate-jv', { tranId            : event.tranId,
-                                                tranTypeCd        : event.trantypeCd,
-                                                closeDateTran     : event.transactions.closeDate, 
-                                                createDateTran    : event.transactions.createDate, 
-                                                createUserTran    : event.transactions.createUser, 
-                                                deleteDateTran    : event.transactions.deleteDate,
-                                                postDateTran      : event.transactions.postDate, 
-                                                tranClassTran     : event.transactions.tranClass, 
-                                                tranClassNoTran   : event.transactions.tranClassNo, 
-                                                tranDateTran      : event.transactions.tranDate, 
-                                                tranIdTran        : event.transactions.tranId, 
-                                                tranStatTran      : event.transactions.tranStat, 
-                                                tranYearTran      : event.transactions.tranYear, 
-                                                updateDateTran    : event.transactions.updateDate, 
-                                                updateUserTran    : event.transactions.updateUser, 
+    this.router.navigate(['/generate-jv', { tranId            : this.dataInfo.tranId,
+                                                tranTypeCd        : this.dataInfo.trantypeCd,
+                                                closeDateTran     : this.dataInfo.transactions.closeDate === null ? '' : this.dataInfo.transactions.closeDate, 
+                                                createDateTran    : this.dataInfo.transactions.createDate, 
+                                                createUserTran    : this.dataInfo.transactions.createUser, 
+                                                deleteDateTran    : this.dataInfo.transactions.deleteDate  === null ? '' : this.dataInfo.transactions.deleteDate,
+                                                postDateTran      : this.dataInfo.transactions.postDate  === null ? '' : this.dataInfo.transactions.postDate, 
+                                                tranClassTran     : this.dataInfo.transactions.tranClass, 
+                                                tranClassNoTran   : this.dataInfo.transactions.tranClassNo, 
+                                                tranDateTran      : this.dataInfo.transactions.tranDate, 
+                                                tranIdTran        : this.dataInfo.transactions.tranId, 
+                                                tranStatTran      : this.dataInfo.transactions.tranStat, 
+                                                tranYearTran      : this.dataInfo.transactions.tranYear, 
+                                                updateDateTran    : this.dataInfo.transactions.updateDate, 
+                                                updateUserTran    : this.dataInfo.transactions.updateUser, 
                                                 from              : 'jv-listing', 
                                                 exitLink          : '/journal-voucher'}], 
                                               { skipLocationChange: true });
   }
 
   toGenerateJVEdit(event) {
+    console.log(event)
     this.accountingService.jvFilter = this.tranStat;
     this.router.navigate(['/generate-jv', { tranId            : event.tranId,
                                             tranTypeCd        : event.trantypeCd,
@@ -177,6 +179,7 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data)
     if(data != null){
       this.dataInfo            = data;
       this.dataInfo.tranId     = data.tranId;
