@@ -168,6 +168,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
     for (var i = 0; i < data.data.length; i++) {
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].taxCd = data.data[i].taxCd;
       this.passData.tableData[this.passData.tableData.length - 1].genTaxDesc = data.data[i].taxName;
       this.passData.tableData[this.passData.tableData.length - 1].baseAmt = data.data[i].amount == null? 0:data.data[i].amount;
@@ -180,6 +181,7 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
     for (var i = 0; i < data.data.length; i++) {
       this.passDataWHT.tableData.push(JSON.parse(JSON.stringify(this.passDataWHT.nData)));
       this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].showMG = 0;
+      this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].edited = true;
       this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].taxCd = data.data[i].taxCd;
       this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].whtTaxDesc = data.data[i].taxName;
       this.passDataWHT.tableData[this.passDataWHT.tableData.length - 1].baseAmt = data.data[i].amount == null? 0:data.data[i].amount;
