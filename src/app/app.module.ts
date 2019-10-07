@@ -455,6 +455,8 @@ import { OrServiceFeeMunichReComponent } from './accounting-service/official-rec
 import { OrOnlyComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-only/or-only.component';
 import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
+import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
+import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.component';
 
 @NgModule({
     imports: [
@@ -916,6 +918,8 @@ import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-typ
         OrOnlyComponent,
         PrintModalMtnAcctComponent,
         BusinessTypeComponent,
+        DcbUserComponent,
+        MtnBankAcctComponent,
     ],
 
   	providers: [
