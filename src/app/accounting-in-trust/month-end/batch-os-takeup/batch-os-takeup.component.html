@@ -22,13 +22,16 @@
         						<div class="custom-row-inline-inset">
         							<div class="input-group">
         								<label class="form-control-sm cust-sm col-sm-4">As of</label>
-        								<input type="date" class="form-control form-control-sm cust-sm col-sm-5">
+        								<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm-5"> -->
+                                        <div class="dp-cont col-sm-5">
+                                          <datepicker [type]="'date'" [(value)]="eomDate"></datepicker>
+                                        </div>
         							</div>
         						</div>
     							<div class="form-group col-sm text-center" style="margin-bottom: 8px;">
 	    						      <div class="cust-btn-container">
-		    						        <button type="button" class="cust cust-btn" style="width: 100%"><a>Book O/S</a></button>
-		    						        <button type="button" class="cust cust-btn" style="width: 100%" disabled><a>Print</a></button>
+		    						        <button type="button" class="cust-btn" style="width: 100%" (click)="onClickBookOS()"><a>Book O/S</a></button>
+		    						        <button type="button" class="cust-btn" style="width: 100%" disabled><a>Print</a></button>
 	    						      </div>
     						    </div>
         					</fieldset>
@@ -57,3 +60,5 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
+
+<app-sucess-dialog [message]="dialogMsg" [icon]="dialogIcon"></app-sucess-dialog>
