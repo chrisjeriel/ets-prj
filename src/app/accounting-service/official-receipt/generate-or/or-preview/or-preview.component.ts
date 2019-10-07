@@ -46,7 +46,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @Input() paymentType: string = "";
   @Input() record: any = {};
 
-  createUpdate: any;
   forkSub: any;
 
   cancelFlag: boolean = false;
