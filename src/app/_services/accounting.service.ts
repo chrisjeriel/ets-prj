@@ -2529,12 +2529,50 @@ export class AccountingService {
     }
 
     saveAcseTaxDetails(params){
-         let header : any = {
+    	let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
    		return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveTaxDetails',params,header);
+    }
+
+
+	getAcseCv(tranId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
+	}
+
+	getAcseCvList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranId','')
+				.set('cvGenNo','')
+				.set('cvDateFrom','')
+				.set('cvDateTo','')
+				.set('cvStatusDesc','')
+				.set('payee','')
+				.set('particulars','')
+				.set('cvAmt','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCv',{params});
+	}
+
+	saveAcseCv(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+   		return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCv',params,header);
     }
 
     getAcseAcctEntries(tranId,entryId?,glAcctId?,slTypeCd?,slCd?){
@@ -2549,12 +2587,21 @@ export class AccountingService {
 	}
 
 	saveAcseAcctEntries(params){
-         let header : any = {
+		 let header : any = {
              headers: new HttpHeaders({
                  'Content-Type': 'application/json'
              })
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcctEntries',JSON.stringify(params),header);
+    }
+
+    updateAcseCvStat(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcseCvStat',params,header);
     }
 
     getAcseAttachments(tranId){
@@ -2570,5 +2617,25 @@ export class AccountingService {
 		    })
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAttachments',JSON.stringify(params),header);
-	} 
+	}
+   		
+
+    getAcseCvPaytReqList(tranId?,itemNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCvPaytReqList',{params});	
+	}
+
+	saveAcseCvPaytReqList(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
+    }	
+
+
 }

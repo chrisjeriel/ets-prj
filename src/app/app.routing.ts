@@ -177,6 +177,8 @@ import { BankAccountComponent } from './maintenance/accounting-mtn/bank-account/
 import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utilities/allocate-investment-income/allocate-investment-income.component';
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
+import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
+
 
 const appRoutes: Routes = [
 
@@ -365,6 +367,7 @@ const appRoutes: Routes = [
     { path: 'mtn-bank-acct', component: BankAccountComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

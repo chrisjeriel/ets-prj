@@ -35,7 +35,7 @@ export class ArOthersComponent implements OnInit {
   passData: any = {
     tableData: [],
     tHeader: ['Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text','text','text','text','percent','currency','currency'],
+    dataTypes: ['reqTxt','text','text','text','percent','reqCurrency','currency'],
     nData: {
       tranId: '',
       billId: '',
