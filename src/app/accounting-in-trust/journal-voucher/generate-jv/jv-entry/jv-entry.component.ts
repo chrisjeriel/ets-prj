@@ -131,27 +131,27 @@ export class JvEntryComponent implements OnInit {
         this.newJV();
       }else{
         this.tranId = params.tranId;
-        this.jvDatas.closeDate = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.createDate = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
-        this.jvDatas.createUser = params.createUserTran, 
-        this.jvDatas.deleteDate = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.postDate = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.tranClass = params.tranClassTran, 
+        this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
+        this.jvDatas.createUser  = params.createUserTran, 
+        this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        this.jvDatas.tranClass   = params.tranClassTran, 
         this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran), 
-        this.jvDatas.tranDate = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
-        this.jvDatas.tranId = parseInt(params.tranIdTran), 
-        this.jvDatas.tranStat = params.tranStatTran, 
-        this.jvDatas.tranYear = parseInt(params.tranYearTran), 
-        this.jvDatas.updateDate = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
-        this.jvDatas.updateUser = params.updateUserTran;
+        this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
+        this.jvDatas.tranId      = parseInt(params.tranIdTran), 
+        this.jvDatas.tranStat    = params.tranStatTran, 
+        this.jvDatas.tranYear    = parseInt(params.tranYearTran), 
+        this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
+        this.jvDatas.updateUser  = params.updateUserTran;
       }
     });
     this.cancelJVBut = true;
-    this.approveBut = true;
-    this.printBut = true;
-    this.UploadBut = true;
-    this.allocBut = true;
-    this.dcBut = true;
+    this.approveBut  = true;
+    this.printBut    = true;
+    this.UploadBut   = true;
+    this.allocBut    = true;
+    this.dcBut       = true;
     this.retrieveJVEntry();
   }
 
@@ -221,58 +221,58 @@ export class JvEntryComponent implements OnInit {
   newJV(){
     this.getDefName();
     setTimeout(() => {
-        this.jvDatas.closeDate = null; 
-        this.jvDatas.createDate = this.ns.toDateTimeString(0)
-        this.jvDatas.createUser =  this.ns.getCurrentUser();
-        this.jvDatas.deleteDate = null;
-        this.jvDatas.postDate = null;
-        this.jvDatas.tranClass = 'JV'; 
-        this.jvDatas.tranTypeCd = null; 
-        this.jvDatas.tranClassNo = null; 
-        this.jvDatas.tranDate = this.ns.toDateTimeString(0), 
-        this.jvDatas.tranId = null; 
-        this.jvDatas.tranStat = 'O'; 
-        this.jvDatas.tranYear = null;
-        this.jvDatas.updateDate = this.ns.toDateTimeString(0), 
-        this.jvDatas.updateUser = this.ns.getCurrentUser();
+        this.jvDatas.closeDate          = null; 
+        this.jvDatas.createDate         = this.ns.toDateTimeString(0)
+        this.jvDatas.createUser         =  this.ns.getCurrentUser();
+        this.jvDatas.deleteDate         = null;
+        this.jvDatas.postDate           = null;
+        this.jvDatas.tranClass          = 'JV'; 
+        this.jvDatas.tranTypeCd         = null; 
+        this.jvDatas.tranClassNo        = null; 
+        this.jvDatas.tranDate           = this.ns.toDateTimeString(0), 
+        this.jvDatas.tranId             = null; 
+        this.jvDatas.tranStat           = 'O'; 
+        this.jvDatas.tranYear           = null;
+        this.jvDatas.updateDate         = this.ns.toDateTimeString(0), 
+        this.jvDatas.updateUser         = this.ns.getCurrentUser();
 
-        this.entryData.jvYear = '';
-        this.entryData.jvNo =  '';
-        this.entryData.jvStatus =  'N';
-        this.entryData.jvStatusName =  'New';
-        this.entryData.tranTypeName = '';
-        this.entryData.jvDate = this.ns.toDateTimeString(0);
-        this.entryData.autoTag = 'N';
-        this.entryData.refNo = '';
-        this.entryData.refnoTranId = '';
-        this.entryData.refNoDate = '';
-        this.entryData.jvType =  '';
-        this.entryData.particulars =  '';
-        this.entryData.currCd = 'PHP';
-        this.entryData.currRate = 1;
-        this.entryData.jvAmt = 0;
-        this.entryData.localAmt = 0;
-        this.entryData.preparedBy = this.ns.getCurrentUser();
-        this.entryData.preparedDate = this.ns.toDateTimeString(0);
-        this.entryData.approvedBy = '';
-        this.entryData.approvedName ='';
+        this.entryData.jvYear           = '';
+        this.entryData.jvNo             =  '';
+        this.entryData.jvStatus         =  'N';
+        this.entryData.jvStatusName     =  'New';
+        this.entryData.tranTypeName     = '';
+        this.entryData.jvDate           = this.ns.toDateTimeString(0);
+        this.entryData.autoTag          = 'N';
+        this.entryData.refNo            = '';
+        this.entryData.refnoTranId      = '';
+        this.entryData.refNoDate        = '';
+        this.entryData.jvType           =  '';
+        this.entryData.particulars      =  '';
+        this.entryData.currCd           = 'PHP';
+        this.entryData.currRate         = 1;
+        this.entryData.jvAmt            = 0;
+        this.entryData.localAmt         = 0;
+        this.entryData.preparedBy       = this.ns.getCurrentUser();
+        this.entryData.preparedDate     = this.ns.toDateTimeString(0);
+        this.entryData.approvedBy       = '';
+        this.entryData.approvedName     ='';
         this.entryData.approvedPosition = '';
-        this.entryData.approvedDate = '';
-        this.entryData.createUser = '';
-        this.entryData.createDate = '';
-        this.entryData.updateUser = '';
-        this.entryData.updateDate = '';
+        this.entryData.approvedDate     = '';
+        this.entryData.createUser       = '';
+        this.entryData.createDate       = '';
+        this.entryData.updateUser       = '';
+        this.entryData.updateDate       = '';
            
-        this.cancelJVBut = true;
-        this.approveBut = true;
-        this.printBut = true;
-        this.UploadBut = true;
-        this.allocBut = true;
-        this.dcBut = true;
+        this.cancelJVBut  = true;
+        this.approveBut   = true;
+        this.printBut     = true;
+        this.UploadBut    = true;
+        this.allocBut     = true;
+        this.dcBut        = true;
         this.approvedStat = false;
-        this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
-        this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
-        this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+        this.entryData.currRate  = this.decimal.transform(this.entryData.currRate,'1.6-6');
+        this.entryData.jvAmt     = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
+        this.entryData.localAmt  = this.decimal.transform(this.entryData.localAmt,'1.2-2');
         this.disableTab.emit(true);
     },0);
   }
@@ -333,31 +333,31 @@ export class JvEntryComponent implements OnInit {
   }
 
   prepareData(){
-    this.jvDatas.tranIdJv = this.tranId;
-    this.jvDatas.jvYear = this.entryData.jvYear;
-    this.jvDatas.jvNo = parseInt(this.entryData.jvNo);
-    this.jvDatas.jvDate = this.entryData.jvDate;
-    this.jvDatas.jvStatus = this.entryData.jvStatus;
-    this.jvDatas.jvTranTypeCd = this.entryData.tranTypeCd;
-    this.jvDatas.tranTypeName = this.entryData.tranTypeName;
-    this.jvDatas.autoTag = this.entryData.autoTag;
-    this.jvDatas.refnoTranId = this.entryData.refnoTranId == '' ? '': this.entryData.refNoTranId;
-    this.jvDatas.refnoDate = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
-    this.jvDatas.particulars = this.entryData.particulars;
-    this.jvDatas.currCd = this.entryData.currCd;
-    this.jvDatas.currRate =(parseFloat(this.entryData.currRate.toString().split(',').join(''))),
-    this.jvDatas.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
-    this.jvDatas.localAmt = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
-    this.jvDatas.allocTag = this.entryData.allocTag;
-    this.jvDatas.allocTranId = this.entryData.allocTranId;
-    this.jvDatas.preparedBy = this.entryData.preparedBy;
-    this.jvDatas.preparedDate = this.entryData.preparedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.preparedDate);
-    this.jvDatas.approvedBy = this.entryData.approvedBy;
-    this.jvDatas.approvedDate = this.entryData.approvedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.approvedDate);
-    this.jvDatas.createUserJv = this.ns.getCurrentUser();
-    this.jvDatas.createDateJv = this.ns.toDateTimeString(0);
-    this.jvDatas.updateUserJv = this.ns.getCurrentUser();
-    this.jvDatas.updateDateJv = this.ns.toDateTimeString(0);
+    this.jvDatas.tranIdJv       = this.tranId;
+    this.jvDatas.jvYear         = this.entryData.jvYear;
+    this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);
+    this.jvDatas.jvDate         = this.entryData.jvDate;
+    this.jvDatas.jvStatus       = this.entryData.jvStatus;
+    this.jvDatas.jvTranTypeCd   = this.entryData.tranTypeCd;
+    this.jvDatas.tranTypeName   = this.entryData.tranTypeName;
+    this.jvDatas.autoTag        = this.entryData.autoTag;
+    this.jvDatas.refnoTranId    = this.entryData.refnoTranId == '' ? '': this.entryData.refNoTranId;
+    this.jvDatas.refnoDate      = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
+    this.jvDatas.particulars    = this.entryData.particulars;
+    this.jvDatas.currCd         = this.entryData.currCd;
+    this.jvDatas.currRate       = (parseFloat(this.entryData.currRate.toString().split(',').join(''))),
+    this.jvDatas.jvAmt          = (parseFloat(this.entryData.jvAmt.toString().split(',').join(''))),
+    this.jvDatas.localAmt       = (parseFloat(this.entryData.localAmt.toString().split(',').join(''))),
+    this.jvDatas.allocTag       = this.entryData.allocTag;
+    this.jvDatas.allocTranId    = this.entryData.allocTranId;
+    this.jvDatas.preparedBy     = this.entryData.preparedBy;
+    this.jvDatas.preparedDate   = this.entryData.preparedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.preparedDate);
+    this.jvDatas.approvedBy     = this.entryData.approvedBy;
+    this.jvDatas.approvedDate   = this.entryData.approvedDate == '' ? '' : this.ns.toDateTimeString(this.entryData.approvedDate);
+    this.jvDatas.createUserJv   = this.ns.getCurrentUser();
+    this.jvDatas.createDateJv   = this.ns.toDateTimeString(0);
+    this.jvDatas.updateUserJv   = this.ns.getCurrentUser();
+    this.jvDatas.updateDateJv   = this.ns.toDateTimeString(0);
   }
 
   saveJV(cancelFlag?){
@@ -394,8 +394,8 @@ export class JvEntryComponent implements OnInit {
   onClickApprove(){
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
       console.log(data);
-      this.entryData.approver = data.employee.employeeName;
-      this.entryData.approvedBy = data.employee.userName;
+      this.entryData.approver     = data.employee.employeeName;
+      this.entryData.approvedBy   = data.employee.userName;
       this.entryData.approverDate = this.ns.toDateTimeString(0);
     });
     this.approveJV.openNoClose();
@@ -413,7 +413,7 @@ export class JvEntryComponent implements OnInit {
 
   checkEntryFields(){
     if(this.entryData.tranTypeName.length === 0 || 
-       this.entryData.particulars.length === 0 ||
+       this.entryData.particulars.length  === 0 ||
        this.entryData.currCd.length === 0 || 
        this.entryData.jvAmt.length === 0 || 
        this.entryData.currRate.length === 0 || 
@@ -426,9 +426,9 @@ export class JvEntryComponent implements OnInit {
 
   openLov(selector){
     if(selector == 'refNo'){
-    this.passLov.params.arTag = 'Y';
-    this.passLov.params.cvTag = 'Y';
-    this.passLov.params.jvTag = 'Y';
+      this.passLov.params.arTag = 'Y';
+      this.passLov.params.cvTag = 'Y';
+      this.passLov.params.jvTag = 'Y';
       this.passLov.selector = 'refNo';
     }
 
@@ -439,17 +439,17 @@ export class JvEntryComponent implements OnInit {
     if(data.selector == 'refNo'){
       console.log(data)
       this.entryData.refNoTranId = parseInt(data.data.tranId);
-      this.entryData.refNoDate = this.ns.toDateTimeString(data.data.tranDate);
-      this.entryData.refNo = data.data.tranClass +'-'+ data.data.tranNo;
+      this.entryData.refNoDate   = this.ns.toDateTimeString(data.data.tranDate);
+      this.entryData.refNo       = data.data.tranClass +'-'+ data.data.tranNo;
       this.form.control.markAsDirty();
     }
   }
 
   cancelJournalVoucher(){
-    this.sendData.tranId = this.tranId;
-    this.sendData.jvNo = parseInt(this.entryData.jvNo);
-    this.sendData.jvYear = this.entryData.jvYear;
-    this.sendData.tranType = this.entryData.tranTypeCd;
+    this.sendData.tranId     = this.tranId;
+    this.sendData.jvNo       = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear     = this.entryData.jvYear;
+    this.sendData.tranType   = this.entryData.tranTypeCd;
     this.sendData.updateUser = this.ns.getCurrentUser();
     this.sendData.updateDate = this.ns.toDateTimeString(0);
 
@@ -498,12 +498,12 @@ export class JvEntryComponent implements OnInit {
 
   ApproveJVStatus(){
     this.sendData.tranId = this.tranId;
-    this.sendData.jvNo = parseInt(this.entryData.jvNo);
-    this.sendData.jvYear = this.entryData.jvYear;
-    this.sendData.approvedBy  = this.entryData.approvedBy;
+    this.sendData.jvNo         = parseInt(this.entryData.jvNo);
+    this.sendData.jvYear       = this.entryData.jvYear;
+    this.sendData.approvedBy   = this.entryData.approvedBy;
     this.sendData.approvedDate = this.entryData.approverDate === '' ? '':this.ns.toDateTimeString(this.entryData.approvedDate);
-    this.sendData.updateUser = this.ns.getCurrentUser();
-    this.sendData.updateDate = this.ns.toDateTimeString(0);
+    this.sendData.updateUser   = this.ns.getCurrentUser();
+    this.sendData.updateDate   = this.ns.toDateTimeString(0);
     this.accService.approveJV(this.sendData).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -538,12 +538,12 @@ export class JvEntryComponent implements OnInit {
 
   setApproval(data){
     this.entryData.approvedBy = data.userId;
-    this.entryData.approver = data.printableName;
+    this.entryData.approver   = data.printableName;
   }
   
   setPrintable(data){
-    this.entryData.preparedBy = data.userId;
-    this.entryData.preparedName = data.printableName
+    this.entryData.preparedBy       = data.userId;
+    this.entryData.preparedName     = data.printableName
     this.entryData.preparedPosition = data.designation;
     this.form.control.markAsDirty();
     setTimeout(()=>{
