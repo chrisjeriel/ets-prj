@@ -2637,5 +2637,13 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
     }	
 
+    cancelOr(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelOr',params,header);
+    }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -40,6 +40,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
+
+  @Output() emitCreateUpdate: any = new EventEmitter<any>();
 
   @Input() paymentType: string = "";
   @Input() record: any = {};
@@ -179,6 +181,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     hide: []
   }
 
+  createUpdate: any = {};
+
   savedData: any = [];
   deletedData: any = [];
 
@@ -202,6 +206,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
+    this.createUpdate = null;
     if ($event.nextId === 'taxDtl') {
      this.currentTab = 'taxDtl';
     }else if($event.nextId === 'acctEntries'){
@@ -223,6 +228,19 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           i.taxAmt = (i.taxRate == null ? 1 : i.taxRate) * i.baseAmt;
         }
       }
+    }
+  }
+
+  onRowClick(data){
+    console.log(data);
+    if(data === null){
+      //this.emitCreateUpdate.emit(null);
+      this.createUpdate = null;
+    }else{
+      //this.emitCreateUpdate.emit(data);
+      data.createDate = this.ns.toDateTimeString(data.createDate);
+      data.updateDate = this.ns.toDateTimeString(data.updateDate);
+      this.createUpdate = data;
     }
   }
 
