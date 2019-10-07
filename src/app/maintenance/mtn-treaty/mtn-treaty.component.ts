@@ -70,7 +70,7 @@ export class MtnTreatyComponent implements OnInit {
     	this.treatyListing.tableData = [];
 
     	this.maintenanceService.getMtnTreaty('').subscribe(data => {
-    		this.treatyListing.tableData = data['treatyList'].filter(a => !this.hide.includes(a.treatyId));
+    		this.treatyListing.tableData = data['treatyList'].filter(a => !this.hide.includes(a.treatyId) && a.activeTag == 'Y');
     		this.table.refreshTable();
     	});
 	}
@@ -85,7 +85,7 @@ export class MtnTreatyComponent implements OnInit {
       		});
     	} else {
     		this.maintenanceService.getMtnTreaty(code).subscribe(data => {
-    			var td = data['treatyList'].filter(a => !this.hide.includes(a.treatyId));
+    			var td = data['treatyList'].filter(a => !this.hide.includes(a.treatyId) && a.activeTag == 'Y');
 
     			if(td.length == 1) {
     				data['treatyList'][0]['ev'] = ev;

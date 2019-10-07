@@ -38,6 +38,8 @@ export class ParListingComponent implements OnInit {
     riskName: any;
     insuredDesc: any;
     showPolAlop: boolean;
+    quoteId: any;
+    quotationNo: any;
     theme =  window.localStorage.getItem("selectedTheme");
 
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
@@ -221,6 +223,8 @@ export class ParListingComponent implements OnInit {
                 this.statusDesc = rec.statusDesc;
                 this.riskName = rec.project.riskName;
                 this.insuredDesc = rec.insuredDesc;
+                this.quoteId = rec.quoteId; /*Added by CJS for WFM Services*/
+                this.quotationNo = rec.quotationNo; /*Added by CJS for WFM Services*/
               }
         }
         this.polLine = this.uwService.rowData[0].split("-")[0];
@@ -229,11 +233,11 @@ export class ParListingComponent implements OnInit {
         this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
             this.uwService.fromCreateAlt = false;
             if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
-             this.uwService.toPolInfo = [];
-             this.uwService.toPolInfo.push("edit", this.polLine);
-             this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true });
+                this.uwService.toPolInfo = [];
+                this.uwService.toPolInfo.push("edit", this.polLine);
+                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc, quoteId: this.quoteId, quotationNo: this.quotationNo }], { skipLocationChange: true });
             } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
-                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc }], { skipLocationChange: true }); 
+                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, quoteId: this.quoteId, quotationNo: this.quotationNo }], { skipLocationChange: true }); 
             }
         
         });

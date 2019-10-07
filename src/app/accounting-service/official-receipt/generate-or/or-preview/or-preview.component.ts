@@ -9,7 +9,7 @@ import { ORPrevAmountDetails , ORPrevAccEntries , ORPreVATDetails , ORPreCredita
 })
 export class OrPreviewComponent implements OnInit {
   
-   passDataAmountDetails: any = {
+   /*passDataAmountDetails: any = {
   	tableData: [],
     tHeader: ["Item No", "Gen Type", "Detail", "Original Amount", "Currency","Currency Rate","Local Amount"],
     dataTypes: ["text", "text", "text", "currency", "text","percent","currency"],
@@ -24,66 +24,122 @@ export class OrPreviewComponent implements OnInit {
     widths: [70,70,'auto',160,60,160,160],
     paginateFlag:true,
     infoFlag:true
-  }
+  }*/
 
-   passDataAccountingEntries: any = {
+  @Input() paymentType: string = "";
+  @Input() record: any = {};
+  createUpdate: any;
+
+   acctEntriesData: any = {
   	tableData: [],
-    tHeader: ["Account Code", "Account Name", "SL Type", "SL Name", "Debit","Credit"],
-    dataTypes: ["text", "text", "text", "text", "currency","currency"],
-    resizable: [true, true, true, true, true, true],
-    nData: new ORPrevAccEntries(null,null,null,null,null,null),
-    total:[null,null,null,'Total',null,'credit'],
-    checkFlag: true,
+    tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
+    uneditable:[true,true,true,true,true,true,false,false],
+    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
+    dataTypes: ['text','text','text','text','currency','currency','currency','currency'],
+    nData: {
+        tranId: '',
+        entryId: '',
+        glAcctId: '',
+        glShortCd: '',
+        glShortDesc:'',
+        slTypeCd: '',
+        slTypeName: '',
+        slCd: '',
+        slName: '',
+        creditAmt: 0,
+        debitAmt: 0,
+        foreignDebitAmt: 0,
+        foreignCreditAmt: 0,
+        autoTag: '',
+        createUser: '',
+        createDate: '',
+        updateUser: '',
+        updateDate: '',
+        showMG:1,
+        edited: true
+      },
     addFlag: true,
     deleteFlag: true,
-    genericBtn: 'Save',
+    editFlag: false,
     pageLength: 10,
-    widths: [150,'auto',100,200,150,150],
-    magnifyingGlass: ['code','slType','slName'],
-    paginateFlag:true,
-    infoFlag:true
+    widths: [105,240,125,170,120,120,120,120],
+    checkFlag: true,
+    magnifyingGlass: ['glShortCd','slTypeName','slName'],
+    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt','foreignDebitAmt','foreignCreditAmt']
   }
 
-   passDataAccountingVATTaxDetails: any = {
+   genTaxData: any = {
     tableData: [],
-    tHeader: ['VAT Type', 'BIR RLF Purchase Type', 'Payor', 'Base Amount', 'VAT Amount'],
-    dataTypes: ['text', 'text', 'text', 'currency', 'currency'],
+    tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
+    dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
     //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
-	  nData: new ORPreVATDetails(null,null,null,null,null),
-    pageID: 3,
+	  nData: {
+            tranId: '',
+            taxType: 'G',
+            taxSeqNo: '',
+            taxCd: '',
+            genType: 'M',
+            taxName: '',
+            purchaseType: '',
+            taxRate: '',
+            payor: '',
+            baseAmt: 0,
+            taxAmt: 0,
+            createUser: '',
+            createDate: '',
+            updateUser: '',
+            updateDate: ''
+    },
+    keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'purchaseType', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    pageID: 'genTax',
     addFlag: true,
     deleteFlag: true,
-    total: [null, null, null, 'Total', 'vatAmount'],
+    total: [null,null,null,null, null, null, 'Total', 'baseAmt', 'taxAmt'],
     pageLength:5,
-    genericBtn: 'Save',
-    widths: [100,200,'auto',150,150],
+    widths: [1,1,50,150,'auto',100,200,150,150],
     paginateFlag:true,
-    infoFlag:true
+    infoFlag:true,
+    checkFlag: true
   }
 
-  passDataAccountingCreditableTaxDetails: any = {
+  whTaxData: any = {
    tableData: [],
-    tHeader: ['BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['text', 'text', 'percent','text', 'currency', 'currency'],
+    tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
+    dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
     // opts:[
     //   {
     //     selector: 'birTaxCode',
     //     vals: ['WC002', 'WC010', 'WC020'],
     //   }
     // ],
-    nData: new ORPreCreditableWTaxDetails(null,null,null,null,null,null),
-    pageID: 4,
+    nData: {
+            tranId: '',
+            taxType: 'W',
+            taxSeqNo: '',
+            taxCd: '',
+            genType: 'M',
+            taxName: '',
+            purchaseType: '',
+            taxRate: '',
+            payor: '',
+            baseAmt: 0,
+            taxAmt: 0,
+            createUser: '',
+            createDate: '',
+            updateUser: '',
+            updateDate: ''
+    },
+    keys: ['taxSeqNo', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    pageID: 'whTax',
     addFlag: true,
     deleteFlag: true,
     pageLength:5,
-    total: [null, null, null, null,'Total', 'wTaxAmount'],
-    widths: [150,250,130,'auto',150,150,],
-    genericBtn: 'Save',
+    total: [null,null,null,null, null, 'Total', 'baseAmt', 'taxAmt'],
+    widths: [1,1,50,200,100,200,150,150],
     paginateFlag:true,
-    infoFlag:true
+    infoFlag:true,
+    checkFlag: true
   }
-
-  @Input() paymentType: string = "type";
 
   constructor(private accountingService: AccountingService) { }
 
@@ -92,10 +148,10 @@ export class OrPreviewComponent implements OnInit {
           this.paymentType = "";
     }
 
-  	this.passDataAmountDetails.tableData = this.accountingService.getORPrevAmountDetails();
+  	/*this.passDataAmountDetails.tableData = this.accountingService.getORPrevAmountDetails();
   	this.passDataAccountingEntries.tableData = this.accountingService.getORPrevAccEntries();
   	this.passDataAccountingVATTaxDetails.tableData = this.accountingService.getORPrevTaxDetails();
-  	this.passDataAccountingCreditableTaxDetails.tableData = this.accountingService.getORPrevCredWTaxDetails();
+  	this.passDataAccountingCreditableTaxDetails.tableData = this.accountingService.getORPrevCredWTaxDetails();*/
   }
 
 }

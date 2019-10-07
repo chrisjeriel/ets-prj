@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
 	 <div class="row">
 	    <div class="col-sm-12">
@@ -8,12 +9,18 @@
    		                <div class="input-group" style="margin-bottom: -14px !important; margin-top: 10px !important">
    		                    <label class="form-control-sm col-sm-1">Request No.</label>
    		                    <div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important;" [(ngModel)]="saveAcitPaytReq.reqPrefix" readonly>
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important; text-align: right;" [(ngModel)]="saveAcitPaytReq.reqYear" readonly>
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 3px !important; text-align: right" [(ngModel)]="saveAcitPaytReq.reqMm" readonly>
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" style="text-align: right" [(ngModel)]="saveAcitPaytReq.reqSeqNo" readonly>
+   		                    	<input name="input1" type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important;" [(ngModel)]="saveAcitPaytReq.reqPrefix" readonly>
+   		                    	<input name="input2" type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 3px !important; text-align: right;" [(ngModel)]="saveAcitPaytReq.reqYear" readonly>
+   		                    	<input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-right: 3px !important; text-align: right" [(ngModel)]="saveAcitPaytReq.reqMm" readonly>
+   		                    	<input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm-4" style="text-align: right" [(ngModel)]="saveAcitPaytReq.reqSeqNo" readonly>
    		                    </div>
-   		                    <label class="form-control-sm col-sm-1">Request Date</label>
+                          <label class="form-control-sm col-sm-1">Payment Type</label>
+                              <div class="input-group col-sm-3" style="padding: 0px;">
+                                 <select name="select1" class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
+                                   <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
+                                 </select>
+                              </div>
+   		                   <!--  <label class="form-control-sm col-sm-1">Request Date</label>
                           <div class="input-group col-sm-3" style="padding: 0px;">
                             <div class="col-sm-8 dp-cont">
                               <datepicker  [type]="'date'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
@@ -21,50 +28,59 @@
                             <div class="col-sm dp-cont">
                               <datepicker  [type]="'time'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
                             </div>
-                          </div>
+                          </div> -->
    		                    <label class="form-control-sm col-sm-1">Status</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.reqStatusDesc" readonly>
+   		                    	<input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.reqStatusDesc" readonly>
    		                    </div>
    		                </div>
 
    		                <div class="input-group" style="margin-bottom: -14px !important;">
                              <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
                              <div class="p-0 col-sm-7" style="position: relative;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="existsInReqDtl">
+                                <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn payee" maxlength="250" [(ngModel)]="saveAcitPaytReq.payee" maxlength="500" appRequired [disabled]="existsInReqDtl">
                                 <div *ngIf="!removeIcon && !existsInReqDtl" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                               </div>
-   		                    <label class="form-control-sm col-sm-1">Payment Type</label>
+                          <label class="form-control-sm col-sm-1" style="margin-left: -2px !important;">Request Date</label>
+                          <div class="input-group col-sm-3" style="padding: 0px;">
+                            <div class="col-sm-8 dp-cont">
+                              <datepicker  [type]="'date'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateDate" (valueChange)="reqDateDate=$event;prepareData()"></datepicker>
+                            </div>
+                            <div class="col-sm dp-cont" style="margin-right: -2px !important;">
+                              <datepicker  [type]="'time'" [disabled]="(saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3) || (saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F')" [required]="true" [value]="reqDateTime" (valueChange)="reqDateTime=$event;"></datepicker>
+                            </div>
+                          </div>
+   		                    <!-- <label class="form-control-sm col-sm-1">Payment Type</label>
       	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-                                 <select class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
+                                 <select name="select1" class="form-control form-control-sm cust-sm col-sm-12 warn" [disabled]="saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqSeqNo != ''" appRequired [ngModel]="saveAcitPaytReq.tranTypeCd" (ngModelChange)="saveAcitPaytReq.tranTypeCd=$event;setDefPar();">
                                    <option *ngFor="let i of tranTypeList" value="{{ i.tranTypeCd }}">{{ i.tranTypeName }}</option>
                                  </select>
-      		                    </div>
+      		                    </div> -->
    		                    
    		                </div>
 
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1 labels">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <input type="text" class="form-control form-control-sm cust-sm col-sm-3 warn cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired [disabled]="existsInReqDtl">
+                              <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-3 warn curr cap-input" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired [disabled]="existsInReqDtl">
                               <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="!removeIcon && !existsInReqDtl"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
-                              <input *ngIf="saveAcitPaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
-                              <input *ngIf="saveAcitPaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
+                              <input name="input8" *ngIf="saveAcitPaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
+                              <input name="input8" *ngIf="saveAcitPaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
                              </div>
                              <label class="form-control-sm col-sm-1 labels">Currency Rate</label>
                              <!-- [ngModel]="saveAcitPaytReq.currRate | number:'1.10-10'" -->
-                             <input class="form-control form-control-sm cust-sm col-sm-3 warn text-right" type="text"  
+                             <input name="input9" class="form-control form-control-sm cust-sm col-sm-3 warn text-right" type="text"  
                              [ngModel]="saveAcitPaytReq.currRate" 
                              (ngModelChange)="saveAcitPaytReq.currRate=$event" (change)="setLocalAmt();" maxlength="32" appRequired numbers-only [disabled]="existsInReqDtl">
                              <label class="form-control-sm col-sm-1 labels">Local Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="PHP" readonly>
-                                <input type="text" class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="saveAcitPaytReq.localAmt" (ngModelChange)="saveAcitPaytReq.localAmt=$event" style="text-align: right; margin-left: 2px;" readonly>
+                                <input name="input10" type="text" class="form-control form-control-sm cust-sm col-sm-4" value="PHP" readonly>
+                                <input name="input11" type="text" class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="saveAcitPaytReq.localAmt" (ngModelChange)="saveAcitPaytReq.localAmt=$event" style="text-align: right; margin-left: 2px;" readonly>
                              </div>
    		                </div>
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1" style="height: auto;">Particulars</label>
-   		                    <textarea class="form-control form-control-sm warn" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="saveAcitPaytReq.particulars" maxlength="1000" appRequired></textarea>
+   		                    <textarea name="textarea1" class="form-control form-control-sm warn particulars" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="saveAcitPaytReq.particulars" maxlength="1000" appRequired></textarea>
    		                </div>
    		                <div class="input-group" style="    margin-bottom: -19px !important;">
    	                    	<div class="input-group col-sm-4" style="padding: 0px;">
@@ -79,32 +95,32 @@
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels">Prepared By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'prep-user')" [(ngModel)]="saveAcitPaytReq.preparedBy" maxlength="10" appRequired>
+   		                    	<input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn prep-user cap-input" (change)="checkCode($event,'prep-user')" [(ngModel)]="saveAcitPaytReq.preparedName" maxlength="10" appRequired>
    		                    	<div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels">Requested By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn cap-input" (change)="checkCode($event,'req-user')" [(ngModel)]="saveAcitPaytReq.requestedBy" maxlength="10" appRequired>
+   		                    	<input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn req-user cap-input" (change)="checkCode($event,'req-user')" [(ngModel)]="saveAcitPaytReq.requestedName" maxlength="10" appRequired>
    		                    	<div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('req-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels">Approved By</label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy">
+   		                    	<input name="input14" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedName">
                             <div *ngIf="!removeIcon" style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
    		                   	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.preparedDes" readonly>
+   		                    	<input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.preparedDes" readonly>
    		                    </div>
    		                    <label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.requestedDes" readonly>
+   		                    	<input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.requestedDes" readonly>
    		                    </div>
    	                    	<label class="form-control-sm col-sm-1 labels"></label>
    	                    	<div class="input-group col-sm-3" style="padding: 0px;">
-   		                    	<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedDes" readonly>
+   		                    	<input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="saveAcitPaytReq.approvedDes" readonly>
    		                    </div>
    		                </div>
    		                <div class="input-group" style="margin-bottom: -5px !important;">
@@ -127,7 +143,7 @@
 	            	<div class="form-group col-sm" style="margin-bottom: 8px;">
 	            		<div class="col-md-13 text-center">
 	            			<div class="cust-btn-container">
-	            				<button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
+	            				<button type="button" class="cust-btn" (click)="showConfirmMdl('new-req')">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
@@ -143,13 +159,13 @@
     <fieldset class="scheduler-border" style="margin-top: 10px !important;">
       <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
         <label class="form-control-sm col-sm-1">Created By</label>
-        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.createUser" readonly>
+        <input name="input18" type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.createUser" readonly>
         <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
         <div class="col-sm dp-cont">
           <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.createDate"></datepicker>
         </div>
         <label class="form-control-sm col-sm-1">Last Update By</label>
-        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.updateUser" readonly>
+        <input name="input19" type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcitPaytReq.updateUser" readonly>
         <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
         <div class="col-sm dp-cont">
           <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcitPaytReq.updateDate"></datepicker>
@@ -185,10 +201,17 @@
           <p class="col-sm-12">Are you sure you want to cancel this Payment Request?</p>
         </div>
       </div>
+      <div *ngIf="fromBtn == 'new-req'">
+        <div class="input-group">
+          <p class="col-sm-12">There are unsaved changes. Do you want to proceed?</p>
+        </div>
+      </div>
     </div>
-    <div footer class="d-flex justify-content-center w-100">                    
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button>
+    <div footer class="d-flex justify-content-center w-100">               
+        <!-- <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
+        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button> -->
+        <button class="cust-btn" type="button" (click)="onYesConfirmed()">Yes</button>
+        <button class="cust-btn" type="button" (click)="confirmMdl.closeModal()">No</button>
     </div>
 </app-modal>
 
@@ -220,20 +243,20 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                    <select name="select2" class="form-control form-control-sm cust-sm col-sm-8">
                         <option>Printer</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Printer Name</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                    <select name="select3" class="form-control form-control-sm cust-sm col-sm-8">
                         <option>EPSON 3600i</option>
                         <option>BROTHER J100</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
-                    <input type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
+                    <input name="input20" type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
                 </div>
             </div>
         </div>
@@ -246,12 +269,11 @@
 
 <app-confirm-save (onYes)="onSaveAcitPaytReq()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+<!-- <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/payt-req'" ></app-cancel-button> -->
 
 <app-lov #mainLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
-
-
+</form>

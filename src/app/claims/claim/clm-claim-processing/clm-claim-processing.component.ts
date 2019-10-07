@@ -28,6 +28,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     tableData: [],
     tHeader: ['Claim No', 'Status', 'Policy No', 'Ceding Company', 'Insured', 'Risk', 'Loss Date','Loss Cause' ,'Loss Details', 'Currency', 'Total Reserve', 'Total Payments', 'Adjusters', 'Processed By','Report Date'],
     dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'date','text', 'text','text', 'currency', 'currency', 'text', 'text','date'],
+    sortKeys : ['CLAIM_NO','CLM_STATUS','POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME','LOSS_DATE','LOSS_ABBR','LOSS_DTL','CURRENCY_CD','T_LOSS_EXP_RES','T_LOSS_EXP_PD','ADJ_NAME','PROCESSED_BY','REPORT_DATE'],
     keys: ['claimNo', 'clmStatus', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'lossDate','lossAbbr', 'lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd', 'adjName', 'processedBy','reportDate'],
     addFlag: true,
     editFlag: true,
@@ -171,7 +172,11 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     pageLength: 10
   }
 
-  searchParams: any[] = [];
+  searchParams: any = {
+        'paginationRequest.count':20,
+        'paginationRequest.position':1,   
+    };
+
   tempPolNo: string[] = ['','','','','','000'];
 
   selected: any;
@@ -220,8 +225,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   }
 
   retrieveClaimsList(){
-    this.cs.getClaimsListing(this.searchParams).subscribe((data : any)=>{
+    this.cs.newGetClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
+        this.passData.count = data['length'];
         //data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
@@ -231,9 +237,8 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
               i.adjName = i.adjName + '/' + j.adjName;
             }
           }
-          this.passData.tableData.push(i);
         }
-        this.table.refreshTable();
+        this.table.placeData(data.claimsList);
       }
     },
     (error)=>{
@@ -441,9 +446,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   }
 
   searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
-        //this.passData.btnDisabled = true;
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
         this.passData.btnDisabled = true;
         this.retrieveClaimsList();
 

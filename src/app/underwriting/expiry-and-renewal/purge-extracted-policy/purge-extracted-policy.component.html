@@ -28,15 +28,15 @@
 										<input type="checkbox" name="expiredAndProcess" id="both" class="form-control-sm" (change)="expiredAndProcess($event)"><label class="form-control-sm" for="both">All Expired And Processed</label>
 									</div>
 									<div class="row list">
-										<input type="checkbox" name="unprocessed" id="processed" class="form-control-sm" (change)="unprocessed($event)"><label class="form-control-sm" for="processed">All Unprocessed</label>
+										<input type="checkbox" name="unprocessed" id="unprocessed" class="form-control-sm" (change)="unprocessed($event)"><label class="form-control-sm" for="unprocessed">All Unprocessed</label>
 									</div>
 									<div class="row list">
-										<input type="checkbox" name="processed" id="unprocessed" class="form-control-sm" (change)="processed($event)"><label class="form-control-sm" for="processed">All Processed</label>
+										<input type="checkbox" name="processed" id="processed" class="form-control-sm" (change)="processed($event)"><label class="form-control-sm" for="processed">All Processed</label>
 									</div>
 								</div>
 								<div class="col-sm-4">
 									<div class="row list" style="margin-left: 1px;">
-										<input type="checkbox" name="baseParam" id="both" class="form-control-sm" (change)="baseParam($event)"><label class="form-control-sm" for="both">Based on Parameter</label>
+										<input type="checkbox" name="baseParam" id="basedOnParams" class="form-control-sm" (change)="baseParam($event)"><label class="form-control-sm" for="basedOnParams">Based on Parameter</label>
 									</div>
 									<div class="row list" style="margin-left: -5px;">
 										 <button class="cust-btn" (click)="parameter();" style="margin-left: 7px;width:100%;margin-bottom: 5px;margin-top: 6px;z-index: 99 !important" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Parameter</button> 
@@ -58,32 +58,32 @@
                      	<div header>Parameter</div>
 							<div body style="width: 600px !important">
 							    <fieldset class="scheduler-border">
-							    <div class="test">
+							    
 							    	<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="radioVal" [value]="'byPolNo'" (click)="clearData()">
-											<label class="form-control-sm col-sm-2" for="byDate" style="margin-left: -4px;">&nbsp;By Policy No</label>
+											<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" [(ngModel)]="radioVal" [value]="'byPolNo'" (click)="clearData()" />
+											<label class="form-control-sm col-sm-2" for="byPolNo" style="margin-left: -4px;">&nbsp;By Policy No</label>
 										</div>
 									</div>
 									<div class="form-row custom-row-inline-inset">
-											<div class="input-group" style="margin-top: -8px;"> 
-												<label class="form-control-sm col-sm-3"></label>
-                            						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.line" [readonly]="radioVal != 'byPolNo'">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year" [readonly]="radioVal != 'byPolNo'">
-									                <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo" [readonly]="radioVal != 'byPolNo'">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" [readonly]="radioVal != 'byPolNo'">
-									                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'">
-									                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" [readonly]="radioVal != 'byPolNo'">  
-									                <div style="padding-left: 5px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
+										<div class="input-group" style="margin-top: -8px;"> 
+											<label class="form-control-sm col-sm-3"></label>
+                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.line" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" [readonly]="radioVal != 'byPolNo'">  
+								                <div style="padding-left: 5px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
 
-											</div>	
-										</div>
+										</div>	
+									</div>
 
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="radioVal" [value]="'byDate'">
+											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="radioVal" [value]="'byDate'" />
 											<label class="form-control-sm col-sm-2" for="byDate" style="text-align: left !important;">&nbsp;By Date</label>
 										</div>
 									</div>
@@ -106,7 +106,7 @@
 										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 											<div class="col-sm-1"></div>
 											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="'byMonthYear'" [(ngModel)]="radioVal">
-											<label class="form-control-sm col-sm-3 text-left" for="byMonthYear" style="margin-left: -34px;">&nbsp;By Month/Year</label>
+											<label class="form-control-sm col-sm-3" for="byMonthYear" style="text-align: left !important;">&nbsp;By Month/Year</label>
 										</div>
 									</div>
 										<div class="form-row custom-row-inline-inset">
@@ -146,7 +146,7 @@
 												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 2px;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
 											</div>
 										</div>
-									<br>
+										<br>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -22px;">
 												<label class="form-control-sm col-sm-2 text-right">Line</label>
@@ -172,7 +172,7 @@
 											</div>	
 										</div>
 										
-									</div>
+									
 								</fieldset>
 							</div>
 							   	<div footer>
@@ -190,7 +190,7 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-cancel-button #cancelMain (onYes)="saveData('cancel')" [url]="'/expiry-listing'" ></app-cancel-button>
+<app-cancel-button #cancelMain (onYes)="saveData('cancel')" [url]="'/'" ></app-cancel-button>
 
 <app-modal class="d-none" id="purgeModal">
     <div header>Confirmation</div>

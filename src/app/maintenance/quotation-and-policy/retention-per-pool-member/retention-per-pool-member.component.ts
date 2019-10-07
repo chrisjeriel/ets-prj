@@ -104,22 +104,43 @@ export class RetentionPerPoolMemberComponent implements OnInit {
  	cancel: boolean = false;
 
  	copyToEffDate: string = '';
+ 	currencyCd:String = 'PHP';
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
+
+	currencyList:any[] = [];
 
 	ngOnInit() {
 		this.titleService.setTitle("Mtn | Retention per Pool Member");
 		setTimeout(() => {
 			this.historyTable.refreshTable();
 			this.poolMemberTable.refreshTable();
-			
 			this.getMtnPoolRetHist();
 		}, 0);
+		this.getCurrencyList();
+	}
+
+	onCurrChange(data){
+		console.log(data)
+	}
+
+	changCurr(data){
+		this.poolMemberData.tableData = [];
+		this.poolMemberTable.refreshTable();
+		this.poolMemberData.disableAdd = true;
+		this.poolMemberData.disableGeneric = true;
+		this.getMtnPoolRetHist();
+	}
+
+	getCurrencyList(){
+		this.ms.getMtnCurrencyList(null).subscribe(a=>{
+			this.currencyList = a['currency'].map(a=>{a.name = a.currencyCd+ ' - '+ a.description;return a;});
+		})
 	}
 
 	getMtnPoolRetHist() {
 		this.historyTable.overlayLoader = true;
-		this.ms.getMtnPoolRetHist('').subscribe(data => {
+		this.ms.getMtnPoolRetHist('',this.currencyCd).subscribe(data => {
 			this.historyData.tableData = data['poolRetHistList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
 																.map(i => {
 																	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom);
@@ -397,7 +418,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
   				this.params.deletePoolRetHist.push(hist);
   			}
   		});
-
+  		this.params.currencyCd = this.currencyCd;
   		this.ms.saveMtnPoolRetHist(this.params).subscribe(data => {
 			if(data['returnCode'] == -1) {
 				this.dialogIcon = "success";
@@ -428,7 +449,8 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 			createDate: this.ns.toDateTimeString(0),
 			createUser: this.ns.getCurrentUser(),
 			updateDate: this.ns.toDateTimeString(0),
-			updateUser: this.ns.getCurrentUser()
+			updateUser: this.ns.getCurrentUser(),
+			currencyCd : this.currencyCd
 		}
 
 		this.ms.copyPoolRetHist(JSON.stringify(params)).subscribe(data => {

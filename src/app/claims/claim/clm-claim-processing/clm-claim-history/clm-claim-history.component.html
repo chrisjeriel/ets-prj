@@ -28,7 +28,7 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt(); checkDirtyTbl();limitHistType();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt($event); checkDirtyTbl();limitHistType();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
@@ -58,7 +58,9 @@
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt  | number:'1.2-2'" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" readonly>
+							<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="preVal.lossStatCd" disabled>
+								<option *ngFor="let data of resStats" [value]="data.code">{{data.description}}</option>
+							</select>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt | number:'1.2-2'" readonly>
 						</div>
@@ -66,7 +68,9 @@
 							<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt | number:'1.2-2'" readonly>
 							<label class="form-control-sm col-sm-1">Status</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.expStatCd" readonly>
+							<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="preVal.expStatCd" disabled>
+								<option *ngFor="let data of resStats" [value]="data.code">{{data.description}}</option>
+							</select>
 							<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
 							<input type="text" class="form-control form-control-sm cust-sm text-right col-sm"  [ngModel]="clmHistoryData.expPdAmt | number:'1.2-2'" readonly>
 						</div>
@@ -133,8 +137,11 @@
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Loss Reserve</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" (ngModelChange)="clmHistoryData.lossStatCd=$event.toUpperCase()" (change)="checkLossStat($event)" required [readonly]="isInquiry">
-					<div class="text-search-ico" *ngIf="!isInquiry"><a (click)="fromStat='loss';showResStatLov();"><i class="fa fa-search"></i></a></div>
+					<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.lossStatCd" (ngModelChange)="clmHistoryData.lossStatCd=$event.toUpperCase()" (change)="checkLossStat($event)" required [readonly]="isInquiry">
+					<div class="text-search-ico" *ngIf="!isInquiry"><a (click)="fromStat='loss';showResStatLov();"><i class="fa fa-search"></i></a></div> -->
+					<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="clmHistoryData.lossStatCd" required [disabled]="isInquiry">
+						<option *ngFor="let data of resStats" [value]="data.code">{{data.description}}</option>
+					</select>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Losses Paid</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.lossPdAmt  | number:'1.2-2'" readonly>
 				</div>
@@ -142,8 +149,9 @@
 					<label class="form-control-sm col-sm-2" style="margin-left: -36px !important;">Expense Reserve</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expResAmt  | number:'1.2-2'" readonly>
 					<label class="form-control-sm col-sm-1">Status</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="clmHistoryData.expStatCd" (ngModelChange)="clmHistoryData.expStatCd=$event.toUpperCase()" (change)="checkExpStat($event)" required [readonly]="isInquiry">
-					<div class="text-search-ico" *ngIf="!isInquiry"><a (click)="fromStat='exp';showResStatLov();"><i class="fa fa-search"></i></a></div>
+					<select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="clmHistoryData.expStatCd" required [disabled]="isInquiry">
+						<option *ngFor="let data of resStats" [value]="data.code">{{data.description}}</option>
+					</select>
 					<label class="form-control-sm col-sm-2" style="margin-left: -32px !important;">Expense Paid</label>
 					<input type="text" class="form-control form-control-sm cust-sm text-right col-sm" [ngModel]="clmHistoryData.expPdAmt  | number:'1.2-2'" readonly>
 				</div>

@@ -2,7 +2,7 @@
 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 	<div class="row">
 		<div class="col-sm-12 cust-margin">
-			<app-cust-editable-non-datatable #userGroups [passData]="passDataUserGroup" (newClick)="onRowClickUserGroup($event)"></app-cust-editable-non-datatable>
+			<app-cust-editable-non-datatable #userGroups [passData]="passDataUserGroup" (newClick)="onRowClickUserGroup($event)" (genericBtn)="deleteUserGrp()" (onDelete)="userGroups.onClickDelete('force');" ></app-cust-editable-non-datatable>
 		</div>
 	</div>
 	<div class="form-row">
@@ -23,7 +23,7 @@
 	                <!-- <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
 	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
 	                <button type="button" class="cust-btn"><a>Cancel</a></button>
-	                <button type="button" class="cust-btn"><a>Save</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSaveConfirmation();"><a>Save</a></button>
 	            </div>
 	        </div>
 	    </div>
@@ -78,7 +78,7 @@
         </div> 
     </div>
   	<div footer class="d-flex justify-content-center w-100">                    
-        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Cancel</a></button>
         <button type="button" class="cust-btn" (click)="onClickSaveTranModules();"><a>Save</a></button>
     </div> 
 </app-modal> 
@@ -109,5 +109,6 @@
 </app-modal> 
 
 
+<app-confirm-save (onYes)="onClickSaveMain();"></app-confirm-save>
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>

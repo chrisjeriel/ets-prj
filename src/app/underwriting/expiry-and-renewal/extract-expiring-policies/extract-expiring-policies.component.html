@@ -22,12 +22,12 @@
 									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
 									<!-- <input [(ngModel)]="expiryParameters.fromExpiryDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="byDate != 'bydate'"> -->
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
 									</div>
 
 									<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
 									</div>
 									<div class="col-sm-2"></div>
 								</div>
@@ -82,7 +82,7 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -11px;">
 									<div class="col-sm-2"></div>
-									<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" value="bypolno" [(ngModel)]="radioVal" (click)="clearDates();getPolListing();">	
+									<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" value="bypolno" [(ngModel)]="radioVal" (click)="clearDates();clearOptionals();getPolListing();">	
 									<label class="form-control-sm col-sm-4" for="byPolNo">&nbsp;By Policy No</label>
 									<div class="col-sm-2"></div>
 								</div>
@@ -116,8 +116,8 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -35px;padding-right: 40px">
 									<label class="form-control-sm col-sm-2 text-right">Line</label>
-				                    <input type="text" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
-				                    <div class="text-search-ico" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>
+				                    <input type="text" [disabled]="radioVal == 'bypolno'" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'line')">
+				                    <div *ngIf="radioVal != 'bypolno'" class="text-search-ico" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>
 				                    &nbsp;&nbsp;
 				                    <input type="text" class="form-control form-control-sm" [(ngModel)]="lineDescription" readonly tabindex="-1">
 								</div>
@@ -125,8 +125,8 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -18px;padding-right: 40px">
 									<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
-				                    <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
-				                    <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+				                    <input type="text" [disabled]="radioVal == 'bypolno'" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only>
+				                    <div class="text-search-ico" *ngIf="radioVal != 'bypolno'" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
 				                    &nbsp;&nbsp;
 				                    <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
 								</div>
@@ -134,8 +134,8 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="input-group" style="margin-top: -16px;padding-right: 40px"> 
 									<label class="form-control-sm col-sm-2" style="padding-left: 0;">Ceding Company</label>
-			                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="cedingId" (change)="checkCode($event, 'cedingCo')">
-			                        <div class="text-search-ico" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
+			                        <input type="text" [disabled]="radioVal == 'bypolno'" class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="cedingId" (change)="checkCode($event, 'cedingCo')">
+			                        <div class="text-search-ico" *ngIf="radioVal != 'bypolno'" (click)="showCedingCompanyLOV()"><a><i class="fa fa-search"></i></a></div>
 			                        &nbsp;&nbsp;
 			                        <input type="text" class="form-control form-control-sm" [(ngModel)]="cedingName" readonly>
 								</div>	

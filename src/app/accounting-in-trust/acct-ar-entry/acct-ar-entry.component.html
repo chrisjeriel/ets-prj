@@ -77,7 +77,7 @@
 						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
-						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted || arInfo.rstrctTranUp === 1" name="amt2">
+						<input id="arAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="arInfo.arAmt" (ngModelChange)="changeArAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
 						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="arInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || arInfo.rstrctTranUp === 1" name="rate">
 					</div>
@@ -99,7 +99,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="newAr()">New AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="confirmNewAr();">New AR</button>
 				</div>
 				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
 					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center" readonly>
@@ -213,14 +213,64 @@ padding-right: 0px !important;">
 	<div header>Confirmation</div>
 	<div body>
 	  <div style="text-align: center">
-	  	<p style="margin: 0px">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px" *ngIf="isPrinted">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this AR with an AR No of <strong>{{arInfo.arNo !== null && arInfo.arNo.length !== 0 ? pad(arInfo.arNo, 'arNo') : generatedArNo}}</strong> ?</p>
+	  	<div class="input-group" style="margin-top: 12px">
+	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
+	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
+	  			<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
+	  			<option [value]="'2'">PRINTER</option>
+	  		</select>
+	  	</div>
 	  </div>
 	</div>
 	<div footer>
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
-          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateArStatus();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" [disabled]="printMethod.length == 0" [class.cust-btn-disabled]="printMethod.length == 0" (click)="printMdl.closeModal();updateArStatus();"><a>Yes</a></button>
           <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+<app-modal class="d-none" #reprintModal>
+	<div header>Re-print AR</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<!-- <p style="margin: 0px" *ngIf="isPrinted">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this AR with an AR No of <strong>{{arInfo.arNo !== null && arInfo.arNo.length !== 0 ? pad(arInfo.arNo, 'arNo') : generatedArNo}}</strong> ?</p> -->
+	  	<div class="input-group">
+	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
+	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
+	  			<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
+	  			<option [value]="'2'">PRINTER</option>
+	  		</select>
+	  	</div>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="reprintMdl.closeModal();"><a>Cancel</a></button>
+          <button class="cust-btn" type="button" [disabled]="printMethod.length == 0" [class.cust-btn-disabled]="printMethod.length == 0" (click)="reprintMdl.closeModal(); reprintMethod();"><a>Ok</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+<app-modal class="d-none" #leaveMdl>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Create new AR without saving changes?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="leaveMdl.closeModal(); newAr();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="leaveMdl.closeModal();"><a>No</a></button>
         </div>
       </div>
   	</div>

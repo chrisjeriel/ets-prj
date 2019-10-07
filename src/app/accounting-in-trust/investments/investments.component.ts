@@ -73,6 +73,7 @@ export class InvestmentsComponent implements OnInit {
           intRt    : null,
           purDate  : null,
           matDate  : null,
+          currSeq  : null,
           currCd : null,
           currRate : null,
           invtAmt  : null,
@@ -88,7 +89,6 @@ export class InvestmentsComponent implements OnInit {
           amortized: null,
           priceCost: null,
           uneditable : ['invtStatus','currRate','priceCost','invtCd'],
-          currSeqNo: null,
           preTerminatedTag: null,
           termDate: null,
           amortEff: null
@@ -238,7 +238,6 @@ export class InvestmentsComponent implements OnInit {
                 this.mtnService.getMtnCurrency('','Y')).pipe(map(([investments, type, status, duration,amortized,bank,invtSecType,currency ]) => { return { investments, type, status, duration,amortized,bank, invtSecType, currency  }; }));
 
       this.subscription = sub$.subscribe(data => {
-        
         var td = data['investments']['invtList'].sort((a, b) => b.createDate - a.createDate).map(a => { 
                                       
                                       a.matDate = this.ns.toDateTimeString(a.matDate);
@@ -246,13 +245,14 @@ export class InvestmentsComponent implements OnInit {
                                       a.createDate = this.ns.toDateTimeString(a.createDate);
                                       a.updateDate = this.ns.toDateTimeString(a.updateDate);
                                       a.edited = false;
+                                      a.currRate =  a.currRate;
                                       var res = a.invtCd.split("-");
-                                      a.currSeqNo = parseInt(res[4]);
+                                      a.currSeq = parseInt(res[4]);
                                          
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost'];
                                       } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
-                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','priceCost'];
+                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
                                       } else {
                                         a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
@@ -491,10 +491,11 @@ export class InvestmentsComponent implements OnInit {
   }
 
   update(data){
-    keys: ['invtCd','bank','certNo','invtType',
+    /*keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']
+            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']*/
+     
       for(var i= 0; i< this.passData.tableData.length; i++){
 
          if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
@@ -561,6 +562,7 @@ export class InvestmentsComponent implements OnInit {
 
                  if(invtIncome === null){
                  }else {
+                   console.log(this.wtaxRate);
                    var taxRate = parseFloat(this.wtaxRate) / 100,
                        
                        withHTaxAmt = invtIncome * taxRate,
@@ -572,6 +574,7 @@ export class InvestmentsComponent implements OnInit {
                        } else {
                          matVal = principal + invtIncome - bankCharges - withHTaxAmt;
                        }
+                       console.log(withHTaxAmt + '-' + matVal);
 
                        this.passData.tableData[i].whtaxAmt = withHTaxAmt;
                        this.passData.tableData[i].matVal = matVal;
@@ -602,16 +605,17 @@ export class InvestmentsComponent implements OnInit {
                        this.passData.tableData[i].currRate = currRt;
                        
                        if (this.passData.tableData[i].invtCd === null){
-                         var maxPHP = this.checkItemCurrency('PHP');
-                         this.passData.tableData[i].currSeqNo = maxPHP + 1;
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                         //var maxPHP = this.checkItemCurrency('PHP');
+                         this.passData.tableData[i].currSeq = null;
+                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
                        } else {
                          var res = this.passData.tableData[i].invtCd.split("-");
                          if (this.passData.tableData[i].currCd !== res[3]){
-                           var maxPHP = this.checkItemCurrency('PHP');
-                           this.passData.tableData[i].currSeqNo = maxPHP + 1;
-                           this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                           //var maxPHP = this.checkItemCurrency('PHP');
+                           this.passData.tableData[i].currSeq = null;
+                           this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
                          } else {
+                            this.passData.tableData[i].currSeq = parseInt(res[4]);
                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
                          }
                        }  
@@ -620,17 +624,18 @@ export class InvestmentsComponent implements OnInit {
                        this.passData.tableData[i].currRate = currRt;
                       
                         if (this.passData.tableData[i].invtCd === null){
-                          var maxUKP = this.checkItemCurrency('UKP');
-                          this.passData.tableData[i].currSeqNo = maxUKP + 1;
-                          this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                         //var maxUKP = this.checkItemCurrency('UKP');
+                          this.passData.tableData[i].currSeq = null;
+                          this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
                         } else {
                           var res = this.passData.tableData[i].invtCd.split("-");
                             if (this.passData.tableData[i].currCd !== res[3]){
-                              var maxUKP = this.checkItemCurrency('UKP');
-                              this.passData.tableData[i].currSeqNo = maxUKP + 1;
-                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                              //var maxUKP = this.checkItemCurrency('UKP');
+                              this.passData.tableData[i].currSeq = null;
+                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
                             }else {
-                               this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
+                              this.passData.tableData[i].currSeq = parseInt(res[4]);
+                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
                             }
                         }  
                      } else if (this.passData.tableData[i].currCd === 'USD'){
@@ -638,17 +643,18 @@ export class InvestmentsComponent implements OnInit {
                        this.passData.tableData[i].currRate = currRt;
      
                        if (this.passData.tableData[i].invtCd === null){
-                         var maxUSD = this.checkItemCurrency('USD');
-                         this.passData.tableData[i].currSeqNo = maxUSD + 1;
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
+                         //var maxUSD = this.checkItemCurrency('USD');
+                         this.passData.tableData[i].currSeq = null;
+                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
                        } else {
                          var res = this.passData.tableData[i].invtCd.split("-");
                            if (this.passData.tableData[i].currCd !== res[3]){
-                             var maxUSD = this.checkItemCurrency('USD');
-                             this.passData.tableData[i].currSeqNo = maxUSD + 1;
-                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeqNo);
-                           } else {
-                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
+                             //var maxUSD = this.checkItemCurrency('USD');
+                             this.passData.tableData[i].currSeq = null;
+                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
+                           } else { 
+                             this.passData.tableData[i].currSeq = parseInt(res[4]);
+                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
                            }
                        }  
                      }
@@ -896,6 +902,7 @@ export class InvestmentsComponent implements OnInit {
 
   onClickSave(){
       if(this.checkFields()){
+         //this.confirmSave.confirmModal();
         let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
           if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
             this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
@@ -969,14 +976,12 @@ export class InvestmentsComponent implements OnInit {
         invTtype =  'LT';
     } else {
         invTtype =  'ST';
-    }  
+    } 
 
      if (invtCd === null){
        var month = currentTime.getMonth() + 1;
        var code = currentTime.getFullYear() + '-' + month.toString().padStart(2,'0');
-       var currSeq = parseInt(currSeqNo);
-       invtCode = code + '-' + invTtype + '-' + currCd + '-' + currSeq.toString().padStart(3,'0');
-       console.log(invtCode);
+       invtCode = code + '-' + invTtype + '-' + currCd;
      } else {
        var res = invtCd.split("-");
        var year = currentTime.getFullYear();
@@ -987,20 +992,16 @@ export class InvestmentsComponent implements OnInit {
        if(currCd === res[3]){
          invtCode = code + '-' + invTtype + '-' + currCd + '-' + res[4];
        } else {
-
-         if( res[0] === year){
-           invtCode = code + '-' + invTtype + '-' + currCd + '-' + currSeq.toString().padStart(3,'0');
-         } else {
-           invtCode = year + '-' + month.toString().padStart(2,'0') + '-' + invTtype + '-' + currCd + '-' + currSeq.toString().padStart(3,'0');
-         }
-         
+         invtCode = year + '-' + month.toString().padStart(2,'0') + '-' + invTtype + '-' + currCd;   
        }
 
        console.log(invtCode);
-     }
-
-     return invtCode;
-
+       var invtCodeArr = invtCode.split("-");
+       if (invtCodeArr[4] === 'undefined'){
+         invtCode = invtCodeArr[0] + '-' + invtCodeArr[1] + '-' + invtCodeArr[2] + '-' + invtCodeArr[3];
+       }
+    }
+    return invtCode;
   }
 
 
@@ -1022,6 +1023,12 @@ export class InvestmentsComponent implements OnInit {
                                                        a.intRt = a.intRt;
                                                        a.invtAmt = a.invtAmt;
                                                        a.invtCd = a.invtCd;
+
+                                                       if (isNaN(a.currSeq)){
+                                                         a.currSeq = null;
+                                                       }
+                                                       
+                                                       a.currSeq = a.currSeq;
 
                                                        if (new Date(a.matDate) <= currentTime){
                                                          console.log("mat reached");

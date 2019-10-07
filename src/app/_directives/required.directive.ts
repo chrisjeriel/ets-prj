@@ -18,9 +18,11 @@ export class RequiredDirective implements OnInit{
       }
     }
 
-    @HostListener('blur', ['$event.target.value']) onBlur(value){
-        if(value === null || typeof value === 'undefined' || value == ''){
+    @HostListener('blur', ['$event.target']) onBlur(value){
+        if(value.value === null || typeof value.value === 'undefined' || value.value == ''){
+          if(!value.disabled && !value.readOnly) {
             highlight(this.er);
+          }
         }else{
             unHighlight(this.er);
         }

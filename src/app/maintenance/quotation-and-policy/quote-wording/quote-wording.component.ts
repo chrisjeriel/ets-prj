@@ -210,6 +210,7 @@ export class QuoteWordingComponent implements OnInit, OnDestroy {
 			if(data['returnCode'] == -1) {
 				this.dialogIcon = "success";
 				this.successDialog.open();
+				this.table.markAsPristine();
 				this.getMtnQuoteWordings();
 			} else {
 				this.dialogIcon = "error";

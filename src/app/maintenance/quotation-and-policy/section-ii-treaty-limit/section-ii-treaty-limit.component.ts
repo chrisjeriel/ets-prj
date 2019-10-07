@@ -150,7 +150,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 
     		this.subscription = sub$.subscribe(data => {
     			this.lineClassList = data['lineClass']['lineClass'];
-    			this.currencyList = data['currency']['currency'];
+    			this.currencyList = data['currency']['currency'].filter(a => a.activeTag == 'Y');
     		});
     	}
 

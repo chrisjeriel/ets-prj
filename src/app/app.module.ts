@@ -451,6 +451,12 @@ import { JvTreatyPullOutComponent } from './accounting-in-trust/journal-voucher/
 import { DistributionByInsComponent } from './underwriting/policy-distribution/distribution-by-ins/distribution-by-ins.component';
 import { LoadingTableComponent } from './_components/loading-table/loading-table.component';
 
+import { MtnAcseTrantypeComponent } from './maintenance/mtn-acse-trantype/mtn-acse-trantype.component';
+import { JvAcctEntriesServiceComponent } from './accounting-service/journal-voucher-service/generate-jv-service/jv-acct-entries-service/jv-acct-entries-service.component';
+import { OrServiceFeeMunichReComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-service-fee-munich-re/or-service-fee-munich-re.component';
+import { OrOnlyComponent } from './accounting-service/official-receipt/generate-or/acct-or-official-receipt/or-only/or-only.component';
+import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 
 @NgModule({
     imports: [
@@ -907,6 +913,12 @@ import { LoadingTableComponent } from './_components/loading-table/loading-table
         JvTreatyPullOutComponent,
         DistributionByInsComponent,
         LoadingTableComponent,
+        MtnAcseTrantypeComponent,
+        JvAcctEntriesServiceComponent,
+        OrServiceFeeMunichReComponent,
+        OrOnlyComponent,
+        PrintModalMtnAcctComponent,
+        BusinessTypeComponent,
     ],
 
   	providers: [

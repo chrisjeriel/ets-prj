@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 			  <fieldset class="scheduler-border" style="margin-top: 10px !important">
 				<div class="row">
-					<div class="col-sm">
+					<div class="col-sm" id="mtn-region">
 						<div class="custom-row-inline-inset" style="margin-top: 25px !important;">
 							<app-cust-editable-non-datatable #regionTable [passData]="passData" (genericBtn)="deleteRegion()" (onDelete)="regionTable.onClickDelete('force');onClickDelRegion(this.deleteBool);" (tableDataChange)="this.selectedData = $event;change($event);" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 						</div>

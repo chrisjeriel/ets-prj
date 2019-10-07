@@ -72,4 +72,32 @@ export class MtnPrintableNamesComponent implements OnInit {
     this.passData.tableData = [];
     this.table.refreshTable();
   }
+
+  checkCode(code, ev) {
+     console.log(code);
+
+    if(code.trim() === ''){
+      this.selectedData.emit({
+        printableName: '',
+        ev: ev
+      });
+    } else {
+      this.maintenanceService.getMtnPrintableName(code).subscribe(data => {
+        if(data['printableNames'].length > 0) {
+          data['printableNames'][0]['ev'] = ev;
+          this.selectedData.emit(data['printableNames'][0]);
+          console.log(this.selectedData);
+        } else {
+          this.selectedData.emit({
+            printableName: '',
+            ev: ev
+          });
+
+          // $('#printable > #modalBtn').trigger('click');
+          this.modal.openNoClose();
+        }
+        
+      });
+   }
+  }
 }

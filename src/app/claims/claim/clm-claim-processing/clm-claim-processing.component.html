@@ -4,7 +4,7 @@
     <ngb-tab title="Claim Processing">
       <ng-template ngbTabContent>
         <div style="margin-top: 12px">
-          <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selected=$event; onClickEdit($event)" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" #mainTable></app-cust-non-datatable>
+          <app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selected=$event; onClickEdit($event)" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" #mainTable></app-loading-table>
         </div>
 
         <br><br>

@@ -92,7 +92,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   claimsOffset: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cummulative Payment','Paid Amount',' Paid Amount (Php)'],
+    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cumulative Payment','Paid Amount',' Paid Amount (Php)'],
     dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
     nData: {
       showMG:1,
@@ -151,6 +151,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   disable: boolean = true;
   readOnly :boolean = false;
   cancelFlag: boolean = false;
+  cedingFlag: boolean = false;
 
   //ADDED BY NECO 09/03/2019
   positiveHistType: number[] = [4,5,10];
@@ -188,12 +189,14 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       console.log(data)
       this.passData.tableData = [];
       this.totalTrtyBal = 0;
+      this.cedingFlag = false;
       if(data.negativeTrty.length != 0){
         this.claimsOffset.disableAdd = false;
-        this.passData.disableAdd = false;
+        this.passData.disableAdd  = false;
+        this.cedingFlag = true;
         this.jvDetails.cedingName = data.negativeTrty[0].cedingName;
-        this.jvDetails.ceding = data.negativeTrty[0].cedingId;
-        this.passLov.cedingId = this.jvDetails.ceding;
+        this.jvDetails.ceding     = data.negativeTrty[0].cedingId;
+        this.passLov.cedingId     = this.jvDetails.ceding;
         this.check(this.jvDetails);
         for (var i = 0; i < data.negativeTrty.length; i++) {
            this.passData.tableData.push(data.negativeTrty[i]);
@@ -267,8 +270,23 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   updateTreatyBal(data){
+    var deletedFlag = false;
+    var table = ''
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
+      if(this.passData.tableData[i].deleted){
+        deletedFlag = true;
+      }
+    }
+
+    if(deletedFlag){
+      table = this.passData.tableData.filter((a)=>{return !a.deleted});
+      if(table.length != 0){
+        this.quarterTable.onRowClick(null, table[0]);
+      }else{
+        this.claimsOffset.tableData = [];
+        this.trytytransTable.refreshTable();
+      }
     }
     this.quarterTable.refreshTable();
   }
@@ -402,16 +420,16 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.jvDetails.deleteClmOffset = [];
     var quarterNo = null;
     var actualBalPaid = 0;
-    console.log(this.claimsOffset.tableData)
     for(var i = 0 ; i < this.passData.tableData.length; i++){
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveNegTrty.push(this.passData.tableData[i]);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].tranId = this.jvDetail.tranId;
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].cedingId = this.jvDetails.ceding;
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
-        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
+        
         if(this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo === ''){
           quarterNo = this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding.split('T');
           quarterNo = quarterNo[0].split('-');
@@ -421,11 +439,22 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       }
 
       if(this.passData.tableData[i].deleted){
-        this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
+        if(this.passData.tableData[i].clmOffset.length == 0){
+          this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
+        }else{
+          for (var a = 0; a < this.passData.tableData[i].clmOffset.length; a++) {
+            this.jvDetails.deleteNegTrty.push(this.passData.tableData[i].clmOffset[a]);
+            this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].cedingId  =  this.jvDetails.ceding;
+            this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
+            this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+          }
+        }
+        
+        //this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
       }
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){
-        if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted){
+        if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted && !this.passData.tableData[i].deleted){
           console.log(this.passData.tableData[i].clmOffset[j].clmPaytAmt);
           actualBalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           this.jvDetails.saveClmOffset.push(this.passData.tableData[i].clmOffset[j]);
@@ -440,6 +469,9 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
         }
+      }
+      if(!this.passData.tableData[i].deleted){
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].actualBalPaid = actualBalPaid;
       }
     }
 

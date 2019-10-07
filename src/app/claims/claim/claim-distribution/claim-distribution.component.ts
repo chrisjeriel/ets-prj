@@ -158,6 +158,7 @@ export class ClaimDistributionComponent implements OnInit {
    histTypeFilter:any = 'L';
 
    currTab:string = 'reserve';
+   dialogMsg:String;
 
   constructor(public modalService: NgbModal, private clmService : ClaimsService, private titleService: Title, private ns: NotesService, private router: Router) { }
 
@@ -317,6 +318,11 @@ export class ClaimDistributionComponent implements OnInit {
         if(a['returnCode']==-1){
           this.diagIcon = 'nice';
           this.getClmHist();
+        }else if(a['returnCode']==20000){
+          this.diagIcon = 'error-message';
+          for(let msg of a['errorList']){
+            this.dialogMsg = msg.errorMessage;
+          }
         }else{
           this.diagIcon = 'error'
         }

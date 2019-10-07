@@ -4,6 +4,7 @@ import { ClaimsService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
 	selector: 'app-clm-claims-inquiry',
@@ -11,12 +12,17 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 	styleUrls: ['./clm-claims-inquiry.component.css']
 })
 export class ClmClaimsInquiryComponent implements OnInit {
-	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 	passData: any = {
 	    tHeader: ["Claim No", "Status", "Policy No", "Co Claim No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
 	    		  "Co Ref No", "Adjuster", "Adjuster Ref No", "Risk", "Loss Date", "Report Date", "Reported By", "Creation Date", 
 	    		  "Processed By", "Loss Cause", "Loss Period", "Event Type", "Event", "Loss Details", "Remarks", "Section I",
 	    		  "Section II", "Section III", 'Currency', 'Total Reserved', 'Total Payment'],
+
+		sortKeys : ['CLAIM_NO','CLM_STATUS','POLICY_NO','CO_CLM_NO','CESSION_DESC','LINE_CLASS_DESC','CEDING_NAME','INSURED_DESC',
+					'CO_REF_NO','ADJ_NAME','ADJ_REF_NO','RISK_NAME','LOSS_DATE','REPORT_DATE','REPORTED_BY','CREATE_DATE',
+					'PROCESSED_BY','LOSS_ABBR','LOSS_PD_ABBR','EVENT_TYPE_DESC','EVENT_DESC','LOSS_DTL','REMARKS','SECI_SI_TAG','SECII_SI_TAG','SECIII_SI_TAG',
+					'CURRENCY_CD','T_LOSS_EXP_RES','T_LOSS_EXP_PD'],
 
 		dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", 
 					"date", "text", "date", "text", "text", "text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
@@ -107,7 +113,10 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	    exportFlag: true
 	 };
 
-  	searchParams: any[] = [];
+  	searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+    };
   	selected: any = {
   		claimNo: '',
   		clmStatus: '',
@@ -166,8 +175,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 
 
 	retrieveClaimlist() {
-		this.passData.tableData = [];
-		this.claimsService.getClaimsListing(this.searchParams).subscribe((data:any)=>{
+		this.claimsService.newGetClaimsListing(this.searchParams).subscribe((data:any)=>{
          /*	this.passData.tableData = data.policyList.filter(a=>{
            
              a.lineCd = a.policyNo.substring(0,3);
@@ -180,8 +188,8 @@ export class ClmClaimsInquiryComponent implements OnInit {
          	}
          	
          );*/
-		 console.log(data.claimsList);
        	 if(data != null){
+        	this.passData.count = data['length'];
 	         for(var i of data.claimsList){
 	           for(var j of i.clmAdjusterList){
 	             if(i.adjName === null){
@@ -192,17 +200,17 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
 	             }
 	           }
-	           this.passData.tableData.push(i);
 	         }
-	         this.table.refreshTable();
+	         this.table.placeData(data.claimsList);
 	       }
        });
 	}
 
 	searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
-        //this.passData.btnDisabled = true;
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+
         this.passData.btnDisabled = true;
         this.retrieveClaimlist();
 

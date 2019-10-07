@@ -5,8 +5,10 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { AccountingService } from '@app/_services/accounting.service';
+import { NotesService } from '@app/_services/notes.service';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-quarterly-stmnt-of-acct',
@@ -18,6 +20,8 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('generateModal') generateModal: ModalComponent;
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
@@ -108,56 +112,35 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		pageStatus: true,
 		pagination: true,
 		colSize: ['300px','120px','120px','120px','120px'],
-		pageID: 2,
+		pageID: 'qsoaCombinedSoa',
 		keys: ['particulars','referenceNo','breakdownAmount','debit','credit']
 	}
 
 	passDataViewAccountsReceivable: any = {
-		tableData:[
-			{policyNo:'CAR-2018-00001-99-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:37128,commission:11138.40,premiumTax:1336.61,amountDue:24652.99},
-			{policyNo:'CAR-2018-00002-33-0001-000',memoNo:'01-0061',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:33210,commission:9963,premiumTax:1195.56,amountDue:22051.44},
-			{policyNo:'CAR-2018-00003-01-0002-001',memoNo:'01-0062',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:47832.42,commission:14349.73,premiumTax:1721.97,amountDue:31760.72},
-			{policyNo:'CAR-2018-00004-01-0001-001',memoNo:'01-0020',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:9979.20,commission:2993.76,premiumTax:359.25,amountDue:6626.19},
-			{policyNo:'CAR-2018-00005-01-0001-005',memoNo:'03-0320',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:23493.91,commission:7048.18,premiumTax:845.78,amountDue:15599.95},
-			{policyNo:'CEC-2018-00001-99-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:5918.40,commission:1775.52,premiumTax:213.06,amountDue:3929.82},
-			{policyNo:'CEC-2018-00002-31-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:552856.33,commission:165856.90,premiumTax:19902.83,amountDue:367096.60},
-			{policyNo:'EAR-2018-00003-99-0001-000',memoNo:'01-0287',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:11299.62,commission:3289.89,premiumTax:406.79,amountDue:7502.94},
-			{policyNo:'EAR-2018-00004-02-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:4500,commission:1350,premiumTax:162,amountDue:2988},
-			{policyNo:'EAR-2018-00005-24-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:14080,commission:4224,premiumTax:506.88,amountDue:9349.12},
-			{policyNo:'EAR-2018-00001-99-0001-001',memoNo:'02-0324',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:43880.50,commission:13164.15,premiumTax:1579.70,amountDue:29136.65},
-			{policyNo:'EAR-2018-00002-42-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:5387.80,commission:1616.34,premiumTax:193.96,amountDue:3577.50},
-			{policyNo:'EEI-2018-00003-99-0001-000',memoNo:'01-0035',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:1943.34,commission:583,premiumTax:69.96,amountDue:1290.38},
-			{policyNo:'EEI-2018-00004-01-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:49238.81,commission:14771.65,premiumTax:1772.60,amountDue:32694.56},
-			{policyNo:'MBI-2018-00001-12-0001-000',memoNo:'03-0622',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:42991.39,commission:12897.42,premiumTax:1547.69,amountDue:28546.28},
-			{policyNo:'MBI-2018-00002-24-0001-000',memoNo:'01-0060',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:12708.80,commission:3812.64,premiumTax:457.52,amountDue:8438.64},
-			{policyNo:'CAR-2018-00006-35-0001-000',memoNo:'01-0004',inceptDate:new Date('2018-01-12'),expiryDate:new Date('2019-01-01'),effectiveDate:new Date('2018-01-12'),premium:199433.18,commission:59829.95,premiumTax:7179.59,amountDue:132423.64},
-		],
-		tHeader:["Policy No.","Memo No.","Incept Date","Expiry Date","Effective Date","Premium","Commission","Premium Tax","Amount Due"],
+		tableData:[],
+		tHeader:["Policy No.","Memo No.","Incept Date","Expiry Date","Effective Date","Premium","RI Commission","Other Charges","Amount Due"],
 		dataTypes: ["text","text","date","date","date","currency","currency","currency","currency"],
+		keys: ['policyNo','memoNo','inceptDate','expiryDate','effDate','premium','riCommission','otherCharges','amountDue'],
 		uneditable: [true,true,true,true,true,true,true,true,true],
 		tableOnly: true,
 		pageStatus: true,
 		pagination: true,
 		pageLength: 15,
-		total: [null,null,null,null,'TOTAL','premium','commission','premiumTax','amountDue'],
-		pageID: 3
+		total: [null,null,null,null,'TOTAL','premium','riCommission','otherCharges','amountDue'],
+		pageID: 'qsoaAccReceivables'
 	}
 
 	passDataSummary: any = {
-		tableData: [
-			{line:'CAR',premium:703397.88,commission:211019,premiumTax:25332.33,amountDue:467056.17},
-			{line:'CEC',premium:156150.64,commission:46845.20,premiumTax:5621.43,amountDue:103684.01},
-			{line:'EEI',premium:19909.84,commission:4289,premiumTax:1037.97,amountDue:14299.09},
-			{line:'MBI',premium:212833.18,commission:63849.95,premiumTax:7661.99,amountDue:141321.24},
-		],
-		tHeader:["Line","Premium","Commission","Premium Tax","Amount Due"],
+		tableData: [],
+		tHeader:["Line","Premium","RI Commission","Other Charges","Amount Due"],
 		dataTypes: ["text","currency","currency","currency","currency"],
-		total: ['TOTAL','premium','commission','premiumTax','amountDue'],
+		keys: ['lineCd','premium','riCommission','otherCharges','amountDue'],
+		total: ['TOTAL','premium','ricommission','otherCharges','amountDue'],
 		tableOnly: true,
 		pageStatus: true,
 		pagination: true,
 		pageLength: 10,
-		pageID: 4,
+		pageID: 'qsoaSummary',
 		uneditable:[true,true,true,true,true]
 	}
 
@@ -185,7 +168,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	confMsg: number = 1;
 	filtCedingId: string = '';
-	filtCedingName: String = '';
+	filtCedingName: string = '';
 	filtFromQtr: number = null;
 	filtFromYear: number = null;
 	filtToQtr: number = null;
@@ -194,11 +177,23 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	gnrtCedingName: string = '';
 	gnrtQtr: number = 1;
 	gnrtYear: number = 1;
+	yearParamOpts: any[] = [];
 
-	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService) { }
+	dialogIcon: string = '';
+	dialogMessage: string = '';
+
+	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
+
+		var d = new Date();
+	    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.gnrtYear = d.getFullYear();
+
+	    for(let x = d.getFullYear(); x >= 2018; x--) {
+	    	this.yearParamOpts.push(x);
+	    }
 
 		this.showGenerateModal();
 	}
@@ -279,5 +274,54 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	setFiltCedingCo(ev) {
 		this.filtCedingId = ev.cedingId;
 		this.filtCedingName = ev.cedingName;
+	}
+
+	showGnrtCedingCoLOV() {
+		this.gnrtCedingCoLOV.modal.openNoClose();
+	}
+
+	setGnrtCedingCo(ev) {
+		this.gnrtCedingId = ev.cedingId;
+		this.gnrtCedingName = ev.cedingName;
+	}
+
+	saveAcitQsoa() {
+		var param = {
+			cedingId: this.gnrtCedingId,
+			gnrtQtr: this.gnrtQtr,
+			gnrtYear: this.gnrtYear,
+			createUser: this.ns.getCurrentUser(),
+			createDate: this.ns.toDateTimeString(0),
+			updateUser: this.ns.getCurrentUser(),
+			updateDate: this.ns.toDateTimeString(0)
+		}
+
+		$('.qsoaLoader').css('display','block');
+		this.as.saveAcitQsoa(param).subscribe(data => {
+			$('.qsoaLoader').css('display','none');
+			if(data['returnCode'] == -1) {
+				this.dialogIcon = 'success-message';
+				this.dialogMessage = 'QSOA successfully generated'
+				this.successDialog.open();
+				
+				this.filtCedingId = this.gnrtCedingId;
+				this.filtCedingName = this.gnrtCedingName;
+				this.filtFromQtr = this.gnrtQtr;
+				this.filtFromYear = this.gnrtYear
+				this.filtToQtr = this.gnrtQtr;
+				this.filtToYear = this.gnrtYear
+
+				var d = new Date();
+				this.gnrtCedingId = '';
+				this.gnrtCedingName = '';
+			    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
+			    this.gnrtYear = d.getFullYear();
+
+				this.onClickSearch();
+			} else {
+				this.dialogIcon = 'error';
+				this.successDialog.open();
+			}
+		});
 	}
 }
