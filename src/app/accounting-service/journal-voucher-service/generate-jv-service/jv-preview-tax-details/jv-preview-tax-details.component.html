@@ -15,7 +15,7 @@
                 <legend class="scheduler-border">Creditable WTax Details</legend>
                 <div class="custom-row-inline-inset">
                     <!-- <app-cust-editable-non-datatable [passData]="passDataAccountingCreditableTaxDetails" (tableDataChange)="computeWTax($event)"> TRBT#PROD_GRADE -->
-                    <app-cust-editable-non-datatable #wthTable [passData]="passDataWHT">
+                    <app-cust-editable-non-datatable #wthTable (clickLOV)="openWHT($event)" [passData]="passDataWHT">
                         <ng-container controls-r>
                             <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
                         </ng-container>
@@ -29,12 +29,14 @@
             <div class="col-md-12 text-center">
                 <div class="cust-btn-container">
                     <button type="button" class="cust-btn"><a>Cancel</a></button>
-                    <button type="button" class="cust-btn"><a>Save</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-confirm-save id="SaveTax" (onYes)="saveTaxDtl()"></app-confirm-save>
+<app-cancel-button (onYes)="saveTaxDtl('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
 <app-lov #genlovMdl [passData]="passLov" (selectedData)="setGenTax($event)">
 <app-lov #wthlovMdl [passData]="passLovWTH" (selectedData)="setWHTax($event)">

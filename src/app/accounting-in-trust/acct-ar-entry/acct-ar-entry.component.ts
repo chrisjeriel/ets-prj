@@ -837,7 +837,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             }
           }
         );
-      },0);
+      },1000);
     }
   }
 
