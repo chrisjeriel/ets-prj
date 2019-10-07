@@ -78,6 +78,7 @@ export class BusinessTypeComponent implements OnInit {
   		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
+      $('#cust-table-container').addClass('ng-dirty');
   	}
   }
 
@@ -155,6 +156,7 @@ export class BusinessTypeComponent implements OnInit {
 	            this.form.control.markAsPristine();
 	            this.dialogIcon = "success";
 	            this.successDialog.open();
+               this.table.overlayLoader = true;
 	             this.getBussType();
 	            $('.ng-dirty').removeClass('ng-dirty');
 	        }else{
