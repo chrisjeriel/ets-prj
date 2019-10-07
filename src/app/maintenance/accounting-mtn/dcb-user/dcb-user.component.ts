@@ -316,6 +316,10 @@ export class DcbUserComponent implements OnInit {
     }
   	
   }
+
+  printPreview(data) {
+    //added by Totz during merge to remove error; See line dcb-user.component.html(43,43)
+  }
  
 
 }
