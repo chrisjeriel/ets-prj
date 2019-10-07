@@ -83,7 +83,23 @@
 			                		<div class="form-row custom-row-inline-inset">
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
-											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleNote">
+											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleNote">
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input197" [checked]="impTag" (change)="impTag = !impTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+											</div>
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input199" [checked]="urgTag" (change)="urgTag = !urgTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+											</div>
 										</div>
 										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
