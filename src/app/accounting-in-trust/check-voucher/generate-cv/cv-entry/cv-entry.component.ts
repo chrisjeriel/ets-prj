@@ -355,6 +355,7 @@ export class CvEntryComponent implements OnInit {
       this.classLov.openLOV();
     }else if(fromUser.toLowerCase() == 'paytreqtype'){
       this.passDataLov.selector = 'paytReqType';
+      this.passDataLov.from = 'acit';
       this.paytReqTypeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'curr'){
       this.currLov.modal.openNoClose();

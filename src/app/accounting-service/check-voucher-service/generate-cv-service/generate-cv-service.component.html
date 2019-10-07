@@ -7,34 +7,34 @@
 					<div>CV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-entry-service></app-cv-entry-service>
+					<app-cv-entry-service (cvData)="passData=$event;" [passData]="passData"></app-cv-entry-service>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>Payment Requests List</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-payment-request-list-service></app-cv-payment-request-list-service>
+					<app-cv-payment-request-list-service [passData]="passData">></app-cv-payment-request-list-service>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>CV Preview</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-preview-service></app-cv-preview-service>
+					<app-cv-preview-service >></app-cv-preview-service>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="passData?.tranId == ''">
 				<ng-template ngbTabTitle>
 					<div>Attachments</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-cv-attachments-service></app-cv-attachments-service>
+					<app-acc-attachments [record]="passData"></app-acc-attachments>
 				</ng-template>
 			</ngb-tab>
 			

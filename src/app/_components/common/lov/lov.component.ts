@@ -1015,27 +1015,67 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['auto']
       this.passTable.dataTypes = ['text'];
       this.passTable.keys = ['description'];
-      this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG').subscribe((a:any)=>{
-        this.passTable.tableData = a.refCodeList.filter(e => e.code == 'C' || e.code == 'P' || e.code == 'S' || e.code == 'Q' || e.code == 'I' || e.code == 'O');
-        this.passTable.tableData.push({code: "O", identifier: "MTN_ACIT_TRAN_TYPE.GROUP_TAG", description: "Others"})
-        this.table.refreshTable();
-      });
+      if(this.passData.from == 'acit'){
+          this.passTable.keys = ['description'];
+          this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG').subscribe((a:any)=>{
+          this.passTable.tableData = a.refCodeList.filter(e => e.code == 'C' || e.code == 'P' || e.code == 'S' || e.code == 'Q' || e.code == 'I' || e.code == 'O');
+          this.passTable.tableData.push({code: "O", identifier: "MTN_ACIT_TRAN_TYPE.GROUP_TAG", description: "Others"})
+          this.table.refreshTable();
+        });
+      }else if(this.passData.from == 'acse'){
+        // this.passTable.tableData.push(
+        //   { code: 'C' , description: 'Check Voucher Payments' },
+        //   { code: 'P' , description: 'Petty Cash Voucher Payments' },
+        //   { code: 'S' , description: 'Service to In-Trust Payments' },
+        //   { code: 'R' , description: 'Risk Management Fee to Employees' },
+        //   { code: 'O' , description: 'Others' }
+        // );
+        this.passTable.keys = ['tranTypeName'];
+        this.mtnService.getMtnAcseTranType('PRQ','','','','','Y')
+        .subscribe(data => {
+          this.passTable.tableData = data['tranTypeList'];
+          this.table.refreshTable();
+        });
+        // console.log(this.passTable.tableData);
+        // setTimeout(() => {
+        //   this.table.refreshTable();
+        // },0);
+      }
     }else if(this.passData.selector == 'paytReqList'){
+      console.log(this.passData.from);
       this.passTable.tHeader = ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'];
       this.passTable.widths = [120,150,1,120,100,1,120];
       this.passTable.dataTypes = [ 'text','text','date','text','text','text','currency'];
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
-      this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-        var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
-        this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
-        for(var i of this.passTable.tableData){
-          if(i.processing !== null && i.processing !== undefined){
-            i.preventDefault = true;
+      if(this.passData.from == 'acit'){
+        this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
+          var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
+          this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
           }
-        }
-        this.table.refreshTable();
-      });
+          this.table.refreshTable();
+        });
+      }else if(this.passData.from == 'acse'){
+        console.log(this.passData);
+        this.accountingService.getAcsePaytReqList([]).subscribe((a:any) => {
+          var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == Number(this.passData.paytReqType));
+          console.log(a['acsePaytReq']);
+          console.log(rec);
+          this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
+          console.log(this.passTable.tableData);
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
+          }
+          this.table.refreshTable();
+        });
+      }
+      
     }else if(this.passData.selector == 'mtnBussType'){
       this.passTable.tHeader = ['Business Type'];
       this.passTable.widths = ['auto']

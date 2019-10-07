@@ -128,10 +128,8 @@ export class CvEntryServiceComponent implements OnInit {
     var subRes = forkJoin(this.accountingService.getAcseCv(this.saveAcseCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACSE_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    // var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries(),subRes)
-    //                         .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
-    var subRes2 = forkJoin(this.mtnService.getMtnBankAcct(),subRes)
-                            .pipe(map(([ba,sub1]) => { return { ba,sub1 }; }));
+    var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries(),subRes)
+                            .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
 
     subRes2.subscribe(data => {
       console.log(data);
@@ -140,20 +138,21 @@ export class CvEntryServiceComponent implements OnInit {
       var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
       var recPrt  = data['sub1']['prt']['refCodeList'];
-      //var recCn   = data['cn']['checkSeriesList'];
+      var recCn   = data['cn']['checkSeriesList'];
 
       this.cvStatList      = recStat;
-      // this.checkSeriesList = recCn;
-       this.checkSeriesList = [];
+      this.checkSeriesList = recCn;
 
       this.bankAcctList = data['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
       // var totalPrl = arrSum(data['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
       // var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
       // var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
+
       var totalPrl = 0;
       var totalCredit = 0;
       var totalDebit = 0;
+
 
       if(this.saveAcseCv.tranId == '' || this.saveAcseCv.tranId == null){
         this.loadingFunc(false);
@@ -341,13 +340,13 @@ export class CvEntryServiceComponent implements OnInit {
     console.log(fromUser);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
-      if(this.saveAcseCv.paytReqType == 'S'){
-        this.passDataLov.payeeClassCd = 2;
-      }else if(this.saveAcseCv.paytReqType == 'I'){
-        this.passDataLov.payeeClassCd = 3;
-      }else{
-        this.passDataLov.payeeClassCd = (this.saveAcseCv.paytReqType == '' || this.saveAcseCv.paytReqType == null)?'':1;
-      }
+      // if(this.saveAcseCv.paytReqType == 'S'){
+      //   this.passDataLov.payeeClassCd = 2;
+      // }else if(this.saveAcseCv.paytReqType == 'I'){
+      //   this.passDataLov.payeeClassCd = 3;
+      // }else{
+      //   this.passDataLov.payeeClassCd = (this.saveAcseCv.paytReqType == '' || this.saveAcseCv.paytReqType == null)?'':1;
+      // }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'mtnBank';
@@ -362,6 +361,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.classLov.openLOV();
     }else if(fromUser.toLowerCase() == 'paytreqtype'){
       this.passDataLov.selector = 'paytReqType';
+      this.passDataLov.from = 'acse';
       this.paytReqTypeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'curr'){
       this.currLov.modal.openNoClose();
@@ -405,8 +405,8 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.checkClassDesc   = data.data.description;
       this.saveAcseCv.checkClass = data.data.code;
     }else if(from.toLowerCase() == 'paytreqtype'){
-      this.saveAcseCv.paytReqTypeDesc   = data.data.description;
-      this.saveAcseCv.paytReqType = data.data.code;
+      this.saveAcseCv.paytReqTypeDesc   = data.data.tranTypeName;
+      this.saveAcseCv.paytReqType = data.data.tranTypeCd;
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcseCv.currCd = data.currencyCd;
       this.saveAcseCv.currRate =  data.currencyRt;
