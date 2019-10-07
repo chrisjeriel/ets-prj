@@ -51,7 +51,7 @@
 
 
   <div  class="cust-tabs-container" style="margin-top:10px !important">
-      <ngb-tabset>
+      <ngb-tabset (tabChange)="onTabChange($event)">
         <!-- <ngb-tab class="ngb-tab" title="Amount Details">
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
@@ -61,7 +61,7 @@
             </div>
           </ng-template>
         </ngb-tab> -->
-        <ngb-tab>
+        <ngb-tab id="taxDtl">
             <ng-template ngbTabTitle>
                 <div>Tax Details</div>
             </ng-template>
@@ -71,7 +71,7 @@
                         <fieldset class="scheduler-border" style="padding-top: 5px !important; margin-top: -12px !important;">
                             <legend class="scheduler-border">General Taxes</legend>
                             <div class="custom-row-inline-inset">
-                                <app-cust-editable-non-datatable [passData]="genTaxData"></app-cust-editable-non-datatable>
+                                <app-cust-editable-non-datatable (tableDataChange)="onTableDataChange($event, 'genTax')" (clickLOV)="openGenTaxLOV($event)" [passData]="genTaxData" #genTaxTbl></app-cust-editable-non-datatable>
                             </div>
                         </fieldset>
                     </div>
@@ -79,7 +79,7 @@
                         <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 5px !important;">
                             <legend class="scheduler-border">Creditable Withholding Taxes</legend>
                             <div class="custom-row-inline-inset">
-                                <app-cust-editable-non-datatable [passData]="whTaxData">
+                                <app-cust-editable-non-datatable (tableDataChange)="onTableDataChange($event, 'whTax')" (clickLOV)="openWhTaxLOV($event)" [passData]="whTaxData" #whTaxTbl>
                                     <ng-container controls-r>
                                         <button class="cust-btn" style="margin-right: 0px !important;">BIR 2307</button>
                                     </ng-container>
@@ -88,15 +88,26 @@
                         </fieldset>
                     </div>
                 </div>
+                <div class="form-row" style="margin-top: 10px !important">
+                    <div class="form-group col-sm">
+                      <div class="col-md-13 text-center">
+                        <br>
+                        <div class="cust-btn-container">
+                          <button *ngIf="genTaxData.checkFlag" type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+                          <button *ngIf="genTaxData.checkFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Accounting Entries">
+        <ngb-tab class="ngb-tab" title="Accounting Entries" id="acctEntries">
             <ng-template ngbTabContent>
               <div class="input-group cust-border" style="padding-top: 0.6em">
                 <div class="col-sm-12">
                 <div style="position: relative;">
                   <button class="cust-btn cust-button" (click)="viewTranDetails()">Print AE</button>
-                   <app-cust-editable-non-datatable [passData]="acctEntriesData"></app-cust-editable-non-datatable>
+                   <app-cust-editable-non-datatable [passData]="acctEntriesData" #acctEntriesTbl></app-cust-editable-non-datatable>
                 </div>
                 </div>
               </div>
@@ -133,3 +144,8 @@ padding-right: 0px !important;">
 		</div>
 	</fieldset>
 </div>
+
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)">
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" #mainCancel></app-cancel-button>
