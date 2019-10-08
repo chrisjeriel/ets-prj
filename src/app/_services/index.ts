@@ -11,3 +11,4 @@ export * from './security.service';
 export * from './upload.service';
 export * from './workflowmanager.service';
 export * from './alert2.service';
+export * from './websocket.service';
