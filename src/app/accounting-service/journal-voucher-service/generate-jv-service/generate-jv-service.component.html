@@ -15,7 +15,8 @@
 					<div>JV Preview</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-preview-service [jvType]="jvType" [jvData]="jvData"></app-jv-preview-service>
+					<app-or-preview [record]="jvData"></app-or-preview>
+					<!-- <app-jv-preview-service [jvType]="jvType" [jvData]="jvData"></app-jv-preview-service> -->
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab>
@@ -23,7 +24,8 @@
 					<div>Attachments</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-attachments-service [jvType]="jvType" [jvData]="jvData"></app-jv-attachments-service>
+					<app-acct-attachment [record]="jvData"></app-acct-attachment>
+					<!-- <app-jv-attachments-service [jvType]="jvType" [jvData]="jvData"></app-jv-attachments-service> -->
 				</ng-template>
 			</ngb-tab>
 

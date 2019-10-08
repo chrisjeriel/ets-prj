@@ -42,7 +42,7 @@ export class AccountingInTrustComponent implements OnInit {
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
       console.log(params);
-      this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-ar-listings';
+      this.exitLink = params['exitLink'] !== undefined ? params['exitLink'] : 'acct-ar-listings';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
 
       this.action = params['action'];

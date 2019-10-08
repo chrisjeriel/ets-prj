@@ -44,7 +44,7 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">Attached Files</legend>
 	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important; margin-top: 14px !important; padding-left: 5px; padding-right: 5px;">
-		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%"></app-cust-editable-non-datatable>
+		<app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 	</div>
 	<div class="col-sm-12" style="margin-top: -15px;">
         <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 25px">
@@ -52,25 +52,25 @@
                 <div class="col-sm-3" style="padding: 0">
                     <div class="input-group">
                         <label class="form-control-sm">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled >
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="createUser" disabled >
                     </div>
                 </div>
                 <div class="col-sm-3" style="padding: 0">
                     <div class="input-group">
                         <label class="form-control-sm">Date Created</label>
-                        <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" disabled >
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="createDate" disabled >
                     </div>
                 </div>
                 <div class="col-sm-3" style="padding: 0">
                     <div class="input-group">
                         <label class="form-control-sm">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled >
+                        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="updateUser" disabled >
                     </div>
                 </div>
                 <div class="col-sm-3" style="padding: 0">
                     <div class="input-group">
                         <label class="form-control-sm">Last Update</label>
-                        <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" disabled >
+                        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="updateDate" disabled >
                     </div>
                 </div>
             </div>

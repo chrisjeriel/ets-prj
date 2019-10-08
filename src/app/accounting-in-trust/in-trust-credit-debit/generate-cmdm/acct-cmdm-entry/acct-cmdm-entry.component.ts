@@ -99,8 +99,7 @@ export class AcctCmdmEntryComponent implements OnInit {
 constructor(private accountingService: AccountingService, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-
-  	if(this.passData.tranId != undefined){
+  	if(this.passData.tranId != undefined && this.passData.memoType != undefined){
 	  	this.getTranTypes();
 	  	this.getSeqDigits();
 	  }else

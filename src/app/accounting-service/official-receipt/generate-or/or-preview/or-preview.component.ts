@@ -44,7 +44,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @Output() emitCreateUpdate: any = new EventEmitter<any>();
 
   @Input() paymentType: string = "";
-  @Input() record: any = {};
+  @Input() record: any;
 
   forkSub: any;
 
@@ -188,6 +188,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    console.log(this.record);
     if(this.paymentType == null){
           this.paymentType = "";
     }
@@ -299,6 +300,11 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   retrieveAcseOrPreview(){
+    if(this.record.from.toLowerCase() == 'cv'){
+      this.record.cvAmt = Number(String(this.record.cvAmt).replace(/\,/g,'')); 
+      this.record.localAmt = Number(String(this.record.localAmt).replace(/\,/g,''));
+    }
+
     if(this.currentTab == 'taxDtl'){
       var sub$ = forkJoin(this.accountingService.acseTaxDetails(this.record.tranId, 'G'),
                           this.accountingService.acseTaxDetails(this.record.tranId, 'W'))
@@ -325,6 +331,30 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           this.whTaxData.tableData = whTax;*/
           this.genTaxTbl.refreshTable();
           this.whTaxTbl.refreshTable();
+
+          if(this.record.from.toLowerCase() == 'or'){
+            if(this.record.orStatDesc.toUpperCase() != 'NEW'){
+              // this.genTaxData.uneditable = [true, true, true];
+              // this.genTaxData.addFlag = false;
+              // this.genTaxData.deleteFlag =  false;
+              // this.genTaxData.checkFlag = false;
+              // this.genTaxData.magnifyingGlass = [];
+            }
+          }else if(this.record.from.toLowerCase() == 'cv'){
+            if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
+              this.genTaxData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
+              this.genTaxData.addFlag         = false;
+              this.genTaxData.deleteFlag      = false;
+              this.genTaxData.checkFlag       = false;
+              this.genTaxData.magnifyingGlass = [];
+
+              this.whTaxData.uneditable       = [true,true,false,true,true,false,false,true];
+              this.whTaxData.addFlag          = false;
+              this.whTaxData.deleteFlag       = false;
+              this.whTaxData.checkFlag        = false;
+              this.whTaxData.magnifyingGlass  = [];
+            }
+          }
         },
         (error: any)=>{
           console.log('error');

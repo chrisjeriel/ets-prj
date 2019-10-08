@@ -127,26 +127,28 @@ export class CvEntryComponent implements OnInit {
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcitCheckSeries(),subRes)
-                            .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
+    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcitCheckSeries())
+                            .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
 
-    subRes2.subscribe(data => {
+    var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
+
+    subRes3.subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
       var recPrt  = data['sub1']['prt']['refCodeList'];
-      var recCn   = data['cn']['checkSeriesList'];
+      var recCn   = data['sub2']['cn']['checkSeriesList'];
 
       this.cvStatList      = recStat;
       this.checkSeriesList = recCn;
 
-      this.bankAcctList = data['ba']['bankAcctList'];
+      this.bankAcctList = data['sub2']['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
-      var totalPrl = arrSum(data['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-      var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
-      var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
+      var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
+      var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
+      var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
 
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
@@ -193,9 +195,8 @@ export class CvEntryComponent implements OnInit {
         });
 
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
-        console.log(recCv);
         console.log(this.saveAcitCv);
-        this.existsInCvDtl = ((data['prl']['acitCvPaytReqList']).length == 0)?false:true;
+        this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
 
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
@@ -209,6 +210,7 @@ export class CvEntryComponent implements OnInit {
       }
 
       this.saveAcitCv['from'] = 'cv';
+      this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
@@ -355,6 +357,7 @@ export class CvEntryComponent implements OnInit {
       this.classLov.openLOV();
     }else if(fromUser.toLowerCase() == 'paytreqtype'){
       this.passDataLov.selector = 'paytReqType';
+      this.passDataLov.from = 'acit';
       this.paytReqTypeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'curr'){
       this.currLov.modal.openNoClose();
@@ -400,6 +403,7 @@ export class CvEntryComponent implements OnInit {
     }else if(from.toLowerCase() == 'paytreqtype'){
       this.saveAcitCv.paytReqTypeDesc   = data.data.description;
       this.saveAcitCv.paytReqType = data.data.code;
+      this.saveAcitCv.particulars  = this.saveAcitCv.paytReqTypeDesc + ((this.saveAcitCv.paytReqType == 'O')?' Payments ':'') + ' for : ';
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcitCv.currCd = data.currencyCd;
       this.saveAcitCv.currRate =  data.currencyRt;

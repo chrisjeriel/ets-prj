@@ -25,7 +25,8 @@
 					<div>Attachments</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-attachments [jvData]="jvData"></app-jv-attachments>
+					<!-- <app-jv-attachments [jvData]="jvData"></app-jv-attachments> -->
+					<app-acc-attachments [record]="jvData"></app-acc-attachments>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab id="Exit">

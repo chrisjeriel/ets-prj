@@ -13,6 +13,10 @@ export class GenerateCvServiceComponent implements OnInit {
   exitTab: string;
   sub: any;
 
+  passData: any = {
+    tranId: ''
+  };
+
   constructor(private route: ActivatedRoute ,private router: Router) { }
 
   ngOnInit() {

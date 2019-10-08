@@ -1,66 +1,122 @@
 <div>
-	<fieldset class="scheduler-border">
-		<legend class="scheduler-border">CV Info</legend>
-		<div class="form-row custom-row-inline-inset">
-			<div class="col-sm-8">
-				<div class="input-group cust-ig">
-					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
-					placeholder="2018" readonly>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right"
-					placeholder="00000001" style="margin-left: 2px;" readonly>
-					<label class="form-control-sm col-sm-1">Date</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="10/01/2018 11:49 AM" readonly>
-					<span class="col-sm-2"></span>
-					<label class="form-control-sm col-sm-1">Status</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="New" readonly>
-				</div>
-				<div class="input-group cust-ig">
-					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payee</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation"
-					readonly>
-				</div>
-			</div>
-			<div class="col-sm-4">
-				<div class="input-group cust-ig">
-					<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-					placeholder="27,153.30" readonly>
-				</div>
-				<div class="input-group cust-ig">
-					<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
-					<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP" readonly>					
-					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
-					placeholder="27,153.30" readonly>
-				</div>
-			</div>
-		</div>
-	</fieldset>
-	<fieldset class="scheduler-border" style="padding:0"> 
-		<legend class="scheduler-border">Payment Requests</legend>  
-		<div class="row">
-			<div class="col-sm-12" style="margin-top: 10px" >
-				<!--  <button type="button" class="cust-btn" style="position: absolute;top: 0px;left: 141px;z-index: 100;"><a>Save</a></button> -->
-				<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
-			</div>
-		</div>
-	</fieldset>
-	<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
-		<div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-			<div class="input-group" style="margin-bottom: -15px !important;">
-				<label class="form-control-sm col-sm-1 text-right labels">Created By</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-				<label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-				<label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-				<label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-				<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-			</div>
-		</div>
-	</fieldset>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">CV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-8">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="cvInfo.cvGenNo?.split('-')[0]" style="text-align: right" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="cvInfo.cvGenNo?.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+          <label class="form-control-sm col-sm-1">Date</label>
+          <div class="dp-cont col-sm">
+            <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="cvInfo?.cvDate"></datepicker>
+          </div>
+          <label class="form-control-sm col-sm-1">Status</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvInfo?.cvStatusDesc" readonly>
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left: 0px !important;">Payee</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="cvInfo?.payee" readonly>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="cvInfo?.currCd" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.cvAmt | number:'1.2-2'"readonly>
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly> 
+          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="cvInfo?.localAmt | number:'1.2-2'" readonly>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="scheduler-border" style="padding:0"> 
+    <legend class="scheduler-border">Payment Requests</legend>  
+    <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: -3px !important;">
+      <div class="input-group">
+        <div class="col-sm"></div>
+        <div class="col-sm-12">
+          <app-cust-editable-non-datatable id="prTbl" #paytReqTbl [passData]="passDataPaytReqList" (clickLOV)="showLov()" (newClick)="onRowClick($event)" (tableDataChange)="passDataPaytReqList.tableData=$event;">
+          </app-cust-editable-non-datatable>
+        </div>
+        <div class="col-sm"></div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-sm">
+        <div class="text-center">
+          <div class="cust-btn-container">
+            <button type="button" class="cust-btn" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'"><a>Cancel</a></button>
+            <button type="button" class="cust-btn" *ngIf="cvInfo?.cvStatus == 'N' || cvInfo?.cvStatus == 'F'" (click)="onClickSave()"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="onClickViewDetails()" [disabled]="!paytData.enabViewDtl">View Details</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+  <div class="col-sm-12" style="padding-left: 0px !important;padding-right: 0px !important;">
+    <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+            <div class="input-group">
+              <div class="col-sm-3" style="padding: 0">
+                <div class="input-group">
+                  <label class="form-control-sm">Created By</label>
+                  <input type="text" class="form-control form-control-sm col-sm" [ngModel]="paytData?.createUser" readonly>
+                </div>
+              </div>
+              <div class="col-sm-3" style="padding: 0">
+                <div class="input-group">
+                  <label class="form-control-sm">Date Created</label>
+                  <div class="dp-cont col-sm">
+                    <datepicker [type]="'datetime'" [disabled]="true" [value]="paytData?.createDate"></datepicker>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3" style="padding: 0">
+                <div class="input-group">
+                  <label class="form-control-sm">Last Update By</label>
+                  <input type="text" class="form-control form-control-sm col-sm" [ngModel]="paytData?.updateUser" readonly>
+                </div>
+              </div>
+              <div class="col-sm-3" style="padding: 0">
+                <div class="input-group">
+                  <label class="form-control-sm">Last Update</label>
+                  <div class="dp-cont col-sm">
+                    <datepicker [type]="'datetime'" [disabled]="true" [value]="paytData?.updateDate"></datepicker>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
 </div>
+
+
+<app-lov #paytReqLov [passData]="passDataLov" (selectedData)="setData($event)" [limitContent]="limitContent"></app-lov>
+<app-confirm-save  #con (onYes)="onSavePaytReqList()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/check-voucher'" ></app-cancel-button>
+
+<app-modal class="d-none" id="warnMdl" #warnMdl>
+  <div header>Warning Message</div>
+  <div body class="container-flex text-center">
+    <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+      <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
+    </fieldset>
+  </div>
+  <div footer class="d-flex justify-content-center w-100">                    
+    <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+  </div>
+</app-modal>
+
 
 
 
