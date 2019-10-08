@@ -79,12 +79,16 @@ export class AcctAttachmentComponent implements OnInit {
         this.record.localAmt = Number(String(this.record.localAmt).replace(/\,/g,''));
       }
 
+      if(this.record.from.toLowerCase() == 'jv'){
+        this.record.jvDate = this.notes.toDateTimeString(this.record.jvDate);
+        this.record.refnoDate = this.record.refnoDate === "" ? "":this.notes.toDateTimeString(this.record.refnoDate);
+      }
 
       this.as.getAcseAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);
           this.passData.tableData = [];
-          if(data.acitAttachmentsList !== null){
-              for(var i of data.acitAttachmentsList){
+          if(data.acseAttachmentsList !== null){
+              for(var i of data.acseAttachmentsList){
                   i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                   this.passData.tableData.push(i);
               }
