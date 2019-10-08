@@ -23,6 +23,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./payment-request-details.component.css'],
   providers: [DatePipe]
 })
+
 export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('mtnClmHistLov') clmHistLov      : MtnClmHistoryLovComponent;
   @ViewChild('cedCompTbl') cedCompTbl         : CustEditableNonDatatableComponent;

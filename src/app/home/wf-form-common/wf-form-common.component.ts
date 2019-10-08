@@ -118,6 +118,8 @@ export class WfFormCommonComponent implements OnInit {
   mode:string = "note";
   referenceId:string = "";
   details:string = "";
+  impTag:boolean = false;
+  urgTag:boolean = false;
 
   saveNotesParams: any = {
     noteList : [],
@@ -328,6 +330,9 @@ export class WfFormCommonComponent implements OnInit {
     var reminderList = [];
     var delReminderList = [];
 
+    console.log("this.impTag : " + this.impTag);
+    console.log("this.urgTag : " + this.urgTag);
+
     if (this.mode == 'note') {
 
       if (this.boolValue == 1) {
@@ -338,6 +343,8 @@ export class WfFormCommonComponent implements OnInit {
             "noteId"       : null,
             "title"        : this.titleNote,
             "note"         : this.notes,
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
@@ -360,6 +367,8 @@ export class WfFormCommonComponent implements OnInit {
             "noteId"       : null,
             "title"        : this.titleNote,
             "note"         : this.notes,
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
@@ -383,6 +392,8 @@ export class WfFormCommonComponent implements OnInit {
               "noteId"       : null,
               "title"        : this.titleNote,
               "note"         : this.notes,
+              "impTag"       : this.impTag ? 'Y' : 'N',
+              "urgTag"       : this.urgTag ? 'Y' : 'N',
               "module"       : this.moduleSource,
               "referenceId"  : this.referenceId,
               "details"      : this.details,
