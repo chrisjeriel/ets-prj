@@ -14,20 +14,20 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2 labels">Transaction Type</label>
 									<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.tranclass" (ngModelChange)="params.tranclass=$event;">
-										<option value="''">All</option>
-										<option value="'AR'">Acknowledgement Receipt</option>
-										<option value="'CV'">Check Voucher</option>
-										<option value="'JV'">Journal Voucher</option>
+										<option value="">All</option>
+										<option value="AR">Acknowledgement Receipt</option>
+										<option value="CV">Check Voucher</option>
+										<option value="JV">Journal Voucher</option>
 									</select>
 									<div class="input-group col-sm-5">
 										<label class="form-control-sm col-sm-1 labels">Period:</label>
 										<label class="form-control-sm col-sm-1 labels" style="margin-left: 10px;">From:</label>
 										<div class="col-sm-4 dp-cont">
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelFrom" (valueChange)="params.cancelFrom = $event;"></datepicker>
+											<datepicker [type]="'date'" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelFrom" (valueChange)="params.cancelFrom = $event;"></datepicker>
 										</div>
 										<label class="form-control-sm col-sm-1 labels">To:</label>
 										<div class="col-sm-4 dp-cont">
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelTo" (valueChange)="params.cancelTo = $event;"></datepicker>
+											<datepicker [type]="'date'" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelTo" (valueChange)="params.cancelTo = $event;"></datepicker>
 										</div>
 									</div>
 									<div class="input-group col-sm-2">

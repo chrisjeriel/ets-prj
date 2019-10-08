@@ -70,10 +70,12 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   	pageLength: 20,
   	pagination: true,
   	pageStatus: true,
+    paginateFlag:true,  
     infoFlag:true
   }
 
   params :any ={
+    tranId:'',
     tranclass:'',
     cancelFrom:'',
     cancelTo:''
@@ -88,11 +90,12 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
-    this.retrieveCancelledTrans();
+    //this.retrieveCancelledTrans();
   }
 
   retrieveCancelledTrans(){
-    this.accountingService.getAcitCancelledTran(null,null,null,null).subscribe((data:any) => {
+    console.log(this.params)
+    this.accountingService.getAcitCancelledTran(this.params.tranId,this.params.tranclass,this.params.cancelFrom,this.params.cancelTo).subscribe((data:any) => {
       if(data.cancelledTran.length !== 0){
         this.cancelledTransactionsData.tableData = [];
         for (var i = 0; i < data.cancelledTran.length; i++) {
@@ -116,9 +119,10 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
 
   onClickSearch(){
     console.log(this.params);
+    this.retrieveCancelledTrans();
   }
 
-  onRowDblClick(event){
+  /*onRowDblClick(event){
      if(this.tranClass == 'AR'){
       this.route.navigate(['accounting-in-trust',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId,from:'CMDM'}],{ skipLocationChange: true });
     }else if(this.tranClass == 'CV'){
@@ -128,7 +132,7 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
     }else{
       //do something
     }
-  }
+  }*/
 
   viewTranDetails(){
     if(this.tranClass == 'AR'){

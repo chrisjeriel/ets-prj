@@ -2640,7 +2640,7 @@ export class AccountingService {
     getAcitCancelledTran(tranId?,tranclass?,cancelFrom?,cancelTo?){
     	const params = new HttpParams()
     		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
-    		.set('tranclass', (tranclass == null || tranclass == undefined ? '' : tranclass))
+    		.set('tranClass', (tranclass == null || tranclass == undefined ? '' : tranclass))
     		.set('cancelFrom', (cancelFrom == null || cancelFrom == undefined ? '' : cancelFrom))
     		.set('cancelTo', (cancelTo == null || cancelTo == undefined ? '' : cancelTo));
 

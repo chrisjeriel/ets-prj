@@ -201,7 +201,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.onChange.emit({ type: this.arInfo.tranTypeCd });
     this.sub = this.route.params.subscribe(
        data=>{
-         console.log(data)
          if(data.from === 'CMDM'){
            tranId = data.tranId;
            arNo = '';
