@@ -2637,5 +2637,13 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
     }	
 
+    getAcitCancelledTran(tranId?,tranclass?,cancelFrom?,cancelTo?){
+    	const params = new HttpParams()
+    		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+    		.set('tranclass', (tranclass == null || tranclass == undefined ? '' : tranclass))
+    		.set('cancelFrom', (cancelFrom == null || cancelFrom == undefined ? '' : cancelFrom))
+    		.set('cancelTo', (cancelTo == null || cancelTo == undefined ? '' : cancelTo));
 
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveCancelledTrans',{params});	
+    }
 }

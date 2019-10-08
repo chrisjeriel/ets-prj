@@ -106,6 +106,8 @@ export class JvEntryServiceComponent implements OnInit {
       if(data.jvEntry !== null){
         this.entryData = data.jvEntry; 
         this.entryData.jvDate       = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
+        this.entryData.createDate   = this.ns.toDateTimeString(this.entryData.createDate);
+        this.entryData.updateDate   = this.ns.toDateTimeString(this.entryData.updateDate);
         this.entryData.refnoDate    = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
         this.entryData.approvedDate = this.entryData.approvedDate == null ? '':this.ns.toDateTimeString(this.entryData.approvedDate);

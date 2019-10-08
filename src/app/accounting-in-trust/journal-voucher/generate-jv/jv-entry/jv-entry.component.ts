@@ -565,7 +565,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickCMDM(){
-    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/generate-jv',tranId: this.tranId}], { skipLocationChange: true }); 
   }
 
   onClickAlloc(){
