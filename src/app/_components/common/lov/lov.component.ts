@@ -1111,6 +1111,60 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.whTaxList.filter((data)=>{return  this.passData.hide.indexOf(data.taxCd)==-1});
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'arList'){
+      this.passTable.tHeader = ['A.R. No.','Payor','AR Date','Payment Type','Status','Particulars','Amount'];
+      this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+      this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
+      this.passTable.keys = ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getArList(this.passData.searchParams).subscribe((a:any)=>{
+        this.passTable.tableData = a["ar"];
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'acitJvList'){
+      this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Status", "Prepared By","Amount"];
+      this.passTable.widths = [120,98,171,335,110,115];
+      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','jvStatusName','jvAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getJVListing(null).subscribe((data:any)=>{
+        for(var i=0; i< data.transactions.length;i++){
+                this.passTable.tableData.push(data.transactions[i].jvListings);
+                this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo);
+                this.passTable.tableData[this.passTable.tableData.length - 1].transactions = data.transactions[i];
+              }
+
+              this.passTable.tableData.forEach(a => {
+                if(a.transactions.tranStat != 'O' && a.transactions.tranStat != 'C') {
+                  a.jvStatus = a.transactions.tranStat;
+                  a.jvStatusName = a.transactions.tranStatDesc;
+                }
+              });
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'acitCvList'){
+      this.passTable.tHeader = ["CV No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"];
+      this.passTable.dataTypes = ['text','text','text','date','text','text','currency',];
+      this.passTable.keys = ['cvGenNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getAcitCvList(this.passData.searchParams).subscribe((data:any)=>{
+        var rec = data['acitCvList'].map(i => { 
+                /*i.createDate     = this.ns.toDateTimeString(i.createDate); 
+                i.updateDate     = this.ns.toDateTimeString(i.updateDate);
+                i.checkDate      = this.ns.toDateTimeString(i.checkDate);
+                i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
+                i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);*/
+
+                if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+                  i.cvStatus = i.mainTranStat;
+                  i.cvStatusDesc = i.mainTranStatDesc;
+                }
+
+                return i; 
+              });
+        this.passTable.tableData = rec;
+        this.table.refreshTable();
+      });
     }
 
 
