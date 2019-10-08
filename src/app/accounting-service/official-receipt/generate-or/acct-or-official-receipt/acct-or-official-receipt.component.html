@@ -100,10 +100,10 @@
                     <app-or-only [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-only>
                   </ng-container>
                   <ng-container *ngSwitchCase="'2'">
-                    <app-or-service-fee-local></app-or-service-fee-local>
+                    <app-or-service-fee-local [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-local>
                   </ng-container>
                   <ng-container *ngSwitchCase="'3'">
-                    <app-or-service-fee-munich-re></app-or-service-fee-munich-re>
+                    <app-or-service-fee-munich-re [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-munich-re>
                   </ng-container>
                 </ng-container>
               </div>

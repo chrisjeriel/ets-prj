@@ -2646,4 +2646,21 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelOr',params,header);
     }
 
+    getAcseOrServFee(tranId?,billId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('billId', (billId == null || billId == undefined ? '' : billId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrServFee',{params});	
+	}
+
+	saveAcseOrServFee(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
+    }
+
 }
