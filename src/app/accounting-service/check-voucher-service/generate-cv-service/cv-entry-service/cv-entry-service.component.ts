@@ -147,11 +147,10 @@ export class CvEntryServiceComponent implements OnInit {
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
-      // var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
+       var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
       // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
       // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
 
-      var totalPrl = 0;
       var totalCredit = 0;
       var totalDebit = 0;
 
