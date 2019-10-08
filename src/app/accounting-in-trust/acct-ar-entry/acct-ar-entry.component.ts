@@ -210,6 +210,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
            arNo = params.arNo;
            if(params.status === 'Cancelled' || params.status === 'Deleted'){
              this.isCancelled = true;
+             this.passData.addFlag = false;
+             this.passData.genericBtn = undefined;
              this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
              this.paytDtlTbl.refreshTable();
            }         
@@ -593,6 +595,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           let arDetailParams = {
             tranId: this.arInfo.tranId,
             formattedArNo: this.arInfo.formattedArNo,
+            arNoDigits: this.arInfo.arNoDigits,
             arNo: this.arInfo.arNo,
             arStatus: this.arInfo.arStatus,
             arStatDesc: this.arInfo.arStatDesc,

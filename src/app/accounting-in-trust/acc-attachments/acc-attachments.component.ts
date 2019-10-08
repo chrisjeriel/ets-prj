@@ -248,7 +248,7 @@ export class AccAttachmentsComponent implements OnInit {
       return '';
     }else{
       if(field === 'arNo'){
-        return String(str).padStart(6, '0');
+        return String(str).padStart(this.record.arNoDigits, '0');
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }

@@ -27,6 +27,8 @@ export class OrOnlyComponent implements OnInit {
   	@ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
   	@ViewChild('taxAllocCancel') taxCancelBtn : CancelButtonComponent;
 
+  	@Output() emitCreateUpdate: any = new EventEmitter<any>();
+
 	 passData : any = {
 	    tableData: [],
 	    tHeader : ["Item","Reference No","Curr","Curr Rate","Amount","Amount(PHP)"],
@@ -144,6 +146,20 @@ export class OrOnlyComponent implements OnInit {
   ngOnInit() {
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
+  	if(this.record.orStatDesc.toUpperCase() != 'NEW'){
+  		this.passData.addFlag = false;
+  		this.passData.deleteFlag = false;
+  		this.passData.checkFlag = false;
+  		this.passDataGenTax.addFlag = false;
+  		this.passDataGenTax.checkFlag = false;
+  		this.passDataGenTax.deleteFlag = false;
+  		this.passDataWhTax.checkFlag = false;
+  		this.passDataWhTax.addFlag = false;
+		this.passDataWhTax.deleteFlag = false;
+  		this.passData.uneditable = [true,true,true,true,true,true];
+  		this.passDataGenTax.uneditable = [true,true,true,true];
+  		this.passDataWhTax.uneditable = [true,true,true,true];
+  	}
   	this.retrieveOrTransDtl();
   }
 
@@ -162,8 +178,10 @@ export class OrOnlyComponent implements OnInit {
   					this.passData.tableData.push(i);
   				}*/
   				this.mainTbl.refreshTable();
-  				this.mainTbl.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
-  						    				  this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
+  				if(this.passData.checkFlag){
+  					this.mainTbl.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
+  							    				  this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
+  				}
   			}
   			
   		},
@@ -180,7 +198,11 @@ export class OrOnlyComponent implements OnInit {
   	if(data === null){
   		this.disableTaxBtn = true;
   		this.selectedItem = {};
+  		this.emitCreateUpdate.emit(null);
   	}else{
+  		data.updateDate = this.ns.toDateTimeString(data.updateDate);
+  		data.createDate = this.ns.toDateTimeString(data.createDate);
+  		this.emitCreateUpdate.emit(data);
   		this.disableTaxBtn = false;
   		this.passDataGenTax.nData.tranId = data.tranId;
   		this.passDataGenTax.nData.billId = data.billId;
