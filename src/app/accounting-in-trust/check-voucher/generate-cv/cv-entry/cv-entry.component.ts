@@ -195,7 +195,6 @@ export class CvEntryComponent implements OnInit {
         });
 
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
-        console.log(recCv);
         console.log(this.saveAcitCv);
         this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
 
