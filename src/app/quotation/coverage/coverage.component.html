@@ -112,10 +112,12 @@
         </div>
         <div class="col-sm-4 mrgn-fieldset">
             <fieldset class="scheduler-border fieldset-height">
-                <div class="form-row custom-row-inline-inset">
-                    <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                    <textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks"></textarea>
-                </div>
+                <form #remarksform="ngForm">
+                    <div class="form-row custom-row-inline-inset">
+                            <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
+                            <textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks" name="remarks"></textarea>
+                    </div>
+                </form> 
             </fieldset>
         </div>
     </div> 
