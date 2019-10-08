@@ -1,4 +1,4 @@
-<fieldset class="scheduler-border">
+<fieldset class="scheduler-border" *ngIf="record?.from.toLowerCase() == 'or'">
   <legend class="scheduler-border">O.R. Info</legend>
   <div class="form-row custom-row-inline-inset">
     <div class="col-sm-6">
@@ -49,6 +49,43 @@
   </div>
 </fieldset>
 
+  <fieldset class="scheduler-border" *ngIf="record?.from.toLowerCase() == 'cv'">
+    <legend class="scheduler-border">CV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-8">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">CV No</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="record.cvGenNo?.split('-')[0]" style="text-align: right" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="record.cvGenNo?.split('-')[1]" style="text-align: right; margin-left: 2px;" readonly>
+          <label class="form-control-sm col-sm-1">Date</label>
+          <div class="dp-cont col-sm">
+            <datepicker [type]="'datetime'" [disabled]="true" [showSeconds]="false" [value]="record?.cvDate"></datepicker>
+          </div>
+          <label class="form-control-sm col-sm-1">Status</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="record?.cvStatusDesc" readonly>
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1" style="padding-left: 0px !important;">Payee</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="record?.payee" readonly>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="record?.currCd" readonly>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="record?.cvAmt | number:'1.2-2'"readonly>
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+          <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" value="PHP" readonly> 
+          <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="record?.localAmt | number:'1.2-2'" readonly>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+
+
 
   <div  class="cust-tabs-container" style="margin-top:10px !important">
       <ngb-tabset (tabChange)="onTabChange($event)">
@@ -88,7 +125,7 @@
                         </fieldset>
                     </div>
                 </div>
-                <div class="form-row" style="margin-top: 10px !important">
+                <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N'">
                     <div class="form-group col-sm">
                       <div class="col-md-13 text-center">
                         <br>
@@ -152,4 +189,4 @@
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)">
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" #mainCancel></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/'+record?.exitLink" #mainCancel></app-cancel-button>

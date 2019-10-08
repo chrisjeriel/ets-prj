@@ -142,4 +142,4 @@ padding-right: 0px !important;">
 
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/'+record?.exitLink" ></app-cancel-button>

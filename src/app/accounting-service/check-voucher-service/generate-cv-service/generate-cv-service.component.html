@@ -26,7 +26,7 @@
 				</ng-template>
 				<ng-template ngbTabContent>
 					<!-- <app-cv-preview-service ></app-cv-preview-service> -->
-					<app-or-preview></app-or-preview>
+					<app-or-preview [record]="passData"></app-or-preview>
 				</ng-template>
 			</ngb-tab>
 
@@ -35,7 +35,7 @@
 					<div>Attachments</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<!-- <app-acct-attachments [record]="passData"></app-acct-attachments> -->
+					<app-acct-attachment [record]="passData"></app-acct-attachment>
 				</ng-template>
 			</ngb-tab>
 			

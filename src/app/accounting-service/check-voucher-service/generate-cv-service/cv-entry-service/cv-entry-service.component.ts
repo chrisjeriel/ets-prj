@@ -216,6 +216,7 @@ export class CvEntryServiceComponent implements OnInit {
       }
 
       this.saveAcseCv['from'] = 'cv';
+      this.saveAcseCv['exitLink'] = 'check-voucher-service';
       this.cvData.emit(this.saveAcseCv);
       ((this.saveAcseCv.cvStatus == 'N' || this.saveAcseCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
