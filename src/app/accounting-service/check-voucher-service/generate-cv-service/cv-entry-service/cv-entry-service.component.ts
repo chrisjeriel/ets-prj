@@ -128,26 +128,28 @@ export class CvEntryServiceComponent implements OnInit {
     var subRes = forkJoin(this.accountingService.getAcseCv(this.saveAcseCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACSE_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries(),subRes)
-                            .pipe(map(([prl,ae,ba,cn,sub1]) => { return { prl, ae, ba, cn, sub1 }; }));
+    var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries())
+                            .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
 
-    subRes2.subscribe(data => {
+    var subRes3 = forkJoin(subRes,subRes2).pipe(map(([sub1,sub2]) => { return { sub1,sub2 }; }));
+
+    subRes3.subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];
       var recStat = data['sub1']['stat']['refCodeList'];
       var recPrt  = data['sub1']['prt']['refCodeList'];
-      var recCn   = data['cn']['checkSeriesList'];
+      var recCn   = data['sub2']['cn']['checkSeriesList'];
 
       this.cvStatList      = recStat;
       this.checkSeriesList = recCn;
 
-      this.bankAcctList = data['ba']['bankAcctList'];
+      this.bankAcctList = data['sub2']['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
-      // var totalPrl = arrSum(data['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
-      // var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
-      // var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
+      // var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
+      // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
+      // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
 
       var totalPrl = 0;
       var totalCredit = 0;
@@ -201,7 +203,7 @@ export class CvEntryServiceComponent implements OnInit {
         this.saveAcseCv = Object.assign(this.saveAcseCv,recCv[0]);
         console.log(recCv);
         console.log(this.saveAcseCv);
-        this.existsInCvDtl = ((data['prl']['acseCvPaytReqList']).length == 0)?false:true;
+        this.existsInCvDtl = ((data['sub2']['prl']['acseCvPaytReqList']).length == 0)?false:true;
 
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
@@ -407,6 +409,7 @@ export class CvEntryServiceComponent implements OnInit {
     }else if(from.toLowerCase() == 'paytreqtype'){
       this.saveAcseCv.paytReqTypeDesc   = data.data.tranTypeName;
       this.saveAcseCv.paytReqType = data.data.tranTypeCd;
+      this.saveAcseCv.particulars  = this.saveAcseCv.paytReqTypeDesc + ((this.saveAcseCv.paytReqType == 5 || this.saveAcseCv.paytReqType == 1 || this.saveAcseCv.paytReqType == 2)?' Payments ':'') + ' for : ';
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcseCv.currCd = data.currencyCd;
       this.saveAcseCv.currRate =  data.currencyRt;
