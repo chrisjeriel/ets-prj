@@ -448,6 +448,8 @@ export class CvEntryComponent implements OnInit {
       }else{
         return;
       }
+    }else{
+      this.success.modal.modalRef.close();
     }
   }
 

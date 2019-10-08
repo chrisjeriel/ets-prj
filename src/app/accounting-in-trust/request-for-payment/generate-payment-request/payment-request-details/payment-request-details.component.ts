@@ -318,10 +318,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // setTimeout(() => {
-    //   $('.globalLoading').removeClass('globalLoading;');
-    // },0);
-    
+    this.loadingFunc(true);
     var d = new Date();
     this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
     this.yearParam = d.getFullYear();
@@ -338,6 +335,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
+      this.loadingFunc(false);
       this.requestData = data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; })[0];
@@ -1422,6 +1420,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagServFee) {
       this.canServFee.onNo();
     }
+  }
+
+  loadingFunc(bool){
+    var str = bool?'block':'none';
+    $('.globalLoading').css('display',str);
   }
 
 }

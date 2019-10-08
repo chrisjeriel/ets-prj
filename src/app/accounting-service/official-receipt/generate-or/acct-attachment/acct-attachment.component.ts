@@ -83,31 +83,28 @@ export class AcctAttachmentComponent implements OnInit {
       this.as.getAcseAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);
           this.passData.tableData = [];
-          if(data.acitAttachmentsList !== null){
-              for(var i of data.acitAttachmentsList){
+          if(data.acseAttachmentsList !== null){
+              for(var i of data.acseAttachmentsList){
                   i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                   this.passData.tableData.push(i);
               }
           }
           this.table.refreshTable();
           this.table.onRowClick(null,this.passData.tableData[0]);
-
+          
+          var a = false;
           if(this.record.from.toLowerCase() == 'or'){
-            if(this.record.orStatDesc.toUpperCase() != 'NEW'){
-              this.passData.uneditable = [true, true, true];
-              this.passData.addFlag = false;
-              this.passData.deleteFlag =  false;
-              this.passData.checkFlag = false;
-              this.passData.magnifyingGlass = [];
-            }
+            a = (this.record.orStatDesc.toUpperCase() != 'NEW')?true:false;
           }else if(this.record.from.toLowerCase() == 'cv'){
-            if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
-              this.passData.uneditable = [true, true, true];
-              this.passData.addFlag = false;
-              this.passData.deleteFlag =  false;
-              this.passData.checkFlag = false;
-              this.passData.magnifyingGlass = [];
-            }
+            a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
+          }
+
+          if(a){
+            this.passData.uneditable = [true, true, true];
+            this.passData.addFlag = false;
+            this.passData.deleteFlag =  false;
+            this.passData.checkFlag = false;
+            this.passData.magnifyingGlass = [];
           }
       });
   }
