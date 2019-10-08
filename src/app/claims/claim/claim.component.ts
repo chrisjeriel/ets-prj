@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject, forkJoin } from 'rxjs';
-import { ClaimsService, MaintenanceService, NotesService, UserService } from '@app/_services';
+import { ClaimsService, MaintenanceService, NotesService, UserService, SecurityService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { map } from 'rxjs/operators';
@@ -65,7 +65,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
   proceed : any;
 
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
-               private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService) { }
+               private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService,
+               private securityService: SecurityService) { }
 
   @ViewChild('tabset') tabset: any;
 
@@ -74,14 +75,13 @@ export class ClaimComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.route.params.subscribe(
       (params)=>{
-        if(params['readonly'] !== undefined){
+        if(params['readonly'] == 'true' || params['readonly'] == true){
           this.isInquiry = true;
         }else{
           this.isInquiry = false;
         }
 
         if(params['tab']!=undefined){
-          console.log(params)
           this.activeIdString=params['tab'];
           this.claimInfo = params;
           this.disableClmHistory = false;
@@ -104,7 +104,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');
       } else if($event.nextId === 'view-pol-info' && $('.ng-dirty').length == 0) {
-        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo), readonly: this.isInquiry }], { skipLocationChange: true });
+        this.router.navigate(['/policy-information', { policyId: this.claimInfo.policyId, policyNo: this.claimInfo.policyNo, clmInfo: JSON.stringify(this.claimInfo), readonly: !this.isInquiry, isInquiry: this.isInquiry }], { skipLocationChange: true });
       }
 
       if($event.nextId === 'clmHistoryId') {
@@ -200,21 +200,27 @@ export class ClaimComponent implements OnInit, OnDestroy {
     var user = this.approversList.some(e => this.userId.toUpperCase() == e.userId.toUpperCase());
     if(user){
       var pass = this.usersList.filter(e => this.userId.toUpperCase() == e.userId.toUpperCase()).map(e => e.password);
-      if(this.password == pass.toString()){
-        this.overMdl.closeModal();
-        this.dialogIcon = 'success-message';
-        this.dialogMessage = 'Login Successfully';
-        this.claimInfo['upUserGi'] = this.userId;
-        this.clmHist.histFunction(this.proceed+1); 
-      } else{
-        this.dialogIcon = 'error-message';
-        this.dialogMessage = 'Invalid Password';
-      }
+
+      this.securityService.secEncryption(this.password).subscribe((data:any)=>{
+          if(data.password == pass.toString()){
+            this.overMdl.closeModal();
+            this.dialogIcon = 'success-message';
+            this.dialogMessage = 'Login Successfully';
+            this.claimInfo['upUserGi'] = this.userId;
+            this.clmHist.histFunction(this.proceed+1);
+            this.success.open();
+          } else{
+            this.dialogIcon = 'error-message';
+            this.dialogMessage = 'Invalid Password';
+            this.success.open();
+          }
+        });
     }else{
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Invalid Username';
+      this.success.open();
     }
 
-    this.success.open();
+    
   }
 }
