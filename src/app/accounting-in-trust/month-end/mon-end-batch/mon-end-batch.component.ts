@@ -16,7 +16,7 @@ export class MonEndBatchComponent implements OnInit {
   eomDate: string = '';
   extLog: string = '';
   webSocketEndPoint: string = 'http://localhost:8888/api/socket';
-  topic: string = "/chat";
+  topic: string = "/extractionLog";
   stompClient: any;
 
   constructor(private router: Router, private as: AccountingService, private ns: NotesService) {
