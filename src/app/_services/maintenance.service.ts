@@ -1396,4 +1396,11 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDcbUser', JSON.stringify(params), header);
     }
+
+    getMtnEmployee(companyId?, employeeId?){
+    	const params = new HttpParams()
+						.set('companyId', (companyId === null || companyId === undefined ? '' : companyId))
+						.set('taxName', (employeeId === null || employeeId === undefined ? '' : employeeId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnEmployee", {params});
+    }
 }

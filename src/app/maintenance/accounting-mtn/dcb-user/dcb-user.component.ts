@@ -86,7 +86,6 @@ export class DcbUserComponent implements OnInit {
   		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
-  		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
   		$('#cust-table-container').addClass('ng-dirty');

@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NotesService, MaintenanceService } from '@app/_services';
@@ -75,7 +76,6 @@ export class BusinessTypeComponent implements OnInit {
   		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
-  		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
       $('#cust-table-container').addClass('ng-dirty');
@@ -87,6 +87,7 @@ export class BusinessTypeComponent implements OnInit {
   }
 
   onTableClick(data){
+    console.log(data);
     this.info = data;
     this.passTable.disableGeneric = data == null;
   }
