@@ -84,6 +84,49 @@
               </div>
             </div>
           </fieldset>
+
+          <fieldset *ngIf="record?.from.toLowerCase() == 'jv'" class="scheduler-border">
+            <legend class="scheduler-border">JV Info</legend>
+               <div class="form-row custom-row-inline-inset">
+                   <div class="col-sm-9">
+                       <div class="input-group">
+                           <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
+                           <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                            style="text-align: right;text-align: right;" [(ngModel)]="record.jvYear" readonly>
+                           <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                            style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="record.jvNo" readonly>
+                           <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
+                           <div class="col-sm-2 dp-cont">
+                               <datepicker [type]="'date'" [value]="record.jvDate?.split('T')[0]" [required]="true" disabled></datepicker>
+                           </div>
+                           <label class="form-control-sm col-sm-1">Status</label>
+                           <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.jvStatus" readonly>
+                           <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                           <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="record.refnoTranId" readonly>
+                       </div>
+                       <div class="input-group">
+                           <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
+                           <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="record.jvType"
+                           readonly>
+                           
+                           <label class="form-control-sm col-sm-1">Ref No Date</label>
+                           <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.refnoDate" readonly>
+                       </div>
+                   </div>
+                   <div class="col-sm-3">
+                       <div class="input-group">
+                           <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                           <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.currCd" readonly>
+                           <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="record.jvAmt | number:'1.2-2'" (ngModelChange)="record.jvAmt =$event" style="margin-left: 2px !important;" readonly>
+                       </div>
+                       <div class="input-group">
+                           <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                           <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly value="PHP">
+                           <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="record.localAmt | number:'1.2-2'" (ngModelChange)="record.localAmt = $event" style="margin-left: 2px !important;" readonly>
+                       </div>
+                   </div>
+               </div>
+              </fieldset>
         </div>
       </div>
 
@@ -104,7 +147,7 @@
 		<label class="form-control-sm col-sm-1">Last Update</label>
 		<input type="text" class="form-control form-control-sm col-sm" value="10/01/2018 10:45 AM">	
 	</div> -->
-  <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.arStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N'">
+  <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.arStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N'">
     <div class="cust-btn-container">
       <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
       <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
