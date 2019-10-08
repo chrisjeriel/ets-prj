@@ -210,7 +210,7 @@ export class CvEntryComponent implements OnInit {
       }
 
       this.saveAcitCv['from'] = 'cv';
-      this.saveAcitCv['exitLink'] = 'check-voucher';
+      this.saveAcitCv['exitLink'] = '/check-voucher';
       this.cvData.emit(this.saveAcitCv);
       ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
