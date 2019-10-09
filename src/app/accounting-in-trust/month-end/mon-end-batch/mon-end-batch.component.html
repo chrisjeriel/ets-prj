@@ -18,11 +18,11 @@
         		</div>
         		<div class="input-group">
         			<label class="col-sm-2"></label>
-        			<textarea #txtArea class="form-control form-control-sm col-sm-8" style="font-size: 11px; min-height: 300px; margin-bottom: 17px !important;" [(ngModel)]="extLog" readonly>Report Summary</textarea>
+        			<textarea #txtArea class="form-control form-control-sm col-sm-8" style="font-size: 11px; min-height: 300px; margin-bottom: 17px !important;" [(ngModel)]="extLog" readonly tabindex="-1">Report Summary</textarea>
         		</div>
     			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">
     		      <div class="cust-btn-container">
-    		        <button type="button" class="cust cust-btn" (click)="onClickGenerate()"><a>Generate</a></button>
+    		        <button type="button" class="cust cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''"><a>Generate</a></button>
     		        <button type="button" class="cust cust-btn"><a>Data Check Report</a></button>
     		      </div>
     		    </div>
