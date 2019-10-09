@@ -94,6 +94,7 @@ export class CvEntryComponent implements OnInit {
   checkSeriesList      : any;
   existsInCvDtl        : boolean = false;
   fromSave             : boolean = false;
+  destination          : string = '';
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -369,9 +370,12 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    this.removeRedBackShad(from);
-    this.form.control.markAsDirty();
-    this.ns.lovLoader(data.ev, 0);
+    setTimeout(() => {
+      this.removeRedBackShad(from);
+      this.ns.lovLoader(data.ev, 0);
+      this.form.control.markAsDirty();
+    },0);
+
     if(from.toLowerCase() == 'payee'){
       this.saveAcitCv.payee   = data.data.payeeName;
       this.saveAcitCv.payeeCd = data.data.payeeNo;

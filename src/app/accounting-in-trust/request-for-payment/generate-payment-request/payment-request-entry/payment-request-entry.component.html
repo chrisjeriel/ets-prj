@@ -145,7 +145,7 @@
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn" (click)="showConfirmMdl('new-req')">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqStatus == 'P'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
                       <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcitPaytReq.reqStatus != 'F'" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
