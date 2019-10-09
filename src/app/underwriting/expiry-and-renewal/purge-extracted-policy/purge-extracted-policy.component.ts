@@ -47,6 +47,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     paginateFlag:true,
     infoFlag:true,
     pageID:'LOV',
+    searchFlag: true,
   }
 
   purgeData: any = {
@@ -126,6 +127,9 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     }else {
       this.baseOnParam = false;
       this.disabledFlag = true;
+      //Added by Neco 10/09/2019
+      this.getPolPurging();
+      //End Neco 10/19/2019
     }
   }
 
@@ -175,7 +179,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
     if(this.allProcess){
       for(var i = 0; i < this.passData.tableData.length;i++){
-        if(this.passData.tableData[i].processTag === 'Y'){
+        if(this.passData.tableData[i].processTag === 'Y' && this.passData.tableData[i].expiryTag === 'N'){
           this.purgeData.deletePurge.push(this.passData.tableData[i]);
         }
       }
@@ -439,4 +443,58 @@ export class PurgeExtractedPolicyComponent implements OnInit {
   cancel(){
      this.cancelBtn.clickCancel();           
   }
+
+  //Added by Neco 10/09/2019
+  filterMainTable(){
+    this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
+      console.log(data)
+      this.passData.tableData = [];
+      this.policyLov = data.polForPurging;
+      var datas = data.polForPurging;
+      for(var i = 0; i < datas.length;i++){
+        this.passData.tableData.push(datas[i]);
+      }
+      switch(this.radioVal){
+        case 'byPolNo':
+          if(this.PolicyNo.line.length !== 0 || this.PolicyNo.year.length !== 0 || this.PolicyNo.sequenceNo.length !== 0 ||
+             this.PolicyNo.companyNo.length !== 0 || this.PolicyNo.coSeriesNo.length !== 0 || this.PolicyNo.altNo.length !== 0){
+            this.passData.tableData = this.passData.tableData.filter(a=>{
+                var splittedPolNo: any[] = a.policyNo.split('-');
+                return this.PolicyNo.line == splittedPolNo[0] ||
+                       this.PolicyNo.year == splittedPolNo[1] ||
+                       this.PolicyNo.sequenceNo == splittedPolNo[2] ||
+                       this.PolicyNo.companyNo == splittedPolNo[3] ||
+                       this.PolicyNo.coSeriesNo == splittedPolNo[4] ||
+                       this.PolicyNo.altNo == splittedPolNo[5];
+            });
+          }
+          break;
+        case 'byDate':
+          console.log(this.dateParams);
+          if(this.dateParams.byDateFrom.length !== 0 && this.dateParams.byDateFrom.length !== 0){
+            this.passData.tableData = this.passData.tableData.filter(a=>{
+                var from = this.dateParams.byDateFrom.length !== 0 ? new Date(this.dateParams.byDateFrom) : new Date();
+                var to = this.dateParams.byDateTo.length !== 0 ? new Date(this.dateParams.byDateTo) : new Date();
+                var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                return from <= expiryDate && expiryDate <= to;
+            });
+          }
+          break;
+        case 'byMonthYear':
+          console.log(this.dateParams);
+          if(this.dateParams.byMonthFrom.length !== 0 && this.dateParams.byYearFrom && this.dateParams.byMonthTo.length !== 0 && this.dateParams.byYearTo.length !== 0){
+            this.passData.tableData = this.passData.tableData.filter(a=>{
+                var from = new Date(parseInt(this.dateParams.byYearFrom), parseInt(this.dateParams.byMonthFrom)-1, 1);
+                var to = new Date(parseInt(this.dateParams.byYearTo), parseInt(this.dateParams.byMonthTo), 0);
+                var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                return from <= expiryDate && expiryDate <= to;
+            });
+          }
+          break;
+      }  
+      this.table.refreshTable();
+    });
+    
+  }
+  //End Neco
 }
