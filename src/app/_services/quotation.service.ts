@@ -530,17 +530,6 @@ export class QuotationService {
         return this.quotationToHoldCover;
     }
 
-    getItemInfoData() {
-        this.itemInfoData = [
-            new ItemInformation(1001, "Description for item number 1"),
-            new ItemInformation(1002, "Description for item number 2"),
-            new ItemInformation(1003, "Description for item number 3")
-        ];
-
-        return this.itemInfoData;
-
-    }
-
     getQuoteGenInfo(quoteId : any, quotationNo: string ){
      
      if (quoteId == '' || quoteId == null ) {
@@ -1056,6 +1045,26 @@ export class QuotationService {
             approvedBy : approvedBy
         }
         return this.http.post(environment.prodApiUrl + '/quote-service/updateQuoteStatus',JSON.stringify(params),header);
+    }
+
+    getItemInfoData(quoteId) {
+        /*this.itemInfoData = [
+            new ItemInformation(1001, "Description for item number 1"),
+            new ItemInformation(1002, "Description for item number 2"),
+            new ItemInformation(1003, "Description for item number 3")
+        ];*/
+         const params = new HttpParams()
+             .set('quoteId', (quoteId === null || quoteId === undefined ? '' : quoteId) )
+        return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuItem",{params});;
+    }
+
+    saveItem(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuItem',JSON.stringify(params),header);
     }
 
 }

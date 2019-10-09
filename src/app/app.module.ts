@@ -457,6 +457,7 @@ import { PrintModalMtnAcctComponent } from './_components/common/print-modal-mtn
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.component';
+import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
 
 @NgModule({
     imports: [
@@ -920,6 +921,7 @@ import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.
         BusinessTypeComponent,
         DcbUserComponent,
         MtnBankAcctComponent,
+        QuoItemComponent,
     ],
 
   	providers: [

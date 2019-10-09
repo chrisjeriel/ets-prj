@@ -1,0 +1,84 @@
+<fieldset class="scheduler-border">
+        <legend class="scheduler-border">Quotation Info</legend>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationInfo.quotationNo"
+                       disabled="disabled">
+                <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.insuredDesc"
+                       disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="quotationInfo.riskName"
+                       disabled="disabled">
+            </div>
+        </div>
+    </fieldset>
+
+<div *ngIf="line=='EEI' || line=='MBI'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [passData]="eeiPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div> -->
+        <br/>
+    </fieldset>
+</div>
+
+<div *ngIf="line=='CEC'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [passData]="cecPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div> -->
+        <br/>
+    </fieldset> 
+</div>
+
+<div *ngIf="line=='BPV'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [passData]="bpvPassData"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>	
+</div>
+
+<div class="MLP" *ngIf="line=='MLP'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Item Information</legend>
+        <app-cust-editable-non-datatable [passData]="mlpPassData"></app-cust-editable-non-datatable>
+        <br/>
+    </fieldset>
+</div>
+
+<div class="DOS" *ngIf="line=='DOS'">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Goods stored and Insured</legend>
+        <app-cust-editable-non-datatable [passData]="dosGoodsPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000 &nbsp;&nbsp;&nbsp;&nbsp;</label>
+        </div> -->
+    </fieldset>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">List of Machinery</legend>
+        <app-cust-editable-non-datatable [passData]="dosMachineryPassData"></app-cust-editable-non-datatable>
+        <!-- <div class="total">
+            <label>Total Sum Insured: 20,000.00&nbsp;&nbsp;</label>
+        </div> -->
+    </fieldset>
+</div>
+
+<div class="col-md-13 text-center">
+    <div class="cust-btn-container" style="margin-top: 10px;">
+        <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="!inquiryFlag"><a>Save</a></button>
+    </div>
+</div>  
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveItem()"></app-confirm-save>
+<app-cancel-button (onYes)="saveItem('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

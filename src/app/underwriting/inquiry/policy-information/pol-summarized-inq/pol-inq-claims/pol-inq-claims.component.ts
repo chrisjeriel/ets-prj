@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute,Router } from '@angular/router';
+import { ClaimsService,NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-pol-inq-claims',
@@ -7,21 +9,98 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class PolInqClaimsComponent implements OnInit {
 
-  constructor() { }
-  passData:any = {
-  	tHeader:['Claim No', 'Status','Creation Date','Loss Date','Currency','Total Reserve','Total Payment','Processed By'],
-  	dataTypes: ['text','text','date','date','text','currency','currency','text'],
-  	tableData:[
-  		['CAR-2019-00001','In Progress','2019-02-28','2019-02-28','PHP',150000,0,'ESALUNSON'],
-  	],
-  	uneditable:[true,true,true,true,true,true,true,true,],
-  	pageID: 'inst',
-  	paginateFlag:true,
-  	infoFlag:true
-  }
+  constructor(private cs : ClaimsService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
+  passData: any = {
+    tableData: [],
+    tHeader: ['Claim No', 'Loss Date','Loss Cause','Loss Details' ,'Currency', 'Total Reserve', 'Total Payments','Report Date'],
+    uneditable:[true,true,true,true,true,true,true,true,true,true,],
+    dataTypes: ['text', 'date', 'text', 'text', 'text', 'currency', 'currency','date'],
+    keys: ['claimNo', 'lossDate','lossAbbr','lossDtl', 'currencyCd', 'totalLossExpRes', 'totalLossExpPd','reportDate'],
+    colSize: ['90px','70px','120px','120px','49px','110px','110px','70px'],
+    addFlag: false,
+    editFlag: false,
+    pagination: true,
+    pageStatus: true,
+    searchFlag: true,
+    pageLength: 10,
+    pageID: 'passDataLOVTbl',
+    filters: [
+       {
+            key: 'claimNo',
+            title:'Claim No.',
+            dataType: 'text'
+        },
+        {
+             keys: {
+                  from: 'lossDateFrom',
+                  to: 'lossDateTo'
+              },
+              title: 'Loss Date',
+              dataType: 'datespan'
+        },
+        {
+            key: 'currencyCd',
+            title:'Currency',
+            dataType: 'text'
+        },
+        {
+             keys: {
+                  from: 'totalResFrom',
+                  to: 'totalResTo'
+              },
+              title: 'Total Reserve',
+              dataType: 'textspan'
+        },
+        {
+             keys: {
+                  from: 'totalPaytFrom',
+                  to: 'totalPaytTo'
+              },
+              title: 'Total Payment',
+              dataType: 'textspan'
+        }
+    ],
+  };
   @ViewChild('claim') table:any;
+  policyNo:any;
+
+  searchParamsLOVTbl:any[] = [];
   ngOnInit() {
-  	setTimeout(a=>{this.table.refreshTable()},0);
+    this.route.params.subscribe(params => {
+        this.policyNo = params['showPolicyNo'];
+        this.searchQueryLOVTbl(this.searchParamsLOVTbl);
+    }); 
   }
+
+
+
+  searchQueryLOVTbl(searchParams){
+        this.searchParamsLOVTbl = searchParams;
+        this.searchParamsLOVTbl.push({ key: 'policyNo', search: this.policyNo });
+        
+        this.passData.tableData = [];
+        this.cs.getClaimsListing(this.searchParamsLOVTbl).subscribe(data => {
+          this.passData.tableData = data['claimsList'].map(a => {
+                                    a.createDate = this.ns.toDateTimeString(a.createDate);
+                                    a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                    return a;
+                                  });
+          this.table.refreshTable();
+        });
+   }
+
+   goToClaims(){
+    this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'edit',
+                          readonly: true,
+                          claimId: this.table.indvSelect.claimId,
+                          claimNo: this.table.indvSelect.claimNo,
+                          line: this.table.indvSelect.claimNo.split('-')[0],
+                          exitLink: 'claims-inquiry'
+                    }],
+                    { skipLocationChange: true }
+      );
+   }
 
 }

@@ -2637,5 +2637,13 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
     }	
 
+    getAcitInwPolPayts(policyId,policyNo){
+    	const params = new HttpParams()
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+			.set('policyNo', (policyNo == null || policyNo == undefined ? '' : policyNo));
+
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInwPolPayts',{params});	
+    }
+
 
 }
