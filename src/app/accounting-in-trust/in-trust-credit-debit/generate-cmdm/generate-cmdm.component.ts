@@ -12,21 +12,24 @@ import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/con
 })
 export class GenerateCMDMComponent implements OnInit {
   @ViewChild('tabset') tabset: any;
+  exitLink: string;
+
   constructor(private route: ActivatedRoute, private router: Router,private modalService: NgbModal,) { }
   passData:any = {};
+  tranId : any;
   ngOnInit() {
     this.route.params.subscribe(a=>{
       this.passData.tranId = a.tranId;
       this.passData.memoType = a.memoType;
+      this.exitLink = a.exitLink;
+      this.tranId = a.tranId;
     })
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-	  if ($event.nextId === 'Exit') {
-      $event.preventDefault();
-      this.router.navigateByUrl('/acc-s-credit-debit-memo');
-      return;
-	  }
+    if ($event.nextId === 'Exit') {
+      this.router.navigate([this.exitLink,{tranId: this.tranId}],{ skipLocationChange: true });
+    } 
 
 
     if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){

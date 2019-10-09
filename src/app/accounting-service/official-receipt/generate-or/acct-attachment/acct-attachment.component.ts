@@ -79,6 +79,10 @@ export class AcctAttachmentComponent implements OnInit {
         this.record.localAmt = Number(String(this.record.localAmt).replace(/\,/g,''));
       }
 
+      if(this.record.from.toLowerCase() == 'jv'){
+        this.record.jvDate = this.notes.toDateTimeString(this.record.jvDate);
+        this.record.refnoDate = this.record.refnoDate === "" ? "":this.notes.toDateTimeString(this.record.refnoDate);
+      }
 
       this.as.getAcseAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);

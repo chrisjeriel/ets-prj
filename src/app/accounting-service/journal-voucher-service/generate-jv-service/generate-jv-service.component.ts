@@ -65,5 +65,7 @@ export class GenerateJvServiceComponent implements OnInit {
      this.jvData.localAmt =  data.localAmt;
      this.jvData.jvType = data.jvType;
      this.jvData.tranType = data.tranType;
+     this.jvData.from = 'jv';
+     this.jvData.exitLink = 'journal-voucher';
   }
 }

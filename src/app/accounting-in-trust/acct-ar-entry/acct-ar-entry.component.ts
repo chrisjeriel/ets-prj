@@ -201,20 +201,28 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.onChange.emit({ type: this.arInfo.tranTypeCd });
     this.sub = this.route.params.subscribe(
        data=>{
-         if('add' === data['action'].trim()){
-           this.isAdd = true;
+         if(data.from === 'CMDM'){
+           tranId = data.tranId;
+           arNo = '';
+           this.isCancelled = true;
+           this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+           this.paytDtlTbl.refreshTable();
          }else{
-           this.isAdd = false;
-           let params = JSON.parse(data['slctd']);
-           tranId = params.tranId;
-           arNo = params.arNo;
-           if(params.status === 'Cancelled' || params.status === 'Deleted'){
-             this.isCancelled = true;
-             this.passData.addFlag = false;
-             this.passData.genericBtn = undefined;
-             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-             this.paytDtlTbl.refreshTable();
-           }         
+           if('add' === data['action'].trim()){
+             this.isAdd = true;
+           }else{
+             this.isAdd = false;
+             let params = JSON.parse(data['slctd']);
+             tranId = params.tranId;
+             arNo = params.arNo;
+             if(params.status === 'Cancelled' || params.status === 'Deleted'){
+               this.isCancelled = true;
+               this.passData.addFlag = false;
+               this.passData.genericBtn = undefined;
+               this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+               this.paytDtlTbl.refreshTable();
+             }         
+           }
          }
        }
     );
