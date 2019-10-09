@@ -125,6 +125,7 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     this.loadingFunc(true);
+    
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
@@ -132,6 +133,27 @@ export class CvEntryComponent implements OnInit {
                             .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
 
     var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
+
+    // let arrSubRes = [
+    //   this.accountingService.getAcitCv(this.saveAcitCv.tranId),
+    //   this.mtnService.getMtnPrintableName(''),
+    //   this.mtnService.getRefCode('CHECK_CLASS'),
+    //   this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
+    //   this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
+    // ];
+    // let arrSubRes2 = [
+    //   this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId),
+    //   this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
+    //   this.mtnService.getMtnBankAcct(),
+    //   this.mtnService.getMtnAcitCheckSeries()
+    // ];
+
+    // let pipeSubRes = ['cv','pn','cl','stat','prt'];
+    
+  
+    // var subRes = forkJoin(arrSubRes).pipe(map((pipeSubRes) => { return { pipeSubRes }; }));
+    // var subRes2 = forkJoin(arrSubRes2).pipe(map(([prl,ba,cn,ae]) => { return { prl, ba, cn, ae }; }));
+    // var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
 
     subRes3.subscribe(data => {
       console.log(data);
