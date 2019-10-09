@@ -45,6 +45,8 @@ export class UnderwritingService {
     toPolInfo: any[] = [];
     fromCreateAlt: boolean = false;
 
+    showPolicyNo:string = '';
+
     constructor(private http: HttpClient) {
 
     }
@@ -366,9 +368,10 @@ export class UnderwritingService {
 
 
 
-    getInwardPolBalance(policyId?) {
+    getInwardPolBalance(policyId?,policyNo?) {
          let params:any = {
-             policyId : policyId
+             policyId : policyId == null ? '' :policyId,
+             policyNo: policyNo == null ? '' :policyNo
          }
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }

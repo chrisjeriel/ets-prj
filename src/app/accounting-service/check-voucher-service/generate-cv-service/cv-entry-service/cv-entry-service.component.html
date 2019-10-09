@@ -1,247 +1,255 @@
+ <form #myForm="ngForm">
  <div class="row">
-    <div class="col-sm-10" style="padding-right: 0px !important;">
+    <div class="col-sm-12">
         <fieldset class="scheduler-border">
             <legend class="scheduler-border">CV Info</legend>
-            <div class="container-fluid">
-               <div class="form-row" style="margin-top: 13.5px !important;margin-bottom: 13.5px !important;">
-                <div class="input-group">
-                    <label class="form-control-sm col-sm-1">CV. No</label>
-                    <div class="input-group col-sm-3 no-padding">
-                        <input type="text"   class="form-control form-control-sm cust-sm col-sm-4"
-                               placeholder="2018">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-8"
-                               placeholder="00000001" style="text-align: right;    margin-left: 2px;">
-                    </div>
-                    <label class="form-control-sm col-sm-1">Date</label>
-                    <input type="date" class="form-control form-control-sm cust-sm col-sm-3" value="2018-10-01" >
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 5px" placeholder="10:45 AM" >
-                    <!-- <label class="form-control-sm col-sm-1">Tran ID</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="000372921" style="text-align: right;"> -->
-                    <label class="form-control-sm col-sm-2">Status</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="New" >
-                </div>
-                <div class="input-group" style="margin-top: -5px">
-                    <label class="form-control-sm col-sm-1">Payee</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="San Miguel Corporation">
-                    <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                    <!-- <select class="form-control form-control-sm cust-sm col-sm-11">
-                        <option value="San Miguel Corporation">San Miguel Corporation</option>
-                        <option value="SM Prime Holdings, Inc">SM Prime Holdings, Inc</option>
-                        <option value="Rustans, Inc">Rustans, Inc</option>
-                    </select> -->
-                </div>
-                <div class="input-group" style="margin-top: -5px">
-                    <label class="form-control-sm col-sm-1">Particlars</label>
-                    <textarea class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" placeholder="Representing check payment for San Miguel Corporation"></textarea>
-                </div>
-            </div>
-            </div>
-        </fieldset>
-    </div>
-    <div class="col-sm-2" style="padding-left: 10px !important;">
-        <fieldset class="scheduler-border" style="padding: 8px 0px !important;">
-            <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-            <!-- <div class="cust-btn-container" style="margin-left: 10px !important;margin-right: 10px !important;">  -->
-                <div class="cust-btn-container" style="text-align: center; margin-top: 1px; margin-bottom: 3px;"> 
-                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">New CV</button>
-                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Save</button>
-                <button class="cust-btn " style="width: 100%;margin-bottom: 5px !important;">Cancel CV</button>
-                <button class="cust-btn " style="width: 100%" (click)="showPrintModal();">Print</button>
-                <app-modal id="printMdl" [btnTitle]="'Print'" class="d-none">
-                    <div header>Print Check/DV</div>
-                    <div body>
-                        <div class="container-fluid">
-                            <div class="custom-row-inline-inset">
-                                <div class="input-group">
-                                    <div class="col-sm-4"></div>
-                                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                                        <input type="checkbox" style="margin-top: 6px;" checked>
-                                        <label class="form-control-sm" for="xx">CV</label>
-                                    </div>
-                                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                                        <input type="checkbox" style="margin-top: 6px;" checked>
-                                        <label class="form-control-sm" for="xx">Check</label>
-                                    </div>
-                                    <!-- <input type="checkbox"> 
-                                    <label class="form-control-sm labels">DV</label>
-                                     <input type="checkbox">
-                                    <label class="form-control-sm labels">Check</label> -->
-                                </div>
-                                <div class="input-group">
-                                    <label class="form-control-sm col-sm-4 labels">Destination</label>
-                                    <select class="form-control form-control-sm cust-sm col-sm-8">
-                                        <option>Printer</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
-                                    <select class="form-control form-control-sm cust-sm col-sm-8">
-                                        <option>EPSON 3600i</option>
-                                        <option>BROTHER J100</option>
-                                    </select>
-                                </div>
-                                <div class="input-group">
-                                    <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
-                                    <input type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
-                                </div>
+            <div class="d-flex">
+                <!-- <div class="col-sm-1"></div> -->
+                <div class="col-sm-12">
+                    <div class="form-row" style="margin-top: 13.5px !important;margin-bottom: 13.5px !important;">
+                        <div class="input-group">
+                            <label class="form-control-sm col-sm-1">CV. No</label>
+                            <div class="input-group col-sm-2 no-padding">
+                                <input name="input1" type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcseCv.cvYear" readonly>
+                                <input name="input2" type="text" class="form-control form-control-sm cust-sm col-sm-8" style="text-align: right;margin-left: 3px;" [(ngModel)]="saveAcseCv.cvNo"  readonly>
                             </div>
-                        </div>
+                            <label class="form-control-sm col-sm-1 no-margin" style="margin-left: -40px !important;">Date</label>
+                            <div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+                              <datepicker [type]="'datetime'" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcseCv.cvDate"></datepicker>
+                          </div>
+                          <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1">Status</label>
+                          <input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcseCv.cvStatusDesc" readonly>
+                          <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
+                          <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                          <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytreqtype')"><i class="fa fa-search"></i></a></div>
+                      </div>
+                      <div class="input-group" style="margin-top: -5px">
+                        <label class="form-control-sm col-sm-1">Payee</label>
+                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn payee" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                     </div>
-                    <div footer class="text-center w-100">
-                        <!-- <button class="cust-btn" type="button" (click)="modalService.dismissAll(); cancel();"><a>Cancel</a></button>
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Print</a></button> TRBT#PROD_GRADE -->
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Print</a></button>
+                    <div class="input-group" style="margin-top: -5px">
+                        <label class="form-control-sm col-sm-1">Particulars</label>
+                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired></textarea>
                     </div>
-                </app-modal>
+                </div>
+
             </div>
-        </fieldset>
-    </div>
+            <!-- <div class="col-sm-1"></div> -->
+        </div>
+    </fieldset>
+</div>
+
     <div class="col-sm-12">
         <fieldset class="scheduler-border" style="padding-bottom: 20px !important;">
             <legend class="scheduler-border">Check Details</legend>
             <div class="test d-flex" style="margin-top: 20px !important;">
-                <!-- <app-cust-editable-non-datatable [passData]="passDataCheckDetails" (tableDataChange)="changeAccountNumber($event)"></app-cust-editable-non-datatable> -->
-                <div class="col-sm-1"></div>
+                <div class="col-sm-1" style="margin-left: -15px !important;"></div>
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="San Miguel Corporation">
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.bankDesc" maxlength="100" appRequired>
+                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
+                    <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
+                        <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-2 warn curr" [(ngModel)]="saveAcseCv.currCd" maxlength="3" appRequired [disabled]="existsInCvDtl">
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                        <input name="input8" type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" maxlength="24" [(ngModel)]="saveAcseCv.cvAmt" (change)="setLocalAmt();" numbers-only appRequired style="margin-left: 3px;">
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
+                    <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1.000000">
+                        <input name="input9" type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcseCv.currRate" (change)="setLocalAmt();" numbers-only appRequired [disabled]="existsInCvDtl">
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
+                    <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="PHP">
-                        <!-- <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div> -->
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" placeholder="27,513.20" style="margin-left: 3px;">
+                        <input name="input10" type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+                        <input name="input11" type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px;" [(ngModel)]="saveAcseCv.localAmt" readonly>
+                    </div>
+                    <div class="input-group" style="margin-top: 20px !important;"></div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels">Prepared By</label>
+                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user" [(ngModel)]="saveAcseCv.preparedByName" appRequired>
+                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels"></label>
+                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="saveAcseCv.preparedByDes" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 no-margin">Date Prepared</label>
+                        <div class="col-sm dp-cont" style="margin-left: 0px !important">
+                            <datepicker [type]="'datetime'" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcseCv.preparedDate"></datepicker>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank Account No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="PCPA-9091-7001-7389">
+                        <input name="input14" type="text" [disabled]="saveAcseCv.bankDesc == '' || saveAcseCv.bankDesc == null" class="form-control form-control-sm cust-sm col-sm-10 warn bank-acct" [(ngModel)]="saveAcseCv.bankAcctDesc" appRequired>
+                        <ng-container *ngIf="!removeIcon">
+                            <div *ngIf="saveAcseCv.bankDesc != '' && saveAcseCv.bankDesc != null" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank-acct')"><i class="fa fa-search"></i></a>
+                            </div>
+                        </ng-container>
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
+                    <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right" placeholder="1324454234">
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcseCv.bankAcctDesc == '' || saveAcseCv.bankAcctDesc == null" [(ngModel)]="saveAcseCv.checkNo" appRequired>
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
-                        <label class="form-control-sm col-sm-3 labels">Check Date</label>
-                        <input type="date" class="form-control form-control-sm cust-sm col-sm-10" value="2018-10-01">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
+                        <div class="col-sm dp-cont checkDateWarn" style="margin-left: 0px !important">
+                            <datepicker [type]="'datetime'" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcseCv.checkDate"></datepicker>
+                        </div>
                     </div>
-                    <div class="input-group"  style="margin-top: 3px">
+                    <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="Local Clearing">
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
+                        <input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class" [(ngModel)]="saveAcseCv.checkClassDesc" appRequired>
+                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
+                    </div>
+                    <div class="input-group" style="margin-top: 20px !important;"></div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels">Certified Correct</label>
+                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcseCv.certifiedByName">
+                        <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('cert-user')"><i class="fa fa-search"></i></a></div>
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels"></label>
+                        <input name="input18" type="text" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="saveAcseCv.certifiedDes" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 no-margin">Date Certified</label>
+                        <div class="col-sm dp-cont" style="margin-left: 0px !important">
+                            <datepicker [type]="'datetime'" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" [required]="false" [(value)]="saveAcseCv.certifiedDate"></datepicker>
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-1"></div>
             </div>
-            <div class="text-center" style="margin-top: 15px !important;">
-                 <button class="cust" (click)="showCVEndtDetModal()">CV Endorsements Details</button>
-            </div>
-            <app-modal id="cvEndt" class="d-none"  >
-                    <div header>Check Voucher Endorsements Details</div>
-                    <div body>
-                        <div class="container-fluid">
-                            <fieldset class="scheduler-border" style="margin-bottom: -15px !important;"> 
-                                 <legend class="scheduler-border">Prepared By</legend> 
-                                     <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important;">
-                                        <app-cust-editable-non-datatable [passData]="preparedByData"></app-cust-editable-non-datatable>
-                                    </div>
-                            </fieldset>
-                             <fieldset class="scheduler-border" style="margin-bottom: -15px !important; margin-top: 15px ! important"> 
-                                 <legend class="scheduler-border">Certified By</legend> 
-                                     <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important;">
-                                        <app-cust-editable-non-datatable [passData]="certifiedByData"></app-cust-editable-non-datatable>
-                                    </div>
-                            </fieldset>
-                            <fieldset class="scheduler-border" style="margin-bottom: -15px !important; margin-top: 15px ! important"> 
-                                 <legend class="scheduler-border">Approved By</legend> 
-                                     <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important;">
-                                        <app-cust-editable-non-datatable [passData]="approvedByData"></app-cust-editable-non-datatable>
-                                    </div>
-                            </fieldset>
 
-
-                                
+            <div class="form-row">
+                <div class="form-group col-sm" style="margin-bottom: 8px;">
+                    <div class="col-md-13 text-center">
+                        <div class="cust-btn-container">
+                            <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
+                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcseCv.cvStatus != 'F'">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
                         </div>
                     </div>
-                    <div footer class="text-center w-100">
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); save();"><a>Save</a></button>
-                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
-                    </div>
-            </app-modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--             <div class="col-sm-12">
-                <div class="form-row custom-row-inline-inset">
-                    <div class="input-group">
-                        <label class="form-control-sm col-sm-1">Prepared By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Ma Cecilia Dela Paz -  Castro">
-                        <div style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                        <label class="form-control-sm col-sm-1">Certified Correct</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Juan Dela Cruz">
-                        <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                        <label class="form-control-sm col-sm-1">Approved By</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Jose Reyes">
-                        <div style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search"></i></a></div>
-                    </div>
-                    <div class="input-group" style="margin-top: -7px !important;">
-                        <div class="col-sm-1"></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Accountant I">
-                        <div class="col-sm-1"></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="Section Manager">
-                        <div class="col-sm-1"></div>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" placeholder="">
-                    </div>
-                    <div class="input-group" style="margin-top: 15px !important;margin-bottom: -25px !important;">
-                        <label class="form-control-sm col-sm-1 labels">Date Prepared</label>
-                        <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" value="2018-10-01T08:45">
-                        <label class="form-control-sm col-sm-1 labels">Date Certified</label>
-                        <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" value="2018-10-02T15:00">
-                        <label class="form-control-sm col-sm-1 labels">Date Approved</label>
-                        <input type="datetime-local" class="form-control form-control-sm cust-sm col-sm-3" value="2018-10-04T13:30">
-                    </div>
-                </div>
-            </div> -->
-        </fieldset>
-    </div>
-    <div class="col-sm-12" style="margin-top: 0px !important;">
-        <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
-            <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
-                <div class="input-group" style="margin-bottom: -15px !important;">
-                    <label class="form-control-sm col-sm-1 text-right ">Created By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-                    <label class="form-control-sm col-sm-1 text-right ">Date Created</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
-                    <label class="form-control-sm col-sm-1 text-right ">Last Update By</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
-                    <label class="form-control-sm col-sm-1 text-right ">Last Update</label>
-                    <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
                 </div>
             </div>
+
+
         </fieldset>
     </div>
+    <div class="col-sm-12">
+    <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+      <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+        <label class="form-control-sm col-sm-1">Created By</label>
+        <input name="input19" type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcseCv.createUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcseCv.createDate"></datepicker>
+        </div>
+        <label class="form-control-sm col-sm-1">Last Update By</label>
+        <input name="input20" type="text" class="form-control form-control-sm col-sm" [(ngModel)]="saveAcseCv.updateUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="saveAcseCv.updateDate"></datepicker>
+        </div>
+      </div>
+    </fieldset>
+  </div>
 </div>
+
+<app-modal class="d-none" #confirmMdl >
+    <div header>Confirmation</div>
+    <div body class="container-flex text-center">
+        <div *ngIf="fromBtn == 'approve-req'" class="input-group">
+            <p class="col-sm-12">Are you sure you want to approve this Check Voucher?</p>
+        </div>
+        <div *ngIf="fromBtn == 'cancel-req'" class="input-group">
+            <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
+        </div>
+        <div *ngIf="fromBtn == 'print'" class="input-group">
+            <p class="col-sm-12">Was the printing of Check Voucher successful?</p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="onYesConfirmed()">Yes</button>
+        <button class="cust-btn" type="button" (click)="confirmMdl.closeModal()">No</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #warnMdl >
+    <div header>Warning</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+            <p class="col-sm-12">{{ warnMsg }}</p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #printmMdl>
+    <div header>Print Check/DV</div>
+    <div body>
+        <div class="container-fluid">
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <div class="col-sm-4"></div>
+                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input name="input21" type="checkbox" style="margin-top: 6px;" checked>
+                        <label class="form-control-sm" for="xx">CV</label>
+                    </div>
+                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input name="input22" type="checkbox" style="margin-top: 6px;" checked>
+                        <label class="form-control-sm" for="xx">Check</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Destination</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option>Printer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option>EPSON 3600i</option>
+                        <option>BROTHER J100</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
+                    <input name="input23" type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="printmMdl.closeModal()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="printmMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
+    </div>
+</app-modal>
+
+<app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" ></app-lov>
+<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,'bank-acct')" ></app-lov>
+<app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" ></app-lov>
+<app-lov #paytReqTypeLov [passData]="passDataLov" (selectedData)="setData($event,'paytreqtype')" ></app-lov>
+<app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>
+<app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
+<app-mtn-printable-names #certUserLov (selectedData)="setData($event,'cert-user')"></app-mtn-printable-names>
+
+<app-confirm-save (onYes)="onSaveAcseCv()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/generate-cv'" ></app-cancel-button>
+</form>

@@ -74,6 +74,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   getClmPaytReq() {
     this.table.overlayLoader = true;
+    this.disableCancelBtn = true;
+    this.disableGenerateBtn = true;
     this.cs.getClmPaytReq(this.claimInfo.claimId,'').subscribe(data => {
       this.passData.tableData = data['paytReqList'].map(a => {
                                                                a.refDate = this.ns.toDateTimeString(a.refDate);
@@ -90,7 +92,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   onRowClick(ev) {
     this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
-    this.disableGenerateBtn = this.selected == null || (this.selected.paytReqNo != null && this.selected.paytReqStat != 'X');
+    this.disableGenerateBtn = this.selected == null || this.selected.paytReqNo != null;
     this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null || this.selected.paytReqStat == 'X';
     console.log(ev)
   }

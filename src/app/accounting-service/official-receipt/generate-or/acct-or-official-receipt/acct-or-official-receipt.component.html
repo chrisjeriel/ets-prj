@@ -110,13 +110,13 @@
             </div>
           </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Others">
+        <ngb-tab class="ngb-tab" title="Others" *ngIf="paymentType != '1'">
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">
                 <div class="input-group">
                       <div class="col-sm">
-                        <app-or-others></app-or-others>
+                        <app-or-others [record]="record"></app-or-others>
                       </div>
                     </div>
               </div>

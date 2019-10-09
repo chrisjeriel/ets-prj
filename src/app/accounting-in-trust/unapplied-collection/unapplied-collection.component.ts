@@ -35,7 +35,7 @@ export class UnappliedCollectionComponent implements OnInit {
   passData: any = {
   	tableData: [],
     tHeader: ['Type', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['select', 'text','text','text','text','percent','currency','currency'],
+    dataTypes: ['reqSelect', 'reqTxt','text','text','text','percent','reqCurrency','currency'],
     nData: {
       tranId: '',
       billId: '',

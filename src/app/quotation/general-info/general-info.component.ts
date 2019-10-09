@@ -188,7 +188,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
 		this.filters.push("Item No", "Desc. of Items");
-		this.tableData = this.quotationService.getItemInfoData();
 
 		this.savingType = this.quotationService.savingType;
 		this.sub = this.route.params.subscribe(params => {
