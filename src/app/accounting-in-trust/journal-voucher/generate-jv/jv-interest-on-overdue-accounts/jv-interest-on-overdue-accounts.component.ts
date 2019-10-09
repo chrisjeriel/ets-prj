@@ -102,7 +102,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   ngOnInit() {
     this.getMtnRate();
     this.getDaysOverdue();
-    console.log(this.jvDetail)
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
@@ -255,7 +254,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
     var overdueDate = new Date();
-    console.log((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime()));
   }
 
   update(data){

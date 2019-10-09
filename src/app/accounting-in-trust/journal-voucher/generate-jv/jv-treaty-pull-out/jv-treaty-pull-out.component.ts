@@ -177,7 +177,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    console.log(data)
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.cedingId = data.payeeCd;
     this.passData.disableAdd = false;
@@ -212,7 +211,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setQuarter(data){
-    console.log(data)
     var quarterNo = null;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -250,7 +248,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data.data);
     this.quarterTable.indvSelect.trtyInvmt = this.quarterTable.indvSelect.trtyInvmt.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
       this.quarterTable.indvSelect.trtyInvmt.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
@@ -287,7 +284,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   openLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'MATURED'}];
     this.passLov.hide = this.invesmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
-    console.log(this.passLov.hide);
     this.lovMdl.openLOV();
   }
 
@@ -351,9 +347,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDetails);
     this.accountingService.saveTrtyInv(this.jvDetails).subscribe((data:any) => {
-      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -372,13 +366,10 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails)
     this.cancelBtn.clickCancel();
   }
 
   update(data){
-    console.log('datachange')
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].maturityValue = this.passData.tableData[i].maturityValue * 1;
     }

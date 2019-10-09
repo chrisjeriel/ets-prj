@@ -53,7 +53,6 @@ export class QuarterEndingLovComponent implements OnInit {
 
   getParameters(){
       this.maintenanceService.getMtnParameters('V').subscribe((data : any) => {
-        console.log(data);
         this.quarters = [];
         for( var i = 0; i < data.parameters.length; i++){
           if(data.parameters[i].paramName == 'FIRST_QTR_ENDING' ||
@@ -88,13 +87,10 @@ export class QuarterEndingLovComponent implements OnInit {
   }
 
   quarterData(data){
-    console.log('pasok')
-    console.log(data);
     this.quarter = data;
   }
 
   yearData(data){
-    console.log(data)
     this.quarterYear = data;         
   }
 
@@ -106,7 +102,6 @@ export class QuarterEndingLovComponent implements OnInit {
     }
 
     this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-    console.log(this.tranClass)
     this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
     if(this.tranClass !== undefined){
       this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {

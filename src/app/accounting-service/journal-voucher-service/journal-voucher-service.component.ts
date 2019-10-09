@@ -86,9 +86,10 @@ export class JournalVoucherServiceComponent implements OnInit {
 
   onClickEdit(event){
     this.accountingService.jvFilter = this.tranStat;
-    /*this.router.navigate(['/generate-jv-service',
-      {jvType: this.type} 
-      ], { skipLocationChange: true });*/
+    this.router.navigate(['generate-jv-service', { tranId     : this.dataInfo.tranId,
+                                                   from       : 'jv-listing', 
+                                                   exitLink   : '/journal-voucher-service'}], 
+                                                  { skipLocationChange: true });
   }
 
   onRowClick(data){

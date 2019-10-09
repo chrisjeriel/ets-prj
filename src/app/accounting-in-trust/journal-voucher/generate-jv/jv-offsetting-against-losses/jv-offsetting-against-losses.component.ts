@@ -231,7 +231,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onrowClick(data){
-    console.log(data)
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
       this.InwPolBal.disableAdd = false;
@@ -267,7 +266,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setClaimOffset(data){
-    console.log(data.data)
     this.passData.tableData = this.passData.tableData.filter((a) => a.showMG != 1);
     for(var  i=0; i < data.data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -320,8 +318,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data)
-
     this.clmTable.indvSelect.inwPolBal = this.clmTable.indvSelect.inwPolBal.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.clmTable.indvSelect.inwPolBal.push(JSON.parse(JSON.stringify(this.InwPolBal.nData)));
@@ -348,10 +344,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].balance          = data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].paytAmt          = data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].localAmt         = data.data[i].prevBalance * this.jvDetail.currRate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].prevPremAmt;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].prevRiComm;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].prevRiCommVat;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].prevCharges;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].balPremDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].balRiComm;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].balRiCommVat;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].balChargesDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
     }
@@ -505,7 +501,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].createDate);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].updateDate);
-          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].remainingBal;
+          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].paytAmt;
         }
 
         if(this.passData.tableData[i].inwPolBal[j].deleted){

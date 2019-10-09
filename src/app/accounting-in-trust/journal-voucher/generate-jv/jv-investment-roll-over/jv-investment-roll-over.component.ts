@@ -117,7 +117,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   setSelectedData(data){
-  	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('srcInvtCode');
 	    this.passData.tableData[this.invIndex].edited				      = true;
@@ -145,7 +144,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   setSelectedDataInv(data){
-  	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('invtCode');
   	  this.passData.tableData[this.invIndex].edited				    = true;
@@ -184,7 +182,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   onRowClick(data){
-  	console.log(data)
   }
 
   onClickSave(){
@@ -235,7 +232,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
   	this.prepareData();
-  	console.log(this.jvDetails);
   	this.accountingService.saveInvRollOver(this.jvDetails).subscribe((data:any) => {
   		if(data['returnCode'] != -1) {
   		  this.dialogMessage = data['errorList'][0].errorMessage;
@@ -280,7 +276,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
     }
 
   update(data){  
-    console.log(data)
     /*for (var i = 0; i < this.passData.tableData.length; i++) {
       var principal = parseFloat(this.passData.tableData[i].invtAmt),
                rate = parseFloat(this.passData.tableData[i].interestRate)/100,

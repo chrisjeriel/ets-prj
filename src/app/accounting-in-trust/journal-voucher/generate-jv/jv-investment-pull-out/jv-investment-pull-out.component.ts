@@ -180,7 +180,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data)
     let selected = data.data;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){

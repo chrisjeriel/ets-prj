@@ -118,7 +118,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   changeBank(data){
-    console.log(data)
     this.passData.tableData = [];
     this.table.refreshTable();
     this.selectedBank = data;
@@ -137,7 +136,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   changeBankAcct(data){
-    console.log(data)
     this.accountNo = data.bankAcctCd;
     this.selectedBankAcct = data;
     this.retrieveInvPlacement();
@@ -234,7 +232,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDetails)
     this.accService.saveInvPlacement(this.jvDetails).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;

@@ -256,7 +256,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   openSoaLOV(data){
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
-    console.log(this.passLov.hide);
     this.lovMdl.openLOV();
   }
 
@@ -266,7 +265,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data);
     var overdue = null;
 
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
@@ -304,7 +302,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    if(this.refundError()){
+      this.dialogMessage = 'Refund must not exceed cummulative payments.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   update(data){
@@ -330,18 +334,18 @@ export class JvInwardPolBalanceComponent implements OnInit {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].localAmt = this.passData.tableData[i].paytAmt * this.passData.tableData[i].currRate;
-        edited[edited.length - 1].netDue = this.passData.tableData[i].remainingBal;
+        edited[edited.length - 1].netDue = this.passData.tableData[i].paytAmt;
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
-        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt > 0){
+        if(this.passData.tableData[i].balance >= 0 && this.passData.tableData[i].paytAmt >= 0){
            edited[edited.length - 1].paytType = 1
-         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt < 0){
+         }else if(this.passData.tableData[i].balance >= 0 && this.passData.tableData[i].paytAmt < 0){
            edited[edited.length - 1].paytType = 2
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt < 0){
+         }else if(this.passData.tableData[i].balance <= 0 && this.passData.tableData[i].paytAmt <= 0){
            edited[edited.length - 1].paytType = 3
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt > 0){
+         }else if(this.passData.tableData[i].balance <= 0 && this.passData.tableData[i].paytAmt > 0){
            edited[edited.length - 1].paytType = 4
          }
       }

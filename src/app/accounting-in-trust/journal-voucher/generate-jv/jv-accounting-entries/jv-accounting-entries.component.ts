@@ -196,7 +196,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   onRowclick(data){
-    console.log(data)
     if(data !== null){
       this.rowData = data;
       this.rowData.createDate = this.ns.toDateTimeString(this.rowData.createDate);
@@ -227,7 +226,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   saveAcctEntries(){
-    console.log(this.accEntries)
     this.prepareData();
     this.accountingService.saveAcitAcctEntries(this.accEntries).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
@@ -422,7 +420,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         for(var i = 0; i < datas.length; i++){
           total += datas[i].paytAmt;
         }
-        console.log(total);
         if(total != this.jvDetails.jvAmt){
           this.errorFlag = true;
         }
@@ -557,7 +554,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   setLov(data){
-    console.log(data)
     if(data.selector == 'slType'){
       this.lovRow.slTypeName = data.data.slTypeName;
       this.lovRow.slTypeCd = data.data.slTypeCd;
@@ -587,7 +583,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   tableDataChange(data){
-    console.log(data)
     this.debitTotal = 0;
     this.creditTotal = 0;
 
@@ -608,10 +603,11 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   retrieveJVEntry(){
     this.accountingService.getJVEntry(this.jvDetails.tranId).subscribe((data:any) => {
-      console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
+        this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
+        this.notBalanced = true;
         this.readOnly = true;
-        this.passData.disableAdd = true;
+        this.passData.disableAdd = true;  
         this.passData.uneditable = [true,true,true,true,true,true,true,true]
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this

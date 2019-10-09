@@ -303,7 +303,6 @@ export class JvEntryComponent implements OnInit {
   }
 
   setTranType(data){
-    console.log(data);
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
     this.entryData.particulars = data.defaultParticulars;
@@ -319,10 +318,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   setCurrency(data){
-    console.log(data);
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
-    console.log(this.entryData.jvAmt)
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
@@ -364,7 +361,6 @@ export class JvEntryComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
-      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -393,7 +389,6 @@ export class JvEntryComponent implements OnInit {
 
   onClickApprove(){
     this.accService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
-      console.log(data);
       this.entryData.approver     = data.employee.employeeName;
       this.entryData.approvedBy   = data.employee.userName;
       this.entryData.approverDate = this.ns.toDateTimeString(0);
@@ -437,7 +432,6 @@ export class JvEntryComponent implements OnInit {
 
   setLov(data){
     if(data.selector == 'refNo'){
-      console.log(data)
       this.entryData.refNoTranId = parseInt(data.data.tranId);
       this.entryData.refNoDate   = this.ns.toDateTimeString(data.data.tranDate);
       this.entryData.refNo       = data.data.tranClass +'-'+ data.data.tranNo;
