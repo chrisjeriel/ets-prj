@@ -9,9 +9,8 @@
         		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         		<div class="row justify-content-sm-center pt-1">
         			<div class="col-sm-4 d-flex">
-				        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">Production Date</label>
-		            <!-- <input type="date" class="form-control form-control-sm col-sm" value="2019-01-31"> -->
-                <div class="dp-cont col-sm">
+				        <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">Production Date</label>
+                <div class="dp-cont col-sm-6">
                   <datepicker [type]="'date'" [(value)]="eomDate"></datepicker>
                 </div>
 				    </div>
@@ -22,8 +21,8 @@
         		</div>
     			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">
     		      <div class="cust-btn-container">
-    		        <button type="button" class="cust cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''"><a>Generate</a></button>
-    		        <button type="button" class="cust cust-btn"><a>Data Check Report</a></button>
+    		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''" style="width: 100%;"><a>Generate</a></button>
+    		        <button type="button" class="cust-btn" style="width: 100%;"><a>Data Check Report</a></button>
     		      </div>
     		    </div>
         	</fieldset>

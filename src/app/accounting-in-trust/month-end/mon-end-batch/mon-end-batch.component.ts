@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService, WebsocketService } from '@app/_services';
+import { AccountingService, NotesService } from '@app/_services';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -16,7 +16,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   eomDate: string = '';
   extLog: string = '';
   webSocketEndPoint: string = 'http://localhost:8888/api/extractionLog';
-  topic: string = "/logs";
+  topic: string = "/prodLogs";
   stompClient: any;
 
   constructor(private router: Router, private as: AccountingService, private ns: NotesService) {
@@ -71,9 +71,9 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
     
     this.as.saveAcitMonthEndBatchProd(param).subscribe(data => {
       /*if(data['returnCode'] == -1) {
-        this.extLog = 'Initializing . . . \nClosing Valid Transaction . . . \nInward Production Processing . . . \nDistributing Inward Production . . . \nFunds Held Extraction . . . \nComputing Interest on Overdue Accounts \nFinished . . .'
+        
       } else {
-        this.extLog = 'Initializing . . . \n' + data['errorList'][0].errorMessage;
+        
       }*/
     });
   }
