@@ -112,7 +112,7 @@
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
 												<input type="text" [ngModel]="nrReasonCd" name="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');reasonCdChange($event)" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
-												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
+												<div class="text-search-ico" *ngIf="reasonFlag"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
 												<input type="text" [ngModel]="nrReasonDescription" name="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
