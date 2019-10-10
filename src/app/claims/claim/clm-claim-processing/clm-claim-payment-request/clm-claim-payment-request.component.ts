@@ -93,7 +93,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   onRowClick(ev) {
     this.selected = ev == null || (Object.entries(ev).length === 0 && ev.constructor === Object) ? null : ev;
     this.disableGenerateBtn = this.selected == null || this.selected.paytReqNo != null;
-    this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null || this.selected.paytReqStat == 'X';
+    this.disableCancelBtn = this.selected == null || this.selected.paytReqNo == null || this.selected.paytReqStat == 'X' || this.selected.paytReqStat == 'P';
     console.log(ev)
   }
 
@@ -230,4 +230,17 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       this.cs.saveClaimPaytReq(JSON.stringify(params2)).subscribe(a=>{
       })
   }
+
+  onClickGenerate(){
+    console.log(this.table.indvSelect.particulars)
+    console.log(this.table.indvSelect.particulars.length)
+    if(this.table.indvSelect.particulars == null || this.table.indvSelect.particulars.trim().length == 0){
+      this.diagIcon = 'error';
+      this.table.loadingFlag = false;
+      this.diag.open();
+    }else{
+      this.genMdl.openNoClose();
+    }
+  }
+  
 }
