@@ -364,57 +364,79 @@ export class QuotationProcessingComponent implements OnInit {
         //neco was here
         this.existingQuotationNo = [];
         this.exclude = [];
-        console.log(this.validationList)
-        for(let i of this.validationList) {
-            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && (i.project!= null && this.riskCd == i.project.riskId)) { // add year
-                this.existingQuotationNo.push(i.quotationNo);
-                this.riskIdList.push(i); //used as object container
-                this.exclude.push(i.quotationNo.split('-')[4]);
-            }
+
+        let params:any = {
+            statusArr: [1,2,3,4,5,6,7],
+            riskName: this.riskName,
+            cessionDesc: this.typeOfCession,
+            quotationNo: this.line + '%'
         }
 
-        for(let i of this.fetchedData) {
-            if(i.quotationNo == this.existingQuotationNo[0]) {
-                this.tempQuoteId = i.quoteId;
+        this.loading = true;
+        this.quotationService.newGetQuoProcessingData(params).subscribe(a=>{
+            //neco was overthrown by paul
+            this.loading = false;
+            if(a['quotationList']!= null && a['quotationList'].length != 0){
+                this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
+                this.riskIdList = a['quotationList']
+                this.tempQuoteId = a['quotationList'][0].quoteId;
             }
-        }
 
-        if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
-            $('#modIntModal > #modalBtn').trigger('click');
+            if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
+                $('#modIntModal > #modalBtn').trigger('click');
 
-        }else{
-            var qLine = this.line.toUpperCase();
+            }else{
+                var qLine = this.line.toUpperCase();
 
-            if (qLine === 'CAR' ||
-                qLine === 'EAR' ||
-                qLine === 'EEI' ||
-                qLine === 'CEC' ||
-                qLine === 'MBI' ||
-                qLine === 'BPV' ||
-                qLine === 'MLP' ||
-                qLine === 'DOS') {
-                this.modalService.dismissAll();
+                if (qLine === 'CAR' ||
+                    qLine === 'EAR' ||
+                    qLine === 'EEI' ||
+                    qLine === 'CEC' ||
+                    qLine === 'MBI' ||
+                    qLine === 'BPV' ||
+                    qLine === 'MLP' ||
+                    qLine === 'DOS') {
+                    this.modalService.dismissAll();
 
-                this.quotationService.rowData = [];
-                this.quotationService.toGenInfo = [];
-                this.quotationService.toGenInfo.push("add", qLine);
-                /*this.router.navigate(['/quotation']);*/
+                    this.quotationService.rowData = [];
+                    this.quotationService.toGenInfo = [];
+                    this.quotationService.toGenInfo.push("add", qLine);
+                    /*this.router.navigate(['/quotation']);*/
 
-                var addParams = {
-                    cessionId: this.typeOfCessionId,
-                    cessionDesc: this.typeOfCession,
-                    riskId: this.riskCd,
-                    intComp: false,
+                    var addParams = {
+                        cessionId: this.typeOfCessionId,
+                        cessionDesc: this.typeOfCession,
+                        riskId: this.riskCd,
+                        intComp: false,
+                    }
+
+                    this.quotationService.savingType = 'normal';
+
+                    setTimeout(() => {
+                        this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
+                    },100); 
                 }
-
-                this.quotationService.savingType = 'normal';
-
-                setTimeout(() => {
-                    this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
-                },100); 
+            //neco was overthrown until here
+            //neco's influence ends here
             }
-        //neco's influence ends here
-        }
+        })
+
+        // console.log(this.validationList)
+        // for(let i of this.validationList) {
+        //     if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && (i.project!= null && this.riskCd == i.project.riskId)) { // add year
+        //         this.existingQuotationNo.push(i.quotationNo);
+        //         this.riskIdList.push(i); //used as object container
+        //         this.exclude.push(i.quotationNo.split('-')[4]);
+        //     }
+        // }
+
+        // for(let i of this.fetchedData) {
+        //     if(i.quotationNo == this.existingQuotationNo[0]) {
+        //         this.tempQuoteId = i.quoteId;
+        //     }
+        // }
+
+        
     }
 
     onRowClick(event) {    

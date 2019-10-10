@@ -359,6 +359,7 @@ export class QuoAlopComponent implements OnInit {
 
     alopItem(){
       this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quotationInfo.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
+            this.table.markAsPristine();
             this.itemInfoData.tableData = [];
             var dataInfos = data.alopItem;
             for(var i=0; i< dataInfos.length;i++){
