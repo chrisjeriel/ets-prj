@@ -46,7 +46,90 @@
 </form>
 
 <app-mtn-company (selectedData)="setSelectedCompany($event)" ></app-mtn-company>
+<app-mtn-employee (selectedData)="setSelectedEmployee($event)" [companyId]="company?.companyId" ></app-mtn-employee>
 <app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null;"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
+
+<app-modal class="d-none" id="otherDetailMdl" #mdl>
+    <div header>Other Details</div>
+    <div body>
+        <fieldset class="scheduler-border" style="width: 800px">
+            <legend class="scheduler-border">Other Details</legend>
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Employee</label>
+                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherDetails?.employeeNo" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="otherDetails?.printableName" readonly>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Designation</label>
+                        <input name="designation" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.designation" (ngModelChange)="otherDetails.designation=$event;">
+                        <label class="form-control-sm col-sm-2">Supervisor</label>
+                        <input name="supervisorName" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.supervisorName" disabled>
+                         <div class="text-search-ico" style="margin-left: -12px ! important; font-size: 12px ! important"><a> <i class="fa fa-search" (click)="employeeLov.modal.openNoClose()"></i></a></div>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Birth Date</label>
+                        <div class="col-sm-4 dp-cont">
+                            <datepicker [type]="'date'" [value]="otherDetails?.birthDate" (valueChange)="otherDetails.birthDate=$event"></datepicker>
+                        </div>
+                        <label class="form-control-sm col-sm-2">Civil Status</label>
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="otherDetails?.civilStatus" (ngModelChange)="otherDetails.civilStatus=$event;"> 
+                                            <option value="S">Single</option>
+                                            <option value="M">Married</option>
+                                            <option value="W">Window/Widower</option>
+                                            <option value="LS">Legally Separated</option>
+                        </select>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                         <label class="form-control-sm col-sm-2">Present Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor [editorContent]="otherDetails?.presentAdd" (fetchContent)="otherDetails.presentAdd = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                         <label class="form-control-sm col-sm-2">Permanent Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor  [editorContent]="otherDetails?.permanentAdd" (fetchContent)="otherDetails.permanentAdd = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                  <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Tax Identification No.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.tin" (ngModelChange)="otherDetails.tin=$event;">
+                        <label class="form-control-sm col-sm-2">SSS No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.sssNo"  (ngModelChange)="otherDetails.sssNo=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">PhilHealth No.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.philhealthNo" (ngModelChange)="otherDetails.philhealthNo=$event;">
+                        <label class="form-control-sm col-sm-2">HDFM (Pagibig) No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.pagibigNo"  (ngModelChange)="otherDetails.pagibigNo=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;" >
+                        <label class="form-control-sm col-sm-2">Contact Nos.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactNos" (ngModelChange)="otherDetails.contactNos=$event;">
+                        <label class="form-control-sm col-sm-2">Email Address</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.email" (ngModelChange)="otherDetails.email=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important; margin-bottom: 1px ! important">
+                        <label class="form-control-sm col-sm-2">Contact Person In case of emergency</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactPerson" (ngModelChange)="otherDetails.contactPerson=$event;">
+                        <label class="form-control-sm col-sm-2">Emergency Contact No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.emergencyNo" (ngModelChange)="otherDetails.emergencyNo=$event;">
+                   </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();saveOtherDetails();"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
+
+
+
+

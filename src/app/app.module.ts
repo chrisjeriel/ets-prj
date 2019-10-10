@@ -459,6 +459,7 @@ import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user
 import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.component';
+import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.component';
 
 @NgModule({
     imports: [
@@ -924,6 +925,7 @@ import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.compo
         MtnBankAcctComponent,
         EmployeeComponent,
         MtnCompanyComponent,
+        MtnEmployeeComponent,
     ],
 
   	providers: [

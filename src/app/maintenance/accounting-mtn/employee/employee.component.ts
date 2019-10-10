@@ -6,7 +6,9 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnCompanyComponent } from '@app/maintenance/mtn-company/mtn-company.component';
+import { MtnEmployeeComponent } from '@app/maintenance/mtn-employee/mtn-employee.component';
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
 
@@ -21,17 +23,69 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(MtnCompanyComponent) companyLov: MtnCompanyComponent;
+   @ViewChild(MtnEmployeeComponent) employeeLov: MtnCompanyComponent;
   @ViewChild('myForm') form:any;
+  @ViewChild('mdl') modal : ModalComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
   
   dialogIcon:string = '';
   dialogMessage: string = '';
-  info:any ;
+  info:{
+      employeeNo: null,
+      lastName : null,
+      firstName : null,
+      middleName : null,
+      printableName : null,
+      gender : null,
+      hireDate : null,
+      terminationDate : null,
+      dept : null,
+      activeTag : 'Y',
+      designation : null,
+      supervisor: null,
+      supervisorName : null,
+      civilStatus : null,
+      birthDdate : null,
+      presentAdd : null,
+      permanentAdd : null,
+      tin : null,
+      sssNo : null,
+      philhealthNo : null,
+      pagibigNo : null,
+      contactNos : null,
+      email : null,
+      contactPerson : null,
+      emergencyNo : null,
+    };
 
+   otherDetails:{
+      employeeNo: null,
+      printableName : null,
+      birthDate : null,
+      designation : null,
+      supervisor: null,
+      supervisorName : null,
+      civilStatus : null,
+      birthDdate : null,
+      presentAdd : null,
+      permanentAdd : null,
+      tin : null,
+      sssNo : null,
+      philhealthNo : null,
+      pagibigNo : null,
+      contactNos : null,
+      email : null,
+      contactPerson : null,
+      emergencyNo : null,
+    };
+
+  oldRecord : any ={};
   company:any = {};
   boolPrint: boolean = true;
-  boolOtherDetails: boolean = true;
+  boolOtherDetails: boolean = false;
   cancelFlag:boolean;
+  inquiryFlag:boolean;
+  indexRow:any;
 
   passTable:any={
   	tableData:[],
@@ -140,6 +194,7 @@ export class EmployeeComponent implements OnInit {
   		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
+      this.boolOtherDetails = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
        $('#cust-table-container').addClass('ng-dirty');
@@ -147,6 +202,14 @@ export class EmployeeComponent implements OnInit {
   }
 
   onTableClick(data){
+    console.log(data);
+    for (var i = this.passTable.tableData.length - 1; i >= 0; i--) {
+            if(data == this.passTable.tableData[i]){
+                this.indexRow = i;
+                break;
+            }
+    }
+
     if (data === null){
        this.boolOtherDetails = true;
        this.passTable.disableGeneric = true;
@@ -222,6 +285,59 @@ export class EmployeeComponent implements OnInit {
       }, 0);
 
    }
+
+   onClickOtherDetails(){
+     this.modal.openNoClose();
+     this.otherDetails = this.passTable.tableData[this.indexRow];
+   }
+
+   setSelectedEmployee(data){
+     if(data === null){
+       this.otherDetails.supervisor = null;
+       this.otherDetails.supervisorName = null;
+     } else {
+       this.otherDetails.supervisor = data.employeeId;
+       this.otherDetails.supervisorName = data.printableName;
+     }
+   }
+
+   saveOtherDetails(){
+     this.passTable.tableData[this.indexRow].edited = true;
+     this.passTable.tableData[this.indexRow].designation = this.otherDetails.designation;
+     this.passTable.tableData[this.indexRow].birthDate = this.otherDetails.birthDate;
+     this.passTable.tableData[this.indexRow].supervisor = this.otherDetails.supervisor;
+     this.passTable.tableData[this.indexRow].supervisorName = this.otherDetails.supervisorName;
+     this.passTable.tableData[this.indexRow].civilStatus = this.otherDetails.civilStatus;
+     this.passTable.tableData[this.indexRow].presentAdd = this.otherDetails.presentAdd;
+     this.passTable.tableData[this.indexRow].permanentAdd = this.otherDetails.permanentAdd;
+     this.passTable.tableData[this.indexRow].tin = this.otherDetails.tin;
+     this.passTable.tableData[this.indexRow].sssNo = this.otherDetails.sssNo;
+     this.passTable.tableData[this.indexRow].philhealthNo = this.otherDetails.philhealthNo;
+     this.passTable.tableData[this.indexRow].pagibigNo = this.otherDetails.pagibigNo;
+     this.passTable.tableData[this.indexRow].contactNos = this.otherDetails.contactNos;
+     this.passTable.tableData[this.indexRow].email = this.otherDetails.email;
+     this.passTable.tableData[this.indexRow].contactPerson = this.otherDetails.contactPerson;
+     this.passTable.tableData[this.indexRow].emergencyNo = this.otherDetails.emergencyNo;
+
+   }
+
+   cancelOtherDetails(){
+     console.log(this.oldRecord.designation);
+   }
+
+   onChange(data){
+     console.log(data);
+   }
+
+
+   printPreview(data){
+
+   }
+
+   onClickSaveCancel(cancelFlag?){
+
+   }
+
 
 
 }
