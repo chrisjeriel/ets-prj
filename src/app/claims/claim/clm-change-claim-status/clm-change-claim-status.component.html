@@ -194,8 +194,9 @@
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly [ngModel]="claimDetails?.lossDate">
+                          <div class="col-sm-4" style="padding: 0px">
+                              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="claimDetails?.lossDate"></datepicker>
+                          </div>
                         <label class="form-control-sm col-sm-2">Currency</label>
                         <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails?.currencyCd">
                       </div>

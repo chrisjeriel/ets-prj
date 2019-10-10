@@ -244,6 +244,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
         if(data.claimsList.length !== 0){
           this.claimNoDataFound = false;
           this.clmListData.tableData = data.claimsList;
+
           this.clmListTable.refreshTable();
           if(this.claimNoIsType){
             this.selectedClaim = this.clmListData.tableData[0];
@@ -320,14 +321,15 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
            }*/
            for(var i of data.claimList){
              for(var j of i.clmAdjusterList){
-               if(i.adjName === undefined){
+               if((i.adjName === undefined || i.adjName === null) && j.adjName!=null){
                  i.adjName = j.adjName;
-               }else{
+               }else if (j.adjName!=null){
                  i.adjName = i.adjName + '/' + j.adjName;
                }
              }
              this.queryData.tableData.push(i);
            }
+           this.queryData.tableData.forEach(a=>a.lossDate = this.ns.toDateTimeString(a.lossDate));
            this.queryTable.refreshTable();
          }else{
            this.queryData.tableData = [];
