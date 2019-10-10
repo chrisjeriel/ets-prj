@@ -19,6 +19,7 @@ export class JvEntryServiceComponent implements OnInit {
   @Input() data: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() emitData = new EventEmitter<any>();
+  @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
@@ -172,6 +173,7 @@ export class JvEntryServiceComponent implements OnInit {
           this.approveBut   = true;
         }
         this.check(this.entryData)
+        this.disableTab.emit(false);
       }
     });
   }

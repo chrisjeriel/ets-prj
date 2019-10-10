@@ -6,11 +6,11 @@
 					<div>JV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-entry-service [data]="jvType" (onChange)="tabController($event)" (emitData)="jvInfo($event)"></app-jv-entry-service>
+					<app-jv-entry-service [data]="jvType" (onChange)="tabController($event)" (emitData)="jvInfo($event)" (disableTab)= "disableTab = $event"></app-jv-entry-service>
 				</ng-template>
 			</ngb-tab>
 
-			<ngb-tab>
+			<ngb-tab [disabled]="disableTab">
 				<ng-template ngbTabTitle>
 					<div>JV Preview</div>
 				</ng-template>
@@ -19,7 +19,7 @@
 					<!-- <app-jv-preview-service [jvType]="jvType" [jvData]="jvData"></app-jv-preview-service> -->
 				</ng-template>
 			</ngb-tab>
-			<ngb-tab>
+			<ngb-tab [disabled]="disableTab">
 				<ng-template ngbTabTitle>
 					<div>Attachments</div>
 				</ng-template>
