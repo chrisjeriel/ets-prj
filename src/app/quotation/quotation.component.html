@@ -136,14 +136,14 @@
 			</ng-template>
 
 		</ngb-tab>
-		<!-- <ngb-tab id="NotesReminders">
+		<ngb-tab id="NotesReminders" *ngIf="!inquiryFlag">
 				<ng-template ngbTabTitle>
 					<div>Notes & Reminders</div>
 				</ng-template>
     			<ng-template ngbTabContent>
-    				<app-wf-form-common [quotationInfo]="quoteInfo"></app-wf-form-common>
+    				<app-wf-form-common [moduleSource]="'Quotation'" [quotationInfo]="quoteInfo"></app-wf-form-common>
     			</ng-template>
-  		</ngb-tab> -->
+  		</ngb-tab>
 		<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>

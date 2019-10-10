@@ -45,7 +45,7 @@
 		margin-right: 1px;
 		text-decoration: none;
 		border: none;
-		background-color: white;
+		background-color: transparent;
 		padding: 0px 2px;
 	}
 
@@ -77,6 +77,16 @@
 		background-color: #4080bf;
 		padding: 2px 5px; 
 		color: white
+	}
+
+	.span-div-flag {
+		width: auto; 
+		text-align: center; 
+		padding: 2px 0px; 
+		transform: scaleX(-1) rotate(15deg);
+		font-size: 22px;
+		-webkit-text-stroke-width: .67px;
+    	-webkit-text-stroke-color: gray;
 	}
 
 	.selectdiv:after {
