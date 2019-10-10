@@ -19,6 +19,7 @@ export class JvEntryServiceComponent implements OnInit {
   @Input() data: any = {};
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() emitData = new EventEmitter<any>();
+  @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
@@ -78,6 +79,14 @@ export class JvEntryServiceComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   from: any = '';
+  saveJVBut: boolean = false;
+  disableBut: boolean = false;
+  cancelJVBut: boolean = false;
+  approveBut: boolean = false;
+  printBut: boolean = false;
+  UploadBut: boolean = false;
+  allocBut: boolean = false;
+  dcBut: boolean = false;
 
   constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute) { }
 
@@ -93,6 +102,12 @@ export class JvEntryServiceComponent implements OnInit {
         this.from = 'jvList';
       }
     });
+    this.cancelJVBut = true;
+    this.approveBut  = true;
+    this.printBut    = true;
+    this.UploadBut   = true;
+    this.allocBut    = true;
+    this.dcBut       = true;
     this.retrieveJVEntry();
   }
 
@@ -133,10 +148,32 @@ export class JvEntryServiceComponent implements OnInit {
           this.jvDatas.tranTypeCd     = this.entryData.tranTypeCd;
         }
 
+        this.cancelJVBut = false;
+        this.UploadBut   = false;
+        this.allocBut    = false;
+        this.dcBut       = false;
+
+        if(this.entryData.jvStatus == 'A'){
+          this.cancelJVBut  = true;
+          this.approvedStat = true;
+          this.disableBut   = true;
+          this.printBut     = false;
+        }
+
+        if(this.entryData.jvStatus == 'F'){
+          this.approvedStat = true;
+          this.disableBut   = true;
+          this.approveBut   = false;
+          this.printBut     = false;
+        }
+        
         if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P'){
           this.approvedStat = true;
+          this.disableBut   = true;
+          this.approveBut   = true;
         }
         this.check(this.entryData)
+        this.disableTab.emit(false);
       }
     });
   }
@@ -204,7 +241,14 @@ export class JvEntryServiceComponent implements OnInit {
         this.entryData.createDate = '';
         this.entryData.updateUser = '';
         this.entryData.updateDate = '';
-           
+        
+        this.cancelJVBut  = true;
+        this.approveBut   = true;
+        this.printBut     = true;
+        this.UploadBut    = true;
+        this.allocBut     = true;
+        this.dcBut        = true;
+        this.approvedStat = false;
         this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
         this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');

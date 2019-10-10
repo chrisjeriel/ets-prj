@@ -201,10 +201,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.onChange.emit({ type: this.arInfo.tranTypeCd });
     this.sub = this.route.params.subscribe(
        data=>{
-         if(data.from === 'CMDM'){
+         if(data.from === 'CancelledTran'){
            tranId = data.tranId;
            arNo = '';
            this.isCancelled = true;
+           this.passData.addFlag = false;
+           this.passData.genericBtn = undefined;
            this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
            this.paytDtlTbl.refreshTable();
          }else{

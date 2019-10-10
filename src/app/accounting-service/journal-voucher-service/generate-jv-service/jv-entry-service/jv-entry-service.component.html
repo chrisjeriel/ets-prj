@@ -29,19 +29,19 @@
                     </div>
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" name="entryData.refNo" [readonly]="approvedStat" [(ngModel)]="entryData.refNo">
-                    <div style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
+                    <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
                 </div>
                 <div class="input-group" style="margin-bottom: -13px !important">
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                         <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" appRequired name="entryData.tranTypeName" [readonly]="approvedStat" [(ngModel)]="entryData.tranTypeName">
-                         <div style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
+                         <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1" >Ref No Date</label>
                     <div class="col-sm dp-cont" style="margin-left: 6px !important;margin-right: 11px !important">
-                    <datepicker [type]="'date'" [showIcon]="true"></datepicker>
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.refnoDate?.split('T')[0]" (valueChange)="entryData.refnoDate = $event" name="entryData.refnoDate" [disabled]="approvedStat"></datepicker>
                     </div>
                 </div>
                 <div class="input-group" style="margin-bottom: -15px !important;">
@@ -76,7 +76,7 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired name="entryData.preparedName" [readonly]="approvedStat" [(ngModel)]="entryData.preparedName">
-                            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
+                            <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
@@ -105,25 +105,31 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Prepared</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <div class="col-sm-5 dp-cont">
+                            <div class="col-sm-9" style="padding: 0px">
+                                <datepicker [showSeconds]="true" [required]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')"></datepicker>
+                            </div>
+                            <!-- <div class="col-sm-5 dp-cont">
                                 <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
                             </div>
 
                             <div class="col-sm-4 dp-cont">
                                 <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"  [disabled]="approvedStat"></datepicker>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="col-sm-2"></div>
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Approved</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <div class="col-sm dp-cont">
+                            <div class="col-sm" style="padding: 0px">
+                                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="entryData.approvedDate"></datepicker>
+                            </div>
+                            <!-- <div class="col-sm dp-cont">
                                 <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')" disabled name="entryData.approvedDate1"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
                                 <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" disabled name="entryData.approvedDate2"></datepicker>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -133,13 +139,13 @@
                     <div class="col-md-12 text-center">
                         <div class="cust-btn-container" style="margin-top: 10px;">
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="newJV()"><a>New JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" (click)="onClickSave()"><a>Save</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" (click)="onClickCancelJV()"><a>Cancel JV</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat" (click)="onClickApprove()"><a>Approve</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Print</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat "><a>Upload Acct. Ent</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Alloc. Trans.</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approvedStat" [class.cust-btn-disabled]="approvedStat"><a>Debit/Credit Memo</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="saveJVBut || disableBut" [class.cust-btn-disabled]="saveJVBut || disableBut" (click)="onClickSave()"><a>Save</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut " (click)="onClickCancelJV()"><a>Cancel JV</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut"><a>Print</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut "><a>Upload Acct. Ent</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut"><a>Alloc. Trans.</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut"><a>Debit/Credit Memo</a></button>
                         </div>
                     </div>
                 </div>

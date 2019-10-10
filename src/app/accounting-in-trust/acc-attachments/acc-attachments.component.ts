@@ -112,6 +112,14 @@ export class AccAttachmentsComponent implements OnInit {
               this.passData.checkFlag = false;
               this.passData.magnifyingGlass = [];
             }
+          }else if(this.record.from.toLowerCase() == 'jv'){
+            if(this.record.statusType.toUpperCase() != 'N'){
+              this.passData.uneditable = [true, true, true];
+              this.passData.addFlag = false;
+              this.passData.deleteFlag =  false;
+              this.passData.checkFlag = false;
+              this.passData.magnifyingGlass = [];
+            }
           }
       });
   }

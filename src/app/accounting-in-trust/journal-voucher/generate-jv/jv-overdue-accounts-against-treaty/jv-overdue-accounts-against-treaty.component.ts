@@ -19,6 +19,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail: any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -165,6 +166,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];
       this.passData.disableAdd = true;
+      this.passDataOffsetting.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
       this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true];
       this.passDataOffsetting.disableAdd = true;
     }
@@ -220,11 +222,16 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.disableAdd = false;
       this.passDataOffsetting.nData.quarterNo = this.quarterNo;
       this.passDataOffsetting.tableData = data.acctOffset;
-      this.trytytrans.refreshTable();
     }else{
       this.passDataOffsetting.disableAdd = true;
       this.passDataOffsetting.tableData = [];
     }
+    this.trytytrans.refreshTable();
+    this.infoData.emit(data)
+  }
+
+  inwClick(data){
+    this.infoData.emit(data)
   }
 
   quarterEndModal(){
@@ -247,7 +254,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   updateTreatyBal(data){
-    console.log(this.passData.tableData)
     var deletedFlag = false;
     var table = ''
 
@@ -283,7 +289,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data)
     this.quarterTable.indvSelect.acctOffset = this.quarterTable.indvSelect.acctOffset.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.quarterTable.indvSelect.acctOffset.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));
@@ -310,10 +315,10 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].balance = data.data[i].prevBalance;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].paytAmt = data.data[i].prevBalance;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].localAmt = data.data[i].prevBalance * this.jvDetail.currRate;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].premAmt = data.data[i].prevPremAmt;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riComm = data.data[i].prevRiComm;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riCommVat = data.data[i].prevRiCommVat;
-      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].prevCharges;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].premAmt = data.data[i].balPremDue;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riComm = data.data[i].balRiComm;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].riCommVat = data.data[i].balRiCommVat;
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].balChargesDue;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].prevBalance;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].remainingBal = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
       
@@ -463,7 +468,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].quarterNo  = this.passData.tableData[i].quarterNo;
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].createDate =  this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].createDate);
           this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].acctOffset[j].updateDate);
-          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].netDue     = this.passData.tableData[i].acctOffset[j].remainingBal;
+          this.jvDetails.saveInwPolOffset[this.jvDetails.saveInwPolOffset.length - 1].netDue     = this.passData.tableData[i].acctOffset[j].premAmt - this.passData.tableData[i].acctOffset[j].riComm - this.passData.tableData[i].acctOffset[j].riCommVat + this.passData.tableData[i].acctOffset[j].charges;
         }
 
         if(this.passData.tableData[i].acctOffset[j].deleted){
@@ -499,9 +504,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   cancel(){
-   //this.cancelBtn.clickCancel();
-   this.prepareData();
-   console.log(this.jvDetails);
+   this.cancelBtn.clickCancel();
   }
 
   getMtnRate(){

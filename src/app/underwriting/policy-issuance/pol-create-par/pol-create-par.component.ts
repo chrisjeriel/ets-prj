@@ -110,11 +110,17 @@ export class PolCreatePARComponent implements OnInit {
 
   getQuoteListing(param?) {
     this.lovTable.loadingFlag = true;
+/*<<<<<<< HEAD*/
     let params = [{ key: 'statusArr', search: [3,5] }]
     if(param != undefined){
       params = params.concat(param);
     }
     this.sub = this.quoteService.getQuoProcessingData(params).subscribe(data => {
+/*=======
+    
+    this.sub = this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
+      console.log(data)
+>>>>>>> 1990f3a3cedd9699648b1e0786568085c682f7e7*/
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];

@@ -18,6 +18,8 @@ export class JvPreniumReserveComponent implements OnInit {
 	@Input() jvDetail:any;
 	@Input() cedingParams:any;
 	@Output() emitData = new EventEmitter<any>();
+	@Output() infoData = new EventEmitter<any>();
+
 	@ViewChild('modal') modal: ModalComponent; 
 	@ViewChild(MtnCedingCompanyTreatyComponent) cedingCoLov: MtnCedingCompanyTreatyComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -175,7 +177,6 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	quarterEndModal(data){
-		console.log(data)
 		if(data.key === 'quarterEnding'){
 			$('#quarterEnd #modalBtn').trigger('click');
 			this.dataIndex = data.index;
@@ -195,7 +196,6 @@ export class JvPreniumReserveComponent implements OnInit {
   	}
 
   	setCedingcompany(data){
-  		console.log(data)
   		this.premResData.cedingName = data.payeeName;
   		this.premResData.cedingId	= data.payeeCd;
   		this.passData.disableAdd = false;
@@ -227,7 +227,7 @@ export class JvPreniumReserveComponent implements OnInit {
     }
 
     setQuarter(data){
-    	console.log(data)
+    	
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
     	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);
@@ -263,5 +263,9 @@ export class JvPreniumReserveComponent implements OnInit {
     	this.maintenanceService.getMtnParameters('N','UPR_WHTAX_RT_ON_INT').subscribe((data:any) =>{
     	  this.whtaxRate = parseInt(data.parameters[0].paramValueN);
     	});
+    }
+
+    onRowClick(data){
+    	this.infoData.emit(data)
     }
 }
