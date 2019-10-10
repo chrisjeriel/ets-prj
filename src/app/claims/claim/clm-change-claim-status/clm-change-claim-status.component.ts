@@ -379,6 +379,7 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   }
 
   setPolicy(){
+    this.selectedPolicy = this.polListTable.indvSelect;
     this.searchLoading = true;
     this.polNoIsType = false;
     this.claimNoIsIncomplete = false;

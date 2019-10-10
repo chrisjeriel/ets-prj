@@ -264,7 +264,7 @@
 <app-modal hidden [btnTitle]="'List Of Values'" #polListMdl>
     <div header>List Of Values</div>
     <div body>
-       <app-cust-non-datatable [passData]="polListData" (rowClick)="selectedPolicy=$event" #polListTable></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="polListData" #polListTable></app-cust-non-datatable>
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">
