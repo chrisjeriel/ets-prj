@@ -19,7 +19,7 @@ export class AltParListingComponent implements OnInit {
     filters: any[] = [];
     line: string = "";
     searchParams: any = {
-        statusArr:['1','2','P','R'],
+        statusArr:['1'],
         'paginationRequest.count':20,
         'paginationRequest.position':1,   
         altNo:1        

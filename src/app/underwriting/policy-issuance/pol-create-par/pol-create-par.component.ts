@@ -6,15 +6,13 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
 
-import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
-
 @Component({
   selector: 'app-pol-create-par',
   templateUrl: './pol-create-par.component.html',
   styleUrls: ['./pol-create-par.component.css']
 })
 export class PolCreatePARComponent implements OnInit {
-  @ViewChild('polLov') lovTable: LoadingTableComponent;
+  @ViewChild('polLov') lovTable: CustNonDatatableComponent;
   @ViewChild('polOptionLov') lovOptTable: CustNonDatatableComponent;
 
   private createParInfo: CreateParInfo
@@ -35,7 +33,6 @@ export class PolCreatePARComponent implements OnInit {
   passDataLOV: any = {
     tableData: [],
     tHeader:["Quotation No", "Ceding Company", "Insured", "Risk"],  
-    sortKeys:['QUOTATION_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
     dataTypes: ["text","text","text","text"],
     pageLength: 10,
     resizable: [false,false,false,false],
@@ -50,12 +47,6 @@ export class PolCreatePARComponent implements OnInit {
     {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
     pageID: 'createPolLov'
   }
-
-  searchParams: any = {
-        statusArr:['3','5'],
-        'paginationRequest.count':10,
-        'paginationRequest.position':1,   
-    };
 
   passDataOptionLOV: any = {
     tableData: [],
@@ -118,14 +109,12 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   getQuoteListing(param?) {
-    if(this.lovTable != undefined)
-      this.lovTable.overlayLoader = true;
+    this.lovTable.loadingFlag = true;
+    let params = [{ key: 'statusArr', search: [3,5] }]
     if(param != undefined){
-      this.searchParams.quotationNo = param[0].search;
-    }else{
-      delete this.searchParams.quotationNo;
+      params = params.concat(param);
     }
-    this.sub = this.quoteService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
+    this.sub = this.quoteService.getQuoProcessingData(params).subscribe(data => {
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
@@ -134,11 +123,10 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.quotationList = this.quotationList.map(qu => { qu.riskName = qu.project != null ? qu.project.riskName : null; return qu; });
-      //this.passDataLOV.tableData = this.quotationList;
-      this.passDataLOV.count = data['length'];
-      this.lovTable.placeData(this.quotationList);
-      //this.lovTable.refreshTable();
+      this.quotationList = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' || qu.status.toUpperCase() === 'CONCLUDED (THRU ANOTHER CEDANT)')
+                                             .map(qu => { qu.riskName = qu.project != null ?  qu.project.riskName : ''; return qu; });
+      this.passDataLOV.tableData = this.quotationList;
+      this.lovTable.refreshTable();
 
       if(param !== undefined) {
         if(this.quotationList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
@@ -616,18 +604,13 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   searchQuery(searchParams){
+    this.filtSearch = searchParams;
+    this.passDataLOV.tableData = [];
     if(this.qu) {
-      for(let key of Object.keys(searchParams)){
-          this.searchParams[key] = searchParams[key]
-        }
-      this.getQuoteListing();
+      this.getQuoteListing(this.filtSearch);
     } else if(this.hc) {
-      this.filtSearch = searchParams;
-      this.passDataLOV.tableData = [];
       this.getHoldCovListing(this.filtSearch);
     } else {
-      this.filtSearch = searchParams;
-      this.passDataLOV.tableData = [];
       this.getPolOCListing(this.filtSearch);
     }    
   }

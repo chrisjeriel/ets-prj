@@ -16,7 +16,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
   styleUrls: ['./clm-claim-processing.component.css']
 })
 export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
-  @ViewChild('mainTable') table : CustNonDatatableComponent;
+  @ViewChild('mainTable') table : LoadingTableComponent;
   @ViewChild('polListTbl') polListTbl : CustNonDatatableComponent;
   @ViewChild('add') addModal : ModalComponent;
   @ViewChild('polList') polListModal : ModalComponent;

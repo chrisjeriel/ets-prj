@@ -24,7 +24,7 @@ export class ClaimStatusComponent implements OnInit {
     opts: [{
             selector: 'openTag',
             prev: ['Open','Close'],
-            vals: ['Y','N'],
+            vals: ['O','C'],
         }],
     nData: {
       statusCode: null,

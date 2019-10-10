@@ -116,6 +116,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
   	searchParams: any = {
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
+        fromInq:'Y'
     };
   	selected: any = {
   		claimNo: '',
