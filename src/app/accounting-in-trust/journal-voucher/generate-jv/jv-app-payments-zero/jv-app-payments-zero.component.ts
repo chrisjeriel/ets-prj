@@ -87,6 +87,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag =  false;
+      this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 

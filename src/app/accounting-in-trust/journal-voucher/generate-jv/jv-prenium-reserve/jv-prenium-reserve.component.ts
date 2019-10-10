@@ -175,7 +175,6 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	quarterEndModal(data){
-		console.log(data)
 		if(data.key === 'quarterEnding'){
 			$('#quarterEnd #modalBtn').trigger('click');
 			this.dataIndex = data.index;
@@ -195,7 +194,6 @@ export class JvPreniumReserveComponent implements OnInit {
   	}
 
   	setCedingcompany(data){
-  		console.log(data)
   		this.premResData.cedingName = data.payeeName;
   		this.premResData.cedingId	= data.payeeCd;
   		this.passData.disableAdd = false;
@@ -227,7 +225,7 @@ export class JvPreniumReserveComponent implements OnInit {
     }
 
     setQuarter(data){
-    	console.log(data)
+    	
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
     	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);

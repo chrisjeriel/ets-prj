@@ -89,10 +89,21 @@ export class JvInvestmentPlacementComponent implements OnInit {
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
+  disable = true;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
+    if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true, true, false];
+      this.disable = true;
+    }
     this.getBank();
   }
 

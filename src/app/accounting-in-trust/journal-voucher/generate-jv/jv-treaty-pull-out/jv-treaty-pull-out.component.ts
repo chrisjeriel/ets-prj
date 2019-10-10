@@ -146,6 +146,17 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.readOnly = false;
     }else {
       this.readOnly = true;
+      this.readOnly = true;
+      this.passData.addFlag = false;
+      this.passData.checkFlag = false;
+      this.invesmentData.checkFlag = false;
+      this.passData.deleteFlag = false;
+      this.invesmentData.addFlag = false;
+      this.invesmentData.deleteFlag = false;
+      this.passData.uneditable = [true,true,true,true,true];
+      this.passData.disableAdd = true;
+      this.invesmentData.uneditable = [true, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],    
+      this.invesmentData.disableAdd = true;
     }
   	this.retrieveInvPullOut();
   }

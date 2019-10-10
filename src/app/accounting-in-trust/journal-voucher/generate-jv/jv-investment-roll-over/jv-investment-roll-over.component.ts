@@ -97,7 +97,18 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   ngOnInit() {
   	this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Investment Source", span: 16 }, { header: "New Investment", span: 16 });
-  	this.getInvRollOut();
+  	if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.disable = true;
+    }
+
+    this.getInvRollOut();
     this.getWTaxRate();
   }
 

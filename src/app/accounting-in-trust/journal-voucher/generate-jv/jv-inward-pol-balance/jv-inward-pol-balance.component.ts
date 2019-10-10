@@ -192,6 +192,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.passData.deleteFlag = false;
        this.passData.checkFlag =  false;
        this.passData.btnDisabled = true;
+       this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
@@ -270,19 +271,19 @@ export class JvInwardPolBalanceComponent implements OnInit {
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
-      this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
-      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data.data[i].soaNo;
-      this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.jvDetail.tranId;
-      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data.data[i].policyNo;
-      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
-      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
-      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
-      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG     = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited     = true;
+      this.passData.tableData[this.passData.tableData.length - 1].itemNo     = null;
+      this.passData.tableData[this.passData.tableData.length - 1].soaNo      = data.data[i].soaNo;
+      this.passData.tableData[this.passData.tableData.length - 1].policyId   = data.data[i].policyId;
+      this.passData.tableData[this.passData.tableData.length - 1].tranId     = this.jvDetail.tranId;
+      this.passData.tableData[this.passData.tableData.length - 1].policyNo   = data.data[i].policyNo;
+      this.passData.tableData[this.passData.tableData.length - 1].coRefNo    = data.data[i].coRefNo;
+      this.passData.tableData[this.passData.tableData.length - 1].instNo     = data.data[i].instNo;
+      this.passData.tableData[this.passData.tableData.length - 1].effDate    = data.data[i].effDate;
+      this.passData.tableData[this.passData.tableData.length - 1].dueDate    = data.data[i].dueDate;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd         = data.data[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currRate       = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = data.data[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = data.data[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = data.data[i].prevRiCommVat;

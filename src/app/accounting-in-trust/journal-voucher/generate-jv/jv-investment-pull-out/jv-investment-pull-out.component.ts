@@ -96,11 +96,22 @@ export class JvInvestmentPullOutComponent implements OnInit {
   dialogMessage : any;
   cancelFlag: boolean = false;
   sub: any;
+  disable: boolean = true;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
     //this.getInvPullout();
+    if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
+      this.disable = true;
+    }
     this.getBank();
     setTimeout(() => {this.getInvPullout()},0);
   }

@@ -165,6 +165,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];
       this.passData.disableAdd = true;
+      this.passDataOffsetting.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
       this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true];
       this.passDataOffsetting.disableAdd = true;
     }

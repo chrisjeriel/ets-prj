@@ -183,6 +183,7 @@ export class JvEntryComponent implements OnInit {
         this.dcBut       = false;
 
         if(this.entryData.jvStatus == 'A'){
+          this.cancelJVBut  = true;
           this.approvedStat = true;
           this.disableBut   = true;
           this.printBut     = false;

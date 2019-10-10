@@ -23,8 +23,8 @@
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-          <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+          <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="cancel();"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" [disabled]="disable" [class.cust-btn-disabled]="disable" (click)="onClickSave();"><a>Save</a></button>
         </div>
       </div>
     </div>
