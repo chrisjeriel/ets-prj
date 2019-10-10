@@ -276,6 +276,12 @@ export class PolCreateAlterationPARComponent implements OnInit {
   }
 
   showWarningMdl() {
+    this.searchParams = {
+        statusArr:['2'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        altNo:0        
+    }
     $('#altWarningModal > #modalBtn').trigger('click');
   }
 
