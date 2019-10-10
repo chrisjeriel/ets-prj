@@ -106,7 +106,7 @@
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
 												<button class="cust col-sm" (click)="parameter();">Search</button>
-												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
