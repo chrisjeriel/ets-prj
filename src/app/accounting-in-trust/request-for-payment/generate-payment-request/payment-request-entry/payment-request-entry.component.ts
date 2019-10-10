@@ -121,15 +121,14 @@ export class PaymentRequestEntryComponent implements OnInit {
   getAcitPaytReq(){
     this.loadingFunc(true);
     var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS'), 
-                          this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId),this.mtnService.getMtnParameters('N','MAX_TRANS_PARTICULARS'))
-                         .pipe(map(([pr,pn,stat,prq,par]) => { return { pr,pn,stat,prq,par }; }));
+                          this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
+                         .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
       var recPrq = data['prq']['acitPrqTrans'];
-      var partLimit = Number(data['par']['parameters'].filter(e => e.paramValueN != null).map(e => e.paramValueN));
       var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
 
       console.log(totalReqAmts);
@@ -178,13 +177,6 @@ export class PaymentRequestEntryComponent implements OnInit {
           this.success.open();
           this.fromSave = false;
         }
-
-        // console.log(this.saveAcitPaytReq.particulars);
-        // var separator = [':',','];
-        // var parArr = this.saveAcitPaytReq.particulars.split(new RegExp(separator.join('|'),'g'));
-        // var defaultPar = parArr[0] + ' : ';
-        // console.log(partLimit);
-        // this.saveAcitPaytReq.particulars = defaultPar + parArr.filter((e,i) => i != 0 && i <= partLimit).join(',');
       }else{
         this.reqDateDate = this.ns.toDateTimeString(0).split('T')[0];
         this.reqDateTime = this.ns.toDateTimeString(0).split('T')[1];

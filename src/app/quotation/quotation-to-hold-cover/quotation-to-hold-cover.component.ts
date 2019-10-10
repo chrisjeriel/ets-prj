@@ -135,7 +135,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     			this.passDataQuoteLOV.filters[0].enabled =true;
   				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);
+  				console.log('entered if');
   			}else{
+  				console.log('entered else');
   				this.getQuoteList();
   			}
   		});
@@ -156,10 +158,19 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			//console.log(data);
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
+/*<<<<<<< HEAD
   			quoList = quoList.map(i => {i.riskName = i.project!=null ? i.project.riskName : null; return i;});
   			this.passDataQuoteLOV.count = data['quo']['length'];
   			this.table.placeData(quoList);
 			//this.table.refreshTable();
+=======*/
+  			quoList = data['quo']['quotationList'].filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER')
+  					  .map(i => { i.riskName = (i.riskName == null || i.riskName == undefined)?'':i.riskName; return i;});
+  			console.log(quoList);
+  			this.passDataQuoteLOV.tableData = quoList;
+  			console.log(this.passDataOptionsLOV.tableData);
+			this.table.refreshTable();
+/*>>>>>>> f62aa0e0e32c1dbcd1a4f85d054353c21f70a58c*/
 			
 				if(quoList.length == 1){
 					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
