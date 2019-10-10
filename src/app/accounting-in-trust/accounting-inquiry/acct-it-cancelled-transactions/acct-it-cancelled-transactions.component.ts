@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-
 import { AccountingService } from '../../../_services/accounting.service';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
 @Component({
   selector: 'app-acct-it-cancelled-transactions',
@@ -12,11 +12,15 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AcctItCancelledTransactionsComponent implements OnInit {
 
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   cancelledTransactionsData: any = {
-  	tableData: this.accountingService.getCancelledTransactions(),
-  	tHeader: ['Tran Type', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Cancelled By', 'Cancelled Date', 'Reason', 'Status'],
-  	dataTypes: ['text', 'text', 'date', 'text', 'text', 'text', 'date', 'text', 'text'],
-  	filters: [
+  	tableData: [],
+  	tHeader: ['Tran Class', 'Ref. No.', 'Tran Date', 'Tran Type','Payee/Payor', 'Particulars', 'Cancelled By', 'Cancelled Date', 'Reason', 'Amount'],
+  	keys: ['tranClass','refNo','tranDate','tranTypeDesc','payee','particulars','cancelledBy','cancelledDate','reason','amount'],
+    dataTypes: ['text', 'text', 'date','text', 'text', 'text', 'text', 'date', 'text', 'text'],
+  	widths:[63,67,115,245,90,152,80,115,100,100],
+    uneditable:[true,true,true,true,true,true,true,true,true,true],
+    filters: [
   		{
   		    key: 'tranType',
   		    title:'Tran. Type',
@@ -63,45 +67,80 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   		    dataType: 'text'
   		},
   	],
-    colSize: ['30px', '50px', '40px', '', '60px', '', '40px', '', '40px'],
-  	total: [null,null,null,null,'Total',null,null,null,null],
   	pageLength: 20,
   	pagination: true,
   	pageStatus: true,
+    paginateFlag:true,  
+    infoFlag:true
   }
 
-  tranType: string = '';
+  params :any ={
+    tranId:'',
+    tranclass:'',
+    cancelFrom:'',
+    cancelTo:''
+  }
+
+  tranClass: string = '';
+  tranId:any;
+  viewTran: boolean = true;
 
   constructor(private titleService: Title, private accountingService: AccountingService, private route: Router) { }
 
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
+    //this.retrieveCancelledTrans();
+  }
+
+  retrieveCancelledTrans(){
+    console.log(this.params)
+    this.accountingService.getAcitCancelledTran(this.params.tranId,this.params.tranclass,this.params.cancelFrom,this.params.cancelTo).subscribe((data:any) => {
+      if(data.cancelledTran.length !== 0){
+        this.cancelledTransactionsData.tableData = [];
+        for (var i = 0; i < data.cancelledTran.length; i++) {
+          this.cancelledTransactionsData.tableData.push(data.cancelledTran[i]);
+        }
+      }
+      this.table.refreshTable();
+    });
   }
 
   onRowClick(data){
-    this.tranType = data.tranType;
-  }
-
-  onRowDblClick(event){
-     if(this.tranType == 'AR'){
-      this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'CV'){
-      this.route.navigate(['generate-cv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'JV'){
-      this.route.navigate(['generate-jv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    console.log(data)
+    if(data !== null){
+      this.viewTran = false;
+      this.tranClass = data.tranClass;
+      this.tranId = data.tranId;
     }else{
-      //do something
+      this.viewTran = true;
     }
   }
 
+  onClickSearch(){
+    console.log(this.params);
+    this.retrieveCancelledTrans();
+  }
+
+  /*onRowDblClick(event){
+     if(this.tranClass == 'AR'){
+      this.route.navigate(['accounting-in-trust',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId,from:'CMDM'}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'CV'){
+      this.route.navigate(['generate-cv',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'JV'){
+      this.route.navigate(['generate-jv',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId}],{ skipLocationChange: true });
+    }else{
+      //do something
+    }
+  }*/
+
   viewTranDetails(){
-    if(this.tranType == 'AR'){
-      this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'CV'){
-      this.route.navigate(['generate-cv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'JV'){
-      this.route.navigate(['generate-jv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
+    if(this.tranClass == 'AR'){
+      this.route.navigate(['accounting-in-trust',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId,from:'CMDM'}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'CV'){
+      this.route.navigate(['generate-cv',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'JV'){
+      this.route.navigate(['generate-jv',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId}],{ skipLocationChange: true });
     }else{
       //do something
     }

@@ -2724,4 +2724,41 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndBatchOS',params,header);
     }
+
+
+    getAcitCancelledTran(tranId?,tranclass?,cancelFrom?,cancelTo?){
+    	const params = new HttpParams()
+    		.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+    		.set('tranClass', (tranclass == null || tranclass == undefined ? '' : tranclass))
+    		.set('cancelFrom', (cancelFrom == null || cancelFrom == undefined ? '' : cancelFrom))
+    		.set('cancelTo', (cancelTo == null || cancelTo == undefined ? '' : cancelTo));
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveCancelledTrans',{params});	
+    }
+
+    cancelOr(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/cancelOr',params,header);
+    }
+
+    getAcseOrServFee(tranId?,billId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('billId', (billId == null || billId == undefined ? '' : billId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseOrServFee',{params});	
+	}
+
+	saveAcseOrServFee(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
+    }
+
 }

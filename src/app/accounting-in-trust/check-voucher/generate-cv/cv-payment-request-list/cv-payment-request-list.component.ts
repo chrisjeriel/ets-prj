@@ -217,6 +217,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     //   this.limitContent.push(e);
     // });
     this.passDataLov.selector = 'paytReqList';
+    this.passDataLov.from = 'acit';
     this.passDataLov.hide = this.passDataPaytReqList.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.reqId});
     console.log(this.cvInfo.paytReqType);
     this.passDataLov.paytReqType = this.cvInfo.paytReqType;
@@ -248,7 +249,7 @@ export class CvPaymentRequestListComponent implements OnInit {
 
   }
 
-   onRowClick(event){
+  onRowClick(event){
      console.log(event);
     if(event != null){
       this.paytData.reqId = event.reqId;

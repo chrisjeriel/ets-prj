@@ -23,7 +23,7 @@ export class GenerateCvComponent implements OnInit {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
-      this.exitLink = params['link'] !== undefined ? params['link'] :'check-voucher';
+      this.exitLink = params['exitLink'] !== undefined ? params['exitLink'] :'check-voucher';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
     });
     this.titleService.setTitle("Acct-IT | Check Voucher");

@@ -6,7 +6,7 @@
   </div>
 </div>
 
-<div class="form-row" style="margin-top: 10px !important">
+<div class="form-row" style="margin-top: 10px !important" *ngIf="passData.checkFlag">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
         <br>
@@ -34,7 +34,7 @@
   <div footer class="w-100">
     <div class="col-md-13 text-center">
         <div class="cust-btn-container" >
-            <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="passData.checkFlag"><a>Save</a></button>
             <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
         </div>
     </div>

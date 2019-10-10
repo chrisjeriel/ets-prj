@@ -206,6 +206,8 @@ export class AcctOrEntryComponent implements OnInit {
            orNo = params.orNo;
            if(params.status === 'Cancelled' || params.status === 'Deleted'){
              this.isCancelled = true;
+             this.passData.addFlag = false;
+             this.passData.genericBtn = undefined;
              this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
              this.paytDtlTbl.refreshTable();
            }         
@@ -339,7 +341,7 @@ export class AcctOrEntryComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0)
     };
-    this.as.cancelAr(params).subscribe(
+    this.as.cancelOr(params).subscribe(
       (data: any)=>{
         if(data.returnCode !== 0){
           this.isCancelled = true;
@@ -453,6 +455,7 @@ export class AcctOrEntryComponent implements OnInit {
         //ar
         if(data.or !== null){
           this.orInfo.tranId         = data.orEntry.tranId;
+          this.orInfo.orType         = data.orEntry.orType;
           this.orInfo.orNo           = this.pad(data.orEntry.orNo, 'orNo');
           this.orInfo.formattedOrNo  = data.orEntry.formattedOrNo;
           this.orInfo.orNoDigits     = data.orEntry.orNoDigits;
@@ -574,6 +577,7 @@ export class AcctOrEntryComponent implements OnInit {
           let orDetailParams = {
             tranId: this.orInfo.tranId,
             formattedOrNo: this.orInfo.formattedOrNo,
+            orNoDigits: this.orInfo.orNoDigits,
             orNo: this.orInfo.orNo,
             orStatus: this.orInfo.orStatus,
             orStatDesc: this.orInfo.orStatDesc,

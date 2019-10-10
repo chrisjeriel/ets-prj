@@ -1387,4 +1387,12 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBussType', JSON.stringify(params), header);
     }
+
+    getMtnAcseCheckSeries(bank?, bankAcct?, checkNo?){
+    	const params = new HttpParams()
+    		.set('bank', (bank === null || bank === undefined ? '' : bank))
+    		.set('bankAcct', (bankAcct === null || bankAcct === undefined ? '' : bankAcct))
+    		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcseCheckSeries', {params});
+    }
 }

@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingEntriesCV } from '@app/_models';
-import { AccountingService } from '@app/_services';
+import { AccountingService, NotesService } from '@app/_services';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-edit-accounting-entries',
@@ -12,21 +17,42 @@ import { Router } from '@angular/router';
 })
 export class EditAccountingEntriesComponent implements OnInit {
 
-  accountingEntriesUtilData: any = {
-  	tableData: this.accountingService.getAccountingEntriesUtil(),
-  	tHeader: ['Code', 'Account', 'SL Type', 'SL Name', 'Debit', 'Credit'],
-  	dataTypes: ['text', 'text', 'text', 'text', 'currency', 'currency'],
-  	nData: new AccountingEntriesCV(null,null,null,null,null,null),
-  	addFlag: true,
-  	deleteFlag: true,
-  	total: [null, null, null, 'Total', 'debit', 'credit'],
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+
+  passData: any = {};
+  tranListData: any = {};
+  tranClass: string = 'AR';
+
+  passLov: any = {
+    selector: 'arList',
+    searchParams: []
   }
 
-  constructor(private accountingService: AccountingService, private titleService: Title, private router: Router) {
+  constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
    }
 
   ngOnInit() {
+    this.passData = this.accountingService.getAccEntriesPassData();
+  }
+
+  retrieveTransactions(){
+    switch(this.tranClass){
+      case 'AR':
+        this.passLov.selector = 'arList';
+        break;
+      case 'CV':
+        this.passLov.selector = 'acitCvList';
+        break;
+      case 'JV':
+        this.passLov.selector = 'acitJvList';
+        break;
+    }
+    this.lovMdl.openLOV();
   }
 
   onTabChange($event: NgbTabChangeEvent) {
@@ -34,5 +60,9 @@ export class EditAccountingEntriesComponent implements OnInit {
         this.router.navigateByUrl('');
       } 
   
+  }
+
+  setSelectedData(data){
+    console.log(data);
   }
 }
