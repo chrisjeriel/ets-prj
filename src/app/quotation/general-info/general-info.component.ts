@@ -738,7 +738,7 @@ export class GeneralInfoComponent implements OnInit {
 	setObj(data){
 		$('#hiddenInp').addClass('ng-touched ng-dirty');
 
-    	this.project.objectId = this.pad(String(data.objectId));
+    	this.project.objectId = this.pad(String(data.objectId),4);
     	this.project.objectDesc = data.description;
     	this.ns.lovLoader(data.ev, 0);
 

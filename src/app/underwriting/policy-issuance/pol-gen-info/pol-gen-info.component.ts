@@ -406,6 +406,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         //edit by paul
         this.policyInfo.principalId = String(this.policyInfo.principalId).padStart(6,'0')
         this.policyInfo.contractorId = this.policyInfo.contractorId != null ? String(this.policyInfo.contractorId).padStart(6,'0'):null;
+        this.policyInfo.project.objectId = this.policyInfo.project.objectId != null ? String(this.policyInfo.project.objectId).padStart(4,'0'):null;
         this.policyInfo.intmId = this.pad(this.policyInfo.intmId, 6);
         if(this.policyInfo.polWordings !== null){
           this.policyInfo.polWordings.text = "";
@@ -675,7 +676,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   setObj(data){
-      this.policyInfo.project.objectId = data.objectId;
+      this.policyInfo.project.objectId = this.pad(data.objectId,4);
       this.policyInfo.project.objectDesc = data.description;
       this.ns.lovLoader(data.ev, 0);
 

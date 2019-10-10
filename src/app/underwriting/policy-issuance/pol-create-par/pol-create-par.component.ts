@@ -121,7 +121,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
       this.quotationList = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' || qu.status.toUpperCase() === 'CONCLUDED (THRU ANOTHER CEDANT)')
-                                             .map(qu => { qu.riskName = qu.project.riskName; return qu; });
+                                             .map(qu => {qu.project != null ? qu.riskName = qu.project.riskName : ''; return qu; });
       this.passDataLOV.tableData = this.quotationList;
       this.lovTable.refreshTable();
 

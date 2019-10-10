@@ -350,9 +350,9 @@ export class QuotationProcessingComponent implements OnInit {
         //neco was here
         this.existingQuotationNo = [];
         this.exclude = [];
-
+        console.log(this.validationList)
         for(let i of this.validationList) {
-            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) { // add year
+            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && (i.project!= null && this.riskCd == i.project.riskId)) { // add year
                 this.existingQuotationNo.push(i.quotationNo);
                 this.riskIdList.push(i); //used as object container
                 this.exclude.push(i.quotationNo.split('-')[4]);
