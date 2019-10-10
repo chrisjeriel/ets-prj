@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { WorkFlowManagerService, NotesService, UserService } from '@app/_services';
+import { WorkFlowManagerService, NotesService, UserService, MaintenanceService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -18,12 +18,14 @@ export class WfFormCommonComponent implements OnInit {
   	 private userService: UserService,
      public modalService: NgbModal,
      private workFlowManagerService: WorkFlowManagerService, 
-     private ns: NotesService) { }
+     private ns: NotesService,
+     private mtnService: MaintenanceService) { }
   
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild("recipientsTable") recipientsTable: CustEditableNonDatatableComponent;
+  @ViewChild("userGrpTable") userGrpTable: CustEditableNonDatatableComponent;
 
   recipientsData: any = {
         tableData: [],
@@ -70,6 +72,27 @@ export class WfFormCommonComponent implements OnInit {
     pageID: 'usersToManyMdl',
     colSize: ['100px', '250px'],
     keys:['userId','userName'],
+    checkFlag: true
+  };
+
+  userGrpListing: any = {
+    tableData: [],
+    tHeader: ['User Group', 'Description'],
+    dataTypes: ['text', 'text'],
+    filters: [
+      {
+        key: 'userGrp',
+        title: 'User Id',
+        dataType: 'text',
+      },
+    ],
+    pageLength: 10,
+    searchFlag: true,
+    pageStatus: true,
+    pagination: true,
+    pageID: 'userGrps',
+    colSize: ['100px', '250px'],
+    keys:['userGrp','userGrpDesc'],
     checkFlag: true
   };
 
@@ -142,13 +165,6 @@ export class WfFormCommonComponent implements OnInit {
     this.details = (this.moduleSource == 'Quotation') ? this.quotationInfo.quotationNo : (this.moduleSource == 'Policy' ? this.policyInfo.policyNo : this.claimInfo.claimNo);
     this.retrieveRelatedRecords();
     this.loadTable();
-
-    setTimeout(this.setDelayedCSS, 5000);
-  }
-
-  setDelayedCSS() {
-    const sheet = new CSSStyleSheet();
-    sheet.insertRule('div.ql-container.ql-snow.ql-disabled {padding: 3px 4px !important; font-weight: 600 !important;}', 1);
   }
 
   onClickSave() {
@@ -203,6 +219,10 @@ export class WfFormCommonComponent implements OnInit {
   	}
   }
 
+  showUserGrpLOV(obj?) {
+    $('#userGrpListing #modalBtn').trigger('click');
+  }
+
   clear(obj){
     this.disableAssignTo = true;
   	this.disableAssignToMany = true;
@@ -223,6 +243,17 @@ export class WfFormCommonComponent implements OnInit {
                  }
                  this.table.refreshTable();
                });
+  }
+
+  openModalGrp(){
+    this.userGrpListing.tableData = [];
+    this.userGrpTable.overlayLoader = true;
+    this.mtnService.getMtnUserGrp('').subscribe((data: any) =>{
+       for(var i = 0; i < data.userGroups.length; i++){
+         this.userGrpListing.tableData.push(data.userGroups[i]);
+       }
+       this.userGrpTable.refreshTable();
+    });
   }
 
   isEmptyObject(obj) {
