@@ -4,6 +4,7 @@ import { QuotationService, NotesService, UserService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
@@ -19,7 +20,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 })
 export class QuotationToHoldCoverComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 	@ViewChild('opt') opt: CustNonDatatableComponent;
 	@ViewChild('tabset') tabset: any;
 	@ViewChild('approvalMdl') approvalMdl : ModalComponent;
@@ -27,6 +28,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	passDataQuoteLOV : any = {
 		tableData	: [],
 		tHeader		: ["Quotation No.", "Ceding Company", "Insured", "Risk"],
+	  	sortKeys:['QUOTATION_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
 		dataTypes	: ["text","text","text","text"],
 		pageLength	: 10,
 		resizable	: [false,false,false,false],
@@ -36,12 +38,17 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		pagination	: true,
 		colSize		: ['', '250px', '250px', '250px'],
 		filters: [
-			{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+			{key: 'quotationNo', title: 'Quotation No.',dataType: 'text'},
 			{key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
 			{key: 'insuredDesc',title: 'Insured',dataType: 'text'},
 			{key: 'riskName',title: 'Risk',dataType: 'text'},
 		]
 	};
+	searchParams: any = {
+        statusArr:['3','6'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+    };
 
 	passDataOptionsLOV : any = {
 		tableData	: [],
@@ -89,7 +96,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 	subs			: Subscription = new Subscription();
 	searchArr 		: any[] = Array(5).fill('');
-	searchParams	: any[] = [];
+	//searchParams	: any[] = [];
 	rowRec			: any;
 	rowRecOpt		: any;
 	fieldIconDsbl	: boolean = true;
@@ -124,6 +131,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.userService.emitModuleId("QUOTE013");
   		this.sub = this.activatedRoute.params.subscribe(params => {
   			if(Object.keys(params).length != 0){
+  				this.searchParams.quotationNo = this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%');
+  				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
+    			this.passDataQuoteLOV.filters[0].enabled =true;
   				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);
   			}else{
   				this.getQuoteList();
@@ -133,25 +143,23 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
-  		var parameter;
-		if(param !== undefined){
-			parameter = param;
-		}else{
-			parameter = this.searchParams;
-		}
-
-		console.log(parameter);
-  		const subRes =  forkJoin(this.quotationService.getQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
+  		
+		// if(param == undefined){
+		// 	delete this.searchParams.quotationNo;
+		// }
+		console.log(this.searchParams)
+		var parameter = this.searchParams;
+  		const subRes =  forkJoin(this.quotationService.newGetQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
   		this.subs = subRes.subscribe(data => {
-  			console.log(data);
+  			//console.log(data);
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
-  			quoList = quoList.filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER').map(i => {i.riskName = i.project.riskName; return i;});
-  			
-  			this.passDataQuoteLOV.tableData = quoList;
-			this.table.refreshTable();
+  			quoList = quoList.map(i => {i.riskName = i.project!=null ? i.project.riskName : null; return i;});
+  			this.passDataQuoteLOV.count = data['quo']['length'];
+  			this.table.placeData(quoList);
+			//this.table.refreshTable();
 			
 				if(quoList.length == 1){
 					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
@@ -209,7 +217,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				}else{
 					this.newHc(true);
 					this.clearAll();
-					if(quoList.length == 0){
+					if(quoList.length == 0 && param != undefined){
 						this.showQuoteLov();
 						this.getQuoteList();
 					}
@@ -268,7 +276,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				this.dialogMessage 	= '';
 				$('app-sucess-dialog #modalBtn').trigger('click');
 				var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
-				this.getQuoteList([{ key: 'quotationNo', search: qNo.join('%-%') }]);
+				
+				this.searchParams.quotationNo = this.searchArr.join('-');
+				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
+    			this.passDataQuoteLOV.filters[0].enabled =true;
+				this.getQuoteList('manual');
 	  		});
 		}
   	}
@@ -287,7 +299,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  				quoNo += '%'+ parseInt(data) + '%-';
 	  			}
 	  		});
-	  		this.getQuoteList([{ key: 'quotationNo', search: quoNo }]);
+	  		this.searchParams.quotationNo = quoNo;
+	  		this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
+    		this.passDataQuoteLOV.filters[0].enabled =true;
+	  		this.getQuoteList('manual');
 	  		this.modalService.dismissAll();
   		}
   	}
@@ -533,6 +548,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		}else{
 			console.log('other else');
 		}
+
+
+		this.searchParams.quotationNo = this.searchArr.join('-');
+		this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
+    	this.passDataQuoteLOV.filters[0].enabled =true;
 		this.getQuoteList([{ key: 'quotationNo', search: this.searchArr.join('-') }]);
 
 	}
@@ -625,9 +645,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	}
 
 	searchQuery(searchParams){
-		console.log(searchParams);
-		this.searchParams = searchParams;
-		this.passDataQuoteLOV.tableData = [];
+		for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
 		this.getQuoteList();
 	}
 

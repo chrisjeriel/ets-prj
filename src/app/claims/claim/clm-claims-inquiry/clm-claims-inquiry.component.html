@@ -5,7 +5,7 @@
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="navigateToGenInfo()" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (export)="export()"></app-cust-non-datatable>
+						<app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="navigateToGenInfo()" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (export)="export()"></app-loading-table>
 					</div>
 				</div>
 				<div class="row" style="margin-bottom:10px !important; margin-top: -19px;">

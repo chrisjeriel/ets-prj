@@ -45,6 +45,8 @@ export class UnderwritingService {
     toPolInfo: any[] = [];
     fromCreateAlt: boolean = false;
 
+    showPolicyNo:string = '';
+
     constructor(private http: HttpClient) {
 
     }
@@ -140,6 +142,10 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/extractExpiringPolicy',JSON.stringify(params),header);
         //console.log("extractExpiringPolicies :" + JSON.stringify(response));
         //return 100;
+    }
+
+    newGetParListing(params) {
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing',{params:params});
     }
 
     getParListing(searchParams: any []) {
@@ -362,9 +368,10 @@ export class UnderwritingService {
 
 
 
-    getInwardPolBalance(policyId?) {
+    getInwardPolBalance(policyId?,policyNo?) {
          let params:any = {
-             policyId : policyId
+             policyId : policyId == null ? '' :policyId,
+             policyNo: policyNo == null ? '' :policyNo
          }
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolInwardBal',{params});
     }

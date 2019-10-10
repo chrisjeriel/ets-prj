@@ -188,7 +188,6 @@ export class GeneralInfoComponent implements OnInit {
 		this.tHeader.push("Item No", "Description of Items");
 		this.dataTypes.push("text", "text");
 		this.filters.push("Item No", "Desc. of Items");
-		this.tableData = this.quotationService.getItemInfoData();
 
 		this.savingType = this.quotationService.savingType;
 		this.sub = this.route.params.subscribe(params => {
@@ -739,7 +738,7 @@ export class GeneralInfoComponent implements OnInit {
 	setObj(data){
 		$('#hiddenInp').addClass('ng-touched ng-dirty');
 
-    	this.project.objectId = this.pad(String(data.objectId));
+    	this.project.objectId = this.pad(String(data.objectId),4);
     	this.project.objectDesc = data.description;
     	this.ns.lovLoader(data.ev, 0);
 

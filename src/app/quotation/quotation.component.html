@@ -9,6 +9,11 @@
 					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Item" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE016') == -1"  *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+			<ng-template ngbTabContent>
+				<app-quo-item [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" ></app-quo-item>
+			</ng-template>
+		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE003') == -1">
 			<ng-template ngbTabTitle>
 				<div>Coverage</div>

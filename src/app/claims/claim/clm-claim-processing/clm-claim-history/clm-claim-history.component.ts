@@ -304,6 +304,7 @@ export class ClmClaimHistoryComponent implements OnInit {
                                 i.histDate     = this.ns.toDateTimeString(i.createDate);
                                 i.createDate   = this.ns.toDateTimeString(i.createDate);
                                 i.updateDate   = this.ns.toDateTimeString(i.updateDate);
+                                i.prevAmt      = i.reserveAmt;
                                 i.paytAmt      = (i.paytAmt == '' || i.paytAmt == null)?0:i.paytAmt;
                                 recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
                                 recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
@@ -620,6 +621,7 @@ export class ClmClaimHistoryComponent implements OnInit {
           record.createDate    = (record.createDate == '' || record.createDate == undefined)?this.ns.toDateTimeString(0):record.createDate;
           record.updateUser    = this.ns.getCurrentUser();
           record.updateDate    = this.ns.toDateTimeString(0);
+          record.affecting     = record.prevAmt ==undefined ||  record.reserveAmt != record.prevAmt ? 'Y' : 'N';  
           this.params.saveClaimHistory.push(record);
         }
       }
