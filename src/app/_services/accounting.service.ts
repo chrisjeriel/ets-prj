@@ -85,7 +85,7 @@ export class AccountingService {
 	    addFlag: true,
 	    deleteFlag: true,
 	    editFlag: false,
-	    pageLength: 10,
+	    pageLength: 'unli',
 	    widths: [105,240,125,170,120,120,120,120],
 	    checkFlag: true,
 	    magnifyingGlass: ['glShortCd','slTypeName','slName'],
@@ -2635,7 +2635,46 @@ export class AccountingService {
              })
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseCvPaytReqList',params,header);
-    }	
+    }
+
+    saveAcitMonthEndBatch(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndBatch',params,header);
+    }
+
+    acitMECloseTransactions(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/acitMECloseTransactions',params,header);
+    }
+
+    acitMEExtractNetPrem(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/acitMEExtractNetPrem',params,header);
+    }
+
+    acitMEEntriesNetPrem(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/acitMEEntriesNetPrem',params,header);
+    }
 
     getAcitInwPolPayts(policyId,policyNo){
     	const params = new HttpParams()
@@ -2644,6 +2683,45 @@ export class AccountingService {
 
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInwPolPayts',{params});	
     }
+    	
 
+    acitMEExtractUPR(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
 
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/acitMEExtractUPR',params,header);
+    }
+
+    acitMEEntriesUPR(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/acitMEEntriesUPR',params,header);
+    }
+
+    saveAcitMonthEndBatchProd(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndBatchProd',params,header);
+    }
+
+    saveAcitMonthEndBatchOS(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndBatchOS',params,header);
+    }
 }
