@@ -134,13 +134,16 @@ export class CvEntryComponent implements OnInit {
 
     var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
 
-    // let arrSubRes = [
-    //   this.accountingService.getAcitCv(this.saveAcitCv.tranId),
-    //   this.mtnService.getMtnPrintableName(''),
-    //   this.mtnService.getRefCode('CHECK_CLASS'),
-    //   this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
-    //   this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
-    // ];
+    // const arrSubRes = {
+    //   'cv'  :this.accountingService.getAcitCv(this.saveAcitCv.tranId),
+    //   'pn'  :this.mtnService.getMtnPrintableName(''),
+    //   'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
+    //   'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
+    //   'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
+    // };
+
+    // const s9 = ['cv','pn','cl','stat','prt'];
+
     // let arrSubRes2 = [
     //   this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId),
     //   this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
@@ -148,15 +151,18 @@ export class CvEntryComponent implements OnInit {
     //   this.mtnService.getMtnAcitCheckSeries()
     // ];
 
-    // let pipeSubRes = ['cv','pn','cl','stat','prt'];
-    
-  
-    // var subRes = forkJoin(arrSubRes).pipe(map((pipeSubRes) => { return { pipeSubRes }; }));
+    // var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+    //   var obj = {};
+    //   s9.forEach((e,i) => {obj[e] = a[i];});
+    //   return obj;
+    // }));
+
     // var subRes2 = forkJoin(arrSubRes2).pipe(map(([prl,ba,cn,ae]) => { return { prl, ba, cn, ae }; }));
     // var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
 
     subRes3.subscribe(data => {
       console.log(data);
+
       this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];

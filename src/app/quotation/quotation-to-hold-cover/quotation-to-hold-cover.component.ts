@@ -125,7 +125,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.sub = this.activatedRoute.params.subscribe(params => {
   			if(Object.keys(params).length != 0){
   				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);
+  				console.log('entered if');
   			}else{
+  				console.log('entered else');
   				this.getQuoteList();
   			}
   		});
@@ -148,9 +150,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			console.log(data);
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
-  			quoList = quoList.filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER').map(i => {i.riskName = i.project.riskName; return i;});
-  			
+  			quoList = data['quo']['quotationList'].filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER')
+  					  .map(i => { i.riskName = (i.riskName == null || i.riskName == undefined)?'':i.riskName; return i;});
+  			console.log(quoList);
   			this.passDataQuoteLOV.tableData = quoList;
+  			console.log(this.passDataOptionsLOV.tableData);
 			this.table.refreshTable();
 			
 				if(quoList.length == 1){
