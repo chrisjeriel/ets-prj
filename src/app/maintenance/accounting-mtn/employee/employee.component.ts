@@ -322,13 +322,8 @@ export class EmployeeComponent implements OnInit {
    }
 
    cancelOtherDetails(){
-     console.log(this.oldRecord.designation);
+     
    }
-
-   onChange(data){
-     console.log(data);
-   }
-
 
    printPreview(data){
 
