@@ -111,12 +111,12 @@
                             <datepicker [type]="'datetime'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
                             </div> -->
 
-                            <div class="col-sm-5 dp-cont">
-                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
+                            <div class="col-sm-5 dp-cont" style="margin-left: 0 !important;">
+                            <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" name="entryData.preparedDate" [disabled]="approvedStat"></datepicker>
                             </div>
 
                             <div class="col-sm-4 dp-cont">
-                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" appRequired name="entryData.time"  [disabled]="approvedStat"></datepicker>
+                            <datepicker [type]="'time'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[1]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'t')" name="entryData.time" [disabled]="approvedStat"></datepicker>
                             </div>
                         </div>
                     </div>
@@ -124,11 +124,11 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Date Approved</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <div class="col-sm dp-cont">
-                                <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')" disabled name="entryData.approvedDate1"></datepicker>
+                            <div class="col-sm dp-cont" style="margin-left: 0 !important;">
+                                <datepicker [type]="'date'" required [value]="entryData.approvedDate?.split('T')[0]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'d')" [disabled]="true" name="entryData.approvedDate1"></datepicker>
                             </div>
                             <div class="col-sm dp-cont">
-                                <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" disabled name="entryData.approvedDate2"></datepicker>
+                                <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" [disabled]="true" name="entryData.approvedDate2"></datepicker>
                             </div>
                         </div>
                     </div>

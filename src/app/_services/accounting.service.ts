@@ -85,7 +85,7 @@ export class AccountingService {
 	    addFlag: true,
 	    deleteFlag: true,
 	    editFlag: false,
-	    pageLength: 10,
+	    pageLength: 'unli',
 	    widths: [105,240,125,170,120,120,120,120],
 	    checkFlag: true,
 	    magnifyingGlass: ['glShortCd','slTypeName','slName'],
