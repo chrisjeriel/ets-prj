@@ -20,6 +20,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvTreatyPullOutComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -219,6 +220,11 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData = [];
     }
     this.invTable.refreshTable();
+    this.infoData.emit(data);
+  }
+
+  invClick(data){
+    this.infoData.emit(data);
   }
 
   setQuarter(data){

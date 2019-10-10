@@ -18,6 +18,8 @@ export class JvPreniumReserveComponent implements OnInit {
 	@Input() jvDetail:any;
 	@Input() cedingParams:any;
 	@Output() emitData = new EventEmitter<any>();
+	@Output() infoData = new EventEmitter<any>();
+
 	@ViewChild('modal') modal: ModalComponent; 
 	@ViewChild(MtnCedingCompanyTreatyComponent) cedingCoLov: MtnCedingCompanyTreatyComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -261,5 +263,9 @@ export class JvPreniumReserveComponent implements OnInit {
     	this.maintenanceService.getMtnParameters('N','UPR_WHTAX_RT_ON_INT').subscribe((data:any) =>{
     	  this.whtaxRate = parseInt(data.parameters[0].paramValueN);
     	});
+    }
+
+    onRowClick(data){
+    	this.infoData.emit(data)
     }
 }

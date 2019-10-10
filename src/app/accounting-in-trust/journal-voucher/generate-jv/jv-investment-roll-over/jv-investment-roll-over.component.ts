@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -15,6 +15,7 @@ import { finalize } from 'rxjs/operators';
 export class JvInvestmentRollOverComponent implements OnInit {
    
    @Input() jvDetail;
+   @Output() infoData = new EventEmitter<any>();
    @ViewChild('lov') lovMdl: LovComponent;
    @ViewChild('newLov') newlovMdl: LovComponent;
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -193,6 +194,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   onRowClick(data){
+    this.infoData.emit(data);
   }
 
   onClickSave(){

@@ -26,6 +26,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   @Input() jvDetail:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
 
   /*passData: any = {
@@ -381,6 +382,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data);
+    /*if(data !== null){
+      this.infoData.emit(data);
+    }*/
   }
 
   refundError():boolean{

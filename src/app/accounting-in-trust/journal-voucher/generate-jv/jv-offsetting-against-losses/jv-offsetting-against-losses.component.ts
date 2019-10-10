@@ -28,6 +28,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],//this.accountingService.getClaimLosses(),
@@ -248,6 +249,11 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.InwPolBal.disableAdd = true;
     }
     this.inwTable.refreshTable();
+    this.infoData.emit(data);
+  }
+
+  inwClick(data){
+    this.infoData.emit(data);
   }
 
   openLOV(data){

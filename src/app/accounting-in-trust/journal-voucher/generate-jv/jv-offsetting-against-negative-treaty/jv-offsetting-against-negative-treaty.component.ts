@@ -20,6 +20,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -330,6 +331,11 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.disableAdd = true;
     }
     this.trytytransTable.refreshTable();
+    this.infoData.emit(data)
+  }
+
+  clmClick(data){
+    this.infoData.emit(data)
   }
 
   onClickSave(){

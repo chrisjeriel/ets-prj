@@ -19,6 +19,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail: any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -221,11 +222,16 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.disableAdd = false;
       this.passDataOffsetting.nData.quarterNo = this.quarterNo;
       this.passDataOffsetting.tableData = data.acctOffset;
-      this.trytytrans.refreshTable();
     }else{
       this.passDataOffsetting.disableAdd = true;
       this.passDataOffsetting.tableData = [];
     }
+    this.trytytrans.refreshTable();
+    this.infoData.emit(data)
+  }
+
+  inwClick(data){
+    this.infoData.emit(data)
   }
 
   quarterEndModal(){

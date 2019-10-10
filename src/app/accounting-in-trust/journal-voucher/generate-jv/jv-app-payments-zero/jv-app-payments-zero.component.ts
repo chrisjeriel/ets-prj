@@ -16,6 +16,7 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   @Input() jvDetail: any;
   @Input() cedingParams:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
 
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
@@ -296,5 +297,10 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  onRowClick(data){
+    console.log(data)
+    this.infoData.emit(data)
   }
 }

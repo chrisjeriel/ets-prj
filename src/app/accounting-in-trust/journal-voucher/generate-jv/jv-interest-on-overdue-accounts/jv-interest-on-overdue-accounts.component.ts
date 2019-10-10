@@ -27,6 +27,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],
@@ -275,5 +276,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.maintenaceService.getMtnParameters('N','OVERDUE_DAYS_THRESHOLD').subscribe((data:any) =>{
       this.daysInterest = parseInt(data.parameters[0].paramValueN);
     });
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data)
   }
 }

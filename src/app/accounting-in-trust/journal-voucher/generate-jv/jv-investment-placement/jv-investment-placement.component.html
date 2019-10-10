@@ -13,7 +13,7 @@
           </select>
           <div class="col-sm-1"></div>
         </div>
-      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvLOV($event)">
+      	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvLOV($event)" (newClick)="onRowClick($event)">
       	</app-cust-editable-non-datatable>
     </div>
   </div>
