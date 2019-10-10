@@ -44,6 +44,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('mdl') modal : ModalComponent;
   @ViewChild('myForm') form:any;
   @ViewChild('myForms') forms:any;
+  @ViewChild('printModal') printModal: ModalComponent;
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
@@ -333,6 +334,7 @@ export class ExpiryListingComponent implements OnInit {
   renewableData: any;
   nonRenewableData: any;
   currentTab: string = 'renew';
+  renAsIsTag: boolean;
 
   params:any = {
     cedingId : "",
@@ -400,7 +402,14 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   onClickUpdate() {
-      this.passDataRenewalPolicies.uneditable = [false,false,false,false,true,true,true,true,true,true,true,true,false,true,true,true,true];
+      //this.passDataRenewalPolicies.uneditable = [false,false,false,false,true,true,true,true,true,true,true,true,false,true,true,true,true];
+      if(this.currentTab == 'renew'){
+        this.table.overlayLoader = true;
+        this.retrieveExpPolList();
+      }else if(this.currentTab == 'nonRenew'){
+        this.table.overlayLoader = true;
+        this.retrieveExpPolListNR();
+      }
   }
 
   onClickProcess() {
@@ -518,7 +527,8 @@ export class ExpiryListingComponent implements OnInit {
   retrieveExpPolList(filter?){
        this.passDataRenewalPolicies.tableData = [];
        this.searchParams.renewalFlag = '';
-       this.searchParams.processTag = 'N';
+       //this.searchParams.processTag = 'N';
+       this.searchParams.processTag = '';
        this.searchParams.renewable = 'Y';
        if(filter !== undefined){
          this.table.overlayLoader = true;
@@ -703,6 +713,8 @@ export class ExpiryListingComponent implements OnInit {
           this.passDataRenewalPolicies.tableData[i].nonRenTag = 'N';
         }
     }*/
+    console.log(data);
+    this.renAsIsTag = this.table.indvSelect.renAsIsTag == 'Y';
 
     if(this.table.indvSelect.renWithChange === 'Y'){
        this.changesFlag = true;
@@ -837,7 +849,7 @@ export class ExpiryListingComponent implements OnInit {
       this.rowRiskId  = data.projectList[0].riskId;
       this.remarks = data.remarks;
       this.tblIndex = data.index;
-      this.changesFlag = true;
+      this.changesFlag = data.renWithChange == 'Y';
       this.purgeFlag = false;
       this.selectedData = data;
       
@@ -846,6 +858,7 @@ export class ExpiryListingComponent implements OnInit {
       }else{
          this.reasonFlag = false;
       }
+      this.renAsIsTag = this.table.indvSelect.renAsIsTag == 'Y';
 
 
     }else{
@@ -1278,28 +1291,54 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   tagProcess(mode) {
-      if (mode == 'tAll') {
-        for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
-          this.passDataRenewalPolicies.tableData[i].processTag = 'Y';
-        }
-      }
-
-      if (mode == 'uAll') {
-        for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
-          this.passDataRenewalPolicies.tableData[i].processTag = 'N';
-        }
-      }
-
-      if (mode == 'tagSel') {
-        for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
-          this.passDataRenewalPolicies.tableData[i].processTag = 'N';
-        }
-
-        for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
-          if (this.passDataRenewalPolicies.tableData[i].renWithChange == 'Y' || this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y' || this.passDataRenewalPolicies.tableData[i].nonRenTag == 'Y') {
+      if(this.currentTab == 'renew'){
+        if (mode == 'tAll') {
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
             this.passDataRenewalPolicies.tableData[i].processTag = 'Y';
           }
         }
+
+        if (mode == 'uAll') {
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+            this.passDataRenewalPolicies.tableData[i].processTag = 'N';
+          }
+        }
+
+        if (mode == 'tagSel') {
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+            this.passDataRenewalPolicies.tableData[i].processTag = 'N';
+          }
+
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+            if (this.passDataRenewalPolicies.tableData[i].renWithChange == 'Y' || this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y' || this.passDataRenewalPolicies.tableData[i].nonRenTag == 'Y') {
+              this.passDataRenewalPolicies.tableData[i].processTag = 'Y';
+            }
+          }
+        }
+      }else if(this.currentTab == 'nonRenew'){
+        if (mode == 'tAll') {
+          for(var i = 0; i < this.passDataNonRenewalPolicies.tableData.length;i++){
+            this.passDataNonRenewalPolicies.tableData[i].processTag = 'Y';
+          }
+        }
+
+        if (mode == 'uAll' || mode == 'tagSel') {
+          for(var i = 0; i < this.passDataNonRenewalPolicies.tableData.length;i++){
+            this.passDataNonRenewalPolicies.tableData[i].processTag = 'N';
+          }
+        }
+
+        /*if (mode == 'tagSel') {
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+            this.passDataRenewalPolicies.tableData[i].processTag = 'N';
+          }
+
+          for(var i = 0; i < this.passDataRenewalPolicies.tableData.length;i++){
+            if (this.passDataRenewalPolicies.tableData[i].renWithChange == 'Y' || this.passDataRenewalPolicies.tableData[i].renAsIsTag == 'Y' || this.passDataRenewalPolicies.tableData[i].nonRenTag == 'Y') {
+              this.passDataRenewalPolicies.tableData[i].processTag = 'Y';
+            }
+          }
+        }*/
       }
   }
 
@@ -1339,7 +1378,21 @@ export class ExpiryListingComponent implements OnInit {
 
   onClickRenSave(){
     console.log("onClickRenSave");
-    $('#extractedPolicies #confirm-save #modalBtn2').trigger('click');
+    //Added by Neco 10/10/2019
+    var reqFieldsCheck: boolean = false;
+    for(var i of this.passDataRenewalPolicies.tableData){
+      if(i.renWithChange == 'Y' && (i.changes == null || i.changes.length == 0)){
+        reqFieldsCheck = true;
+        break;
+      }
+    }
+    if(reqFieldsCheck){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else{
+      $('#extractedPolicies #confirm-save #modalBtn2').trigger('click');
+    }
+    //END Neco 10/10/2019
   }
 
   saveChangesToExtPolicyNR(){
@@ -1630,6 +1683,11 @@ export class ExpiryListingComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
     this.clearData();
+    this.changes = '';
+    this.nrReasonCd = '';
+    this.nrReasonDescription = '';
+    this.remarks = '';
+    this.nrRemarks = '';
     this.currentTab = $event.nextId;
     if($event.nextId == 'renew'){
       this.retrieveExpPolList();

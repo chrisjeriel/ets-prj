@@ -17,7 +17,7 @@
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
 												<button class="cust col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
-												<button class="cust col-sm" (click)="showEditModal(content)">Edit</button>
+												<button class="cust col-sm" (click)="showEditModal(content)" [disabled]="renAsIsTag || disabledFlag || reasonFlag" [class.cust-btn-disabled]="renAsIsTag || disabledFlag || reasonFlag">Edit</button>
 												<button class="cust col-sm" (click)="onClickPurge();" [disabled]="purgeFlag" [class.cust-btn-disabled]="purgeFlag">Purge</button>
 												<button class="cust col-sm" (click)="onClickRenSave();">Save</button>
 											</div>
@@ -29,12 +29,12 @@
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Changes</label>
-												<textarea class="form-control form-control-sm col-sm-8"  name="changes" [disabled]="!changesFlag" (change)="changesValueChanged($event);" [ngModel]="changes" (ngModelChange)="changes = $event"></textarea>
+												<textarea class="form-control form-control-sm col-sm-8"  name="changes" [readonly]="!changesFlag || renAsIsTag" (change)="changesValueChanged($event);" [ngModel]="changes" (ngModelChange)="changes = $event" appRequired></textarea>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
 												<input type="text" [ngModel]="nrReasonCd" name="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');nrReasonCdChange($event)" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
-												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
+												<div class="text-search-ico" *ngIf="reasonFlag"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
 												<input type="text" [ngModel]="nrReasonDescription" name="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
@@ -130,19 +130,19 @@
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: 29px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: -41px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('uAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="margin-left: -102px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tagSel');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
 															</div>
 														</div>
@@ -298,7 +298,7 @@
         </div>
     </div>
     <div footer class="w-100 text-right">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); printModal.openNoClose();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
@@ -547,3 +547,61 @@
       <button class="cust-btn" type="button" (click)="setLOV();policyModal.closeModal();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-modal class="hidden"  #printModal>
+    <div header>Print</div>
+    <div body style="max-width: : 200px !important">
+       <fieldset class="scheduler-border">
+       						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Report</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">Report 1</option>
+       									<option value="">Report 2</option>
+       									<option value="">Report 3</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">No. Of Copies</label>
+       								<input type="text" class="form-control form-control-sm cust-sm col-sm-8 " placeholder="25" style="text-align: right"
+       								 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Destination</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Printer Name</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">CPI Printer</option>
+       									<option value="">PMMSC Printer</option>
+       									<option value="">Printer</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+       								<div class="col-sm-8">
+       									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+       									&nbsp;&nbsp;&nbsp;&nbsp; -->
+       									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+       									<div class="col-sm-1"></div>
+       								</div>
+       							</div>
+       						</div>
+       					</fieldset>
+
+    </div>                
+    <div footer style="margin-right: 330px !important;">
+      <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Print</a></button>
+    </div>
+</app-modal>
+
