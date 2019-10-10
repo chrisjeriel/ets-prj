@@ -460,6 +460,9 @@ import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-typ
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { MtnBankAcctComponent } from './maintenance/mtn-bank-acct/mtn-bank-acct.component';
 import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
+import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
+import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.component';
+import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.component';
 
 @NgModule({
     imports: [
@@ -925,6 +928,9 @@ import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
         DcbUserComponent,
         MtnBankAcctComponent,
         QuoItemComponent,
+        EmployeeComponent,
+        MtnCompanyComponent,
+        MtnEmployeeComponent,
     ],
 
   	providers: [
