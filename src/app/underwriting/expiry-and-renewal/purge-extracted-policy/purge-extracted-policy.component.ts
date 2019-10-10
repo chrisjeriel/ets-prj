@@ -446,6 +446,7 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   //Added by Neco 10/09/2019
   filterMainTable(){
+    this.table.overlayLoader = true;
     this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
@@ -459,13 +460,14 @@ export class PurgeExtractedPolicyComponent implements OnInit {
           if(this.PolicyNo.line.length !== 0 || this.PolicyNo.year.length !== 0 || this.PolicyNo.sequenceNo.length !== 0 ||
              this.PolicyNo.companyNo.length !== 0 || this.PolicyNo.coSeriesNo.length !== 0 || this.PolicyNo.altNo.length !== 0){
             this.passData.tableData = this.passData.tableData.filter(a=>{
-                var splittedPolNo: any[] = a.policyNo.split('-');
-                return this.PolicyNo.line == splittedPolNo[0] ||
-                       this.PolicyNo.year == splittedPolNo[1] ||
-                       this.PolicyNo.sequenceNo == splittedPolNo[2] ||
-                       this.PolicyNo.companyNo == splittedPolNo[3] ||
-                       this.PolicyNo.coSeriesNo == splittedPolNo[4] ||
-                       this.PolicyNo.altNo == splittedPolNo[5];
+                var polNo = this.PolicyNo.line + '.*-.*'+            //
+                            this.PolicyNo.year + '.*-.*'+            //
+                            this.PolicyNo.sequenceNo + '.*-.*'+      // Similar to SQL's "LIKE %%" comparison
+                            this.PolicyNo.companyNo + '.*-.*'+       // Neco 10/10/2019
+                            this.PolicyNo.coSeriesNo + '.*-.*'+      //
+                            this.PolicyNo.altNo;                     //
+                var pattern = new RegExp(polNo);                      
+                return pattern.test(a.policyNo); 
             });
           }
           break;
@@ -476,7 +478,10 @@ export class PurgeExtractedPolicyComponent implements OnInit {
                 var from = this.dateParams.byDateFrom.length !== 0 ? new Date(this.dateParams.byDateFrom) : new Date();
                 var to = this.dateParams.byDateTo.length !== 0 ? new Date(this.dateParams.byDateTo) : new Date();
                 var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
-                return from <= expiryDate && expiryDate <= to;
+                return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
             });
           }
           break;
@@ -487,12 +492,16 @@ export class PurgeExtractedPolicyComponent implements OnInit {
                 var from = new Date(parseInt(this.dateParams.byYearFrom), parseInt(this.dateParams.byMonthFrom)-1, 1);
                 var to = new Date(parseInt(this.dateParams.byYearTo), parseInt(this.dateParams.byMonthTo), 0);
                 var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
-                return from <= expiryDate && expiryDate <= to;
+                return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
             });
           }
           break;
       }  
       this.table.refreshTable();
+      this.table.overlayLoader = false;
     });
     
   }

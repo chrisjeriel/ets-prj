@@ -11,7 +11,10 @@ import { MtnNonrenewReasonComponent } from '@app/maintenance/mtn-nonrenew-reason
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { MtnCatPerilModalComponent } from '@app/maintenance/mtn-cat-peril-modal/mtn-cat-peril-modal.component';
 import { ModalComponent }  from '@app/_components/common/modal/modal.component';
-
+import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-expiry-listing',
@@ -20,6 +23,11 @@ import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 })
 export class ExpiryListingComponent implements OnInit {
   @ViewChild(MtnCatPerilModalComponent) catPerils: MtnCatPerilModalComponent;
+  @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
+  @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
+  @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+  @ViewChild('policyLov') policyModal : ModalComponent;
+  @ViewChild('lov') tableLov :CustEditableNonDatatableComponent;
   @ViewChild('mtnSectionCover') secCoversLov: MtnSectionCoversComponent;
   @ViewChild('totalPerSection') totalPerSection:CustEditableNonDatatableComponent;
   @ViewChild('contentEditPol') contentEditPol;
@@ -106,6 +114,20 @@ export class ExpiryListingComponent implements OnInit {
         keys:['itemNo','quantity','description','lossMin'],
         widths:[1,1,1,1,1],
         checkFlag:true
+  }
+
+  passDataLov :any ={
+    tableData:[],
+    tHeader: ['Policy No', 'Ceding Company', 'Insured'],
+    dataTypes:['text','text','text'],
+    tooltip:[null,null,null],
+    keys:['policyNo','cedingName','insuredDesc'],
+    uneditable:[true,true,true],
+    widths:[180,200,230],
+    paginateFlag:true,
+    infoFlag:true,
+    pageID:'LOV',
+    searchFlag: true,
   }
 
   passDataSectionCover: any = {
@@ -306,6 +328,44 @@ export class ExpiryListingComponent implements OnInit {
   tblIndex: any;
   tblIndexNR: any;
   selectedData: any;
+  radioVal: any = 'byPolNo';
+  selected: any;
+  renewableData: any;
+  nonRenewableData: any;
+  currentTab: string = 'renew';
+
+  params:any = {
+    cedingId : "",
+    cedingName : "",
+    line: "",
+    typeOfCessionId : "",
+    lineDescription :"",
+    typeOfCession :"",
+    byDateFrom: '',
+    byDateTo: '',
+    byMonthFrom:'',
+    byMonthTo:'',
+    byYearTo: '',
+    byYearFrom: ''
+  }
+
+  dateParams:any = {
+    byDateFrom: '',
+    byDateTo: '',
+    byMonthFrom:'',
+    byMonthTo:'',
+    byYearFrom:'',
+    byYearTo:''
+  }
+
+  PolicyNo: any = {
+    line: '',
+    year: '',
+    sequenceNo: '',
+    companyNo: '',
+    coSeriesNo: '',
+    altNo: ''
+  }
 
   constructor(private underWritingService: UnderwritingService, public modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
 
@@ -314,7 +374,7 @@ export class ExpiryListingComponent implements OnInit {
     //this.tableData = this.underWritingService.getExpiryListing();
     //this.renewedPolicyList = this.underWritingService.renewExpiredPolicies();
     this.retrieveExpPolList();
-    this.retrieveExpPolListNR();
+    //this.retrieveExpPolListNR();
   }
 
   renewPolicies() {
@@ -333,6 +393,10 @@ export class ExpiryListingComponent implements OnInit {
 
   onClickPrint() {
       $('#printPolicyModal > #modalBtn').trigger('click');
+  }
+
+  parameter() {
+        $('#parameter #modalBtn').trigger('click');
   }
 
   onClickUpdate() {
@@ -451,15 +515,19 @@ export class ExpiryListingComponent implements OnInit {
       
   }
 
-  retrieveExpPolList(){
+  retrieveExpPolList(filter?){
        this.passDataRenewalPolicies.tableData = [];
        this.searchParams.renewalFlag = '';
        this.searchParams.processTag = 'N';
        this.searchParams.renewable = 'Y';
+       if(filter !== undefined){
+         this.table.overlayLoader = true;
+       }
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
           var records = data['expPolicyList'];
           this.disabledFlag = true;
+          this.renewableData = records;
           this.fetchedData = records;
           var counter = 0;
           for(var i = 0; i < records.length;i++){
@@ -482,20 +550,76 @@ export class ExpiryListingComponent implements OnInit {
             }
             
           }
+          //Added by Neco 10/09/2019
+          if(filter !== undefined){
+            switch(this.radioVal){
+              case 'byPolNo':
+                if(this.PolicyNo.line.length !== 0 || this.PolicyNo.year.length !== 0 || this.PolicyNo.sequenceNo.length !== 0 ||
+                   this.PolicyNo.companyNo.length !== 0 || this.PolicyNo.coSeriesNo.length !== 0 || this.PolicyNo.altNo.length !== 0){
+                  this.passDataRenewalPolicies.tableData = this.passDataRenewalPolicies.tableData.filter(a=>{
+                      var polNo = this.PolicyNo.line + '.*-.*'+            //
+                                  this.PolicyNo.year + '.*-.*'+            //
+                                  this.PolicyNo.sequenceNo + '.*-.*'+      // Similar to SQL's "LIKE %%" comparison
+                                  this.PolicyNo.companyNo + '.*-.*'+       // Neco 10/10/2019
+                                  this.PolicyNo.coSeriesNo + '.*-.*'+      //
+                                  this.PolicyNo.altNo;                     //
+                      var pattern = new RegExp(polNo, 'i');                      
+                      return pattern.test(a.policyNo); 
+                  });
+                }
+                break;
+              case 'byDate':
+                console.log(this.dateParams);
+                if(this.dateParams.byDateFrom.length !== 0 && this.dateParams.byDateFrom.length !== 0){
+                  this.passDataRenewalPolicies.tableData = this.passDataRenewalPolicies.tableData.filter(a=>{
+                      var from = this.dateParams.byDateFrom.length !== 0 ? new Date(this.dateParams.byDateFrom) : new Date();
+                      var to = this.dateParams.byDateTo.length !== 0 ? new Date(this.dateParams.byDateTo) : new Date();
+                      var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                      return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
+                  });
+                }
+                break;
+              case 'byMonthYear':
+                console.log(this.dateParams);
+                if(this.dateParams.byMonthFrom.length !== 0 && this.dateParams.byYearFrom && this.dateParams.byMonthTo.length !== 0 && this.dateParams.byYearTo.length !== 0){
+                  this.passDataRenewalPolicies.tableData = this.passDataRenewalPolicies.tableData.filter(a=>{
+                      var from = new Date(parseInt(this.dateParams.byYearFrom), parseInt(this.dateParams.byMonthFrom)-1, 1);
+                      var to = new Date(parseInt(this.dateParams.byYearTo), parseInt(this.dateParams.byMonthTo), 0);
+                      var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                      return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
+                  });
+                }
+                break;
+            }  
+          }
+          //END Neco 10/09/2019
+
           this.table.refreshTable();
-          this.table.loadingFlag = false;
+          this.table.overlayLoader = false;
        });
   }
 
-  retrieveExpPolListNR(){
+  retrieveExpPolListNR(filter?){
        this.passDataNonRenewalPolicies.tableData = [];
        this.searchParams.renewalFlag = '';
-       this.searchParams.processTag = 'N';
+       //this.searchParams.processTag = 'N';
        this.searchParams.renewable = 'N';
+       this.searchParams.processTag = '';
+       if(filter !== undefined){
+         this.nrTable.overlayLoader = true;
+       }
+       console.log(this.searchParams);
        this.underWritingService.getExpPolList(this.searchParams).subscribe(data => {
           console.log(data);
           var records = data['expPolicyList'];
           this.disabledFlag = true;
+          this.nonRenewableData = records;
           this.fetchedData = records;
           var counter =0;
           for(var i = 0; i < records.length;i++){
@@ -515,7 +639,59 @@ export class ExpiryListingComponent implements OnInit {
                 this.passDataNonRenewalPolicies.tableData[this.passDataNonRenewalPolicies.tableData.length - 1].renTsiAmount = 0;
             }
           }
+          //Added by Neco 10/09/2019
+          if(filter !== undefined){
+            switch(this.radioVal){
+              case 'byPolNo':
+                console.log(this.PolicyNo);
+                if(this.PolicyNo.line.length !== 0 || this.PolicyNo.year.length !== 0 || this.PolicyNo.sequenceNo.length !== 0 ||
+                   this.PolicyNo.companyNo.length !== 0 || this.PolicyNo.coSeriesNo.length !== 0 || this.PolicyNo.altNo.length !== 0){
+                  this.passDataNonRenewalPolicies.tableData = this.passDataNonRenewalPolicies.tableData.filter(a=>{
+                      var polNo = this.PolicyNo.line + '.*-.*'+            //
+                                  this.PolicyNo.year + '.*-.*'+            //
+                                  this.PolicyNo.sequenceNo + '.*-.*'+      // Similar to SQL's "LIKE %%" comparison
+                                  this.PolicyNo.companyNo + '.*-.*'+       // Neco 10/10/2019
+                                  this.PolicyNo.coSeriesNo + '.*-.*'+      //
+                                  this.PolicyNo.altNo;                     //
+                      var pattern = new RegExp(polNo, 'i');                      
+                      return pattern.test(a.policyNo); 
+                  });
+                console.log(this.passDataNonRenewalPolicies.tableData);
+                }
+                break;
+              case 'byDate':
+                console.log(this.dateParams);
+                if(this.dateParams.byDateFrom.length !== 0 && this.dateParams.byDateFrom.length !== 0){
+                  this.passDataNonRenewalPolicies.tableData = this.passDataNonRenewalPolicies.tableData.filter(a=>{
+                      var from = this.dateParams.byDateFrom.length !== 0 ? new Date(this.dateParams.byDateFrom) : new Date();
+                      var to = this.dateParams.byDateTo.length !== 0 ? new Date(this.dateParams.byDateTo) : new Date();
+                      var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                      return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
+                  });
+                }
+                break;
+              case 'byMonthYear':
+                console.log(this.dateParams);
+                if(this.dateParams.byMonthFrom.length !== 0 && this.dateParams.byYearFrom && this.dateParams.byMonthTo.length !== 0 && this.dateParams.byYearTo.length !== 0){
+                  this.passDataNonRenewalPolicies.tableData = this.passDataNonRenewalPolicies.tableData.filter(a=>{
+                      var from = new Date(parseInt(this.dateParams.byYearFrom), parseInt(this.dateParams.byMonthFrom)-1, 1);
+                      var to = new Date(parseInt(this.dateParams.byYearTo), parseInt(this.dateParams.byMonthTo), 0);
+                      var expiryDate = new Date(this.ns.toDateTimeString(a.expiryDate));
+                      return from <= expiryDate && expiryDate <= to && 
+                             a.policyNo.split('-')[0] == (this.params.line.length !== 0 ? this.params.line : a.policyNo.split('-')[0]) &&
+                             a.cessionId == (this.params.typeOfCessionId.length !== 0 ? this.params.typeOfCessionId : a.cessionId) &&
+                             a.cedingId == (this.params.cedingId.length !== 0 ? this.params.cedingId : a.cedingId);
+                  });
+                }
+                break;
+            }  
+          }
+          //END Neco 10/09/2019
           this.nrTable.refreshTable();
+          this.nrTable.overlayLoader = false;
        });
   }
 
@@ -1061,6 +1237,13 @@ export class ExpiryListingComponent implements OnInit {
       if(field === 'nrReason') {            
           this.nrReasonLOV.checkCode(this.nrReasonCd, ev);
       }
+      else if(field === 'line') {            
+            this.lineLov.checkCode(this.params.line, ev);
+      } else if(field === 'typeOfCession'){
+          this.typeOfCessionLov.checkCode(this.params.typeOfCessionId, ev);
+      } else if(field === 'cedingCo') {         
+          this.cedingCoLov.checkCode(this.params.cedingId, ev);
+      }
   }
 
   sectionCoversLOV(data){
@@ -1353,4 +1536,116 @@ export class ExpiryListingComponent implements OnInit {
       }
     });
   }
+
+  showTypeOfCessionLOV(){
+    this.typeOfCessionLov.modal.openNoClose();
+  }
+
+  showLineLOV(){
+    this.lineLov.modal.openNoClose();
+  }
+
+  showCedingCompanyLOV() {
+    this.cedingCoLov.modal.openNoClose();
+  }
+
+  setLine(data){
+    this.params.line = data.lineCd;
+    this.params.lineDescription = data.description;
+    this.ns.lovLoader(data.ev, 0);
+
+    if(data.hasOwnProperty('fromLOV')){
+        $('#parameter > #modalBtn').trigger('click');    
+    }
+  }
+
+  setTypeOfCession(data) {        
+        this.params.typeOfCessionId = data.cessionId;
+        this.params.typeOfCession = data.description;
+  }
+
+  setCedingcompany(event){
+    this.params.cedingId = event.cedingId;
+    this.params.cedingName = event.cedingName;
+    this.ns.lovLoader(event.ev, 0);
+  }
+
+  showPolicyLov(){
+    this.passDataLov.tableData = [];
+    for(var i = 0 ; i  < this.fetchedData.length; i++){
+      this.passDataLov.tableData.push(this.fetchedData[i]);
+    }
+    this.tableLov.refreshTable();
+    this.policyModal.openNoClose()
+  }
+
+  setLOV(){
+    if(this.selected !== null){
+      var polNo = this.selected.policyNo.split('-');
+      var polId = this.selected.policyId;
+      this.PolicyNo.line  = polNo[0];
+      this.PolicyNo.year  = polNo[1];
+      this.PolicyNo.sequenceNo  = polNo[2];
+      this.PolicyNo.companyNo  = polNo[3];
+      this.PolicyNo.coSeriesNo  = polNo[4];
+      this.PolicyNo.altNo  = polNo[5];
+
+      this.underWritingService.getPolGenInfo(polId,null).subscribe((data:any) => {
+          console.log(data)
+          this.params.line = data.policy.lineCd;
+          this.params.lineDescription = data.policy.lineCdDesc;
+          this.params.typeOfCessionId = data.policy.cessionId;
+          this.params.typeOfCession = data.policy.cessionDesc;
+          this.params.cedingId = data.policy.cedingId;
+          this.params.cedingName = data.policy.cedingName;
+      });
+    }
+  }
+
+  onClick(data){
+    console.log(data)
+    this.selected = data;
+  }
+
+  clearData(){
+    this.params.line = '';
+    this.params.lineDescription = '';
+    this.params.typeOfCession = '';
+    this.params.typeOfCessionId = '';
+    this.params.cedingId = '';
+    this.params.cedingName = '';
+    this.PolicyNo.line = '';
+    this.PolicyNo.year = '';
+    this.PolicyNo.companyNo = '';
+    this.PolicyNo.sequenceNo = '';
+    this.PolicyNo.coSeriesNo = '';
+    this.PolicyNo.altNo = '';
+    this.dateParams.byDateFrom = '';
+    this.dateParams.byDateTo = '';
+    this.dateParams.byMonthFrom = '';
+    this.dateParams.byMonthTo = '';
+    this.dateParams.byYearFrom = '';
+    this.dateParams.byYearTo = '';
+  }
+
+  onTabChange($event: NgbTabChangeEvent) {
+    this.clearData();
+    this.currentTab = $event.nextId;
+    if($event.nextId == 'renew'){
+      this.retrieveExpPolList();
+    }else if($event.nextId == 'nonRenew'){
+      this.retrieveExpPolListNR();
+    }
+  }
+
+  //Added by Neco 10/09/2019
+  filterMainTable(){
+    if(this.currentTab == 'renew'){
+      this.retrieveExpPolList('filter');
+    }else if(this.currentTab == 'nonRenew'){
+      this.retrieveExpPolListNR('filter');
+    }
+    
+  }
+  //End Neco
 }
