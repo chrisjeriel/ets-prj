@@ -77,7 +77,7 @@
     <div header>List Of Values</div>
     <div body>
        <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
-       <app-cust-non-datatable [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);"></app-cust-non-datatable>
+       <app-loading-table [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-loading-table>
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">

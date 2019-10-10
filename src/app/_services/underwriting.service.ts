@@ -144,6 +144,10 @@ export class UnderwritingService {
         //return 100;
     }
 
+    newGetParListing(params) {
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolicyListing',{params:params});
+    }
+
     getParListing(searchParams: any []) {
         var params;
         if(searchParams.length < 1){

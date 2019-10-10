@@ -3,12 +3,12 @@
 </div>
 <div class="cust-tabs-container">
     <h4>Quotation</h4>
-    <ngb-tabset>
+    <ngb-tabset [destroyOnHide]="false">
         <ngb-tab class="ngb-tab" title="Quotation Processing">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 <div>
-                    <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selectedQuotation = $event; onRowDblClick()"
-                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy('fromScreen');" (export)="export()"></app-cust-non-datatable>
+                    <app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selectedQuotation = $event; onRowDblClick()"
+                        (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (searchToDb)="searchQuery($event)" (gnrc1)="onClickCopy();" (gnrc2)="onClickIntCompCopy('fromScreen');" (export)="export()"></app-loading-table>
                 </div>
             </ng-template>
         </ngb-tab>

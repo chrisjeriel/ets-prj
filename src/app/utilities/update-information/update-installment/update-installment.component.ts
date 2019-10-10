@@ -8,6 +8,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+
 
 @Component({
   selector: 'app-update-installment',
@@ -15,7 +17,12 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
   styleUrls: ['./update-installment.component.css']
 })
 export class UpdateInstallmentComponent implements OnInit {
-  searchParams: any[] = [];
+  searchParams: any = {
+        statusArr:['2'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        altNo:0        
+    };
   @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('instllmentTable') instllmentTable: CustEditableNonDatatableComponent;
@@ -23,6 +30,7 @@ export class UpdateInstallmentComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
   @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild('polLov') polLov: LoadingTableComponent;
 
   selectedPolicy: any = null;
   searchArr: any[] = Array(6).fill('');
@@ -104,6 +112,7 @@ export class UpdateInstallmentComponent implements OnInit {
   passDataLOV: any = {
     tableData: [],
     tHeader: ["Policy No", "Ceding Company", "Insured", "Risk"],
+    sortKeys : ['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
     dataTypes: ["text", "text", "text", "text"],
     pageLength: 10,
     resizable: [false, false, false, false],
@@ -111,8 +120,30 @@ export class UpdateInstallmentComponent implements OnInit {
     keys: ['policyNo', 'cedingName', 'insuredDesc', 'riskName'],
     pageStatus: true,
     pagination: true,
-    filters: [],
-    pageID: 'createPolLov'
+    filters: [
+      {
+          key: 'policyNo',
+          title: 'Policy No.',
+          dataType: 'text'
+      },
+      {
+          key: 'cedingName',
+          title: 'Ceding Company',
+          dataType: 'text'
+      },
+      {
+          key: 'insuredDesc',
+          title: 'Insured',
+          dataType: 'text'
+      },
+      {
+          key: 'riskName',
+          title: 'Risk',
+          dataType: 'text'
+      },
+    ],
+    pageID: 'createPolLov',
+    
   }
 
   passLOVData: any = {
@@ -290,19 +321,22 @@ export class UpdateInstallmentComponent implements OnInit {
   }
 
   retrievePolListing(param?) {
-    console.log('retrieve pol listing');
-    this.underwritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
+    if(param!=undefined){
+      this.passDataLOV.filters[0].search = param[0].search;
+      this.passDataLOV.filters[0].enabled =true;
+      this.searchParams.policyNo = param[0].search;
+    }
+    this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       this.instllmentTable.btnDisabled = true;
       this.otherTable.btnDisabled = true;
 
       var polList = data['policyList'];
       this.fetchedData = polList;
+      this.passDataLOV.count = data['length'];
 
       polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
         .map(p => { p.riskName = p.project.riskName; return p; });
-
-      this.passDataLOV.tableData = polList;
-      this.table.forEach(table => { table.refreshTable() });
+      this.polLov.placeData(polList);
 
       if (param !== undefined) {
         if (polList.length === 1 && !this.searchArr.includes('%%')) {
@@ -588,5 +622,12 @@ export class UpdateInstallmentComponent implements OnInit {
 
     return str === '' ? '' : String(str).padStart(num, '0');
   }
+
+  searchQuery(searchParams){
+      for(let key of Object.keys(searchParams)){
+          this.searchParams[key] = searchParams[key]
+      }
+      this.retrievePolListing();
+    }
 
 }
