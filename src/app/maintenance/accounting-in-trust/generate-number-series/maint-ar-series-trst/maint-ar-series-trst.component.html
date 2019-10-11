@@ -5,12 +5,12 @@
 			<legend class="scheduler-border">Series Option</legend>
 			<div class="input-group" style="margin-top: 5px">
 				<label class="form-control-sm col-sm-2">From</label>
-				<input type="text" class="form-control form-control-sm col-sm-2">
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.arFrom">
 				<label class="form-control-sm col-sm-1">To</label>
-				<input type="text" class="form-control form-control-sm col-sm-2">
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.arTo">
 				<div class="col-sm text-center">
-					<button class="cust-btn" style="min-width: 100px;margin-left: -25px">Generate</button>
-					<button class="cust-btn" style="min-width: 100px;">Search</button>
+					<button class="cust-btn" style="min-width: 100px;margin-left: -25px" (click)="onClickGenerate()">Generate</button>
+					<button class="cust-btn" style="min-width: 100px;" (click)="retrieveARSeries()">Search</button>
 				</div>
 			</div>
 		</fieldset>
@@ -28,9 +28,7 @@
 		</fieldset>
 	</div>
 	<div class="col-sm-2"></div>
-	<!-- <div class="col-sm-12">
-		<fieldset class="scheduler-border">
-			<legend class="scheduler-border">Generated Series</legend>
-		</fieldset>
-	</div> -->
 </div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="generateAR()"></app-confirm-save>
+<app-cancel-button (onYes)="generateAR('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
