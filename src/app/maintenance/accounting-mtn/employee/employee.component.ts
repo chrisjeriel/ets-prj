@@ -79,7 +79,9 @@ export class EmployeeComponent implements OnInit {
       emergencyNo : null,
     };
 
-  oldRecord : any ={};
+  oldRecord : any ={
+      tableData:[]
+  };
   company:any = {};
   boolPrint: boolean = true;
   boolOtherDetails: boolean = false;
@@ -322,7 +324,7 @@ export class EmployeeComponent implements OnInit {
    }
 
    cancelOtherDetails(){
-     
+     this.form.resetForm();
    }
 
    printPreview(data){

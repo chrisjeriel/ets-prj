@@ -98,7 +98,7 @@
                   </div>
                   <div class="input-group" style="margin-top: -12px !important;">
                         <label class="form-control-sm col-sm-2">Tax Identification No.</label>
-                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.tin" (ngModelChange)="otherDetails.tin=$event;">
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" (ngModelChange)="otherDetails.tin=$event;" [ngModel]="otherDetails?.tin">
                         <label class="form-control-sm col-sm-2">SSS No.</label>
                         <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.sssNo"  (ngModelChange)="otherDetails.sssNo=$event;" >
                    </div>
@@ -124,7 +124,7 @@
     </div>
     <div footer class="text-center w-100">
         <div>
-            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button>
+           <!--  <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button> -->
             <button class="cust-btn" type="button" (click)="modal.closeModal();saveOtherDetails();"><a>Save</a></button>
         </div>
     </div>
