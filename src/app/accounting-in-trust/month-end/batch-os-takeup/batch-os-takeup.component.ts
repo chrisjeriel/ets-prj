@@ -2,7 +2,8 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService, NotesService } from '@app/_services';
-import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { environment } from '@environments/environment';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -12,14 +13,16 @@ import * as SockJS from 'sockjs-client';
   styleUrls: ['./batch-os-takeup.component.css']
 })
 export class BatchOsTakeupComponent implements OnInit, OnDestroy {
-  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('txtArea') txtArea: ElementRef;
+  @ViewChild('eomOsMdl') eomOsMdl: ModalComponent;
 
   eomDate: string = '';
   dialogMsg: string = '';
   dialogIcon: string = '';
+  eomMessage: string = '';
+  returnCode: number = null;
   extLog: string = '';
-  webSocketEndPoint: string = 'http://localhost:8888/api/extractionLog';
+  webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/osLogs";
   stompClient: any;
 
@@ -64,20 +67,21 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickBookOS() {
+  onClickBookOS(force?) {
     this.extLog = '';
 
     var param = {
+      force: force === undefined ? 'N' : 'Y',
       eomDate: this.eomDate,
       eomUser: this.ns.getCurrentUser()
     }
 
     this.as.saveAcitMonthEndBatchOS(param).subscribe(data => {
-      /*if(data['returnCode'] == -1) {
-
-      } else {
-        
-      }*/
+      this.returnCode = data['returnCode'];
+      if(this.returnCode == 1 || this.returnCode == 2) {
+        this.eomMessage = data['eomMessage'];
+        this.eomOsMdl.openNoClose();
+      }
     });
   }
 

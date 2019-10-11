@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService, NotesService } from '@app/_services';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { environment } from '@environments/environment';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -12,10 +14,13 @@ import * as SockJS from 'sockjs-client';
 })
 export class MonEndBatchComponent implements OnInit, OnDestroy {
   @ViewChild('txtArea') txtArea: ElementRef;
+  @ViewChild('eomProdMdl') eomProdMdl: ModalComponent;
 
   eomDate: string = '';
   extLog: string = '';
-  webSocketEndPoint: string = 'http://localhost:8888/api/extractionLog';
+  eomMessage: string = '';
+  returnCode: number = null
+  webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/prodLogs";
   stompClient: any;
 
@@ -61,20 +66,21 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickGenerate() {
+  onClickGenerate(force?) {
     this.extLog = '';
 
     var param = {
+      force: force === undefined ? 'N' : 'Y',
       eomDate: this.eomDate,
       eomUser: this.ns.getCurrentUser()
     }
     
     this.as.saveAcitMonthEndBatchProd(param).subscribe(data => {
-      /*if(data['returnCode'] == -1) {
-        
-      } else {
-        
-      }*/
+      this.returnCode = data['returnCode'];
+      if(this.returnCode == 1 || this.returnCode == 2) {
+        this.eomMessage = data['eomMessage'];
+        this.eomProdMdl.openNoClose();
+      }
     });
   }
 

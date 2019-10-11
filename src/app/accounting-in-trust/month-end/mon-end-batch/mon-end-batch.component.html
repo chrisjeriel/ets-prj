@@ -36,3 +36,18 @@
     </ngb-tab>
   </ngb-tabset>
 </div>
+
+<app-modal #eomProdMdl class="d-none">
+    <div header>Confirmation</div>
+    <div body>
+      <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
+        <div class="custom-row-inline-inset" style="text-align: center">
+          <p>{{ eomMessage }}</p>
+        </div>
+      <!-- </fieldset> -->
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="returnCode == 2">
+        <button *ngIf="returnCode !== 2" class="cust-btn" type="button" (click)="onClickGenerate(true); eomProdMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="eomProdMdl.closeModal()"><a>{{ returnCode == 2 ? 'Ok' : 'No' }}</a></button>
+    </div>
+</app-modal>

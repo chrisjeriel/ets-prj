@@ -87,4 +87,17 @@
   </ngb-tabset>
 </div>
 
-<app-sucess-dialog [message]="dialogMsg" [icon]="dialogIcon"></app-sucess-dialog>
+<app-modal #eomOsMdl class="d-none">
+    <div header>{{ returnCode == 2 ? 'Message' : 'Confirmation' }}</div>
+    <div body>
+      <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
+        <div class="custom-row-inline-inset" style="text-align: center">
+          <p>{{ eomMessage }}</p>
+        </div>
+      <!-- </fieldset> -->
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="returnCode == 2">
+        <button *ngIf="returnCode !== 2" class="cust-btn" type="button" (click)="onClickBookOS(true); eomOsMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="eomOsMdl.closeModal()"><a>{{ returnCode == 2 ? 'Ok' : 'No' }}</a></button>
+    </div>
+</app-modal>
