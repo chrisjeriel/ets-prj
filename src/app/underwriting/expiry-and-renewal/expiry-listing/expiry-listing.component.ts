@@ -407,7 +407,7 @@ export class ExpiryListingComponent implements OnInit {
         this.table.overlayLoader = true;
         this.retrieveExpPolList();
       }else if(this.currentTab == 'nonRenew'){
-        this.table.overlayLoader = true;
+        this.nrTable.overlayLoader = true;
         this.retrieveExpPolListNR();
       }
   }
