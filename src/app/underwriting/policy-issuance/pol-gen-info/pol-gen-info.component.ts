@@ -554,6 +554,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.getValidBookingMth(this.policyInfo.issueDate,this.policyInfo.effDate);
       }else{
         setTimeout(a=>this.form.control.markAsPristine(),0);
+        this.dps.forEach(a=>a.markAsPristine());
+        this.ns.formGroup.markAsPristine();
         this.updateMinBookingDate();
       }
 
@@ -1005,7 +1007,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.dialogIcon = "";
          $('#polGenInfo > #successModalBtn').trigger('click');
          this.form.control.markAsPristine();
-         this.dps.forEach(a=>a.markAsPristine());
+         this.ns.formGroup.markAsPristine();
          this.forceExt = 0;
 
 
