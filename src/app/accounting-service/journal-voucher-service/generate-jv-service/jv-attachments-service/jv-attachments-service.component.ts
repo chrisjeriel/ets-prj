@@ -60,19 +60,24 @@ export class JvAttachmentsServiceComponent implements OnInit {
   savedData: any[];
   deletedData: any[];
   filesList: any [] = [];
+  createUser: any;
+  createDate: any;
+  updateUser: any;
+  updateDate: any;
 
   constructor(private accountingService: AccountingService,private ns: NotesService, private upload: UploadService) { }
 
   ngOnInit() {
     this.jvDetails = this.jvData;
+    this.retrieveAttachements();
   }
 
   retrieveAttachements(){
-    this.accountingService.getAcitAttachments(this.jvDetails.tranId).subscribe((data: any) =>{
+    this.accountingService.getAcseAttachments(this.jvDetails.tranId).subscribe((data: any) =>{
         console.log(data);
         this.passData.tableData = [];
-        if(data.acitAttachmentsList !== null){
-            for(var i of data.acitAttachmentsList){
+        if(data.acseAttachmentsList !== null){
+            for(var i of data.acseAttachmentsList){
                 i.fileNameServer = this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
                 this.passData.tableData.push(i);
             }
@@ -128,7 +133,7 @@ export class JvAttachmentsServiceComponent implements OnInit {
       delAttachmentsList: this.deletedData
     }
 
-    this.accountingService.saveAcitAttachments(params).subscribe((data: any) => {
+    this.accountingService.saveAcseAttachments(params).subscribe((data: any) => {
       console.log(data);
       if(data.returnCode === 0){
           this.dialogMessage="The system has encountered an unspecified error.";
@@ -203,5 +208,21 @@ export class JvAttachmentsServiceComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.onClickCancel();
+  }
+
+  onRowClick(data){
+    console.log(data)
+    if(data !== null){
+      this.createUser = data.createUser;
+      this.createDate = this.ns.toDateTimeString(data.createDate);
+      this.updateUser = data.updateUser;
+      this.updateDate = this.ns.toDateTimeString(data.updateDate);
+    }else{
+      this.createUser = '';
+      this.createDate = '';
+      this.updateUser = '';
+      this.updateDate = '';
+    }
+    
   }
 }

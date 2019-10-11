@@ -26,6 +26,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   @Input() jvDetail:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
 
   /*passData: any = {
@@ -192,6 +193,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.passData.deleteFlag = false;
        this.passData.checkFlag =  false;
        this.passData.btnDisabled = true;
+       this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
@@ -256,7 +258,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   openSoaLOV(data){
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
-    console.log(this.passLov.hide);
     this.lovMdl.openLOV();
   }
 
@@ -266,25 +267,24 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data);
     var overdue = null;
 
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
-      this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
-      this.passData.tableData[this.passData.tableData.length - 1].soaNo = data.data[i].soaNo;
-      this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passData.tableData[this.passData.tableData.length - 1].tranId = this.jvDetail.tranId;
-      this.passData.tableData[this.passData.tableData.length - 1].policyNo = data.data[i].policyNo;
-      this.passData.tableData[this.passData.tableData.length - 1].coRefNo  = data.data[i].coRefNo;
-      this.passData.tableData[this.passData.tableData.length - 1].instNo  = data.data[i].instNo;
-      this.passData.tableData[this.passData.tableData.length - 1].effDate  = data.data[i].effDate;
-      this.passData.tableData[this.passData.tableData.length - 1].dueDate  = data.data[i].dueDate;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd  = data.data[i].currCd;
-      this.passData.tableData[this.passData.tableData.length - 1].currRate  = data.data[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG     = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited     = true;
+      this.passData.tableData[this.passData.tableData.length - 1].itemNo     = null;
+      this.passData.tableData[this.passData.tableData.length - 1].soaNo      = data.data[i].soaNo;
+      this.passData.tableData[this.passData.tableData.length - 1].policyId   = data.data[i].policyId;
+      this.passData.tableData[this.passData.tableData.length - 1].tranId     = this.jvDetail.tranId;
+      this.passData.tableData[this.passData.tableData.length - 1].policyNo   = data.data[i].policyNo;
+      this.passData.tableData[this.passData.tableData.length - 1].coRefNo    = data.data[i].coRefNo;
+      this.passData.tableData[this.passData.tableData.length - 1].instNo     = data.data[i].instNo;
+      this.passData.tableData[this.passData.tableData.length - 1].effDate    = data.data[i].effDate;
+      this.passData.tableData[this.passData.tableData.length - 1].dueDate    = data.data[i].dueDate;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd         = data.data[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currRate       = data.data[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt  = data.data[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiComm  = data.data[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat  = data.data[i].prevRiCommVat;
@@ -304,7 +304,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    if(this.refundError()){
+      this.dialogMessage = 'Refund must not exceed cummulative payments.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   update(data){
@@ -330,18 +336,18 @@ export class JvInwardPolBalanceComponent implements OnInit {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         edited.push(this.passData.tableData[i]);
         edited[edited.length - 1].localAmt = this.passData.tableData[i].paytAmt * this.passData.tableData[i].currRate;
-        edited[edited.length - 1].netDue = this.passData.tableData[i].remainingBal;
+        edited[edited.length - 1].netDue = this.passData.tableData[i].paytAmt;
         edited[edited.length - 1].createUser = this.ns.getCurrentUser();
         edited[edited.length - 1].createDate = this.ns.toDateTimeString(0);
         edited[edited.length - 1].updateUser = this.ns.getCurrentUser();
         edited[edited.length - 1].updateDate = this.ns.toDateTimeString(0);
-        if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt > 0){
+        if(this.passData.tableData[i].balance >= 0 && this.passData.tableData[i].paytAmt >= 0){
            edited[edited.length - 1].paytType = 1
-         }else if(this.passData.tableData[i].balance > 0 && this.passData.tableData[i].paytAmt < 0){
+         }else if(this.passData.tableData[i].balance >= 0 && this.passData.tableData[i].paytAmt < 0){
            edited[edited.length - 1].paytType = 2
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt < 0){
+         }else if(this.passData.tableData[i].balance <= 0 && this.passData.tableData[i].paytAmt <= 0){
            edited[edited.length - 1].paytType = 3
-         }else if(this.passData.tableData[i].balance < 0 && this.passData.tableData[i].paytAmt > 0){
+         }else if(this.passData.tableData[i].balance <= 0 && this.passData.tableData[i].paytAmt > 0){
            edited[edited.length - 1].paytType = 4
          }
       }
@@ -376,6 +382,13 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data);
+    /*if(data !== null){
+      this.infoData.emit(data);
+    }*/
   }
 
   refundError():boolean{

@@ -16,7 +16,7 @@
  	</div>
 	<div class="row">
 	    <div class="col-sm-12" style="margin-top: 15px" >
-		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (clickLOV)="quarterEndModal($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+		  <app-cust-editable-non-datatable [passData]="passData" style="width: 100%" (clickLOV)="quarterEndModal($event)" (tableDataChange)="update($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 	   </div>
 	</div>
 	<div class="form-row" style="margin-top: 13px !important;">

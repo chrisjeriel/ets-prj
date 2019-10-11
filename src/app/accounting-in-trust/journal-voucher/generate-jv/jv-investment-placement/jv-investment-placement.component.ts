@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvInvestmentPlacementComponent implements OnInit {
   
   @Input() jvDetail;
+  @Output() infoData = new EventEmitter<any>();
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -89,10 +90,21 @@ export class JvInvestmentPlacementComponent implements OnInit {
   cancelFlag: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
+  disable = true;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
+    if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [true, true, true, true, true, true,true, true, true, true, true, false];
+      this.disable = true;
+    }
     this.getBank();
   }
 
@@ -118,7 +130,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   changeBank(data){
-    console.log(data)
     this.passData.tableData = [];
     this.table.refreshTable();
     this.selectedBank = data;
@@ -137,7 +148,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   changeBankAcct(data){
-    console.log(data)
     this.accountNo = data.bankAcctCd;
     this.selectedBankAcct = data;
     this.retrieveInvPlacement();
@@ -234,7 +244,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDetails)
     this.accService.saveInvPlacement(this.jvDetails).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -247,5 +256,9 @@ export class JvInvestmentPlacementComponent implements OnInit {
         this.retrieveInvPlacement();
       }
     })
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data)
   }
 }

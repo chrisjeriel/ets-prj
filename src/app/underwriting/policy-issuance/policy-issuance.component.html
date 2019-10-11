@@ -147,7 +147,7 @@
   		</ngb-tab>
   		<ngb-tab title="Premium Coll" *ngIf="fromSummary">
 			<ng-template ngbTabContent>
-				<app-premium-coll></app-premium-coll>
+				<app-premium-coll [policyInfo]="policyInfo"></app-premium-coll>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Claims" *ngIf="fromSummary">

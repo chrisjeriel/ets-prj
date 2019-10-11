@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationList } from '@app/_models';
 import { QuotationService, NotesService } from '../../../_services';
 import { QuotationProcessing } from '@app/_models';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '@environments/environment';
 import * as alasql from 'alasql';
@@ -14,7 +14,7 @@ import * as alasql from 'alasql';
     styleUrls: ['./list-of-quotations.component.css']
 })
 export class ListOfQuotationsComponent implements OnInit {
-    @ViewChildren(CustNonDatatableComponent) table: QueryList<CustNonDatatableComponent>;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     //Table Parameters
     tableData: any[] = [];
     allData: any[] = [];
@@ -33,7 +33,10 @@ export class ListOfQuotationsComponent implements OnInit {
     i: number;
     //quoteList: QuotationList = new QuotationList(null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
     quoteList: any = {};
-    searchParams: any[] = [];
+    searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+    };
     records: any[] = [];
     line: string = "";
     quotationNo: string = "";
@@ -62,91 +65,92 @@ export class ListOfQuotationsComponent implements OnInit {
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
-        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text', 'text'],
+        sortKeys:['QUOTATION_NO','CESSION_DESCRIPTION','CLASS_DESCRIPTION','STATUS','CEDING_NAME','PRINCIPAL_NAME','CONTRACTOR_NAME','RISK_NAME','OBJECT_DESCRIPTION','SITE','CURRENCY_CD','TOTAL_SI','OPTION_RT','ISSUE_DATE','EXPIRY_DATE','REQ_BY','CREATE_USER'],
+        dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text', 'text'],     
         filters: [
-        {
-            key: 'quotationNo',
-            title: 'Quotation No.',
-            dataType: 'text'
-        },
-        {
-            key: 'cessionDesc',
-            title: 'Type of Cession',
-            dataType: 'text'
-        },
-        {
-            key: 'lineClassCdDesc',
-            title: 'Line Class',
-            dataType: 'text'
-        },
-        {
-            key: 'status',
-            title: 'Status',
-            dataType: 'text'
-        },
-        {
-            key: 'cedingName',
-            title: 'Ceding Co.',
-            dataType: 'text'
-        },
-        {
-            key: 'principalName',
-            title: 'Principal',
-            dataType: 'text'
-        },
-        {
-            key: 'contractorName',
-            title: 'Contractor',
-            dataType: 'text'
-        },
-        {
-            key: 'riskName',
-            title: 'Risk',
-            dataType: 'text'
-        },
-        {
-            key: 'objectDesc',
-            title: 'Object',
-            dataType: 'text'
-        },
-        {
-            key: 'site',
-            title: 'Site',
-            dataType: 'text'
-        },
-        {
-            key: 'policyNo',
-            title: 'Policy No.',
-            dataType: 'seq'
-        },
-        {
-            keys: {
-                    from: 'issueDateFrom',
-                    to: 'issueDateTo'
-                },
-            title: 'Quote Date',
-            dataType: 'datespan'
-        },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
-        {
-            key: 'currencyCd',
-            title: 'Currency',
-            dataType: 'text'
-        },
-        {
-            key: 'reqBy',
-            title: 'Requested By',
-            dataType: 'text'
-        },
-       {
-            key: 'createUser',
-            title: 'Created By',
-            dataType: 'text'
-        },
+            {
+                key: 'quotationNo',
+                title: 'Quotation No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionDesc',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'lineClassCdDesc',
+                title: 'Line Class',
+                dataType: 'text'
+            },
+            {
+                key: 'status',
+                title: 'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingName',
+                title: 'Ceding Co.',
+                dataType: 'text'
+            },
+            {
+                key: 'principalName',
+                title: 'Principal',
+                dataType: 'text'
+            },
+            {
+                key: 'contractorName',
+                title: 'Contractor',
+                dataType: 'text'
+            },
+            {
+                key: 'riskName',
+                title: 'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'objectDesc',
+                title: 'Object',
+                dataType: 'text'
+            },
+            {
+                key: 'site',
+                title: 'Site',
+                dataType: 'text'
+            },
+            {
+                key: 'policyNo',
+                title: 'Policy No.',
+                dataType: 'seq'
+            },
+            {
+                keys: {
+                        from: 'issueDateFrom',
+                        to: 'issueDateTo'
+                    },
+                title: 'Quote Date',
+                dataType: 'datespan'
+            },
+            {
+                key: 'expiryDate',
+                title: 'Valid Until',
+                dataType: 'date'
+            },
+            {
+                key: 'currencyCd',
+                title: 'Currency',
+                dataType: 'text'
+            },
+            {
+                key: 'reqBy',
+                title: 'Requested By',
+                dataType: 'text'
+            },
+           {
+                key: 'createUser',
+                title: 'Created By',
+                dataType: 'text'
+            },
         ],
         pageLength: 10,
         expireFilter: false, checkFlag: false, tableOnly: false, fixedCol: false, printBtn: false, pageStatus: true, pagination: true, pageID: 1, exportFlag: true,
@@ -170,39 +174,41 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
-        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+        this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
+            this.passData.count = data['length'];
+            let recs: any[] = [];
             for(let rec of this.records){
-                this.passData.tableData.push({
-                                                quotationNo: rec.quotationNo,
-                                                cessionDesc: rec.cessionDesc,
-                                                lineClassCdDesc: rec.lineClassCdDesc,
-                                                status: rec.status,
-                                                cedingId: rec.cedingId,
-                                                cedingName: rec.cedingName,
-                                                prinId: rec.principalId,
-                                                principalName: rec.principalName,
-                                                contractorId: rec.contractorId,
-                                                contractorName: rec.contractorName,
-                                                insuredDesc: rec.insuredDesc,
-                                                riskName: (rec.project == null) ? '' : rec.project.riskName,
-                                                objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                site: (rec.project == null) ? '' : rec.project.site,
-                                                policyNo: rec.policyNo,
-                                                currencyCd: rec.currencyCd,
-                                                issueDate: new Date(rec.issueDate),
-                                                expiryDate: new Date(rec.expiryDate),
-                                                reqBy: rec.reqBy,
-                                                createUser: rec.createUser,
-                                                preparedBy: rec.preparedBy,
-                                                approvedBy: rec.approvedBy,
-                                                firstOptionRt: rec.firstOptionRt,
-                                                sumInsured: rec.sumInsured
-                                            });
+                recs.push({
+                            quotationNo: rec.quotationNo,
+                            cessionDesc: rec.cessionDesc,
+                            lineClassCdDesc: rec.lineClassCdDesc,
+                            status: rec.status,
+                            cedingId: rec.cedingId,
+                            cedingName: rec.cedingName,
+                            prinId: rec.principalId,
+                            principalName: rec.principalName,
+                            contractorId: rec.contractorId,
+                            contractorName: rec.contractorName,
+                            insuredDesc: rec.insuredDesc,
+                            riskName: (rec.project == null) ? '' : rec.project.riskName,
+                            objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
+                            site: (rec.project == null) ? '' : rec.project.site,
+                            policyNo: rec.policyNo,
+                            currencyCd: rec.currencyCd,
+                            issueDate: new Date(rec.issueDate),
+                            expiryDate: new Date(rec.expiryDate),
+                            reqBy: rec.reqBy,
+                            createUser: rec.createUser,
+                            preparedBy: rec.preparedBy,
+                            approvedBy: rec.approvedBy,
+                            firstOptionRt: rec.firstOptionRt,
+                            sumInsured: rec.sumInsured
+                        });
             }
 
-
-               this.table.forEach(table => { table.refreshTable() });
+            this.table.placeData(recs);
+               //this.table.forEach(table => { table.refreshTable() });
         });
     }
 
@@ -221,8 +227,9 @@ export class ListOfQuotationsComponent implements OnInit {
 
     //Method for DB query
     searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
         this.retrieveQuoteListingMethod();
         this.quoteList = {};
         this.passData.btnDisabled = true;

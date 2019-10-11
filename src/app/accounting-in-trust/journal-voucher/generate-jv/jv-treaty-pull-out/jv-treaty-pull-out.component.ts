@@ -20,6 +20,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvTreatyPullOutComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -146,6 +147,17 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.readOnly = false;
     }else {
       this.readOnly = true;
+      this.readOnly = true;
+      this.passData.addFlag = false;
+      this.passData.checkFlag = false;
+      this.invesmentData.checkFlag = false;
+      this.passData.deleteFlag = false;
+      this.invesmentData.addFlag = false;
+      this.invesmentData.deleteFlag = false;
+      this.passData.uneditable = [true,true,true,true,true];
+      this.passData.disableAdd = true;
+      this.invesmentData.uneditable = [true, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],    
+      this.invesmentData.disableAdd = true;
     }
   	this.retrieveInvPullOut();
   }
@@ -177,7 +189,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    console.log(data)
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.cedingId = data.payeeCd;
     this.passData.disableAdd = false;
@@ -209,10 +220,14 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData = [];
     }
     this.invTable.refreshTable();
+    this.infoData.emit(data);
+  }
+
+  invClick(data){
+    this.infoData.emit(data);
   }
 
   setQuarter(data){
-    console.log(data)
     var quarterNo = null;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -250,7 +265,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data.data);
     this.quarterTable.indvSelect.trtyInvmt = this.quarterTable.indvSelect.trtyInvmt.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
       this.quarterTable.indvSelect.trtyInvmt.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
@@ -287,7 +301,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   openLOV(data){
     this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'MATURED'}];
     this.passLov.hide = this.invesmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
-    console.log(this.passLov.hide);
     this.lovMdl.openLOV();
   }
 
@@ -351,9 +364,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDetails);
     this.accountingService.saveTrtyInv(this.jvDetails).subscribe((data:any) => {
-      console.log(data)
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -372,13 +383,10 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.jvDetails)
     this.cancelBtn.clickCancel();
   }
 
   update(data){
-    console.log('datachange')
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].maturityValue = this.passData.tableData[i].maturityValue * 1;
     }

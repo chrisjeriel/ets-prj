@@ -38,5 +38,6 @@ display: none;
 ul.timeline > li:hover {
     background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
     cursor: pointer;
+    border-radius: 5px;
     /*padding-left: 20px;*/
 }

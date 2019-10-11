@@ -10,6 +10,7 @@ import { MtnSectionCoversComponent } from '@app/maintenance/mtn-section-covers/m
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-coverage',
@@ -27,6 +28,7 @@ export class CoverageComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild('infoCov') modal : ModalComponent;
   @Output() enblQuoteOpTab = new EventEmitter<any>();
+  @ViewChild(NgForm) remarksForm:NgForm;
   editedData: any[] = [];
   deletedData: any[] = [];
   //deletedEditedData: any[] = [];
@@ -346,6 +348,7 @@ export class CoverageComponent implements OnInit {
             this.editedData = [];
             this.deletedData =[];
             this.enblEndtTab.emit(true);
+            this.remarksForm.control.markAsPristine();
             //this.getCoverageInfo();
            }
       });

@@ -327,7 +327,15 @@ export class WfNotesComponent implements OnInit {
   }
 
 
-  redirectToQuoteGenInfo(data) {
+  redirectToQuoteGenInfo(origin, data) {
+    if (origin == 'detail') {
+      var temp = data;
+      data = {};
+      data.referenceNo = temp.details;
+      data.referenceId = temp.referenceId;
+    }
+
+
     console.log("redirectToQuoteGenInfo");
     console.log(data);
     var line = data.referenceNo.split("-")[0];
@@ -342,7 +350,7 @@ export class WfNotesComponent implements OnInit {
   }
 
 
-  redirectToPolGenInfo(relData) {
+  redirectToPolGenInfo(origin, relData) {
 
     /*for(let rec of this.fetchedData){
           if(rec.policyNo === this.uwService.rowData[0]) {
@@ -356,6 +364,12 @@ export class WfNotesComponent implements OnInit {
     }
     this.polLine = this.uwService.rowData[0].split("-")[0];
     this.policyNo = this.uwService.rowData[0];*/
+
+    if (origin == 'detail') {
+      var temp = relData;
+      relData = {};
+      relData.referenceNo = temp;
+    }
 
     console.log('redirectToPolGenInfo');
     console.log(relData);
@@ -408,8 +422,5 @@ export class WfNotesComponent implements OnInit {
           }
     });
 
-    
-
-    /**/
   }
 }

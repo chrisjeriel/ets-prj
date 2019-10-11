@@ -194,8 +194,9 @@
                     <div class="col-sm-6">
                       <div class="input-group">
                         <label class="form-control-sm col-sm-2">Loss Date</label>
-                        <input type="text" class="form-control form-control-sm cust-sm" 
-                          readonly [ngModel]="claimDetails?.lossDate">
+                          <div class="col-sm-4" style="padding: 0px">
+                              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="claimDetails?.lossDate"></datepicker>
+                          </div>
                         <label class="form-control-sm col-sm-2">Currency</label>
                         <input type="text" class="form-control form-control-sm cust-sm" readonly [ngModel]="claimDetails?.currencyCd">
                       </div>
@@ -263,7 +264,7 @@
 <app-modal hidden [btnTitle]="'List Of Values'" #polListMdl>
     <div header>List Of Values</div>
     <div body>
-       <app-cust-non-datatable [passData]="polListData" (rowClick)="selectedPolicy=$event" #polListTable></app-cust-non-datatable>
+       <app-cust-non-datatable [passData]="polListData" #polListTable></app-cust-non-datatable>
     </div>
     <div footer class="text-center w-100">
         <div class="col-sm-12 text-center">

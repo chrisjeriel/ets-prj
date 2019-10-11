@@ -1,21 +1,25 @@
 <div class="form-row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
-		<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openLOV($event)"></app-cust-editable-non-datatable>
+		<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openLOV($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 	</div>
 	<div class="col-sm-2"></div>
 </div>
 <!-- *ngIf="record.orStatDesc.toUpperCase() == 'NEW'" -->
-<div class="form-row" >
+<div class="form-row" *ngIf="record.orStatDesc.toUpperCase() == 'NEW'">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" ><a>Cancel</a></button>
-          <button type="button" class="cust-btn" ><a>Save</a></button>
+          <button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
         </div>
       </div>
     </div>
 </div>
 
 <app-quarter-ending-lov (selectedData)="setSelectedData($event)"></app-quarter-ending-lov>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" ></app-cancel-button>

@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { QuotationService, NotesService, UserService } from '@app/_services';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-quote-modification',
@@ -10,11 +11,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./quote-modification.component.css']
 })
 export class QuoteModificationComponent implements OnInit {
-	@ViewChild('quModifLov') lovTable: CustNonDatatableComponent;
+	@ViewChild('quModifLov') lovTable: LoadingTableComponent;
+	@ViewChild(ModalComponent) mmdl: ModalComponent;
 
 	passDataLOV: any = {
 	  tableData: [],
 	  tHeader:["Quotation No", "Ceding Company", "Insured", "Risk"],  
+	  sortKeys:['QUOTATION_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
 	  dataTypes: ["text","text","text","text"],
 	  pageLength: 10,
 	  resizable: [false,false,false,false],
@@ -23,12 +26,18 @@ export class QuoteModificationComponent implements OnInit {
 	  pageStatus: true,
 	  pagination: true,
 	  filters: [
-	  /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
-	  {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
-	  {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-	  {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
+	 				{key: 'quotationNo', title: 'Quotation No', dataType: 'text'},
+                    {key: 'cedingName',  title: 'Ceding Co',    dataType: 'text'},
+                    {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
+                    {key: 'riskName',    title: 'Risk',         dataType: 'text'}],
 	  pageID: 'quModifLov'
 	}
+
+	searchParams: any = {
+        statusArr:['3'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+    };
 
 	selected: any = null;
 	quList: any[] = [];
@@ -49,18 +58,20 @@ export class QuoteModificationComponent implements OnInit {
 	}
 
 	getQuoteListing(param?) {
-		this.lovTable.loadingFlag = true;
-		this.qs.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
+		console.log(param)
+		this.lovTable.overlayLoader = true;
+		this.qs.newGetQuoProcessingData(this.searchParams).subscribe(data => {
+			this.passDataLOV.count = data['length'];
 		  	this.quList = data['quotationList'];
-			this.passDataLOV.filters = [{key: 'quotationNo', title: 'Quotation No', dataType: 'text'},
-		                                {key: 'cedingName',  title: 'Ceding Co',    dataType: 'text'},
-		                                {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
-		                                {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
+			// this.passDataLOV.filters = [{key: 'quotationNo', title: 'Quotation No', dataType: 'text'},
+		 //                                {key: 'cedingName',  title: 'Ceding Co',    dataType: 'text'},
+		 //                                {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
+		 //                                {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-		    this.quList = this.quList.filter(qu => qu.status.toUpperCase() === 'RELEASED')
-		                             .map(qu => { qu.riskName = qu.project.riskName; return qu; });
-		    this.passDataLOV.tableData = this.quList;
-		    this.lovTable.refreshTable();
+		    this.quList = this.quList.map(qu => { qu.riskName = qu.project!= null ? qu.project.riskName:null; return qu; });
+		    //this.passDataLOV.tableData = this.quList;
+		    this.lovTable.placeData(this.quList);
+		    //this.lovTable.refreshTable();
 
 		    if(param !== undefined) {
 		    	if(this.quList.length == 1 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {  
@@ -68,9 +79,11 @@ export class QuoteModificationComponent implements OnInit {
 		        	this.setDetails();
 		      	} else if(this.quList.length == 0 && this.quNo.length == 5 && !this.searchArr.includes('%%')) {
 		        	this.clearFields();
+		        	this.clearParams();
 		        	this.getQuoteListing();
 		        	this.showLOV();
 		      	} else if(this.quList.length == 0 && this.searchArr.includes('%%')) {
+		      		this.clearParams();
 		      		this.getQuoteListing();
 		      	} else if(this.searchArr.includes('%%')) {
 		      		this.selected = null;
@@ -82,7 +95,16 @@ export class QuoteModificationComponent implements OnInit {
 		});
 	}
 
+	clearParams(){
+		this.searchParams= {
+						        statusArr:['3'],
+						        'paginationRequest.count':10,
+						        'paginationRequest.position':1,   
+						    };
+	}
+
 	search(key,ev) {
+		console.log(ev)
     	var a = ev.target.value;
 
     	if(ev != 'forceSearch' && a == '') {
@@ -94,7 +116,7 @@ export class QuoteModificationComponent implements OnInit {
     	if(key === 'lineCd') {
     	  this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
     	} else if(key === 'year') {
-    	  this.searchArr[1] = '%' + a + '%';
+    	  this.searchArr[1] = a === '' ? '%%' : '%' + a + '%';
     	} else if(key === 'seqNo') {
     	  this.searchArr[2] = a == '' ? '%%' : '%' + String(a).padStart(5, '0') + '%';
     	} else if(key === 'revNo') {
@@ -106,8 +128,11 @@ export class QuoteModificationComponent implements OnInit {
     	if(this.searchArr.includes('')) {
     	  this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
     	}
-
-    	this.getQuoteListing([{ key: 'quotationNo', search: this.searchArr.join('-') }]);
+    	this.searchParams.quotationNo = this.searchArr.join('-');
+    	this.passDataLOV.tableData = [];
+    	this.passDataLOV.filters[0].search = this.searchArr.join('-');
+    	this.passDataLOV.filters[0].enabled =true;
+    	this.getQuoteListing('manual');
 	}
 
 	pad(ev,num) {
@@ -117,7 +142,10 @@ export class QuoteModificationComponent implements OnInit {
 	}
 
 	showLOV() {
-		$('#quModifLovMdl > #modalBtn').trigger('click');
+		//this.searchParams = 
+		//$('#quModifLovMdl > #modalBtn').trigger('click');
+		this.lovTable.p = 1;
+		this.mmdl.openNoClose();
 	}
 
 	setDetails(fromMdl?) {
@@ -146,9 +174,14 @@ export class QuoteModificationComponent implements OnInit {
 	}
 
 	searchQuery(searchParams){
-		this.filtSearch = searchParams;
-	  	this.passDataLOV.tableData = [];
-	  	this.getQuoteListing(this.filtSearch);
+		//this.filtSearch = searchParams;
+		for(let key of Object.keys(searchParams)){
+			//if(key == 'quotationNo' && this.searchParams[key] != undefined)
+            this.searchParams[key] = searchParams[key]
+        }
+
+	  	//this.passDataLOV.tableData = [];
+	  	this.getQuoteListing();
 	}
 
 	clearFields() {

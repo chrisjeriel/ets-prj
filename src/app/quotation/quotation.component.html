@@ -9,6 +9,11 @@
 					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Item" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE016') == -1"  *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+			<ng-template ngbTabContent>
+				<app-quo-item [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" ></app-quo-item>
+			</ng-template>
+		</ngb-tab>
 		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE003') == -1">
 			<ng-template ngbTabTitle>
 				<div>Coverage</div>
@@ -136,14 +141,14 @@
 			</ng-template>
 
 		</ngb-tab>
-		<!-- <ngb-tab id="NotesReminders">
+		<ngb-tab id="NotesReminders" *ngIf="!inquiryFlag">
 				<ng-template ngbTabTitle>
 					<div>Notes & Reminders</div>
 				</ng-template>
     			<ng-template ngbTabContent>
-    				<app-wf-form-common [quotationInfo]="quoteInfo"></app-wf-form-common>
+    				<app-wf-form-common [moduleSource]="'Quotation'" [quotationInfo]="quoteInfo"></app-wf-form-common>
     			</ng-template>
-  		</ngb-tab> -->
+  		</ngb-tab>
 		<ngb-tab id="Exit">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>

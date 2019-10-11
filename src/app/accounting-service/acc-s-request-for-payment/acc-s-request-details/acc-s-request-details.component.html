@@ -41,31 +41,30 @@
             </ng-template>
             <ng-template ngbTabContent>
                <div class="input-group cust-border" style="padding-top: 0.6em">
-                <div class="col-sm-12">
-                    <ng-container [ngSwitch]="true">
-                        <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 5">
-                            <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl></app-cust-editable-non-datatable>
+                    <div class="col-sm-12">
+                        <ng-container [ngSwitch]="true">
+                            <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 5">
+                                <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl></app-cust-editable-non-datatable>
+                            </ng-container>
+                            <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 2">
+                                <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl></app-cust-editable-non-datatable>
+                            </ng-container>
                         </ng-container>
-                        <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 2">
-                            <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl></app-cust-editable-non-datatable>
-                        </ng-container>
-                    </ng-container>
+                        <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="(requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+                            <div class="form-group col-sm-12">
+                                <div class="text-center">
+                                    <div class="cust-btn-container">
+                                        <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                                        <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </ng-template>
-    </ngb-tab>
-</ngb-tabset>
-</div>
-
-<div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="(requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
-    <div class="form-group col-sm-12">
-        <div class="text-center">
-          <div class="cust-btn-container">
-            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-        </div>
-    </div>
-</div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
 </div>
 
 <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;padding-right: 0px !important;">
@@ -87,9 +86,7 @@
     </fieldset>
 </div>
 
-
+<app-lov #lov [passData]="passData" (selectedData)="setData($event,'pcvdata')" [lovCheckBox]="true"></app-lov>
 <app-confirm-save  #con (onYes)="onSave()"></app-confirm-save>
 <app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/acc-s-request-for-payment'" ></app-cancel-button>
-
-<app-lov #lov [passData]="passData" (selectedData)="setData($event,'pcvdata')" [lovCheckBox]="true"></app-lov>

@@ -63,7 +63,23 @@
 										</div>
 										<div class="input-group" style="margin: -2px 0 0 0;">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
-											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleReminder">
+											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleReminder">
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input197" [checked]="impTag" (change)="impTag = !impTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+											</div>
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input199" [checked]="urgTag" (change)="urgTag = !urgTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+											</div>
 										</div>
 										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
@@ -71,7 +87,7 @@
 										</div>
 										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
-											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="'Quotation Number : ' + policyInfo.quotationNo">
+											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="relatedRecordTxt">
 										</div>
 									</div>
 			                </fieldset>
@@ -83,7 +99,23 @@
 			                		<div class="form-row custom-row-inline-inset">
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
-											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="titleNote">
+											<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleNote">
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input197" [checked]="impTag" (change)="impTag = !impTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+											</div>
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input199" [checked]="urgTag" (change)="urgTag = !urgTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+											</div>
 										</div>
 										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
@@ -91,8 +123,15 @@
 										</div>
 										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
 											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
-											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="'Quotation Number : ' + policyInfo.quotationNo">
+											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="relatedRecordTxt">
 										</div>
+										<!-- <div class="input-group" style="margin: 0 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
+											<div class="form-control form-control-sm cust-sm col-sm-10" style="padding: 0px !important; border: none; height: calc(1.3rem + 1px) !important;">
+	                                            <text-editor [table]="false" name="Related Record" [editorContent]="relatedRecordTxt" [readonly]="true" [editablePrev]="false">
+	                                            </text-editor>
+	                                        </div>
+										</div> -->
 									</div>
 			                </fieldset>
 			            </div>
@@ -121,13 +160,21 @@
 											<label class="form-control-sm" for="radio3">Assign to many</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
-											 <button type="button" class="cust-btn col-sm-2" style="margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
 											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
 										</div>
 										<div class="input-group" style="margin: 10px 0 0 0;">
+											<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio3">Assign to group</label>
+										</div>
+										<div class="input-group" style="margin: -10px 0 0 0; padding-bottom: 9px;">
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUserGrpLOV('0')"  [disabled]= disableAssignToMany><a>Groups</a></button>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
+										</div>
+										<!-- <div class="input-group" style="margin: 10px 0 0 0;">
 											<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
 											<label class="form-control-sm" for="radio4">Assign to all</label>
-										</div>
+										</div> -->
 										<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 											 <button style="z-index: 20 !important;" type="button" class="cust-btn"><a>Clear</a></button>
 											 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="onClickSave();" [disabled]=disablebtnBool><a>Save</a></button>
@@ -169,6 +216,20 @@
 				        <div class="d-flex justify-content-center">
 				            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); cancel();"><a>Cancel</a></button>  
 				            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Ok</a></button>
+				        </div>
+				    </div>
+				</app-modal>
+
+				
+				<app-modal style="z-index: 99999;" class="d-none" (modalOpened)="openModalGrp()" id="userGrpListing">
+					<div header>List of Values</div>
+					<div body>
+						<app-cust-non-datatable #userGrpTable [passData]="userGrpListing"></app-cust-non-datatable>
+					</div>
+					<div footer>
+				        <div class="d-flex justify-content-center">
+				            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>  
+				            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 				        </div>
 				    </div>
 				</app-modal>

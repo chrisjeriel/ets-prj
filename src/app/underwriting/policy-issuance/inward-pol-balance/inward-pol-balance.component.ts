@@ -115,11 +115,11 @@ export class InwardPolBalanceComponent implements OnInit {
       this.passData2.checkFlag= false;
       this.passData.checkFlag= false;
 
-      this.passData.tHeader = ['Inst No','Due Date','Booking Date','Acct. Entry Date','Premium','Comm Rate(%)','Comm Amt','VAT on R/I Comm','Other Charges','Amount Due'];
-      this.passData.keys = ['instNo','dueDate','bookingDate','acctEntDate','premAmt','commRt','commAmt','vatRiComm','otherChargesInw','amtDue'];
-      this.passData.total = [null,null,null,'Total','premAmt',null,'commAmt','vatRiComm','otherChargesInw','amtDue'];
-      this.passData.dataTypes = ["number","date","date","date","currency","percent","currency","currency","currency","currency",];
-      this.passData.widths = ["1", "1", "1", "1", "auto", "auto", "auto", "auto", "auto", "auto"];
+      this.passData.tHeader = ['Inst No','Due Date','Booking Date','Memo No','Acct. Entry Date','Premium','Comm Rate(%)','Comm Amt','VAT on R/I Comm','Other Charges','Amount Due'];
+      this.passData.keys = ['instNo','dueDate','bookingDate','memoNo','acctEntDate','premAmt','commRt','commAmt','vatRiComm','otherChargesInw','amtDue'];
+      this.passData.total = [null,null,null,null,'Total','premAmt',null,'commAmt','vatRiComm','otherChargesInw','amtDue'];
+      this.passData.dataTypes = ["number","date","date",'text',"date","currency","percent","currency","currency","currency","currency",];
+      this.passData.widths = ["1", "1", "1", "1","1", "auto", "auto", "auto", "auto", "auto", "auto"];
 
 
       for(let key of this.passData.keys)

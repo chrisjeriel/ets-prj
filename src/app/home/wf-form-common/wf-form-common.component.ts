@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { WorkFlowManagerService, NotesService, UserService } from '@app/_services';
+import { WorkFlowManagerService, NotesService, UserService, MaintenanceService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -18,12 +18,14 @@ export class WfFormCommonComponent implements OnInit {
   	 private userService: UserService,
      public modalService: NgbModal,
      private workFlowManagerService: WorkFlowManagerService, 
-     private ns: NotesService) { }
+     private ns: NotesService,
+     private mtnService: MaintenanceService) { }
   
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild("recipientsTable") recipientsTable: CustEditableNonDatatableComponent;
+  @ViewChild("userGrpTable") userGrpTable: CustEditableNonDatatableComponent;
 
   recipientsData: any = {
         tableData: [],
@@ -73,6 +75,27 @@ export class WfFormCommonComponent implements OnInit {
     checkFlag: true
   };
 
+  userGrpListing: any = {
+    tableData: [],
+    tHeader: ['User Group', 'Description'],
+    dataTypes: ['text', 'text'],
+    filters: [
+      {
+        key: 'userGrp',
+        title: 'User Id',
+        dataType: 'text',
+      },
+    ],
+    pageLength: 10,
+    searchFlag: true,
+    pageStatus: true,
+    pagination: true,
+    pageID: 'userGrps',
+    colSize: ['100px', '250px'],
+    keys:['userGrp','userGrpDesc'],
+    checkFlag: true
+  };
+
   userInfo: any = { 
   					userId: null,
 				  	userName: null,
@@ -94,7 +117,7 @@ export class WfFormCommonComponent implements OnInit {
 
   //Reminders Variables
   titleReminder: string = "";
-  alarmTime: any;
+  alarmTime: any = this.ns.toDateTimeString(0);
   reminder: string;
   reminderDate: any = this.ns.toDateTimeString(0);
 
@@ -118,6 +141,8 @@ export class WfFormCommonComponent implements OnInit {
   mode:string = "note";
   referenceId:string = "";
   details:string = "";
+  impTag:boolean = false;
+  urgTag:boolean = false;
 
   saveNotesParams: any = {
     noteList : [],
@@ -129,6 +154,8 @@ export class WfFormCommonComponent implements OnInit {
     delReminderList : []
   };
 
+  relatedRecordTxt:string  = "";
+
   ngOnInit() {
   	console.log("NG ON INIT : ");
     console.log(this.quotationInfo);
@@ -136,7 +163,7 @@ export class WfFormCommonComponent implements OnInit {
     console.log(this.claimInfo);
     this.referenceId = (this.moduleSource == 'Quotation') ? this.quotationInfo.quoteId : (this.moduleSource == 'Policy' ? this.policyInfo.policyId : this.claimInfo.claimId);
     this.details = (this.moduleSource == 'Quotation') ? this.quotationInfo.quotationNo : (this.moduleSource == 'Policy' ? this.policyInfo.policyNo : this.claimInfo.claimNo);
-
+    this.retrieveRelatedRecords();
     this.loadTable();
   }
 
@@ -192,6 +219,10 @@ export class WfFormCommonComponent implements OnInit {
   	}
   }
 
+  showUserGrpLOV(obj?) {
+    $('#userGrpListing #modalBtn').trigger('click');
+  }
+
   clear(obj){
     this.disableAssignTo = true;
   	this.disableAssignToMany = true;
@@ -212,6 +243,17 @@ export class WfFormCommonComponent implements OnInit {
                  }
                  this.table.refreshTable();
                });
+  }
+
+  openModalGrp(){
+    this.userGrpListing.tableData = [];
+    this.userGrpTable.overlayLoader = true;
+    this.mtnService.getMtnUserGrp('').subscribe((data: any) =>{
+       for(var i = 0; i < data.userGroups.length; i++){
+         this.userGrpListing.tableData.push(data.userGroups[i]);
+       }
+       this.userGrpTable.refreshTable();
+    });
   }
 
   isEmptyObject(obj) {
@@ -338,6 +380,8 @@ export class WfFormCommonComponent implements OnInit {
             "noteId"       : null,
             "title"        : this.titleNote,
             "note"         : this.notes,
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
@@ -360,6 +404,8 @@ export class WfFormCommonComponent implements OnInit {
             "noteId"       : null,
             "title"        : this.titleNote,
             "note"         : this.notes,
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
@@ -383,6 +429,8 @@ export class WfFormCommonComponent implements OnInit {
               "noteId"       : null,
               "title"        : this.titleNote,
               "note"         : this.notes,
+              "impTag"       : this.impTag ? 'Y' : 'N',
+              "urgTag"       : this.urgTag ? 'Y' : 'N',
               "module"       : this.moduleSource,
               "referenceId"  : this.referenceId,
               "details"      : this.details,
@@ -403,6 +451,10 @@ export class WfFormCommonComponent implements OnInit {
 
     } else if (this.mode == 'reminder') {
 
+      console.log("reminder alarm time");
+      console.log(this.alarmTime);
+      console.log("-----------");
+
       if (this.boolValue == 1) {
         //Assign to me
         var reminder = {};
@@ -414,7 +466,9 @@ export class WfFormCommonComponent implements OnInit {
           "module"       : this.moduleSource,
           "referenceId"  : this.referenceId,
           "details"      : this.details,
-          "alarmTime"    : null,
+          "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+          "impTag"       : this.impTag ? 'Y' : 'N',
+          "urgTag"       : this.urgTag ? 'Y' : 'N',
           "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
           "createDate"   : null,
           "createUser"   : JSON.parse(window.localStorage.currentUser).username,
@@ -437,7 +491,9 @@ export class WfFormCommonComponent implements OnInit {
           "module"       : this.moduleSource,
           "referenceId"  : this.referenceId,
           "details"      : this.details,
-          "alarmTime"    : null,
+          "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+          "impTag"       : this.impTag ? 'Y' : 'N',
+          "urgTag"       : this.urgTag ? 'Y' : 'N',
           "assignedTo"   : this.userInfo.userId,
           "createDate"   : null,
           "createUser"   : JSON.parse(window.localStorage.currentUser).username,
@@ -461,7 +517,9 @@ export class WfFormCommonComponent implements OnInit {
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
-            "alarmTime"    : null,
+            "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
             "assignedTo"   : this.selects[i].userId,
             "createDate"   : null,
             "createUser"   : JSON.parse(window.localStorage.currentUser).username,
@@ -511,10 +569,10 @@ export class WfFormCommonComponent implements OnInit {
       this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
       this.recipientsData.uneditable = [true,true,true,true,true];
     } else if (this.mode == 'reminder') {
-      this.recipientsData.dataTypes = ['text','text', 'text', 'date', 'text', 'date'];
-      this.recipientsData.keys = ['type', 'title', 'reminder', 'reminderDate', 'assignedTo','createDate'];
-      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Reminder Date', 'Assigned To', 'Date Assigned'];
-      this.recipientsData.uneditable = [true,true,true,true,true,true];
+      this.recipientsData.dataTypes = ['text','text', 'text', 'datetime', 'time', 'text', 'date'];
+      this.recipientsData.keys = ['type', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'];
+      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'];
+      this.recipientsData.uneditable = [true,true,true,true,true,true,true];
     }
 
     
@@ -566,5 +624,57 @@ export class WfFormCommonComponent implements OnInit {
 
     }
 
+  }
+
+  retrieveRelatedRecords() {
+    try {
+
+      this.workFlowManagerService.retrieveRelatedRecords(this.moduleSource, this.referenceId).subscribe((data: any)=>{
+          if (data.relatedRecordList != null) {
+
+            console.log("retrieveRelatedRecords");
+            console.log(data);
+            console.log("------------------");
+
+            var quotationList = "";       
+            for(let rec of data.relatedRecordList){
+              if (rec.module.toUpperCase() == 'QUOTATION' && this.details != rec.referenceNo) {
+                quotationList = quotationList + (quotationList == "" ? "" : " / ") + rec.referenceNo;
+              } 
+            }
+            if (quotationList != "") {
+              this.relatedRecordTxt = this.relatedRecordTxt + "Quotation : " + quotationList;
+            }
+
+            var policyList = "";       
+            for(let rec of data.relatedRecordList){
+              if (rec.module.toUpperCase() == 'POLICY' && this.details != rec.referenceNo) {
+                policyList = policyList + (policyList == "" ? "" : " / ") + rec.referenceNo;
+              } 
+            }
+            if (policyList != "") {
+              this.relatedRecordTxt = (this.relatedRecordTxt == "" ? "" : this.relatedRecordTxt + " \n") + "Policy : " + policyList;
+            }
+
+            var claimList = "";       
+            for(let rec of data.relatedRecordList){
+              if (rec.module.toUpperCase() == 'CLAIM' && this.details != rec.referenceNo) {
+                claimList = claimList + (claimList == "" ? "" : " / ") + rec.referenceNo;
+              } 
+            }
+            if (claimList != "") {
+              this.relatedRecordTxt = (this.relatedRecordTxt == "" ? "" : this.relatedRecordTxt + " \n") + "Claim : " + claimList;
+            }
+
+            this.recipientsTable.refreshTable();
+          } else {
+            //alert("Saved successfully.");
+          }
+      });
+    } catch(e) {
+      alert("Error calling WFM Services in NOTE loadTable(): " + e);
+    } finally {
+
+    }
   }
 }
