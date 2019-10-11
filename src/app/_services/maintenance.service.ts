@@ -1412,4 +1412,13 @@ export class MaintenanceService{
 						.set('taxName', (employeeId === null || employeeId === undefined ? '' : employeeId));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnEmployee", {params});
     }
+
+     saveMtnEmployee(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEmployee', JSON.stringify(params), header);
+    }
 }
