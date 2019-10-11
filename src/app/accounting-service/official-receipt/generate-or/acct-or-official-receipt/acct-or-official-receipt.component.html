@@ -97,13 +97,13 @@
               <div class="col-sm-12">
                 <ng-container [ngSwitch]="paymentType">
                   <ng-container *ngSwitchCase="'1'">
-                    <app-or-only [record]="record"></app-or-only>
+                    <app-or-only [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-only>
                   </ng-container>
                   <ng-container *ngSwitchCase="'2'">
-                    <app-or-service-fee-local></app-or-service-fee-local>
+                    <app-or-service-fee-local [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-local>
                   </ng-container>
                   <ng-container *ngSwitchCase="'3'">
-                    <app-or-service-fee-munich-re></app-or-service-fee-munich-re>
+                    <app-or-service-fee-munich-re [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-munich-re>
                   </ng-container>
                 </ng-container>
               </div>
@@ -116,7 +116,7 @@
               <div class="col-sm-12">
                 <div class="input-group">
                       <div class="col-sm">
-                        <app-or-others [record]="record"></app-or-others>
+                        <app-or-others [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-others>
                       </div>
                     </div>
               </div>
@@ -128,23 +128,27 @@
 
     <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
     padding-right: 0px !important;">
-    <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
-      <div class="custom-row-inline-inset">
-       <div class="form-row" style="margin-bottom: -10px;">
-        <div class="input-group">
-         <label class="form-control-sm col-sm-1" >Created By</label>
-         <input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-         <label class="form-control-sm col-sm-1" >Date Created</label>
-         <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" disabled>
-         <label class="form-control-sm col-sm-1" >Last Update By</label>
-         <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" disabled>
-         <label class="form-control-sm col-sm-1" >Last Update</label>
-         <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" disabled>
-       </div>
-     </div>
-   </div>
- </fieldset>
-</div>
+      <fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+        <div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+          <div class="form-row" style="margin-bottom: -10px;">
+            <div class="input-group">
+              <label class="form-control-sm col-sm-1">Created By</label>
+              <input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.createUser" disabled>
+              <label class="form-control-sm col-sm-1">Date Created</label>
+              <div class="col-sm" style="padding: 0px">
+                  <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.createDate"></datepicker>
+              </div>
+              <label class="form-control-sm col-sm-1">Last Update By</label>
+              <input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.updateUser" disabled>
+              <label class="form-control-sm col-sm-1">Last Update</label>
+              <div class="col-sm" style="padding: 0px">
+                  <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.updateDate"></datepicker>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
 
 <!-- <app-modal id="taxAlloc" class="d-none" [modalSize]="'sm'">
   <div header>Tax Allocation</div>

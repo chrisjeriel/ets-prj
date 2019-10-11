@@ -35,7 +35,7 @@
             <fieldset class="scheduler-border">
                 <legend class="scheduler-border">Inward Policy Balances</legend>
                  <div class="col-sm-12" style="margin-top: 15px" >
-                    <app-cust-editable-non-datatable #trytytrans [passData]="passDataOffsetting" (clickLOV)="openLOV($event)" (tableDataChange)="passDataOffsetting.tableData = $event; quarterTable.indvSelect.acctOffset=$event;update($event)"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable #trytytrans [passData]="passDataOffsetting" (clickLOV)="openLOV($event)" (tableDataChange)="passDataOffsetting.tableData = $event; quarterTable.indvSelect.acctOffset=$event;update($event)" (newClick)="inwClick($event)"></app-cust-editable-non-datatable>
                  </div>
             </fieldset>
         </div>

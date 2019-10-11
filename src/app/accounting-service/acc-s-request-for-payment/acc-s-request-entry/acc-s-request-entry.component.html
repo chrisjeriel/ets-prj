@@ -145,7 +145,7 @@
                     <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click) = "onClickNewReq()">New Request</button>
                       <button type="button" class="cust-btn" [disabled]="(saveAcsePaytReq.reqStatus != 'N' && saveAcsePaytReq.reqStatus != 'F')" (click)="onClickSave()">Save</button>
-                      <button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcsePaytReq.reqStatus == 'X'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
+                      <button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcsePaytReq.reqStatus == 'X' || saveAcsePaytReq.reqStatus == 'P'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
                       <button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
                       <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcsePaytReq.reqStatus != 'F'" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
                     </div>

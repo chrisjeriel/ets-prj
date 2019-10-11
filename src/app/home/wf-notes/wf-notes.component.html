@@ -18,7 +18,7 @@
 	    z-index: 400;
 	}
 	ul.timeline > li {
-	    margin: 20px 0;
+	    margin: 20px -10px;
 	    padding-left: 20px;
 	}
 	/*ul.timeline > li:before {
@@ -37,7 +37,7 @@
 		margin-right: 1px;
 		text-decoration: none;
 		border: none;
-		background-color: white;
+		background-color: transparent;
 		padding: 0px 2px;
 	}
 
@@ -81,6 +81,16 @@
 		background-color: #79797936 !important;
 	}
 
+	.spanBadge {
+		float: left;
+	    width: 26px;
+	    border: .67px solid gray;
+	    border-radius: 1px 12px 12px 1px;
+	    margin-top: 3px;
+	    font-size: 12px;
+	    margin-left: -19px;
+	}
+
 </style>
 
 <div id="noteDiv" style="border: 1px solid #c5c3c3; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll ">
@@ -105,10 +115,17 @@
     				<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
 				</div>
 
-				<ul class="timeline">
+				<ul class="timeline" style="margin-right: 10px;">
 					<li *ngFor="let notes of noteList; let i = index">
 					  <div>	
-						<a class="note-title" href="#">{{ notes.title }}</a>
+						
+						<div>
+
+							<span *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="spanBadge" style="background-color: #ffff00ad;">&nbsp;</span>
+							<span *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="spanBadge" style="background-color: #ffa500ad;">&nbsp;</span>
+							<span *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="spanBadge" style="background-color: #ff0000ad;">&nbsp;</span>
+							<span style="float: left;"><a class="note-title" href="#">&nbsp;{{ notes.title }}</a></span>
+						</div>
 						<br/>
 						<a class="note-date-time" href="#">{{ notes.createDate | date:'MMM dd, yyyy hh:mm a' }}</a>
 						<div class="float-right" *ngIf="noteBool">
@@ -175,6 +192,11 @@
 
 
 					  </div>
+					    <div *ngIf="notes.module != ''">
+					    	<p *ngIf="notes.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ notes.module }}</b> - <a href="#" (click)="redirectToQuoteGenInfo('detail', notes);">{{ notes.details }}</a></p>
+					    	<p *ngIf="notes.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ notes.module }}</b> - <a href="#" (click)="redirectToPolGenInfo('detail', notes.details);">{{ notes.details }}</a></p>
+					    </div>
+
 					    <div  *ngIf="noteBool && notes.createUser != null">
 						<p style="font-size: 12px; margin-bottom: 0px !important;">Assigned by <b>{{ notes.createUser }}</b> - {{ notes.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
 					    </div>
@@ -188,18 +210,18 @@
 						    	<ngb-accordion #acc="ngbAccordion">
 								  	<ngb-panel>
 			                            <ng-template ngbPanelTitle>
-			                                <fa name="folder-open"></fa>&nbsp;Related Records
+			                                <fa name="list-ul"></fa>&nbsp;Related Records
 			                            </ng-template>
 			                            <ng-template ngbPanelContent>
 			                            	<div *ngFor="let relRecord of notes.relatedRecordList;" id="relRecordsGrp">
-			                            		<button *ngIf="relRecord.module == 'QUOTATION'" (click)="redirectToQuoteGenInfo(relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</span></button>
-			                                	<br *ngIf="relRecord.module == 'QUOTATION'" />
+			                            		<button *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != notes.details" (click)="redirectToQuoteGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != notes.details" />
 
-			                                	<button *ngIf="relRecord.module == 'POLICY'" (click)="redirectToPolGenInfo(relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</span></button>
-			                                	<br *ngIf="relRecord.module == 'POLICY'" />
+			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != notes.details" (click)="redirectToPolGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != notes.details" />
 
-			                                	<button *ngIf="relRecord.module == 'CLAIM'" [routerLink]="['users-maintenance']" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</span></button>
-			                                	<br *ngIf="relRecord.module == 'CLAIM'" />
+			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != notes.details" [routerLink]="['users-maintenance']" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<br *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != notes.details" />
 			                            	</div>
 			                            </ng-template>
 			                    	</ngb-panel>

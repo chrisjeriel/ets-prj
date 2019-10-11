@@ -25,7 +25,11 @@ export class JvDetailsComponent implements OnInit {
      currCd: '',
      currRate: '',
      jvAmt: '',
-     localAmt: ''
+     localAmt: '',
+     createUser: '',
+     createDate: '',
+     updateUser: '',
+     updateDate: ''
   };
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
@@ -47,6 +51,22 @@ export class JvDetailsComponent implements OnInit {
     this.cedingData.emit({ cedingId: data.cedingId,
                            cedingName: data.cedingName
                        });
+  }
+
+  infoData(data){
+    console.log(data)
+    if(data !== null){
+      this.jvDetails.createUser = data.createUser;
+      this.jvDetails.createDate = this.ns.toDateTimeString(data.createDate);
+      this.jvDetails.updateUser = data.updateUser;
+      this.jvDetails.updateDate = this.ns.toDateTimeString(data.updateDate);
+    }else{
+      this.jvDetails.createUser = '';
+      this.jvDetails.createDate = '';
+      this.jvDetails.updateUser = '';
+      this.jvDetails.updateDate = '';
+    }
+    
   }
 
 }

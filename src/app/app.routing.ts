@@ -178,6 +178,8 @@ import { AllocateInvestmentIncomeComponent } from './accounting-in-trust/utiliti
 import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-mtn.component';
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
+import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
+
 
 
 const appRoutes: Routes = [
@@ -209,7 +211,7 @@ const appRoutes: Routes = [
     { path: 'pol-dist-list', component: PolDistListComponent },
     { path: 'pol-dist', component: PolDistComponent },
     { path: 'policy-dist', component: PolicyDistributionComponent },
-    { path: 'create-open-cover', component: PolCreateOpenCoverComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'create-open-cover', component: PolCreateOpenCoverComponent,  }, //canDeactivate: [UnsavedChangesGuard]
     { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
     { path: 'update-info', component: UpdateInformationComponent },
@@ -368,6 +370,7 @@ const appRoutes: Routes = [
     { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

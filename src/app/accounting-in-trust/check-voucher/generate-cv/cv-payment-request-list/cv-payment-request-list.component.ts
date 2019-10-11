@@ -133,7 +133,11 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      this.getCvPaytReqList();
+      if(data['returnCode'] == -1){
+        this.getCvPaytReqList();
+      }else{
+        this.dialogIcon = 'error';
+      }
       this.suc.open();
       this.params.savePaytReqList  = [];
       this.params.deletePaytReqList  = [];
@@ -217,6 +221,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     //   this.limitContent.push(e);
     // });
     this.passDataLov.selector = 'paytReqList';
+    this.passDataLov.from = 'acit';
     this.passDataLov.hide = this.passDataPaytReqList.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.reqId});
     console.log(this.cvInfo.paytReqType);
     this.passDataLov.paytReqType = this.cvInfo.paytReqType;
@@ -248,7 +253,7 @@ export class CvPaymentRequestListComponent implements OnInit {
 
   }
 
-   onRowClick(event){
+  onRowClick(event){
      console.log(event);
     if(event != null){
       this.paytData.reqId = event.reqId;
@@ -266,7 +271,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     if(this.cancelFlag){
       this.can.onNo();
     }else{
-      this.suc.modal.closeModal();
+      this.suc.modal.modalRef.close();
     }
   }
 

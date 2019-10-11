@@ -107,7 +107,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
     this.underWritingService.extractExpiringPolicies(this.expiryParameters).subscribe((data:any) => {
         console.log("extractExpiringPolicies: " + JSON.stringify(data));
-        if (data.returnCode != -1) {
+        if (data.errorList.length > 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           this.successDiag.open();

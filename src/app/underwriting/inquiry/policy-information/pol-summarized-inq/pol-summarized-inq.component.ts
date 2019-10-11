@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UnderwritingService } from '@app/_services';
 
 @Component({
   selector: 'app-pol-summarized-inq',
@@ -8,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class PolSummarizedInqComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private route: ActivatedRoute, private router: Router, private us: UnderwritingService) { }
   showPolicyNo:string;
   policyId:string;
   clmInfo: any = null;
@@ -23,6 +24,7 @@ export class PolSummarizedInqComponent implements OnInit {
               this.clmInfo = JSON.parse(params['clmInfo']);
               this.clmInq = params['isInquiry'];
             }
+            this.us.showPolicyNo = this.showPolicyNo;
   	});   
   }
 

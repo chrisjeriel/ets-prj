@@ -98,7 +98,7 @@ export class PolPostComponent implements OnInit {
       const coveragaAmts: string[] = ['totalValue','cumSecISi','cumSecIISi','cumSecIIISi','cumTSi','cumSecIPrem','cumSecIIPrem','cumSecIIIPrem','cumTPrem'];
       this.loadMsg = "Checking Coverage"
       this.uwService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe(a=>{
-        if(a['policy'] == null){
+        if(a['policy'] == null || a['policy'].project.coverage.totalPrem == 0){
           this.progress +=50;
           this.affectingTag = false;
           this.post();

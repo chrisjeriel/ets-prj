@@ -410,9 +410,7 @@ cancel(){
 saveQuoteOptionAll(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
    if(this.optionsData.tableData.filter(a=>(a.optionRt == 0 ||
-        a.commRtQuota == 0 ||
-        a.commRtSurplus == 0 ||
-        a.commRtFac == 0) && !a.deleted
+        a.commRtQuota == 0 ) && !a.deleted
       ).length != 0){
      this.dialogIcon = "error";
      setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
@@ -655,7 +653,7 @@ saveQuoteOptionAll(cancelFlag?){
   }
 
   getRates(){
-    this.mtnService.getMtnTreatyCommission(parseInt(this.quoteNoData.split('-')[1])).subscribe((data)=>{
+    this.mtnService.getMtnTreatyComm(parseInt(this.quoteNoData.split('-')[1]),this.quotationInfo.currencyCd).subscribe((data)=>{
       console.log(data);
       this.optionsData.nData.commRtQuota = data['treatyList'].filter(a=>a.treatyType=='Q')[0].commRate;
       this.optionsData.nData.commRtFac = data['treatyList'].filter(a=>a.treatyType=='F')[0].commRate;

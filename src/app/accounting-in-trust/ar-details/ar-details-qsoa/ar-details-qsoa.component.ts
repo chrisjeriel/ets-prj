@@ -29,9 +29,9 @@ export class ArDetailsQsoaComponent implements OnInit {
   passData: any = {
     tableData:[],
     tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
-    dataTypes:['text','text','percent','currency','currency'],
+    dataTypes:['date','text','percent','currency','currency'],
     total:[null,null,'Total','balPaytAmt','localAmt'],
-    uneditable: [false,true,true,false,true],
+    uneditable: [true,true,true,false,true],
     addFlag:true,
     deleteFlag:true,
     infoFlag:true,
@@ -100,7 +100,7 @@ export class ArDetailsQsoaComponent implements OnInit {
         for(var i of data.negTrtyBalList){
           i.showMG = 0;
           i.uneditable = ['quarterEnding'];
-          i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          //i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
         //this.passData.tableData = data.negTrtyBalList;
@@ -117,7 +117,7 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   setSelectedData(data){
     console.log(data);
-    this.passData.tableData[this.quarterEndingIndex].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+    this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
     this.passData.tableData[this.quarterEndingIndex].showMG = 0;
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }

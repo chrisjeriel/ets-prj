@@ -143,6 +143,7 @@ export class PolicyInformationComponent implements OnInit {
         if(!this.fromClm) {
           this.router.navigateByUrl('/policy-inquiry');  
         } else {
+
           this.router.navigate(
                     ['/claims-claim', {
                         from: this.clmInfo.claimId == '' ? 'add' : 'edit',
@@ -158,9 +159,8 @@ export class PolicyInformationComponent implements OnInit {
                     { skipLocationChange: true }
           );
 
-          this.clmInq = false;
         }
-   }
+      }
  }
 
  gotoSum(){

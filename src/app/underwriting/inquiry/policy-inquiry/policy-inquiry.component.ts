@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingPolicyInquiryInfo } from '@app/_models';
 import { UnderwritingService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { Router } from '@angular/router';
 import * as alasql from 'alasql';
 
@@ -12,11 +12,12 @@ import * as alasql from 'alasql';
   styleUrls: ['./policy-inquiry.component.css']
 })
 export class PolicyInquiryComponent implements OnInit {
-  @ViewChild('listTable') listTable: CustNonDatatableComponent;
+  @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
         "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
     ],
+    sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
     dataTypes: [
             "text","text", "text", "text", "text", "text", "text", "text",
             "text", "currency", "currency", "date", "date", "date", "date", "text"
@@ -171,7 +172,10 @@ export class PolicyInquiryComponent implements OnInit {
     totalPrem: null,
   }
 
-  searchParams: any[] = [];
+  searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1
+    };
 
   constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
 
@@ -193,17 +197,17 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
-        this.passData.btnDisabled = true;
-        console.log(this.searchParams);
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
         this.retrievePolListing();
 
    }
 
    retrievePolListing(){
-       this.underwritingService.getParListing(this.searchParams).subscribe((data:any)=>{
-         this.passData.tableData = data.policyList.filter(a=>{
+       this.underwritingService.newGetParListing(this.searchParams).subscribe((data:any)=>{
+         this.passData.count = data['length'];
+         this.listTable.placeData(data.policyList.filter(a=>{
            
              a.lineCd = a.policyNo.substring(0,3);
              a.totalSi = a.project.coverage.totalSi;
@@ -212,8 +216,7 @@ export class PolicyInquiryComponent implements OnInit {
              a.site = a.project.site;
              a.totalPrem = a.project.coverage.totalPrem;
              return true;
-         });
-         this.listTable.refreshTable();
+         }));
        })
    }
 

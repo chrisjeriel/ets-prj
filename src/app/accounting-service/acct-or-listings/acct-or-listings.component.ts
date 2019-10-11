@@ -153,13 +153,13 @@ export class AcctOrListingsComponent implements OnInit {
     console.log(data);
     this.record = {
       tranId: data.tranId,
-      arNo: data.arNo == null ? '' : data.arNo,
+      orNo: data.orNo == null ? '' : data.orNo,
       payor: data.payor,
-      arDate: data.arDate,
+      orDate: data.orDate,
       paymentType: data.tranTypeName,
-      status: data.arStatDesc,
+      status: data.orStatDesc,
       particulars: data.particulars,
-      amount: data.arAmt
+      amount: data.orAmt
     }
 
     this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit', tranStat: this.tranStat }], { skipLocationChange: true });

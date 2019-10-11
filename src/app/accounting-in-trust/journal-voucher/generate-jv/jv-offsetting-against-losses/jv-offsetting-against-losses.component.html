@@ -30,7 +30,7 @@
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Inward Policy Balances</legend>
 			 	 <div class="col-sm-12" style="margin-top: 15px" >
-			 	 	 <app-cust-editable-non-datatable #inwTable [passData]="InwPolBal" (tableDataChange)="InwPolBal.tableData = $event;clmTable.indvSelect.inwPolBal=$event;updateInw($event)" (clickLOV)="openLOVInw($event)"></app-cust-editable-non-datatable>
+			 	 	 <app-cust-editable-non-datatable #inwTable [passData]="InwPolBal" (tableDataChange)="InwPolBal.tableData = $event;clmTable.indvSelect.inwPolBal=$event;updateInw($event)" (newClick)="inwClick($event)" (clickLOV)="openLOVInw($event)"></app-cust-editable-non-datatable>
 			 	 </div>
 			</fieldset>
 		</div>

@@ -1,0 +1,135 @@
+<form #myForm="ngForm">
+<div class="cust-tabs-container">
+    <h4>Maintenance / Accounting / Employee</h4>
+    <ngb-tabset>
+        <ngb-tab title="Employee Maintenance">
+            <ng-template ngbTabContent>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2"></label>
+                        <label class="form-control-sm col-sm-1">Company</label>
+                        <input name="companyCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="company.companyId" (change)="checkCode($event)" >
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="companyLov.modal.openNoClose()"></i></a></div>
+                        <input name="companyName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="company.companyName" readonly>
+                        <label class="form-control-sm col-sm-2"></label>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="row">
+                        <div class="col-sm" id="mtn-employee">
+	                	  <app-cust-editable-non-datatable #emp [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)" (clickLOV)="clickLOV($event);"></app-cust-editable-non-datatable>
+                        </div>
+                    </div>
+	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                        <button class="cust-btn" (click)="onClickOtherDetails()" [disabled]="boolOtherDetails">Other Details</button>
+                        <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input  name="updateDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+</form>
+
+<app-mtn-company (selectedData)="setSelectedCompany($event)" ></app-mtn-company>
+<app-mtn-employee (selectedData)="setSelectedEmployee($event)" [companyId]="company?.companyId" ></app-mtn-employee>
+<app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null;"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
+
+<app-modal class="d-none" id="otherDetailMdl" #mdl>
+    <div header>Other Details</div>
+    <div body>
+        <fieldset class="scheduler-border" style="width: 800px">
+            <legend class="scheduler-border">Other Details</legend>
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Employee</label>
+                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherDetails?.employeeNo" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="otherDetails?.printableName" readonly>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Designation</label>
+                        <input name="designation" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.designation" (ngModelChange)="otherDetails.designation=$event;">
+                        <label class="form-control-sm col-sm-2">Supervisor</label>
+                        <input name="supervisorName" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.supervisorName" disabled>
+                         <div class="text-search-ico" style="margin-left: -12px ! important; font-size: 12px ! important"><a> <i class="fa fa-search" (click)="employeeLov.modal.openNoClose()"></i></a></div>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Birth Date</label>
+                        <div class="col-sm-4 dp-cont">
+                            <datepicker [type]="'date'" [value]="otherDetails?.birthDate" (valueChange)="otherDetails.birthDate=$event"></datepicker>
+                        </div>
+                        <label class="form-control-sm col-sm-2">Civil Status</label>
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="otherDetails?.civilStatus" (ngModelChange)="otherDetails.civilStatus=$event;"> 
+                                            <option value="S">Single</option>
+                                            <option value="M">Married</option>
+                                            <option value="W">Window/Widower</option>
+                                            <option value="LS">Legally Separated</option>
+                        </select>
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                         <label class="form-control-sm col-sm-2">Present Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor [editorContent]="otherDetails?.presentAdd" (fetchContent)="otherDetails.presentAdd = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                         <label class="form-control-sm col-sm-2">Permanent Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor  [editorContent]="otherDetails?.permanentAdd" (fetchContent)="otherDetails.permanentAdd = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                  <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">Tax Identification No.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.tin" (ngModelChange)="otherDetails.tin=$event;">
+                        <label class="form-control-sm col-sm-2">SSS No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.sssNo"  (ngModelChange)="otherDetails.sssNo=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;">
+                        <label class="form-control-sm col-sm-2">PhilHealth No.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.philhealthNo" (ngModelChange)="otherDetails.philhealthNo=$event;">
+                        <label class="form-control-sm col-sm-2">HDFM (Pagibig) No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.pagibigNo"  (ngModelChange)="otherDetails.pagibigNo=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important;" >
+                        <label class="form-control-sm col-sm-2">Contact Nos.</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactNos" (ngModelChange)="otherDetails.contactNos=$event;">
+                        <label class="form-control-sm col-sm-2">Email Address</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.email" (ngModelChange)="otherDetails.email=$event;" >
+                   </div>
+                   <div class="input-group" style="margin-top: -12px !important; margin-bottom: 1px ! important">
+                        <label class="form-control-sm col-sm-2">Contact Person In case of emergency</label>
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactPerson" (ngModelChange)="otherDetails.contactPerson=$event;">
+                        <label class="form-control-sm col-sm-2">Emergency Contact No.</label>
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.emergencyNo" (ngModelChange)="otherDetails.emergencyNo=$event;">
+                   </div>
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();saveOtherDetails();"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
+
+
+
+

@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
 	<h4>Policy/ Expiry & Renewal/ Expiry List</h4>
-	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Renewable Policies" (click)="retrieveExpPolList();">
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Renewable Policies" (click)="retrieveExpPolList();" id="renew">
 			<ng-template ngbTabContent>
 				<form #myForm="ngForm">
 				<div class="row">
@@ -17,24 +17,24 @@
 										<div class="col-sm">
 											<div class="row" style="margin-top: 0px;margin-right: -4px;">
 												<button class="cust col-sm" (click)="gotoInfo();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Details</button>
-												<button class="cust col-sm" (click)="showEditModal(content)">Edit</button>
+												<button class="cust col-sm" (click)="showEditModal(content)" [disabled]="renAsIsTag || disabledFlag || reasonFlag" [class.cust-btn-disabled]="renAsIsTag || disabledFlag || reasonFlag">Edit</button>
 												<button class="cust col-sm" (click)="onClickPurge();" [disabled]="purgeFlag" [class.cust-btn-disabled]="purgeFlag">Purge</button>
 												<button class="cust col-sm" (click)="onClickRenSave();">Save</button>
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
-												<button class="cust col-sm">Search</button>
+												<button class="cust col-sm" (click)="parameter();">Search</button>
 												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcess();">Process</button>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 15px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Changes</label>
-												<textarea class="form-control form-control-sm col-sm-8"  name="changes" [disabled]="!changesFlag" (change)="changesValueChanged($event);" [ngModel]="changes" (ngModelChange)="changes = $event"></textarea>
+												<textarea class="form-control form-control-sm col-sm-8"  name="changes" [readonly]="!changesFlag || renAsIsTag" (change)="changesValueChanged($event);" [ngModel]="changes" (ngModelChange)="changes = $event" appRequired></textarea>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
 												<input type="text" [ngModel]="nrReasonCd" name="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');nrReasonCdChange($event)" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
-												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
+												<div class="text-search-ico" *ngIf="reasonFlag"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
 												<input type="text" [ngModel]="nrReasonDescription" name="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
@@ -83,7 +83,7 @@
 				</form>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Non-Renewable Policies ">
+		<ngb-tab class="ngb-tab" title="Non-Renewable Policies " id="nonRenew">
 			<ng-template ngbTabContent>
 				<form #myForms="ngForm">
 				<div class="row">
@@ -105,14 +105,14 @@
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
-												<button class="cust col-sm">Search</button>
-												<button class="cust col-sm">Update</button>
+												<button class="cust col-sm" (click)="parameter();">Search</button>
+												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
 											</div>
 											<div class="row" style="margin-right: -5px !important;margin-top: 5px !important;">
 												<label class="form-control-sm col-sm-4 text-right">Reason For Non-renewal</label>
 												<input type="text" [ngModel]="nrReasonCd" name="nrReasonCd" (ngModelChange)="nrReasonCd = $event.toUpperCase()" (change)="checkCode($event, 'nrReason');reasonCdChange($event)" class="form-control form-control-sm col-sm-3" [disabled]="!reasonFlag">
-												<div class="text-search-ico"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
+												<div class="text-search-ico" *ngIf="reasonFlag"><a (click)="showNRReasonLOV();"><i class="fa fa-search"></i></a></div>
 												<input type="text" [ngModel]="nrReasonDescription" name="nrReasonDescription" class="form-control form-control-sm col-sm" style="margin-left: 8px !important;" [disabled]="!reasonFlag">
 											</div>
 											<div class="row" style="margin-top: -18px;margin-right: -5px !important;">
@@ -130,19 +130,19 @@
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: 29px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Tag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="    margin-left: -41px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('uAll');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Untag All</label>
 															</div>
 														</div>
 														<div class="col-sm-3">
 															<div class="input-group" style="margin-left: -102px !important;">
-															<input type="radio" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
+															<input type="radio" (click)="tagProcess('tagSel');" name="Process" class="form-control-sm" id="test" style="margin-top: 1px !important;">
 															<label class="form-control-sm col-sm" for="test" style="margin-left: 3px !important;">Selected Policies</label>
 															</div>
 														</div>
@@ -298,7 +298,7 @@
         </div>
     </div>
     <div footer class="w-100 text-right">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); printModal.openNoClose();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
     </div>
 </app-modal>
@@ -396,7 +396,9 @@
 <app-sucess-dialog #editCatPeril [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-sucess-dialog #renewable [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-sucess-dialog #nonrenewable [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
-
+<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+<app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-sucess-dialog #editCov [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-sucess-dialog #editCatPeril [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-sucess-dialog #renewable [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
@@ -404,3 +406,202 @@
 <app-confirm-save id="coverageConfirm" (onYes)="savePolicyChanges()"></app-confirm-save>
 <!-- <app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges('cancel')" [url]="'/policy-listing'" ></app-cancel-button> TRBT#PROD_GRADE -->
 <app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges()" [url]="'/policy-listing'" ></app-cancel-button>
+
+				 	<app-modal class="hidden" id="parameter">
+                     	<div header>Parameter</div>
+							<div body style="width: 600px !important">
+							    <fieldset class="scheduler-border">
+							    
+							    	<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-left: 100px;">
+											<div class="col-sm-1"></div>
+											<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" [(ngModel)]="radioVal" [value]="'byPolNo'" (click)="clearData()" />
+											<label class="form-control-sm col-sm-2" for="byPolNo" style="margin-left: -4px;">&nbsp;By Policy No</label>
+										</div>
+									</div>
+									<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-top: -8px;"> 
+											<label class="form-control-sm col-sm-3"></label>
+                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.line" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'">
+								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" [readonly]="radioVal != 'byPolNo'">  
+								                <div style="padding-left: 5px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
+
+										</div>	
+									</div>
+
+									<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-left: 100px;">
+											<div class="col-sm-1"></div>
+											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="radioVal" [value]="'byDate'" />
+											<label class="form-control-sm col-sm-2" for="byDate" style="text-align: left !important;">&nbsp;By Date</label>
+										</div>
+									</div>
+
+									<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-top: -10px;margin-left: 90px;">
+											<div class="col-sm-1"></div>
+											<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateFrom" [disabled]="radioVal != 'byDate'"></datepicker>
+											</div>
+											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
+											<div class="col-sm-3 dp-cont">
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateTo" [disabled]="radioVal != 'byDate'"></datepicker>
+											</div>	
+										</div>
+									</div>
+									
+									<div class="form-row custom-row-inline-inset">
+										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
+											<div class="col-sm-1"></div>
+											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="'byMonthYear'" [(ngModel)]="radioVal">
+											<label class="form-control-sm col-sm-3" for="byMonthYear" style="text-align: left !important;">&nbsp;By Month/Year</label>
+										</div>
+									</div>
+										<div class="form-row custom-row-inline-inset">
+											<div class="input-group" style="margin-top: -10px; margin-left: 90px;">
+												<div class="col-sm-1"></div>
+												<label class="form-control-sm col-sm-1 cust-sm from">From</label>
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: 8px;" [ngModel]="dateParams.byMonthFrom" (ngModelChange)="dateParams.byMonthFrom = $event">
+													<option value="01">January</option>
+													<option value="02">February</option>
+													<option value="03">March</option>
+													<option value="04">April</option>
+													<option value="05">May</option>
+													<option value="06">June</option>
+													<option value="07">July</option>
+													<option value="08">August</option>
+													<option value="09">September</option>
+													<option value="10">October</option>
+													<option value="11">November</option>
+													<option value="12">December</option>
+												</select>
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 2px;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event">
+												<label class="form-control-sm col-sm-1 cust-sm toMonth" style="margin-left: -10px !important;">To</label>
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: -2px;" [ngModel]="dateParams.byMonthTo"(ngModelChange)="dateParams.byMonthTo=$event">
+													<option value="01">January</option>
+													<option value="02">February</option>
+													<option value="03">March</option>
+													<option value="04">April</option>
+													<option value="05">May</option>
+													<option value="06">June</option>
+													<option value="07">July</option>
+													<option value="08">August</option>
+													<option value="09">September</option>
+													<option value="10">October</option>
+													<option value="11">November</option>
+													<option value="12">December</option>
+												</select>
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 2px;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
+											</div>
+										</div>
+										<br>
+										<div class="form-row custom-row-inline-inset">
+											<div class="input-group" style="margin-top: -22px;">
+												<label class="form-control-sm col-sm-2 text-right" style="margin: 0px">Line</label>
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="params.line" (ngModelChange)="params.line = $event.toUpperCase()" [readonly]="radioVal == 'byPolNo'">
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription" readonly>
+											</div>
+										</div>
+										<div class="form-row custom-row-inline-inset">
+											<div class="input-group" style="margin-top: -8px;">
+												<label class="form-control-sm col-sm-2 text-right" style="margin: 0px">Type of Cession</label>
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="params.typeOfCessionId" (ngModelChange)="params.typeOfCessionId = $event.toUpperCase()" [readonly]="radioVal == 'byPolNo'"> 
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession" readonly> 
+											</div>
+										</div>
+										<div class="form-row custom-row-inline-inset">
+											<div class="input-group" style="margin-top: -8px;"> 
+												<label class="form-control-sm col-sm-2" style="padding-right: 4px; margin: 0px">Ceding Company</label>
+												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase();" [readonly]="radioVal == 'byPolNo'">
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName" readonly> 
+											</div>	
+										</div>
+										
+									
+								</fieldset>
+							</div>
+							   	<div footer>
+							        <div class="cust-btn-container text-center" style="margin-right: 215px;">
+							            <button type="button" class="cust-btn" (click)="clearData();"><a>Clear</a></button>
+							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();  filterMainTable();"><a>Ok</a></button>
+									</div>
+								</div>
+                </app-modal>
+
+<app-modal class="hidden" id="PolicyLOVS" #policyLov>
+    <div header>List of Values</div>
+    <div body style="min-width: 800px !important">
+       <app-cust-editable-non-datatable #lov [passData]="passDataLov" (newClick)="onClick($event)"></app-cust-editable-non-datatable>
+    </div>                
+    <div footer style="margin-right: 330px !important;">
+      <button class="cust-btn" type="button" (click)="policyModal.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="setLOV();policyModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="hidden"  #printModal>
+    <div header>Print</div>
+    <div body style="max-width: : 200px !important">
+       <fieldset class="scheduler-border">
+       						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Report</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">Report 1</option>
+       									<option value="">Report 2</option>
+       									<option value="">Report 3</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">No. Of Copies</label>
+       								<input type="text" class="form-control form-control-sm cust-sm col-sm-8 " placeholder="25" style="text-align: right"
+       								 onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Destination</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       									<option value="">C:\Users\CPI\Desktop\pmmsc\ets-prj</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<label class="col-sm-3">Printer Name</label>
+       								<select class="form-control form-control-sm cust-sm col-sm-8">
+       									<option value="">CPI Printer</option>
+       									<option value="">PMMSC Printer</option>
+       									<option value="">Printer</option>
+       								</select>
+       								<div class="col-sm-1"></div>
+       							</div>
+       							<div class="input-group" style="margin-bottom:3px !important;">
+       								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+       								<div class="col-sm-8">
+       									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+       									&nbsp;&nbsp;&nbsp;&nbsp; -->
+       									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+       									<div class="col-sm-1"></div>
+       								</div>
+       							</div>
+       						</div>
+       					</fieldset>
+
+    </div>                
+    <div footer style="margin-right: 330px !important;">
+      <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Print</a></button>
+    </div>
+</app-modal>
+
