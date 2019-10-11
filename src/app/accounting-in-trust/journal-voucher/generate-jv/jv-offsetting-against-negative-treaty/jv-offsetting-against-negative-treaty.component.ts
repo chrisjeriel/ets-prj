@@ -20,6 +20,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
@@ -227,7 +228,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    console.log(data)
     this.jvDetails.cedingName = data.payeeName;
     this.jvDetails.ceding = data.payeeCd;
     this.passLov.cedingId = data.payeeCd;
@@ -245,7 +245,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   openLOV(data){
     this.passLov.hide = this.claimsOffset.tableData.filter((a)=>{return !a.deleted}).map((a)=> {return JSON.stringify({claimId: a.claimId, histNo:a.histNo})});  
-    console.log(this.passLov.hide)
     this.lovMdl.openLOV();
   }
 
@@ -254,7 +253,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setQuarter(data){
-      console.log(data)
       var quarterNo = null;
       this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -292,7 +290,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   setClaimOffset(data){
-    console.log(data.data)
     this.quarterTable.indvSelect.clmOffset = this.quarterTable.indvSelect.clmOffset.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
       this.quarterTable.indvSelect.clmOffset.push(JSON.parse(JSON.stringify(this.claimsOffset.nData)));
@@ -321,9 +318,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   }
 
   onrowClick(data){
-    console.log(data)
     if(data!==null && data.quarterNo !== '' && data.clmOffset.length != 0){
-      console.log(data)
       this.quarterNo = data.quarterNo;
       this.claimsOffset.disableAdd = false;
       this.claimsOffset.nData.quarterNo = this.quarterNo;
@@ -336,6 +331,11 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.claimsOffset.disableAdd = true;
     }
     this.trytytransTable.refreshTable();
+    this.infoData.emit(data)
+  }
+
+  clmClick(data){
+    this.infoData.emit(data)
   }
 
   onClickSave(){
@@ -373,7 +373,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       for (var j = 0; j < this.passData.tableData[i].clmOffset.length; j++) {
         if(this.passData.tableData[i].clmOffset[j].clmPaytAmt <= this.passData.tableData[i].clmOffset[j].reserveAmt){
-          console.log('condition true')
           return true;
           break;
         }
@@ -455,7 +454,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
       for(var j = 0 ; j < this.passData.tableData[i].clmOffset.length; j++){
         if(this.passData.tableData[i].clmOffset[j].edited && !this.passData.tableData[i].clmOffset[j].deleted && !this.passData.tableData[i].deleted){
-          console.log(this.passData.tableData[i].clmOffset[j].clmPaytAmt);
           actualBalPaid += this.passData.tableData[i].clmOffset[j].clmPaytAmt;
           this.jvDetails.saveClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.saveClmOffset[this.jvDetails.saveClmOffset.length - 1].tranId = this.jvDetail.tranId;

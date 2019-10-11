@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, EventEmitter, Output } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -15,6 +15,7 @@ import { finalize } from 'rxjs/operators';
 export class JvInvestmentRollOverComponent implements OnInit {
    
    @Input() jvDetail;
+   @Output() infoData = new EventEmitter<any>();
    @ViewChild('lov') lovMdl: LovComponent;
    @ViewChild('newLov') newlovMdl: LovComponent;
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -97,7 +98,18 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   ngOnInit() {
   	this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Investment Source", span: 16 }, { header: "New Investment", span: 16 });
-  	this.getInvRollOut();
+  	if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.disable = true;
+    }
+
+    this.getInvRollOut();
     this.getWTaxRate();
   }
 
@@ -117,7 +129,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   setSelectedData(data){
-  	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('srcInvtCode');
 	    this.passData.tableData[this.invIndex].edited				      = true;
@@ -145,7 +156,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   setSelectedDataInv(data){
-  	console.log(data)
   	let selected = data.data;
   	  this.passData.tableData[this.invIndex].colMG.push('invtCode');
   	  this.passData.tableData[this.invIndex].edited				    = true;
@@ -184,7 +194,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   }
 
   onRowClick(data){
-  	console.log(data)
+    this.infoData.emit(data);
   }
 
   onClickSave(){
@@ -235,7 +245,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
   saveData(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
   	this.prepareData();
-  	console.log(this.jvDetails);
   	this.accountingService.saveInvRollOver(this.jvDetails).subscribe((data:any) => {
   		if(data['returnCode'] != -1) {
   		  this.dialogMessage = data['errorList'][0].errorMessage;
@@ -280,7 +289,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
     }
 
   update(data){  
-    console.log(data)
     /*for (var i = 0; i < this.passData.tableData.length; i++) {
       var principal = parseFloat(this.passData.tableData[i].invtAmt),
                rate = parseFloat(this.passData.tableData[i].interestRate)/100,

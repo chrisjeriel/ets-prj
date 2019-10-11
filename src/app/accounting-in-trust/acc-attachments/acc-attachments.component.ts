@@ -79,6 +79,10 @@ export class AccAttachmentsComponent implements OnInit {
         this.record.localAmt = Number(String(this.record.localAmt).replace(/\,/g,''));
       }
 
+      if(this.record.from.toLowerCase() == 'jv'){
+        this.record.jvDate = this.notes.toDateTimeString(this.record.jvDate);
+        this.record.refnoDate = this.record.refnoDate === "" ? "":this.notes.toDateTimeString(this.record.refnoDate);
+      }
 
       this.as.getAcitAttachments(this.record.tranId).subscribe((data: any) =>{
           console.log(data);
@@ -102,6 +106,14 @@ export class AccAttachmentsComponent implements OnInit {
             }
           }else if(this.record.from.toLowerCase() == 'cv'){
             if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
+              this.passData.uneditable = [true, true, true];
+              this.passData.addFlag = false;
+              this.passData.deleteFlag =  false;
+              this.passData.checkFlag = false;
+              this.passData.magnifyingGlass = [];
+            }
+          }else if(this.record.from.toLowerCase() == 'jv'){
+            if(this.record.statusType.toUpperCase() != 'N'){
               this.passData.uneditable = [true, true, true];
               this.passData.addFlag = false;
               this.passData.deleteFlag =  false;
@@ -248,7 +260,7 @@ export class AccAttachmentsComponent implements OnInit {
       return '';
     }else{
       if(field === 'arNo'){
-        return String(str).padStart(6, '0');
+        return String(str).padStart(this.record.arNoDigits, '0');
       }else if(field === 'dcbSeqNo'){
         return String(str).padStart(3, '0');
       }

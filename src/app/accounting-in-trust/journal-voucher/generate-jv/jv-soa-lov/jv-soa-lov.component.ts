@@ -57,7 +57,6 @@ export class JvSoaLovComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data)
   	if(data!=null){
   		this.selected = data;
   	}else{

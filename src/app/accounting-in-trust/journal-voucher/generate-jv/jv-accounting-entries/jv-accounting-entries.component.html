@@ -10,7 +10,9 @@
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
                  style="text-align: right; margin-left: 2px;text-align: right;" readonly [(ngModel)]="jvDetails.jvNo" name="jvDetails.jvNo">
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvDate" readonly name="jvDetails.jvDate">
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
                 <label class="form-control-sm col-sm-1">Status</label>
                 <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.jvStatus" readonly name="jvDetails.jvStatus">
                 <label class="form-control-sm col-sm-1 text-right">Ref No</label>
@@ -21,7 +23,9 @@
                 <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
                 readonly name="jvDetails.jvType">
                 <label class="form-control-sm col-sm-1">Ref No Date</label>
-                <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoDate" readonly name="jvDetails.refnoDate">
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.refnoDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
             </div>
         </div>
         <div class="col-sm-3">
@@ -86,11 +90,15 @@
             <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
             <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.createUser" [ngModel]="rowData?.createUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.createDate" [ngModel]="rowData?.createDate" disabled>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="rowData?.createDate"></datepicker>
+            </div>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
             <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.updateUser" [ngModel]="rowData?.updateUser" disabled>
             <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-            <input type="datetime-local" class="form-control form-control-sm col-sm-2" name="rowData.updateDate" [ngModel]="rowData?.updateDate" disabled>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="rowData?.updateDate"></datepicker>
+            </div>
         </div>
     </div>
 </fieldset>

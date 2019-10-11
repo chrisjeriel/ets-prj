@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, EventEmitter, Output } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 export class JvInvestmentPullOutComponent implements OnInit {
   
   @Input() jvDetail;
+  @Output() infoData = new EventEmitter<any>();
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -96,11 +97,22 @@ export class JvInvestmentPullOutComponent implements OnInit {
   dialogMessage : any;
   cancelFlag: boolean = false;
   sub: any;
+  disable: boolean = true;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private accService: AccountingService) { }
 
   ngOnInit() {
     //this.getInvPullout();
+    if(this.jvDetail.statusType == 'N'){
+      this.disable = false;
+    }else {
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag =  false;
+      this.passData.btnDisabled = true;
+      this.passData.uneditable = [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
+      this.disable = true;
+    }
     this.getBank();
     setTimeout(() => {this.getInvPullout()},0);
   }
@@ -180,7 +192,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data)
     let selected = data.data;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
@@ -264,5 +275,9 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
   onTableDataChange(data){
     console.log(data)
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data);
   }
 }

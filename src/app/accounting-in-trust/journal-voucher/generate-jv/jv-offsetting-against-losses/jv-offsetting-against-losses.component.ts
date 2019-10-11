@@ -28,6 +28,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],//this.accountingService.getClaimLosses(),
@@ -165,20 +166,21 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
-      this.passData.addFlag = false;
-      this.passData.deleteFlag = false;
-      this.InwPolBal.addFlag = false;
-      this.InwPolBal.deleteFlag = false;
-      this.passData.checkFlag = false;
-      this.InwPolBal.checkFlag = false;
+      this.passData.addFlag       = false;
+      this.passData.deleteFlag    = false;
+      this.InwPolBal.addFlag      = false;
+      this.InwPolBal.deleteFlag   = false;
+      this.passData.checkFlag     = false;
+      this.InwPolBal.checkFlag    = false;
       this.readOnly = true;
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+      this.InwPolBal.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+      this.passData.uneditable  =  [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
    
-    this.InwPolBal.nData = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
-    this.passLov.currCd = this.jvDetail.currCd;
+    this.InwPolBal.nData      = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
+    this.passLov.currCd       = this.jvDetail.currCd;
     this.InwPolBal.disableAdd = true;
     this.retrieveClmLosses();
   }
@@ -186,15 +188,15 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   retrieveClmLosses(){
     this.accountingService.getRecievableLosses(this.jvDetail.tranId,null).subscribe((data:any) => {
       console.log(data)
-      this.passData.tableData = [];
+      this.passData.tableData  = [];
       this.InwPolBal.tableData = [];
       this.cedingFlag = false;
       if(data.receivables.length!=0){
         this.cedingFlag = true;
         this.jvDetails.cedingName = data.receivables[0].cedingName;
-        this.jvDetails.cedingId = data.receivables[0].cedingId;
-        this.passLov.cedingId = data.payeeCd;
-        this.passLovInw.cedingId = this.jvDetails.cedingId;
+        this.jvDetails.cedingId   = data.receivables[0].cedingId;
+        this.passLov.cedingId     = data.payeeCd;
+        this.passLovInw.cedingId  = this.jvDetails.cedingId;
         for(var i = 0 ; i < data.receivables.length; i++){
           this.passData.tableData.push(data.receivables[i]);
           this.clmTable.onRowClick(null, this.passData.tableData[0]);
@@ -231,15 +233,14 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   onrowClick(data){
-    console.log(data)
     if(data != null && data.itemNo != ''){
       this.itemNo = data.itemNo;
-      this.InwPolBal.disableAdd = false;
+      this.InwPolBal.disableAdd   = false;
       this.InwPolBal.nData.itemNo = this.itemNo;
-      this.InwPolBal.tableData = data.inwPolBal;
+      this.InwPolBal.tableData    = data.inwPolBal;
     }else{
       this.InwPolBal.disableAdd = true;
-      this.InwPolBal.tableData = [];
+      this.InwPolBal.tableData  = [];
     }
 
     if(this.jvDetail.statusType == 'N'){
@@ -248,6 +249,11 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.InwPolBal.disableAdd = true;
     }
     this.inwTable.refreshTable();
+    this.infoData.emit(data);
+  }
+
+  inwClick(data){
+    this.infoData.emit(data);
   }
 
   openLOV(data){
@@ -267,31 +273,30 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setClaimOffset(data){
-    console.log(data.data)
     this.passData.tableData = this.passData.tableData.filter((a) => a.showMG != 1);
     for(var  i=0; i < data.data.length;i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       //this.claimsOffset.tableData.push(data)
-      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
-      this.passData.tableData[this.passData.tableData.length - 1].edited  = true;
-      this.passData.tableData[this.passData.tableData.length - 1].itemNo = null;
-      this.passData.tableData[this.passData.tableData.length - 1].claimId = data.data[i].claimId;
-      this.passData.tableData[this.passData.tableData.length - 1].projId = data.data[i].projId;
-      this.passData.tableData[this.passData.tableData.length - 1].histNo = data.data[i].histNo;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG   = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].edited   = true;
+      this.passData.tableData[this.passData.tableData.length - 1].itemNo   = null;
+      this.passData.tableData[this.passData.tableData.length - 1].claimId  = data.data[i].claimId;
+      this.passData.tableData[this.passData.tableData.length - 1].projId   = data.data[i].projId;
+      this.passData.tableData[this.passData.tableData.length - 1].histNo   = data.data[i].histNo;
       this.passData.tableData[this.passData.tableData.length - 1].policyId = data.data[i].policyId;
-      this.passData.tableData[this.passData.tableData.length - 1].currCd = this.jvDetail.currCd;
+      this.passData.tableData[this.passData.tableData.length - 1].currCd   = this.jvDetail.currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = this.jvDetail.currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].claimNo = data.data[i].claimNo;
+      this.passData.tableData[this.passData.tableData.length - 1].claimNo  = data.data[i].claimNo;
       this.passData.tableData[this.passData.tableData.length - 1].histCategoryDesc = data.data[i].histCategoryDesc;
       this.passData.tableData[this.passData.tableData.length - 1].histCategory = data.data[i].histCategory;
-      this.passData.tableData[this.passData.tableData.length - 1].histType = data.data[i].histType;
+      this.passData.tableData[this.passData.tableData.length - 1].histType     = data.data[i].histType;
       this.passData.tableData[this.passData.tableData.length - 1].histTypeDesc = data.data[i].histTypeDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].exGratia = data.data[i].exGratia;
-      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
-      this.passData.tableData[this.passData.tableData.length - 1].reserveAmt = data.data[i].reserveAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].paytAmt = data.data[i].cumulativeAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].clmPaytAmt = data.data[i].reserveAmt;
-      this.passData.tableData[this.passData.tableData.length - 1].localAmt = data.data[i].reserveAmt * this.jvDetail.currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].exGratia     = data.data[i].exGratia;
+      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc  = data.data[i].insuredDesc;
+      this.passData.tableData[this.passData.tableData.length - 1].reserveAmt   = data.data[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].paytAmt      = data.data[i].cumulativeAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].clmPaytAmt   = data.data[i].reserveAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt     = data.data[i].reserveAmt * this.jvDetail.currRate;
     }
     this.clmTable.refreshTable();
     this.clmTable.onRowClick(null, this.passData.tableData[0]);
@@ -320,8 +325,6 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data)
-
     this.clmTable.indvSelect.inwPolBal = this.clmTable.indvSelect.inwPolBal.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
       this.clmTable.indvSelect.inwPolBal.push(JSON.parse(JSON.stringify(this.InwPolBal.nData)));
@@ -348,10 +351,10 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].balance          = data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].paytAmt          = data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].localAmt         = data.data[i].prevBalance * this.jvDetail.currRate;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].prevPremAmt;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].prevRiComm;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].prevRiCommVat;
-      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].prevCharges;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].premAmt          = data.data[i].balPremDue;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riComm           = data.data[i].balRiComm;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].riCommVat        = data.data[i].balRiCommVat;
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].balChargesDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
     }
@@ -367,7 +370,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.InwPolBal.tableData[i].charges     = (this.InwPolBal.tableData[i].paytAmt / this.InwPolBal.tableData[i].prevNetDue) * this.InwPolBal.tableData[i].prevCharges;
       this.InwPolBal.tableData[i].netDue      = this.InwPolBal.tableData[i].premAmt - this.InwPolBal.tableData[i].riComm - this.InwPolBal.tableData[i].riCommVat + this.InwPolBal.tableData[i].charges;
 
-      this.InwPolBal.tableData[i].totalPayt   = this.InwPolBal.tableData[i].paytAmt + this.InwPolBal.tableData[i].cumPayment;
+      this.InwPolBal.tableData[i].totalPayt    = this.InwPolBal.tableData[i].paytAmt + this.InwPolBal.tableData[i].cumPayment;
       this.InwPolBal.tableData[i].remainingBal = this.InwPolBal.tableData[i].prevNetDue - this.InwPolBal.tableData[i].totalPayt;
       this.InwPolBal.tableData[i].localAmt     = this.InwPolBal.tableData[i].paytAmt * 1;
     }
@@ -505,7 +508,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].itemNo = this.passData.tableData[i].itemNo;
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].createDate);
           this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].inwPolBal[j].updateDate);
-          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].remainingBal;
+          this.jvDetails.saveInwPol[this.jvDetails.saveInwPol.length - 1].netDue = this.passData.tableData[i].inwPolBal[j].paytAmt;
         }
 
         if(this.passData.tableData[i].inwPolBal[j].deleted){

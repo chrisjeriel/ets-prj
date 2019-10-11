@@ -42,5 +42,6 @@
 
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
 <app-mtn-bank id="bankLOV" (selectedData)="selectedBankLOV($event)"></app-mtn-bank>
-<app-mtn-bank-acct id="bankAcctLOV" (selectedData)="selectedBankAcctLOV($event)" [bankCd]="this.bankCd"></app-mtn-bank-acct>
+<app-mtn-bank-acct id="bankAcctORLOV" (selectedData)="selectedBankAcctORLOV($event)" [bankCd]="this.bankORCd"></app-mtn-bank-acct>
+<app-mtn-bank-acct id="bankAcctARLOV" (selectedData)="selectedBankAcctARLOV($event)" [bankCd]="this.bankARCd"></app-mtn-bank-acct>
 <app-mtn-users id="mtnUsers" (selectedData)="selectedMtnUsers($event)"></app-mtn-users>
