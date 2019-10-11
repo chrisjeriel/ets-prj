@@ -32,6 +32,6 @@
 	<div class="col-sm-2"></div>
 </div>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
 <app-confirm-save (onYes)="generateCV()"></app-confirm-save>
 <app-cancel-button (onYes)="generateCV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
