@@ -151,25 +151,25 @@
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
 											<!-- <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired> -->
-											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" appRequired>
+											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]="disableAssignTo" [(ngModel)]="userInfo.userId" appRequired>
 											<div id="search" class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
-											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]= disableAssignTo readonly [(ngModel)]="userInfo.userName">
+											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]="disableAssignTo" readonly [(ngModel)]="userInfo.userName">
 										</div>
 										<div class="input-group" style="margin: 10px 0 0 0;">
 											<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
 											<label class="form-control-sm" for="radio3">Assign to many</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
-											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]= disableAssignToMany><a>Users</a></button>
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]="disableAssignToMany"><a>Users</a></button>
 											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
 										</div>
 										<div class="input-group" style="margin: 10px 0 0 0;">
-											<input id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm" for="radio3">Assign to group</label>
+											<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio4">Assign to group</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0; padding-bottom: 9px;">
-											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUserGrpLOV('0')"  [disabled]= disableAssignToMany><a>Groups</a></button>
-											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUserGrpLOV('0')"  [disabled]="disableAssignToGroup"><a>Groups</a></button>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToGroup" appRequired>
 										</div>
 										<!-- <div class="input-group" style="margin: 10px 0 0 0;">
 											<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">

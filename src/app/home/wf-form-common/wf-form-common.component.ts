@@ -132,8 +132,10 @@ export class WfFormCommonComponent implements OnInit {
   disablebtnBool: boolean = false;
   disableAssignTo: boolean = true;
   disableAssignToMany: boolean = true;
+  disableAssignToGroup: boolean = true;
   boolValue: any;
   userInfoToMany: string;
+  userInfoToGroup: string;
   selects: any[] = [];
   dialogIcon:string  = "";
   dialogMessage:string  = "";
@@ -183,13 +185,13 @@ export class WfFormCommonComponent implements OnInit {
         }
         case '2': {
         this.boolValue = '2';
+        this.disableRad();
         this.disableAssignTo = false;
-        this.disableAssignToMany = true;
         break;
         }
         case '3': {
         this.boolValue = '3';
-        this.disableAssignTo = true;
+        this.disableRad();
         this.disableAssignToMany = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
@@ -197,7 +199,8 @@ export class WfFormCommonComponent implements OnInit {
         }
         case '4': {
         this.boolValue = '4';
-        this.clear('enable');
+        this.disableRad();
+        this.disableAssignToGroup = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
         break;
@@ -207,6 +210,12 @@ export class WfFormCommonComponent implements OnInit {
         break;
         }
     }
+  }
+
+  disableRad() {
+    this.disableAssignTo = true;
+    this.disableAssignToMany = true;
+    this.disableAssignToGroup = true;
   }
 
   showUsersLOV(obj){
