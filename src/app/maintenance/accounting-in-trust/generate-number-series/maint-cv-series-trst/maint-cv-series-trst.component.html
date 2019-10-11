@@ -1,3 +1,33 @@
-<p>
-  maint-cv-series-trst works!
-</p>
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Series Option</legend>
+			<div class="input-group" style="margin-top: 5px">
+				<label class="form-control-sm col-sm-1" style="margin-left: margin-left: 15px;">Year</label>
+				<input type="text" class="form-control form-control-sm col-sm-1">
+				<label class="form-control-sm col-sm-1">From</label>
+				<input type="text" class="form-control form-control-sm col-sm-2">
+				<label class="form-control-sm col-sm-1" style="margin-left: -25px;">To</label>
+				<input type="text" class="form-control form-control-sm col-sm-2">
+				<div class="col-sm text-center">
+					<button class="cust-btn" style="min-width: 100px;margin-left: -25px">Generate</button>
+					<button class="cust-btn" style="min-width: 100px;">Search</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Generated Series</legend>
+			<div class="row" style="margin-top: 5px">
+				<div class="col-sm-12">
+					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>

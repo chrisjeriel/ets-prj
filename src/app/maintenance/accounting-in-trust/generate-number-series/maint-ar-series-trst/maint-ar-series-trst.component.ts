@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MaintenanceService } from '@app/_services';
 
 @Component({
   selector: 'app-maint-ar-series-trst',
@@ -20,9 +21,13 @@ export class MaintArSeriesTrstComponent implements OnInit {
       keys: ['quarterEnding', 'currCd', 'currRate', 'balanceAmt', 'localAmt','balanceAmt', 'localAmt'],
   }
 
-  constructor() { }
+  constructor(private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
+  }
+
+  onClickGenerate(){
+
   }
 
 }

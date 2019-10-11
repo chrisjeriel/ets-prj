@@ -1395,4 +1395,13 @@ export class MaintenanceService{
     		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcseCheckSeries', {params});
     }
+
+    generateARSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateARSeries', JSON.stringify(params), header);
+    }
 }
