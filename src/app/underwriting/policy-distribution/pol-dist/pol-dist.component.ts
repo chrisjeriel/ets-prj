@@ -3,7 +3,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
 import { NotesService, UnderwritingService } from '@app/_services';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -21,8 +21,8 @@ export class PolDistComponent implements OnInit {
   private policyHoldCoverInfo: PolicyHoldCoverInfo;
 	private userName: string = JSON.parse(window.localStorage.currentUser).username;
 
-	@ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+	@ViewChild(LoadingTableComponent) table : LoadingTableComponent;
+	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;	
 	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
 	@ViewChild('myForm') form:any;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -37,7 +37,29 @@ export class PolDistComponent implements OnInit {
 		pageLength: 10,
 		pagination: true,
 		pageStatus: true,
-		keys: ['policyNo','cedingName', 'insuredDesc', 'riskName']
+		keys: ['policyNo','cedingName', 'insuredDesc', 'riskName'],
+		filters: [
+		  {
+		      key: 'policyNo',
+		      title: 'Policy No.',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'cedingName',
+		      title: 'Ceding Company',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'insuredDesc',
+		      title: 'Insured',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'riskName',
+		      title: 'Risk',
+		      dataType: 'text'
+		  },
+		],
 	}
 
 	polHoldCoverParams: any = {
@@ -112,21 +134,37 @@ export class PolDistComponent implements OnInit {
 	approveBtnDisabledStatus: string[] = ['2','3','4','5','6','R', ''];
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
+	searchParams: any = {
+        statusArr:['2'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+    };
+
+
 	ngOnInit() {
     	this.titleService.setTitle("Pol | Policy Distribution");
 		this.printType = 'SCREEN';
 	}
 
 	retrievePolListing(){
-		this.table.loadingFlag = true;
-		this.policyListingData.tableData = [];
 		setTimeout(()=>{
-			this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
+			if(!this.noDataFound){
+		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
+		      this.policyListingData.filters[0].enabled =true;
+		      this.searchParams.policyNo = this.tempPolNo.join('%-%');
+		    }else{
+		    	this.policyListingData.filters[0].search = '';
+		    	this.policyListingData.filters[0].enabled =false;
+		    	this.searchParams.policyNo = '';
+		    }
+
+			this.us.newGetParListing(this.searchParams).subscribe((data: any) =>{
 				data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
+				let recs:any[] = [];
 				if(data.policyList.length !== 0){
 					this.noDataFound = false;
 					for(var rec of data.policyList){
-						this.policyListingData.tableData.push({
+						recs.push({
 							policyId: rec.policyId,
 							policyNo: rec.policyNo,
 							cedingName: rec.cedingName,
@@ -136,17 +174,16 @@ export class PolDistComponent implements OnInit {
 							totalSi: rec.project.coverage.totalSi
 						});
 					}
-					this.policyListingData.tableData = this.policyListingData.tableData.filter(a=> {return a.statusDesc === 'In Force'});
 					if(this.isType && !this.isIncomplete){
 						this.isIncomplete = false;
-						this.policyInfo 					= this.policyListingData.tableData[0];
+						this.policyInfo 					= recs[0];
 						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
 						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
 					}
 				}else{
 					this.noDataFound = true;
-					this.policyListingData.tableData = [];
+					this.table.addFiller();
 					if(this.isType){
 						this.policyInfo.cedingName = '';
 						this.policyInfo.insuredDesc = '';
@@ -157,9 +194,9 @@ export class PolDistComponent implements OnInit {
 						}, 100);
 					}
 				}
-				this.table.refreshTable();
+				this.policyListingData.count = data['length']; 
+				this.table.placeData(recs);
 				this.modalOpen = true;
-				this.table.loadingFlag = false;
 			});
 		}, 100);
 		
@@ -268,6 +305,13 @@ export class PolDistComponent implements OnInit {
    onClickCancel(){
    	this.router.navigate(['/']);
    }
+
+   searchQuery(searchParams){
+      for(let key of Object.keys(searchParams)){
+          this.searchParams[key] = searchParams[key]
+      }
+      this.retrievePolListing();
+    }
 
 }
 

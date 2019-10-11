@@ -1388,6 +1388,7 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBussType', JSON.stringify(params), header);
     }
 
+
     getMtnAcseCheckSeries(bank?, bankAcct?, checkNo?){
     	const params = new HttpParams()
     		.set('bank', (bank === null || bank === undefined ? '' : bank))
@@ -1396,6 +1397,7 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcseCheckSeries', {params});
     }
 
+
     generateARSeries(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -1403,5 +1405,22 @@ export class MaintenanceService{
             })
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/generateARSeries', JSON.stringify(params), header);
+     }
+
+    saveMtnDcbUser(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnDcbUser', JSON.stringify(params), header);
     }
+
+    getMtnEmployee(companyId?, employeeId?){
+    	const params = new HttpParams()
+						.set('companyId', (companyId === null || companyId === undefined ? '' : companyId))
+						.set('taxName', (employeeId === null || employeeId === undefined ? '' : employeeId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnEmployee", {params});
+    }
+    
 }

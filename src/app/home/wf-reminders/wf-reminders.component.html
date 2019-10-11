@@ -25,8 +25,11 @@
 			        	<div>
 							<div class="float-left a-date">
 								<a href="#">
+									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" class="fa fa-flag span-div-flag" style="color: #ffff00ad;"></i>
+									<i *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" class="fa fa-flag span-div-flag" style="color: #ffa500ad;"></i>
+									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" class="fa fa-flag span-div-flag" style="color: #ff0000ad;"></i>
 									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm a' }}<br>
-									<div class="span-div"><span>{{ reminder.alarmTime }}</span></div>
+									<div class="span-div"><span>{{ reminder.alarmTime | date:'hh:mm a' }}</span></div>
 								</a>
 							</div>
 
@@ -107,6 +110,11 @@
 						<p><b>{{ reminder.title }}</b></p>
 						<p>{{ reminder.reminder }}</p>
 						
+						<div *ngIf="reminder.module != ''">
+					    	<p *ngIf="reminder.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#">{{ reminder.details }}</a></p>
+					    </div>
+
 						<div  *ngIf="reminderBool">
 						<p style="font-size: 12px">Assigned by <b>{{ reminder.createUser }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
 					    </div>
@@ -124,14 +132,14 @@
 			                            </ng-template>
 			                            <ng-template ngbPanelContent>
 			                            	<div *ngFor="let relRecord of reminder.relatedRecordList;">
-			                            		<button *ngIf="relRecord.module == 'QUOTATION'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
-			                                	<br *ngIf="relRecord.module == 'QUOTATION'" />
+			                            		<button *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" />
 
-			                                	<button *ngIf="relRecord.module == 'POLICY'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
-			                                	<br *ngIf="relRecord.module == 'POLICY'" />
+			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" />
 
-			                                	<button *ngIf="relRecord.module == 'CLAIM'" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
-			                                	<br *ngIf="relRecord.module == 'CLAIM'" />
+			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" />
 			                            	</div>
 			                            </ng-template>
 			                    	</ngb-panel>

@@ -8,6 +8,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { map } from 'rxjs/operators';
 import { ClmClaimHistoryComponent } from '@app/claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-claim',
@@ -66,7 +67,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
                private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService,
-               private securityService: SecurityService) { }
+               private securityService: SecurityService, private loc: Location) { }
 
   @ViewChild('tabset') tabset: any;
 

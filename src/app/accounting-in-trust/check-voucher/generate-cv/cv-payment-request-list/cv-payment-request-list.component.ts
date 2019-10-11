@@ -133,7 +133,11 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.accountingService.saveAcitCvPaytReqList(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      this.getCvPaytReqList();
+      if(data['returnCode'] == -1){
+        this.getCvPaytReqList();
+      }else{
+        this.dialogIcon = 'error';
+      }
       this.suc.open();
       this.params.savePaytReqList  = [];
       this.params.deletePaytReqList  = [];
@@ -267,7 +271,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     if(this.cancelFlag){
       this.can.onNo();
     }else{
-      this.suc.modal.closeModal();
+      this.suc.modal.modalRef.close();
     }
   }
 

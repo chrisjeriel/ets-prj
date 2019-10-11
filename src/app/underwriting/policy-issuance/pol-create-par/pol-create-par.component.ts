@@ -110,9 +110,17 @@ export class PolCreatePARComponent implements OnInit {
 
   getQuoteListing(param?) {
     this.lovTable.loadingFlag = true;
+/*<<<<<<< HEAD*/
+    let params = [{ key: 'statusArr', search: [3,5] }]
+    if(param != undefined){
+      params = params.concat(param);
+    }
+    this.sub = this.quoteService.getQuoProcessingData(params).subscribe(data => {
+/*=======
     
     this.sub = this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
       console.log(data)
+>>>>>>> 1990f3a3cedd9699648b1e0786568085c682f7e7*/
       this.quotationList = data['quotationList'];
       this.passDataLOV.tHeader = ['Quotation No', 'Ceding Company', 'Insured', 'Risk'];
       this.passDataLOV.keys = ['quotationNo','cedingName','insuredDesc','riskName'];
@@ -121,8 +129,7 @@ export class PolCreatePARComponent implements OnInit {
                                   {key: 'insuredDesc', title: 'Insured',      dataType: 'text'},
                                   {key: 'riskName',    title: 'Risk',         dataType: 'text'}];
 
-      this.quotationList = this.quotationList.filter(qu => qu.status.toUpperCase() === 'RELEASED' || qu.status.toUpperCase() === 'CONCLUDED (THRU ANOTHER CEDANT)')
-                                             .map(qu => { qu.riskName = qu.project.riskName; return qu; });
+      this.quotationList = this.quotationList.map(qu => {qu.project != null ? qu.riskName = qu.project.riskName : ''; return qu; });
       this.passDataLOV.tableData = this.quotationList;
       this.lovTable.refreshTable();
 

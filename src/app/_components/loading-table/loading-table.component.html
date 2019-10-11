@@ -1,0 +1,283 @@
+<style>
+    thead tr th {
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
+</style>
+
+<div class="row"  *ngIf="loadingFlag">
+    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+</div>
+<div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'">
+    <ng-container *ngIf="overlayLoader">
+        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+        <div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
+        </div>
+    </ng-container>
+    
+    <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn">
+        <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
+        <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
+        <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>
+        <button *ngIf="passData.copyFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickCopy($event)"><a class="paginate_button previous">Copy</a></button>
+         <button *ngIf="passData.saveFlag" class="cust-btn" (click)="onClicSave($event)"><a class="paginate_button previous">Save</a></button>
+        <button *ngIf="passData.printBtn" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" type="button" (click)="onClickPrint($event)"><a>Print</a></button> <!-- edited by Engel 3/14/2019 -->
+
+        <button *ngIf="passData.genericBtn1 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric1($event)" [disabled]="btnDisabled">{{ passData.genericBtn1 }}</button>
+        <button *ngIf="passData.genericBtn2 !== undefined" class="cust-btn genericBtn" [class.btnDisabled]="btnDisabled" (click)="onClickGeneric2($event)" [disabled]="btnDisabled">{{ passData.genericBtn2 }}</button>
+    </div>
+    <div class="expire" *ngIf="passData.expireFilter" align="right" style="margin-top: 1px !important;">
+        <label>Expires in (Days): &nbsp; </label>
+        <input type="number" class="form-control-sm expireIn" placeholder="" [(ngModel)]="expireValue" (keyup.enter)="pressEnterFilter();">
+    </div>
+    <div class="search-filter" *ngIf="!passData.tableOnly">
+        <label>Search: &nbsp;
+            <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (keydown.enter)="filterDisplay()">
+        </label>
+    </div>
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="!passData.tableOnly">
+        <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item">
+                <div class="container" style="padding-left: 5px; padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                             <span class="cust-tbl-label">Filter by:</span>
+                        </div>
+                    </div>
+                    <div class="row" style="overflow: auto; height: 140px">
+                        <div class="col-sm-12" >
+                            <div class="input-group" *ngFor="let filt of passData.filters;let i= index" [ngSwitch]="passData.filters[i].dataType">
+                                <div class="input-group-prepend" style="margin-right: 2px !important" *ngIf="passData.filters[i].dataType != 'expire'">
+                                    <div class="input-group-text cust-ig-text">
+                                        <input type="checkbox" [(ngModel)]="filt.enabled"><span>&nbsp;{{filt.title}}</span>
+                                    </div>
+                                </div>
+
+                                <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'text'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
+                                 <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'expire'"  type="hidden" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
+                                <input [readonly]="!filt.enabled" [ngModel]="filt.search" (ngModelChange)="filt.search=$event.toUpperCase()" *ngSwitchCase="'seq'"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();">
+
+                                <div class="dp-cont col-sm" style="margin-left: 0 !important;" *ngSwitchCase="'date'">
+                                    <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.search" (valueChange)="filt.search=$event;"></datepicker>
+                                </div>
+
+                                <ng-container *ngSwitchCase="'datespan'">
+
+                                             <div tabindex="0" class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="From Date" placement="bottom" (keyup.enter)="pressEnterFilter();">
+                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search" (valueChange)="filt.keys.search=$event; filt.keys.search2 = valChanged('ds', filt.keys.search, filt.keys?.search2)"></datepicker> <!-- filt.keys.search2=$event; -->
+                                             </div>
+                                             <span style="line-height: 1;">&ndash;</span>
+                                             <div tabindex="0" class="dp-cont col-sm" style="margin-left: 0 !important;" ngbTooltip="To Date" placement="bottom" (keyup.enter)="pressEnterFilter();">
+                                                 <datepicker [type]="'date'" [disabled]="!filt.enabled" [value]="filt.keys?.search2" (valueChange)="filt.keys.search2=$event" [minDate]="filt.keys?.search"></datepicker>
+                                             </div>
+                                </ng-container>
+                                 <ng-container *ngSwitchCase="'textspan'">
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search" (ngModelChange)="filt.keys.search=$event.toUpperCase()"  type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter() ;" placement="bottom" ngbTooltip="Min Value" onkeypress='return  event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged('ts', filt.keys.search, filt.keys?.search2)">                
+                                        <span style="line-height: 1;">&ndash;</span>
+                                             <input [readonly]="!filt.enabled" [ngModel]="filt.keys?.search2" (ngModelChange)="filt.keys.search2=$event.toUpperCase()" type="text" class="form-control form-control-sm" (keyup.enter)="pressEnterFilter();" placement="bottom" ngbTooltip="Max Value"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' appCurrency (change)="filt.keys.search2 = valChanged('ts', filt.keys.search, filt.keys?.search2)">
+                                </ng-container>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <button id="okFilter" class="cust-filter cust-tbl-submit" (click)="addFiller();changePage(1); drop.close();"><a>Ok</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="passData.exportFlag">
+       <button class="cust-export" ngbDropdownToggle><a><fa name="ellipsis-v"></fa></a></button>
+        <div ngbDropdownMenu aria-labelledby="dropdownConfig">
+            <div class="dropdown-item-export">
+                <div class="container" style="padding-left: 5px; padding-right: 5px;">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="input-group  justify-content-center">
+                                <button class="cust-btn" (click)="onClickExport(event)" style="width: 100%"><i class="fa fa-file-excel-o fa-lg" aria-hidden="true" style="margin-right: 5px; padding-bottom: 5px"></i><a>Export to Excel</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row"  *ngIf="loadingTableFlag">
+        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+    </div>
+
+    <div *ngIf="!loadingTableFlag" class="loadDiv"> <!-- Div of table -->
+        <div style="position: absolute;left: 0px;top:0px" [id]="'pinTable'+passData.pageID">
+            <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
+                    <thead>
+                        <tr>
+                            <th *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-header"><input type="checkbox" name="" [(ngModel)]="checked" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag"></th>
+                            <th (click)="sort(dataKeys[0],sortBy);sortIndex=i;" *ngFor="let header of passData.tHeader;let i = index" [class.d-none]="pinDataHeader.indexOf(header) == -1">
+                                <i class="fa fa-map-pin" (click)="unPinColumn($event,pinDataHeader.indexOf(header))"></i>
+                                <span class="gridHeader" (click)="sort(dataKeys[i],sortBy);sortIndex=i;">{{header}}</span>
+                                    <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
+                                    <i *ngIf="!sortBy && i==sortIndex" class="fa fa-caret-up"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of passData.tableData | paginate: { id:'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }" (click)="onRowClick($event, data);" (dblclick)="onRowDblClick($event,data)" [class.selected]="data === indvSelect && !data.filler" >
+                            <td *ngIf="passData.checkFlag && pinKeys.length != 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
+                            <td style="margin-top:1px" *ngFor="let key of dataKeys; let i = index" [class.d-none]="pinKeys.indexOf(key) == -1" [ngSwitch]="passData.dataTypes[i]">
+                                <div *ngIf="!(data===fillData)">
+                                    <div *ngSwitchCase="'percent'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] | number: '1.7-7'}}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'currency'" style="text-align: right">
+                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'number'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] | number: '1.0-0'}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'right'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] }}</span>
+                                    </div>
+                                    <span *ngSwitchCase="'date'" class="unclickable">{{data[key] | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable">{{data[key] | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                        <input  type="checkbox" [checked]="data[key]" class="unclickable" >
+                                    </div>
+                                    <span *ngSwitchDefault class="unclickable">{{data[key] }}</span>
+                                </div>
+                                <div *ngIf="data===fillData" class="filler">
+                                    <span></span>
+<!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="passData.totalRow!==undefined">
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+        <div [id]="'notPin'+passData.pageID">
+            
+            <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol">
+                <table id="non-datatable" class="content-container keypress-class" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}" >
+                    <thead >
+                        <tr>
+                            <th *ngIf="passData.checkFlag && pinKeys.length==0" class="checkbox-container-header isCheckBox">
+                                <input type="checkbox" name="" (change)="selectAll($event.target.checked)" class="checkbox"  [checked]="checked" [class.sticky]="unliFlag" [disabled]="passData.tableData.length == 0">
+                            </th>
+                            <th *ngFor="let tHeader of passData.tHeader; let i = index" [ngSwitch]="passData.dataTypes[i]"  [ngClass]="{'sticky': unliFlag, 'isCheckBox': passData.dataTypes[i] == 'checkbox', 'd-none': pinDataHeader.indexOf(tHeader) != -1 }" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}" [ngbTooltip]="passData.tooltip !== undefined ? passData.tooltip[i] :null">
+                                <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
+                                <span
+                                      class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+                                <div *ngSwitchCase="'currency'" style="text-align: right">
+                                    <span class="gridHeader" (click)="sort(passData.sortKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                </div>
+                                <div *ngSwitchCase="'percent'" style="text-align: right">
+                                    <span class="gridHeader" (click)="sort(passData.sortKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                </div>
+                                <div *ngSwitchCase="'number'" style="text-align: right">
+                                    <span class="gridHeader" (click)="sort(passData.sortKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                </div>
+                                <div *ngSwitchCase="'right'" style="text-align: right">
+                                    <span class="gridHeader" (click)="sort(passData.sortKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                </div>
+
+                                <span *ngSwitchDefault class="gridHeader" (click)="sort(passData.sortKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                 <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
+                                 <i *ngIf="!sortBy && i==sortIndex" class="fa fa-caret-up"></i>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr *ngFor="let data of passData.tableData | paginate: { id: 'non-editable'+passData.pageID, itemsPerPage: passData.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="!data.filler && (data === indvSelect || selected.includes(data) || data?.checked)" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
+                            <td *ngIf="passData.checkFlag && pinKeys.length == 0" class="checkbox-container-body"><input type="checkbox" name="" *ngIf="!(data===fillData)" class="checkbox" (click)="data.preventDefault ? removeSelected($event, data, true) : null;" (change)="removeSelected($event, data)" [ngModelOptions]="{standalone: true}" [ngModel]="data.checked"></td>
+                            <td *ngFor="let key of dataKeys; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngClass]="{'d-none': pinKeys.indexOf(key) != -1, 'checkbox-padding': passData.dataTypes[i] === 'checkbox'}" [ngStyle]="{'max-width': (passData.colSize[i] == '' || passData.colSize.length == 0) ? 'auto' : passData.colSize[i]}">
+                                <div *ngIf="!(data===fillData)">
+
+                                    <div *ngSwitchCase="'percent'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] | number: '1.10-10'}}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'currencyRate'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] | number: '1.6-6'}}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'currency'" style="text-align: right">
+                                        <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'number'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] | number: '1.0-0'}}</span>
+                                    </div>
+                                    <div  *ngSwitchCase="'right'" style="text-align: right">
+                                        <span class="unclickable">{{data[key] }}</span>
+                                    </div>
+                                    <span *ngSwitchCase="'date'" class="unclickable">{{data[key] | date: 'MM/dd/yyyy'}}</span>
+                                    <span *ngSwitchCase="'time'" class="unclickable">{{data[key] | date: 'HH:mm'}}</span>
+                                    <span *ngSwitchCase="'datetime'" class="unclickable">{{data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>
+                                    <span *ngSwitchCase="'year'" class="unclickable">{{data[key] | date: 'yyyy'}}</span>
+                                    <div  *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
+                                    <span class="unclickable">{{data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                    </div>
+                                    <div *ngSwitchCase="'checkbox'" style="text-align: center;">
+                                        <input  type="checkbox" [checked]="data[key] && data[key]!= 'N'" class="unclickable">
+                                    </div>
+                                    <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
+                                </div>
+                                <div *ngIf="data===fillData" class="filler">
+                                    <span></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr *ngIf="passData.total !== undefined">
+                            <th *ngIf="passData.checkFlag"></th>
+                            <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]" [ngStyle]="{ 'text-align': 'right'}">
+                                <div *ngSwitchCase="'currency'" style="text-align: right">
+                                        <span class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                </div>
+                                <div  *ngSwitchCase="'number'" style="text-align: right">
+                                    <span class="unclickable">{{ getSum(data) | number: '1.0-0'}}</span>
+                                </div>
+                                <div  *ngSwitchDefault style="text-align: right">
+                                        <span class="unclickable">{{ getSum(data)}}</span>
+                                </div>
+                            </th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="pagingStatus" *ngIf="passData.pageStatus">
+            <pagination-template #paw="paginationApi" [id]="'non-editable'+passData.pageID"> <!-- (pageChange)="p = $event"> -->
+                <label *ngIf="!paw.isLastPage() && passData.count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{ paw.getCurrent() * passData.pageLength }} of {{passData.count}} entries </label>
+                <label *ngIf="paw.isLastPage() && passData.count > 0">Showing {{ (paw.getCurrent() - 1) * passData.pageLength + 1 }} - {{passData.count}} of {{passData.count}} entries</label>
+                <label *ngIf="passData.count < 1">Showing 0 - 0 of 0 entries</label>
+            </pagination-template>
+        </div>
+        <div class="pagination" *ngIf="passData.pagination">
+            <pagination-controls #paw [id]="'non-editable'+passData.pageID" class="my-pagination" (pageChange)="p = $event;changePage($event)" previousLabel="" nextLabel="">
+            </pagination-controls>
+        </div>
+        <div *ngIf="passData.pagination" style="height: 42px;float: right;">
+        </div>
+    </div>
+</div>
+

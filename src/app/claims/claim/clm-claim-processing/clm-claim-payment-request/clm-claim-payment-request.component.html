@@ -55,7 +55,7 @@
   <div class="form-group col-sm">
     <div class="col-md-13 text-center">
       <div class="cust-btn-container">
-        <button type="button" class="cust-btn" (click)="genMdl.openNoClose()" [disabled]="disableGenerateBtn" *ngIf="!isInquiry"><a>Generate Request</a></button>
+        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="disableGenerateBtn" *ngIf="!isInquiry"><a>Generate Request</a></button>
         <button type="button" class="cust-btn" (click)="canMdl.openNoClose()" [disabled]="disableCancelBtn" *ngIf="!isInquiry"><a>Cancel Request</a></button>
         <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
       </div>

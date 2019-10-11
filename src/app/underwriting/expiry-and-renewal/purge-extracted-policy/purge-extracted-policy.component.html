@@ -151,24 +151,24 @@
 											<div class="input-group" style="margin-top: -22px;">
 												<label class="form-control-sm col-sm-2 text-right">Line</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'line')" [ngModel]="params.line" (ngModelChange)="params.line = $event.toUpperCase()" [readonly]="radioVal == 'byPolNo'">
-												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription" [readonly]="radioVal == 'byPolNo'">
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.lineDescription" readonly>
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;">
 												<label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event, 'typeOfCession')" [ngModel]="params.typeOfCessionId" (ngModelChange)="params.typeOfCessionId = $event.toUpperCase()" [readonly]="radioVal == 'byPolNo'"> 
-												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession" [readonly]="radioVal == 'byPolNo'"> 
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showTypeOfCessionLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.typeOfCession" readonly> 
 											</div>
 										</div>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group" style="margin-top: -8px;"> 
 												<label class="form-control-sm col-sm-2" style="padding-right: 4px;">Ceding Company</label>
 												<input type="text" class="form-control form-control-sm col-sm-3" (change)="checkCode($event,'cedingCo')" [ngModel]="params.cedingId" (ngModelChange)="params.cedingId=$event.toUpperCase();" [readonly]="radioVal == 'byPolNo'">
-												<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
-												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName" [readonly]="radioVal == 'byPolNo'"> 
+												<div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
+												<input type="text" name="" class="form-control form-control-sm col-sm" style="margin-left: 7px" [(ngModel)]="params.cedingName" readonly> 
 											</div>	
 										</div>
 										
@@ -179,7 +179,7 @@
 							        <div class="cust-btn-container text-center" style="margin-right: 215px;">
 							            <button type="button" class="cust-btn" (click)="clearData();"><a>Clear</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Ok</a></button>
+							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();  filterMainTable();"><a>Ok</a></button>
 									</div>
 								</div>
                 </app-modal>

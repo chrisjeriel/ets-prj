@@ -69,11 +69,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
 
   cedingCompanyData: any = {
-  	tableData     : [],
-  	tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Approved Amount','Payment Amount','Payment Amount (PHP)'],
+    tableData     : [],
+    tHeader       : ['Claim No.','Hist No.','Hist Category','Hist Type','Payment For', 'Insured', 'Ex-Gratia','Curr','Curr Rate','Reserve Amount','Approved Amount','Payment Amount','Payment Amount (PHP)'],
     dataTypes     : ['lov-input', 'sequence-2', 'text', 'text', 'text', 'text', 'checkbox','text', 'percent','currency','currency','currency','currency'],
     magnifyingGlass : ['claimNo'],
-  	nData: {
+    nData: {
       claimNo        : '',
       histNo         : '',
       histCatDesc    : '',
@@ -88,14 +88,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
       localAmt       : '',
       showMG         : 1
     },
-  	paginateFlag  : true,
-  	infoFlag      : true,
-  	pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
-  	checkFlag     : false,
-  	addFlag       : false,
-  	deleteFlag    : false,
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'cedingCompanyData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
+    checkFlag     : false,
+    addFlag       : false,
+    deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true,true],
-  	total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
+    total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
     widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120,120],
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
   };
@@ -318,10 +318,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // setTimeout(() => {
-    //   $('.globalLoading').removeClass('globalLoading;');
-    // },0);
-    
+    this.loadingFunc(true);
     var d = new Date();
     this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
     this.yearParam = d.getFullYear();
@@ -338,6 +335,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
+      this.loadingFunc(false);
       this.requestData = data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; })[0];
@@ -1162,7 +1160,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         createUser  : (e.createUser == '' || e.createUser == null)?this.ns.getCurrentUser():e.createUser,
         createDate  : (e.createDate == '' || e.createDate == null)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate),
         itemNo      : e.itemNo,
-        netDue      : e.netDue,
+        netDue      : e.prevNetDue,
         premAmt     : e.premAmt,
         prevPaytAmt : e.cumPayment,
         prevBalance : e.prevBalance,
@@ -1422,6 +1420,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     if(this.cancelFlagServFee) {
       this.canServFee.onNo();
     }
+  }
+
+  loadingFunc(bool){
+    var str = bool?'block':'none';
+    $('.globalLoading').css('display',str);
   }
 
 }

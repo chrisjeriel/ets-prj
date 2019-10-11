@@ -151,9 +151,9 @@ export class BankAccountComponent implements OnInit {
   		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
-  		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
+       $('#cust-table-container').addClass('ng-dirty');
   	}
   }
 
@@ -177,6 +177,7 @@ export class BankAccountComponent implements OnInit {
             this.form.control.markAsPristine();
             this.dialogIcon = "success";
             this.successDialog.open();
+            this.table.overlayLoader = true;
             this.getBankAcct();
             $('.ng-dirty').removeClass('ng-dirty');
         }else{
@@ -237,6 +238,7 @@ export class BankAccountComponent implements OnInit {
   }
 
   onTableClick(data){
+    console.log(data);
     this.info = data;
     this.passTable.disableGeneric = data == null;
   }

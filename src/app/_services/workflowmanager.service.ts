@@ -62,4 +62,12 @@ export class WorkFlowManagerService {
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retTransactions', {params});
     }
 
+    retrieveRelatedRecords(module: string, referenceId: string){
+         const params = new HttpParams()
+                .set('module', module)
+                .set('referenceId', referenceId);
+
+        return this.http.get(environment.prodApiUrl + '/work-flow-service/retRelatedRecords', {params});
+    }
+
 }
