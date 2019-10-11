@@ -91,6 +91,10 @@ export class ClaimsService {
           return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimListing',{params});
      }
 
+     newGetClaimsListing(searchParams: any) {
+        return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClaimListing',{params:searchParams});
+     }
+
     getClaimApprovedAmt(claimId?,histNo?){
 		const params = new HttpParams()
 			.set('claimId', (claimId == null || claimId == undefined ? '' : claimId))

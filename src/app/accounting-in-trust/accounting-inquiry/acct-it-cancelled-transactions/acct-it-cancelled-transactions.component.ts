@@ -94,8 +94,8 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   }
 
   retrieveCancelledTrans(){
-    console.log(this.params)
     this.accountingService.getAcitCancelledTran(this.params.tranId,this.params.tranclass,this.params.cancelFrom,this.params.cancelTo).subscribe((data:any) => {
+      console.log(data)
       if(data.cancelledTran.length !== 0){
         this.cancelledTransactionsData.tableData = [];
         for (var i = 0; i < data.cancelledTran.length; i++) {
@@ -136,7 +136,7 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
 
   viewTranDetails(){
     if(this.tranClass == 'AR'){
-      this.route.navigate(['accounting-in-trust',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId,from:'CMDM'}],{ skipLocationChange: true });
+      this.route.navigate(['accounting-in-trust',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId,from:'CancelledTran'}],{ skipLocationChange: true });
     }else if(this.tranClass == 'CV'){
       this.route.navigate(['generate-cv',{exitLink:'/acct-it-cancelled-trans',tranId: this.tranId}],{ skipLocationChange: true });
     }else if(this.tranClass == 'JV'){

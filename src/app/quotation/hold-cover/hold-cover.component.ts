@@ -271,6 +271,7 @@ export class HoldCoverComponent implements OnInit {
 		$('#lovMdl > #modalBtn').trigger('click');
 		var quoFiltSearch = this.passDataQuoteLOV.filters[0].search;
 		var quoFiltEnabled = this.passDataQuoteLOV.filters[0].enabled;
+		this.searchParams = this.searchParams.concat([{ key: 'statusArr', search: [3,6] }])
 		if(quoFiltEnabled === true){
 			this.quotationService.getQuoProcessingData(this.searchParams)
 			.subscribe(val => {

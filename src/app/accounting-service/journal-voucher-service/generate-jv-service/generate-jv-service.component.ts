@@ -15,6 +15,7 @@ export class GenerateJvServiceComponent implements OnInit {
   exitTab: string;
   sub: any;
   jvType: any;
+  disableTab: boolean = true;
 
   jvData: any = {
      type: '', 

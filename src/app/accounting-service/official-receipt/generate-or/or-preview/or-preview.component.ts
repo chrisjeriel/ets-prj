@@ -331,30 +331,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           this.whTaxData.tableData = whTax;*/
           this.genTaxTbl.refreshTable();
           this.whTaxTbl.refreshTable();
-
-          if(this.record.from.toLowerCase() == 'or'){
-            if(this.record.orStatDesc.toUpperCase() != 'NEW'){
-              // this.genTaxData.uneditable = [true, true, true];
-              // this.genTaxData.addFlag = false;
-              // this.genTaxData.deleteFlag =  false;
-              // this.genTaxData.checkFlag = false;
-              // this.genTaxData.magnifyingGlass = [];
-            }
-          }else if(this.record.from.toLowerCase() == 'cv'){
-            if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
-              this.genTaxData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
-              this.genTaxData.addFlag         = false;
-              this.genTaxData.deleteFlag      = false;
-              this.genTaxData.checkFlag       = false;
-              this.genTaxData.magnifyingGlass = [];
-
-              this.whTaxData.uneditable       = [true,true,false,true,true,false,false,true];
-              this.whTaxData.addFlag          = false;
-              this.whTaxData.deleteFlag       = false;
-              this.whTaxData.checkFlag        = false;
-              this.whTaxData.magnifyingGlass  = [];
-            }
-          }
         },
         (error: any)=>{
           console.log('error');
@@ -366,6 +342,27 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
            this.acctEntriesData.tableData = data.acctEntries;
            this.acctEntriesTbl.refreshTable();
       });
+    }
+
+    var a = false;
+      if(this.record.from.toLowerCase() == 'or'){
+            a = (this.record.orStatDesc.toUpperCase() != 'NEW')?true:false;
+      }else if(this.record.from.toLowerCase() == 'cv'){
+            a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
+      }
+
+          if(a){
+            this.genTaxData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
+            this.genTaxData.addFlag         = false;
+            this.genTaxData.deleteFlag      = false;
+            this.genTaxData.checkFlag       = false;
+            this.genTaxData.magnifyingGlass = [];
+
+            this.whTaxData.uneditable       = [true,true,false,true,true,false,false,true];
+            this.whTaxData.addFlag          = false;
+            this.whTaxData.deleteFlag       = false;
+            this.whTaxData.checkFlag        = false;
+            this.whTaxData.magnifyingGlass  = [];
     }
   }
 

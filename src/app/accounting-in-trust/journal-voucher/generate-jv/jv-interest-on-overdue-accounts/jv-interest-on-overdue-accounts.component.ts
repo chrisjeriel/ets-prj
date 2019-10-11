@@ -27,6 +27,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   @Input() cedingParams:any;
   @Input() jvDetail:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
 
   passData: any = {
     tableData: [],
@@ -102,7 +103,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   ngOnInit() {
     this.getMtnRate();
     this.getDaysOverdue();
-    console.log(this.jvDetail)
     this.passLov.currCd = this.jvDetail.currCd;
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
@@ -255,7 +255,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   cancel(){
     this.cancelBtn.clickCancel();
     var overdueDate = new Date();
-    console.log((new Date(overdueDate.getFullYear(),overdueDate.getMonth() + 1 ,0).getTime()));
   }
 
   update(data){
@@ -277,5 +276,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.maintenaceService.getMtnParameters('N','OVERDUE_DAYS_THRESHOLD').subscribe((data:any) =>{
       this.daysInterest = parseInt(data.parameters[0].paramValueN);
     });
+  }
+
+  onRowClick(data){
+    this.infoData.emit(data)
   }
 }

@@ -194,11 +194,11 @@
     <app-modal hidden [btnTitle]="'List Of Values'" id="lovMdl">
         <div header>List Of Values</div>
         <div body>
-           <app-cust-non-datatable [passData]="policyListingData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+           <app-loading-table [passData]="policyListingData" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-loading-table>
         </div>
         <div footer class="text-center w-100">
             <div class="col-sm-12 text-center">
-            <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();searchParams['paginationRequest.position'] = 1;   "><a>Cancel</a></button>
             <button class="cust-btn" type="button" (click)="selectPol()" [disabled]="emptySelect || selectedPolicy === null || selectedPolicy === undefined" [class.cust-btn-disabled]="emptySelect || selectedPolicy === null || selectedPolicy === undefined"><a>Ok</a></button>
             </div>
         </div>

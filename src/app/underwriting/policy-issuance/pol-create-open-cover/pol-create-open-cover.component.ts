@@ -6,6 +6,7 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '../../../_services';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { FormsModule }   from '@angular/forms';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
     selector: 'app-pol-create-open-cover',
@@ -19,6 +20,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     passDataLOV: any = {
       tableData: [],
       tHeader:["Quotation No", "Ceding Company", "Insured", "Risk"],  
+      sortKeys : ['QUOTATION_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
       dataTypes: ["text","text","text","text"],
       pageLength: 10,
       resizable: [false,false,false,false],
@@ -27,12 +29,20 @@ export class PolCreateOpenCoverComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       filters: [
-      /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+      {key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
       {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
       {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-      {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
+      {key: 'riskName',title: 'Risk',dataType: 'text'}],
       pageID: 'lov1'
     }
+
+    searchParams: any = {
+        statusArr:['3'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,
+        openCoverTag  : 'Y'
+    };
+
 
     passDataOptionLOV: any = {
       tableData: [],
@@ -44,15 +54,15 @@ export class PolCreateOpenCoverComponent implements OnInit {
       keys: ['optionId','optionRt'],
       pageStatus: true,
       pagination: true,
-      filters: [
-      /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
-      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
-      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-      {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
+      // filters: [
+      // {key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+      // {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+      // {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+      // {key: 'riskName',title: 'Risk',dataType: 'text'}],
       pageID: 'optionLov'
     }
 
-    @ViewChild('polLov') quListTable : CustNonDatatableComponent;
+    @ViewChild('polLov') quListTable : LoadingTableComponent;
     @ViewChild('optLov') optListTable : CustNonDatatableComponent;
     @ViewChild('myForm') form:any;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -208,17 +218,26 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     getQuoteListing() {
-      this.quListTable.loadingFlag = true;
-      this.qs.getQuoProcessingData([{key: 'status', search: 'RELEASED'},{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe(data => {
+      if(!this.noDataFound){
+          this.passDataLOV.filters[0].search = this.tempQuoteNo.join('%-%');
+          this.passDataLOV.filters[0].enabled =true;
+          this.searchParams.policyNo = this.tempQuoteNo.join('%-%');
+        }else{
+          this.passDataLOV.filters[0].search = '';
+          this.passDataLOV.filters[0].enabled =false;
+          this.searchParams.policyNo = '';
+        }
+
+      this.qs.newGetQuoProcessingData(this.searchParams).subscribe(data => {
         this.quotationList = data['quotationList'];
+        this.passDataLOV.count = data['length'];
+        this.quListTable.placeData(data['quotationList'].map(q => { q.riskName = q.project != null ? q.project.riskName : null; return q; }));
         if(this.quotationList.length !== 0){
           this.noDataFound = false;
-          this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
-          console.log('data found')
+          //this.passDataLOV.tableData = this.quotationList.filter(a=>{return a.openCoverTag === 'Y';}).map(q => { q.riskName = q.project.riskName; return q; });
           if(this.isType && !this.isIncomplete){
-            console.log('data found isType')
             this.isIncomplete = false;
-            this.quoteData                     = this.passDataLOV.tableData[0];
+            this.quoteData                     = this.quotationList[0];
             this.quoteData.quoteNo             = this.quoteData.quotationNo;
             this.currentLineCd                 = this.quoteData.quoteNo.split('-')[0];
             this.tempQuoteNo                   = this.quoteData.quoteNo.split('-');
@@ -243,7 +262,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
         }
         else{
           this.noDataFound = true;
-          this.passDataLOV.tableData = [];
+          this.quListTable.addFiller();
           if(this.isType){
             this.clearFields();
             this.selectedOpt.optionId = '';
@@ -410,5 +429,12 @@ export class PolCreateOpenCoverComponent implements OnInit {
         this.inceptDate.time = '';
         this.expiryDate.date = '';
         this.expiryDate.time = '';
+    }
+
+    searchQuery(searchParams){
+      for(let key of Object.keys(searchParams)){
+          this.searchParams[key] = searchParams[key]
+      }
+      this.getQuoteListing();
     }
 }

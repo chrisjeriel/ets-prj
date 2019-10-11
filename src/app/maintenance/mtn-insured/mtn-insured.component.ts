@@ -23,7 +23,7 @@ export class MtnInsuredComponent implements OnInit {
         tableData: [],   
         tHeader: ['Insured Id', 'Insured Name','Address'],
         dataTypes: ['sequence-6', 'text', 'text'],
-    keys:['insuredId', 'insuredName','address'],
+        keys:['insuredId', 'insuredName','address'],
         resizable: [],     
         colSize: ['74px','374px','374px'],      
         tabIndexes: [],   
@@ -89,11 +89,13 @@ export class MtnInsuredComponent implements OnInit {
         if((this.p - 1) * this.passData.pageLength > this.currentIndex ){
             //this.page.previous();
             this.p -= 1;
+            this.updatePage();
             setTimeout(()=>{$('#tableRow').focus();},100);
             console.log('prev');
         }else if(this.p * this.passData.pageLength -1 < this.currentIndex){
             //this.page.next();
             this.p += 1;
+            this.updatePage();
             setTimeout(()=>{$('#tableRow').focus();},100);
             console.log('next');
         }

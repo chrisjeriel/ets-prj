@@ -28,8 +28,14 @@ export class DcbUserComponent implements OnInit {
   info:any ;
   bankLOVRow : number;
   acctType: any;
-  bankCd:any;
+  bankORCd:any;
+  bankARCd:any;
   cancelFlag: boolean; 
+
+   allRecords:any = {
+    tableData:[],
+    keys:['dcbUserCd','userId','printableName','validFrom','validTo','arBankName','arBankAcctNo','orBankName','orBankAcctNo','activeTag'],
+   }
 
   passTable:any={
   	tableData:[],
@@ -80,9 +86,9 @@ export class DcbUserComponent implements OnInit {
   		this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
   		this.successDialog.open();
   	}else{
-  		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
+  		$('#cust-table-container').addClass('ng-dirty');
   	}
   }
 
@@ -114,7 +120,8 @@ export class DcbUserComponent implements OnInit {
   clickLOV(data){
   	this.bankLOVRow = null;
   	this.acctType = null;
-  	this.bankCd = null;
+  	this.bankARCd = null;
+  	this.bankORCd = null;
 
   	 if(data.key=='arBankName'){
         $('#bankLOV #modalBtn').trigger('click');
@@ -132,11 +139,11 @@ export class DcbUserComponent implements OnInit {
 	  		this.dialogMessage =  'Please choose a Bank before picking a bank account.';
 	  		this.successDialog.open();
      	} else {
-     		$('#bankAcctLOV #modalBtn').trigger('click');
+     		$('#bankAcctARLOV #modalBtn').trigger('click');
 	        data.tableData = this.passTable.tableData;
 	        this.bankLOVRow = data.index;
 	        this.acctType = 'AR';
-	        this.bankCd = data.data.defaultArBank;
+	        this.bankARCd = data.data.defaultArBank;
      	}
      } else if (data.key == 'orBankAcctNo'){
      	if (data.data.defaultOrBank === null){
@@ -144,11 +151,11 @@ export class DcbUserComponent implements OnInit {
 	  		this.dialogMessage =  'Please choose a Bank before picking a bank account.';
 	  		this.successDialog.open();
      	} else {
-     		$('#bankAcctLOV #modalBtn').trigger('click');
+     		$('#bankAcctORLOV #modalBtn').trigger('click');
 	        data.tableData = this.passTable.tableData;
 	        this.bankLOVRow = data.index;
 	        this.acctType = 'OR';
-	        this.bankCd = data.data.defaultOrBank;
+	        this.bankORCd = data.data.defaultOrBank;
      	}
     } else if (data.key == 'userId'){
        		$('#mtnUsers #modalBtn').trigger('click');
@@ -173,42 +180,53 @@ export class DcbUserComponent implements OnInit {
   	 	if(data === null){
   	 	  this.passTable.tableData[this.bankLOVRow].arBankName = null;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultArBank = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = null;
   	 	}else {
   	 	  this.passTable.tableData[this.bankLOVRow].arBankName = data.shortName;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultArBank = data.bankCd;
+  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = null;
   	 	}
   	 } else if (this.acctType === 'OR'){
   	 	 if(data === null){
   	 	  this.passTable.tableData[this.bankLOVRow].orBankName = null;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBank = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].orBankAcctNo = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBankAcct = null;
   	 	}else {
   	 	  this.passTable.tableData[this.bankLOVRow].orBankName = data.shortName;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBank = data.bankCd;
+  	 	  this.passTable.tableData[this.bankLOVRow].orBankAcctNo = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBankAcct = null;
   	 	}
   	 }
   	 this.passTable.tableData[this.bankLOVRow].edited = true;
      $('#cust-table-container').addClass('ng-dirty');
   }
 
-  selectedBankAcctLOV(data){
+
+  selectedBankAcctORLOV(data){
   	console.log(data);
-  	if (this.acctType === 'AR'){
-  	 	if(data === null){
-  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = null;
-  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = null;
-  	 	}else {
-  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = data.accountNo;
-  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = data.bankAcctCd;
-  	 	}
-  	 } else if (this.acctType === 'OR'){
-  	 	 if(data === null){
+  	 if(data === null){
   	 	  this.passTable.tableData[this.bankLOVRow].orBankAcctNo = null;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBankAcct = null;
   	 	}else {
   	 	  this.passTable.tableData[this.bankLOVRow].orBankAcctNo = data.accountNo;
   	 	  this.passTable.tableData[this.bankLOVRow].defaultOrBankAcct = data.bankAcctCd;
   	 	}
-  	 }
+  	 this.passTable.tableData[this.bankLOVRow].edited = true;
+     $('#cust-table-container').addClass('ng-dirty');
+  }
+  
+  selectedBankAcctARLOV(data){
+  	if(data === null){
+  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = null;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = null;
+  	 	}else {
+  	 	  this.passTable.tableData[this.bankLOVRow].arBankAcctNo = data.accountNo;
+  	 	  this.passTable.tableData[this.bankLOVRow].defaultArBankAcct = data.bankAcctCd;
+  	}
   	 this.passTable.tableData[this.bankLOVRow].edited = true;
      $('#cust-table-container').addClass('ng-dirty');
   }
@@ -292,6 +310,15 @@ export class DcbUserComponent implements OnInit {
   	params.saveList.forEach(a=>{
   		a.updateUser = this.ns.getCurrentUser();
   		a.updateDate = this.ns.toDateTimeString(0);
+  		a.remarks = null;
+  		if (a.validTo === null || a.validTo === ''){
+  		} else {
+  			a.validTo = this.ns.toDateTimeString(a.validTo);
+  		}
+  		if (a.validFrom === null || a.validFrom === ''){
+  		} else {
+  			a.validFrom = this.ns.toDateTimeString(a.validFrom);
+  		}
   	});
   	params.delList = this.passTable.tableData.filter(a=>a.deleted);
    
@@ -299,26 +326,106 @@ export class DcbUserComponent implements OnInit {
           this.conSave.showBool = false;
           this.dialogIcon = "success";
           this.successDialog.open();
-           $('.ng-dirty').removeClass('ng-dirty');
+          $('.ng-dirty').removeClass('ng-dirty');
     }else {
     	console.log(params);
-    	/*this.ms.saveMtnBussType(params).subscribe(a=>{
+    	this.ms.saveMtnDcbUser(params).subscribe(a=>{
 	  		if(a['returnCode'] == -1){
-	            this.form.control.markAsPristine();
+	  			this.form.control.markAsPristine();
 	            this.dialogIcon = "success";
 	            this.successDialog.open();
+	            this.table.overlayLoader = true;
+	            this.getMtnDCBUser();
 	            $('.ng-dirty').removeClass('ng-dirty');
 	        }else{
 	            this.dialogIcon = "error";
 	            this.successDialog.open();
 	        }
-  		});*/
+  		});
     }
   	
   }
 
+  print(){
+    this.printModal.open();
+  }
+
   printPreview(data) {
     //added by Totz during merge to remove error; See line dcb-user.component.html(43,43)
+     console.log(data);
+     this.allRecords.tableData = [];
+     if(data[0].basedOn === 'curr'){
+      this.getRecords(this.info.userId);
+	 } else if (data[0].basedOn === 'all') {
+	  this.getRecords();
+	 }
+  }
+
+  getRecords(userId?){
+     this.ms.getMtnDCBUser(userId).pipe(finalize(() => this.finalGetRecords())).subscribe(a=>{
+	        this.allRecords.tableData = a['dcbUserList'];
+	        this.allRecords.tableData.forEach(a=>{
+		          if (a.validTo === null){
+		            a.validTo = '';
+		          }else {
+		            a.validTo = this.ns.toDateTimeString(a.validTo);
+		          };
+
+		          if (a.validFrom === null){
+		            a.validFrom = '';
+		          }else {
+		            a.validFrom = this.ns.toDateTimeString(a.validFrom);
+		          };
+
+        });
+     });
+  }
+
+
+
+  finalGetRecords(){
+  	this.export(this.allRecords.tableData);
+  }
+
+  export(record?){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'DCBUsers'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+     alasql.fn.datetime = function(dateStr) {
+        for(var prop in dateStr) {
+           if (dateStr.hasOwnProperty(prop)) {
+              var newdate = new Date(dateStr);
+              return newdate.toLocaleString();
+           } else {
+              var date = "";
+              return date;
+           }
+        } 
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+        	return '';
+        } else {
+        	return text;
+        }
+      };
+
+
+    alasql('SELECT dcbUserCd AS [Dcb Code],userId AS [User Id],printableName AS [Printable Name],datetime(validFrom) AS [Valid From], datetime(validTo) AS [Valid To], nvl(arBankName) AS [AR Bank Name], nvl(arBankAcctNo) AS [AR Bank Account], nvl(orBankName) AS [OR Bank Name], nvl(orBankAcctNo) AS [OR Bank Account],activeTag AS [Active Tag]   INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);	  
   }
  
 

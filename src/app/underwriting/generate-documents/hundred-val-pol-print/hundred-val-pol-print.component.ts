@@ -4,7 +4,7 @@ import {  NgbTabChangeEvent, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NotesService, UnderwritingService } from '@app/_services';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
   selector: 'app-hundred-val-pol-print',
@@ -15,7 +15,7 @@ export class HundredValPolPrintComponent implements OnInit {
 
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-  @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+  @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 
   private currentUser: string = JSON.parse(window.localStorage.currentUser).username;
 
@@ -36,12 +36,42 @@ export class HundredValPolPrintComponent implements OnInit {
   policyListingData: any = {
   	tableData: [],
   	tHeader: ['Policy No.', 'Ceding Company', 'Insured', 'Risk'],
+  	sortKeys : ['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
   	dataTypes: ['text', 'text', 'text', 'text'],
   	pageLength: 10,
   	pagination: true,
   	pageStatus: true,
-  	keys: ['policyNo','cedingName', 'insuredDesc', 'riskName']
+  	keys: ['policyNo','cedingName', 'insuredDesc', 'riskName'],
+  	filters: [
+		  {
+		      key: 'policyNo',
+		      title: 'Policy No.',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'cedingName',
+		      title: 'Ceding Company',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'insuredDesc',
+		      title: 'Insured',
+		      dataType: 'text'
+		  },
+		  {
+		      key: 'riskName',
+		      title: 'Risk',
+		      dataType: 'text'
+		  },
+		],
   }
+
+  searchParams: any = {
+        statusArr:['P','R','1','2','3','4','5','A'],
+        'paginationRequest.count':10,
+        'paginationRequest.position':1  
+    };
+
 
   policyInfo: any = {
   	policyId: '',
@@ -68,17 +98,29 @@ export class HundredValPolPrintComponent implements OnInit {
     }
 
 	openPolListModal(){
-		this.policyListingData.tableData = [];
+		this.searchParams['paginationRequest.position'] = 1;
+		this.table.p = 1;
 		this.retrievePolListing();
 		$('#lovMdl > #modalBtn').trigger('click');
 
 	}
+
 	retrievePolListing(){
-		this.policyListingData.tableData = [];
-		this.table.loadingFlag = true;
-		this.us.getParListing([{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any)=>{
-			console.log(data);
-			this.table.loadingFlag = false;
+		//this.policyListingData.tableData = [];
+		//this.table.loadingFlag = true;
+		this.table.overlayLoader = true;
+		if(!this.noDataFound){
+	      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
+	      this.policyListingData.filters[0].enabled =true;
+	      this.searchParams.policyNo = this.tempPolNo.join('%-%');
+	    }else{
+	    	this.policyListingData.filters[0].search = '';
+	    	this.policyListingData.filters[0].enabled =false;
+	    	this.searchParams.policyNo = '';
+	    }
+
+		this.us.newGetParListing(this.searchParams).subscribe((data: any)=>{
+			this.policyListingData.count = data['length'];
 			if(data.policyList.length !== 0){
 				this.noDataFound = false;
 				for(var rec of data.policyList){
@@ -92,14 +134,24 @@ export class HundredValPolPrintComponent implements OnInit {
 						totalSi: rec.project.coverage.totalSi
 					});
 				}
-				this.policyListingData.tableData = this.policyListingData.tableData.filter(a => {return a.statusDesc.toUpperCase() !== 'SPOILED'});
-				this.table.refreshTable();
+				this.table.placeData(data.policyList.map(rec=>{
+						rec.policyId =  rec.policyId;
+						rec.policyNo =  rec.policyNo;
+						rec.cedingName =  rec.cedingName;
+						rec.insuredDesc =  rec.insuredDesc;
+						rec.riskName =  rec.project.riskName;
+						rec.statusDesc =  rec.statusDesc;
+						rec.totalSi =  rec.project.coverage.totalSi;
+						return rec;
+					}));
+				//this.policyListingData.tableData = this.policyListingData.tableData.filter(a => {return a.statusDesc.toUpperCase() !== 'SPOILED'});
+				//this.table.refreshTable();
 				if(this.isType){
 					this.selected = this.policyListingData.tableData[0];
 					this.selectPol();
 					this.isType = false;
 				}
-			}else{
+			}else if (this.searchParams.policyNo != ''){
 				this.noDataFound = true;
 				this.isType = false;
 				setTimeout(()=>{this.openPolListModal()},100);
@@ -209,9 +261,11 @@ export class HundredValPolPrintComponent implements OnInit {
 				}
 			}
 			if(!emptyCheck){
-				this.policyListingData.tableData = [];
+				//this.policyListingData.tableData = [];
 				this.isType = true;
 				this.change = false;
+				this.searchParams['paginationRequest.position'] = 1;
+				this.table.p = 1;
 				this.retrievePolListing();
 			}
 		}
@@ -247,5 +301,12 @@ export class HundredValPolPrintComponent implements OnInit {
 	    }
 	  }
 	}
+
+	searchQuery(searchParams){
+      for(let key of Object.keys(searchParams)){
+          this.searchParams[key] = searchParams[key]
+      }
+      this.retrievePolListing();
+    }
 
 }

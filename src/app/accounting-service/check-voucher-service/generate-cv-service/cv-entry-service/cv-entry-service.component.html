@@ -134,7 +134,7 @@
                         <div class="cust-btn-container">
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == '' || saveAcseCv.cvStatus == 'P'" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcseCv.cvStatus != 'F'">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>

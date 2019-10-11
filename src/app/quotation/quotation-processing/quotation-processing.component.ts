@@ -11,6 +11,7 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import * as alasql from 'alasql';
 import { User } from '@app/_models';
 
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
     selector: 'app-quotation-processing',
@@ -18,7 +19,7 @@ import { User } from '@app/_models';
     styleUrls: ['./quotation-processing.component.css']
 })
 export class QuotationProcessingComponent implements OnInit {
-    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
@@ -60,11 +61,16 @@ export class QuotationProcessingComponent implements OnInit {
     cedingCode: any;
     cedingName: any;
 
-    searchParams: any[] = [];
+    searchParams: any = {
+        statusArr:['1','2','P','R'],
+        'paginationRequest.count':20,
+        'paginationRequest.position':1,   
+    };
 
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+        sortKeys:['QUOTATION_NO','CESSION_DESCRIPTION','CLASS_DESCRIPTION','STATUS','CEDING_NAME','PRINCIPAL_NAME','CONTRACTOR_NAME','RISK_NAME','OBJECT_DESCRIPTION','SITE','CURRENCY_CD','TOTAL_SI','OPTION_RT','ISSUE_DATE','EXPIRY_DATE','REQ_BY','CREATE_USER'],
         dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text',],
         resizable: [false, true, true, true, true, true, true, true, true, true, false, false, true, true, true, true],
         filters: [
@@ -255,27 +261,28 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
-        this.passData.tableData = [];
-        this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
+        this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
+            this.passData.count = data['length'];
             this.fetchedData = records;
 
             this.validationList = records.filter(a => ['REQUESTED','IN PROGRESS','RELEASED','CONCLUDED','CONCLUDED (THRU ANOTHER CEDANT)',
                                                        'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
 
-            this.passData.tableData = records.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
+            
+            //this.table.refreshTable();
+            this.table.placeData(records//.filter(a => ['IN PROGRESS','REQUESTED','PENDING APPROVAL','REJECTED'].includes(a.status.toUpperCase()))
                                              .map(i => {
                                                  if(i.project != null){
                                                      i.riskId = i.project.riskId;
                                                      i.riskName = i.project.riskName;
                                                      i.objectDesc = i.project.objectDesc;
-                                                         i.site = i.project.site;
+                                                     i.site = i.project.site;
                                                  }
                                                  i.issueDate = this.ns.toDateTimeString(i.issueDate);
                                                  i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
                                                  return i;
-                                             });
-            this.table.refreshTable();
+                                             }));
         });
     }
 
@@ -331,8 +338,15 @@ export class QuotationProcessingComponent implements OnInit {
     //Method for DB query
     searchQuery(searchParams){
         console.log(searchParams);
-        this.searchParams = searchParams;
-        this.passData.tableData = [];
+        //this.searchParams = searchParams;
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+        this.passData.btnDisabled = true;
+        //this.passData.tableData = [];
+        this.passData.btnDisabled = true;
+        this.disabledEditBtn = true;
+        this.disabledCopyBtn = true;
         this.retrieveQuoteListingMethod();
     }
 
@@ -351,56 +365,78 @@ export class QuotationProcessingComponent implements OnInit {
         this.existingQuotationNo = [];
         this.exclude = [];
 
-        for(let i of this.validationList) {
-            if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && this.riskCd == i.project.riskId) { // add year
-                this.existingQuotationNo.push(i.quotationNo);
-                this.riskIdList.push(i); //used as object container
-                this.exclude.push(i.quotationNo.split('-')[4]);
-            }
+        let params:any = {
+            statusArr: [1,2,3,4,5,6,7],
+            riskName: this.riskName,
+            cessionDesc: this.typeOfCession,
+            quotationNo: this.line + '%'
         }
 
-        for(let i of this.fetchedData) {
-            if(i.quotationNo == this.existingQuotationNo[0]) {
-                this.tempQuoteId = i.quoteId;
+        this.loading = true;
+        this.quotationService.newGetQuoProcessingData(params).subscribe(a=>{
+            //neco was overthrown by paul
+            this.loading = false;
+            if(a['quotationList']!= null && a['quotationList'].length != 0){
+                this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
+                this.riskIdList = a['quotationList']
+                this.tempQuoteId = a['quotationList'][0].quoteId;
             }
-        }
 
-        if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
-            $('#modIntModal > #modalBtn').trigger('click');
+            if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
+                $('#modIntModal > #modalBtn').trigger('click');
 
-        }else{
-            var qLine = this.line.toUpperCase();
+            }else{
+                var qLine = this.line.toUpperCase();
 
-            if (qLine === 'CAR' ||
-                qLine === 'EAR' ||
-                qLine === 'EEI' ||
-                qLine === 'CEC' ||
-                qLine === 'MBI' ||
-                qLine === 'BPV' ||
-                qLine === 'MLP' ||
-                qLine === 'DOS') {
-                this.modalService.dismissAll();
+                if (qLine === 'CAR' ||
+                    qLine === 'EAR' ||
+                    qLine === 'EEI' ||
+                    qLine === 'CEC' ||
+                    qLine === 'MBI' ||
+                    qLine === 'BPV' ||
+                    qLine === 'MLP' ||
+                    qLine === 'DOS') {
+                    this.modalService.dismissAll();
 
-                this.quotationService.rowData = [];
-                this.quotationService.toGenInfo = [];
-                this.quotationService.toGenInfo.push("add", qLine);
-                /*this.router.navigate(['/quotation']);*/
+                    this.quotationService.rowData = [];
+                    this.quotationService.toGenInfo = [];
+                    this.quotationService.toGenInfo.push("add", qLine);
+                    /*this.router.navigate(['/quotation']);*/
 
-                var addParams = {
-                    cessionId: this.typeOfCessionId,
-                    cessionDesc: this.typeOfCession,
-                    riskId: this.riskCd,
-                    intComp: false,
+                    var addParams = {
+                        cessionId: this.typeOfCessionId,
+                        cessionDesc: this.typeOfCession,
+                        riskId: this.riskCd,
+                        intComp: false,
+                    }
+
+                    this.quotationService.savingType = 'normal';
+
+                    setTimeout(() => {
+                        this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
+                    },100); 
                 }
-
-                this.quotationService.savingType = 'normal';
-
-                setTimeout(() => {
-                    this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
-                },100); 
+            //neco was overthrown until here
+            //neco's influence ends here
             }
-        //neco's influence ends here
-        }
+        })
+
+        // console.log(this.validationList)
+        // for(let i of this.validationList) {
+        //     if(this.line == i.lineCd && this.typeOfCession == i.cessionDesc && (i.project!= null && this.riskCd == i.project.riskId)) { // add year
+        //         this.existingQuotationNo.push(i.quotationNo);
+        //         this.riskIdList.push(i); //used as object container
+        //         this.exclude.push(i.quotationNo.split('-')[4]);
+        //     }
+        // }
+
+        // for(let i of this.fetchedData) {
+        //     if(i.quotationNo == this.existingQuotationNo[0]) {
+        //         this.tempQuoteId = i.quoteId;
+        //     }
+        // }
+
+        
     }
 
     onRowClick(event) {    
@@ -421,9 +457,19 @@ export class QuotationProcessingComponent implements OnInit {
             }    
         }
 
-        this.selectedQuotation = event;
-        this.disabledEditBtn = false;
+        
+        if(this.selectedQuotation === event || event === null || event.filler || Object.keys(event).length == 0){
+            this.passData.btnDisabled = true;
+            this.disabledEditBtn = true;
+        this.disabledCopyBtn = true;
+        }else{
+            this.passData.btnDisabled = false;
+            this.disabledEditBtn = false;
         this.disabledCopyBtn = false;
+        }
+
+
+        this.selectedQuotation = event;
     }
 
     onRowDblClick() {

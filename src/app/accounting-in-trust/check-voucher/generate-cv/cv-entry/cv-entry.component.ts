@@ -94,6 +94,7 @@ export class CvEntryComponent implements OnInit {
   checkSeriesList      : any;
   existsInCvDtl        : boolean = false;
   fromSave             : boolean = false;
+  destination          : string = '';
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -124,6 +125,7 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     this.loadingFunc(true);
+    
     var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
                           .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
@@ -132,8 +134,35 @@ export class CvEntryComponent implements OnInit {
 
     var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
 
+    // const arrSubRes = {
+    //   'cv'  :this.accountingService.getAcitCv(this.saveAcitCv.tranId),
+    //   'pn'  :this.mtnService.getMtnPrintableName(''),
+    //   'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
+    //   'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
+    //   'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
+    // };
+
+    // const s9 = ['cv','pn','cl','stat','prt'];
+
+    // let arrSubRes2 = [
+    //   this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId),
+    //   this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
+    //   this.mtnService.getMtnBankAcct(),
+    //   this.mtnService.getMtnAcitCheckSeries()
+    // ];
+
+    // var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+    //   var obj = {};
+    //   s9.forEach((e,i) => {obj[e] = a[i];});
+    //   return obj;
+    // }));
+
+    // var subRes2 = forkJoin(arrSubRes2).pipe(map(([prl,ba,cn,ae]) => { return { prl, ba, cn, ae }; }));
+    // var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
+
     subRes3.subscribe(data => {
       console.log(data);
+
       this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];
@@ -369,9 +398,12 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    this.removeRedBackShad(from);
-    this.form.control.markAsDirty();
-    this.ns.lovLoader(data.ev, 0);
+    setTimeout(() => {
+      this.removeRedBackShad(from);
+      this.ns.lovLoader(data.ev, 0);
+      this.form.control.markAsDirty();
+    },0);
+
     if(from.toLowerCase() == 'payee'){
       this.saveAcitCv.payee   = data.data.payeeName;
       this.saveAcitCv.payeeCd = data.data.payeeNo;
@@ -448,6 +480,8 @@ export class CvEntryComponent implements OnInit {
       }else{
         return;
       }
+    }else{
+      this.success.modal.modalRef.close();
     }
   }
 

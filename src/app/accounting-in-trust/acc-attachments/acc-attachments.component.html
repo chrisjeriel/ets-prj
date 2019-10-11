@@ -97,7 +97,7 @@
                             style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="record.jvNo" readonly>
                            <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
                            <div class="col-sm-2 dp-cont">
-                               <datepicker [type]="'date'" [value]="record.jvDate?.split('T')[0]" [required]="true" disabled></datepicker>
+                               <datepicker [type]="'date'" [value]="record.jvDate?.split('T')[0]" [required]="true" [disabled]="true"></datepicker>
                            </div>
                            <label class="form-control-sm col-sm-1">Status</label>
                            <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.jvStatus" readonly>
@@ -110,7 +110,9 @@
                            readonly>
                            
                            <label class="form-control-sm col-sm-1">Ref No Date</label>
-                           <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.refnoDate" readonly>
+                           <div class="col-sm-2 dp-cont">
+                               <datepicker [type]="'date'" [value]="record.refnoDate?.split('T')[0]" [disabled]="true"></datepicker>
+                           </div>
                        </div>
                    </div>
                    <div class="col-sm-3">

@@ -19,6 +19,8 @@ export class DummyComponent implements OnInit {
     @ViewChild(ModalComponent) modalComp: ModalComponent;
     @ViewChild(SpecialLovComponent) specLov: SpecialLovComponent;
 
+    
+
     tableData: any[] = [];
     tableData2: any[] = [];
     tableData3: any[] = [];
@@ -369,7 +371,6 @@ export class DummyComponent implements OnInit {
       }
 
 
-
       paulsData:any = {
           tHeader: ['Insured Id','Insured Name','Address'],
           dataTypes: ['sequence-3', 'text', 'text'],
@@ -381,4 +382,6 @@ export class DummyComponent implements OnInit {
           pageID: 'Insured',
           keys:['insuredId', 'insuredName','address']
       }
+
+      edtr: any = 'test\nme\ndaddy';
 }

@@ -10,5 +10,5 @@
 	</div>
 </fieldset>
 <div class="w-100 text-center mt-1">
-	<button class="cust-btn">Claim Info</button>
+	<button class="cust-btn" [disabled]="table?.indvSelect == null" (click)="goToClaims()">Claim Info</button>
 </div>

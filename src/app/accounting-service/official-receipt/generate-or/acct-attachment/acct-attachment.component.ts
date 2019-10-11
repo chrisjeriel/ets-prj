@@ -95,23 +95,20 @@ export class AcctAttachmentComponent implements OnInit {
           }
           this.table.refreshTable();
           this.table.onRowClick(null,this.passData.tableData[0]);
-
+          
+          var a = false;
           if(this.record.from.toLowerCase() == 'or'){
-            if(this.record.orStatDesc.toUpperCase() != 'NEW'){
-              this.passData.uneditable = [true, true, true];
-              this.passData.addFlag = false;
-              this.passData.deleteFlag =  false;
-              this.passData.checkFlag = false;
-              this.passData.magnifyingGlass = [];
-            }
+            a = (this.record.orStatDesc.toUpperCase() != 'NEW')?true:false;
           }else if(this.record.from.toLowerCase() == 'cv'){
-            if(this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F'){
-              this.passData.uneditable = [true, true, true];
-              this.passData.addFlag = false;
-              this.passData.deleteFlag =  false;
-              this.passData.checkFlag = false;
-              this.passData.magnifyingGlass = [];
-            }
+            a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
+          }
+
+          if(a){
+            this.passData.uneditable = [true, true, true];
+            this.passData.addFlag = false;
+            this.passData.deleteFlag =  false;
+            this.passData.checkFlag = false;
+            this.passData.magnifyingGlass = [];
           }
       });
   }

@@ -194,7 +194,13 @@ export class ProgramParameterComponent implements OnInit {
   }
 
   dataChange(data){
-    console.log(data)
+    console.log(this.passData.tableData[this.passData.tableData.length - 1].paramType)
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].paramType == 'V'){
+        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueV'];
+      }
+    }
+    
   }
 
 }
