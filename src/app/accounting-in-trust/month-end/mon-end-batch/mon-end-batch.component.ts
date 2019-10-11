@@ -15,7 +15,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
 
   eomDate: string = '';
   extLog: string = '';
-  webSocketEndPoint: string = 'http://localhost:8888/api/extractionLog';
+  webSocketEndPoint: string = 'http://192.10.10.210:8888/api/extractionLog';
   topic: string = "/prodLogs";
   stompClient: any;
 

@@ -59,23 +59,23 @@
             <legend class="scheduler-border">Other Details</legend>
                     <div class="input-group" style="margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-2">Employee</label>
-                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="otherDetails?.employeeNo" readonly>
-                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="otherDetails?.printableName" readonly>
+                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.employeeNo" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="info?.printableName" readonly>
                    </div>
                    <div class="input-group" style="margin-top: -12px !important;">
                         <label class="form-control-sm col-sm-2">Designation</label>
-                        <input name="designation" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.designation" (ngModelChange)="otherDetails.designation=$event;">
+                        <input name="designation" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.designation" (ngModelChange)="info.designation=$event;">
                         <label class="form-control-sm col-sm-2">Supervisor</label>
-                        <input name="supervisorName" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.supervisorName" disabled>
+                        <input name="supervisorName" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.supervisorName" disabled>
                          <div class="text-search-ico" style="margin-left: -12px ! important; font-size: 12px ! important"><a> <i class="fa fa-search" (click)="employeeLov.modal.openNoClose()"></i></a></div>
                    </div>
                    <div class="input-group" style="margin-top: -12px !important;">
                         <label class="form-control-sm col-sm-2">Birth Date</label>
                         <div class="col-sm-4 dp-cont">
-                            <datepicker [type]="'date'" [value]="otherDetails?.birthDate" (valueChange)="otherDetails.birthDate=$event"></datepicker>
+                            <datepicker [type]="'date'" [value]="info?.birthDate.split('T')[0]" (valueChange)="info.birthDate=$event"></datepicker>
                         </div>
                         <label class="form-control-sm col-sm-2">Civil Status</label>
-                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="otherDetails?.civilStatus" (ngModelChange)="otherDetails.civilStatus=$event;"> 
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="info?.civilStatus" (ngModelChange)="info.civilStatus=$event;" appRequired> 
                                             <option value="S">Single</option>
                                             <option value="M">Married</option>
                                             <option value="W">Window/Widower</option>
@@ -85,46 +85,46 @@
                    <div class="input-group" style="margin-top: -12px !important;">
                          <label class="form-control-sm col-sm-2">Present Address</label>
                          <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
-                                <text-editor [editorContent]="otherDetails?.presentAdd" (fetchContent)="otherDetails.presentAdd = $event">
+                                <text-editor [editorContent]="info?.presentAdd" (fetchContent)="info.presentAdd = $event">
                                 </text-editor>
                          </div>
                   </div>
                    <div class="input-group" style="margin-top: -12px !important;">
                          <label class="form-control-sm col-sm-2">Permanent Address</label>
                          <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
-                                <text-editor  [editorContent]="otherDetails?.permanentAdd" (fetchContent)="otherDetails.permanentAdd = $event">
+                                <text-editor  [editorContent]="info?.permanentAdd" (fetchContent)="info.permanentAdd = $event">
                                 </text-editor>
                          </div>
                   </div>
                   <div class="input-group" style="margin-top: -12px !important;">
                         <label class="form-control-sm col-sm-2">Tax Identification No.</label>
-                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.tin" (ngModelChange)="otherDetails.tin=$event;">
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" (ngModelChange)="info.tin=$event;" [ngModel]="info?.tin" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         <label class="form-control-sm col-sm-2">SSS No.</label>
-                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.sssNo"  (ngModelChange)="otherDetails.sssNo=$event;" >
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.sssNo"  (ngModelChange)="info.sssNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                    </div>
                    <div class="input-group" style="margin-top: -12px !important;">
                         <label class="form-control-sm col-sm-2">PhilHealth No.</label>
-                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.philhealthNo" (ngModelChange)="otherDetails.philhealthNo=$event;">
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.philhealthNo" (ngModelChange)="info.philhealthNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         <label class="form-control-sm col-sm-2">HDFM (Pagibig) No.</label>
-                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.pagibigNo"  (ngModelChange)="otherDetails.pagibigNo=$event;" >
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.pagibigNo"  (ngModelChange)="info.pagibigNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' >
                    </div>
                    <div class="input-group" style="margin-top: -12px !important;" >
                         <label class="form-control-sm col-sm-2">Contact Nos.</label>
-                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactNos" (ngModelChange)="otherDetails.contactNos=$event;">
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.contactNos" (ngModelChange)="info.contactNos=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         <label class="form-control-sm col-sm-2">Email Address</label>
-                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.email" (ngModelChange)="otherDetails.email=$event;" >
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.email" (ngModelChange)="info.email=$event;" >
                    </div>
                    <div class="input-group" style="margin-top: -12px !important; margin-bottom: 1px ! important">
                         <label class="form-control-sm col-sm-2">Contact Person In case of emergency</label>
-                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.contactPerson" (ngModelChange)="otherDetails.contactPerson=$event;">
+                        <input name="tinNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.contactPerson" (ngModelChange)="info.contactPerson=$event;">
                         <label class="form-control-sm col-sm-2">Emergency Contact No.</label>
-                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="otherDetails?.emergencyNo" (ngModelChange)="otherDetails.emergencyNo=$event;">
+                        <input name="sssNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.emergencyNo" (ngModelChange)="info.emergencyNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                    </div>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <div>
-            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button> 
             <button class="cust-btn" type="button" (click)="modal.closeModal();saveOtherDetails();"><a>Save</a></button>
         </div>
     </div>
