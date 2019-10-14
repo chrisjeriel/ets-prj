@@ -463,6 +463,10 @@ import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.component';
 import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.component';
+import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-service/generate-number-series-service/generate-number-series-service.component';
+import { JvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/jv-series/jv-series.component';
+import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
+import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
 
 @NgModule({
     imports: [
@@ -931,6 +935,10 @@ import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.co
         EmployeeComponent,
         MtnCompanyComponent,
         MtnEmployeeComponent,
+        GenerateNumberSeriesServiceComponent,
+        JvSeriesComponent,
+        CvSeriesComponent,
+        OrSeriesComponent,
     ],
 
   	providers: [

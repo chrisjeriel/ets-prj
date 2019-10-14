@@ -1405,7 +1405,7 @@ export class MaintenanceService{
             })
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/generateARSeries', JSON.stringify(params), header);
-     }
+    }
 
     saveMtnDcbUser(params){
     	let header : any = {
@@ -1471,5 +1471,66 @@ export class MaintenanceService{
     	const params = new HttpParams()
     		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/maxTranNo", {params});
+    }
+
+    generateORSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseORSeries', JSON.stringify(params), header);
+    }
+
+    generateAcseCVSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseCVSeries', JSON.stringify(params), header);
+    }
+    
+    generateAcseJVSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseJVSeries', JSON.stringify(params), header);
+    }
+
+    getAcseOrSeries(orType,orFrom,orTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('orType', (orType === null || orType === undefined ? '' : orType))
+			.set('orFrom', (orFrom === null || orFrom === undefined ? '' : orFrom))
+			.set('orTo', (orTo === null || orTo === undefined ? '' : orTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseOrSeries", {params});
+    }
+
+    getAcseCvSeries(cvYear,cvFrom,cvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('cvYear', (cvYear === null || cvYear === undefined ? '' : cvYear))
+			.set('cvFrom', (cvFrom === null || cvFrom === undefined ? '' : cvFrom))
+			.set('cvTo', (cvTo === null || cvTo === undefined ? '' : cvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseCVSeries", {params});
+    }
+
+    getAcseJvSeries(jvYear,jvFrom,jvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('jvYear', (jvYear === null || jvYear === undefined ? '' : jvYear))
+			.set('jvFrom', (jvFrom === null || jvFrom === undefined ? '' : jvFrom))
+			.set('jvTo', (jvTo === null || jvTo === undefined ? '' : jvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseJVSeries", {params});
+    }
+
+    getAcseMaxTranSeries(tranClass,orType?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    		.set('orType', (orType === null || orType === undefined ? '' : orType));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/acseMaxTranNo", {params});
     }
 }
