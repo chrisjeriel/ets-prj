@@ -2761,4 +2761,14 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
     }
 
+    saveAcitMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndTrialBal',params,header);
+    }
+
 }
