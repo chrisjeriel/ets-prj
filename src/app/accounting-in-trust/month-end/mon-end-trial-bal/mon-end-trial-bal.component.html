@@ -10,26 +10,28 @@
         		
         			<div class="input-group mt-1">
 				        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right">Transaction Date</label>
-		                <input type="date" class="form-control form-control-sm col-sm-5" value="2019-01-31">
+                <div class="dp-cont col-sm-5">
+                  <datepicker [type]="'date'" [(value)]="tranDate"></datepicker>
+                </div>
 				    </div>
 
         			<div class="input-group cust-ig">
 				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" checked="checked" name="">
+				        	<input type="checkbox" [(ngModel)]="inclPrevMon" name="">
 				        </div>
-		                <label class="form-control-sm text-left col-sm">Include Previous Months</label>
+		            <label class="form-control-sm text-left col-sm">Include Previous Months</label>
 				    </div>
         			<div class="input-group cust-ig">
 				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" checked="checked" name="">
+				        	<input type="checkbox" [(ngModel)]="inclPrevYrs" name="">
 				        </div>
-		                <label class="form-control-sm text-left col-sm">Include Previous Years</label>
+		            <label class="form-control-sm text-left col-sm">Include Previous Years</label>
 				    </div>
         			<div class="input-group">
 				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" checked="checked" name="">
+				        	<input type="checkbox" [(ngModel)]="adjEntsOnly" name="">
 				        </div>
-		                <label class="form-control-sm text-left col-sm">Adjusting Entries Only</label>
+		            <label class="form-control-sm text-left col-sm">Adjusting Entries Only</label>
 				    </div>
 
     			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">

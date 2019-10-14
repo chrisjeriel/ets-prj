@@ -9,6 +9,11 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 })
 export class MonEndTrialBalComponent implements OnInit {
 
+  tranDate: string = '';
+  inclPrevMon: boolean = true;
+  inclPrevYrs: boolean = true;
+  adjEntsOnly: boolean = true;
+
   constructor( private router: Router) { }
 
   ngOnInit() {

@@ -19,6 +19,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   eomDate: string = '';
   extLog: string = '';
   eomMessage: string = '';
+  processing: boolean = false;
   returnCode: number = null
   webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/prodLogs";
@@ -67,6 +68,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   }
 
   onClickGenerate(force?) {
+    this.processing = true;
     this.extLog = '';
 
     var param = {
@@ -76,6 +78,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
     }
     
     this.as.saveAcitMonthEndBatchProd(param).subscribe(data => {
+      this.processing = false;
       this.returnCode = data['returnCode'];
       if(this.returnCode == 1 || this.returnCode == 2) {
         this.eomMessage = data['eomMessage'];
