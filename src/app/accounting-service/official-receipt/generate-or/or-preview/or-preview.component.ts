@@ -47,8 +47,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @Input() record: any;
 
   forkSub: any;
+  lovRow: any;
 
   cancelFlag: boolean = false;
+  lovCheckbox: boolean = false;
 
    acctEntriesData: any = {
   	tableData: [],
@@ -180,6 +182,12 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     hide: []
   }
 
+  totals: any = {
+    debit: 0,
+    credit: 0,
+    variance: 0
+  }
+
   createUpdate: any = {};
 
   savedData: any = [];
@@ -188,6 +196,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.acctEntriesData.nData.tranId = this.record.tranId;
+    this.acctEntriesData.nData.autoTag = 'N';
     console.log(this.record);
     if(this.paymentType == null){
           this.paymentType = "";
@@ -247,6 +257,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   openGenTaxLOV(event){
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnGenTax';
+    this.lovCheckbox = true;
     this.passLov.hide = this.genTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
     console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
@@ -256,16 +267,40 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   openWhTaxLOV(event){
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnWhTax';
+    this.lovCheckbox = true;
     this.passLov.hide = this.whTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
     console.log(this.passLov.hide);
     this.whTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
 
+  acctEntriesLOV(data){
+    this.lovRow = data.data;
+    if(data.key == 'glShortCd'){
+      this.passLov.selector = 'acseChartAcct';
+      this.lovCheckbox = true;
+      this.passLov.params = {};
+    }else if(data.key == 'slTypeName'){
+      this.passLov.selector = 'slType';
+      this.lovCheckbox = false;
+      this.passLov.params = {};
+    }else if(data.key == 'slName'){
+      this.passLov.selector = 'sl';
+      this.lovCheckbox = false;
+      this.passLov.params = {
+        slTypeCd: data.data.slTypeCd
+      };
+    }
+
+    this.lovMdl.openLOV();
+  }
+
   setSelectedData(data){
     let selected = data.data;
-    if(selected[0].taxId !== undefined){ //set values to general taxes table
-      console.log(selected);
+    console.log(this.lovRow);
+    console.log(selected);
+    if(data.selector == 'mtnGenTax'){ //set values to general taxes table
+      this.lovRow = undefined;
       this.genTaxData.tableData = this.genTaxData.tableData.filter(a=>a.showMG!=1);
       for(var i = 0; i < selected.length; i++){
         this.genTaxData.tableData.push(JSON.parse(JSON.stringify(this.genTaxData.nData)));
@@ -280,8 +315,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].uneditable = ['taxCd'];
       }
       this.genTaxTbl.refreshTable();
-    }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
-      console.log(selected);
+    }else if(data.selector == 'mtnWhTax'){ //set values to withholding taxes table
+      this.lovRow = undefined;
       this.whTaxData.tableData = this.whTaxData.tableData.filter(a=>a.showMG!=1);
       for(var i = 0; i < selected.length; i++){
         this.whTaxData.tableData.push(JSON.parse(JSON.stringify(this.whTaxData.nData)));
@@ -296,7 +331,50 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].uneditable = ['taxCd'];
       }
       this.whTaxTbl.refreshTable();
+    }else if(data.selector == 'slType'){
+      this.lovRow.slTypeName = data.data.slTypeName;
+      this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
+      this.acctEntriesTbl.refreshTable();
+    }else if(data.selector == 'sl'){
+      this.lovRow.slTypeName = data.data.slTypeName; 
+      this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = data.data.slName;
+      this.lovRow.slCd = data.data.slCd;
+      this.acctEntriesTbl.refreshTable();
+    }else if(data.selector == 'acseChartAcct'){
+
+      let firstRow = selected.pop();
+      this.lovRow.glAcctId = firstRow.glAcctId;
+      this.lovRow.glShortCd = firstRow.shortCode;
+      this.lovRow.glShortDesc = firstRow.shortDesc;
+
+      this.acctEntriesData.tableData = this.acctEntriesData.tableData.filter(a=>a.glAcctId != '');
+      for(let row of data.data){
+        this.acctEntriesData.tableData.push(JSON.parse(JSON.stringify(this.acctEntriesData.nData)));
+        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
+        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortCd = row.shortCode;
+        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
+      }
+      this.acctEntriesTbl.refreshTable();
     }
+  }
+
+  acctEntriesTableDataChange(data){
+    if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
+      for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
+        this.acctEntriesData.tableData[i].debitAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
+        this.acctEntriesData.tableData[i].creditAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
+      }
+    }
+  }
+
+  computeTotals(){   
+    console.log(this.acctEntriesData.tableData)
+    this.totals.credit = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
+    this.totals.debit  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
+    this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
   retrieveAcseOrPreview(){
@@ -340,6 +418,21 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       this.accountingService.getAcseAcctEntries(this.record.tranId).subscribe(
         (data:any)=>{
            this.acctEntriesData.tableData = data.acctEntries;
+           this.acctEntriesData.tableData.forEach(a=>{
+             a.createDate = this.ns.toDateTimeString(a.createDate);
+             a.updateDate = this.ns.toDateTimeString(a.updateDate);
+             a.showMG = 1;
+             //F is full, L is limited, N is restricted
+             if(a.updateLevel == 'N'){
+               a.uneditable = ['glShortCd','debitAmt','creditAmt', 'foreignDebitAmt', 'foreignCreditAmt'];
+               a.showMG = 0;
+             }else if(a.updateLevel == 'L'){
+               a.uneditable = ['glShortCd'];
+               a.colMG = ['glShortCd'];
+               a.showMG = 1;
+             }
+           });
+           this.computeTotals();
            this.acctEntriesTbl.refreshTable();
       });
     }
@@ -413,7 +506,40 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         }
       );
     }else if(this.currentTab == 'acctEntries'){
-      //to be continued
+      this.savedData = this.acctEntriesData.tableData.filter(a=>a.edited && !a.deleted).map(b=>{b.createUser = this.ns.getCurrentUser();
+                                                                                               b.createDate = this.ns.toDateTimeString(0);
+                                                                                               b.updateUser = this.ns.getCurrentUser();
+                                                                                               b.updateDate = this.ns.toDateTimeString(0);
+                                                                                               return b;});
+      this.deletedData = this.acctEntriesData.tableData.filter(a=>a.deleted);
+      console.log(this.savedData);
+      console.log(this.deletedData);
+
+      this.savedData.forEach(a=>{
+        if(!a.add){
+          a.updateUser = this.ns.getCurrentUser();
+          a.updateDate = this.ns.toDateTimeString(0);
+        }
+      })
+
+      let params = {
+        tranId: this.record.tranId,
+        saveList: this.savedData,
+        delList: this.deletedData
+      }
+
+      this.accountingService.saveAcseAcctEntries(params).subscribe(a=>{
+        if(a['returnCode']==0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.dialogIcon = 'success';
+          this.successDiag.open();
+          this.acctEntriesTbl.markAsPristine();
+          console.log('marked as pristine');
+          this.retrieveAcseOrPreview();
+        }
+      });
     }
   }
 
