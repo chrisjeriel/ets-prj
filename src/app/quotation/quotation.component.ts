@@ -9,6 +9,7 @@ import { first } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
 
 
@@ -21,9 +22,10 @@ export class QuotationComponent implements OnInit {
 	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService, private userService: UserService) { 
   }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-  @ViewChild('tabset') tabset: any;
+  @ViewChild('tabset') tabset: NgbTabset;
   @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
   @ViewChild('content') content:any;
+  @ViewChild('active')activeComp:any;
   docTitle: string = "";
 	sub: any;
 	line: string;
@@ -137,20 +139,15 @@ export class QuotationComponent implements OnInit {
    //   }                   
   		if ($event.nextId === 'Exit') {
         $event.preventDefault();
+        console.log(this.activeComp);
     		this.router.navigateByUrl(this.exitLink);
-  		} else 
-
-  		if ($event.nextId === 'approval-tab') {
-			$event.preventDefault();
-      this.showApprovalModal(this.content);
-		}else
-
-      if ($event.nextId === 'Print') {
+  		} else if ($event.nextId === 'approval-tab') {
+        $event.preventDefault();
+        this.showApprovalModal(this.content);
+      }else if ($event.nextId === 'Print') {
         $event.preventDefault();
         $('#printListQuotation > #printModalBtn').trigger('click');
-      } else
-
-     if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
+      }else if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -166,8 +163,6 @@ export class QuotationComponent implements OnInit {
             this.tabset.select($event.nextId)
           }
         })
-
-
       }
  
   	}
@@ -215,6 +210,7 @@ export class QuotationComponent implements OnInit {
               console.log("Status Failed to Update.");
             } else {
               console.log("Status Released");
+              this.updateGenInfo();
             }
           });
         }
@@ -353,7 +349,7 @@ export class QuotationComponent implements OnInit {
         })
       }
 
-      this.genInfoComponent.ngOnInit();
+      //this.genInfoComponent.ngOnInit();
       /*setTimeout(() => {
         this.router.navigate(['/quotation', { line: this.quoteInfo.lineCd,  quotationNo : this.quoteInfo.quotationNo, quoteId: this.quoteInfo.quoteId, from: 'quo-processing', inquiryFlag: true}], { skipLocationChange: true });
       },100); */
@@ -387,6 +383,8 @@ export class QuotationComponent implements OnInit {
         console.log(this.quoteInfo.statusDesc)
         if(this.quoteInfo.status == '3'){
           this.inquiryFlag = true;
+          this.activeComp.inquiryFlag = true;
+          this.activeComp.ngOnInit();
         }
       })
     }
