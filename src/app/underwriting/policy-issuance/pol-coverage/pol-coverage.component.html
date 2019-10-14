@@ -154,22 +154,14 @@
     </div>
   </div>
 
-<app-modal class="hidden" id="CATPerils" #catPerilMdl>
-    <div header>CAT Perils Exposure</div>
-    <div body style=" margin-top: -10px !important; width: 400px ! important">
-       <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
-    </div>                
-    <div footer style="margin-right: 145px !important;">
-      <button class="cust-btn" type="button" (click)="onCancelCat()"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)="onClickSaveCat();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
-    </div>
-</app-modal>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null; promptClickCat ? onClickCat():null"></app-sucess-dialog>
+
+<app-sucess-dialog #diagCov [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+
 <app-confirm-save id="saveCov" (onYes)="saveCoverage()"></app-confirm-save>
-<app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
+
 <app-cancel-button #cancelCov (onYes)="saveCoverage('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
-<app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdl.closeModal()"></app-cancel-button>
+
 
 <app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>
@@ -205,25 +197,6 @@
 </app-modal>
 </form>
 </ng-container>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -341,85 +314,107 @@
       <div class="col-sm-1"></div>
     </div>
   </fieldset>
-<form #secDetails="ngForm">
-<div class="row">
-  <div class="col-sm-6">
-    <fieldset class="scheduler-border">
-     <legend class="scheduler-border">Share Details</legend>
-     <div class="cust-sm">
-      <div class="input-group" style="margin-top: -14px;">
-        &nbsp;
-      </div>
-      <div class="input-group" style="margin-bottom: -13px !important">
-       <label class="form-control-sm col-sm-3">Share(%)</label>
-       <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)" name="altCoverageData.pctShare">
-       <label class="form-control-sm col-sm-2">PML(%)</label>
-       <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event" name="altCoverageData.pctPml">
-       <span class="col-sm-1"></span>
-     </div>
-     <div class="input-group" style="margin-bottom: -6px !important">
-       <label class="form-control-sm col-sm-3">100% Values</label>
-       <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue($event)" (blur)="checktotalValue()" name="altCoverageData.totalValue">
-       <span class="col-sm-1"></span>
-     </div>
-   </div>
- </fieldset>
-</div>
+  <form #secDetails="ngForm">
+  <div class="row">
+    <div class="col-sm-6">
+      <fieldset class="scheduler-border">
+         <legend class="scheduler-border">Share Details</legend>
+         <div class="cust-sm">
+            <div class="input-group" style="margin-top: -14px;">
+              &nbsp;
+            </div>
+            <div class="input-group" style="margin-bottom: -13px !important">
+             <label class="form-control-sm col-sm-3">Share(%)</label>
+             <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)" name="altCoverageData.pctShare">
+             <label class="form-control-sm col-sm-2">PML(%)</label>
+             <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event" name="altCoverageData.pctPml">
+             <span class="col-sm-1"></span>
+           </div>
+           <div class="input-group" style="margin-bottom: -6px !important">
+             <label class="form-control-sm col-sm-3">100% Values</label>
+             <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue($event)" (blur)="checktotalValue()" name="altCoverageData.totalValue">
+             <span class="col-sm-1"></span>
+           </div>
+         </div>
+      </fieldset>
+    </div>
     <div class="cust-sm col-sm-6" style="padding-left: 0px;">
-      <fieldset class="scheduler-border" style="padding-top: 10px !important;">
-       <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-       <div class="cust-sm">
-         <div class="cust-sm col-sm-1"></div>
-         <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
-          <div class="input-group" style="margin-top: -16px;">
-            &nbsp;
-          </div>
-          <!-- <div class="input-group" style="margin-top: -5px;">
-            <label class="form-control-sm col-sm-1">Remarks</label>
-            <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
-          </div> -->
-          <div class="input-group" style="margin-top: -5px;">
-           <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
-           <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
-             <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event; form.control.markAsDirty()" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px" name="altCoverageData.remarks"></textarea> 
+        <fieldset class="scheduler-border" style="padding-top: 10px !important;">
+         <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+         <div class="cust-sm">
+           <div class="cust-sm col-sm-1"></div>
+           <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
+            <div class="input-group" style="margin-top: -16px;">
+              &nbsp;
+            </div>
+            <!-- <div class="input-group" style="margin-top: -5px;">
+              <label class="form-control-sm col-sm-1">Remarks</label>
+              <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px"></textarea> 
+            </div> -->
+            <div class="input-group" style="margin-top: -5px;">
+             <label class="form-control-sm col-sm-1" style="margin-right: 10px">Remarks</label>
+             <div class="form-control-sm col-sm edtr-cont" style="height: 60px; margin-bottom: 10px;">
+               <textarea class="form-control-sm form-control" [ngModel]="altCoverageData.remarks" (ngModelChange)="altCoverageData.remarks = $event; form.control.markAsDirty()" style="font-size: 11px; min-height: 61px; margin-bottom: 10px; margin-left: 8px" name="altCoverageData.remarks"></textarea> 
+             </div>
            </div>
          </div>
        </div>
-     </div>
-   </fieldset>
- </div>
-</div>
-</form>
+     </fieldset>
+   </div>
+  </div>
+  </form>
 
 
-    <div class="form-row">
-      <div class="form-group col-sm">
-        <div class="col-sm text-center">
-          <div class="cust-btn-container" style="margin-top: 10px;">
-            <!-- <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button> -->
-            <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
-            <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
-            <button type="button" class="cust-btn" (click)="onClickSaveAlt()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+      <div class="form-row">
+        <div class="form-group col-sm">
+          <div class="col-sm text-center">
+            <div class="cust-btn-container" style="margin-top: 10px;">
+              <!-- <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button> -->
+              <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+              <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+              <button type="button" class="cust-btn" (click)="onClickSaveAlt()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    
-</div>
+      
+  </div>
 
-<app-modal class="hidden" id="CATPerils" #catPerilMdlAlt>
+
+
+  <app-cancel-button #cancelCov (onYes)="alterationSave('cancel')" [url]="'/alt-policy-listing'" ></app-cancel-button>
+  <app-confirm-save id="confirmSave" (onYes)="alterationSave()"></app-confirm-save>
+  <app-sucess-dialog #diagCov id="deductibles-success" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null;"></app-sucess-dialog>
+<!--   <app-modal class="hidden" id="CATPerils" #catPerilMdlAlt>
+      <div header>CAT Perils Exposure</div>
+      <div body style=" margin-top: -10px !important; width: 400px ! important">
+         <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
+      </div>                
+      <div footer style="margin-right: 145px !important;">
+        <button class="cust-btn" type="button" (click)="onCancelCat();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)=" onClickSaveCat()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+      </div>
+      <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
+      <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdlAlt.closeModal()"></app-cancel-button>
+  </app-modal>-->
+</ng-container> 
+
+
+<app-modal class="hidden" id="CATPerils" #catPerilMdl>
     <div header>CAT Perils Exposure</div>
     <div body style=" margin-top: -10px !important; width: 400px ! important">
        <app-cust-editable-non-datatable #catPerils [passData]="passDataCATPerils"></app-cust-editable-non-datatable>
     </div>                
     <div footer style="margin-right: 145px !important;">
-      <button class="cust-btn" type="button" (click)="onCancelCat();"><a>Cancel</a></button>
-      <button class="cust-btn" type="button" (click)=" saveCatPeril()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+      <button class="cust-btn" type="button" (click)="onCancelCat()"><a>Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="onClickSaveCat();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
     </div>
+    <app-sucess-dialog #diagCat [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? catPerilMdl.closeModal():null"></app-sucess-dialog>
     <app-confirm-save id="saveCat" (onYes)="saveCatPeril()"></app-confirm-save>
-    <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdlAlt.closeModal()"></app-cancel-button>
+    <app-cancel-button #cancelCat (onYes)="saveCatPeril('cancel')" (no)="catPerilMdl.closeModal()" [form]="catPerilstable.form?.first"></app-cancel-button>
 </app-modal>
-</ng-container>
+
+
 
 <app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
 <!-- <app-modal class="d-none" #deductiblesModal>
@@ -433,10 +428,9 @@
   </div>
 </app-modal> -->
 
+
 <!-- <app-confirm-save  id = "alterationSaving" (onYes)="alterationSave()"></app-confirm-save> -->
 <app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
-<app-confirm-save id="confirmSave" (onYes)="alterationSave()"></app-confirm-save>
-<app-sucess-dialog #successAlt id="deductibles-success" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null;promptClickCat ?  onClickCat(): null"></app-sucess-dialog>
 
 <app-modal #info hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>
