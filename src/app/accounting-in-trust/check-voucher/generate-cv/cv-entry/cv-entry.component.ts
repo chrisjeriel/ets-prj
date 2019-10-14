@@ -112,11 +112,13 @@ export class CvEntryComponent implements OnInit {
       if(this.passData.tranId == '') {
         if(Object.keys(params).length != 0 ){
           this.saveAcitCv.tranId = params['tranId'];
+          console.log(this.saveAcitCv.tranId);
         } else {
-          //else
+          console.log(this.saveAcitCv.tranId);
         }
       } else {
         this.saveAcitCv.tranId = this.passData.tranId;
+        console.log(this.saveAcitCv.tranId);
       }
 
      this.getAcitCv();
@@ -125,44 +127,48 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     this.loadingFunc(true);
-    
-    var subRes = forkJoin(this.accountingService.getAcitCv(this.saveAcitCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG'))
-                          .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
+    const subResKey = ['pn','cl','stat','prt'];
+    const subResKey2 = ['ba','cn'];
 
-    var subRes2 = forkJoin(this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId), this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcitCheckSeries())
-                            .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
+    const arrSubRes = {
+      'pn'  :this.mtnService.getMtnPrintableName(''),
+      'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
+      'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
+      'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
+    };
+
+    const arrSubRes2 = {
+      'ba'  : this.mtnService.getMtnBankAcct(),
+      'cn'  : this.mtnService.getMtnAcitCheckSeries()
+    };
+
+    if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null && this.saveAcitCv.tranId != undefined){
+      $.extend(arrSubRes,{
+        'cv'  :this.accountingService.getAcitCv(this.saveAcitCv.tranId)
+      });
+      $.extend(arrSubRes2,{
+        'ae'  : this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
+        'prl' : this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId)
+      });
+      subResKey.push('cv');
+      subResKey2.push('ae','prl');
+    }
+
+    var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+      var obj = {};
+      subResKey.forEach((e,i) => {obj[e] = a[i];});
+      return obj;
+    }));
+    
+    var subRes2 = forkJoin(Object.values(arrSubRes2)).pipe(map((b) => { 
+      var obj = {};
+      subResKey2.forEach((e,i) => {obj[e] = b[i];});
+      return obj;
+    }));
 
     var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
-
-    // const arrSubRes = {
-    //   'cv'  :this.accountingService.getAcitCv(this.saveAcitCv.tranId),
-    //   'pn'  :this.mtnService.getMtnPrintableName(''),
-    //   'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
-    //   'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
-    //   'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
-    // };
-
-    // const s9 = ['cv','pn','cl','stat','prt'];
-
-    // let arrSubRes2 = [
-    //   this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId),
-    //   this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
-    //   this.mtnService.getMtnBankAcct(),
-    //   this.mtnService.getMtnAcitCheckSeries()
-    // ];
-
-    // var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
-    //   var obj = {};
-    //   s9.forEach((e,i) => {obj[e] = a[i];});
-    //   return obj;
-    // }));
-
-    // var subRes2 = forkJoin(arrSubRes2).pipe(map(([prl,ba,cn,ae]) => { return { prl, ba, cn, ae }; }));
-    // var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
-
     subRes3.subscribe(data => {
       console.log(data);
-
       this.loadingFunc(false);
       var recPn   = data['sub1']['pn']['printableNames'];
       var recCl   = data['sub1']['cl']['refCodeList'];
@@ -175,10 +181,7 @@ export class CvEntryComponent implements OnInit {
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
-      var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-      var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
-      var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
-
+      
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
         this.saveAcitCv.cvStatus = 'N';
@@ -200,6 +203,9 @@ export class CvEntryComponent implements OnInit {
           }
         });
       }else{
+        var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
+        var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
+        var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
         var recCv = data['sub1']['cv']['acitCvList'].map(e => {
           e.createDate = this.ns.toDateTimeString(e.createDate);
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
