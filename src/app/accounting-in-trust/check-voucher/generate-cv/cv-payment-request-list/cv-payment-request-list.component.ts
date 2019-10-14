@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { AccCVPayReqList } from '@app/_models';
@@ -19,17 +19,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./cv-payment-request-list.component.css']
 })
 export class CvPaymentRequestListComponent implements OnInit {
-  @ViewChild('paytReqTbl') paytReqTbl : CustNonDatatableComponent;
-  @ViewChild('paytReqLov') paytReqLov  : LovComponent;
-  @ViewChild('can') can             : CancelButtonComponent;
-  @ViewChild('con') con             : ConfirmSaveComponent;
-  @ViewChild('suc') suc            : SucessDialogComponent;
+  @ViewChild('paytReqTbl') paytReqTbl   : CustNonDatatableComponent;
+  @ViewChild('paytReqLov') paytReqLov   : LovComponent;
+  @ViewChild('can') can                 : CancelButtonComponent;
+  @ViewChild('con') con                 : ConfirmSaveComponent;
+  @ViewChild('suc') suc                 : SucessDialogComponent;
   @ViewChild('warnMdl') warnMdl         : ModalComponent;
 
   passDataPaytReqList: any = {
-    tableData     : [],
-    tHeader       : ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'],
-    dataTypes     : ['lov-input','text','date','text','text','text','currency'],
+    tableData       : [],
+    tHeader         : ['Payment Request No.','Payment Type','Request Date','Particulars','Requested By','Curr','Amount'],
+    dataTypes       : ['lov-input','text','date','text','text','text','currency'],
     magnifyingGlass : ['paytReqNo'],
     nData : {
       paytReqNo     : '',
@@ -99,7 +99,7 @@ export class CvPaymentRequestListComponent implements OnInit {
               public modalService: NgbModal, private router : Router) { }
 
   ngOnInit() {
-    this.titleService.setTitle(" Acct | CV | Payment Request List");
+    this.titleService.setTitle(" Acct-IT | Payment Requests List");
   	this.getCvPaytReqList();
   }
 
