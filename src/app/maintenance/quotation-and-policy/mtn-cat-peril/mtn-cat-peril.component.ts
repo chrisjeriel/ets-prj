@@ -1,17 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MaintenanceService, NotesService } from '@app/_services'
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { FormGroup } from '@angular/forms';
+
 @Component({
   selector: 'app-mtn-cat-peril',
   templateUrl: './mtn-cat-peril.component.html',
   styleUrls: ['./mtn-cat-peril.component.css']
 })
-export class MtnCATPerilComponent implements OnInit {
+export class MtnCATPerilComponent implements OnInit, AfterViewInit {
   
-
+  formGroup: FormGroup = new FormGroup({});
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild('catPeril') table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -39,6 +41,7 @@ export class MtnCATPerilComponent implements OnInit {
     disableGeneric : true,
     addFlag: true,
     genericBtn:'Delete',
+    disableAdd: true,
     searchFlag: true,
     pageLength: 10,
     paginateFlag: true,
@@ -70,15 +73,26 @@ export class MtnCATPerilComponent implements OnInit {
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
+  ngAfterViewInit() {
+      this.table.loadingFlag = false;
+      this.table.form.forEach((f,i)=>{
+        this.formGroup.addControl('table'+i, f.control); 
+      })
+  }
+
   ngOnInit() {
     this.getCatPeril();
   }
 
   getCatPeril(){
     if(this.line == '' || this.line == null){
-
+      this.passData.disableAdd = true;
+      this.passData.disableGeneric = true;
+      this.passData.tableData = [];
+      this.table.refreshTable();
     }else{
         this.passData.tableData = [];
+        this.passData.disableAdd = false;
         this.maintenanceService.getMtnCatPeril(this.line,'000').subscribe((data:any) => {
           console.log(data)
           for(var i = 0; i< data.catPerilList.length; i++){
@@ -151,26 +165,19 @@ export class MtnCATPerilComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
-    if(this.edited.length === 0 && this.deleted.length === 0){
-        setTimeout(()=> {
-        this.dialogMessage = "Nothing to Save.";
-        this.dialogIcon = "info";
-        this.successDiag.open();
-        },0);
-    }else{
-       this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data) => {
-         console.log(data)
-         if(data['returnCode'] == 0) {
-             this.dialogMessage = data['errorList'][0].errorMessage;
-             this.dialogIcon = "error";
-             this.successDiag.open();
-           } else{
-             this.dialogIcon = "success";
-             this.successDiag.open();
-             this.getCatPeril();
-           }
-       });
-     }
+     this.maintenanceService.saveMtnCatPeril(this.saveData).subscribe((data) => {
+       console.log(data)
+       if(data['returnCode'] == 0) {
+           this.dialogMessage = data['errorList'][0].errorMessage;
+           this.dialogIcon = "error";
+           this.cancelFlag = false;
+           this.successDiag.open();
+         } else{
+           this.dialogIcon = "success";
+           this.successDiag.open();
+           this.getCatPeril();
+         }
+     });
   }
 
   cancel(){
