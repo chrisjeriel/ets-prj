@@ -9,8 +9,7 @@
               <div class="col-sm-3"></div>
               <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
               <input class="form-control form-control-sm  col-sm-1 not-form" type="text" 
-                [ngModel]="line"
-                [appCheckForm]="formGroup" [data]="line" (output)="line=$event.target.value;checkCode($event)">
+                [ngModel]="line" [appCheckForm]="formGroup" [data]="line" (output)="line=$event.target.value;checkCode($event)">
               <div class="text-search-ico" style="padding-left: 1px" 
                     [appCheckForm]="formGroup" (output)="showObjLineLOV()"><a><i
                     class="fa fa-search"></i></a></div>&nbsp;

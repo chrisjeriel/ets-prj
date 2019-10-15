@@ -62,7 +62,7 @@ export class CheckFormDirective{
             this.output.emit(event);     
           }
         });
-     }else{
+     }else if(this.tagName == 'DIV' && !this.form.dirty){
        this.output.emit(event);
      }
    }

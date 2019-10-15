@@ -30,7 +30,7 @@ export class ConfirmSaveComponent implements OnInit {
   }
 
   confirmModal(){
-  	if((this.form == undefined && $('.ng-dirty:not([type="search"]):not(.not-form)').length != 0)|| (this.form != undefined && this.form.dirty)
+  	if((this.form == undefined && $('.ng-dirty:not([type="search"]):not(.not-form):not(.exclude)').length != 0)|| (this.form != undefined && this.form.dirty)
         ){
   		this.saveModal.openNoClose();
   	}else{

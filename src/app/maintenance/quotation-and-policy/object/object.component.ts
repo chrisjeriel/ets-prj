@@ -123,8 +123,12 @@ export class ObjectComponent implements OnInit, AfterViewInit {
   ngAfterViewInit() {
       this.objTable.loadingFlag = false;
       this.catPerilTable.loadingFlag = false;
-      this.formGroup.addControl('objTable', this.objTable.form.first.form); 
-      this.formGroup.addControl('catPerilTable', this.catPerilTable.form.first.form);  
+      this.objTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('objTable'+i, f.control); 
+      })
+      this.catPerilTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('catPerilTable'+i, f.control); 
+      }) 
   }
 
   ngOnInit() {
