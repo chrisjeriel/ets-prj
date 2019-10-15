@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { AccCVPayReqList } from '@app/_models';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -19,7 +19,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./budget-details.component.css']
 })
 export class BudgetDetailsComponent implements OnInit {
-  @ViewChild('budgetYrTbl') budgetYrTbl : CustNonDatatableComponent;
+  @ViewChild('budgetYrTbl') budgetYrTbl : CustEditableNonDatatableComponent;
+  @ViewChild('budYrLov') budYrLov       : LovComponent;
   @ViewChild('can') can                 : CancelButtonComponent;
   @ViewChild('con') con                 : ConfirmSaveComponent;
   @ViewChild('suc') suc                 : SucessDialogComponent;
@@ -46,8 +47,10 @@ export class BudgetDetailsComponent implements OnInit {
     checkFlag        : true,
     searchFlag       : true,
     pageLength       : 15,
+    infoFlag         : true,
     widths           : [117, 'auto', 'auto', 'auto', 125],
     paginateFlag     : true,
+    pageID           : 'budgetYrDataID',
     magnifyingGlass  : ['glShortCd','slTypeName','slName'],
     total            : [null,null,null,'TOTAL','totalBudget'],
     keys             : ['glShortCd','glShortDesc','slTypeName','slName','totalBudget'],
@@ -92,22 +95,33 @@ export class BudgetDetailsComponent implements OnInit {
     deleteBudgetExpense   : []
   };
 
+  passDataLov  : any = {
+    selector  : '',
+    payeeCd   : '',
+    currCd    : '',
+    params    : {}
+  };
+
   budgetYear     : string = '';
   cancelFlag     : boolean;
   dialogIcon     : string;
   dialogMessage  : string;
+  lovCheckBox    : boolean = true;
+  lovRow         : any;
 
   constructor(private titleService: Title,private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
               public modalService: NgbModal, private router : Router) { }
 
   ngOnInit() {
-  	this.getAcseBudgetExpense();
+  	//this.getAcseBudgetExpense();
   }
 
   getAcseBudgetExpense(){
-    this.acctService.getAcseBudgetExpense()
+    this.budgetYrTbl.overlayLoader = true;
+    this.acctService.getAcseBudgetExpense(this.budgetYear)
     .subscribe(data => {
       console.log(data);
+      this.budgetYrTbl.overlayLoader = false;
       this.budgetYrData.tableData = data['acseBudgetExpenseList'].map(e => {
         e.updateDate = this.ns.toDateTimeString(e.updateDate);
         e.createDate = this.ns.toDateTimeString(e.createDate);
@@ -131,8 +145,7 @@ export class BudgetDetailsComponent implements OnInit {
         }else{
           this.params.deleteBudgetExpense.push(e);
         }
-      }
-      if(e.edited && !e.deleted){
+      }else if(e.edited && !e.deleted){
         e.fromCancel = true;
         this.params.saveBudgetExpense = this.params.saveBudgetExpense.filter(i => i.glAcctId != e.glAcctId);
         e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -140,27 +153,27 @@ export class BudgetDetailsComponent implements OnInit {
         e.updateUser    = this.ns.getCurrentUser();
         e.updateDate    = this.ns.toDateTimeString(0);
         e.budgetYear    = this.budgetYear;
+        e.totalExpense  = 0;
         this.params.saveBudgetExpense.push(e);
       }else if(e.edited && e.deleted){ 
         this.params.deleteBudgetExpense.push(e);  
       }
     });
 
+    console.log(this.budgetYrData.tableData);
     console.log(this.params.saveBudgetExpense);
-    if(isEmpty){
-        this.dialogIcon = 'error';
-        this.suc.open();
-        this.params.saveBudgetExpense = [];
-      }else{
+    if(isEmpty == 1){
+      this.dialogIcon = 'error';
+      this.suc.open();
+      this.params.saveBudgetExpense = [];
+    }else{
+    console.log('1');
         if(this.params.saveBudgetExpense.length == 0 && this.params.deleteBudgetExpense.length == 0){
-            if($('input').hasClass('ng-dirty')){
-            }else{
-              $('.ng-dirty').removeClass('ng-dirty');
-              this.params.saveBudgetExpense   = [];
-              this.params.deleteBudgetExpense = [];
-              this.budgetYrData.tableData = this.budgetYrData.tableData.filter(e => e.glAcctId != '');
-            }
+            this.budgetYrTbl.markAsPristine();
             this.con.confirmModal();
+            this.params.saveBudgetExpense   = [];
+            this.params.deleteBudgetExpense = [];
+            this.budgetYrData.tableData = this.budgetYrData.tableData.filter(e => e.glAcctId != '');
         }else{
           if(this.cancelFlag == true){
             this.con.showLoading(true);
@@ -169,7 +182,7 @@ export class BudgetDetailsComponent implements OnInit {
             this.con.confirmModal();
           }
         }
-      }
+    }
   }
 
   onSaveAcseBudgetExpense(){
@@ -187,7 +200,73 @@ export class BudgetDetailsComponent implements OnInit {
     });
   }
 
+  showLov(data){
+    console.log(data);
+    this.lovRow = data;
+    var key = data['key'].toUpperCase();
+    this.passDataLov.selector = '';
+    if(key == 'GLSHORTCD'){
+      this.passDataLov.selector = 'acseChartAcct';
+      this.lovCheckBox = true;
+      this.passDataLov.params = {};
+    }else if(key == 'SLTYPENAME'){
+      this.passDataLov.selector = 'slType';
+      this.lovCheckBox = false;
+      this.passDataLov.params = {};
+    }else if(key == 'SLNAME'){
+      this.passDataLov.selector = 'sl';
+      this.lovCheckBox = false;
+      this.passDataLov.params.slTypeCd = data.data.slTypeCd;
+    }
+    this.budYrLov.openLOV();
+  }
+
+  setData(data){
+    console.log(data);
+    var rec = data['data'];
+    console.log(rec);
+    if(data.selector == 'acseChartAcct'){
+      rec.forEach(e => {
+        this.budgetYrData.tableData.push(e);
+      });
+    }else if(data.selector == 'slType'){
+      this.budgetYrData.tableData[this.lovRow.index].slTypeCd = rec.slTypeCd;
+      this.budgetYrData.tableData[this.lovRow.index].slTypeName = rec.slTypeName;
+      this.budgetYrData.tableData[this.lovRow.index].slCd = '';
+      this.budgetYrData.tableData[this.lovRow.index].slName = '';
+    }else if(data.selector == 'sl'){
+      this.budgetYrData.tableData[this.lovRow.index].slCd = rec.slCd;
+      this.budgetYrData.tableData[this.lovRow.index].slName = rec.slName;
+    }
+    
+    this.budgetYrData.tableData = this.budgetYrData.tableData.filter(e => e.glAcctId != '').map(e => {
+      if(e.newRec == 1){
+        e.glShortCd   = e.shortCode;
+        e.glShortDesc = e.shortDesc;
+        e.createUser  = '';
+        e.createDate  = '';
+        e.updateUser  = '';
+        e.updateDate  = '';
+        e.edited      = true;
+        e.checked     = false;
+        e.showMG      = 1;
+      }
+      return e;
+    });
+    console.log(this.budgetYrData.tableData);
+    this.budgetYrTbl.refreshTable();
+  }
+
+  checkCancel(){
+    if(this.cancelFlag){
+      this.can.onNo();
+    }else{
+      this.suc.modal.modalRef.close();
+    }
+  }
+
   onRowClick(data){
+    console.log(data);
     this.otherData = data;
   }
 }

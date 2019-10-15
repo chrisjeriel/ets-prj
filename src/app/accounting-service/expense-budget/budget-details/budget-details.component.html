@@ -83,7 +83,7 @@
 	 		  						<div class="col-sm-4">
 	 		  							<div class="input-group">
 	 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
-	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [(ngModel)]="budgetYear">
+	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [ngModel]="budgetYear" (ngModelChange)="budgetYear=$event;getAcseBudgetExpense()">
 	 		  									<option value="2019">2019</option>
 	 		  									<option value="2018">2018</option>
 	 		  									<option value="2017">2017</option>
@@ -97,7 +97,7 @@
 	 		  					</div>
 	 		  					<div class="row">
 			                        <div class="col-sm-12" style="padding: 0">
-			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
+			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (clickLOV)="showLov($event)" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
 			                        </div>
 	                    		</div>
 	                    		<div class="row" style="margin-top: -16px;">
@@ -105,7 +105,7 @@
 	                    				<div class="col-md-13 text-center">
 	                    					<div class="cust-btn-container">
 	                    						<button type="button" class="cust-btn"><a>Cancel</a></button>
-	                    						<button type="button" class="cust-btn"><a>Save</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 	                    						<button type="button" class="cust-btn"><a>Print</a></button>
 	                    					</div>
 	                    				</div>
@@ -154,7 +154,7 @@
 			            </fieldset>
 			          </div>
 
-
+<app-lov #budYrLov [passData]="passDataLov" (selectedData)="setData($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-confirm-save  #con (onYes)="onSaveAcseBudgetExpense()"></app-confirm-save>
 <app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
