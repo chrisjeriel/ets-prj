@@ -1,0 +1,53 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Accounting Service / Withholding Tax</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Withholding Tax Maintenance">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 20px">
+						<fieldset class="scheduler-border">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+								</div>
+								<div class="form-control-sm col-sm-1"></div>
+								<label class="form-control-sm col-sm-1">Remarks</label>
+								<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event">
+							</div>
+							<div class="form-row" style="margin-top: 13px !important;">
+							    <div class="form-group col-sm">
+							        <div class="col-md-12 text-center">
+							            <div class="cust-btn-container">
+							                <button type="button" class="cust-btn"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn"><a>Save</a></button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
+					    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+					        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+					            <div class="input-group" style="margin-bottom: -15px !important;">
+					                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.createUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true"></datepicker>
+					                </div>
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly name="entryData.updateUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true"></datepicker>
+					                </div>
+					            </div>
+					        </div>
+					    </fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

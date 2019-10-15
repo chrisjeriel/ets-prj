@@ -1533,4 +1533,15 @@ export class MaintenanceService{
     		.set('orType', (orType === null || orType === undefined ? '' : orType));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/acseMaxTranNo", {params});
     }
+
+    getWhTax(whtaxId, taxCd, taxType, creditableTag?, fixedTag?, activeTag?){
+    	const params = new HttpParams()
+    		.set('whtaxId', (whtaxId === null || whtaxId === undefined ? '' : whtaxId))
+    		.set('taxCd', (taxCd === null || taxCd === undefined ? '' : taxCd))
+    		.set('taxType', (taxType === null || taxType === undefined ? '' : taxType))
+    		.set('creditableTag', (creditableTag === null || creditableTag === undefined ? '' : creditableTag))
+    		.set('fixedTag', (fixedTag === null || fixedTag === undefined ? '' : fixedTag))
+    		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseWHTax", {params});
+    }
 }

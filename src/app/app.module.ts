@@ -467,6 +467,7 @@ import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-s
 import { JvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/jv-series/jv-series.component';
 import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
 import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
+import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
 
 @NgModule({
     imports: [
@@ -939,6 +940,7 @@ import { OrSeriesComponent } from './maintenance/accounting-service/generate-num
         JvSeriesComponent,
         CvSeriesComponent,
         OrSeriesComponent,
+        WithhodlingTaxComponent,
     ],
 
   	providers: [

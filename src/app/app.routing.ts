@@ -180,7 +180,7 @@ import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-typ
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-service/generate-number-series-service/generate-number-series-service.component';
-
+import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
 
 const appRoutes: Routes = [
 
@@ -372,6 +372,7 @@ const appRoutes: Routes = [
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'generate-number-series-service',component: GenerateNumberSeriesServiceComponent},
+	{ path: 'mtn-withholding-tax',component: WithhodlingTaxComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
