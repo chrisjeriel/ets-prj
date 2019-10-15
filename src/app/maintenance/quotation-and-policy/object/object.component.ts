@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-object',
   templateUrl: './object.component.html',
   styleUrls: ['./object.component.css']
 })
-export class ObjectComponent implements OnInit {
+export class ObjectComponent implements OnInit, AfterViewInit {
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
   @ViewChild('objectTable') objTable: CustEditableNonDatatableComponent;
@@ -34,7 +35,9 @@ export class ObjectComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateDate: this.ns.toDateTimeString(0),
       createUser: JSON.parse(window.localStorage.currentUser).username,
-      updateUser: JSON.parse(window.localStorage.currentUser).username
+      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      okDelete: 'Y',
+      catPerilList:[]
     },
     addFlag: true,
     paginateFlag: true,
@@ -65,6 +68,7 @@ export class ObjectComponent implements OnInit {
       defaultTag: '',
       activeTag: '',
       remarks: '',
+      okDelete:'Y',
       createDate: this.ns.toDateTimeString(0),
       updateDate: this.ns.toDateTimeString(0),
       createUser: JSON.parse(window.localStorage.currentUser).username,
@@ -108,14 +112,29 @@ export class ObjectComponent implements OnInit {
     catPerilAbbr: null
   }
 
+  showCatLOVRow:any;
+
   constructor(private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService,
     public modalService: NgbModal) { }
+
+
+  formGroup: FormGroup = new FormGroup({});
+
+  ngAfterViewInit() {
+      this.objTable.loadingFlag = false;
+      this.catPerilTable.loadingFlag = false;
+      this.formGroup.addControl('objTable', this.objTable.form.first.form); 
+      this.formGroup.addControl('catPerilTable', this.catPerilTable.form.first.form);  
+  }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Object');
   }
 
   retrieveObject() {
+    this.formGroup.markAsPristine();
+    this.objTable.overlayLoader = true;
+    this.catPerilTable.overlayLoader = true;
     if(this.line === '' || this.line == null) {
       this.clearTbl();
     } else {
@@ -150,9 +169,9 @@ export class ObjectComponent implements OnInit {
     $('#objLineLOV #modalBtn').trigger('click');
   }
 
-  showCATPerilLOV() {
+  showCATPerilLOV(data) {
     this.hideCATPeril = this.catPerilData.tableData.filter(a => !a.deleted).map(a => a.catPerilId);
-
+    this.showCatLOVRow = data.data;
     $('#catPerilLOV #modalBtn2').trigger('click');
   }
 
@@ -161,14 +180,21 @@ export class ObjectComponent implements OnInit {
     this.description = data.description;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveObject();
+    if(this.line.length == 0 ){
+      this.passData.disableAdd = true;
+      this.passData.disableGeneric = true;
+      this.catPerilData.disableAdd = true;
+    }
   }
 
   setCATPeril(data) {
-    this.catPerilData.tableData[this.catPerilData.tableData.length - 1] = data;
-    this.catPerilData.tableData[this.catPerilData.tableData.length - 1].edited = true;
-    this.catPerilData.tableData[this.catPerilData.tableData.length - 1].add = true;
-
-    this.catPerilTable.refreshTable();
+    for(let key of Object.keys(data)){
+      this.showCatLOVRow[key] = data[key]
+    }
+    this.showCatLOVRow.edited = true;
+    this.showCatLOVRow.add = true;
+    this.onCatPerilChange();
+    // this.catPerilTable.refreshTable();
   }
 
   checkCode(ev) {
@@ -185,6 +211,7 @@ export class ObjectComponent implements OnInit {
   objRowClick(ev) {
     this.currData = ev;
     this.catPerilData.tableData = [];
+    console.log(ev)
     if (ev != null && ev !== '') {
       if (ev.catPerilList != null) {
         this.catPerilData.tableData = ev.catPerilList.filter(a => {
@@ -192,9 +219,9 @@ export class ObjectComponent implements OnInit {
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
           return true;
         });
-        this.passData.disableGeneric = false;
+        
       }
-
+      this.passData.disableGeneric = false;
       this.catPerilData.disableAdd = false;
       this.enableFields();
 
@@ -202,6 +229,9 @@ export class ObjectComponent implements OnInit {
       this.userData.createDate = ev.createDate;
       this.userData.updateUser = ev.updateUser;
       this.userData.updateDate = ev.updateDate;
+    }else{
+      this.passData.disableGeneric = true;
+      this.catPerilData.disableAdd = true;
     }
 
     this.selected = this.passData.tableData.indexOf(this.objTable.indvSelect);
@@ -236,25 +266,26 @@ export class ObjectComponent implements OnInit {
       }
     }
 
-    for (let rec of this.catPerilData.tableData) {
-      if (rec.edited && !rec.deleted) {
-        rec.lineCd = this.line;
-        rec.objectId = this.currData.objectId;
-        rec.createUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.createDate = this.ns.toDateTimeString(rec.createDate);
-        rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
-        rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
-        savedData.saveCatPeril.push(rec);
-      } else if (rec.deleted) {
-        rec.lineCd = this.line;
-        rec.objectId = this.currData.objectId;
-        savedData.delCatPeril.push(rec);
+    for(let obj of this.passData.tableData)
+      for (let rec of obj.catPerilList) {
+        if (rec.edited && !rec.deleted) {
+          rec.lineCd = this.line;
+          rec.objectId = obj.objectId;
+          rec.createUser = JSON.parse(window.localStorage.currentUser).username;
+          rec.createDate = this.ns.toDateTimeString(rec.createDate);
+          rec.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
+          savedData.saveCatPeril.push(rec);
+        } else if (rec.deleted) {
+          rec.lineCd = this.line;
+          rec.objectId = obj.objectId;
+          savedData.delCatPeril.push(rec);
+        }
       }
-    }
 
 
     if (this.validate(savedData)) {
-      if (savedData.saveObject.length > 0 || savedData.deleteObject.length) {
+      if (savedData.saveObject.length > 0 || savedData.deleteObject.length > 0) {
         if (this.checkObjectId()) {
           this.mtnService.saveMtnObject(JSON.stringify(savedData)).subscribe((data: any) => {
             if (data['returnCode'] === 0) {
@@ -291,7 +322,6 @@ export class ObjectComponent implements OnInit {
         } else {
           this.warningMsg = 0;
           this.showWarningMdl();
-
           setTimeout(() => { $('.globalLoading').css('display', 'none'); }, 0);
         }
       } else if (savedData.saveCatPeril.length > 0 || savedData.delCatPeril.length > 0) {
@@ -309,6 +339,13 @@ export class ObjectComponent implements OnInit {
             this.catPerilTable.refreshTable();
           }
         });
+      }else{
+        this.dialogIcon = 'success';
+        $('#objectSuccess > #successModalBtn').trigger('click');
+        this.objTable.markAsPristine();
+        this.catPerilTable.markAsPristine();
+        this.retrieveObject();
+        setTimeout(() => { $('.globalLoading').css('display', 'none'); }, 0);
       }
     } else {
       this.dialogMessage = 'Please check field values';
@@ -341,7 +378,6 @@ export class ObjectComponent implements OnInit {
         }
       }
     }
-
     return true;
   }
 
@@ -382,4 +418,8 @@ export class ObjectComponent implements OnInit {
     $('#objWarningModal > #modalBtn').trigger('click');
   }
 
+
+  onCatPerilChange(){
+    this.objTable.indvSelect.catPerilList = this.catPerilData.tableData;
+  }
 }

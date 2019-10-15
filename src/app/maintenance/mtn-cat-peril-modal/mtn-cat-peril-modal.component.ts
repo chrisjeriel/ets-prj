@@ -51,10 +51,10 @@ export class MtnCatPerilModalComponent implements OnInit {
       if (data['catPerilList'] != null) {
         if (this.hide !== undefined) {
           this.catPerilListing.tableData = data['catPerilList'].filter(a => {
-            return !this.hide.includes(a.catPerilId);
+            return !this.hide.includes(a.catPerilId) && a.activeTag == 'Y';
           });
         } else {
-          this.catPerilListing.tableData = data['catPerilList'];
+          this.catPerilListing.tableData = data['catPerilList'].filter(a=>a.activeTag == 'Y');
         }
 
         this.table.refreshTable();

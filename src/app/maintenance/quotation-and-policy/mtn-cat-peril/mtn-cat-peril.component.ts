@@ -79,7 +79,7 @@ export class MtnCATPerilComponent implements OnInit {
 
     }else{
         this.passData.tableData = [];
-        this.maintenanceService.getMtnCatPeril(this.line).subscribe((data:any) => {
+        this.maintenanceService.getMtnCatPeril(this.line,'000').subscribe((data:any) => {
           console.log(data)
           for(var i = 0; i< data.catPerilList.length; i++){
               this.passData.tableData.push(data.catPerilList[i]);

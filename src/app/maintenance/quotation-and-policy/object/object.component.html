@@ -8,9 +8,11 @@
             <div class="input-group">
               <div class="col-sm-3"></div>
               <label class="form-control-sm text-right" style="margin-bottom: 0px">Line</label>
-              <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)"
-                [(ngModel)]="line">
-              <div class="text-search-ico" style="padding-left: 1px" (click)="showObjLineLOV()"><a><i
+              <input class="form-control form-control-sm  col-sm-1 not-form" type="text" 
+                [ngModel]="line"
+                [appCheckForm]="formGroup" [data]="line" (output)="line=$event.target.value;checkCode($event)">
+              <div class="text-search-ico" style="padding-left: 1px" 
+                    [appCheckForm]="formGroup" (output)="showObjLineLOV()"><a><i
                     class="fa fa-search"></i></a></div>&nbsp;
               <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;"
                 [(ngModel)]="description" readonly>
@@ -34,7 +36,7 @@
                 <legend class="scheduler-border">CAT Peril per Object</legend>
                 <div class="row" style="padding-bottom: 8px;"></div>
                 <div style="padding-top: 5px;">
-                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (clickLOV)="showCATPerilLOV()">
+                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (clickLOV)="showCATPerilLOV($event)" (tableDataChange)="onCatPerilChange()">
                   </app-cust-editable-non-datatable>
                 </div>
               </fieldset>
@@ -89,6 +91,5 @@
 <app-mtn-line id="objLineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-mtn-cat-peril-modal id="catPerilLOV" [lineCd]="line" (selectedData)="setCATPeril($event)" [hide]="hideCATPeril"></app-mtn-cat-peril-modal>
 <app-confirm-save (onYes)="onClickSaveObject()"></app-confirm-save>
-<app-sucess-dialog id="objectSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag? cancel.onNo() : null"></app-sucess-dialog>
-<!-- <app-cancel-button (onYes)="onClickSaveLineClass('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button> TRBT#PROD_GRADE -->
-<app-cancel-button [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+<app-sucess-dialog id="objectSuccess" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error'? cancel.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveObject('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
