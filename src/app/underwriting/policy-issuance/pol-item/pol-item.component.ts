@@ -53,7 +53,7 @@ export class PolItemComponent implements OnInit {
     eeiPassData:any={
         tableData:[],
         tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['number', 'string', 'string', 'string', 'currency'],
+        dataTypes:['number', 'reqTxt', 'string', 'string', 'currency'],
         nData: {
             "quantity": null,
             "itemDesc": null,
@@ -84,7 +84,7 @@ export class PolItemComponent implements OnInit {
     bpvPassData: any = {
         tableData:[],
         tHeader: ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'],
-        dataTypes:['string', 'string', 'string', 'string', 'currency'],
+        dataTypes:['string', 'string', 'reqTxt', 'string', 'currency'],
         nData: {
              "serialNo":null,
              "location": null,
@@ -111,7 +111,7 @@ export class PolItemComponent implements OnInit {
     mlpPassData: any = {
         tableData: [],
         tHeader:  ['Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
-        dataTypes:  [ 'number', 'text', 'number', 'percent', 'number'],
+        dataTypes:  [ 'number', 'reqTxt', 'number', 'percent', 'number'],
         nData:  {
             "itemNo":null,
             "quantity": null,
@@ -141,7 +141,7 @@ export class PolItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "text", "number", "currency"],
+        dataTypes: [ "text", "reqTxt", "number", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -172,7 +172,7 @@ export class PolItemComponent implements OnInit {
     dosMachineryPassData: any = {
         tableData: [],
         tHeader: ["Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
-        dataTypes: [ "number", "text", "text", "currency"],
+        dataTypes: [ "number", "reqTxt", "text", "currency"],
         nData: {
             "itemNo":null,
             "standbyUnit": null,
@@ -199,7 +199,7 @@ export class PolItemComponent implements OnInit {
     cecPassData: any = {
         tableData:[],
         tHeader: [ 'Insured Item and Location', 'Deductible', 'Sum Insured'],
-        dataTypes:['string', 'string', 'currency'],
+        dataTypes:['reqTxt', 'string', 'currency'],
         nData: {
             "itemNo":null,
             "quantity": null,

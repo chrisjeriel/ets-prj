@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ExpiryParameters, ExpiryListing, RenewedPolicy } from '../../../_models';
-import { UnderwritingService, NotesService } from '../../../_services';
+import { UnderwritingService, NotesService, WorkFlowManagerService } from '../../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -45,6 +45,8 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('myForm') form:any;
   @ViewChild('myForms') forms:any;
   @ViewChild('printModal') printModal: ModalComponent;
+  @ViewChild("remindersTable") remindersTable: CustEditableNonDatatableComponent;
+
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
   renewedPolicyList: RenewedPolicy[] = [];
@@ -280,7 +282,33 @@ export class ExpiryListingComponent implements OnInit {
         tableData: [],
         keys:['catPerilName','pctSharePrem'],
         pageLength:10,
-    };
+   };
+
+
+      
+
+   remindersData: any = {
+        tableData: [],
+        dataTypes : ['fasymbol','text', 'text', 'date', 'time', 'text', 'date'],
+        keys : ['type', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'],
+        tHeader : ['Type', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'],
+        uneditable : [false,true,true,true,true,true,true],
+
+        //widths: [60,'auto',100,'auto'],
+        nData:{
+            type: null,
+            title: null,
+            assignedTo: null,
+            createDate: 0,
+        },
+        pageLength: 5,
+        deleteFlag: false,
+        checkFlag: true,
+        paginateFlag: true,
+        infoFlag: true,
+        searchFlag: true,
+        pageID: 2,
+   }
 
    editModal: any = {
      currencyCd: null,
@@ -335,6 +363,7 @@ export class ExpiryListingComponent implements OnInit {
   nonRenewableData: any;
   currentTab: string = 'renew';
   renAsIsTag: boolean;
+  
 
   params:any = {
     cedingId : "",
@@ -369,7 +398,17 @@ export class ExpiryListingComponent implements OnInit {
     altNo: ''
   }
 
-  constructor(private underWritingService: UnderwritingService, public modalService: NgbModal, private titleService: Title, private ns: NotesService,  private decimal : DecimalPipe, private router : Router) { }
+  
+
+  constructor(private underWritingService: UnderwritingService, 
+              public modalService: NgbModal, 
+              private titleService: Title, 
+              private ns: NotesService,  
+              private decimal : DecimalPipe, 
+              private router : Router,
+              private workFlowManagerService : WorkFlowManagerService) { }
+
+  mode:string = 'reminder';
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Expiry Listing");
@@ -781,6 +820,11 @@ export class ExpiryListingComponent implements OnInit {
       $('#purgeRenewablePolicyModalNR #modalBtn').trigger('click');
   }
 
+  switchScreen() {
+    console.log("mode: " + this.mode);
+    this.loadNRTable();
+  }
+
   gotoPurgeExtractedPolicy() {
     //this.router.navigate(['/purge-extracted-policy', { }], { skipLocationChange: false });
     this.purgeData.deletePurge.push(this.selectedData);
@@ -860,6 +904,8 @@ export class ExpiryListingComponent implements OnInit {
       }
       this.renAsIsTag = this.table.indvSelect.renAsIsTag == 'Y';
 
+      this.loadNRTable();
+
 
     }else{
       this.disabledFlag = true;
@@ -871,7 +917,41 @@ export class ExpiryListingComponent implements OnInit {
       this.purgeFlag = true;
       this.selectedData = null;
       this.clearVar();
+      this.remindersData.tableData = [];
+      this.remindersTable.refreshTable();
     }
+  }
+
+  loadNRTable() {
+    this.remindersData.tableData = [];
+    this.remindersTable.overlayLoader = true;
+    console.log("loadNRTable : mode : ");
+    console.log(this.mode); 
+
+    if (this.mode == 'reminder') {
+      this.workFlowManagerService.retrieveWfmReminders('', '', '', 'Policy', this.rowPolicyId).subscribe((data: any)=>{
+          if (data.reminderList != null) {          
+            for(let rec of data.reminderList){
+              if (rec.impTag == 'Y' && rec.urgTag == 'N') {
+                rec.type = 'fa fa-warning span-div-flag-imp';
+              } else if (rec.impTag == 'N' && rec.urgTag == 'Y') {
+                rec.type = 'fa fa-warning span-div-flag-urg';
+              } else if (rec.impTag == 'Y' && rec.urgTag == 'Y') {
+                rec.type = 'fa fa-warning span-div-flag-imp-urg';
+              }
+              
+              this.remindersData.tableData.push(rec);
+            }
+
+            this.remindersTable.refreshTable();
+          } else {
+            //alert("Saved successfully.");
+          }
+      });
+    } else if (this.mode == 'note') {
+      this.remindersTable.refreshTable();
+    }
+
   }
 
   clearVar(){

@@ -25,9 +25,9 @@
 			        	<div>
 							<div class="float-left a-date">
 								<a href="#">
-									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" class="fa fa-flag span-div-flag" style="color: #ffff00ad;"></i>
-									<i *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" class="fa fa-flag span-div-flag" style="color: #ffa500ad;"></i>
-									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" class="fa fa-flag span-div-flag" style="color: #ff0000ad;"></i>
+									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" class="fa fa-warning span-div-flag" style="color: #ffff00;"></i>
+									<i *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" class="fa fa-warning span-div-flag" style="color: #ffa500;"></i>
+									<i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" class="fa fa-warning span-div-flag" style="color: #ff0000;"></i>
 									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm a' }}<br>
 									<div class="span-div"><span>{{ reminder.alarmTime | date:'hh:mm a' }}</span></div>
 								</a>
@@ -111,8 +111,9 @@
 						<p>{{ reminder.reminder }}</p>
 						
 						<div *ngIf="reminder.module != ''">
-					    	<p *ngIf="reminder.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#">{{ reminder.details }}</a></p>
-					    	<p *ngIf="reminder.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToQuoteGenInfo('detail', reminder);">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToPolGenInfo('detail', reminder.details);">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Claim'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToclaimGenInfo('detail', reminder);">{{ reminder.details }}</a></p>
 					    </div>
 
 						<div  *ngIf="reminderBool">
@@ -132,13 +133,13 @@
 			                            </ng-template>
 			                            <ng-template ngbPanelContent>
 			                            	<div *ngFor="let relRecord of reminder.relatedRecordList;">
-			                            		<button *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
+			                            		<button *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" (click)="redirectToQuoteGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
 			                                	<br *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" />
 
-			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" (click)="redirectToPolGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
 			                                	<br *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" />
 
-			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" (click)="redirectToclaimGenInfo('related', relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
 			                                	<br *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" />
 			                            	</div>
 			                            </ng-template>

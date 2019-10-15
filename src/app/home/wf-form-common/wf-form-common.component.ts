@@ -127,7 +127,10 @@ export class WfFormCommonComponent implements OnInit {
     policyId : null,
     policyNo : null
   };
-  @Input() claimInfo: any = {};
+  @Input() claimInfo: any = {
+    claimId : null,
+    claimNo : null
+  };
   @Input() moduleSource: string = "";
   disablebtnBool: boolean = false;
   disableAssignTo: boolean = true;

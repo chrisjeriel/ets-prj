@@ -83,12 +83,11 @@
 
 	.spanBadge {
 		float: left;
-	    width: 26px;
-	    border: .67px solid gray;
-	    border-radius: 1px 12px 12px 1px;
-	    margin-top: 3px;
-	    font-size: 12px;
+	    margin-top: 0px;
+	    font-size: 30px;
 	    margin-left: -19px;
+	    -webkit-text-stroke-width: 1px;
+    	-webkit-text-stroke-color: black;
 	}
 
 </style>
@@ -121,9 +120,9 @@
 						
 						<div>
 
-							<span *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="spanBadge" style="background-color: #ffff00ad;">&nbsp;</span>
-							<span *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="spanBadge" style="background-color: #ffa500ad;">&nbsp;</span>
-							<span *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="spanBadge" style="background-color: #ff0000ad;">&nbsp;</span>
+							<i *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="fa fa-bookmark spanBadge" style="color: #ffff00;"></i>
+							<i *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="fa fa-bookmark spanBadge" style="color: #ffa500;"></i>
+							<i *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="fa fa-bookmark spanBadge" style="color: #ff0000;"></i>
 							<span style="float: left;"><a class="note-title" href="#">&nbsp;{{ notes.title }}</a></span>
 						</div>
 						<br/>
@@ -195,6 +194,7 @@
 					    <div *ngIf="notes.module != ''">
 					    	<p *ngIf="notes.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ notes.module }}</b> - <a href="#" (click)="redirectToQuoteGenInfo('detail', notes);">{{ notes.details }}</a></p>
 					    	<p *ngIf="notes.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ notes.module }}</b> - <a href="#" (click)="redirectToPolGenInfo('detail', notes.details);">{{ notes.details }}</a></p>
+					    	<p *ngIf="notes.module == 'Claim'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ notes.module }}</b> - <a href="#" (click)="redirectToclaimGenInfo('detail', notes);">{{ notes.details }}</a></p>
 					    </div>
 
 					    <div  *ngIf="noteBool && notes.createUser != null">
@@ -220,7 +220,7 @@
 			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != notes.details" (click)="redirectToPolGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</span></button>
 			                                	<br *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != notes.details" />
 
-			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != notes.details" [routerLink]="['users-maintenance']" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</span></button>
+			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != notes.details" (click)="redirectToclaimGenInfo('related', relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-level-up" style="transform: rotate(90deg);"></i><span style="font-weight: 600;">&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</span></button>
 			                                	<br *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != notes.details" />
 			                            	</div>
 			                            </ng-template>
