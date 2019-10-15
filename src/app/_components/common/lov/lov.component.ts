@@ -1189,6 +1189,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = rec;
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'acseChartAcct'){
+      this.passTable.tHeader = ['Account Code','Account Name'];
+      this.passTable.widths =[250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortCode','shortDesc'];
+      this.passData.params.activeTag = 'Y';
+      this.mtnService.getMtnAcseChartAcct(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
+        this.table.refreshTable();
+        console.log(this.passTable.tableData);
+      })
     }
 
 
