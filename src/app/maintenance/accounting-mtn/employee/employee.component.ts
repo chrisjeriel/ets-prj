@@ -69,6 +69,11 @@ export class EmployeeComponent implements OnInit {
   inquiryFlag:boolean;
   indexRow:any;
 
+  allRecords:any = {
+    tableData:[],
+    keys:['employeeNo','lastName','firstName','middleName','genderDesc','hireDate','terminationDate','department','designation','birthDate','civilStatusDesc','supervisorName','presentAdd','permanentAdd','email','tin','sssNo','philhealthNo','pagibigNo','contactNos','contactPerson','emergencyNo']
+  }
+
   passTable:any={
   	tableData:[],
   	widths:[1,1,150,150,150,80,1,1,150],
@@ -374,9 +379,92 @@ export class EmployeeComponent implements OnInit {
      this.passTable.tableData[this.indexRow].emergencyNo = this.oldRecord.emergencyNo;
   }
 
-   printPreview(data){
+  print(){
+    this.printModal.open();
+  }
 
-   }
+  printPreview(data){
+    this.allRecords.tableData = [];
+     if(data[0].basedOn === 'curr'){
+        this.getRecords(this.company.companyId);
+     } else if (data[0].basedOn === 'all') {
+        this.getRecords(null);
+     }
+  }
+
+   getRecords(companyId?){
+     this.ms.getMtnEmployee(companyId).pipe(
+           finalize(() => this.finalGetRecords() )
+           ).subscribe(a=>{
+        this.allRecords.tableData = a['employeeList'];
+        
+        this.allRecords.tableData.forEach(a=>{
+          if (a.hireDate === null){
+            a.hireDate = '';
+          }else {
+            a.hireDate = this.ns.toDateTimeString(a.openDate);
+          };
+
+          if (a.terminationDate === null){
+            a.terminationDate = '';
+          }else {
+            a.terminationDate = this.ns.toDateTimeString(a.closeDate);
+          };
+
+          if (a.birthDate === null){
+            a.birthDate = '';
+          }else {
+            a.birthDate = this.ns.toDateTimeString(a.closeDate);
+          };
+        });
+     });
+  }
+
+  finalGetRecords(selection?){
+    this.export(this.allRecords.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'Employee'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+     alasql.fn.datetime = function(dateStr) {
+        for(var prop in dateStr) {
+           if (dateStr.hasOwnProperty(prop)) {
+              var newdate = new Date(dateStr);
+              return newdate.toLocaleString();
+           } else {
+              var date = "";
+              return date;
+           }
+        } 
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+
+
+    alasql('SELECT employeeNo AS [Employee No],lastName AS [Last Name],firstName AS [First Name],middleName AS [Middle Name],genderDesc AS [Gender],datetime(hireDate) AS [Hire Date], datetime(terminationDate) AS [Termination Date], nvl(arBankName) AS [AR Bank Name], nvl(department) AS [Department], nvl(designation) AS [Designation], nvl(supervisorName) AS [Supervisor Name],datetime(birthDate) AS [Birth Date],civilStatusDesc AS [Civil Status], nvl(presentAdd) AS [Present Address], nvl(permanentAdd) AS [Permanent Address], nvl(tin) AS [Tin No.], nvl(sssNo) AS [SSS No.], nvl(philhealthNo) AS [PhilHealth No.], nvl(pagibigNo) AS [Pagibig No.], nvl(email) AS [Email Address], nvl(contactNos) AS [Contact No.] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+
+  }
+
 
   
 

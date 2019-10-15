@@ -463,6 +463,7 @@ import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.component';
 import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.component';
+import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
 
 @NgModule({
     imports: [
@@ -931,6 +932,7 @@ import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.co
         EmployeeComponent,
         MtnCompanyComponent,
         MtnEmployeeComponent,
+        GenTaxesComponent,
     ],
 
   	providers: [

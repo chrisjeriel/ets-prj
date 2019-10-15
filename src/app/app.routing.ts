@@ -179,7 +179,7 @@ import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
-
+import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
 
 
 const appRoutes: Routes = [
@@ -371,6 +371,7 @@ const appRoutes: Routes = [
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
