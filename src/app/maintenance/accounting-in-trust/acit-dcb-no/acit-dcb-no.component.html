@@ -1,27 +1,41 @@
 <div class="cust-tabs-container">
-	<h4>Maintenance / Accounting Service / Withholding Tax</h4>
+	<h4>Maintenance / Accounting In-Trust / DCB No.</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Withholding Tax Maintenance">
+		<ngb-tab class="ngb-tab" title="Daily Collection Batch Number Maintenance">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-12" style="margin-top: 20px">
 						<fieldset class="scheduler-border">
 							<div class="row" style="margin-top: 15px">
 								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="col-sm-4"></div>
+										<label class="form-control-sm col-sm-1 text-right labels">DCB Status</label>
+										<select class="form-control form-control-sm cust-sm col-sm-3">
+											<option value="">All</option>
+											<option value="O">Open</option>
+											<option value="T">Temporarily Closed</option>
+											<option value="C">Closed</option>
+										</select>
+										<div class="col-sm-4"></div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
 									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 								</div>
-								<div class="form-control-sm col-sm-1"></div>
-								<label class="form-control-sm col-sm-1">Remarks</label>
-								<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true">
 							</div>
 							<div class="form-row" style="margin-top: 13px !important;">
 							    <div class="form-group col-sm">
 							        <div class="col-md-12 text-center">
 							            <div class="cust-btn-container">
-							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>Cancel</a></button>
-							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickSave()"><a>Save</a></button>
-							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>History</a></button>
-							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>Print</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>Save</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>DCB User Maintenance</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>Print</a></button>
 							            </div>
 							        </div>
 							    </div>

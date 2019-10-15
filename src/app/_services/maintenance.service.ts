@@ -1544,4 +1544,13 @@ export class MaintenanceService{
     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseWHTax", {params});
     }
+
+    saveWhTax(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnWhTax', JSON.stringify(params), header);
+    }
 }
