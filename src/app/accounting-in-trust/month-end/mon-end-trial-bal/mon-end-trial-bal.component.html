@@ -10,7 +10,7 @@
         		
         			<div class="input-group mt-1">
 				        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right">Transaction Date</label>
-                <div class="dp-cont col-sm-5">
+                <div class="dp-cont col-sm-4">
                   <datepicker [type]="'date'" [(value)]="tranDate"></datepicker>
                 </div>
 				    </div>
@@ -38,7 +38,7 @@
     		      <div class="cust-btn-container">
     		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="tranDate == null || tranDate == ''"><a>Generate</a></button>
                 <button type="button" class="cust-btn" (click)="onClickPrint()"><a>Print</a></button>
-                <button type="button" class="cust-btn"><a>Post</a></button>
+                <button type="button" class="cust-btn" (click)="onClickPost()"><a>Post to Fiscal Year</a></button>
     		      </div>
     		    </div>
         	</fieldset>
@@ -63,8 +63,8 @@
         </div>
     </div>
     <div footer class="w-100 text-right" [class.text-center]="returnCode == -1 || returnCode == 2">
-        <button *ngIf="returnCode == 1" class="cust-btn" type="button" (click)="onClickGenerate(true); eomTbMdl.closeModal(); showPrintDialog = true;"><a>Yes</a></button>
-        <button class="cust-btn" type="button" (click)="eomTbMdl.closeModal()"><a>{{ returnCode == 1 ? 'No' : 'Ok' }}</a></button>
+        <button *ngIf="returnCode == 1" class="cust-btn" type="button" (click)="onClickGenerate(true); eomTbMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="eomTbMdl.closeModal();"><a>{{ returnCode == 1 ? 'No' : 'Ok' }}</a></button>
     </div>
 </app-modal>
 
@@ -80,17 +80,48 @@
       </div>
     </div>
   </div>
-  <div footer>
-      <div class="d-flex justify-content-center text-center">
-        <div class="col-sm-12 text-center">
-          <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>Cancel</a></button>
-          <button class="cust-btn" type="button" [disabled]="printMethod.length == 0" [class.cust-btn-disabled]="printMethod.length == 0" (click)="printMdl.closeModal();"><a>Ok</a></button>
-        </div>
-      </div>
-    </div>
+  <div footer class="w-100 text-center">
+    <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" [disabled]="printMethod.length == 0" [class.cust-btn-disabled]="printMethod.length == 0" (click)="printMdl.closeModal(); export();"><a>Ok</a></button>
+  </div>
 </app-modal>
 
-<app-sucess-dialog #eomTbDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="showPrintDialog ? onClickPrint() : null"></app-sucess-dialog>
+<app-modal #postMdl class="d-none">
+  <div header>Post GL to Fiscal Year</div>
+  <div body>
+    <div class="text-center">
+      <div class="input-group">
+        <p class="form-control-sm col-sm-12" style="margin-bottom: 5px;">Are you sure you want to post to Fiscal Year the close GLs for this month?</p>
+      </div>
+      <div class="input-group">
+        <label class="form-control-sm col-sm-3" style="margin: 0px !important">Year</label>
+        <input type="text" class="form-control form-control-sm col-sm-3 text-right" mask="0000" [(ngModel)]="eomYear">
+        <label class="form-control-sm col-sm-2" style="margin: 0px !important">Month</label>
+        <input type="text" class="form-control form-control-sm col-sm-3 text-right" mask="00" [(ngModel)]="eomMm">
+        <div style="margin-left: 6px !important; z-index: 200; font-size: 14px;"><a (click)="showLov()"><i class="fa fa-search"></i></a></div>
+        <div class="col-sm-2"></div>
+      </div>
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <button class="cust-btn" type="button" (click)="postMdl.closeModal();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="post();"><a>Post</a></button>
+  </div>
+</app-modal>
+
+<app-modal #lovMdl class="d-none">
+  <div header>List of Values</div>
+  <div body>
+    <app-cust-non-datatable [passData]="unpostedMonthsData" (rowClick)="selected=$event"></app-cust-non-datatable>
+  </div>
+  <div footer class="w-100 text-center">
+    <button class="cust-btn" type="button" (click)="lovMdl.closeModal();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="lovMdl.closeModal(); setSelected();"><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-sucess-dialog #eomTbDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="returnCode == -1 ? getAcitMonthEndTrialBal(tranDate) : null"></app-sucess-dialog>
+<app-sucess-dialog #eomTbDialog2 [icon]="dialogIcon2" [message]="dialogMessage2" (onOk)="postReturnCode == -1 ? getAcitMonthEndUnpostedMonths() : null"></app-sucess-dialog>
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999;display: none">
 <div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);display: none">
 </div>
