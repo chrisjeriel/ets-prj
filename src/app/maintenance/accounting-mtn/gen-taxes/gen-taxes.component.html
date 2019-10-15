@@ -18,7 +18,7 @@
 	                <div class="w-100 text-center my-2" style="margin-top: 0px !important">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
                     	<button class="cust-btn" (click)="onClickSave()">Save</button>
-                        <button class="cust-btn" (click)="onClickSave()" [disabled]="boolRange">Range</button>
+                        <button class="cust-btn" (click)="onClickRange()" [disabled]="boolRange">Range</button>
                         <button class="cust-btn" (click)="onClickSave()">History</button>
                         <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
                     </div>
@@ -47,3 +47,25 @@
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
 <app-mtn-bank-acct id="bankAcctLOV" (selectedData)="selectedBankAcctLOV($event)"></app-mtn-bank-acct>
+
+<app-modal class="d-none" id="taxRange" #mdl>
+    <div header>Tax Range</div>
+    <div body style="width: 700px ! important">
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Tax</label>
+                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.taxCd" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm-7 ml-2" [ngModel]="info?.taxName" readonly>
+                   </div>
+                   <div class="input-group" style="margin-top: 1px !important;">
+                            <div class="col-sm" id="mtn-gentax-range" style="padding: 0">
+                              <app-cust-editable-non-datatable #gentaxrange [passData]="passTableRange" (genericBtn)="deleteRange()" (onDelete)="tableRange.onClickDelete('force');" (newClick)="onTableRangeClick($event)" ></app-cust-editable-non-datatable>
+                            </div>
+                   </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelRange();"><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="modal.closeModal();saveRange();"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>

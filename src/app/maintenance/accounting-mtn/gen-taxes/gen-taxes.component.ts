@@ -8,6 +8,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+
 
 @Component({
   selector: 'app-gen-taxes',
@@ -17,11 +19,13 @@ import { finalize } from 'rxjs/operators';
 export class GenTaxesComponent implements OnInit {
 
   @ViewChild('gentax') table: CustEditableNonDatatableComponent;
+  @ViewChild('gentaxrange') tableRange: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
+   @ViewChild('mdl') modal : ModalComponent;
 
   dialogIcon:string = '';
   dialogMessage: string = '';
@@ -30,6 +34,28 @@ export class GenTaxesComponent implements OnInit {
   boolRange: boolean = true;
   boolPrint: boolean = false;
   lovRow: any ;
+
+  passTableRange: any={
+  	tableData:[],
+  	widths:[1,1,1,1],
+  	tHeader:['Maximum Value','Minimum Value','Tax Rate','Tax Amount'],
+  	dataTypes:['currency','currency','percent','currency'],
+  	keys:['maxVal','minVal','taxRate','taxAmt'],
+  	addFlag: true,
+  	genericBtn:'Delete',
+  	paginateFlag:true, 
+  	pageLength: 10,
+  	infoFlag:true,
+  	searchFlag:false,
+  	pageID : 'genTaxRange',
+  	nData:{
+  		maxVal : null,
+  		minVal : null,
+  		taxRate : null,
+  		taxAmt : null },
+	disableSort : true,
+	disableGeneric: true
+  }
 
   passTable:any={
   	tableData:[],
@@ -148,14 +174,17 @@ export class GenTaxesComponent implements OnInit {
   	 for(var i= 0; i< this.passTable.tableData.length; i++){
   	 	 if(this.passTable.tableData[i].edited || this.passTable.tableData[i].add){
   	 	   if (data.key === 'chargeType'){
-              if(this.passTable.tableData[i].chargeType === 'R')
+
+               if(this.passTable.tableData[i].chargeType === 'R')
                   this.passTable.tableData[i].amount = null;
                   this.boolRange = true;
                }
+
                if (this.passTable.tableData[i].chargeType === 'A'){
                	  this.passTable.tableData[i].taxRate = null;
                   this.boolRange = true;
                }
+               
                if (this.passTable.tableData[i].chargeType === 'G'){
                	  this.boolRange = false;
                	  this.passTable.tableData[i].amount = null;
@@ -164,7 +193,26 @@ export class GenTaxesComponent implements OnInit {
            }
 	  	 }
   	 }
+
+ onClickRange(){
+ 	 this.modal.openNoClose();
+ }
+
+ deleteRange(){
+  	this.tableRange.selected  = [this.tableRange.indvSelect]
+  	this.tableRange.confirmDelete();
+  	
+ }
+
+ onTableRangeClick(data){
+ 	if (data === null){
+  	  this.passTableRange.disableGeneric = true;
+  	} else {
+  	  this.passTableRange.disableGeneric = false;
+  	}
+ }
   
+
 
 
 }
