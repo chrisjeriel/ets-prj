@@ -200,6 +200,7 @@ export class JvEntryComponent implements OnInit {
           this.approvedStat = true;
           this.disableBut   = true;
           this.approveBut   = true;
+          this.cancelJVBut = true;
         }
 
         this.check(this.entryData)

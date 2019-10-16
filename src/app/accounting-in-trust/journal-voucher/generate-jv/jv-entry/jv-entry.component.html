@@ -121,7 +121,7 @@
                             </div>
 ======= -->
                             <div class="col-sm-9" style="padding: 0px">
-                                <datepicker [showSeconds]="true" [required]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')"></datepicker>
+                                <datepicker [showSeconds]="true" [required]="true" [disabled]="approvedStat" [(value)]="entryData.preparedDate"></datepicker>
                             </div>
 
                             <!-- <div class="col-sm-5 dp-cont">
@@ -221,7 +221,7 @@
 </app-modal>
 
 <app-modal class="d-none" id="cancelAcct" #CancelEntries>
-    <div header>Confirmartion</div>  
+    <div header>Confirmation</div>  
     <div body>
         <div class="form-row custom-row-inline-inset">
             <span class="col-sm-2"></span>
