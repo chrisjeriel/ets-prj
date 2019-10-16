@@ -215,7 +215,7 @@ export class RegionComponent implements OnInit {
     this.mtnRegionReq.saveRegion.forEach(a=>a.updateUser = this.ns.getCurrentUser()); 
     this.mtnRegionReq.saveRegion.forEach(a=>a.updateDate = this.ns.toDateTimeString(0));
     this.mtnRegionReq.saveRegion.forEach(a=>a.activeTag = this.cbFunc2(a.activeTag));
-    this.mtnRegionReq.saveRegion.forEach(a=>a.regionCd = this.regionCd);
+    // this.mtnRegionReq.saveRegion.forEach(a=>a.regionCd = this.regionCd);
     this.mtnRegionReq.deleteRegion = this.deletedData; 
 
 
