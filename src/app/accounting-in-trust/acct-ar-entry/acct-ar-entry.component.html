@@ -10,10 +10,10 @@
 				<input id="arNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="arInfo.arNo" (change)="arInfo.arNo = pad($event.target.value, 'arNo')" (blur)="arInfo.arNo=pad(arInfo.arNo, 'arNo')" [readonly]="isCancelled || isPrinted" name="arNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">A.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date); retrieveCurrency();" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'" [textAlign]="'center'"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="arDate.date" (valueChange)="arDate.date = $event; retrieveMtnAcitDCBNo(arDate.date.split('-')[0], arDate.date); retrieveCurrency();" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="arDate.time" (valueChange)="arDate.time = $event" [disabled]="arInfo.arStatDesc?.toUpperCase() !== 'NEW' || arInfo.dcbStatus == 'T' || arInfo.dcbStatus == 'C'" [textAlign]="'center'"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="arInfo.arStatDesc" readonly name="arStat">
@@ -47,7 +47,7 @@
 					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;prDate.time = prDate.time == null || prDate.time == '' ? '08:00' : prDate.time;" [disabled]="isCancelled || isPrinted"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted" [textAlign]="'center'"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="arInfo.prPreparedBy" [readonly]="isCancelled || isPrinted" name="preparedBy">
