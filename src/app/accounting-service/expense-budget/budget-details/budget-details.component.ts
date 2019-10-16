@@ -57,31 +57,11 @@ export class BudgetDetailsComponent implements OnInit {
     total            : [null,null,null,'TOTAL','totalBudget'],
     keys             : ['glShortCd','glShortDesc','slTypeName','slName','totalBudget'],
     filters: [
-            {
-                key: 'accCode',
-                title: 'Account Code',
-                dataType: 'text'
-            },
-            {
-                key: 'accName',
-                title: 'Account Name',
-                dataType: 'text'
-            },
-            {
-                key: 'slType',
-                title: 'SL Type',
-                dataType: 'text'
-            },
-            {
-                key: 'slName',
-                title: 'SL Name',
-                dataType: 'text'
-            },
-            {
-                key: 'amount',
-                title: 'Amount',
-                dataType: 'text'
-            },
+            {key: 'accCode',title: 'Account Code',dataType: 'text'},
+            {key: 'accName',title: 'Account Name',dataType: 'text'},
+            {key: 'slType', title: 'SL Type',dataType: 'text'},
+            {key: 'slName', title: 'SL Name',dataType: 'text'},
+            {key: 'amount', title: 'Amount',dataType: 'text'},
         ],
   };
 
