@@ -11,7 +11,7 @@
         			<div class="col-sm-4 d-flex">
 				        <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">Production Date</label>
                 <div class="dp-cont col-sm-6">
-                  <datepicker [type]="'date'" [(value)]="eomDate"></datepicker>
+                  <datepicker [type]="'date'" [(value)]="eomDate" [disabled]="processing"></datepicker>
                 </div>
 				    </div>
         		</div>
@@ -19,11 +19,16 @@
         			<label class="col-sm-2"></label>
         			<textarea #txtArea class="form-control form-control-sm col-sm-8" style="font-size: 11px; min-height: 300px; margin-bottom: 17px !important;" [(ngModel)]="extLog" readonly tabindex="-1">Report Summary</textarea>
         		</div>
-    			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">
-    		      <div class="cust-btn-container">
-    		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''" style="width: 100%;"><a>Generate</a></button>
-    		        <button type="button" class="cust-btn" style="width: 100%;"><a>Data Check Report</a></button>
-    		      </div>
+    			<div class="form-group col-sm text-center" style="height: 2em; margin-bottom: 5px;">
+              <ng-container *ngIf="processing">
+                <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Processing</span>    
+              </ng-container>
+              <ng-container *ngIf="!processing">
+      		      <div class="cust-btn-container">
+      		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''" style="width: 100%;"><a>Generate</a></button>
+      		        <button type="button" class="cust-btn" style="width: 100%;"><a>Data Check Report</a></button>
+      		      </div>
+              </ng-container>
     		    </div>
         	</fieldset>
         </div>
@@ -40,11 +45,9 @@
 <app-modal #eomProdMdl class="d-none">
     <div header>Confirmation</div>
     <div body>
-      <!-- <fieldset class="scheduler-border" style="padding-top: 5px !important;"> -->
-        <div class="custom-row-inline-inset" style="text-align: center">
-          <p>{{ eomMessage }}</p>
-        </div>
-      <!-- </fieldset> -->
+      <div class="custom-row-inline-inset" style="text-align: center">
+        <p>{{ eomMessage }}</p>
+      </div>
     </div>
     <div footer class="w-100 text-right" [class.text-center]="returnCode == 2">
         <button *ngIf="returnCode !== 2" class="cust-btn" type="button" (click)="onClickGenerate(true); eomProdMdl.closeModal();"><a>Yes</a></button>

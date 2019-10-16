@@ -20,6 +20,7 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
   dialogMsg: string = '';
   dialogIcon: string = '';
   eomMessage: string = '';
+  processing: boolean = false;
   returnCode: number = null;
   extLog: string = '';
   webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
@@ -68,6 +69,7 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
   }
 
   onClickBookOS(force?) {
+    this.processing = true;
     this.extLog = '';
 
     var param = {
@@ -77,6 +79,7 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
     }
 
     this.as.saveAcitMonthEndBatchOS(param).subscribe(data => {
+      this.processing = false;
       this.returnCode = data['returnCode'];
       if(this.returnCode == 1 || this.returnCode == 2) {
         this.eomMessage = data['eomMessage'];
