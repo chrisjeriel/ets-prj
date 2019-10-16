@@ -337,6 +337,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
+    this.ns.clearFormGroup();
     this.sub.unsubscribe();
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
@@ -756,6 +757,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.form.control.markAsPristine();
+          this.ns.formGroup.markAsPristine();
         }
       }
     );
