@@ -1,6 +1,6 @@
 <div class="cust-tabs-container">
 	<h4>Maintenance / Accounting Service / Withholding Tax</h4>
-	<ngb-tabset (tabChange)="onTabChange($event)">
+	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Withholding Tax Maintenance">
 			<ng-template ngbTabContent>
 				<div class="row">
@@ -18,7 +18,7 @@
 							    <div class="form-group col-sm">
 							        <div class="col-md-12 text-center">
 							            <div class="cust-btn-container">
-							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickCancel()"><a>Cancel</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickSave()"><a>Save</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>History</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>Print</a></button>

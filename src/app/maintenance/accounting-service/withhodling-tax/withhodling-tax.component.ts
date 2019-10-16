@@ -131,6 +131,7 @@ export class WithhodlingTaxComponent implements OnInit {
   }
 
   saveMtnWhTax(cancel?){
+    this.cancelFlag = cancel !== undefined;
     this.prepareData();
     console.log(this.params)
     this.maintenanceService.saveWhTax(this.params).subscribe((data:any) => {
@@ -145,5 +146,9 @@ export class WithhodlingTaxComponent implements OnInit {
         this.retrieveWhtax();
       }
     });
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }
