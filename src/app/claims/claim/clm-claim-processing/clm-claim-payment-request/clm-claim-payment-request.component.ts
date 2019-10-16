@@ -129,15 +129,15 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     switch (this.selected.histCategory) {
       case "A":
         // params.reqPrefix = 'CEP';
-        params.tranTypeCd = 1
+        params.tranTypeCd = 2
         break;
       case "O":
         // params.reqPrefix = 'CEO';
-        params.tranTypeCd = 2
+        params.tranTypeCd = 3
         break;
       case "L":
         // params.reqPrefix = 'CPC';
-        params.tranTypeCd = 3
+        params.tranTypeCd = 1
         break;  
       default:
         break;
