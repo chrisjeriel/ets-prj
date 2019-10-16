@@ -21,7 +21,7 @@ export class MtnTreatyComponent implements OnInit {
 	    pagination: true,
 	    fixedCol: false,
 	    pageID: 'mtnTreatyLOV',
-	    keys:['treatyId','treatyName']
+	    keys:['treatyId','treatyName'],
 	};
 
 	@Output() selectedData: EventEmitter<any> = new EventEmitter();
@@ -68,7 +68,7 @@ export class MtnTreatyComponent implements OnInit {
 
 	openModal() {
     	this.treatyListing.tableData = [];
-
+    	this.table.overlayLoader = true;
     	this.maintenanceService.getMtnTreaty('').subscribe(data => {
     		this.treatyListing.tableData = data['treatyList'].filter(a => !this.hide.includes(a.treatyId) && a.activeTag == 'Y');
     		this.table.refreshTable();

@@ -13,6 +13,7 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-claim-cash-call',
@@ -76,6 +77,7 @@ export class ClaimCashCallComponent implements OnInit {
   	dialogIcon:string = '';
  	  dialogMessage: string = '';
  	  disableCopySetup: boolean = true;
+    hasChanges: boolean = false;
 
     oldRecord    : any = {
       treatyCd        : null,
@@ -102,11 +104,13 @@ export class ClaimCashCallComponent implements OnInit {
    copytreatyCompCd: any = '';
    copytreatyComp: any = '';
    errorMsg: number = 0;
+   url: string = null;
 
   constructor(	private ns: NotesService, 
   				private ms: MaintenanceService, 
   				public modalService: NgbModal, 
-  				private titleService: Title) { }
+  				private titleService: Title,
+          private router: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Mtn | Claim Cash Call");
@@ -118,7 +122,7 @@ export class ClaimCashCallComponent implements OnInit {
   }
 
   getMtnCurrencyList(){
-  	this.ms.getMtnCurrencyList('').subscribe(data => {
+  	this.ms.getMtnCurrency('', 'Y', null).subscribe(data => {
       this.currencyList = data['currency'];
   	});
   }
@@ -156,6 +160,17 @@ export class ClaimCashCallComponent implements OnInit {
   	this.treatyCd = data.treatyId;
   	this.treaty = data.treatyName;
     this.ns.lovLoader(data.ev, 0);
+
+    this.checkTableReload();
+  }
+
+  checkTableReload() {
+    if(this.treatyCd != '' && this.treatyCompCd != '' && this.currencyCd != '') {
+      this.getMtnClmCashCall();
+      setTimeout(() => {
+        this.table.markAsPristine();
+      }, 100);
+    }
   }
 
   showTreatyCompLOV(ev){
@@ -166,34 +181,40 @@ export class ClaimCashCallComponent implements OnInit {
   	this.treatyCompCd = data.cedingId;
   	this.treatyComp = data.cedingName;
     this.ns.lovLoader(data.ev, 0);
+
+    this.checkTableReload();
   }
 
    checkCode(ev, field){
         $('#treatyCode').removeClass('ng-dirty');
         $('#treatyCompCode').removeClass('ng-dirty');
+        $('#c-list').removeClass('ng-dirty'); //Added to handle <select> from triggering ConfirmLeaveComponent
         ev.preventDefault();
-          if($('.ng-dirty').length != 0 ){
-          const subject = new Subject<boolean>();
-          const modal = this.modalService.open(ConfirmLeaveComponent,{
-              centered: true, 
-              backdrop: 'static', 
-              windowClass : 'modal-size'
-          });
-              modal.componentInstance.subject = subject;
 
-              subject.subscribe(a=>{
-                 if(a){
-                  this.showList(ev,field);
-                 } 
-                 else {
-                  this.treatyCd = this.oldRecord.treatyCd; 
-                  this.treatyCompCd = this.oldRecord.treatyCompCd; 
-                  this.currencyCd = this.oldRecord.currencyCd; 
-                 }
-              })
-          } else {
-               this.showList(ev,field);
-          }
+        if($('.ng-dirty').length != 0 ){
+            const subject = new Subject<boolean>();
+            const modal = this.modalService.open(ConfirmLeaveComponent,{
+                centered: true, 
+                backdrop: 'static', 
+                windowClass : 'modal-size'
+            });
+            modal.componentInstance.subject = subject;
+
+            console.log("May madumi daw.");
+
+            subject.subscribe(a=>{
+               if(a){
+                this.showList(ev,field);
+               } 
+               else {
+                this.treatyCd = this.oldRecord.treatyCd; 
+                this.treatyCompCd = this.oldRecord.treatyCompCd; 
+                this.currencyCd = this.oldRecord.currencyCd; 
+               }
+            })
+        } else {
+             this.showList(ev,field);
+        }
   }
 
    showList(ev,obj){
@@ -202,39 +223,34 @@ export class ClaimCashCallComponent implements OnInit {
             if (this.treatyCd == null || this.treatyCd == '') {
                 this.treatyCd= '';
                 this.treaty= '';
-                this.currencyCd = '';
+                //this.currencyCd = '';
                 this.clear();
             } else {
                 this.treaty= '';
-                this.currencyCd = '';
+                //this.currencyCd = '';
                 this.clear();
                 this.ns.lovLoader(ev, 1);
                 this.treatyLOV.checkCode(this.treatyCd,ev);
             }
-        } else if(obj === 'treatyComp'){
+      } else if(obj === 'treatyComp'){
             this.oldRecord.treatyCompCd = this.treatyCompCd;
             if (this.treatyCompCd == null || this.treatyCompCd == '') {
                 this.treatyCompCd = '';
                 this.treatyComp = '';
-                this.currencyCd = '';
+                //this.currencyCd = '';
                 this.clear();
             } else {
                 this.treatyComp = '';
-                this.currencyCd = '';
+                //this.currencyCd = '';
                 this.clear();
                 this.ns.lovLoader(ev, 1);
                 this.cedingCoLOV.checkCode(this.treatyCompCd,ev);
             }
-        } else if(obj == 'currency'){
+      } else if(obj == 'currency'){
+            
+      }
 
-           if(this.treatyCd != '' && this.treatyCompCd != '' && this.currencyCd != '') {
-              this.getMtnClmCashCall();
-           } 
-           
-           setTimeout(() => {
-              this.table.markAsPristine();
-          }, 0);
-        }
+      this.checkTableReload();
     } 
 
     clear(){
@@ -252,7 +268,6 @@ export class ClaimCashCallComponent implements OnInit {
     this.oldRecord.treatyCompCd = this.treatyCompCd;
     this.oldRecord.currencyCd = this.currencyCd;
     this.ms.getMtnClmCashCall(this.treatyCd, this.treatyCompCd, this.currencyCd).subscribe(data => {
-       console.log(data);
       this.passData.tableData = data['cashCallList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
                                  .map(i => {
                                     i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
@@ -301,21 +316,45 @@ export class ClaimCashCallComponent implements OnInit {
    return true;
 }
 
+ verifyChanges() {
+    this.hasChanges = false;
+      for(let check of this.passData.tableData){
+        if (check.edited == true) {
+            this.hasChanges = true;
+            break;
+      }
+    }
+ }
+
+ onClickCancel() {
+   $('#c-list').removeClass('ng-dirty');
+   this.cancelBtn.clickCancel();
+ }
+
  onClickSave(){
-     if(this.checkFields()){
-         if(this.checkEffFields()){
-           this.confirmSave.confirmModal();
-         } else {
-           this.modalService.dismissAll();
-           this.errorMsg = 1;
-           $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
-         }
-         
-     } else {
-        this.dialogMessage="Please check field values.";
-        this.dialogIcon = "error";
-        this.successDialog.open();
-     }
+    
+    this.verifyChanges();
+
+    if (this.hasChanges) {
+      if(this.checkFields()){
+          if(this.checkEffFields()){
+            this.confirmSave.confirmModal();
+          } else {
+            this.modalService.dismissAll();
+            this.errorMsg = 1;
+            $('#mtnClmCashCallWarningModal > #modalBtn').trigger('click');
+          }
+           
+      } else {
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          this.successDialog.open();
+      }
+    } else {
+      this.dialogIcon = "info";
+      this.dialogMessage = "Nothing to save.";
+      this.successDialog.open();
+    }
  }
 
  cbFunc2(cb){
@@ -345,6 +384,14 @@ export class ClaimCashCallComponent implements OnInit {
 
  }
 
+ onClickCancelNo() {
+   this.url = '/maintenance-clm';
+   setTimeout(() => {
+      this.router.navigate([this.url]);
+   }, 10);
+   
+ }
+
  saveDataClmCashCall(){
      this.mtnClmCashCallReq.saveCashCall = [];
      this.mtnClmCashCallReq.delCashCall = [];
@@ -369,14 +416,16 @@ export class ClaimCashCallComponent implements OnInit {
     console.log(JSON.stringify(obj));
     this.ms.saveMtnClmCashCall(JSON.stringify(obj))
                 .subscribe(data => {
-                  console.log(data);
               if(data['returnCode'] == -1){
                   this.dialogIcon = "success";
                   this.successDialog.open();
+                  this.treatyTable.markAsPristine();
+                  this.url = '/maintenance-clm';
                   this.getMtnClmCashCall();
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();
+                  this.url = null;
                   this.getMtnClmCashCall();
               }
     });
