@@ -12,6 +12,7 @@ import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-budget-details',
@@ -24,6 +25,7 @@ export class BudgetDetailsComponent implements OnInit {
   @ViewChild('can') can                 : CancelButtonComponent;
   @ViewChild('con') con                 : ConfirmSaveComponent;
   @ViewChild('suc') suc                 : SucessDialogComponent;
+  @ViewChild('myForm') form             : NgForm;
 
   budgetYrData: any = {
     tableData        : [],
@@ -103,6 +105,7 @@ export class BudgetDetailsComponent implements OnInit {
   };
 
   budgetYear     : string = '';
+  budgetYearArr  : any[] = [];
   cancelFlag     : boolean;
   dialogIcon     : string;
   dialogMessage  : string;
@@ -113,14 +116,13 @@ export class BudgetDetailsComponent implements OnInit {
               public modalService: NgbModal, private router : Router) { }
 
   ngOnInit() {
-  	//this.getAcseBudgetExpense();
+    this.yearsRange();
   }
 
   getAcseBudgetExpense(){
     this.budgetYrTbl.overlayLoader = true;
     this.acctService.getAcseBudgetExpense(this.budgetYear)
     .subscribe(data => {
-      console.log(data);
       this.budgetYrTbl.overlayLoader = false;
       this.budgetYrData.tableData = data['acseBudgetExpenseList'].map(e => {
         e.updateDate = this.ns.toDateTimeString(e.updateDate);
@@ -145,18 +147,20 @@ export class BudgetDetailsComponent implements OnInit {
         }else{
           this.params.deleteBudgetExpense.push(e);
         }
-      }else if(e.edited && !e.deleted){
+      }else { 
         e.fromCancel = true;
-        this.params.saveBudgetExpense = this.params.saveBudgetExpense.filter(i => i.glAcctId != e.glAcctId);
-        e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
-        e.createDate    = this.ns.toDateTimeString(e.createDate);
-        e.updateUser    = this.ns.getCurrentUser();
-        e.updateDate    = this.ns.toDateTimeString(0);
-        e.budgetYear    = this.budgetYear;
-        e.totalExpense  = 0;
-        this.params.saveBudgetExpense.push(e);
-      }else if(e.edited && e.deleted){ 
-        this.params.deleteBudgetExpense.push(e);  
+        if(e.edited && !e.deleted){
+          this.params.saveBudgetExpense = this.params.saveBudgetExpense.filter(i => i.glAcctId != e.glAcctId);
+          e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
+          e.createDate    = this.ns.toDateTimeString(e.createDate);
+          e.updateUser    = this.ns.getCurrentUser();
+          e.updateDate    = this.ns.toDateTimeString(0);
+          e.budgetYear    = this.budgetYear;
+          e.totalExpense  = 0;
+          this.params.saveBudgetExpense.push(e);
+        }else if(e.edited && e.deleted){ 
+          this.params.deleteBudgetExpense.push(e);  
+        }
       }
     });
 
@@ -167,21 +171,20 @@ export class BudgetDetailsComponent implements OnInit {
       this.suc.open();
       this.params.saveBudgetExpense = [];
     }else{
-    console.log('1');
-        if(this.params.saveBudgetExpense.length == 0 && this.params.deleteBudgetExpense.length == 0){
-            this.budgetYrTbl.markAsPristine();
-            this.con.confirmModal();
-            this.params.saveBudgetExpense   = [];
-            this.params.deleteBudgetExpense = [];
-            this.budgetYrData.tableData = this.budgetYrData.tableData.filter(e => e.glAcctId != '');
+      if(this.params.saveBudgetExpense.length == 0 && this.params.deleteBudgetExpense.length == 0){
+        this.budgetYrTbl.markAsPristine();
+        this.con.confirmModal();
+        this.params.saveBudgetExpense   = [];
+        this.params.deleteBudgetExpense = [];
+        this.budgetYrData.tableData = this.budgetYrData.tableData.filter(e => e.glAcctId != '');
+      }else{
+        if(this.cancelFlag == true){
+          this.con.showLoading(true);
+          setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
         }else{
-          if(this.cancelFlag == true){
-            this.con.showLoading(true);
-            setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
-          }else{
-            this.con.confirmModal();
-          }
+          this.con.confirmModal();
         }
+      }
     }
   }
 
@@ -193,6 +196,7 @@ export class BudgetDetailsComponent implements OnInit {
         this.dialogIcon = 'error';
       }else{
         this.getAcseBudgetExpense();
+        this.budgetYrTbl.markAsPristine();
       }
       this.suc.open();
       this.params.saveBudgetExpense  = [];
@@ -259,15 +263,27 @@ export class BudgetDetailsComponent implements OnInit {
 
   checkCancel(){
     if(this.cancelFlag){
-      this.can.onNo();
-    }else{
-      this.suc.modal.modalRef.close();
+      if(this.budgetYrData.tableData.some(e => e.fromCancel == false)){
+        return;
+      }else{
+        this.can.onNo();  
+      }
     }
   }
 
   onRowClick(data){
     console.log(data);
     this.otherData = data;
+  }
+
+  yearsRange(){
+    var d = new Date().getFullYear();
+    for(var i=(d-10);i<=d;i++){
+      this.budgetYearArr.push(i);
+    }
+    this.budgetYearArr.sort((a,b) => b-a);
+    this.budgetYear = this.budgetYearArr[0];
+    this.getAcseBudgetExpense();
   }
 }
 
