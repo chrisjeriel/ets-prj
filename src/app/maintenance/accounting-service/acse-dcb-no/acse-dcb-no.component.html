@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4>Maintenance / Accounting In-Trust / DCB No.</h4>
+	<h4>Maintenance / Accounting Service / DCB No.</h4>
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Daily Collection Batch Number Maintenance">
 			<ng-template ngbTabContent>
@@ -11,7 +11,7 @@
 									<div class="input-group">
 										<div class="col-sm-4"></div>
 										<label class="form-control-sm col-sm-1 text-right labels">DCB Status</label>
-										<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.status" (ngModelChange)="params.status=$event;retrieveMtnDCB()">
+										<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.status" (ngModelChange)="params.status=$event;retrieveDcb()">
 											<option value="">All</option>
 											<option value="O">Open</option>
 											<option value="T">Temporarily Closed</option>

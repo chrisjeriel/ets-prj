@@ -7,12 +7,11 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
-  selector: 'app-acit-dcb-no',
-  templateUrl: './acit-dcb-no.component.html',
-  styleUrls: ['./acit-dcb-no.component.css']
+  selector: 'app-acse-dcb-no',
+  templateUrl: './acse-dcb-no.component.html',
+  styleUrls: ['./acse-dcb-no.component.css']
 })
-export class AcitDcbNoComponent implements OnInit {
-   
+export class AcseDcbNoComponent implements OnInit {
    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
@@ -66,17 +65,17 @@ export class AcitDcbNoComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private router: Router) { }
 
   ngOnInit() {
-    this.retrieveMtnDCB();
+  	this.retrieveDcb();
   }
 
-  retrieveMtnDCB(){
+  retrieveDcb(){
   	if(this.params.status !== 'O'){
   		this.passData.addFlag = false;
   	}else{
   		this.passData.addFlag = true;
       this.passData.genericBtn = 'Delete';
   	}
-  	this.maintenanceService.getMtnAcitDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
+  	this.maintenanceService.getMtnAcseDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
   		this.passData.tableData = [];
   		for (var i = 0; i < data.dcbNoList.length; i++) {
   			this.passData.tableData.push(data.dcbNoList[i]);
@@ -86,27 +85,60 @@ export class AcitDcbNoComponent implements OnInit {
   	});
   }
 
+  onRowClick(data){
+  	if(data !== null){
+  		this.params.createUser = data.createUser;
+  		this.params.createDate = this.ns.toDateTimeString(data.createDate);
+  		this.params.updateUser = data.updateUser;
+  		this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
+  	}else{
+  		this.params.createUser = '';
+  		this.params.createDate = '';
+  		this.params.updateUser = '';
+  		this.params.updateDate = '';
+  	}
+  }
+
   dcbUser(){
     this.router.navigate(['/mtn-dcb-user', {exitLink:'/mtn-acit-dcb-no'}], { skipLocationChange: true }); 
   }
 
-  onRowClick(data){
-    console.log(data)
-    if(data!==null){
-      this.params.createUser = data.createUser;
-      this.params.createDate = this.ns.toDateTimeString(data.createDate);
-      this.params.updateUser = data.updateUser;
-      this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
-    }else{
-      this.params.createUser = '';
-      this.params.createDate = '';
-      this.params.updateUser = '';
-      this.params.updateDate = '';
-    }
+  onClickSave(){
+  	this.confirm.confirmModal();
   }
 
-  onClickSave(){
-    this.confirm.confirmModal();
+  prepareData(){
+  	this.params.saveDCBNo = [];
+  	this.params.delDCBNo = [];
+
+  	for (var i = 0; i < this.passData.tableData.length; i++) {
+  		if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+  			this.params.saveDCBNo.push(this.passData.tableData[i]);
+  			this.params.saveDCBNo[this.params.saveDCBNo.length - 1].createDate = this.ns.toDateTimeString(0);
+  			this.params.saveDCBNo[this.params.saveDCBNo.length - 1].updateDate = this.ns.toDateTimeString(0);
+  			this.params.saveDCBNo[this.params.saveDCBNo.length - 1].dcbDate = this.ns.toDateTimeString(this.passData.tableData[i].dcbDate);
+  		}
+
+  		if(this.passData.tableData[i].deleted){
+  			this.params.delDCBNo.push(this.passData.tableData[i]);
+  		}
+  	}
+  }
+
+  saveDCBNo(cancel?){
+  	this.prepareData();
+  	this.maintenanceService.saveMtnAcseDCBNo(this.params.delDCBNo,this.params.saveDCBNo).subscribe((data:any) => {
+  		if(data['returnCode'] != -1) {
+  		  this.dialogMessage = data['errorList'][0].errorMessage;
+  		  this.dialogIcon = "error";
+  		  this.successDiag.open();
+  		}else{
+  		  this.dialogMessage = "";
+  		  this.dialogIcon = "success";
+  		  this.successDiag.open();
+  		  this.retrieveDcb();
+  		}
+  	});
   }
 
   update(){
@@ -117,44 +149,10 @@ export class AcitDcbNoComponent implements OnInit {
   	}
   }
 
-  prepareData(){
-    this.params.saveDCBNo = [];
-    this.params.delDCBNo = [];
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-        this.params.saveDCBNo.push(this.passData.tableData[i]);
-        this.params.saveDCBNo[this.params.saveDCBNo.length - 1].dcbDate = this.ns.toDateTimeString(this.passData.tableData[i].dcbDate);
-        this.params.saveDCBNo[this.params.saveDCBNo.length - 1].createDate = this.ns.toDateTimeString(0);
-        this.params.saveDCBNo[this.params.saveDCBNo.length - 1].updateDate = this.ns.toDateTimeString(0);
-      }
-
-      if(this.passData.tableData[i].deleted){
-        this.params.delDCBNo.push(this.passData.tableData[i]);
-      }
-    }
-  }
-
-  saveDCBNo(cancel?){
-    this.cancelFlag = cancel !== undefined;
-    this.prepareData();
-    this.maintenanceService.saveMtnAcitDCBNo(this.params.delDCBNo,this.params.saveDCBNo).subscribe((data:any) =>  {
-      if(data['returnCode'] != -1) {
-        this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error";
-        this.successDiag.open();
-      }else{
-        this.dialogMessage = "";
-        this.dialogIcon = "success";
-        this.successDiag.open();
-        this.retrieveMtnDCB();
-      }
-    });
-  }
-
   deleteCurr(){
     if(this.table.indvSelect.okDelete == 'N'){
       this.dialogIcon = 'info';
-      this.dialogMessage =  'The selected DCB No. cannot be deleted. This was already used in Acknowledgement Reciept/s.';
+      this.dialogMessage =  'The selected DCB No. cannot be deleted. This was already used in Official Reciept/s.';
       this.successDiag.open();
     }else{
       this.table.indvSelect.deleted = true;

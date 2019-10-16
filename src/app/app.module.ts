@@ -469,6 +469,8 @@ import { CvSeriesComponent } from './maintenance/accounting-service/generate-num
 import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
 import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
 import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
+import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
+import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
 
 @NgModule({
     imports: [
@@ -943,6 +945,8 @@ import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-n
         OrSeriesComponent,
         WithhodlingTaxComponent,
         AcitDcbNoComponent,
+        AcseDcbNoComponent,
+        AcitTranTypeComponent,
     ],
 
   	providers: [
