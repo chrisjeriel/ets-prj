@@ -22,7 +22,7 @@
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
-												<button class="cust col-sm" (click)="parameter();">Search</button>
+												<button class="cust col-sm" (click)="parameter();">Filter</button>
 												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcess();">Process</button>
 											</div>
@@ -110,7 +110,7 @@
 											</div>
 											<div class="row" style="margin-right: -4px;">
 												<button class="cust col-sm" (click)="onClickPrint();" [disabled]="!printFlag">Print</button>
-												<button class="cust col-sm" (click)="parameter();">Search</button>
+												<button class="cust col-sm" (click)="parameter();">Filter</button>
 												<button class="cust col-sm" (click)="onClickUpdate();" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag">Update</button>
 												<button class="cust col-sm" (click)="onClickProcessNR()">Process</button>
 											</div>
@@ -420,26 +420,26 @@
 <app-cancel-button id="coverageCancel" (onYes)="savePolicyChanges()" [url]="'/policy-listing'" ></app-cancel-button>
 
 				 	<app-modal class="hidden" id="parameter">
-                     	<div header>Parameter</div>
+                     	<div header>Filter</div>
 							<div body style="width: 600px !important">
 							    <fieldset class="scheduler-border">
 							    
 							    	<div class="form-row custom-row-inline-inset">
-										<div class="input-group" style="margin-left: 100px;">
+										<div class="input-group" style="margin-left: 50px;">
 											<div class="col-sm-1"></div>
 											<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" [(ngModel)]="radioVal" [value]="'byPolNo'" (click)="clearData()" />
-											<label class="form-control-sm col-sm-2" for="byPolNo" style="margin-left: -4px;">&nbsp;By Policy No</label>
+											<label class="form-control-sm col-sm-2" for="byPolNo" style="margin-left: 2px;">By Policy No</label>
 										</div>
 									</div>
 									<div class="form-row custom-row-inline-inset">
-										<div class="input-group" style="margin-top: -8px;"> 
+										<div class="input-group" style="margin-top: -8px; margin-left: -49px;"> 
 											<label class="form-control-sm col-sm-3"></label>
-                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.line" [readonly]="radioVal != 'byPolNo'">
-								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year" [readonly]="radioVal != 'byPolNo'">
-								                <input type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo" [readonly]="radioVal != 'byPolNo'">
-								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" [readonly]="radioVal != 'byPolNo'">
-								                <input type="text" class="form-control form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'">
-								                <input type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" [readonly]="radioVal != 'byPolNo'">  
+                        						<input type="text" class="form-control form-control-sm col-sm-1 cap-input" ngbTooltip="Line" [(ngModel)]="PolicyNo.line" [readonly]="radioVal != 'byPolNo'" mask="SSS">
+								                <input type="text" class="form-control text-right form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Year" [(ngModel)]="PolicyNo.year" (blur)="PolicyNo.year=pad($event,4)" [readonly]="radioVal != 'byPolNo'" mask="9999">
+								                <input type="text" class="form-control text-right form-control-sm col-sm-2 cap-input" style="margin-left: 3px;" ngbTooltip="Sequence No" [(ngModel)]="PolicyNo.sequenceNo" (blur)="PolicyNo.sequenceNo=pad($event,5)" [readonly]="radioVal != 'byPolNo'" mask="99999">
+								                <input type="text" class="form-control text-right form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" (blur)="PolicyNo.companyNo=pad($event,3)" [readonly]="radioVal != 'byPolNo'" mask="999">
+								                <input type="text" class="form-control text-right form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'" mask="9999" (blur)="PolicyNo.coSeriesNo=pad($event,4)">
+								                <input type="text" class="form-control text-right form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" (blur)="PolicyNo.altNo=pad($event,3)" [readonly]="radioVal != 'byPolNo'" mask="999">  
 								                <div style="padding-left: 5px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
 
 										</div>	
@@ -478,7 +478,7 @@
 											<div class="input-group" style="margin-top: -10px; margin-left: 90px;">
 												<div class="col-sm-1"></div>
 												<label class="form-control-sm col-sm-1 cust-sm from">From</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: 8px;" [ngModel]="dateParams.byMonthFrom" (ngModelChange)="dateParams.byMonthFrom = $event">
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="fromMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: 0px !important; margin-top: 0px !important;" [ngModel]="dateParams.byMonthFrom" (ngModelChange)="dateParams.byMonthFrom = $event">
 													<option value="01">January</option>
 													<option value="02">February</option>
 													<option value="03">March</option>
@@ -492,9 +492,9 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 2px;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event">
 												<label class="form-control-sm col-sm-1 cust-sm toMonth" style="margin-left: -10px !important;">To</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: -2px;" [ngModel]="dateParams.byMonthTo"(ngModelChange)="dateParams.byMonthTo=$event">
+												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: 0px !important; margin-top: 0px !important;" [ngModel]="dateParams.byMonthTo"(ngModelChange)="dateParams.byMonthTo=$event">
 													<option value="01">January</option>
 													<option value="02">February</option>
 													<option value="03">March</option>
@@ -508,7 +508,7 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 2px;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
 											</div>
 										</div>
 										<br>

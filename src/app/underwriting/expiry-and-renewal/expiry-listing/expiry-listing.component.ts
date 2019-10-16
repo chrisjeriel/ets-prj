@@ -259,6 +259,7 @@ export class ExpiryListingComponent implements OnInit {
           radCols : ['renAsIsTag', 'renWithChange', 'nonRenTag']
         }],
         uneditable: [false, false,false,false,false,true,true,true,true,true,true,true,true,false,true,true,true,true],
+        searchFlag: true,
    };
 
    passDataNonRenewalPolicies: any = {
@@ -274,6 +275,7 @@ export class ExpiryListingComponent implements OnInit {
         tooltip:[null, 'Process Policy',"Non-Renewal",null,null,null,null,null,null,'Summarized','With Balance','With Claim','With Reminder','Reqular Policy'],
         keys:['printTag','processTag', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'],
         uneditable: [false,false,true,true,true,true,true,true,true,true,true,true,true,true],
+        searchFlag: true,
    };
 
    passDataCATPerils: any = {
@@ -291,7 +293,7 @@ export class ExpiryListingComponent implements OnInit {
         tableData: [],
         dataTypes : ['fasymbol','text', 'text', 'date', 'time', 'text', 'date'],
         keys : ['type', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'],
-        tHeader : ['Type', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'],
+        tHeader : ['Severity', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'],
         uneditable : [false,true,true,true,true,true,true],
 
         //widths: [60,'auto',100,'auto'],
@@ -303,7 +305,7 @@ export class ExpiryListingComponent implements OnInit {
         },
         pageLength: 5,
         deleteFlag: false,
-        checkFlag: true,
+        checkFlag: false,
         paginateFlag: true,
         infoFlag: true,
         searchFlag: true,
@@ -925,10 +927,14 @@ export class ExpiryListingComponent implements OnInit {
   loadNRTable() {
     this.remindersData.tableData = [];
     this.remindersTable.overlayLoader = true;
-    console.log("loadNRTable : mode : ");
-    console.log(this.mode); 
 
     if (this.mode == 'reminder') {
+
+      this.remindersData.dataTypes = ['fasymbol','text', 'text', 'date', 'time', 'text', 'date'];
+      this.remindersData.keys = ['type', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'];
+      this.remindersData.tHeader = ['Severity', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'];
+      this.remindersData.uneditable = [false,true,true,true,true,true,true];
+
       this.workFlowManagerService.retrieveWfmReminders('', '', '', 'Policy', this.rowPolicyId).subscribe((data: any)=>{
           if (data.reminderList != null) {          
             for(let rec of data.reminderList){
@@ -949,7 +955,31 @@ export class ExpiryListingComponent implements OnInit {
           }
       });
     } else if (this.mode == 'note') {
-      this.remindersTable.refreshTable();
+
+      this.remindersData.dataTypes = ['fasymbol','text', 'text', 'text', 'date'];
+      this.remindersData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
+      this.remindersData.tHeader = ['Severity', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
+      this.remindersData.uneditable = [false,true,true,true,true];
+
+      this.workFlowManagerService.retrieveWfmNotes('', '', '', 'Policy', this.rowPolicyId).subscribe((data: any)=>{
+          if (data.noteList != null) {          
+            for(let rec of data.noteList){
+              if (rec.impTag == 'Y' && rec.urgTag == 'N') {
+                rec.type = 'fa fa-bookmark span-div-flag-imp';
+              } else if (rec.impTag == 'N' && rec.urgTag == 'Y') {
+                rec.type = 'fa fa-bookmark span-div-flag-urg';
+              } else if (rec.impTag == 'Y' && rec.urgTag == 'Y') {
+                rec.type = 'fa fa-bookmark span-div-flag-imp-urg';
+              }
+              
+              this.remindersData.tableData.push(rec);
+            }
+
+            this.remindersTable.refreshTable();
+          } else {
+            //alert("Saved successfully.");
+          }
+      });
     }
 
   }
@@ -964,7 +994,6 @@ export class ExpiryListingComponent implements OnInit {
 
 
   onRowClickNR(data) {
-    console.log(data)
     this.activeTable = "NR";
     this.nrReasonCd = "";
     this.nrReasonDescription = "";
@@ -1030,7 +1059,6 @@ export class ExpiryListingComponent implements OnInit {
     this.secIIIPrem = 0;
     this.totalPrem = 0;
     for(var i = 0 ; i < data.length;i++){
-      console.log(data[i])
       this.passDataSectionCover.tableData.push(data[i]);
       this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].deleted = false;
 
@@ -1135,8 +1163,6 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   updateSectionCover(data){
-    console.log('edited')
-    console.log(this.passDataSectionCover.tableData)
     this.secISi     = 0;
     this.secIISi    = 0;
     this.secIIISi   = 0;
@@ -1348,7 +1374,6 @@ export class ExpiryListingComponent implements OnInit {
 
   savePolicyChanges() {
     this.prepareCoverage();
-    console.log(this.ExpcoverageData)
     this.underWritingService.saveExpEdit(this.ExpcoverageData).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
         console.log('failed')
@@ -1421,6 +1446,13 @@ export class ExpiryListingComponent implements OnInit {
         }*/
       }
   }
+
+  pad(ev,num) {
+    var str = ev.target.value;    
+
+    return str === '' ? '' : String(str).padStart(num, '0');
+  }
+
 
   processRenewalPolicies() {
       this.underWritingService.processRenewablePolicy(this.processRenewalPoliciesParams).subscribe(data => {
