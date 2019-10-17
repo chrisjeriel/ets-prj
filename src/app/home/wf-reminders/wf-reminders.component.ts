@@ -1,64 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WorkFlowManagerService, NotesService } from '@app/_services';
+import { WorkFlowManagerService, NotesService, UnderwritingService, QuotationService } from '@app/_services';
 import { finalize } from 'rxjs/operators';
 import { WfReminderFormComponent } from '@app/home/wf-reminders/wf-reminder-form/wf-reminder-form.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
-
-
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-];
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-wf-reminders',
@@ -70,7 +18,6 @@ export class WfRemindersComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmsaveDiag: ConfirmSaveComponent;
 
-  countries = COUNTRIES;
   currentUser : string;
   alarmTime: string;
   reminder: string;
@@ -90,7 +37,12 @@ export class WfRemindersComponent implements OnInit {
   updateMode: boolean;
   updateReminderInfoParam = {};
 
-  constructor(private workFlowManagerService: WorkFlowManagerService, private ns: NotesService,private modalService: NgbModal) { }
+  constructor(private workFlowManagerService: WorkFlowManagerService, 
+              private ns: NotesService,
+              private modalService: NgbModal, 
+              private uwService: UnderwritingService,
+              private router: Router,
+              private quotationService: QuotationService) { }
     
   ngOnInit() {
      this.selectedReminder = 'atm';
@@ -334,6 +286,97 @@ export class WfRemindersComponent implements OnInit {
     }else if(obj === 'closeReminderMdl'){
         this.modalService.dismissAll();
     }
+  }
+
+  redirectToQuoteGenInfo(origin, data) {
+    if (origin == 'detail') {
+      var temp = data;
+      data = {};
+      data.referenceNo = temp.details;
+      data.referenceId = temp.referenceId;
+    }
+
+    var line = data.referenceNo.split("-")[0];
+
+    this.quotationService.toGenInfo = [];
+    this.quotationService.toGenInfo.push("edit", line);
+    this.quotationService.savingType = 'normal';
+
+    setTimeout(() => {
+        this.router.navigate(['/quotation', { line: line,  quotationNo : data.referenceNo, quoteId: data.referenceId, from: 'quo-processing'}], { skipLocationChange: true });
+    },100);
+  }
+
+  redirectToclaimGenInfo(origin, data) {
+    if (origin == 'detail') {
+      var temp = data;
+      data = {};
+      data.referenceNo = temp.details;
+      data.referenceId = temp.referenceId;
+    }
+
+    let line = data.referenceNo.split('-')[0];
+    setTimeout(() => {
+      this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'edit',
+                        readonly: true,
+                        claimId: data.referenceId,
+                        claimNo: data.referenceNo,
+                        line: line,
+                        exitLink: '/'
+                    }],
+                    { skipLocationChange: true }
+      );    
+    },100);
+  }
+
+
+  redirectToPolGenInfo(origin, relData) {
+    if (origin == 'detail') {
+      var temp = relData;
+      relData = {};
+      relData.referenceNo = temp;
+    }
+
+    var fetchedData = null;
+    var searchParams = [];
+
+    searchParams.push({ key: "policyNo",
+                       search: relData.referenceNo
+                     });
+    this.uwService.getParListing(searchParams).subscribe(data => {
+          var records = data['policyList'];
+
+          for (var i = 0; i < records.length; i++) {
+            if (relData.referenceNo == records[i].policyNo) {
+              fetchedData = records[i];
+            }
+          }
+
+          if (fetchedData != null) {
+            var polLine = fetchedData.policyNo.split("-")[0];
+            var policyId = fetchedData.policyId;
+            var statusDesc = fetchedData.statusDesc;
+            var riskName = fetchedData.project.riskName;
+            var insuredDesc = fetchedData.insuredDesc;
+            var quoteId = fetchedData.quoteId; 
+            var quotationNo = fetchedData.quotationNo; 
+
+
+            this.uwService.getPolAlop(fetchedData.policyId, fetchedData.policyNo).subscribe((data: any) => {
+                this.uwService.fromCreateAlt = false;
+                if (statusDesc === 'In Progress' || statusDesc === 'Approved'){
+                    this.uwService.toPolInfo = [];
+                    this.uwService.toPolInfo.push("edit", polLine);
+                    this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: polLine, policyNo: fetchedData.policyNo, policyId: fetchedData.policyId, editPol: true, statusDesc: statusDesc ,riskName: riskName, insured: insuredDesc, quoteId: quoteId, quotationNo: quotationNo }], { skipLocationChange: true });
+                } else if (statusDesc === 'In Force' || statusDesc === 'Pending Approval' || statusDesc === 'Rejected') {
+                    this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: polLine, policyNo: fetchedData.policyNo, policyId: fetchedData.policyId, editPol: false, statusDesc: statusDesc, riskName: riskName, insured: insuredDesc, quoteId: quoteId, quotationNo: quotationNo }], { skipLocationChange: true }); 
+                }
+            });
+          }
+    });
+
   }
 
 }

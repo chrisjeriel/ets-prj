@@ -2761,4 +2761,52 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
     }
 
+    getAcseBudgetExpense(budgetYear?,itemNo?){
+		const params = new HttpParams()
+			.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBudgetExpense',{params});	
+	}
+
+	saveAcseBudgetExpense(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseBudgetExpense',params,header);
+    }	
+
+    saveAcitMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndTrialBal',params,header);
+    }
+
+    getAcitMonthEndTrialBal(eomDate){
+		const params = new HttpParams()
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndTrialBal',{params});	
+	}
+
+	postAcitMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/postAcitMonthEndTrialBal',params,header);
+    }
+
+    getAcitMonthEndUnpostedMonths() {
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndUnpostedMonths');	
+	}
+
 }

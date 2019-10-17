@@ -26,7 +26,7 @@ export class InsuredListComponent implements OnInit {
         addFlag     : true,
         editFlag    : true,
         exportFlag	: true,
-        keys        : ['insuredId','insuredName','insuredAbbr','activeTag','insuredType','corpTag','vatTag','address'],
+        keys        : ['insuredId','insuredName','insuredAbbr','activeTag','insuredTypeDesc','corpTagDesc','vatTagDesc','address'],
         pageID      : 'mtn-insured',
         filters		: [{ key: 'insuredId',title	: 'Insured No',dataType: 'text'},
         			   { key: 'insuredName',title	: 'Name',dataType: 'text'},

@@ -1083,10 +1083,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucUnCol.open();
       this.params.savePrqTrans  = [];
@@ -1100,10 +1100,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucOth.open();
       this.params.savePrqTrans  = [];
@@ -1119,10 +1119,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     });
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucTrty.open();
       this.params.savePrqTrans  = [];
@@ -1136,10 +1136,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucInvt.open();
       this.params.savePrqTrans  = [];
@@ -1200,10 +1200,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucInw.open();
       this.params.savePrqTrans  = [];
@@ -1216,10 +1216,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();  
-      }else{
+      if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
+      }else{
+        this.getPaytReqPrqTrans();
       }
       this.sucClm.open();
       this.params.savePrqTrans  = [];
@@ -1399,14 +1399,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
-      if(data['returnCode'] == -1) {
+      if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+        this.sucServFee.open();
+      }else{
         this.dialogIcon = "success";
         this.sucServFee.open();
         this.getAcctPrqServFee();
         this.getPaytReqPrqTrans();
-      } else {
-        this.dialogIcon = "error";
-        this.sucServFee.open();
       }
     });
   }

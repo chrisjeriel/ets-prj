@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
     selector: 'app-quote-option',
@@ -21,6 +22,7 @@ export class QuoteOptionComponent implements OnInit {
     @ViewChild("optionsTable") optionsTable: CustEditableNonDatatableComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(ModalComponent) deductiblesModal : ModalComponent;
+    @ViewChild('deductibleLOV') deductibleLOV: LovComponent;
 /*    private quotationInfo: QuotationInfo;*/
     private quotationOption: QuotationOption;
     private quotationOtherRates: QuotationOtherRates;
@@ -352,9 +354,10 @@ clickDeductiblesLOV(data,from){
       endtCd: '0',
       activeTag:'Y'
     }
-    setTimeout(() => {
+    /*setTimeout(() => {
       $('#lov #modalBtn2').trigger('click');
-    });
+    });*/
+    this.deductibleLOV.openLOV();
     this.deductiblesLOVRow = data.index;
 }
 

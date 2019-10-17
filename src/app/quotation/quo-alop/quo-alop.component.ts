@@ -408,13 +408,16 @@ export class QuoAlopComponent implements OnInit {
         },0);
       }else{
         this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
+          console.log(data)
           if(data['returnCode'] == 0) {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
-            $('#successModalBtn').trigger('click');
+
+            this.successDiag.open();
+            console.log(this.dialogIcon)
           } else{
             this.dialogIcon = "success";
-            $('#successModalBtn').trigger('click');
+            this.successDiag.open();
             if(cancelFlag !== undefined){
               this.itmInfoMdl.closeModal();
             }

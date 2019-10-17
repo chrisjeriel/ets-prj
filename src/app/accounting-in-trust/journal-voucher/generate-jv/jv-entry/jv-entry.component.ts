@@ -164,6 +164,7 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.tranId         = data.transactions.tranId;
         this.jvDatas.tranYear       = data.transactions.tranYear;
         this.jvDatas.tranClassNo    = data.transactions.tranClassNo;
+        this.jvDatas.adjEntryTag    = data.transactions.adjEntryTag;
         this.entryData.jvDate       = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
         this.entryData.refnoDate    = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
         this.entryData.preparedDate = this.entryData.preparedDate == null ? '':this.ns.toDateTimeString(this.entryData.preparedDate);
@@ -237,6 +238,7 @@ export class JvEntryComponent implements OnInit {
         this.jvDatas.tranYear           = null;
         this.jvDatas.updateDate         = this.ns.toDateTimeString(0), 
         this.jvDatas.updateUser         = this.ns.getCurrentUser();
+        this.jvDatas.adjEntryTag      = 'N';
 
         this.entryData.jvYear           = '';
         this.entryData.jvNo             =  '';
@@ -362,6 +364,7 @@ export class JvEntryComponent implements OnInit {
   saveJV(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
+    console.log(this.jvDatas);
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;

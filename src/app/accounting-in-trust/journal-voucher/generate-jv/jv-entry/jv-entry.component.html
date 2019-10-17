@@ -6,27 +6,43 @@
                <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;margin-right: 5px !important;">
                 <div class="input-group" style="margin-top: 14px !important;margin-bottom: -20px !important;">
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV No</label>
-                    <div class="col-sm-4">
+                    <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="margin-right: 2px !important" style="text-align: right;" [(ngModel)]="entryData.jvYear" readonly name="entryData.jvYear">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly name="entryData.jvNo">
-                            <label class="form-control-sm col-sm">Date</label>
-                            <div class="col-sm-4 dp-cont">
-                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true" name="entryData.jvDate"  [disabled]="approvedStat"></datepicker>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 2px !important" style="text-align: right;" [(ngModel)]="entryData.jvYear" readonly name="entryData.jvYear">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="text-align: right; margin-left:2px" [(ngModel)]="entryData.jvNo" readonly name="entryData.jvNo">
+                            <label class="form-control-sm col-sm-1">Date</label>
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'date'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[0]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'d')" [required]="true" name="entryData.jvDate" [disabled]="approvedStat"></datepicker>
+                            </div>
+
+                            <div class="col-sm-1 dp-cont">
+                            <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"  [disabled]="approvedStat"></datepicker>
+                            </div>
+                            <label class="form-control-sm col-sm-1">Status</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="entryData.jvStatusName" readonly name="entryData.jvStatusName">
+                            <div class="col-sm-3 form-row custom-row-inline-inset" style="margin-top: 0 !important; margin-bottom: 0 !important;">
+                                <label class="form-control-sm col-sm-6" style="margin-left: 10px;">Adjusting Entry</label> 
+                                <input type="checkbox" style="margin-top: 5px; margin-left: 2px" [checked]="jvDatas.adjEntryTag === 'Y'" (change)="jvDatas.adjEntryTag = (jvDatas.adjEntryTag === 'Y') ? 'N' : 'Y'" name="jvDatas.adjEntryTag" [disabled]="approvedStat">
+                                <label class="form-control-sm col-sm-3">Auto</label> 
+                                <input type="checkbox" name="autoTag" style="margin-top: 5px; margin-left: 2px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled name="entryData.autoTag">
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4" style="padding: 0;">
+                    <!-- <div class="col-sm-4" style="padding: 0;">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm-2 dp-cont" style="margin-left: -4px !important">
                             <datepicker [type]="'time'" [showIcon]="true" [value]="entryData.jvDate?.split('T')[1]" (valueChange)="entryData.jvDate=dc($event,entryData.jvDate,'t')" [required]="true"  [disabled]="approvedStat"></datepicker>
                             </div>
                             <label class="form-control-sm col-sm-2">Status</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="entryData.jvStatusName" readonly name="entryData.jvStatusName">
-                            <label class="form-control-sm col-sm-2">Auto</label> 
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="entryData.jvStatusName" readonly name="entryData.jvStatusName">
+                            <label class="form-control-sm col-sm-2">Adjusting Entry</label> 
+                            <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled name="entryData.autoTag">
+                            <label class="form-control-sm col-sm-1">Auto</label> 
                             <input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="entryData.autoTag === 'Y'" (change)="entryData.autoTag = (entryData.autoTag === 'Y') ? 'N' : 'Y'" disabled name="entryData.autoTag">
                         </div>
-                    </div>
+                    </div> -->
+
+
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
                     <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" [(ngModel)]="entryData.refNo" name="entryData.refNo" [readonly]="approvedStat">
                     <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>

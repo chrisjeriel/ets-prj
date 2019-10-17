@@ -1432,6 +1432,15 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/generateCVSeries', JSON.stringify(params), header);
      }
 
+     saveMtnEmployee(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEmployee', JSON.stringify(params), header);
+     }
+
      generateJVSeries(params){
     	let header : any = {
             headers: new HttpHeaders({
