@@ -117,6 +117,7 @@ export class BlockComponent implements OnInit, AfterViewInit {
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
+            this.formGroup.markAsPristine();
             this.getBlock();
         }else{
             this.dialogIcon = "error";

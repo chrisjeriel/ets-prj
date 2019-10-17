@@ -127,7 +127,7 @@ export class LineClassComponent implements OnInit {
       this.params.saveLineClass     = [];
       this.params.deleteLineClass   = [];
       this.passData.disableGeneric  = true;
-      $('.ng-dirty').removeClass('ng-dirty');
+      this.table.markAsPristine();
     });
   }
 

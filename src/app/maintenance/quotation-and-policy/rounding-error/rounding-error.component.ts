@@ -199,6 +199,7 @@ export class RoundingErrorComponent implements OnInit {
           } else{
             this.dialogIcon = "success";
             this.successDiag.open();
+            this.table.markAsPristine();
             this.getRoundingError();
             this.passData.disableGeneric = true
         }

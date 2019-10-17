@@ -751,6 +751,7 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 				this.dialogIcon = "success";
 				this.successDialog.open();
 				this.getMtnTreatyComm();
+				this.formGroup.markAsPristine();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();

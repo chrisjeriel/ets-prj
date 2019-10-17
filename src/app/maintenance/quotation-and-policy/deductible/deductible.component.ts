@@ -171,7 +171,7 @@ export class DeductibleComponent implements OnInit {
             this.params.saveDeductibles  = [];
             this.params.deleteDeductibles  = [];
             this.passData.disableGeneric = true;
-            $('.ng-dirty').removeClass('ng-dirty');
+            this.table.markAsPristine();
         });
     }
 

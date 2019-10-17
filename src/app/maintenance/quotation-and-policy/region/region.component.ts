@@ -240,7 +240,7 @@ export class RegionComponent implements OnInit {
                   this.dialogIcon = "success";
                   this.successDialog.open();
                   this.getMtnRegion();
-                  $('.ng-dirty').removeClass('ng-dirty');
+                  this.regionTable.markAsPristine();
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();
@@ -292,7 +292,7 @@ export class RegionComponent implements OnInit {
       this.getMtnRegion();
     }
 
-    if($('.ng-dirty').length != 0 ){
+    if($('.ng-dirty:not([type="search"]):not(.not-form):not(.exclude)').length != 0 ){
         event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{

@@ -95,6 +95,7 @@ export class SpoilageReasonComponent implements OnInit {
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
+            this.table.markAsPristine();
             this.getSpoilageReasons();
         }else{
             this.dialogIcon = "error";

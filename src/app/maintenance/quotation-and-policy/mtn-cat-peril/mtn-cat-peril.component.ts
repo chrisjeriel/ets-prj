@@ -175,6 +175,7 @@ export class MtnCATPerilComponent implements OnInit, AfterViewInit {
          } else{
            this.dialogIcon = "success";
            this.successDiag.open();
+           this.formGroup.markAsPristine();
            this.getCatPeril();
          }
      });
