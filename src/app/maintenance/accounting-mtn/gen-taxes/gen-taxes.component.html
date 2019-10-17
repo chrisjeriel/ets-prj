@@ -13,13 +13,13 @@
                     </div>
                     <div  class="input-group">
                         <label class="form-control-sm col-sm-1">Remarks</label>
-                        <input name="remarks" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.remarks">
+                        <input name="remarks" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.remarks" (ngModelChange)="info.remarks=$event;onChangeRemarks()" [disabled]="boolRemarks">
                     </div>
 	                <div class="w-100 text-center my-2" style="margin-top: 0px !important">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
                     	<button class="cust-btn" (click)="onClickSave()">Save</button>
                         <button class="cust-btn" (click)="onClickRange()" [disabled]="boolRange">Range</button>
-                        <button class="cust-btn" (click)="onClickSave()">History</button>
+                        <button class="cust-btn" (click)="onClickHistory()" [disabled]="boolHistory">History</button>
                         <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
                     </div>
                 </fieldset>
@@ -46,7 +46,7 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null;"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
-<app-mtn-bank-acct id="bankAcctLOV" (selectedData)="selectedBankAcctLOV($event)"></app-mtn-bank-acct>
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" [lovCheckBox]="lovCheckbox">
 
 <app-modal class="d-none" id="taxRange" #mdl>
     <div header>Tax Range</div>
@@ -64,8 +64,31 @@
     </div>
     <div footer class="text-center w-100">
         <div>
-            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelRange();"><a>Cancel</a></button> 
-            <button class="cust-btn" type="button" (click)="modal.closeModal();saveRange();"><a>Save</a></button>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();this.passTableRange.disableGeneric = true "><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="saveGenTaxRange();"><a>Save</a></button>
         </div>
     </div>
 </app-modal>
+<app-confirm-save #saveRange (onYes)="onClickSaveRange()"></app-confirm-save>
+
+<app-modal class="d-none" id="hist" #mdlHist>
+    <div header>Tax Charges Maintenance History</div>
+    <div body>
+                   <div class="input-group" style="margin-top: 1px !important;">
+                            <div class="col-sm" id="mtn-gentax-hist" style="padding: 0">
+                              <app-cust-editable-non-datatable #gentaxhist [passData]="passTableHist" (newClick)="onTableHistClick($event)"></app-cust-editable-non-datatable>
+                            </div>
+                   </div>
+                    <div  class="input-group">
+                        <label class="form-control-sm col-sm-1">Remarks</label>
+                        <input name="remarksHist" type="text" class="form-control form-control-sm col-sm" [ngModel]="infoHist?.remarks" (ngModelChange)="infoHist.remarks=$event;onChangeRemarksHist()" [disabled]="boolRemarksHist">
+                    </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modalHist.closeModal();infoHist = null;"><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="saveGenTaxHist();" [disabled]="boolSaveHist"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
+<app-confirm-save #saveHist (onYes)="onClickSaveHist()"></app-confirm-save>
