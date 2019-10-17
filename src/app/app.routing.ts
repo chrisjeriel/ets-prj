@@ -180,6 +180,8 @@ import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-typ
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
+import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
+import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 
 
 const appRoutes: Routes = [
@@ -371,7 +373,9 @@ const appRoutes: Routes = [
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] }, 
+    { path: 'mtn-invt-sec-type', component: InvtSecTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

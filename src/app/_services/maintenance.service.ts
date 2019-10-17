@@ -1479,4 +1479,30 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGenTaxRange", {params});
     }
 
+     saveMtnInvSecType(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnInvSecType', JSON.stringify(params), header);
+      }
+
+    getMtnPayeeClass(payeeClassCd?,activeTag?){
+    	const params = new HttpParams()
+						.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+						.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeClass', {params});
+    }
+
+     saveMtnPayeeClass(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPayeeClass', JSON.stringify(params), header);
+      }
+
+
 }
