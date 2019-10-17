@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy,AfterViewInit } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
@@ -9,13 +9,19 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
+
+
+
+
 
 @Component({
   selector: 'app-quote-wording',
   templateUrl: './quote-wording.component.html',
   styleUrls: ['./quote-wording.component.css']
 })
-export class QuoteWordingComponent implements OnInit, OnDestroy {
+export class QuoteWordingComponent implements OnInit, OnDestroy,AfterViewInit {
+	formGroup: FormGroup = new FormGroup({});
   	@ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
   	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
@@ -69,6 +75,15 @@ export class QuoteWordingComponent implements OnInit, OnDestroy {
  	cancel: boolean = false;
  	subscription: Subscription = new Subscription();;
 
+
+	ngAfterViewInit() {
+	  this.table.loadingFlag = false;
+	  this.table.loadingFlag = false;
+	  this.table.form.forEach((f,i)=>{
+	    this.formGroup.addControl('table'+i, f.control); 
+	  }) 
+	}
+	
   	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
   	ngOnInit() {
