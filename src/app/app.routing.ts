@@ -183,6 +183,7 @@ import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-s
 import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
 import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
 import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
+import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
 
 const appRoutes: Routes = [
 
@@ -377,6 +378,7 @@ const appRoutes: Routes = [
 	{ path: 'mtn-withholding-tax',component: WithhodlingTaxComponent},
 	{ path: 'mtn-acit-dcb-no',component: AcitDcbNoComponent},
 	{ path: 'mtn-acse-dcb-no',component: AcseDcbNoComponent},
+	{ path: 'mtn-acit-tran-type',component: AcitTranTypeComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
