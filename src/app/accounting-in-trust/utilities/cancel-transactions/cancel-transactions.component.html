@@ -1,208 +1,28 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Utilities / Cancel Transactions</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Acknowledgement Receipt">
+		<ngb-tab id="ar">
+			<ng-template ngbTabTitle>
+				<div>Acknowledgement Receipt</div>
+			</ng-template>
 			<ng-template ngbTabContent>
-				<fieldset class="scheduler-border" style="margin-bottom: 15px !important; padding-left: 30px !important; padding-right: 30px !important;">
-					<legend class="scheduler-border">Records for Cancellation</legend>
-					<div class="row">
-						<div class="col-sm-12" style="padding: 0">
-							<app-cust-non-datatable #arTbl [passData]="passDataAr" (tableDataChange)="passDataAr.tableData=$event;"></app-cust-non-datatable>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom: 15px !important;">
-						<div class="col-sm-12">
-							<div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
-								<div class="input-group">
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Created By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Date Created</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-
-				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-					<div class="row">
-						<div class="input-group col-sm-12" style=" margin-top: 10px !important;margin-bottom: -1px !important;">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-2">Reason for Cancellation</label>
-							<textarea class="form-control form-control-sm-5" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"></textarea>
-							<div class="col-sm-2"></div>
-						</div>
-					</div>
-					<div class="form-row" style="margin-bottom: -7px !important;">
-						<div class="form-group col-sm">
-							<div class="col-md-12 text-center">
-								<div class="cust-btn-container">
-									<button type="button" class="cust-btn"><a>Cancel</a></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>				
+				<app-cancel-ar-cv-jv [tranClass] ="tranClass"></app-cancel-ar-cv-jv>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Check Voucher">
+		<ngb-tab id="cv">
+			<ng-template ngbTabTitle>
+				<div>Check Voucher</div>
+			</ng-template>
 			<ng-template ngbTabContent>
-				<fieldset class="scheduler-border" style="margin-bottom: 15px !important; padding-left: 30px !important; padding-right: 30px !important;">
-					<legend class="scheduler-border">Records for Cancellation</legend>
-					<div class="row">
-						<div class="col-sm-12" style="padding: 0">
-							<app-cust-non-datatable #cvTbl [passData]="passDataCv" (tableDataChange)="passDataCv.tableData=$event;"></app-cust-non-datatable>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom: 15px !important;">
-						<div class="col-sm-12">
-							<div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
-								<div class="input-group">
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Created By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Date Created</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-
-				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-					<div class="row">
-						<div class="input-group col-sm-12" style=" margin-top: 10px !important;margin-bottom: -1px !important;">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-2">Reason for Cancellation</label>
-							<textarea class="form-control form-control-sm-5" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"></textarea>
-							<div class="col-sm-2"></div>
-						</div>
-					</div>
-					<div class="form-row" style="margin-bottom: -7px !important;">
-						<div class="form-group col-sm">
-							<div class="col-md-12 text-center">
-								<div class="cust-btn-container">
-									<button type="button" class="cust-btn"><a>Cancel</a></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>				
+				<app-cancel-ar-cv-jv [tranClass] ="tranClass"></app-cancel-ar-cv-jv>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab class="ngb-tab" title="Journal Voucher">
+		<ngb-tab id="jv">
+			<ng-template ngbTabTitle>
+				<div>Journal Voucher</div>
+			</ng-template>
 			<ng-template ngbTabContent>
-				<fieldset class="scheduler-border" style="margin-bottom: 15px !important; padding-left: 30px !important; padding-right: 30px !important;">
-					<legend class="scheduler-border">Records for Cancellation</legend>
-					<div class="row">
-						<div class="col-sm-12" style="padding: 0">
-							<app-cust-non-datatable #jvTbl [passData]="passDataJv" (tableDataChange)="passDataJv.tableData=$event;"></app-cust-non-datatable>
-						</div>
-					</div>
-					<div class="row" style="margin-bottom: 15px !important;">
-						<div class="col-sm-12">
-							<div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
-								<div class="input-group">
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Created By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Date Created</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
-											</div>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update By</label>
-											<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
-										</div>
-									</div>
-									<div class="col-sm-3" style="padding: 0">
-										<div class="input-group">
-											<label class="form-control-sm">Last Update</label>
-											<div class="dp-cont col-sm">
-												<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-
-				<fieldset class="scheduler-border" style="margin-top: 10px !important;">
-					<div class="row">
-						<div class="input-group col-sm-12" style=" margin-top: 10px !important;margin-bottom: -1px !important;">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-2">Reason for Cancellation</label>
-							<textarea class="form-control form-control-sm-5" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"></textarea>
-							<div class="col-sm-2"></div>
-						</div>
-					</div>
-					<div class="form-row" style="margin-bottom: -7px !important;">
-						<div class="form-group col-sm">
-							<div class="col-md-12 text-center">
-								<div class="cust-btn-container">
-									<button type="button" class="cust-btn"><a>Cancel</a></button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</fieldset>				
+				<app-cancel-ar-cv-jv [tranClass] ="tranClass"></app-cancel-ar-cv-jv>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab id="Exit">
