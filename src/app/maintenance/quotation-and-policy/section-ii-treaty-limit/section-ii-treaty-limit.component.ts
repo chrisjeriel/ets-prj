@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy , AfterViewInit} from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -9,13 +9,16 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { Title } from '@angular/platform-browser';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-section-ii-treaty-limit',
   templateUrl: './section-ii-treaty-limit.component.html',
   styleUrls: ['./section-ii-treaty-limit.component.css']
 })
-export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
+export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
@@ -25,12 +28,12 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 
   	secIIData: any = {
 	  	tableData: [],
-	  	tHeader: ['Sec II Trty Limit ID', 'Treaty Limit Amt', 'Effective From', 'Active', 'Remarks'],
-	  	dataTypes: ['sequence-6', 'currency', 'date', 'checkbox', 'text'],
-	  	keys: ['seciiTrtyLimId', 'amount', 'effDateFrom', 'activeTag', 'remarks'],
-	  	widths: ['1','200','140','1','auto'],
-	  	uneditable: [true,false,false,false,false],
-	  	uneditableKeys: ['amount','effDateFrom'],
+	  	tHeader: ['Sec II Trty Limit ID', '% of TSI','Treaty Limit Amt', 'Effective From', 'Active', 'Remarks'],
+	  	dataTypes: ['sequence-6','percent', 'currency', 'date', 'checkbox', 'text'],
+	  	keys: ['seciiTrtyLimId','pctShareTsi' ,'amount', 'effDateFrom', 'activeTag', 'remarks'],
+	  	widths: ['1','200','200','140','1','auto'],
+	  	uneditable: [true,false,false,false,false,false],
+	  	uneditableKeys: ['pctShareTsi','amount','effDateFrom'],
 	  	nData: {
 	  		newRec: 1,
 	  		seciiTrtyLimId: '',
@@ -41,7 +44,8 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 	  		createUser: '',
 	  		createDate: '',
 	  		updateUser: '',
-	  		updateDate: ''
+	  		updateDate: '',
+	  		pctShareTsi:''
   		},
   		paginateFlag: true,
   		infoFlag: true,
@@ -79,6 +83,15 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 	disableCopyLCList: boolean = true;
 
 	subscription: Subscription = new Subscription();
+
+	formGroup: FormGroup = new FormGroup({});
+
+	ngAfterViewInit() {
+	  this.table.loadingFlag = false;
+	  this.table.form.forEach((f,i)=>{
+	    this.formGroup.addControl('table'+i, f.control); 
+	  })
+	}
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
@@ -150,7 +163,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 
     		this.subscription = sub$.subscribe(data => {
     			this.lineClassList = data['lineClass']['lineClass'];
-    			this.currencyList = data['currency']['currency'].filter(a => a.activeTag == 'Y');
+    			this.currencyList = data['currency']['currency'];
     		});
     	}
 
@@ -198,7 +211,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 	}
 
 	lineClassChanged(ev) {
-		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
+		this.lineClassCdDesc = ev=='DEF' ?'Default (Applicable to Line Class without setup)': this.lineClassList.filter(a=>a.lineClassCd == ev)[0].lineClassCdDesc;
 
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnSecIITrtyLimit();
@@ -262,13 +275,13 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 				}
 			}
 
-			if(d.edited && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId != '') {
+			if(d.add && !d.deleted && d.activeTag == 'Y' && d.seciiTrtyLimId != '') {
 				if(td.filter(c => c.activeTag == 'Y').length > 0) {
 					var dEDF = new Date(d.effDateFrom);
 					var max = td.filter(c => c != d && c.activeTag == 'Y' && !c.deleted)
 								.sort((a, b) => Number(new Date(b.effDateFrom)) - Number(new Date(a.effDateFrom)))[0];
 
-					if(max != d && dEDF <= new Date(max.effDateFrom)) {
+					if(max != undefined && max != d && dEDF <= new Date(max.effDateFrom)) {
 						this.errorMsg = 1;
 						$('#mtnSecIITrtyLimWarningModal > #modalBtn').trigger('click');
 						this.cancel = false;
@@ -325,6 +338,7 @@ export class SectionIiTreatyLimitComponent implements OnInit, OnDestroy {
 			if(data['returnCode'] == -1) {
 				this.dialogIcon = "success";
 				this.successDialog.open();
+				this.formGroup.markAsPristine();
 				this.getMtnSecIITrtyLimit();
 			} else {
 				this.dialogIcon = "error";
