@@ -93,12 +93,10 @@
                       </div>
                       <div class="col-sm-1"></div>
                     </div>
-                    <div class="input-group">
-                      <div class="col-sm-1"></div>
-                      <div class="col-sm-10">
+                    <div class="input-group" style="margin-top: 8px;">
+                      <div class="col-sm-12">
                         <app-cust-editable-non-datatable #servFeeSubTbl [passData]="serviceFeeSubData"></app-cust-editable-non-datatable>
                       </div>
-                      <div class="col-sm-1"></div>
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6">
