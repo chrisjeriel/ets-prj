@@ -61,11 +61,11 @@ export class BlockComponent implements OnInit, AfterViewInit {
   	setTimeout(a=>this.table.refreshTable(),0)
   }
 
-    ngAfterViewInit() {
-      this.table.loadingFlag = false;
-      this.table.form.forEach((f,i)=>{
-        this.formGroup.addControl('table'+i, f.control); 
-      })
+  ngAfterViewInit() {
+    this.table.loadingFlag = false;
+    this.table.form.forEach((f,i)=>{
+      this.formGroup.addControl('table'+i, f.control); 
+    })
   }
 
   getBlock(){
@@ -345,6 +345,10 @@ export class BlockComponent implements OnInit, AfterViewInit {
             }
 
         }
+        this.passTable.tableData = [];
+        this.passTable.disableAdd = true;
+        this.passTable.disableGeneric = true;
+        this.table.refreshTable();
 
         this.ns.lovLoader(data.ev, 0);
     }

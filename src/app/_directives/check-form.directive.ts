@@ -26,7 +26,7 @@ export class CheckFormDirective{
   }
 
   @HostListener("blur", ["$event"]) onBlur(event) {
-  	if(this.form.dirty){
+  	if(this.form.dirty && event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
   		let subject:Subject<Boolean> = new Subject<Boolean>();
         let modal:NgbModalRef = this.modalService.open(ConfirmLeaveComponent,{
             centered: true, 
@@ -37,6 +37,7 @@ export class CheckFormDirective{
 
         subject.subscribe(a=>{
         	if(a){
+            this.form.markAsPristine();
         		this.output.emit(event); 		
         	}else{
         		event.target.value = this.pastData;

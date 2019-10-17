@@ -2,24 +2,41 @@
     <div class="form-row custom-row-inline-inset">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">Region</label>
-            <input type="search" [ngModel]="locData?.regionCd" (ngModelChange)="locData.regionCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'region')">
-            <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('region')"></i></a></div>
+            <input type="search" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" 
+                [ngModel]="locData?.regionCd" [data]="locData?.regionCd" [appCheckForm]="formGroup" 
+                (output)="locData.regionCd=$event.target.value.toUpperCase();checkCode($event, 'region')">
+            <div class="text-search-ico"  
+                    [appCheckForm]="formGroup" (output)="openGenericLOV('region')"><a><i
+                    class="fa fa-search"></i></a></div>
+
             <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.regionDesc" style="margin-left: 6px !important">
             <label class="form-control-sm col-sm-1 text-right labels">Province</label>
-            <input type="search" [ngModel]="locData?.provinceCd" (ngModelChange)="locData.provinceCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'province')">
-            <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('province')"></i></a></div>
+            <input type="search" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" 
+                [ngModel]="locData?.provinceCd" [data]="locData?.provinceCd" [appCheckForm]="formGroup" 
+                (output)="locData.provinceCd=$event.target.value.toUpperCase();checkCode($event, 'province')">
+            <div class="text-search-ico"  
+                    [appCheckForm]="formGroup" (output)="openGenericLOV('province')"><a><i
+                    class="fa fa-search"></i></a></div>
             <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" [ngModel]="locData?.provinceDesc" style="margin-left: 6px !important">
         </div>
     </div>
     <div class="form-row custom-row-inline-inset">
         <div class="input-group">
             <label class="form-control-sm col-sm-1 text-right labels">City/Town</label>
-            <input type="search" [ngModel]="locData?.cityCd" (ngModelChange)="locData.cityCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'city')">
-            <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('city')" ></i></a></div>
+            <input type="search" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" 
+                [ngModel]="locData?.cityCd" [data]="locData?.cityCd" [appCheckForm]="formGroup" 
+                (output)="locData.cityCd=$event.target.value.toUpperCase();checkCode($event, 'city')">
+             <div class="text-search-ico"  
+                    [appCheckForm]="formGroup" (output)="openGenericLOV('city')"><a><i
+                    class="fa fa-search"></i></a></div>
             <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important" [ngModel]="locData?.cityDesc">
             <label class="form-control-sm col-sm-1 text-right labels">District</label>
-            <input type="search" [ngModel]="locData?.districtCd" (ngModelChange)="locData.districtCd = $event.toUpperCase()" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" (change)="checkCode($event, 'district')">
-            <div class="text-search-ico"><a><i class="fa fa-search" (click)="openGenericLOV('district')"></i></a></div>
+            <input type="search" class="form-control form-control-sm col-sm-1 cap-input" style="margin-right: -1px !important" 
+                [ngModel]="locData?.districtCd" [data]="locData?.districtCd" [appCheckForm]="formGroup" 
+                (output)="locData.districtCd=$event.target.value.toUpperCase();checkCode($event, 'district')">
+            <div class="text-search-ico"  
+                    [appCheckForm]="formGroup" (output)="openGenericLOV('district')"><a><i
+                    class="fa fa-search"></i></a></div>
             <input disabled="disabled"  type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 6px !important"  [ngModel]="locData?.districtDesc">
         </div>
     </div>
