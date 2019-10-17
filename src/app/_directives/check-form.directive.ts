@@ -22,29 +22,56 @@ export class CheckFormDirective{
   }
 
   @HostListener("focus", ["$event.target"]) onFocus(target) {
-  	this.pastData = target.value.toString();
+  	setTimeout(a=>this.pastData = target.value.toString(),0);
+  }
+
+  @HostListener("change", ["$event"]) onSelect(event) {
+    if(this.tagName == 'SELECT'){
+        if(this.form.dirty && event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
+          let subject:Subject<Boolean> = new Subject<Boolean>();
+            let modal:NgbModalRef = this.modalService.open(ConfirmLeaveComponent,{
+                centered: true, 
+                backdrop: 'static', 
+                windowClass : 'modal-size'
+            });
+            modal.componentInstance.subject = subject;
+
+            subject.subscribe(a=>{
+              if(a){
+                this.form.markAsPristine();
+                this.output.emit(event.target.value);     
+              }else{
+                event.target.value = this.pastData;
+              }
+            });
+        }else if(event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
+          this.output.emit(event.target.value); 
+        }
+    }
   }
 
   @HostListener("blur", ["$event"]) onBlur(event) {
-  	if(this.form.dirty && event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
-  		let subject:Subject<Boolean> = new Subject<Boolean>();
-        let modal:NgbModalRef = this.modalService.open(ConfirmLeaveComponent,{
-            centered: true, 
-            backdrop: 'static', 
-            windowClass : 'modal-size'
-        });
-        modal.componentInstance.subject = subject;
+    if(this.tagName != 'SELECT'){
+    	if(this.form.dirty && event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
+    		let subject:Subject<Boolean> = new Subject<Boolean>();
+          let modal:NgbModalRef = this.modalService.open(ConfirmLeaveComponent,{
+              centered: true, 
+              backdrop: 'static', 
+              windowClass : 'modal-size'
+          });
+          modal.componentInstance.subject = subject;
 
-        subject.subscribe(a=>{
-        	if(a){
-            this.form.markAsPristine();
-        		this.output.emit(event); 		
-        	}else{
-        		event.target.value = this.pastData;
-        	}
-        });
-    }else if(event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
-    	this.output.emit(event); 
+          subject.subscribe(a=>{
+          	if(a){
+              this.form.markAsPristine();
+          		this.output.emit(event); 		
+          	}else{
+          		event.target.value = this.pastData;
+          	}
+          });
+      }else if(event.target.value.toString().toUpperCase() != this.pastData.toUpperCase()){
+      	this.output.emit(event); 
+      }
     }
   }
 
