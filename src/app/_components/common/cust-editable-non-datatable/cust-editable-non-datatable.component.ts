@@ -471,11 +471,13 @@ export class CustEditableNonDatatableComponent implements OnInit {
        if(dataType == 'percent' && parseFloat(temp)>100){
            temp = '100';
        }
+
        if(event.target.value.indexOf('(')!= -1){
            temp = '-'+temp.substring(1,event.target.value.length-1);
        }
+
        if(data[key] != parseFloat(temp.split(',').join(''))){
-           data[key] = parseFloat(temp.split(',').join('')) ;
+           data[key] = data[key]==null || data[key].toString().length == 0 ?'' : parseFloat(temp.split(',').join('')) ;
        }else{
            //fix for rate not formatting properly when entered the same value twice or more (Neco 05/02/2019)
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join('')) + parseFloat('1')},0);
