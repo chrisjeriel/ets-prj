@@ -189,6 +189,7 @@ export class AcitTranTypeComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 1;
   		}
   		this.table.refreshTable();
+      this.table.onRowClick(null,this.passData.tableData[0]);
       this.table.loadingFlag = false;
   	});
   }
@@ -214,10 +215,6 @@ export class AcitTranTypeComponent implements OnInit {
       this.params.tranTypeName = '';
       this.params.tranTypeCd = '';
   	}
-  }
-
-  update(){
-  	
   }
 
   onClickSave(){

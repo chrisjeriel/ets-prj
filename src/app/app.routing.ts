@@ -184,6 +184,7 @@ import { WithhodlingTaxComponent } from './maintenance/accounting-service/withho
 import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
 import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
 import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
+import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
 
 const appRoutes: Routes = [
 
@@ -379,6 +380,7 @@ const appRoutes: Routes = [
 	{ path: 'mtn-acit-dcb-no',component: AcitDcbNoComponent},
 	{ path: 'mtn-acse-dcb-no',component: AcseDcbNoComponent},
 	{ path: 'mtn-acit-tran-type',component: AcitTranTypeComponent},
+	{ path: 'mtn-acse-tran-type',component: AcseTranTypeComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

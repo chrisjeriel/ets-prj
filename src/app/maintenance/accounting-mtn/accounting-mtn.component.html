@@ -104,10 +104,13 @@
                                     <p-accordionTab header="S">
                                     </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="T">
                                           <button [routerLink]="['/mtn-acit-tran-type']" class="button btn btn-link">Transaction Type</button>
                                           <br />
+                                          <button [routerLink]="['/mtn-acse-tran-type']" class="button btn btn-link">Transaction Type - Service</button>
+                                          <br />
+                                          
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
@@ -120,7 +123,7 @@
                                     <p-accordionTab header="V">
                                     </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="W">
                                           <button [routerLink]="['/mtn-withholding-tax']" class="button btn btn-link">Withholding Tax</button>
                                           <br />

@@ -1607,4 +1607,13 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcitDefAcctEnt', JSON.stringify(params), header);
     }
+
+    saveAcseTranType(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseTranType', JSON.stringify(params), header);
+    }
 }
