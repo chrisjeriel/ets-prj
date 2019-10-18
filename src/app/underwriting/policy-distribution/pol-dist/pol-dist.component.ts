@@ -180,6 +180,7 @@ export class PolDistComponent implements OnInit {
 						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
 						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
+						this.selectedPolicy                 = recs[0];
 					}
 				}else{
 					this.noDataFound = true;

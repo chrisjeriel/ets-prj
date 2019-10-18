@@ -751,3 +751,45 @@ body span.ui-state-default.ui-state-disabled {
     opacity: 0.6 !important;
     background-color: #f5f5f5 !important;
 }
+
+.span-div-flag-imp {
+    text-align: center; 
+    padding: 2px 0px; 
+    /*transform: scaleX(-1) rotate(15deg);*/
+    font-size: 22px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    color: #ffff00;
+    width: 100%;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+
+.span-div-flag-urg {
+    text-align: center; 
+    padding: 2px 0px; 
+    /*transform: scaleX(-1) rotate(15deg);*/
+    font-size: 22px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    color: #ffa500;
+    width: 100%;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+
+.span-div-flag-imp-urg {
+    text-align: center; 
+    padding: 2px 0px; 
+    /*transform: scaleX(-1) rotate(15deg);*/
+    font-size: 22px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    color: #ff0000;
+    width: 100%;
+    padding-top: 5px;
+    margin-left: 5px;
+}
+
+
+

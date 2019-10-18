@@ -115,7 +115,7 @@
                 <form #remarksform="ngForm">
                     <div class="form-row custom-row-inline-inset">
                             <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
-                            <textarea [readonly]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks" name="remarks"></textarea>
+                            <textarea [readonly]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks" name="remarks"></textarea>
                     </div>
                 </form> 
             </fieldset>
@@ -126,8 +126,8 @@
         <div class="form-group col-sm">
             <div class="col-md-13 text-center">
                 <div class="cust-btn-container" style="margin-top: 10px;">
-                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                 </div>
             </div>
         </div>

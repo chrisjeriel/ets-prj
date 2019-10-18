@@ -254,7 +254,7 @@
                                                  type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
                                                  [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
                                              </ng-template>
-                                         </ng-container>                                    
+                                         </ng-container>                               
 
                                          <ng-container *ngSwitchCase="'currency'">
                                              <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
@@ -681,6 +681,11 @@
 
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
+
+                                        <ng-container *ngSwitchCase="'fasymbol'">
+                                            <i class="{{data[key]}}">&nbsp;</i>
+                                            
+                                        </ng-container>
 
 
                                         <!-- appRequired Test -->

@@ -157,6 +157,7 @@ export class ByMonthComponent implements OnInit {
     if(fromNgModelChange){
       this.table.overlayLoader = true;
     }
+    this.selectedYear = year;
     this.as.getAcseBudExpMonthly(year).subscribe(
       (data:any)=>{
         if(data.budExpMonthlyList.length !== 0){
@@ -206,7 +207,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.jan,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -224,7 +225,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.jan,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -243,7 +244,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.feb,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -261,7 +262,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.feb,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -280,7 +281,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.mar,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -298,7 +299,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.mar,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -317,7 +318,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.apr,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -335,7 +336,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.apr,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -354,7 +355,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.may,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -372,7 +373,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.may,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -391,7 +392,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.jun,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -409,7 +410,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.jun,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -428,7 +429,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.jul,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -446,7 +447,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.jul,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -465,7 +466,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.aug,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -483,7 +484,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.aug,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -502,7 +503,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.sep,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -520,7 +521,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.sep,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -539,7 +540,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.oct,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -557,7 +558,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.oct,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -576,7 +577,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.nov,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -594,7 +595,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.nov,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -613,7 +614,7 @@ export class ByMonthComponent implements OnInit {
           this.savedData.push({
             budgetYear: data.lastEditedRow.budgetYear,
             budgetAmt: data.lastEditedRow.dec,
-            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+            createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
             createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
             updateUser: this.ns.getCurrentUser(),
             updateDate: this.ns.toDateTimeString(0),
@@ -631,7 +632,7 @@ export class ByMonthComponent implements OnInit {
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
               budgetAmt: data.lastEditedRow.dec,
-              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser : data.lastEditedRow.createUser,
+              createUser: data.lastEditedRow.createUser == null ? this.ns.getCurrentUser() : data.lastEditedRow.createUser,
               createDate: data.lastEditedRow.createDate == null ? this.ns.toDateTimeString(0) : this.ns.toDateTimeString(data.lastEditedRow.createDate),
               updateUser: this.ns.getCurrentUser(),
               updateDate: this.ns.toDateTimeString(0),
@@ -683,6 +684,7 @@ export class ByMonthComponent implements OnInit {
           this.dialogIcon = 'error';
           this.successDiag.open();
         }else{
+          console.log(this.selectedYear);
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveAcseBudExpMonthly(this.selectedYear, true);
