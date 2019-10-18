@@ -7,6 +7,7 @@ import { Title } from '@angular/platform-browser';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { Subject } from 'rxjs';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-insured',
@@ -19,6 +20,7 @@ export class InsuredComponent implements OnInit {
 	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
 	@ViewChild('tabset') tabset: any;
 
+	@ViewChild('myForm') form: NgForm;
   	private sub		: any;
   	cancelFlag		: boolean;
   	dialogIcon		: string = '';
@@ -124,6 +126,7 @@ export class InsuredComponent implements OnInit {
 		  	this.dialogIcon = '';
 		  	this.dialogMessage = '';
 		  	this.success.open();
+		  	this.form.control.markAsPristine(); 
 		  	this.insuredRecord.insuredId = data['insuredIdOut'];
 		  	this.getInsuredList();
 		});	
@@ -212,7 +215,7 @@ export class InsuredComponent implements OnInit {
 	}
 
 	addDirty(){
-		$('input').addClass('ng-dirty');
+		//$('input').addClass('ng-dirty');
 	}
 
 	fmtOnBlur(){

@@ -290,7 +290,7 @@ export class MtnInsuredComponent implements OnInit {
         ev: ev
       });
     } else {
-      this.mtnService.getMtnInsured(code).subscribe(data => {
+      this.mtnService.newGetMtnInsuredList({insuredId:code,activeTag:'Y'}).subscribe(data => {
         if(data['insured'].length > 0) {
           data['insured'][0]['ev'] = ev;
           data['insured'][0].insuredId = this.pad(data['insured'][0].insuredId, 6); //Ensures 6 digit for insured ID
