@@ -7,10 +7,10 @@
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBank" (ngModelChange)="changeBank($event)" appRequired >
             <option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
           </select>
-          <label class="form-control-sm col-sm-2">Bank Acct. No.</label>
+         <!--  <label class="form-control-sm col-sm-2">Bank Acct. No.</label>
           <select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedBankAcct" (ngModelChange)="changeBankAcct($event)" appRequired>
             <option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
-          </select>
+          </select> -->
           <div class="col-sm-1"></div>
         </div>
       	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openInvLOV($event)" (newClick)="onRowClick($event)">

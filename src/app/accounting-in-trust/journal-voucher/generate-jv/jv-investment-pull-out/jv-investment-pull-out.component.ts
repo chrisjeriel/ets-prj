@@ -186,7 +186,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   openInvPulloutLOV(data){
-    this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key:'invtStatus', search: 'MATURED'}];
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }
