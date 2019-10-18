@@ -2826,4 +2826,13 @@ export class AccountingService {
     getAcitMonthEndUnpostedMonths() {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndUnpostedMonths');	
 	}
+
+	getAcseActExpMonthly(budgetYear?, itemNo?, mm?){
+    	const params = new HttpParams()
+    		.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo))
+    		.set('mm', (mm == null || mm == undefined ? '' : mm));
+
+    	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseActExpMonthly',{params});	
+    }
 }
