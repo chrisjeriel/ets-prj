@@ -65,8 +65,8 @@
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
-                        <div class="col-sm-3" style="margin-right: -30px !important;"></div>
-                        <div class="col-sm-6 input-group">
+                        <div class="col-sm-2" style="margin-right: -30px !important;"></div>
+                        <div class="col-sm-8 input-group">
                           <label class="form-control-sm col-sm-2">Service Fee</label>
                           <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
                           <label class="form-control-sm col-sm-2">Period As Of</label>
@@ -81,10 +81,9 @@
                               <option [value]="y">{{ y }}</option>
                             </ng-container>
                           </select>
-                          <div class="col-sm-1"></div>
-                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
                         </div>
-                        <div class="col-sm-3"></div>
+                        <div class="col-sm-2"></div>
                     </div>
                     <div class="input-group" style="margin-top: 3px">
                       <div class="col-sm-1"></div>
