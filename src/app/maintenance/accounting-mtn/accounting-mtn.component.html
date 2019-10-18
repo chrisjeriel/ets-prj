@@ -101,8 +101,12 @@
                                     <p-accordionTab header="R">
                                     </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="S">
+                                          <button [routerLink]="['/mtn-sl']" class="button btn btn-link">Subsidiary Ledger</button>
+                                          <br />
+                                          <button [routerLink]="['/mtn-sl-type']" class="button btn btn-link">Subsidiary Ledger Type</button>
+                                          <br />
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">

@@ -466,6 +466,8 @@ import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.co
 import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
 import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
+import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
+import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 
 @NgModule({
     imports: [
@@ -937,6 +939,8 @@ import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/pa
         GenTaxesComponent,
         InvtSecTypeComponent,
         PayeeClassComponent,
+        SlTypeComponent,
+        SlComponent,
     ],
 
   	providers: [

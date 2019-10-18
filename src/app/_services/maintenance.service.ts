@@ -1495,14 +1495,32 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeClass', {params});
     }
 
-     saveMtnPayeeClass(params){
+    saveMtnPayeeClass(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPayeeClass', JSON.stringify(params), header);
-      }
+    }
+
+    saveMtnSLType(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSLType', JSON.stringify(params), header);
+    }
+
+    saveMtnSL(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSL', JSON.stringify(params), header);
+    }
 
 
 }

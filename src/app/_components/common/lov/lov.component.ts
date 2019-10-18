@@ -203,7 +203,7 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?) {
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,ev?) {
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -374,6 +374,35 @@ export class LovComponent implements OnInit {
                 data: null,
                 ev: ev
               });
+              this.modal.openNoClose();
+            }
+        });
+      }
+    } else if (selector == 'slType') {
+      if (slTypeCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        let sl:any = {};
+        sl.slTypeCd = slTypeCd;
+        sl.activeTag = 'Y'
+        console.log(sl);
+        this.mtnService.getMtnSlType(sl).subscribe((data: any) => {
+            if(data.list.length > 0) {
+              data.list[0]['ev'] = ev;
+              data.list[0]['selector'] = selector;
+              this.selectedData.emit({data: data['list'][0], ev : ev});
+              console.log(data['list'][0]);
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.selector = 'slType';
+              this.passData.params = {activeTag : 'Y'};
               this.modal.openNoClose();
             }
         });
