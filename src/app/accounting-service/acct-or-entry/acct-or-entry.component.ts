@@ -933,7 +933,7 @@ export class AcctOrEntryComponent implements OnInit {
 
   //VALIDATION STARTS HERE
   checkOrInfoFields(): boolean{
-    if(
+    if(this.orInfo.orNo.length === 0 ||
        this.orDate.date.length === 0 || this.orDate.time.length === 0 ||
        this.orInfo.dcbYear.length === 0 || this.orInfo.dcbUserCd.length === 0 ||
        this.orInfo.dcbNo.length === 0 || this.orInfo.tranTypeCd.length === 0 ||
