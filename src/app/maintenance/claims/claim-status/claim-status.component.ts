@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService } from '@app/_services'
+import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -69,9 +70,10 @@ export class ClaimStatusComponent implements OnInit {
     saveClaimStatus: []
   }
 
-  constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
+  constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Mtn | Claim Status")
   	this.getClaimStat();
   }
 
@@ -109,19 +111,18 @@ export class ClaimStatusComponent implements OnInit {
       for(var j = 0; j < this.passData.tableData.length; j++){
         if( i != j){
           if(this.passData.tableData[i].statusCode.trim() == this.passData.tableData[j].statusCode.trim()){
-            this.errorFlag = true;
+
+            this.dialogMessage = 'Unable to save the record. Status Code must be unique.';
+            this.dialogIcon = "error-message";
+            this.successDiag.open();
+            return;
           }
         }
       }
     }
-
     this.prepareData();
 
-    if(this.errorFlag){
-      this.dialogMessage = 'Unable to save the record. Status Code must be unique.';
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.saveData.saveClaimStatus.length == 0 && this.saveData.delClaimStatus.length == 0){
+    if(this.saveData.saveClaimStatus.length == 0 && this.saveData.delClaimStatus.length == 0){
       this.dialogMessage = 'Nothing to save';
       this.dialogIcon = "info";
       this.successDiag.open();
@@ -157,6 +158,7 @@ export class ClaimStatusComponent implements OnInit {
       } else{
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.table.markAsPristine();
         this.getClaimStat();
         this.passData.disableGeneric = true;
       }
