@@ -411,7 +411,6 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    // $('input').addClass('ng-dirty');
     this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
