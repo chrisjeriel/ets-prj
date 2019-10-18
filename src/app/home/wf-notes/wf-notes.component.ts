@@ -9,58 +9,6 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { Router } from '@angular/router';
 
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-];
-
 @Component({
   selector: 'app-wf-notes',
   templateUrl: './wf-notes.component.html',
@@ -72,7 +20,6 @@ export class WfNotesComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmsaveDiag: ConfirmSaveComponent;
 
-  countries = COUNTRIES;
   currentUser : string;
   selectedNotes: any = null;
   noteBool: boolean = true;
@@ -335,9 +282,6 @@ export class WfNotesComponent implements OnInit {
       data.referenceId = temp.referenceId;
     }
 
-
-    console.log("redirectToQuoteGenInfo");
-    console.log(data);
     var line = data.referenceNo.split("-")[0];
 
     this.quotationService.toGenInfo = [];
@@ -349,30 +293,37 @@ export class WfNotesComponent implements OnInit {
     },100);
   }
 
+  redirectToclaimGenInfo(origin, data) {
+    if (origin == 'detail') {
+      var temp = data;
+      data = {};
+      data.referenceNo = temp.details;
+      data.referenceId = temp.referenceId;
+    }
+
+    let line = data.referenceNo.split('-')[0];
+    setTimeout(() => {
+      this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'edit',
+                        readonly: true,
+                        claimId: data.referenceId,
+                        claimNo: data.referenceNo,
+                        line: line,
+                        exitLink: '/'
+                    }],
+                    { skipLocationChange: true }
+      );    
+    },100);
+  }
+
 
   redirectToPolGenInfo(origin, relData) {
-
-    /*for(let rec of this.fetchedData){
-          if(rec.policyNo === this.uwService.rowData[0]) {
-            this.policyId = rec.policyId;
-            this.statusDesc = rec.statusDesc;
-            this.riskName = rec.project.riskName;
-            this.insuredDesc = rec.insuredDesc;
-            this.quoteId = rec.quoteId; 
-            this.quotationNo = rec.quotationNo; 
-          }
-    }
-    this.polLine = this.uwService.rowData[0].split("-")[0];
-    this.policyNo = this.uwService.rowData[0];*/
-
     if (origin == 'detail') {
       var temp = relData;
       relData = {};
       relData.referenceNo = temp;
     }
-
-    console.log('redirectToPolGenInfo');
-    console.log(relData);
 
     var fetchedData = null;
     var searchParams = [];
@@ -384,20 +335,11 @@ export class WfNotesComponent implements OnInit {
           var records = data['policyList'];
 
           for (var i = 0; i < records.length; i++) {
-            console.log("Relate if : ");
-            console.log(relData.referenceNo);
-            console.log(records[i].policyNo);
-            console.log("-----------")
 
             if (relData.referenceNo == records[i].policyNo) {
               fetchedData = records[i];
             }
           }
-          console.log("records");
-          console.log(records);
-
-          console.log("fetchedData");
-          console.log(fetchedData);
 
           if (fetchedData != null) {
             var polLine = fetchedData.policyNo.split("-")[0];

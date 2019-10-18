@@ -314,9 +314,12 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
         // console.log("Params used in Dist Risk Warnings:");
         // console.log("riskDistId : " + this.riskDistributionData.riskDistId);
         // console.log("altNo :" + this.riskDistributionData.altNo);
-
-        if (this.riskDistributionData.altNo != 0 && this.params.fromInq != 'true') {
+        console.log(this.params.fromInq);
+        console.log(this.params.fromNegate)
+        if (this.params.fromInq != 'true' && (this.params.fromNegate == 'false'|| this.params.fromNegate == undefined)) {
+          console.log('proc')
           this.polService.getPolDistWarning(this.riskDistributionData.riskDistId, this.riskDistributionData.altNo).subscribe((data2: any)=> {
+            console.log(data2)
               if (data2.warningList.length > 0) {
                 for (var i = 0; i < data2.warningList.length; i++) {
 
@@ -325,9 +328,12 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
                     this.inquiryMode();
                   } else if (data2.warningList[i].warningCode == 'PREV_HAS_CHANGES') {
                     this.inquiryFlag.emit(false);
+                  } else if (data2.warningList[i].warningCode == 'ALREADY_POSTED') {
+                    this.inquiryFlag.emit(true);
+                    this.inquiryMode();
                   }
                   this.warningModalCode = data2.warningList[i].warningCode;
-                  this.warningModalMsg = data2.warningList[i].warningMessage;
+                  this.warningModalMsg = data2.warningList[i].warningMessage;0
                   $('#warningModal > #modalBtn').trigger('click');
                   break;
                 }

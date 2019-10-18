@@ -136,7 +136,7 @@
 			</ng-template>
 
 			<ng-template ngbTabTitle>
-				<div *ngIf="!inquiryFlag && quoteInfo.quoteId != ''" (click)="showApprovalModal(content)">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId != ''">Approval</div>
 				<div *ngIf="!inquiryFlag && quoteInfo.quoteId == ''">Approval</div>
 			</ng-template>
 
@@ -157,7 +157,7 @@
   		</ngb-tab>
 	</ngb-tabset>
 </div>
-<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" ></app-sucess-dialog>
 
 <!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal> TRBT#PROD_GRADE-->
 

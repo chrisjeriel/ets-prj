@@ -83,10 +83,10 @@
 		width: auto; 
 		text-align: center; 
 		padding: 2px 0px; 
-		transform: scaleX(-1) rotate(15deg);
+		/*transform: scaleX(-1) rotate(15deg);*/
 		font-size: 22px;
-		-webkit-text-stroke-width: .67px;
-    	-webkit-text-stroke-color: gray;
+		-webkit-text-stroke-width: 1px;
+    	-webkit-text-stroke-color: black;
 	}
 
 	.selectdiv:after {
