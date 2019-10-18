@@ -1571,4 +1571,40 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitTranType', JSON.stringify(params), header);
     }
+
+    getAcitDefAmt(tranClass,tranTypeCd,itemNo?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcitDefAmt',{params});	
+    }
+
+    saveAcitAmtDtl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitDefAmt', JSON.stringify(params), header);
+    }
+
+    getAcitDefAcctEnt(tranClass,tranTypeCd,entryNo?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('entryNo', (entryNo == null || entryNo == undefined ? '' : entryNo));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcitDefAcctEnt',{params});	
+    }
+
+    saveAcitDefAcctEnt(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcitDefAcctEnt', JSON.stringify(params), header);
+    }
 }

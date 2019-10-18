@@ -27,7 +27,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
 							<div class="row" style="margin-top: 15px">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="update()" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="update()" (genericBtn)="deleteCurr()" #tranType></app-cust-editable-non-datatable>
 								</div>
 								<div class="form-control-sm col-sm-1"></div>
 								<label class="form-control-sm col-sm-1">Remarks</label>
@@ -82,24 +82,24 @@
 				<div class="input-group">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-3 text-right labels">Transaction Type</label>
-					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranType">
+					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranTypeName">
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
 			<div class="col-sm-12" style="margin-top: 20px">
-				<app-cust-editable-non-datatable [passData]="acctEntries"></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="acctEntries" (clickLOV)="openAcctEntryLov($event)" (newClick)="acctEntriesClick($event)" #acctEntTbl></app-cust-editable-non-datatable>
 			</div>
 			<div class="col-sm-12">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Remarks</label>
-					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true">
+					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="acctEntTbl.indvSelect.remarks=$event;acctEntTbl.indvSelect.edited=true">
 				</div>
 			</div>
 		</div>
     </div>
     <div footer class="text-center">
 		<div class="input-group">
-			<button type="button" class="cust-btn" (click)="acctEntryMdl.closeModal();"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="onClickSaveAcctEnt()"><a>Save</a></button>
 			<button type="button" class="cust-btn" (click)="acctEntryMdl.closeModal();"><a>Cancel</a></button>
 		</div>
     </div>
@@ -113,29 +113,32 @@
 				<div class="input-group">
 					<div class="col-sm-1"></div>
 					<label class="form-control-sm col-sm-3 text-right labels">Transaction Type</label>
-					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranType">
+					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranTypeName">
 					<div class="col-sm-1"></div>
 				</div>
 			</div>
 			<div class="col-sm-12" style="margin-top: 20px">
-				<app-cust-editable-non-datatable [passData]="amountDtl"></app-cust-editable-non-datatable>
+				<app-cust-editable-non-datatable [passData]="amountDtl" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" #amtDtlTbl></app-cust-editable-non-datatable>
 			</div>
 			<div class="col-sm-12">
 				<div class="input-group">
 					<label class="form-control-sm col-sm-2">Remarks</label>
-					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true">
+					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="amtDtlTbl.indvSelect.remarks=$event;amtDtlTbl.indvSelect.edited=true">
 				</div>
 			</div>
 		</div>
     </div>
     <div footer class="text-center">
 		<div class="input-group">
-			<button type="button" class="cust-btn" (click)="amountDetailsMdl.closeModal();"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="onClickSaveAmounDtl()"><a>Save</a></button>
 			<button type="button" class="cust-btn" (click)="amountDetailsMdl.closeModal();"><a>Cancel</a></button>
 		</div>
     </div>
 </app-modal>
-
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" #amtDtlLov></app-lov>
+<app-lov [passData]="passLov" (selectedData)="setLovAcct($event)" #acctEntryLov></app-lov>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveData()"></app-confirm-save>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-confirm-save (onYes)="saveData()" #tranTypeSave></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" #tranTypeCancel></app-cancel-button>
+<app-confirm-save (onYes)="saveAmtDtl()" #amtDetailSave></app-confirm-save>
+<app-confirm-save (onYes)="saveDefAcctEntries()" #acctEntrySave></app-confirm-save>
