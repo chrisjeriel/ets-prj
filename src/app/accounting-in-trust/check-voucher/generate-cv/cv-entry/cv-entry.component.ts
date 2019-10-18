@@ -315,7 +315,6 @@ export class CvEntryComponent implements OnInit {
         this.cs.confirmModal();
       }
     }
-
     console.log(this.saveAcitCv);
   }
 
