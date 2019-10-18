@@ -110,7 +110,7 @@ export class CancelArCvJvComponent implements OnInit {
 			this.passDataCancelTrans.tHeader    = ['AR No','Payor','AR Date','Status','Payment Type','Particulars','Amount'];
 			this.passDataCancelTrans.dataTypes  = ['sequence-6','text','date','text','text','text','currency'];
 			this.passDataCancelTrans.keys       = ['arNo', 'payor', 'arDate', 'arStatDesc','tranTypeName', 'particulars', 'arAmt'],
-			this.passDataCancelTrans.colSize    = ['25px', '80px', '40px', '100px', '100px', '200px', '125px'],
+			this.passDataCancelTrans.colSize    = ['30px', '200px', '40px', '20px', '150px', '200px', '125px'],
 			this.passDataCancelTrans.filters    = [
 				{key   : 'arNo',title: 'AR No',dataType: 'text'},
 				{key   : 'payor',title: 'Payor',dataType: 'text'},

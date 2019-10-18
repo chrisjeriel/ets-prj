@@ -112,13 +112,10 @@ export class CvEntryComponent implements OnInit {
       if(this.passData.tranId == '') {
         if(Object.keys(params).length != 0 ){
           this.saveAcitCv.tranId = params['tranId'];
-          console.log(this.saveAcitCv.tranId);
         } else {
-          console.log(this.saveAcitCv.tranId);
         }
       } else {
         this.saveAcitCv.tranId = this.passData.tranId;
-        console.log(this.saveAcitCv.tranId);
       }
 
      this.getAcitCv();
