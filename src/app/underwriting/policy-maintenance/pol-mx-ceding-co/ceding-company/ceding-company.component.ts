@@ -96,6 +96,7 @@ export class CedingCompanyComponent implements OnInit {
   openModal(){
      this.passDataCedingCompanyMember.tableData = [];
      
+     this.table.overlayLoader = true;
 
      this.underwritingService.getCedingCompanyList('','','','','','','','Y','','Y').subscribe((data: any) => {
          for(var i=0; i < data.cedingcompany.length;i++){

@@ -271,7 +271,11 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     this.as.saveAcitAcctEntries(this.params)
     .subscribe(data => {
       console.log(data);
-      this.getAcctEntries();
+      if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+      }else{
+        this.getAcctEntries();
+      }
       this.suc.open();
       this.params.saveList  = [];
       this.params.delList  = [];

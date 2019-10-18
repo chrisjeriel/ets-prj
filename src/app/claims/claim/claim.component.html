@@ -41,12 +41,20 @@
 
       </ng-template>
     </ngb-tab>
-     <ngb-tab id="Exit">
+    <ngb-tab id="NotesReminders" *ngIf="claimInfo.claimId != ''">
+        <ng-template ngbTabTitle>
+          <div>Notes & Reminders</div>
+        </ng-template>
+          <ng-template ngbTabContent>
+            <app-wf-form-common [moduleSource]="'Claim'" [claimInfo]="claimInfo"></app-wf-form-common>
+          </ng-template>
+    </ngb-tab>
+    <ngb-tab id="Exit">
         <ng-template ngbTabTitle>
           <div>Exit</div>
         </ng-template>
           <ng-template ngbTabContent></ng-template>
-      </ngb-tab>
+    </ngb-tab>
   </ngb-tabset>
 </div>
 

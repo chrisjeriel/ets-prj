@@ -11,6 +11,7 @@ import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-employee',
@@ -23,7 +24,7 @@ export class EmployeeComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(MtnCompanyComponent) companyLov: MtnCompanyComponent;
-   @ViewChild(MtnEmployeeComponent) employeeLov: MtnCompanyComponent;
+  @ViewChild(MtnEmployeeComponent) employeeLov: MtnCompanyComponent;
   @ViewChild('myForm') form:any;
   @ViewChild('mdl') modal : ModalComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
@@ -37,6 +38,7 @@ export class EmployeeComponent implements OnInit {
       middleName : null,
       printableName : null,
       gender : null,
+      birthDate : null,
       hireDate : null,
       terminationDate : null,
       dept : null,
@@ -45,7 +47,6 @@ export class EmployeeComponent implements OnInit {
       supervisor: null,
       supervisorName : null,
       civilStatus : null,
-      birthDdate : null,
       presentAdd : null,
       permanentAdd : null,
       tin : null,
@@ -58,28 +59,9 @@ export class EmployeeComponent implements OnInit {
       emergencyNo : null,
     };
 
-   otherDetails:{
-      employeeNo: null,
-      printableName : null,
-      birthDate : null,
-      designation : null,
-      supervisor: null,
-      supervisorName : null,
-      civilStatus : null,
-      birthDdate : null,
-      presentAdd : null,
-      permanentAdd : null,
-      tin : null,
-      sssNo : null,
-      philhealthNo : null,
-      pagibigNo : null,
-      contactNos : null,
-      email : null,
-      contactPerson : null,
-      emergencyNo : null,
-    };
-
-  oldRecord : any ={};
+  oldRecord : any ={
+      tableData:[]
+  };
   company:any = {};
   boolPrint: boolean = true;
   boolOtherDetails: boolean = false;
@@ -102,6 +84,7 @@ export class EmployeeComponent implements OnInit {
   	infoFlag:true,
   	searchFlag:true,
   	nData:{
+      employeeId : null,
       employeeNo: null,
       lastName : null,
       firstName : null,
@@ -110,7 +93,19 @@ export class EmployeeComponent implements OnInit {
       hireDate : null,
       terminationDate : null,
       dept : null,
+      birthDate : '',
+      civilStatus : null,
       activeTag : 'Y',
+      presentAdd : null,
+      permanentAdd : null,
+      tin : null,
+      sssNo : null,
+      philhealthNo : null,
+      pagibigNo : null,
+      contactNos : null,
+      email : null,
+      contactPerson : null,
+      emergencyNo : null,
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
@@ -128,7 +123,7 @@ export class EmployeeComponent implements OnInit {
 
 
 
-  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private modalService: NgbModal) { }
 
   ngOnInit() {
   	 this.form.control.markAsPristine();
@@ -172,12 +167,11 @@ export class EmployeeComponent implements OnInit {
 	  	this.ms.getMtnEmployee(this.company.companyId).subscribe(a=>{
 	  		this.passTable.tableData = a['employeeList'];
 	  		this.passTable.tableData.forEach(a=>{
+          a.birthDate = this.ns.toDateTimeString(a.birthDate);
 	  			a.hireDate = this.ns.toDateTimeString(a.hireDate);
 	  			a.terminationDate = this.ns.toDateTimeString(a.terminationDate);
 	  			a.createDate = this.ns.toDateTimeString(a.createDate);
 	  			a.updateDate = this.ns.toDateTimeString(a.updateDate);
-	  			a.openDate = this.ns.toDateTimeString(a.openDate);
-	  			a.closeDate = this.ns.toDateTimeString(a.closeDate);
 	  		})
 	  		this.table.refreshTable();
         this.table.overlayLoader = false;
@@ -197,7 +191,7 @@ export class EmployeeComponent implements OnInit {
       this.boolOtherDetails = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
-       $('#cust-table-container').addClass('ng-dirty');
+      $('#cust-table-container').addClass('ng-dirty');
   	}
   }
 
@@ -242,7 +236,8 @@ export class EmployeeComponent implements OnInit {
              check.firstName === null || check.firstName === '' ||
              check.middleName === null || check.middleName === '' ||
              check.gender === null || check.gender === '' ||
-             check.department === null || check.department === '' 
+             check.department === null || check.department === '' ||
+             check.civilStatus === null || check.civilStatus === '' 
           ) {   
             return false;
           }   
@@ -288,51 +283,101 @@ export class EmployeeComponent implements OnInit {
 
    onClickOtherDetails(){
      this.modal.openNoClose();
-     this.otherDetails = this.passTable.tableData[this.indexRow];
+     this.oldRecord = JSON.parse(JSON.stringify(this.table.indvSelect));
    }
 
    setSelectedEmployee(data){
      if(data === null){
-       this.otherDetails.supervisor = null;
-       this.otherDetails.supervisorName = null;
+       this.info.supervisor = null;
+       this.info.supervisorName = null;
      } else {
-       this.otherDetails.supervisor = data.employeeId;
-       this.otherDetails.supervisorName = data.printableName;
+       this.info.supervisor = data.employeeId;
+       this.info.supervisorName = data.printableName;
      }
    }
 
    saveOtherDetails(){
      this.passTable.tableData[this.indexRow].edited = true;
-     this.passTable.tableData[this.indexRow].designation = this.otherDetails.designation;
-     this.passTable.tableData[this.indexRow].birthDate = this.otherDetails.birthDate;
-     this.passTable.tableData[this.indexRow].supervisor = this.otherDetails.supervisor;
-     this.passTable.tableData[this.indexRow].supervisorName = this.otherDetails.supervisorName;
-     this.passTable.tableData[this.indexRow].civilStatus = this.otherDetails.civilStatus;
-     this.passTable.tableData[this.indexRow].presentAdd = this.otherDetails.presentAdd;
-     this.passTable.tableData[this.indexRow].permanentAdd = this.otherDetails.permanentAdd;
-     this.passTable.tableData[this.indexRow].tin = this.otherDetails.tin;
-     this.passTable.tableData[this.indexRow].sssNo = this.otherDetails.sssNo;
-     this.passTable.tableData[this.indexRow].philhealthNo = this.otherDetails.philhealthNo;
-     this.passTable.tableData[this.indexRow].pagibigNo = this.otherDetails.pagibigNo;
-     this.passTable.tableData[this.indexRow].contactNos = this.otherDetails.contactNos;
-     this.passTable.tableData[this.indexRow].email = this.otherDetails.email;
-     this.passTable.tableData[this.indexRow].contactPerson = this.otherDetails.contactPerson;
-     this.passTable.tableData[this.indexRow].emergencyNo = this.otherDetails.emergencyNo;
-
+     $('#cust-table-container').addClass('ng-dirty');
+     this.modalService.dismissAll();
    }
 
-   cancelOtherDetails(){
-     
-   }
+  onClickSaveCancel(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    if(this.cancelFlag){
+       if (this.checkValidation()){
+           this.save();
+       }else {
+           this.successDialog.open();
+           this.tblHighlightReq('#mtn-employee',this.passTable.dataTypes,[1,2,3,4,5,8]);
+       }
+    }else {
+      this.save();
+    }
+  }
+
+   save(){
+    this.boolOtherDetails = true;
+    let params: any = {
+      saveList:[],
+      delList:[]
+    }
+    params.saveList = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
+    params.saveList.forEach(a=>{
+      a.companyId = this.company.companyId;
+      a.updateUser = this.ns.getCurrentUser();
+      a.updateDate = this.ns.toDateTimeString(0);
+      a.printableName = a.firstName + ' ' + a.lastName;
+    });
+    params.delList = this.passTable.tableData.filter(a=>a.deleted);
+   
+    if(params.saveList.length === 0 && params.delList.length === 0 ){    
+          this.conSave.showBool = false;
+          this.dialogIcon = "success";
+          this.successDialog.open();
+          $('.ng-dirty').removeClass('ng-dirty');
+    }else {
+      console.log(params);
+      this.ms.saveMtnEmployee(params).subscribe(a=>{
+        if(a['returnCode'] == -1){
+          this.form.control.markAsPristine();
+              this.dialogIcon = "success";
+              this.successDialog.open();
+              this.table.overlayLoader = true;
+              this.getEmployee();
+              $('.ng-dirty').removeClass('ng-dirty');
+          }else{
+              this.dialogIcon = "error";
+              this.successDialog.open();
+          }
+      });
+    }
+    
+  }
+
+  cancelOtherDetails(){
+    console.log(this.oldRecord);
+     this.passTable.tableData[this.indexRow].designation = this.oldRecord.designation;
+     this.passTable.tableData[this.indexRow].birthDate = this.oldRecord.birthDate;
+     this.passTable.tableData[this.indexRow].supervisor = this.oldRecord.supervisor;
+     this.passTable.tableData[this.indexRow].supervisorName = this.oldRecord.supervisorName;
+     this.passTable.tableData[this.indexRow].civilStatus = this.oldRecord.civilStatus;
+     this.passTable.tableData[this.indexRow].presentAdd = this.oldRecord.presentAdd;
+     this.passTable.tableData[this.indexRow].permanentAdd = this.oldRecord.permanentAdd;
+     this.passTable.tableData[this.indexRow].tin = this.oldRecord.tin;
+     this.passTable.tableData[this.indexRow].sssNo = this.oldRecord.sssNo;
+     this.passTable.tableData[this.indexRow].philhealthNo = this.oldRecord.philhealthNo;
+     this.passTable.tableData[this.indexRow].pagibigNo = this.oldRecord.pagibigNo;
+     this.passTable.tableData[this.indexRow].contactNos = this.oldRecord.contactNos;
+     this.passTable.tableData[this.indexRow].email = this.oldRecord.email;
+     this.passTable.tableData[this.indexRow].contactPerson = this.oldRecord.contactPerson;
+     this.passTable.tableData[this.indexRow].emergencyNo = this.oldRecord.emergencyNo;
+  }
 
    printPreview(data){
 
    }
 
-   onClickSaveCancel(cancelFlag?){
-
-   }
-
-
+  
 
 }

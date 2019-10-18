@@ -27,8 +27,9 @@
 						            <div class="col-sm-3">
 						            	<div class="input-group">
 							            	<label class="form-control-sm text-right" style="margin-bottom: 0px">Currency</label>
-							            	<select id="c-list" class="form-control form-control-sm cust-sm" [(ngModel)]="currencyCd" [disabled]="treaty == '' || treatyComp == '' || currencyList.length == 0" (change)="checkCode($event, 'currency')">
-							            		<option *ngFor="let c of currencyList" [value]="c.currencyCd">{{ c.currencyCd + ' - ' + c.description }}</option>
+							            	<select id="c-list" class="form-control form-control-sm cust-sm" [(ngModel)]="currencyCd" [disabled]="currencyList.length == 0" (change)="checkCode($event, 'currency')">
+							            		<option [value]="XXXXXX"></option>
+							            		<option *ngFor="let c of currencyList" [value]="c.currencyCd">{{ c.currencyCd + ' - ' + c.currencyDesc }}</option>
 							            	</select>
 						            	</div>
 						            </div>
@@ -49,7 +50,7 @@
 								<div class="form-group col-sm">
 									<div class="col-md-13 text-center">
 										<div class="cust-btn-container">
-										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+										<button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
 							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 										</div>
 									</div>
@@ -87,7 +88,7 @@
 
 <app-confirm-save #confirmSave (onYes)="onClickSaveCashCall()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSaveCashCall('cancel')" [url]="'/maintenance-clm'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSaveCashCall('cancel')" (no)="onClickCancelNo();" [url]="url" ></app-cancel-button>
 <app-mtn-treaty (selectedData)="setSelectedTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 <app-mtn-treaty #treatyCopyLOV (selectedData)="setSelectedCopyTreaty($event)" [hide]="hiddenTreaty"></app-mtn-treaty>
 

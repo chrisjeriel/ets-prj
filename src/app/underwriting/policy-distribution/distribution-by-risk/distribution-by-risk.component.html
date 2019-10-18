@@ -257,7 +257,7 @@
     </div>
     <div footer class="w-100 text-right">
 
-        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED' || warningModalCode == 'MODDED_COMM_RT'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED' || warningModalCode == 'MODDED_COMM_RT'|| warningModalCode == 'ALREADY_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
         <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>

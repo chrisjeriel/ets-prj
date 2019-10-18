@@ -145,7 +145,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
-  		
+  // 		var parameter;
+		// if(param !== undefined){
+		// 	parameter = param;
+		// }else{
+		// 	parameter = this.searchParams;
+		// }
+		
 		// if(param == undefined){
 		// 	delete this.searchParams.quotationNo;
 		// }
