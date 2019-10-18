@@ -2809,4 +2809,11 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndUnpostedMonths');	
 	}
 
+	getAcitMonthEnd(eomDate){
+		const params = new HttpParams()
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEnd',{params});	
+	}
+
 }

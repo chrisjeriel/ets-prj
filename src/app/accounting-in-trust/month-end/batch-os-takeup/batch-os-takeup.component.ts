@@ -31,6 +31,7 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.wsConnect();
+    this.getAcitMonthEnd();
   }
 
   ngOnDestroy() {
@@ -66,6 +67,17 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
     if ($event.nextId === 'Exit') {
       this.router.navigateByUrl('/');
     }
+  }
+
+  getAcitMonthEnd(eomDate?) {
+    var date = eomDate === undefined ? this.ns.toDateTimeString(0) : eomDate;
+
+    this.as.getAcitMonthEnd(date).subscribe(data => {
+      if(data['monthEnd'].length > 0) {
+        this.eomDate = this.ns.toDateTimeString(data['monthEnd'][0].eomDate).split('T')[0];
+        this.extLog = data['monthEnd'][0].batchOsReport;
+      }
+    });
   }
 
   onClickBookOS(force?) {
