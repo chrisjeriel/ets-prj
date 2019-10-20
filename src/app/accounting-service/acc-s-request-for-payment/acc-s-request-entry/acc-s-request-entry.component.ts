@@ -83,7 +83,7 @@ export class AccSRequestEntryComponent implements OnInit {
   prqStatList       : any;
   isReqAmtEqDtlAmts : boolean = false;
   warnMsg           : string = '';
-  existsInReqDtl      : boolean = false;
+  existsInReqDtl    : boolean = false;
   removeIcon        : boolean = false;
   fromSave          : boolean = false;
 
@@ -96,7 +96,7 @@ export class AccSRequestEntryComponent implements OnInit {
   paymentData  : any = {};
   paymentType  : any;
   passDataLov  : any = {
-    selector     :'',
+    selector     : '',
     payeeClassCd : ''
   };
 
@@ -108,12 +108,22 @@ export class AccSRequestEntryComponent implements OnInit {
     this.titleService.setTitle('Acct-Serv | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcsePaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
-        this.initDisabled = false;
+      if(this.rowData.reqId == ''){
+        if(Object.keys(params).length != 0){
+          this.saveAcsePaytReq.reqId = params['reqId'];
+          this.initDisabled = false;
+        }else{
+          this.initDisabled = true;
+        }
       }else{
-        this.initDisabled = true;
+        this.saveAcsePaytReq.reqId = this.rowData.reqId;
       }
+      // if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
+      //   this.saveAcsePaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
+      //   this.initDisabled = false;
+      // }else{
+      //   this.initDisabled = true;
+      // }
 
 
       this.getAcsePaytReq();
@@ -124,24 +134,41 @@ export class AccSRequestEntryComponent implements OnInit {
 
   getAcsePaytReq(){
     this.loadingFunc(true);
-    console.log(this.saveAcsePaytReq.reqId);
-    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
-                         .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
-    // var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS'))
-    //                      .pipe(map(([pr,pn,stat]) => { return { pr,pn,stat}; }));
+    // var subRes = forkJoin(this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACse_PAYMENT_REQUEST.STATUS'), this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId))
+    //                      .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
+
+    const subResKey = ['pn','stat'];
+    const arrSubRes = {
+      'pn'   : this.mtnService.getMtnPrintableName(''),
+      'stat' : this.mtnService.getRefCode('ACSE_PAYMENT_REQUEST.STATUS')
+    };
+
+    if(this.saveAcsePaytReq.reqId != '' && this.saveAcsePaytReq.reqId != null && this.saveAcsePaytReq.reqId != undefined){
+      $.extend(arrSubRes,{
+        'pr'  : this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),
+        'prq' : this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId)
+      });
+      subResKey.push('pr','prq');
+    }
+
+    var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+      var obj = {};
+      subResKey.forEach((e,i) => {obj[e] = a[i];});
+      return obj;
+    }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
-      var recPrq = data['prq']['acsePrqTrans'];
-      var totalReqAmts = (recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => Math.abs(a)+Math.abs(b),0);
-      //var totalReqAmts = 0;
       this.prqStatList = recStat;
 
       this.loadingFunc(false);
       if(!this.initDisabled){
-         var recPr =  data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+        var recPrq = data['prq']['acsePrqTrans'];
+        var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
+
+        var recPr =  data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate);
                                                recPn.forEach(e2 => {

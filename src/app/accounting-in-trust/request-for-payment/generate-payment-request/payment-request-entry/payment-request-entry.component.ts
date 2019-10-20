@@ -94,7 +94,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   paymentData  : any = {};
   paymentType  : any;
   passDataLov  : any = {
-    selector     :'',
+    selector     : '',
     payeeClassCd : ''
   };
 
@@ -105,12 +105,24 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcitPaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
-        this.initDisabled = false;
+      if(this.rowData.reqId == ''){
+        if(Object.keys(params).length != 0){
+          this.saveAcitPaytReq.reqId = params['reqId'];
+          this.initDisabled = false;
+        }else{
+          this.initDisabled = true;
+        }
       }else{
-        this.initDisabled = true;
+        this.saveAcitPaytReq.reqId = this.rowData.reqId;
       }
+
+      // if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
+      //   this.saveAcitPaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
+      //   this.initDisabled = false;
+      // }else{
+      //   this.initDisabled = true;
+      //   this.saveAcitPaytReq.reqId = this.rowData.reqId;
+      // }
 
       this.getAcitPaytReq();
     });
@@ -399,7 +411,6 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    // $('input').addClass('ng-dirty');
     this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);

@@ -474,6 +474,7 @@ import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tr
 import { JvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/jv-series/jv-series.component';
 import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
 import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
+import { CancelArCvJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar-cv-jv/cancel-ar-cv-jv.component';
 
 @NgModule({
     imports: [
@@ -952,6 +953,7 @@ import { OrSeriesComponent } from './maintenance/accounting-service/generate-num
         AcseDcbNoComponent,
         AcitTranTypeComponent,
         //AcseTranTypeComponent,
+        CancelArCvJvComponent,
     ],
 
   	providers: [

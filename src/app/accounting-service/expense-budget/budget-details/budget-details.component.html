@@ -78,34 +78,37 @@
 	 		  		<fieldset class="scheduler-border">
 	 		  			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 	 		  				<div class="container-fluid" style="padding-top: 7px;">
-	 		  					<div class="row">
-	 		  						<div class="col-sm-4"></div>
-	 		  						<div class="col-sm-4">
-	 		  							<div class="input-group">
-	 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
-	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [(ngModel)]="budgetYear">
-	 		  									<option value="2019">2019</option>
-	 		  									<option value="2018">2018</option>
-	 		  									<option value="2017">2017</option>
-	 		  									<option value="2016">2016</option>
-	 		  									<option value="2015">2015</option>
-	 		  									<option value="2014">2014</option>
-	 		  								</select>
-	 		  							</div>
-	 		  						</div>
-	 		  						<div class="col-sm-4"></div>
-	 		  					</div>
+	 		  					<form #myForm="ngForm">
+		 		  					<div class="row">
+		 		  						<div class="col-sm-4"></div>
+		 		  						<div class="col-sm-4">
+		 		  							<div class="input-group">
+		 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
+			 		  								<select name="select1" class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [ngModel]="budgetYear" (ngModelChange)="budgetYear=$event;getAcseBudgetExpense();form.control.markAsPristine();">
+			 		  									<!-- <option value="2019">2019</option>
+			 		  									<option value="2018">2018</option>
+			 		  									<option value="2017">2017</option>
+			 		  									<option value="2016">2016</option>
+			 		  									<option value="2015">2015</option>
+			 		  									<option value="2014">2014</option> -->
+			 		  									<option *ngFor="let i of budgetYearArr" value="{{ i }}">{{ i }}</option>
+			 		  								</select>
+		 		  							</div>
+		 		  						</div>
+		 		  						<div class="col-sm-4"></div>
+		 		  					</div>
+	 		  					</form>
 	 		  					<div class="row">
 			                        <div class="col-sm-12" style="padding: 0">
-			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
+			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (clickLOV)="showLov($event)" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
 			                        </div>
 	                    		</div>
 	                    		<div class="row" style="margin-top: -16px;">
 	                    			<div class="form-group col-sm" style="margin-bottom: 8px;">
 	                    				<div class="col-md-13 text-center">
 	                    					<div class="cust-btn-container">
-	                    						<button type="button" class="cust-btn"><a>Cancel</a></button>
-	                    						<button type="button" class="cust-btn"><a>Save</a></button>
+	                    						<button type="button" class="cust-btn" (click)="can.clickCancel()"><a>Cancel</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 	                    						<button type="button" class="cust-btn"><a>Print</a></button>
 	                    					</div>
 	                    				</div>
@@ -154,7 +157,7 @@
 			            </fieldset>
 			          </div>
 
-
+<app-lov #budYrLov [passData]="passDataLov" (selectedData)="setData($event)" [lovCheckBox]="lovCheckBox"></app-lov>
 <app-confirm-save  #con (onYes)="onSaveAcseBudgetExpense()"></app-confirm-save>
-<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog> <!-- checkCancel() does not exist -->
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
