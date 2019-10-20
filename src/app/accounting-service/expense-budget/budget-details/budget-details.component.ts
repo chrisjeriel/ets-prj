@@ -190,6 +190,10 @@ export class BudgetDetailsComponent implements OnInit {
   onRowClick(data){
     this.otherData = data;
   }
+
+  checkCancel() {
+    
+  }
 }
 
 

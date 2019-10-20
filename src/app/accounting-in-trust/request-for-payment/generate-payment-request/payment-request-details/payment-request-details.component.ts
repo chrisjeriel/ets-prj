@@ -240,19 +240,19 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   serviceFeeSubData: any = {
     tableData     : [],
-    tHeader       : ['Sub-Distribution of Pool & Munich Re','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
-    dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['cedingName','actualShrPct','currCd','currRt','actualShrAmt','localAmt'],
-    paginateFlag  : true,
+    tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded', 'Total Net Prem', 'Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
+    dataTypes     : ['text','currency','currency','percent','text','percent','currency','currency'],
+    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','currCd','currRt','actualShrAmt','localAmt'],
+    paginateFlag  : false,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
-    uneditable    : [true,true,true,true,true,true],
-    total         : [null,null,null,'Total','actualShrAmt','localAmt'],
-    widths        : ['400','100','1','100','auto','auto'],
+    uneditable    : [true,true,true,true,true,true,true,true],
+    total         : [null,null,null,null,null,'Total','actualShrAmt','localAmt'],
+    widths        : ['400','auto','auto','100','1','100','auto','auto'],
     pageID        : 'serviceFeeSubData',
-    pageLength    : 10,
+    pageLength    : 'unli'
   };
 
   passData : any = {
@@ -319,13 +319,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.loadingFunc(true);
-    var d = new Date();
-    this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
-    this.yearParam = d.getFullYear();
-
-    for(let x = d.getFullYear(); x >= 2018; x--) {
-      this.yearParamOpts.push(x);
-    }
 
     this.inwardPolBalData = this.acctService.getInwardPolicyKeys('PRQ');
     this.getPaytReqPrqTrans();
@@ -1352,6 +1345,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcctPrqServFee(gnrt?) {
+    var d = new Date();
+
+    for(let x = d.getFullYear(); x >= 2018; x--) {
+      this.yearParamOpts.push(x);
+    }
+
     setTimeout(() => {
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
@@ -1363,6 +1362,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.acctService.getAcctPrqServFee('normal', this.requestData.reqId).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        if(this.serviceFeeMainData.tableData.length == 0 && this.serviceFeeSubData.tableData.length == 0) {
+          
+          this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
+          this.yearParam = d.getFullYear();
+        } else {
+          this.qtrParam = this.serviceFeeSubData.tableData[0].quarter;
+          this.yearParam = this.serviceFeeSubData.tableData[0].sfeeYear;
+          
+        }
 
         this.servFeeMainTbl.refreshTable();
         this.servFeeSubTbl.refreshTable();
