@@ -1423,6 +1423,22 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnEmployee", {params});
     }
 
+    getMtnAcseChartAcct(param){
+    	const params = new HttpParams()
+    				.set('glAcctId', (param.glAcctId === null || param.glAcctId === undefined ? '' : param.glAcctId))
+    				.set('glAcctCategory', (param.glAcctCategory === null || param.glAcctCategory === undefined ? '' : param.glAcctCategory))
+    				.set('glAcctControl', (param.glAcctControl === null || param.glAcctControl === undefined ? '' : param.glAcctControl))
+    				.set('glAcctSub1', (param.glAcctSub1 === null || param.glAcctSub1 === undefined ? '' : param.glAcctSub1))
+    				.set('glAcctSub2', (param.glAcctSub2 === null || param.glAcctSub2 === undefined ? '' : param.glAcctSub2))
+    				.set('glAcctSub3', (param.glAcctSub3 === null || param.glAcctSub3 === undefined ? '' : param.glAcctSub3))
+    				.set('slTypeCd', (param.slTypeCd === null || param.slTypeCd === undefined ? '' : param.slTypeCd))
+    				.set('drCrTag', (param.drCrTag === null || param.drCrTag === undefined ? '' : param.drCrTag))
+    				.set('postTag', (param.postTag === null || param.postTag === undefined ? '' : param.postTag))
+    				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcct", {params});
+    }
+
     generateCVSeries(params){
     	let header : any = {
             headers: new HttpHeaders({

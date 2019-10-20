@@ -185,7 +185,24 @@
                 <div class="col-sm-12">
                 <div style="position: relative;">
                   <button class="cust-btn cust-button" (click)="viewTranDetails()">Print AE</button>
-                   <app-cust-editable-non-datatable [passData]="acctEntriesData" (newClick)="onRowClick($event)" #acctEntriesTbl></app-cust-editable-non-datatable>
+                   <app-cust-editable-non-datatable [passData]="acctEntriesData" (newClick)="onRowClick($event)" (clickLOV)="acctEntriesLOV($event)" (tableDataChange)="acctEntriesTableDataChange($event)" #acctEntriesTbl></app-cust-editable-non-datatable>
+                </div>
+                <div class="input-group" style="margin-top: 7px;">
+                    <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
+                    <label class="form-control-sm col-sm-2" >Variance</label>
+                    <!-- <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label> -->
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
+                </div>
+                <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N'">
+                    <div class="form-group col-sm">
+                      <div class="col-md-13 text-center">
+                        <br>
+                        <div class="cust-btn-container">
+                          <button *ngIf="genTaxData.checkFlag" type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+                          <button *ngIf="genTaxData.checkFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+                        </div>
+                      </div>
+                    </div>
                 </div>
                 </div>
               </div>
@@ -227,7 +244,7 @@
       </fieldset>
     </div>
 
-<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)">
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" [lovCheckBox]="lovCheckbox">
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/'+record?.exitLink" #mainCancel></app-cancel-button>

@@ -322,15 +322,15 @@ export class ArPreviewComponent implements OnInit {
       }
 
       this.accountingService.saveAcitAcctEntries(params).subscribe(a=>{
-        if(a['returnCode']==-1){
+        if(a['returnCode']==0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.acctEntryTbl.markAsPristine();
           console.log('marked as pristine');
           this.retrieveAcctEntry();
-        }else{
-          this.dialogIcon = 'error';
-          this.successDiag.open();
         }
       });
     //}

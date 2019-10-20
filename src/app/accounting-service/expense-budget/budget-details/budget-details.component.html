@@ -83,7 +83,7 @@
 	 		  						<div class="col-sm-4">
 	 		  							<div class="input-group">
 	 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
-	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear">
+	 		  								<select class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [(ngModel)]="budgetYear">
 	 		  									<option value="2019">2019</option>
 	 		  									<option value="2018">2018</option>
 	 		  									<option value="2017">2017</option>
@@ -97,7 +97,7 @@
 	 		  					</div>
 	 		  					<div class="row">
 			                        <div class="col-sm-12" style="padding: 0">
-			                            <app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
 			                        </div>
 	                    		</div>
 	                    		<div class="row" style="margin-top: -16px;">
@@ -113,41 +113,48 @@
 	                    		</div>
 	 		  				</div>	
 	 		  		</fieldset> 
-	 		  		<fieldset class="scheduler-border" style="margin-top: 8px ! important"> 
-			            <div class="row">
+	 		  		<div class="col-sm-12" style="padding-left: 0px !important;padding-right: 0px !important;">
+			            <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+			              <div class="row">
 			                <div class="col-sm-12">
-			                    <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
+			                  <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+			                    <div class="input-group">
+			                      <div class="col-sm-3" style="padding: 0">
 			                        <div class="input-group">
-			                            <div class="col-sm-3" style="padding: 0">
-			                                <div class="input-group">
-			                                    <label class="form-control-sm">Created By</label>
-			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-			                                </div>
-			                            </div>
-			                            <div class="col-sm-3" style="padding: 0">
-			                                <div class="input-group">
-			                                    <label class="form-control-sm">Date Created</label>
-			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
-			                                </div>
-			                            </div>
-			                            <div class="col-sm-3" style="padding: 0">
-			                                <div class="input-group">
-			                                    <label class="form-control-sm">Last Update By</label>
-			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-			                                </div>
-			                            </div>
-			                            <div class="col-sm-3" style="padding: 0">
-			                                <div class="input-group">
-			                                    <label class="form-control-sm">Last Update</label>
-			                                    <input type="text" class="form-control form-control-sm col-sm" placeholder="10/01/2018 11:49 AM" readonly>
-			                                </div>
-			                            </div>
+			                          <label class="form-control-sm">Created By</label>
+			                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
 			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Date Created</label>
+			                          <div class="dp-cont col-sm">
+			                            <datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
+			                          </div>
+			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Last Update By</label>
+			                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
+			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Last Update</label>
+			                          <div class="dp-cont col-sm">
+			                            <datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
+			                          </div>
+			                        </div>
+			                      </div>
 			                    </div>
+			                  </div>
 			                </div>
-			            </div>
-        			</fieldset>
+			              </div>
+			            </fieldset>
+			          </div>
 
 
-
-<!-- >>>>>>> 978e0a86388844d0fc07436f2327abfe7de2467c -->
+<app-confirm-save  #con (onYes)="onSaveAcseBudgetExpense()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>

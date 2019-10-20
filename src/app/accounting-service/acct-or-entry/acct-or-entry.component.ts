@@ -21,7 +21,9 @@ export class AcctOrEntryComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('reprintModal') reprintMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
+  @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
 
   passData: any = {
@@ -98,10 +100,13 @@ export class AcctOrEntryComponent implements OnInit {
   disablePayor: boolean = false;
   isPrinted: boolean = false;
   loading: boolean = false;
+  screenPrint: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
+  generatedArNo: string = '';
+  printMethod: string = '2';
 
   orInfo: any = {
     tranId: '',
@@ -238,6 +243,14 @@ export class AcctOrEntryComponent implements OnInit {
       this.passData.genericBtn = undefined;
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
       this.paytDtlTbl.refreshTable();
+    }
+  }
+
+  confirmNewOr(){
+    if(this.form.dirty){
+      this.leaveMdl.openNoClose();
+    }else{
+      this.newOr();
     }
   }
 
@@ -733,6 +746,30 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   print(){
+    this.canPrintScreen();
+    if(this.checkOrInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+      $('.required').focus().blur();
+      $('table input').focus().blur();
+      $('table select').focus().blur();
+    }
+    /*else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Allowable DCB Bank Account should match the AR Currency.';
+      this.successDiag.open();
+    }*/
+    else if(this.orAmtEqualsPayt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Total amount of payment details is not equal to the OR Amount.';
+      this.successDiag.open();
+    }else if(this.dcbStatusCheck()){
+
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }
     if(this.orAmtEqualsOrDtlPayt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'OR cannot be printed. Total Payments in OR Details must be equal to OR Amount';
@@ -742,30 +779,60 @@ export class AcctOrEntryComponent implements OnInit {
       this.dialogMessage = 'OR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
     }else{
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+      if(this.isPrinted){
+        /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
-      this.printMdl.openNoClose();
+        this.printMdl.openNoClose();*/
+        this.reprintMdl.openNoClose();
+      }else{
+        //this.loading = true;
+        this.printMdl.openNoClose();
+        //this.retrieveMtnAcitArSeries();
+      }
+    }
+  }
+
+  reprintMethod(){
+    if(this.printMethod == '1'){
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+                            this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
+      //this.printMdl.openNoClose();
+    }else if(this.printMethod == '2'){
+      this.as.acitGenerateReport('ACITR_AR', this.orInfo.tranId).subscribe(
+        (data:any)=>{
+          var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+                       var downloadURL = window.URL.createObjectURL(data);
+                       const iframe = document.createElement('iframe');
+                       iframe.style.display = 'none';
+                       iframe.src = downloadURL;
+                       document.body.appendChild(iframe);
+                       iframe.contentWindow.print();
+        });
     }
   }
 
   updateOrStatus(){
     if(!this.isPrinted){
+      this.save();
+      this.reprintMethod();
       let params: any = {
         tranId: this.orInfo.tranId,
         orNo: this.orInfo.orNo,
         updateUser: this.ns.getCurrentUser(),
         updateDate: this.ns.toDateTimeString(0)
       }
-      this.as.printAr(params).subscribe(
-        (data:any)=>{
-          if(data.returnCode == 0){
-            this.dialogIcon = 'error-message';
-            this.dialogIcon = 'An error has occured when updating OR status';
-          }else{
-            this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
-          }
-        }
-      );
+      setTimeout(()=>{
+         this.as.printOr(params).subscribe(
+           (data:any)=>{
+             if(data.returnCode == 0){
+               this.dialogIcon = 'error-message';
+               this.dialogIcon = 'An error has occured when updating OR status';
+             }else{
+               this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
+             }
+           }
+         );
+      },1000);
     }
   }
 
@@ -933,7 +1000,7 @@ export class AcctOrEntryComponent implements OnInit {
 
   //VALIDATION STARTS HERE
   checkOrInfoFields(): boolean{
-    if(
+    if(this.orInfo.orNo.length === 0 ||
        this.orDate.date.length === 0 || this.orDate.time.length === 0 ||
        this.orInfo.dcbYear.length === 0 || this.orInfo.dcbUserCd.length === 0 ||
        this.orInfo.dcbNo.length === 0 || this.orInfo.tranTypeCd.length === 0 ||
@@ -1015,6 +1082,17 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   //UTILITIES STARTS HERE
+
+  canPrintScreen(){
+    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+        (data:any)=>{
+          if(data.parameters.length !== 0){
+            this.screenPrint = data.parameters[0].paramValueV == 'Y';
+            this.printMethod = '2';
+          }
+        }
+    );
+  }
 
   changeTranType(data){
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
