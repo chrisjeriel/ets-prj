@@ -6,11 +6,11 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
-  selector: 'app-maint-cv-series-trst',
-  templateUrl: './maint-cv-series-trst.component.html',
-  styleUrls: ['./maint-cv-series-trst.component.css']
+  selector: 'app-cv-series',
+  templateUrl: './cv-series.component.html',
+  styleUrls: ['./cv-series.component.css']
 })
-export class MaintCvSeriesTrstComponent implements OnInit {
+export class CvSeriesComponent implements OnInit {
   
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
@@ -28,7 +28,7 @@ export class MaintCvSeriesTrstComponent implements OnInit {
       pageID: 1,
       uneditable: [true,true,true,true,true,true,true,true],
       keys: ['cvYear', 'cvNo', 'tranId', 'usedTag', 'createUser', 'createDate','updateUser', 'updateDate'],
-  }
+  };
 
   params : any = {
     cvFrom: '',
@@ -39,21 +39,22 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     updateUser: this.ns.getCurrentUser(),
     updateDate: this.ns.toDateTimeString(0)
   }
-
+  
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  maxCVSeries: number = 0;
   cancelFlag:boolean;
-
+  
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
+    this.retrieveMaxTran();
   }
 
-  retrieveCVSeries(){
+  retrieveCV(){
     this.table.loadingFlag = true;
-    this.maintenanceService.getCvSeries(this.params.cvYear,this.params.cvFrom,this.params.cvTo).subscribe((data:any) => {
+    this.maintenanceService.getAcseCvSeries(this.params.cvYear,this.params.cvFrom, this.params.cvTo).subscribe((data:any) => {
+      console.log(data);
       this.passData.tableData = [];
       for (var i = 0; i < data.cvSeries.length; i++) {
         this.passData.tableData.push(data.cvSeries[i]);
@@ -64,7 +65,11 @@ export class MaintCvSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.cvFrom <= this.maxARSeries){
+    if(this.checkField()){
+      this.dialogMessage = "Please Check Field Values!";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.params.cvFrom <= this.maxCVSeries){
       this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
@@ -73,8 +78,19 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     }
   }
 
+  checkField() :boolean{
+    if(this.params.cvYear.length !== 0 &&
+       this.params.cvTo.length !== 0 &&
+       this.params.cvFrom.length !== 0
+      ){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   generateCV(cancel?){
-    this.maintenanceService.generateCVSeries(this.params).subscribe((data:any) => {
+    this.maintenanceService.generateAcseCVSeries(this.params).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -87,9 +103,10 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('CV').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
+  retrieveMaxTran(){
+    this.maintenanceService.getAcseMaxTranSeries('CV',null).subscribe((data:any) => {
+      console.log(data)
+      this.maxCVSeries = data.maxTranNo.tranNo;
     });
   }
 }

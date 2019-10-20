@@ -1,0 +1,72 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Accounting In-Trust / DCB No.</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Daily Collection Batch Number Maintenance">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 20px">
+						<fieldset class="scheduler-border">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="col-sm-4"></div>
+										<label class="form-control-sm col-sm-1 text-right labels">DCB Status</label>
+										<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.status" (ngModelChange)="params.status=$event;retrieveMtnDCB()">
+											<option value="">All</option>
+											<option value="O">Open</option>
+											<option value="T">Temporarily Closed</option>
+											<option value="C">Closed</option>
+										</select>
+										<div class="col-sm-4"></div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="update()" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
+								</div>
+							</div>
+							<div class="form-row" style="margin-top: 13px !important;">
+							    <div class="form-group col-sm">
+							        <div class="col-md-12 text-center">
+							            <div class="cust-btn-container">
+							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="onClickCancel()"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="onClickSave()"><a>Save</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="dcbUser()"><a>DCB User Maintenance</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>Print</a></button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
+					    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+					        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+					            <div class="input-group" style="margin-bottom: -15px !important;">
+					                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.createUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.createDate"></datepicker>
+					                </div>
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.updateUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.updateDate"></datepicker>
+					                </div>
+					            </div>
+					        </div>
+					    </fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveDCBNo()"></app-confirm-save>
+<app-cancel-button (onYes)="saveDCBNo('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

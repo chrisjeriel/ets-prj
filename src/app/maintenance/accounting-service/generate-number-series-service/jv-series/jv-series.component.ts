@@ -6,12 +6,12 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
-  selector: 'app-maint-cv-series-trst',
-  templateUrl: './maint-cv-series-trst.component.html',
-  styleUrls: ['./maint-cv-series-trst.component.css']
+  selector: 'app-jv-series',
+  templateUrl: './jv-series.component.html',
+  styleUrls: ['./jv-series.component.css']
 })
-export class MaintCvSeriesTrstComponent implements OnInit {
-  
+export class JvSeriesComponent implements OnInit {
+   
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -19,7 +19,7 @@ export class MaintCvSeriesTrstComponent implements OnInit {
 
   passData: any = {
       tableData: [],
-      tHeader: ['CV Year','CV No', 'Tran ID', 'Used','Created By', 'Date Created', 'Last Update By', 'Last Update'],
+      tHeader: ['JV Year','JV No', 'Tran ID', 'Used','Created By', 'Date Created', 'Last Update By', 'Last Update'],
       dataTypes: ['year','text', 'number', 'checkbox','text','date', 'text', 'date'],
       searchFlag: true,
       infoFlag: true,
@@ -27,13 +27,13 @@ export class MaintCvSeriesTrstComponent implements OnInit {
       pageLength: 15,
       pageID: 1,
       uneditable: [true,true,true,true,true,true,true,true],
-      keys: ['cvYear', 'cvNo', 'tranId', 'usedTag', 'createUser', 'createDate','updateUser', 'updateDate'],
+      keys: ['jvYear', 'jvNo', 'tranId', 'usedTag', 'createUser', 'createDate','updateUser', 'updateDate'],
   }
 
   params : any = {
-    cvFrom: '',
-    cvTo:'',
-    cvYear: '',
+    jvFrom: '',
+    jvTo:'',
+    jvYear: '',
     createUser: this.ns.getCurrentUser(),
     createDate: this.ns.toDateTimeString(0),
     updateUser: this.ns.getCurrentUser(),
@@ -42,21 +42,22 @@ export class MaintCvSeriesTrstComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  maxJVSeries: number = 0;
   cancelFlag:boolean;
-
+  
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
+    this.retrieveMaxTran();
   }
 
-  retrieveCVSeries(){
+  retrieveJV(){
     this.table.loadingFlag = true;
-    this.maintenanceService.getCvSeries(this.params.cvYear,this.params.cvFrom,this.params.cvTo).subscribe((data:any) => {
+    this.maintenanceService.getAcseJvSeries(this.params.jvYear,this.params.jvFrom,this.params.jvTo).subscribe((data:any) => {
+      console.log(data);
       this.passData.tableData = [];
-      for (var i = 0; i < data.cvSeries.length; i++) {
-        this.passData.tableData.push(data.cvSeries[i]);
+      for (var i = 0; i < data.jvSeries.length; i++) {
+        this.passData.tableData.push(data.jvSeries[i]);
       }
       this.table.refreshTable();
       this.table.loadingFlag = false;
@@ -64,8 +65,12 @@ export class MaintCvSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.cvFrom <= this.maxARSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
+    if(this.checkField()){
+      this.dialogMessage = "Please Check Field Values!";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.params.jvFrom <= this.maxJVSeries){
+      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.jvFrom + " to " + this.params.jvTo + ".Please adjust your From-To range values.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
@@ -73,8 +78,19 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     }
   }
 
-  generateCV(cancel?){
-    this.maintenanceService.generateCVSeries(this.params).subscribe((data:any) => {
+  checkField() :boolean{
+    if(this.params.jvYear.length !== 0 &&
+       this.params.jvTo.length !== 0 &&
+       this.params.jvFrom.length !== 0
+      ){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  generateJV(cancel?){
+    this.maintenanceService.generateAcseJVSeries(this.params).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -87,9 +103,10 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('CV').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
+  retrieveMaxTran(){
+    this.maintenanceService.getAcseMaxTranSeries('JV',null).subscribe((data:any) => {
+      console.log(data)
+      this.maxJVSeries = data.maxTranNo.tranNo;
     });
   }
 }

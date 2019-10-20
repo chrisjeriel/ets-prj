@@ -128,7 +128,7 @@ export class JournalVoucherComponent implements OnInit {
 
   onClickAdd(event){
     this.accountingService.jvFilter = this.tranStat;
-      this.router.navigate(['/generate-jv', {from: 'add',
+    this.router.navigate(['/generate-jv', {from: 'add',
                                              exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 

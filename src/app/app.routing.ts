@@ -178,8 +178,12 @@ import { AccountingMtnComponent } from './maintenance/accounting-mtn/accounting-
 import { BusinessTypeComponent } from './maintenance/accounting-mtn/business-type/business-type.component';
 import { DcbUserComponent } from './maintenance/accounting-mtn/dcb-user/dcb-user.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
-
-
+import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-service/generate-number-series-service/generate-number-series-service.component';
+import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
+import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
+import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
+import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
+//import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
 
 const appRoutes: Routes = [
 
@@ -516,6 +520,12 @@ const appRoutes: Routes = [
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'generate-number-series-service',component: GenerateNumberSeriesServiceComponent},
+	{ path: 'mtn-withholding-tax',component: WithhodlingTaxComponent},
+	{ path: 'mtn-acit-dcb-no',component: AcitDcbNoComponent},
+	{ path: 'mtn-acse-dcb-no',component: AcseDcbNoComponent},
+	{ path: 'mtn-acit-tran-type',component: AcitTranTypeComponent},
+	//{ path: 'mtn-acse-tran-type',component: AcseTranTypeComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

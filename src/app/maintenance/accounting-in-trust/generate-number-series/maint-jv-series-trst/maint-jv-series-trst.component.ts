@@ -3,6 +3,7 @@ import { MaintenanceService, NotesService } from '@app/_services';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-maint-jv-series-trst',
@@ -14,6 +15,7 @@ export class MaintJvSeriesTrstComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   passData: any = {
       tableData: [],
@@ -41,6 +43,7 @@ export class MaintJvSeriesTrstComponent implements OnInit {
   dialogMessage: string = "";
   dialogIcon: string = "";
   maxARSeries: number = 0;
+  cancelFlag:boolean;
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 

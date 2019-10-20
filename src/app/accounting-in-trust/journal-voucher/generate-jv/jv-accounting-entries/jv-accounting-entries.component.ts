@@ -464,7 +464,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].balanceAmt
         }
 
-        if(total + this.jvDetails.jvAmt !== 0){
+        if(Math.abs(total) - this.jvDetails.jvAmt !== 0){
           this.errorFlag = true;
         }
       });

@@ -6,11 +6,11 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
-  selector: 'app-maint-cv-series-trst',
-  templateUrl: './maint-cv-series-trst.component.html',
-  styleUrls: ['./maint-cv-series-trst.component.css']
+  selector: 'app-or-series',
+  templateUrl: './or-series.component.html',
+  styleUrls: ['./or-series.component.css']
 })
-export class MaintCvSeriesTrstComponent implements OnInit {
+export class OrSeriesComponent implements OnInit {
   
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
@@ -19,44 +19,45 @@ export class MaintCvSeriesTrstComponent implements OnInit {
 
   passData: any = {
       tableData: [],
-      tHeader: ['CV Year','CV No', 'Tran ID', 'Used','Created By', 'Date Created', 'Last Update By', 'Last Update'],
-      dataTypes: ['year','text', 'number', 'checkbox','text','date', 'text', 'date'],
+      tHeader: ['OR Type','OR No', 'Tran ID', 'Used','Created By', 'Date Created', 'Last Update By', 'Last Update'],
+      dataTypes: ['text','text', 'number', 'checkbox','text','date', 'text', 'date'],
       searchFlag: true,
       infoFlag: true,
       paginateFlag: true,
       pageLength: 15,
       pageID: 1,
       uneditable: [true,true,true,true,true,true,true,true],
-      keys: ['cvYear', 'cvNo', 'tranId', 'usedTag', 'createUser', 'createDate','updateUser', 'updateDate'],
+      keys: ['orType','orNo', 'tranId', 'usedTag', 'createUser', 'createDate','updateUser', 'updateDate'],
   }
 
   params : any = {
-    cvFrom: '',
-    cvTo:'',
-    cvYear: '',
+    orType: 'VAT',
+    orFrom: '',
+    orTo:'',
     createUser: this.ns.getCurrentUser(),
     createDate: this.ns.toDateTimeString(0),
     updateUser: this.ns.getCurrentUser(),
     updateDate: this.ns.toDateTimeString(0)
-  }
+  };
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  maxORSeries: number = 0;
   cancelFlag:boolean;
-
+  
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
+    this.retrieveMaxTran();
   }
 
-  retrieveCVSeries(){
+  retrieveOrSeries(){
     this.table.loadingFlag = true;
-    this.maintenanceService.getCvSeries(this.params.cvYear,this.params.cvFrom,this.params.cvTo).subscribe((data:any) => {
+    this.maintenanceService.getAcseOrSeries(this.params.orType,this.params.orFrom,this.params.orTo).subscribe((data:any) => {
+      console.log(data);
       this.passData.tableData = [];
-      for (var i = 0; i < data.cvSeries.length; i++) {
-        this.passData.tableData.push(data.cvSeries[i]);
+      for (var i = 0; i < data.orSeries.length; i++) {
+        this.passData.tableData.push(data.orSeries[i]);
       }
       this.table.refreshTable();
       this.table.loadingFlag = false;
@@ -64,17 +65,32 @@ export class MaintCvSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.cvFrom <= this.maxARSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
+    if(this.checkField()){
+      this.dialogMessage = "Please Check Field Values!";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else{
+    }else if(this.params.orFrom <= this.maxORSeries){
+      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.orFrom + " to " + this.params.orTo + ".Please adjust your From-To range values.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else {
       this.confirm.confirmModal();
     }
   }
 
-  generateCV(cancel?){
-    this.maintenanceService.generateCVSeries(this.params).subscribe((data:any) => {
+  checkField() :boolean{
+    if(this.params.orType.length !== 0 &&
+       this.params.orTo.length !== 0 &&
+       this.params.orFrom.length !== 0
+      ){
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  generateOR(cancel?){
+    this.maintenanceService.generateORSeries(this.params).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -87,9 +103,10 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('CV').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
+  retrieveMaxTran(){
+    this.maintenanceService.getAcseMaxTranSeries('OR',this.params.orType).subscribe((data:any) => {
+      console.log(data)
+      this.maxORSeries = data.maxTranNo.tranNo;
     });
   }
 }
