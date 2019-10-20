@@ -245,18 +245,11 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     getAccessibleModules() {
-        this.accessibleModules = this.userService.getAccessModules();
-
         if (this.accessibleModules.length <= 0) {
             console.log("Page reloaded, retrieve modules again.");
             this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
 
-            this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {
-                this.userService.setAccessModules(data['modulesList']);
-                this.userService.emitAccessModules(data['modulesList']);
-
-                this.accessibleModules = this.userService.getAccessModules();
-            });
+            this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
         }
     }
 

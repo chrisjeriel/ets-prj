@@ -2,16 +2,24 @@
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from '@environments/environment';
 import { User } from '@app/_models';
-import { Subject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-    constructor(private http: HttpClient) { }
 
-    public accessibleModules = new Subject<any>();
+    private accessibleModulesSubject: BehaviorSubject<any>;
+    public accessibleModules = new Observable<string[]>();
     public moduleIdObs = new Subject<string>();
-    public accessibleModulesArr: string[] = [];
+    /*public accessibleModulesArr: string[] = [];
+*/
+
+    constructor(private http: HttpClient) {
+        this.moduleIdObs.next("MAIN");
+        this.accessibleModulesSubject = new BehaviorSubject<any>(JSON.parse(localStorage.getItem('accessModules')));
+        this.accessibleModules = this.accessibleModulesSubject.asObservable();
+    }
+   
 
     getAll() {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
@@ -74,20 +82,21 @@ export class UserService {
         };
         return this.http.post(environment.prodApiUrl + '/user-service/saveMtnUserGrp',params,header);
     }
-
+/*
     setAccessModules(data) {
         this.accessibleModulesArr = data;
     }
 
     getAccessModules() {
         return this.accessibleModulesArr;
-    }
+    }*/
 
     emitAccessModules(val) {
-        this.accessibleModules.next(val);
+        this.accessibleModulesSubject.next(val);
     }
 
     emitModuleId(val) {
         this.moduleIdObs.next(val);
     }
+
 }

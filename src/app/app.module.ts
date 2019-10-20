@@ -22,6 +22,7 @@ import { fakeBackendProvider } from './_helpers';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { UnsavedChangesGuard } from './_guards';
+import { ModuleAccessGuard } from '@app/_guards';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -937,6 +938,7 @@ import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.co
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
+        ModuleAccessGuard,
         // provider used to create fake backend
         fakeBackendProvider,
         DecimalPipe

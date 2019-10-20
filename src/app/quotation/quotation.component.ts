@@ -76,19 +76,16 @@ export class QuotationComponent implements OnInit {
   approverList: any[];
   approver:string = '';
   exitLink:string;
-  accessibleModules:string [] = [];
+  accessibleModules:any [] = [];
 
 	ngOnInit() {
       this.sub = this.route.params.subscribe(params => {
           this.line = params['line'];
           this.inquiryFlag = params['inquiry'];
-          console.log("params['inquiry'] " + params['inquiry']);
-          console.log("QUOTATION COMPONENT: " + JSON.stringify(params));
           this.exitLink = params['exitLink'];
-          this.accessibleModules = this.userService.getAccessModules();
-      });
 
-      
+          this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
+      });
 	}
 
 	showApprovalModal(content) {
@@ -135,15 +132,10 @@ export class QuotationComponent implements OnInit {
 		 // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
 		 // 	  $event.preventDefault();
    //   }                   
-  		if ($event.nextId === 'Exit') {
-        $event.preventDefault();
-    		this.router.navigateByUrl(this.exitLink);
-  		} else 
-
   		if ($event.nextId === 'approval-tab') {
 			$event.preventDefault();
       this.showApprovalModal(this.content);
-		}else
+		  }else
 
       if ($event.nextId === 'Print') {
         $event.preventDefault();
@@ -168,6 +160,9 @@ export class QuotationComponent implements OnInit {
         })
 
 
+      } else if ($event.nextId === 'Exit') {
+        $event.preventDefault();
+        this.router.navigateByUrl(this.exitLink);
       }
  
   	}

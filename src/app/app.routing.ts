@@ -2,8 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
-import { RegisterComponent } from './register';
-import { AuthGuard, UnsavedChangesGuard } from './_guards';
+import { AuthGuard, UnsavedChangesGuard, ModuleAccessGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
 import { HoldCoverMonitoringListComponent } from './quotation/quotation-inquiry/hold-cover-monitoring-list/hold-cover-monitoring-list.component';
@@ -186,57 +185,203 @@ const appRoutes: Routes = [
 
 
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'quotation', component: QuotationComponent, canActivate: [AuthGuard], canDeactivate: [UnsavedChangesGuard] },
-    { path: 'policy-issuance', component: PolicyIssuanceComponent ,canDeactivate: [UnsavedChangesGuard]},
-    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
-    { path: 'register', component: RegisterComponent },
-    { path: 'quotation-inquiry', component: QuotationInquiryComponent },
-    { path: 'hold-cover-monitoring', component: HoldCoverMonitoringListComponent },
-    { path: 'notes', component: NotesComponent },
-    { path: 'quotation-processing', component: QuotationProcessingComponent },
-    { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent },
-    { path: 'policy', component: PolicyIssuanceComponent },
-    { path: 'create-policy', component: PolCreatePARComponent },
-    { path: 'create-alteration', component: PolCreateAlterationPARComponent },
-    { path: 'policy-listing', component: ParListingComponent },
-    { path: 'alt-policy-listing', component: AltParListingComponent },
-    { path: 'expiry-listing', component: ExpiryListingComponent },
-    { path: 'quotation-holdcover', component: HoldCoverComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'policy-printing', component: PolicyPrintingComponent },
-    { path: 'policy-holdcover', component: PolicyToHoldCoverComponent },
-    { path: 'change-quote-status', component: ChangeQuoteStatusComponent },
-    { path: 'policy-inquiry', component: PolicyInquiryComponent },
-    { path: 'pol-dist-list', component: PolDistListComponent },
-    { path: 'pol-dist', component: PolDistComponent },
-    { path: 'policy-dist', component: PolicyDistributionComponent },
-    { path: 'create-open-cover', component: PolCreateOpenCoverComponent,  }, //canDeactivate: [UnsavedChangesGuard]
-    { path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
-    { path: 'update-info', component: UpdateInformationComponent },
-    { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
+    { path: 'quotation', component: QuotationComponent, 
+    		canDeactivate: [UnsavedChangesGuard], 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'QUOTE001', verifyWithData: true } 
+   	},
+   	{ path: 'quotation-processing', component: QuotationProcessingComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'QUOTE001'} 
+    },
+
+    { path: 'quotation-inquiry', component: QuotationInquiryComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'QUOTE012' } 
+    },
+
+    { path: 'quotation-holdcover', component: HoldCoverComponent, 
+    		canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'QUOTE013'} 
+    },
+
+    { path: 'hold-cover-monitoring', component: HoldCoverMonitoringListComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'QUOTE014' } 
+    },
+    { path: 'change-quote-status', component: ChangeQuoteStatusComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'QUOTE015'}
+	},
+
+	/*Disabled Quotation Modules
+	{ path: 'open-cover-processing', component: OpenCoverProcessingComponent },
+    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
     { path: 'open-cover', component: OpenCoverComponent },
+	*/
+
+
+
+
+    { path: 'create-policy', component: PolCreatePARComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL001'} 
+   	},
+    { path: 'policy', component: PolicyIssuanceComponent,
+		    canDeactivate: [UnsavedChangesGuard], 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL002', verifyWithData: true }
+	},
+    { path: 'policy-issuance', component: PolicyIssuanceComponent, 
+    		canDeactivate: [UnsavedChangesGuard], 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL002', verifyWithData: true }
+   	},
+    { path: 'policy-issuance-alt', component: PolicyIssuanceAltComponent, 
+    		canDeactivate: [UnsavedChangesGuard], 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL002', verifyWithData: true } 
+    },
+    { path: 'policy-listing', component: ParListingComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL012'}
+	},
+    { path: 'create-alteration', component: PolCreateAlterationPARComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL013'} 
+   	},
+   	{ path: 'alt-policy-listing', component: AltParListingComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL016'} 
+   	},
+
+   	{ path: 'create-open-cover', component: PolCreateOpenCoverComponent,  
+   			canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL017'} 
+   	}, //canDeactivate: [UnsavedChangesGuard]
+
+   	{ path: 'create-open-cover-letter', component: PolIssuanceOpenCoverLetterComponent, 
+   			canDeactivate: [UnsavedChangesGuard], 
+   			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL017', verifyWithData: true }
+   	},
+
+   	{ path: 'open-cover-list', component: PolOpenCovListComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard], 
+    		data: { moduleId : 'POL020'} 
+    },
+   	{ path: 'policy-inquiry', component: PolicyInquiryComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL021'}
+   	},
+   	{ path: 'policy-information', component: PolicyInformationComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL022', verifyWithData: true}
+   	},
+   	{ path: 'pol-summarized-inq', component: PolSummarizedInqComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL023', verifyWithData: true}
+   	},
+   	{ path: 'pol-oc-inquiry', component: PolOcInquiryComponent,
+   			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL024'} 
+	},
+    { path: 'extract-expiring-policies', component: ExtractExpiringPoliciesComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL025'} 
+	},
+	{ path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL026'}
+	},
+	{ path: 'expiry-listing', component: ExpiryListingComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL027'} //and POL028 
+	},
+	{ path: 'policy-holdcover', component: PolicyToHoldCoverComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL029'} 
+	},
+	{ path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL030'} 
+	},
+    { path: 'policy-printing', component: PolicyPrintingComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL031'}
+	},
+	{ path: 'update-info', component: UpdateInformationComponent, 
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL032'}
+	},
+	{ path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL032'}
+	},
+    { path: 'pol-util-installment', component: UpdateInstallmentComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL033'}
+	},
+	{ path: 'spoil-pol-alt', component: SpoilPolAltComponent, canDeactivate: [UnsavedChangesGuard],
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL034'}
+	},
+	{ path: 'pol-dist', component: PolDistComponent,
+			canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL035'}
+	},
+    
+    { path: 'pol-dist-list', component: PolDistListComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL036'}
+	},
+    { path: 'policy-dist', component: PolicyDistributionComponent, 
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL038', verifyWithData: true } //and POL037
+	},
+    
+    { path: 'batch-processing', component: PolBatchProcessingComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL039' } //and POL040
+	},
+    
+    { path: 'negate-distribution', component: NegateDistributionComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL041'}
+    },
+    { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL042', verifyWithData: true }
+	},
+    { path: 'pol-value-coverage', component: PolValueCoverageComponent , canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'POL043', verifyWithData: true }
+    },
+
+
+    
+    
+    
+    
+
+    
     { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },//, canDeactivate: [UnsavedChangesGuard] },
     { path: 'clm-gen-info-claim', component: ClmGenInfoClaimComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'claims-claim', component: ClaimComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'negate-distribution', component: NegateDistributionComponent },
-    { path: 'purge-extracted-policy', component: PurgeExtractedPolicyComponent },
-    { path: 'update-info', component: UpdateInformationComponent },
-    { path: 'open-cover-processing', component: OpenCoverProcessingComponent },
-    { path: 'open-cover', component: OpenCoverComponent },
+    
     { path: 'payment-request', component: PaymentRequestsComponent },
-    { path: 'negate-distribution', component: NegateDistributionComponent },
     { path: 'maintenance-line', component: PolMxLineComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-line-class', component: LineClassComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'batch-processing', component: PolBatchProcessingComponent },
+    
     { path: 'maintenance-deductible', component:  DeductibleComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-risk-list', component: RiskListComponent },
     { path: 'maintenance-risk', component: RiskFormComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'claims-inquiry', component: ClmClaimsInquiryComponent },
     { path: 'clm-change-claim-status', component: ClmChangeClaimStatusComponent },
-    { path: 'pol-util-gen-info', component: UpdateGeneralInfoComponent },
-    { path: 'pol-util-installment', component: UpdateInstallmentComponent },
+    
     /*{ path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },*/
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent, canDeactivate: [UnsavedChangesGuard]  },
@@ -250,7 +395,7 @@ const appRoutes: Routes = [
     { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'trial-balance', component: TrialBalanceComponent },
-    { path: 'open-cover-inquiry', component: OpenCoverInquiryComponent },
+    
     { path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'print-registers', component: RegistersComponent },
     { path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent },
@@ -307,12 +452,12 @@ const appRoutes: Routes = [
     { path: 'users', component: UsersComponent },
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
     { path: 'modules-maintenance', component: ModulesMaintenanceComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'policy-information', component: PolicyInformationComponent},
-    { path: 'pol-oc-inquiry', component: PolOcInquiryComponent},
-    { path: 'open-cover-list', component: PolOpenCovListComponent},
-    { path: 'pol-hold-cov-monitoring', component: PolHoldCovMonitoringComponent},
-    { path: 'spoil-pol-alt', component: SpoilPolAltComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'pol-summarized-inq', component: PolSummarizedInqComponent},
+    
+    
+    
+    
+    
+    
     // { path: 'maintenance-insured', component: InsuredListComponent},
     // { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'adv-word-mtn', component: AdviceWordingsComponent },
@@ -321,7 +466,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-endt', component: EndorsementComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-object', component: ObjectComponent },
     { path: 'maintenance-sec-cov', component: SectionCoverComponent, canDeactivate: [UnsavedChangesGuard] }, //deza was here added unsavedChangesGaurd #8221 MTN112
-    { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard] },
+    
     { path: 'maintenance-qu-pol', component: QuotationAndPolicyComponent},
     { path: 'maintenance-quote-wording', component: QuoteWordingComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-qu-reason', component: QuoteStatusReasonComponent },
@@ -331,7 +476,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-currency-rate', component: MtnCurrencyRateComponent },
     { path: 'maintenance-cat-peril', component: MtnCATPerilComponent },
     { path: 'maintenance-cresta-zone', component: MtnCrestaComponent ,  canDeactivate: [UnsavedChangesGuard]},
-    { path: 'pol-value-coverage', component: PolValueCoverageComponent , canDeactivate: [UnsavedChangesGuard] },
+    
     { path: 'maintenance-insured', component: InsuredListComponent },
     { path: 'insured-mtn', component: InsuredComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-type-of-cession', component: TypeOfCessionComponent, canDeactivate: [UnsavedChangesGuard] },
