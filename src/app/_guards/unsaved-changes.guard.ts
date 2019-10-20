@@ -14,7 +14,7 @@ export interface CanComponentDeactivate {
 export class UnsavedChangesGuard implements CanDeactivate<CanComponentDeactivate> {
     constructor(private modalService:NgbModal){}
     canDeactivate():Observable<boolean> | Promise<boolean> | boolean {
-    	if( $('.cancel-mdl-header').length != 1 && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0 ){
+    	if( $('.cancel-mdl-header').length != 1 && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude):not(.not-form)').length != 0 ){
     		// if(!confirm("Leave without saving changes?"))
         // 		return false;
         // 	else

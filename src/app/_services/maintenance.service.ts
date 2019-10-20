@@ -49,6 +49,13 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
 	}
 
+	newGetMtnInsuredList(searchParams){
+		
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params:searchParams});
+	}
+
+
+
 	// getEndtCode(lineCd?:string,endtCd?:number){
 	// 	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
 	// 		+(lineCd!==undefined ? '?lineCd='+lineCd : '')

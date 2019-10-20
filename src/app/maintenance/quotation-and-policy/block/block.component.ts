@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -6,13 +6,14 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-block',
   templateUrl: './block.component.html',
   styleUrls: ['./block.component.css']
 })
-export class BlockComponent implements OnInit {
+export class BlockComponent implements OnInit, AfterViewInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
@@ -51,12 +52,20 @@ export class BlockComponent implements OnInit {
     disableGeneric: true
   }
   cancelFlag:boolean;
+  formGroup: FormGroup = new FormGroup({});
 
   constructor(private ns:NotesService,private ms:MaintenanceService,private titleService: Title) { }
 
   ngOnInit() {
     this.titleService.setTitle('Mtn | Block');
   	setTimeout(a=>this.table.refreshTable(),0)
+  }
+
+  ngAfterViewInit() {
+    this.table.loadingFlag = false;
+    this.table.form.forEach((f,i)=>{
+      this.formGroup.addControl('table'+i, f.control); 
+    })
   }
 
   getBlock(){
@@ -108,6 +117,7 @@ export class BlockComponent implements OnInit {
   		if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
+            this.formGroup.markAsPristine();
             this.getBlock();
         }else{
             this.dialogIcon = "error";
@@ -336,8 +346,21 @@ export class BlockComponent implements OnInit {
             }
 
         }
+        this.passTable.tableData = [];
+        this.passTable.disableAdd = true;
+        this.passTable.disableGeneric = true;
+        this.table.refreshTable();
 
         this.ns.lovLoader(data.ev, 0);
+    }
+
+    onRowClick(data){
+      this.info = data;
+      if(data==null){
+        this.passTable.disableGeneric = true;
+      }else{
+        this.passTable.disableGeneric = false;
+      }
     }
 
 }

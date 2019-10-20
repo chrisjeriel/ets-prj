@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -10,13 +10,17 @@ import { MtnTreatyComponent } from '@app/maintenance/mtn-treaty/mtn-treaty.compo
 import { Title } from '@angular/platform-browser';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { FormGroup } from '@angular/forms';
+
+
+
 
 @Component({
   selector: 'app-treaty-limit',
   templateUrl: './treaty-limit.component.html',
   styleUrls: ['./treaty-limit.component.css']
 })
-export class TreatyLimitComponent implements OnInit, OnDestroy {
+export class TreatyLimitComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild('treatyLimitTable') treatyLimitTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyLayerTable') treatyLayerTable: CustEditableNonDatatableComponent;
   	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
@@ -118,6 +122,17 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 
 	subscription: Subscription = new Subscription();
 
+	formGroup: FormGroup = new FormGroup({});
+
+	ngAfterViewInit() {
+	  this.treatyLayerTable.form.forEach((f,i)=>{
+	    this.formGroup.addControl('treatyLayerTable'+i, f.control); 
+	  })
+	  this.treatyLimitTable.form.forEach((f,i)=>{
+	    this.formGroup.addControl('treatyLimitTable'+i, f.control); 
+	  }) 
+	}
+
 	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
 	ngOnInit() {
@@ -161,7 +176,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 																		i.treatyId = i.treatyId == '' ? '' : String(i.treatyId).padStart(2, '0');
 																		return i;
 																	});
-			// this.treatyLayerData.disableAdd = false;
+			this.treatyLayerData.disableAdd = false;
 			// this.treatyLayerData.disableGeneric = false;
 			this.treatyLayerTable.refreshTable();
 	  		this.treatyLayerTable.onRowClick(null, this.treatyLayerData.tableData[0]);
@@ -201,7 +216,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 		this.selected = data;
 		this.treatyLayerSelected = data;
 		this.treatyLayerData.disableGeneric = this.treatyLayerSelected == null || this.treatyLayerSelected == '' || this.treatyLayerSelected.showMG == undefined;
-		this.treatyLayerData.disableAdd = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId != '';
+		//this.treatyLayerData.disableAdd = this.treatyLimitSelected == null || this.treatyLimitSelected == '' || this.treatyLimitSelected.treatyLimitId != '';
 	}
 
 	onTreatyLayerClickDelete(ev) {
@@ -292,7 +307,7 @@ export class TreatyLimitComponent implements OnInit, OnDestroy {
 	}
 
 	lineClassChanged(ev) {
-		this.lineClassCdDesc = ev.target.options[ev.target.selectedIndex].text;
+		this.lineClassCdDesc = ev=='DEF' ?'Default (Applicable to Line Class without setup)': this.lineClassList.filter(a=>a.lineClassCd == ev)[0].lineClassCdDesc;
 
 		if(this.lineCd != '' && this.lineClassCd != '' && this.currencyCd != '') {
 			this.getMtnTreatyLimit();

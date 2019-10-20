@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -8,13 +8,16 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { MtnTreatyComponent } from '@app/maintenance/mtn-treaty/mtn-treaty.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { Title } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
+
 
 @Component({
   selector: 'app-treaty-share',
   templateUrl: './treaty-share.component.html',
   styleUrls: ['./treaty-share.component.css']
 })
-export class TreatyShareComponent implements OnInit {
+export class TreatyShareComponent implements OnInit,AfterViewInit {
+	formGroup: FormGroup = new FormGroup({});
 	@ViewChild('treatyYearTable') treatyYearTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyCommTable') treatyCommTable: CustEditableNonDatatableComponent;
 	@ViewChild('treatyShareTable') treatyShareTable: CustEditableNonDatatableComponent;
@@ -189,6 +192,19 @@ export class TreatyShareComponent implements OnInit {
 
 	constructor(private ns: NotesService, private ms: MaintenanceService, public modalService: NgbModal, private titleService: Title) { }
 
+
+  ngAfterViewInit() {
+      this.treatyCommTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('treatyCommTable'+i, f.control); 
+      })
+      this.treatyYearTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('treatyYearTable'+i, f.control); 
+      }) 
+      this.treatyShareTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('treatyShareTable'+i, f.control); 
+      }) 
+  }
+
 	ngOnInit() {
 		this.titleService.setTitle("Mtn | Treaty Share");
 		setTimeout(() => {
@@ -203,6 +219,7 @@ export class TreatyShareComponent implements OnInit {
 	}
 
 	changCurr(data){
+		this.currencyCd = data;
 		this.getMtnTreatyComm();
 	}
 
@@ -257,7 +274,7 @@ export class TreatyShareComponent implements OnInit {
 
 	getMtnTreatyCommRate() {
 		if(this.treatyYearSelected != null) {
-			this.treatyCommData.tableData = this.treatyYearSelected.treatyCommList;
+			this.treatyCommData.tableData =this.treatyYearSelected.treatyCommList == undefined ?[]: this.treatyYearSelected.treatyCommList;
 
 			this.treatyCommTable.refreshTable();
 			this.treatyCommTable.onRowClick(null, this.treatyCommData.tableData[0]);
@@ -289,7 +306,7 @@ export class TreatyShareComponent implements OnInit {
 				this.treatyShareData.disableAdd = this.treatyCommSelected.treatyType == 'F';
 			});*/
 
-			this.treatyShareData.tableData = this.treatyCommSelected.treatyShareList;
+			this.treatyShareData.tableData = this.treatyCommSelected.treatyShareList == undefined ?[]:this.treatyCommSelected.treatyShareList;
 			this.treatyShareTable.refreshTable();
 			this.treatyShareTable.onRowClick(null, this.treatyShareData.tableData[0]);
 			this.treatyShareData.disableAdd = this.treatyCommSelected.treatyType == 'F';
@@ -734,6 +751,7 @@ export class TreatyShareComponent implements OnInit {
 				this.dialogIcon = "success";
 				this.successDialog.open();
 				this.getMtnTreatyComm();
+				this.formGroup.markAsPristine();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();
@@ -761,7 +779,8 @@ export class TreatyShareComponent implements OnInit {
 		  	createDate: this.ns.toDateTimeString(0),
 		  	createUser: this.ns.getCurrentUser(),
 		  	updateDate: this.ns.toDateTimeString(0),
-		  	updateUser: this.ns.getCurrentUser()
+		  	updateUser: this.ns.getCurrentUser(),
+		  	currencyCd: this.currencyCd
 		}
 
 		this.ms.copyTreatyShareSetup(JSON.stringify(params)).subscribe(data => {

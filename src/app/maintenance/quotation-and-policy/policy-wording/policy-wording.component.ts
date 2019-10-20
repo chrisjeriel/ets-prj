@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
@@ -9,19 +9,25 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { FormGroup } from '@angular/forms';
+
+
+  
+
 
 @Component({
   selector: 'app-policy-wording',
   templateUrl: './policy-wording.component.html',
   styleUrls: ['./policy-wording.component.css']
 })
-export class PolicyWordingComponent implements OnInit, OnDestroy {
+export class PolicyWordingComponent implements OnInit, OnDestroy, AfterViewInit {
 	@ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
 	@ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   	@ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
+  	formGroup: FormGroup = new FormGroup({});
 	policyWordingData: any = {
 	  	tableData: [],
 	  	tHeader: ['Policy Word Code', 'Wording Title', 'Wordings', 'Paragraph Type', 'Active', 'Default', 'Open Cover', 'Remarks'],
@@ -101,6 +107,13 @@ export class PolicyWordingComponent implements OnInit, OnDestroy {
   		this.titleService.setTitle("Mtn | Policy Wording");
   		setTimeout(() => { this.table.refreshTable(); }, 0);
   	}
+
+  	ngAfterViewInit() {
+      this.table.loadingFlag = false;      
+      this.table.form.forEach((f,i)=>{
+        this.formGroup.addControl('table'+i, f.control); 
+      })
+  }
 
   	ngOnDestroy() {
   		this.subscription.unsubscribe();

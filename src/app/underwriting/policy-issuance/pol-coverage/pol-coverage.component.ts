@@ -28,7 +28,8 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('catPerils') catPerilstable: CustEditableNonDatatableComponent;
   @ViewChild('cancelCov') cancelBtn : CancelButtonComponent;
   @ViewChild('cancelCat') cancelCatBtn : CancelButtonComponent;
-  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('diagCov') successDiag: SucessDialogComponent;
+  @ViewChild('diagCat') successDiagCAT: SucessDialogComponent;
   @ViewChild('successAlt') successAlt: SucessDialogComponent;
   @ViewChild('confirmSave') confirmSave: ConfirmSaveComponent;
   @ViewChild(MtnSectionCoversComponent) secCoversLov: MtnSectionCoversComponent;
@@ -796,9 +797,12 @@ export class PolCoverageComponent implements OnInit {
                 infoData[i].premAmt = infoData[i].cumPrem
               }
 
+              
+
               this.passDataSectionCover.tableData.push(infoData[i]);
               this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y' ? this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
-              
+
+
               if(this.line == 'CAR' || this.line == 'EAR'){
                 if(infoData[i].section == 'I'){
                   if(infoData[i].addSi == 'Y'){
@@ -910,9 +914,10 @@ export class PolCoverageComponent implements OnInit {
   getEditableCov(){
     for(let data of this.passDataSectionCover.tableData){
       data.uneditable = [];
-      if(data.discountTag == 'Y'){
-        data.uneditable.pop();
-      }else if(data.discountTag == 'N' ) {
+      if((this.line == 'CAR' && data.coverCd == 56) || (this.line == 'EAR' && data.coverCd == 58)){
+        data.uneditable.push('addSi');
+      }
+      if(data.discountTag == 'N' ) {
           data.uneditable.push('cumPrem');
       }
     }
@@ -930,7 +935,10 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onClickCat(){
-    if(!this.alteration){
+
+    this.getCATPerils();
+    this.catPerilMdl.openNoClose();
+    // if(!this.alteration){
       // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
       //   this.promptClickCat = true;
       //   this.onClickSave();
@@ -941,9 +949,7 @@ export class PolCoverageComponent implements OnInit {
       //     this.catPerilMdl.openNoClose();
       //   },0);
       // }
-      this.getCATPerils();
-      this.catPerilMdl.openNoClose();
-    }else{
+    // }else{
       // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
       //   this.promptClickCat = true;
       //   this.onClickSaveAlt();
@@ -954,9 +960,9 @@ export class PolCoverageComponent implements OnInit {
       //     this.catPerilMdlAlt.openNoClose();
       //   },0);
       // }
-      this.getCATPerils();
-      this.catPerilMdlAlt.openNoClose();
-    }
+      // this.getCATPerils();
+      // this.catPerilMdlAlt.openNoClose();
+    // }
   }
 
   CATPerils() {
@@ -1007,26 +1013,28 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getCATPerils(){
-    if(!this.alteration){
-      this.underwritingservice.getCATPeril(null,this.policyId).subscribe((data:any) => {
-        
-        var catPerilData = data.policy.catPeril;
-        this.passDataCATPerils.tableData = [];
-        for(var i = 0; i < catPerilData.length;i++){
-          this.passDataCATPerils.tableData.push(catPerilData[i]);
-        }
-        this.catPerilstable.refreshTable();
-      });
-    }else{
-      this.underwritingservice.getCATPeril(null,this.policyIdAlt).subscribe((data:any) => {
-        var catPerilData = data.policy.catPeril;
-        this.passDataCATPerils.tableData = [];
-        for(var i = 0; i < catPerilData.length;i++){
-          this.passDataCATPerils.tableData.push(catPerilData[i]);
-        }
-        this.catPerilstable.refreshTable();
-      });
-    }
+   this.underwritingservice.getCATPeril(null,this.alteration? this.policyIdAlt : this.policyId).subscribe((data:any) => {
+      
+      var catPerilData = data.policy.catPeril;
+      this.passDataCATPerils.tableData = [];
+      for(var i = 0; i < catPerilData.length;i++){
+        this.passDataCATPerils.tableData.push(catPerilData[i]);
+      }
+      this.catPerilstable.markAsPristine();
+      this.catPerilstable.refreshTable();
+    });
+    // if(!this.alteration){
+     
+    // }else{
+    //   this.underwritingservice.getCATPeril(null,this.policyIdAlt).subscribe((data:any) => {
+    //     var catPerilData = data.policy.catPeril;
+    //     this.passDataCATPerils.tableData = [];
+    //     for(var i = 0; i < catPerilData.length;i++){
+    //       this.passDataCATPerils.tableData.push(catPerilData[i]);
+    //     }
+    //     this.catPerilstable.refreshTable();
+    //   });
+    // }
     
   }
 
@@ -1257,7 +1265,9 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');*/
     /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
+
     this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+
     this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
     this.coverageData.totalSi = this.totalSi;
     this.coverageData.totalPrem = this.totalPrem;
@@ -1492,11 +1502,11 @@ export class PolCoverageComponent implements OnInit {
     }
     
     for( var i = 0; i < this.passDataCATPerils.tableData.length; i++){
-      if(this.passDataCATPerils.tableData[i].edited){
+      //if(this.passDataCATPerils.tableData[i].edited){
         this.catPerilData.saveCATPerilList.push(this.passDataCATPerils.tableData[i]);
         this.catPerilData.saveCATPerilList[this.catPerilData.saveCATPerilList.length - 1].createDate = this.ns.toDateTimeString(0);
         this.catPerilData.saveCATPerilList[this.catPerilData.saveCATPerilList.length - 1].updateDate = this.ns.toDateTimeString(0);
-      }
+      //}
     }  
   }
   saveCatPeril(cancelFlag?){
@@ -1506,13 +1516,12 @@ export class PolCoverageComponent implements OnInit {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
-        $('#successModalBtn').trigger('click');
+        this.successDiagCAT.open();
       } else{
         this.dialogMessage = "";
         this.dialogIcon = "success";
-        $('#successModalBtn').trigger('click');
-        this.getPolCoverage();
-        this.table.markAsPristine();
+        this.successDiagCAT.open();
+        this.catPerilstable.markAsPristine();
         this.editedData = [];
         //this.getCoverageInfo();
       }
@@ -1531,6 +1540,16 @@ export class PolCoverageComponent implements OnInit {
     for( var i= 0; i< this.passDataSectionCover.tableData.length;i++){
       if(this.passDataSectionCover.tableData[i].cumSi < 0 && this.passDataSectionCover.tableData[i].addSi == 'Y'){
         this.errorFlag = true;
+      }
+    }
+
+    for(let sec of this.passDataSectionCover.tableData){
+      for(let ded of sec.deductiblesSec){
+        if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+          this.dialogIcon = "error";
+          this.successDiag.open();
+          return null;
+        }
       }
     }
 
@@ -1847,10 +1866,11 @@ export class PolCoverageComponent implements OnInit {
 
     /*console.log('comtotalSi - ' + this.altCoverageData.comtotalSi)
     console.log('totalVal - ' + this.altCoverageData.totalValue)*/
-    this.altCoverageData.pctShare = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().split(',').join(''))*100);
-    this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
-    this.altCoverageData.totalValue = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().split(',').join(''))*100);
-    this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
+    this.altCoverageData.pctShare = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().replace(/[,]/g,""))*100);
+    //this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
+    //this.altCoverageData.totalValue = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().replace(/[,]/g,""))*100);
+    //this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');
+    console.log(this.altCoverageData.totalValue)
     this.altCoverageData.pctPml = this.decimal.transform(this.coverageData.pctPml,'1.2-2');
 
   }
@@ -1925,7 +1945,8 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.saveDeductibleList = this.editedDedt;
   }
 
-  alterationSave(){
+  alterationSave(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     this.prepareAlterationSave();
     this.underwritingservice.savePolCoverage(this.altCoverageData).subscribe((data: any) => {
         if(data['returnCode'] == 0) {
@@ -1973,8 +1994,8 @@ export class PolCoverageComponent implements OnInit {
   getEditableAlt(){
     for(let data of this.passData.tableData){
       data.uneditable = [];
-      if(data.discountTag == 'Y' || data.exDiscTag == 'Y'){
-        data.uneditable.pop();
+      if((this.line == 'CAR' && data.coverCd == 56) || (this.line == 'EAR' && data.coverCd == 58)){
+        data.uneditable.push('addSi');
       }
       if(data.discountTag == 'N' ) {
           data.uneditable.push('premAmt');

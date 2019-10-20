@@ -205,7 +205,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
            this.dialogMessage = data['errorList'][0].errorMessage;
            this.dialogIcon = "error";
            this.userSuccess.open();
-           this.table.markAsPristine();
+           this.cancelFlag = false;
          }else{
            this.dialogMessage = "";
            this.dialogIcon = "success";
@@ -262,7 +262,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";
           this.successDiag.open();
-          console.log('failed')
+          this.cancelFlag = false;
         }else{
           this.dialogMessage = "";
           this.dialogIcon = "success";

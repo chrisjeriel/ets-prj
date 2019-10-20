@@ -145,6 +145,7 @@ export class MtnCrestaComponent implements OnInit {
         } else{
           this.dialogIcon = "success";
           this.successDialog.open();
+          this.table.markAsPristine();
           this.getCresta();
         }
   	})

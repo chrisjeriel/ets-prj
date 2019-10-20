@@ -215,7 +215,7 @@ export class RegionComponent implements OnInit {
     this.mtnRegionReq.saveRegion.forEach(a=>a.updateUser = this.ns.getCurrentUser()); 
     this.mtnRegionReq.saveRegion.forEach(a=>a.updateDate = this.ns.toDateTimeString(0));
     this.mtnRegionReq.saveRegion.forEach(a=>a.activeTag = this.cbFunc2(a.activeTag));
-    this.mtnRegionReq.saveRegion.forEach(a=>a.regionCd = this.regionCd);
+    // this.mtnRegionReq.saveRegion.forEach(a=>a.regionCd = this.regionCd);
     this.mtnRegionReq.deleteRegion = this.deletedData; 
 
 
@@ -240,7 +240,7 @@ export class RegionComponent implements OnInit {
                   this.dialogIcon = "success";
                   this.successDialog.open();
                   this.getMtnRegion();
-                  $('.ng-dirty').removeClass('ng-dirty');
+                  this.regionTable.markAsPristine();
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();
@@ -292,7 +292,7 @@ export class RegionComponent implements OnInit {
       this.getMtnRegion();
     }
 
-    if($('.ng-dirty').length != 0 ){
+    if($('.ng-dirty:not([type="search"]):not(.not-form):not(.exclude)').length != 0 ){
         event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{

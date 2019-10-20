@@ -185,6 +185,7 @@ export class OtherChargeComponent implements OnInit, OnDestroy {
 				this.dialogIcon = "success";
 				this.successDialog.open();
 				this.getMtnOtherCharges();
+				this.table.markAsPristine();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();

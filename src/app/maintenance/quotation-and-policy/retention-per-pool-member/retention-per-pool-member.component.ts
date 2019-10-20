@@ -424,6 +424,8 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 				this.dialogIcon = "success";
 				this.successDialog.open();
 				this.getMtnPoolRetHist();
+				this.historyTable.markAsPristine();
+				this.poolMemberTable.markAsPristine();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();

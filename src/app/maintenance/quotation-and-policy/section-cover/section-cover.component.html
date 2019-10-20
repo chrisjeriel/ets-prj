@@ -8,8 +8,9 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-                            <input class="form-control form-control-sm  col-sm-1 not-form" type="text" (change)="checkCode($event)" [(ngModel)]="line.lineCd">
-                            <div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                            <input class="form-control form-control-sm  col-sm-1 not-form exclude" type="text" 
+                            [ngModel]="line.lineCd" [appCheckForm]="formGroup" [data]="line" (output)="line.lineCd=$event.target.value;checkCode($event)">
+                            <div class="text-search-ico" style="padding-left: 1px"[appCheckForm]="formGroup" (output)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 2px;" [(ngModel)]="line.description" readonly>
                             <div class="col-sm-3"></div>
                         </div>
@@ -50,6 +51,5 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error'?cnclBtn.onNo():null"></app-sucess-dialog>
