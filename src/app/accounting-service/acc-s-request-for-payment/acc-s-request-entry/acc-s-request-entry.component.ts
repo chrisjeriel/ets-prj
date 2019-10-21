@@ -231,9 +231,12 @@ export class AccSRequestEntryComponent implements OnInit {
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
-      
-      this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
-      
+
+      if(this.saveAcsePaytReq.tranTypeCd == 3 || this.saveAcsePaytReq.tranTypeCd == 4){
+        this.isReqAmtEqDtlAmts = true;
+      }else{
+        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;  
+      }
     });
   }
 
@@ -306,7 +309,7 @@ export class AccSRequestEntryComponent implements OnInit {
       reqMm           : (this.saveAcsePaytReq.reqMm == '' || this.saveAcsePaytReq.reqMm == null)?Number(this.reqDateDate.split('-')[1]):Number(this.saveAcsePaytReq.reqMm),
       reqPrefix       : this.tranTypeList.filter(i => i.tranTypeCd == this.saveAcsePaytReq.tranTypeCd).map(i => i.typePrefix).toString(),
       reqSeqNo        : this.saveAcsePaytReq.reqSeqNo,
-      reqStatus       : (this.saveAcsePaytReq.reqStatusNew == 'A')?this.saveAcsePaytReq.reqStatusNew:this.saveAcsePaytReq.reqStatus,
+      reqStatus       : (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) > 0)?'F':this.saveAcsePaytReq.reqStatus,
       reqYear         : (this.saveAcsePaytReq.reqYear == '' || this.saveAcsePaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcsePaytReq.reqYear,
       requestedBy     : this.saveAcsePaytReq.requestedBy,
       tranTypeCd      : this.saveAcsePaytReq.tranTypeCd,
