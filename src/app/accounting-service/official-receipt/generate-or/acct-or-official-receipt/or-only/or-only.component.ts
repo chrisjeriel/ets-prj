@@ -291,6 +291,10 @@ export class OrOnlyComponent implements OnInit {
   	this.cancelBtn.clickCancel();
   }
 
+  test(event){
+    console.log(event);
+  }
+
   save(cancelFlag?){
   	var totalLocalAmt: number = 0;
   	this.cancelFlag = cancelFlag !== undefined;
@@ -334,6 +338,7 @@ export class OrOnlyComponent implements OnInit {
       delOrTransDtl: this.deletedData,
       delOrItemTaxes: this.deletedTaxData
     }
+    console.log(params);
 
     this.as.saveAcseOrTransDtl(params).subscribe(
       (data:any)=>{

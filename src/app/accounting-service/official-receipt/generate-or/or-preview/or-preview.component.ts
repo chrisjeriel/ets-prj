@@ -123,7 +123,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,false,true,true,true,false,false,true],
+    uneditable: [true,true,true,true,true,true,false,false,false],
     magnifyingGlass: ['taxCd']
   }
 
@@ -165,7 +165,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,false,true,true,false,false,true],
+    uneditable: [true,true,true,true,true,false,false,false],
     magnifyingGlass: ['taxCd']
   }
 
@@ -226,7 +226,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data, table){
-    if(table == 'genTax'){
+    /*if(table == 'genTax'){
        if(data.key == 'baseAmt'){
          for(var i of this.genTaxData.tableData){
            i.taxAmt = (i.taxRate == null ? 1 : i.taxRate) * i.baseAmt;
@@ -238,7 +238,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           i.taxAmt = (i.taxRate == null ? 1 : i.taxRate) * i.baseAmt;
         }
       }
-    }
+    }*/
   }
 
   onRowClick(data){
@@ -306,6 +306,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.genTaxData.tableData.push(JSON.parse(JSON.stringify(this.genTaxData.nData)));
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxCd = selected[i].taxCd; 
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxName = selected[i].taxName; 
+        this.genTaxData.tableData[this.genTaxData.tableData.length - 1].genBirRlf = selected[i].birRlfType; 
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxRate = selected[i].taxRate;
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxAmt = selected[i].amount;
         this.genTaxData.tableData[this.genTaxData.tableData.length - 1].tranId = this.record.tranId;
@@ -367,6 +368,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.acctEntriesData.tableData[i].debitAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
         this.acctEntriesData.tableData[i].creditAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
       }
+      this.computeTotals();
     }
   }
 

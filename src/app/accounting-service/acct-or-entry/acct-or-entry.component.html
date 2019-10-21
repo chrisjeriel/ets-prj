@@ -8,7 +8,7 @@
 			<legend class="scheduler-border">O.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">O.R. No.</label>
-				<input id="orNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="orInfo.orNo" (change)="orInfo.orNo = pad($event.target.value, 'orNo')" (blur)="orInfo.orNo=pad(orInfo.orNo, 'orNo')" [readonly]="isCancelled || isPrinted" name="orNo" appRequired>
+				<input id="orNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2 required" [ngModel]="orInfo.orNo" (change)="orInfo.orNo = pad($event.target.value, 'orNo')" (blur)="orInfo.orNo=pad(orInfo.orNo, 'orNo')" [readonly]="isCancelled || isPrinted" name="orNo" appRequired>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">O.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
 					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="orDate.date" (valueChange)="orDate.date = $event; retrieveMtnAcseDCBNo(orDate.date.split('-')[0], orDate.date); retrieveCurrency();" [disabled]="orInfo.orStatDesc?.toUpperCase() !== 'NEW' || orInfo.dcbStatus == 'T' || orInfo.dcbStatus == 'C'"></datepicker>
@@ -75,7 +75,7 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="orInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1" name="amt">
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd == 2 || orInfo.tranTypeCd == 3" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
 						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">

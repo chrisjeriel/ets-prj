@@ -23,7 +23,7 @@
   <div body>
     <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
       <legend class="scheduler-border">General Taxes</legend>
-      <app-cust-editable-non-datatable (clickLOV)="openGenTaxLOV($event)" [passData]="passDataGenTax" (tableDataChange)="selectedItem.edited = true;" #genTaxTbl ></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable (clickLOV)="openGenTaxLOV($event)" [passData]="passDataGenTax" (tableDataChange)="selectedItem.edited = true; test($event)" #genTaxTbl ></app-cust-editable-non-datatable>
     </fieldset>
 
     <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 

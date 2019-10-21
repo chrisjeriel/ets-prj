@@ -322,6 +322,8 @@ export class AcctOrEntryComponent implements OnInit {
     this.passData.tableData = [];
     this.paytDtlTbl.refreshTable();
     this.retrieveCurrency();
+    this.isPrinted = false;
+    this.isCancelled = false;
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
   }
@@ -1095,6 +1097,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeTranType(data){
+    console.log(data);
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.orInfo.tranTypeCd = data;
     //this.orInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
@@ -1104,7 +1107,47 @@ export class AcctOrEntryComponent implements OnInit {
         break;
       }
     }
-    if(data == 7){
+
+    if(data == 1 || data == 2){
+      this.selectedCurrency = 'PHP';
+      this.passData.nData.currCd = 'PHP';
+      this.orInfo.currCd = 'PHP';
+      for(var i of this.currencies){
+        if(i.currencyCd == 'PHP'){
+          this.orInfo.currRate = i.currencyRt;
+          this.passData.nData.currRate = i.currencyRt;
+          setTimeout(()=>{
+            $('.rate').focus().blur();
+          },0);
+          break;
+        }
+      }
+      
+    }else if(data == 3){
+      this.selectedCurrency = 'USD';
+      this.passData.nData.currCd = 'USD';
+      this.orInfo.currCd = 'USD';
+      for(var i of this.currencies){
+        if(i.currencyCd == 'USD'){
+          this.orInfo.currRate = i.currencyRt;
+          this.passData.nData.currRate = i.currencyRt;
+          setTimeout(()=>{
+            $('.rate').focus().blur();
+          },0);
+          break;
+        }
+      }
+    }
+    
+    //apply changes to payment details
+      for(var j = 0; j < this.passData.tableData.length; j++){
+        this.passData.tableData[j].currCd = this.selectedCurrency;
+        this.passData.tableData[j].currRate = this.orInfo.currRate;
+        this.passData.tableData[j].edited = true;
+      }
+      this.paytDtlTbl.refreshTable();
+      this.retrieveMtnBankAcct();
+    /*if(data == 7){
       this.disablePayor = true;
       this.ms.getMtnPayee().subscribe(
         (data:any)=>{
@@ -1126,7 +1169,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.orInfo.bussTypeCd = '';
       this.orInfo.bussTypeName = '';
       this.orInfo.tin = '';
-    }
+    }*/
   }
 
   compareCurrencyFn(c1: any, c2: any): boolean {

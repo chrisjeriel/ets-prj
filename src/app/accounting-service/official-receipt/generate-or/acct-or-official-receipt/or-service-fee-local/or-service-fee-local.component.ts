@@ -36,8 +36,8 @@ export class OrServiceFeeLocalComponent implements OnInit {
 			quarterEnding: '',
 			currCd: '',
 			currRate: '',
-			servFeeAmt: '',
-			localAmt: '',
+			servFeeAmt: 0,
+			localAmt: 0,
 			createUser: '',
 			createDate: '',
 			updateUser: '',
@@ -83,7 +83,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   	this.as.getAcseOrServFee(this.record.tranId, 1).subscribe(
   		(data:any)=>{
   			if(data.servFeeList.length !== 0){
-  				this.passData.tableData = data.servFeeList;
+  				this.passData.tableData = data.servFeeList.map(a=>{a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a;});
   				this.table.refreshTable();
   			}
   		}
@@ -117,6 +117,8 @@ export class OrServiceFeeLocalComponent implements OnInit {
   onTableDataChange(data){
     if(data.key == 'servFeeAmt'){
       for(var i of this.passData.tableData){
+        console.log(i.servFeeAmt);
+        console.log(i.currRate);
         i.localAmt = i.servFeeAmt * i.currRate;
       }
     }
@@ -138,6 +140,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   	for (var i = 0 ; this.passData.tableData.length > i; i++) {
   	  if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
   	      this.savedData.push(this.passData.tableData[i]);
+          //this.savedData[this.savedData.length-1].quarterEnding = this.ns.toDateTimeString(this.record.quarterEnding);
   	      this.savedData[this.savedData.length-1].tranId = this.record.tranId;
   	      this.savedData[this.savedData.length-1].billId = 1; //1 for Official Receipt Transaction Type
   	      this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
