@@ -454,4 +454,8 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
     $('#lineLOV #modalBtn').trigger('click');
 	}
 
+  dedClick(data){
+    this.passDedTable.disableGeneric = data==null;
+  }
+
 }

@@ -31,7 +31,7 @@
 
 	                <fieldset class="scheduler-border" style="padding-top: 10px !important;">
 	                	<legend class="scheduler-border">Deductible per Endorsement</legend>
-	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event;disableFields()"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #dedTable [passData]="passDedTable" (genericBtn)="deleteDed()" (onDelete)="dedTable.onClickDelete('force');" (tableDataChange)="endtTable.indvSelect.deductibles = $event;disableFields()" (newClick)="dedClick($event)"></app-cust-editable-non-datatable>
 	                </fieldset>
 	                <div class="w-100 text-center my-2">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
