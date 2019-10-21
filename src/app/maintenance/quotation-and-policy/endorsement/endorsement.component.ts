@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -6,14 +6,15 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-endorsement',
   templateUrl: './endorsement.component.html',
   styleUrls: ['./endorsement.component.css']
 })
-export class EndorsementComponent implements OnInit {
-
+export class EndorsementComponent implements OnInit, AfterViewInit {
+  formGroup: FormGroup = new FormGroup({});
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild("endtTable") endtTable: CustEditableNonDatatableComponent;
   @ViewChild("dedTable") dedTable: CustEditableNonDatatableComponent;
@@ -142,6 +143,19 @@ export class EndorsementComponent implements OnInit {
 
   constructor(private ns: NotesService, private ms: MaintenanceService) { }
 
+  ngAfterViewInit() {
+      this.dedTable.loadingFlag = false;
+      this.endtTable.loadingFlag = false;
+      this.dedTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('dedTable'+i, f.control); 
+      })
+      this.endtTable.form.forEach((f,i)=>{
+        this.formGroup.addControl('endtTable'+i, f.control); 
+      }) 
+  }
+
+
+
   ngOnInit() {
   	//setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
 
@@ -158,30 +172,35 @@ export class EndorsementComponent implements OnInit {
   }
 
   checkCode(ev,force?){
-     this.newLineEv = ev;
-     console.log(ev)
-     if($('.ng-dirty:not([type="search"])').length == 0 || force !=undefined){
-        if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
-          this.line.description = '';
-          this.passEndtTable.disableAdd = true;
-          this.passEndtTable.disableGeneric = true;
-          this.passEndtTable.tableData = [];
-          this.endtTable.refreshTable();
 
-          this.passDedTable.disableAdd = true;
-          this.passDedTable.disableGeneric = true;
-          this.passDedTable.tableData = [];
-          this.dedTable.refreshTable();
-        }else{
-          this.ns.lovLoader(ev, 1);
-          this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
-        }
-        this.fromChng = false;
-      }else{
-        this.exitUrl = null;
-        this.cnclBtn.clickCancel();
-        this.fromChng = true;
-      }
+    this.ns.lovLoader(ev, 1);
+    this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
+
+
+     // this.newLineEv = ev;
+     // console.log(ev)
+     // if($('.ng-dirty:not([type="search"])').length == 0 || force !=undefined){
+     //    if(ev.target.value == null || ev.target.value.toUpperCase() == ''){
+     //      this.line.description = '';
+     //      this.passEndtTable.disableAdd = true;
+     //      this.passEndtTable.disableGeneric = true;
+     //      this.passEndtTable.tableData = [];
+     //      this.endtTable.refreshTable();
+
+     //      this.passDedTable.disableAdd = true;
+     //      this.passDedTable.disableGeneric = true;
+     //      this.passDedTable.tableData = [];
+     //      this.dedTable.refreshTable();
+     //    }else{
+     //      this.ns.lovLoader(ev, 1);
+     //      this.lineLov.checkCode(ev.target.value.toUpperCase(), ev); 
+     //    }
+     //    this.fromChng = false;
+     //  }else{
+     //    this.exitUrl = null;
+     //    this.cnclBtn.clickCancel();
+     //    this.fromChng = true;
+     //  }
   }
 
   setLine(data){
@@ -381,6 +400,7 @@ export class EndorsementComponent implements OnInit {
               this.checkCode(this.newLineEv,'force')
             }
         }else{
+            this.cancelFlag = false;
             this.dialogIcon = "error";
             this.successDialog.open();
             this.fromChng = false;
