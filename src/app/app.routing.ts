@@ -184,6 +184,11 @@ import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-n
 import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
 import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
 //import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
+import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
+import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
+import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
+import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
+import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 
 const appRoutes: Routes = [
 
@@ -526,6 +531,11 @@ const appRoutes: Routes = [
 	{ path: 'mtn-acse-dcb-no',component: AcseDcbNoComponent},
 	{ path: 'mtn-acit-tran-type',component: AcitTranTypeComponent},
 	//{ path: 'mtn-acse-tran-type',component: AcseTranTypeComponent},
+    { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] }, 
+    { path: 'mtn-invt-sec-type', component: InvtSecTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-sl-type', component: SlTypeComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

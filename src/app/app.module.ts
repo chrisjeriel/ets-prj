@@ -475,6 +475,11 @@ import { JvSeriesComponent } from './maintenance/accounting-service/generate-num
 import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
 import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
 import { CancelArCvJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar-cv-jv/cancel-ar-cv-jv.component';
+import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
+import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
+import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
+import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
+import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 
 @NgModule({
     imports: [
@@ -954,6 +959,11 @@ import { CancelArCvJvComponent } from './accounting-in-trust/utilities/cancel-tr
         AcitTranTypeComponent,
         //AcseTranTypeComponent,
         CancelArCvJvComponent,
+        GenTaxesComponent,
+        InvtSecTypeComponent,
+        PayeeClassComponent,
+        SlTypeComponent,
+        SlComponent,
     ],
 
   	providers: [

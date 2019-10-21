@@ -1430,6 +1430,15 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnEmployee", {params});
     }
 
+     saveMtnEmployee(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEmployee', JSON.stringify(params), header);
+      }
+
     getMtnAcseChartAcct(param){
     	const params = new HttpParams()
     				.set('glAcctId', (param.glAcctId === null || param.glAcctId === undefined ? '' : param.glAcctId))
@@ -1453,15 +1462,6 @@ export class MaintenanceService{
             })
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/generateCVSeries', JSON.stringify(params), header);
-     }
-
-     saveMtnEmployee(params){
-    	let header : any = {
-            headers: new HttpHeaders({
-                 'Content-Type': 'application/json'
-            })
-         };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnEmployee', JSON.stringify(params), header);
      }
 
      generateJVSeries(params){
@@ -1524,13 +1524,22 @@ export class MaintenanceService{
     }
     
     generateAcseJVSeries(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseJVSeries', JSON.stringify(params), header);
+    }
+
+     saveMtnGenTax(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseJVSeries', JSON.stringify(params), header);
-    }
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTax', JSON.stringify(params), header);
+      }
 
     getAcseOrSeries(orType,orFrom,orTo, usedTag?){
     	const params = new HttpParams()
@@ -1578,21 +1587,45 @@ export class MaintenanceService{
     }
 
     saveWhTax(params){
-    	let header : any = {
+		let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
-         };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnWhTax', JSON.stringify(params), header);
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnWhTax', JSON.stringify(params), header);
     }
 
+     getMtnGenTaxHist(taxId?){
+    	const params = new HttpParams()
+						.set('taxId', (taxId === null || taxId === undefined ? '' : taxId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGenTaxHist", {params});
+    }
+
+    saveMtnGenTaxHist(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxHist', JSON.stringify(params), header);
+      }
+
     saveAcitTrantype(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitTranType', JSON.stringify(params), header);
+    }
+
+    saveMtnGenTaxRange(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitTranType', JSON.stringify(params), header);
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxRange', JSON.stringify(params), header);
     }
 
     getAcitDefAmt(tranClass,tranTypeCd,itemNo?){
@@ -1639,4 +1672,56 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseTranType', JSON.stringify(params), header);
     }
+
+
+    getMtnGenTaxRange(taxId?){
+    	const params = new HttpParams()
+						.set('taxId', (taxId === null || taxId === undefined ? '' : taxId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGenTaxRange", {params});
+    }
+
+     saveMtnInvSecType(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnInvSecType', JSON.stringify(params), header);
+      }
+
+    getMtnPayeeClass(payeeClassCd?,activeTag?){
+    	const params = new HttpParams()
+						.set('payeeClassCd', (payeeClassCd === null || payeeClassCd === undefined ? '' : payeeClassCd))
+						.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeClass', {params});
+    }
+
+    saveMtnPayeeClass(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPayeeClass', JSON.stringify(params), header);
+    }
+
+    saveMtnSLType(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSLType', JSON.stringify(params), header);
+    }
+
+    saveMtnSL(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSL', JSON.stringify(params), header);
+    }
+
+
 }

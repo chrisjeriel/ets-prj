@@ -18,7 +18,7 @@ import { finalize } from 'rxjs/operators';
 })
 
 export class BankAccountComponent implements OnInit {
-@ViewChild('bankaccttable') table: CustEditableNonDatatableComponent;
+  @ViewChild('bankaccttable') table: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) conSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
