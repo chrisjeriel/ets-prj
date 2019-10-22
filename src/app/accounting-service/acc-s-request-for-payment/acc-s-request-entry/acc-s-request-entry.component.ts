@@ -524,9 +524,23 @@ export class AccSRequestEntryComponent implements OnInit {
       this.saveAcsePaytReq.reqStatusNew = '';
       this.warnMsg = 'Requested Amount must be equal to the total payment amounts in Request Details.';
       this.warnMdl.openNoClose();
+    }else if(from.toLowerCase() == 'new-req'){
+     if(this.form.dirty){
+        this.confirmMdl.openNoClose();
+        this.fromBtn = from; 
+      }else{
+        this.onClickNewReq();
+      }
     }else{
-      this.confirmMdl.openNoClose();
-      this.fromBtn = from;
+      if(this.saveAcsePaytReq.processing == null){
+        this.confirmMdl.openNoClose();
+        this.fromBtn = from;
+      }else{
+        this.warnMsg = 'This Payment Request is being processed in another transaction. Please delete or cancel the \ntransaction with Check Voucher No. ' 
+                        + this.saveAcsePaytReq.processing + ' before cancelling this payment request.';
+        this.warnMdl.openNoClose();
+      }
+      
     }
     // (from.toLowerCase() == 'approve')?this.saveAcsePaytReq.reqStatusNew = '':'';
   }

@@ -522,13 +522,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.warn = [];
     console.log(this.inwardPolBalData.tableData);
     this.inwardPolBalData.tableData.forEach(e => {
-      // e.premAmt      = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balPremDue) * 100)/100;
-      // e.riComm       = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiComm) * 100)/100;
-      // e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.balAmtDue)*e.balRiCommVat) * 100)/100;
-      // e.charges      = isNaN(Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100)?0:Math.round((e.returnAmt - (e.premAmt - e.riComm - e.riCommVat)) * 100)/100;
-      // e.totalPayt    = isNaN(Math.round((e.returnAmt + e.cumPayment) * 100)/100)?0:Math.round((e.returnAmt + e.cumPayment) * 100)/100;
-      // e.remainingBal = isNaN(Math.round((e.prevNetDue - e.totalPayt) * 100)/100)?0:Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
-
       e.premAmt      = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevPremAmt) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevPremAmt) * 100)/100;
       e.riComm       = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiComm) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiComm) * 100)/100;
       e.riCommVat    = isNaN(Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiCommVat) * 100)/100)?0:Math.round(((e.returnAmt/e.prevNetDue)*e.prevRiCommVat) * 100)/100;
@@ -922,7 +915,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogMessage = '';
     var isEmpty = 0;
     this.inwardPolBalData.tableData.forEach(e => {
-      if(e.returnAmt == '' || e.returnAmt == null){
+      if(e.returnAmt == '' || e.returnAmt == null || isNaN(e.returnAmt)){
         if(!e.deleted){
           isEmpty = 1;
           e.fromCancel = false;
