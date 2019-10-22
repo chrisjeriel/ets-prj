@@ -145,7 +145,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     pinKeysRight:any[] = [];
 
     refreshTable(initLoad?, selectAll?){
-
+        this.displayData = this.displayData.filter(a=>a!=this.fillData);
         if(initLoad === undefined){
             this.loadingFlag = false;
         }else{

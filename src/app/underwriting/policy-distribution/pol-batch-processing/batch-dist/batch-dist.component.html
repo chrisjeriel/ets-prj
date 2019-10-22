@@ -1,0 +1,39 @@
+<div class="form-row">
+	<div class="col-md-12">
+		<div style="margin-top: 0px !important;">
+			<app-cust-non-datatable [passData]="passData" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
+		</div>
+	</div>
+</div>
+<div class="form-row">
+    <div class="form-group col-sm">
+        <div class="col-md-12 text-center">
+            <div class="cust-btn-container" style="margin-top: 10px">
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                <button type="button" class="cust-btn" (click)="confirmDist()" [disabled]="table.selected?.length == 0"><a>Distribute</a></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal class="d-none" #confirmMdl>
+	<div header>Confirmation</div>
+	<div body>
+		Are you sure you want to distribute the ff. records?
+		<app-cust-editable-non-datatable [passData]="confirmPassData" #confirmTable></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+		<button class="cust-btn" (click)="distribute()">Yes</button>
+		<button class="cust-btn" (click)="confirmMdl.closeModal()">No</button>
+	</div>
+</app-modal>
+
+<app-modal class="d-none" #msgMdl>
+	<div header>Batch Distribution</div>
+	<div body>
+		<app-cust-editable-non-datatable [passData]="msgPassData" #msgTable></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+		<button class="cust-btn" (click)="msgMdl.closeModal()">Ok</button>
+	</div>
+</app-modal>

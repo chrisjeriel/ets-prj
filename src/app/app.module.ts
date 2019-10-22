@@ -480,6 +480,8 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-dist/batch-dist.component';
+import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
 
 @NgModule({
     imports: [
@@ -964,6 +966,8 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
         PayeeClassComponent,
         SlTypeComponent,
         SlComponent,
+        BatchDistComponent,
+        BatchPostComponent,
     ],
 
   	providers: [
