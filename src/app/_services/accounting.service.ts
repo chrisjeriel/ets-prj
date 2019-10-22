@@ -2343,7 +2343,7 @@ export class AccountingService {
 		    })
 		}
 		
-		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOA',JSON.stringify(params),header);
 	}
 
 	/*
@@ -2850,6 +2850,13 @@ export class AccountingService {
 			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEnd',{params});	
+	}
+
+	getQSOADtl(qsoaId){
+		const params = new HttpParams()
+			.set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOADtl',{params});
 	}
 
 }
