@@ -13,13 +13,13 @@ export class BatchPostComponent implements OnInit {
   @ViewChild('msgMdl') msgMdl : ModalComponent;
   msgPassData:any = {
   	tHeader: [
-          "Risk Dist No.", "Policy No.", "Status"
+          "Dist Id.", "Policy No.", "Status"
       ],
     dataTypes: [
         "sequence-5","text","text"
     ],  
     widths:[72,167,380],
-    keys: ['riskDistId', 'policyNo', 'message'],
+    keys: ['distId', 'policyNo', 'message'],
     pageLength: 'unli',
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,],
     tableData:[]
@@ -28,13 +28,13 @@ export class BatchPostComponent implements OnInit {
 
   confirmPassData:any = {
   	tHeader: [
-          "Risk Dist No.", "Policy No.", "Ceding Company", "Insured", "Risk","Currency","Sum Insured"
+          "Dist. Id", "Policy No.", "Ceding Company", "Insured", "Risk","Currency","Sum Insured"
       ],
     dataTypes: [
         "sequence-5","text","text", "text", "text", "text", "currency"
     ],  
     widths:[72,167,182,182,150,100],
-    keys: ['riskDistId', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'currencyCd', 'totalSi'],
+    keys: ['distId', 'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'currencyCd', 'totalSi'],
     pageLength: 'unli',
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,],
     tableData:[]
@@ -141,7 +141,7 @@ export class BatchPostComponent implements OnInit {
   		distList : this.table.selected,
   		user : this.ns.getCurrentUser()
   	}
-  	this.underwritingService.batchDist(params).subscribe(a=>{
+  	this.underwritingService.batchPost(params).subscribe(a=>{
   		this.confirmTable.overlayLoader = false;
   		this.confirmMdl.closeModal();
   		this.msgPassData.tableData = a['updateResult'];

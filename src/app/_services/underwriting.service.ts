@@ -1195,6 +1195,15 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/batchDistribution',JSON.stringify(params),header);
     }
+
+    batchPost(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/batchPosting',JSON.stringify(params),header);
+    }
 }            
 
             
