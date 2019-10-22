@@ -16,7 +16,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 })
 export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild('slTypeLov') lov: LovComponent;
+  @ViewChild('acctCodeLov') accCodelov: LovComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
@@ -54,11 +55,12 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     genericBtn: 'Delete',
     disableGeneric: true,
     magnifyingGlass: ['slTypeName'],
-    opts: [{
+    opts: [
+    /*{
       selector: 'glAcctCategory',
       prev: ['Asset','Liability','Equity','Revenue','Expense'],
       vals: ['1','2','3','4','5'],
-    },
+    },*/
     {
       selector: 'drCrTag',
       prev: ['Dr','Cr'],
@@ -82,11 +84,26 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     params:{}
   }
 
+  params = {
+    remarks:'',
+    saveAcitChartAcct: [],
+    deleteAcitChartAcct: []
+  };
+
+  searchParams = {
+    glAcctCategory :'',
+    glAcctControl:'',
+    glAcctSub1:'',
+    glAcctSub2:'',
+    glAcctSub3:''
+  };
+
   selected: any = null;
   row: any = null;
   dialogIcon:string = '';
   dialogMessage: string = '';
   cancel: boolean = false;
+  remarksFlag: boolean = false;
 
   subscription: Subscription = new Subscription();
 
@@ -101,13 +118,21 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   }
 
   getMtnAcitChartAcct(params) {
+    this.table.loadingFlag = true;
     var sub$ = forkJoin(this.ms.getMtnAcitChartAcct(params),
                         this.ms.getRefCode('MTN_ACIT_CHART_ACCT.GL_ACCT_CATEGORY')).pipe(map(([chartAcct, ref]) => { return { chartAcct, ref} }));
 
     this.subscription.add(sub$.subscribe(data => {
-      this.chartOfAccounts.opts[0].prev = data['ref']['refCodeList'].map(a => a.description);
-      this.chartOfAccounts.opts[0].vals = data['ref']['refCodeList'].map(a => a.code);
 
+      this.chartOfAccounts.opts.forEach( a=> {
+        if(a.selector == 'glAcctCategory'){
+          a.prev = [];
+          a.vals = [];
+        }
+      });
+
+      this.chartOfAccounts.opts.push({selector: 'glAcctCategory',prev: data['ref']['refCodeList'].map(a => a.description), vals : data['ref']['refCodeList'].map(a => a.code)});
+      this.chartOfAccounts.tableData = [];
       this.chartOfAccounts.tableData = data['chartAcct']['list'].sort((a, b) => a.glAcctId - b.glAcctId)
                                                                 .map(a => {
                                                                   a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -115,23 +140,46 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
                                                                   a.showMG = 1;
                                                                   return a;
                                                                 });
+      this.table.loadingFlag = false;
       this.table.refreshTable();
       this.table.onRowClick(null, this.chartOfAccounts.tableData[0]);
     }));
   }
 
+  onClickSearch(){
+    this.getMtnAcitChartAcct(this.searchParams);
+  }
+
+  clearAccCode(){
+    this.searchParams.glAcctControl = '';
+    this.searchParams.glAcctSub1 = '';
+    this.searchParams.glAcctSub2 = '';
+    this.searchParams.glAcctSub3 = '';
+  }
+
   onRowClick(data) {
-    this.selected = data;
-    this.chartOfAccounts.disableGeneric = this.selected == null || this.selected == '';
+    if(data!==null){
+      this.selected = data;
+      this.params.remarks = data.remarks;
+      this.remarksFlag = false;
+      this.chartOfAccounts.disableGeneric = false;
+    }else{
+      this.chartOfAccounts.disableGeneric = true;
+      this.selected = null;
+      this.params.remarks = '';
+      this.remarksFlag = true;
+    }
   }
 
   onClickDelete(ev) {
-    if(ev != undefined) {
+    console.log(ev)
+    if(ev.okDelete == 'N'){
+        this.dialogMessage = "Deleting this record is not allowed. This was already used in some accounting records.";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+    }else{
+      this.table.selected = [this.table.indvSelect];
       this.table.confirmDelete();
-    } else {
-      this.table.indvSelect.edited = true;
-      this.table.indvSelect.deleted = true;
-      this.table.refreshTable();
     }
   }
 
@@ -145,6 +193,20 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   setSLType(data) {
     this.row.slTypeCd = data.data.slTypeCd;
     this.row.slTypeName = data.data.slTypeName;
+  }
+
+  showAccCode(){
+    this.passLov.selector = 'acitChartAcct';
+    this.passLov.params = {glAcctCategory: this.searchParams.glAcctCategory};
+    this.accCodelov.openLOV();
+  }
+
+  setAcctCode(data){
+    this.searchParams.glAcctCategory = data.data.glAcctCategory;
+    this.searchParams.glAcctControl = data.data.glAcctControl;
+    this.searchParams.glAcctSub1 = data.data.glAcctSub1;
+    this.searchParams.glAcctSub2 = data.data.glAcctSub2;
+    this.searchParams.glAcctSub3 = data.data.glAcctSub3;
   }
 
   updateShortCode(data) {
@@ -201,10 +263,9 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
       return;
     }
 
-    var params = {
-      saveAcitChartAcct: [],
-      deleteAcitChartAcct: []
-    }
+   
+      this.params.saveAcitChartAcct = [];
+      this.params.deleteAcitChartAcct = [];
 
     var td = this.chartOfAccounts.tableData;
 
@@ -215,13 +276,25 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
         a.updateUser = this.ns.getCurrentUser();
         a.updateDate = this.ns.toDateTimeString(0);
 
-        params.saveAcitChartAcct.push(a);
+        this.params.saveAcitChartAcct.push(a);
       } else if(a.deleted) {
-        params.deleteAcitChartAcct.push(a);
+        this.params.deleteAcitChartAcct.push(a);
       }
     });
 
-    console.log(params);
+    console.log(this.params);
+    this.ms.saveAcitChartAcct(this.params).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDialog.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDialog.open();
+        this.getMtnAcitChartAcct({});
+      }
+    });
     //DITO PO NAHINTO ANG LAHAT, BYE MAINTENANCE, HELLO CV, I'M OUT
   }
 }
