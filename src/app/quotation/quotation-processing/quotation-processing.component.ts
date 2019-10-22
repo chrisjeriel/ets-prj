@@ -811,6 +811,12 @@ showCedingCompanyIntCompLOV() {
 
 export(){
         //do something
+    let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+    
+    delete paramsCpy['paginationRequest.count'];
+    delete paramsCpy['paginationRequest.position'];
+    console.log(paramsCpy);
+
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -838,6 +844,27 @@ export(){
             return num
       };
 
-    alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+      this.quotationService.newGetQuoProcessingData(paramsCpy).subscribe(data => {
+            var records = data['quotationList'];
+            //this.table.refreshTable();
+            records = records.map(i => {
+                                     if(i.project != null){
+                                         i.riskId = i.project.riskId;
+                                         i.riskName = i.project.riskName;
+                                         i.objectDesc = i.project.objectDesc;
+                                         i.site = i.project.site;
+                                     }
+                                     i.issueDate = this.ns.toDateTimeString(i.issueDate);
+                                     i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
+                                     for(let key of Object.keys(i)){
+                                         i[key] = i[key]==null ? '' : i[key];
+                                     }
+
+                                     return i;
+                                 });
+            alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
+        });
+
+    
   }
 }
