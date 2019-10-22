@@ -32,7 +32,7 @@ export class OrOnlyComponent implements OnInit {
 	 passData : any = {
 	    tableData: [],
 	    tHeader : ["Item","Reference No","Curr","Curr Rate","Amount","Amount(PHP)"],
-	    dataTypes: ["text","text","text","percent","currency","currency"],
+	    dataTypes: ["reqTxt","text","text","percent","reqCurrency","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
 	    checkFlag: true,
@@ -284,7 +284,12 @@ export class OrOnlyComponent implements OnInit {
   }
 
   onClickSave(){
-  	this.confirm.confirmModal();
+  	if(this.checkFields()){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
@@ -365,28 +370,21 @@ export class OrOnlyComponent implements OnInit {
   }
 
   confirmLeaveTaxAlloc(){
-    /*for(var i of this.passDataGenTax.tableData){
-      if(i.add || i.edited || i.deleted){
-        return true;
-      }
-    }
-    for(var i of this.passDataWhTax.tableData){
-      if(i.add || i.edited || i.deleted){
-        return true;
-      }
-    }*/
     if(this.genTaxTbl.form.first.dirty || this.whTaxTbl.form.first.dirty){
       return true;
     }
     return false;
   }
 
-  /*openLeaveTaxConfirmation(){
-  	this.modalService.open(ConfirmLeaveComponent,{
-          centered: true, 
-          backdrop: 'static', 
-          windowClass : 'modal-size'
-      });
-  }*/
+  //VALIDATIONS STARTS HERE
+  checkFields(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.itemName == null || (i.itemName !== null && i.itemName.length == 0) ||
+         i.currAmt == null || (i.currAmt !== null && String(i.currAmt).toString().length == 0)){
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

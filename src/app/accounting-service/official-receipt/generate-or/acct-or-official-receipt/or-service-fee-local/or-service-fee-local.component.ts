@@ -45,7 +45,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 			showMG: 1
 		},
 		total:[null,null,'Total','servFeeAmt','localAmt'],
-		dataTypes: ['date','text','percent','currency','currency'],
+		dataTypes: ['reqDate','text','percent','reqCurrency','currency'],
 		addFlag:true,
 		deleteFlag: true,
 		checkFlag: true,
@@ -125,7 +125,12 @@ export class OrServiceFeeLocalComponent implements OnInit {
   }
 
   onClickSave(){
-  	this.confirm.confirmModal();
+  	if(this.checkFields()){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
@@ -189,6 +194,17 @@ export class OrServiceFeeLocalComponent implements OnInit {
 
       }
     );
+  }
+
+  //Validations starts here
+  checkFields(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.quarterEnding == null || (i.quarterEnding !== null && i.quarterEnding.length == 0) ||
+         i.servFeeAmt == null || (i.servFeeAmt !== null && String(i.servFeeAmt).toString().length == 0)){
+        return true;
+      }
+    }
+    return false;
   }
 
 }

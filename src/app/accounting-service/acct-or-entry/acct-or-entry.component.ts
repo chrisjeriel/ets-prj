@@ -326,10 +326,12 @@ export class AcctOrEntryComponent implements OnInit {
     this.isCancelled = false;
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
+    this.form.control.markAsPristine();
   }
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+    this.ns.clearFormGroup();
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
     }
@@ -742,6 +744,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.form.control.markAsPristine();
+          this.ns.formGroup.markAsPristine();
         }
       }
     );
