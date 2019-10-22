@@ -470,7 +470,7 @@ import { WithhodlingTaxComponent } from './maintenance/accounting-service/withho
 import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
 import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
 import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
-//import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
+import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
 import { JvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/jv-series/jv-series.component';
 import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
 import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
@@ -957,7 +957,7 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
         AcitDcbNoComponent,
         AcseDcbNoComponent,
         AcitTranTypeComponent,
-        //AcseTranTypeComponent,
+        AcseTranTypeComponent,
         CancelArCvJvComponent,
         GenTaxesComponent,
         InvtSecTypeComponent,

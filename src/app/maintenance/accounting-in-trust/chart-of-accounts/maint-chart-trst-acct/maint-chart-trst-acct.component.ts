@@ -56,8 +56,8 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     magnifyingGlass: ['slTypeName'],
     opts: [{
       selector: 'glAcctCategory',
-      prev: [],
-      vals: [],
+      prev: ['Asset','Liability','Equity','Revenue','Expense'],
+      vals: ['1','2','3','4','5'],
     },
     {
       selector: 'drCrTag',

@@ -1723,5 +1723,56 @@ export class MaintenanceService{
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnSL', JSON.stringify(params), header);
     }
 
+    getMtnAcseDefAcctEnt(tranClass?,tranTypeCd?,entryNo?){
+    	const params = new HttpParams()
+			.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+			.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+			.set('entryNo', (entryNo === null || entryNo === undefined ? '' : entryNo));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseDefAcctEnt', {params});
+    }
 
+    saveMtnAcseAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseDefAcctEnt', JSON.stringify(params), header);
+    }
+
+    getAcseDefAmt(tranClass,tranTypeCd,itemNo?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseAmtDtl',{params});	
+    }
+
+    saveAcseAmtDtl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseAmtDtl', JSON.stringify(params), header);
+    }
+
+    getAcseWhtaxHist(whTaxId,histNo,taxCd?){
+    	const params = new HttpParams()
+    		.set('whTaxId', (whTaxId == null || whTaxId == undefined ? '' : whTaxId))
+    		.set('histNo', (histNo == null || histNo == undefined ? '' : histNo))
+    		.set('taxCd', (taxCd == null || taxCd == undefined ? '' : taxCd));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseWhTaxHist',{params});	
+    }
+
+    saveAcseWhtaxHist(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseWhTaxHist', JSON.stringify(params), header);
+    }
 }
