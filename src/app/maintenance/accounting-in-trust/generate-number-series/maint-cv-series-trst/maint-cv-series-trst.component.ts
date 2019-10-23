@@ -4,6 +4,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-maint-cv-series-trst',
@@ -16,6 +17,8 @@ export class MaintCvSeriesTrstComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cvModal') cvModal: ModalComponent;
+  @ViewChild('cvErrorModal') cvErrorModal: ModalComponent;
 
   passData: any = {
       tableData: [],
@@ -42,13 +45,12 @@ export class MaintCvSeriesTrstComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  okGenerate: any = '';
   cancelFlag:boolean;
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
   }
 
   retrieveCVSeries(){
@@ -64,12 +66,24 @@ export class MaintCvSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.cvFrom <= this.maxARSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
+    if(this.params.cvFrom >= this.params.cvTo){
+      this.dialogMessage = "Cv From must not be greater or equal to Cv to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
+      this.maintenanceService.getMaxTranSeries('CV',this.params.cvFrom,this.params.cvTo,this.params.cvYear).subscribe((data:any) =>{
+        this.okGenerate = data.allowGenerate.allowGenerate;
+
+        if(this.okGenerate === 'N'){
+          /*this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
+          this.dialogIcon = "error-message";
+          this.successDiag.open();*/
+          this.cvErrorModal.openNoClose();
+        }else{
+          //this.confirm.confirmModal();
+          this.cvModal.openNoClose();
+        }
+      });
     }
   }
 
@@ -87,9 +101,7 @@ export class MaintCvSeriesTrstComponent implements OnInit {
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('CV').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
-    });
+  checkGenerate(){
+    return this.params.cvFrom == '' || this.params.cvTo == '' || this.params.cvYear == '';
   }
 }
