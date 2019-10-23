@@ -78,6 +78,8 @@ export class QuotationComponent implements OnInit {
   exitLink:string;
   accessibleModules:any [] = [];
 
+  @ViewChild('active')activeComp:any;
+
 	ngOnInit() {
       this.sub = this.route.params.subscribe(params => {
           this.line = params['line'];
@@ -210,6 +212,7 @@ export class QuotationComponent implements OnInit {
               console.log("Status Failed to Update.");
             } else {
               console.log("Status Released");
+              this.updateGenInfo();
             }
           });
         }
@@ -382,6 +385,8 @@ export class QuotationComponent implements OnInit {
         console.log(this.quoteInfo.statusDesc)
         if(this.quoteInfo.status == '3'){
           this.inquiryFlag = true;
+          this.activeComp.inquiryFlag = true;
+          this.activeComp.ngOnInit();
         }
       })
     }
