@@ -631,7 +631,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 			this.dialogMessage = "Please complete all the required fields.";
 			$('#genInfo #successModalBtn').trigger('click');
 			setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-       		
+       		this.cancelFlag = false;
 
 			//this.focusBlur();
 		}
