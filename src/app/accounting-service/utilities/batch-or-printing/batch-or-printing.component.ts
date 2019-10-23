@@ -11,6 +11,8 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { finalize } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-batch-or-printing',
@@ -22,6 +24,7 @@ export class BatchOrPrintingComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
 
   exitLink: string;
   exitTab: string;
@@ -68,6 +71,9 @@ export class BatchOrPrintingComponent implements OnInit {
     };
 
   searchParams: any[] = [];
+  batchData   : any = { 
+                    "reportRequest": []
+                    }
 
   constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
 
@@ -116,6 +122,7 @@ export class BatchOrPrintingComponent implements OnInit {
       this.toDate === null || this.toDate === undefined?'':this.toDate;
       this.tranTypeCd === null || this.tranTypeCd === undefined ?'':this.tranTypeCd;
       this.passData.tableData = [];
+      this.passData.disableGeneric = true;
       this.table.overlayLoader = true;
       this.searchParams = [    {key: "orDateFrom", search: this.fromDate },
                                {key: "orDateTo", search: this.toDate },
@@ -147,6 +154,7 @@ export class BatchOrPrintingComponent implements OnInit {
 
   onTableClick(data){
     console.log(data);
+    this.passData.disableGeneric = data == null;
   }
 
   onClicktag(tag?){
@@ -159,5 +167,65 @@ export class BatchOrPrintingComponent implements OnInit {
       }
     }
   }
+
+  printOR(){
+    let tranIdArray=[];
+
+    for(var i=0; i < this.passData.tableData.length;i++){
+      if (this.passData.tableData[i].orNo !== null && this.passData.tableData[i].printCheck === 'Y'){
+        tranIdArray.push(this.passData.tableData[i].tranId);
+      }
+    }
+
+    if(tranIdArray.length === 0){
+      this.dialogMessage = 'Please choose records to be printed.';
+      this.dialogIcon = 'error-message';
+      this.successDiag.open();
+    } else {
+      let selectedBatchData = [];
+       this.batchData.reportRequest = [];
+
+      for(let i=0;i<tranIdArray.length ;i++){ 
+        selectedBatchData.push({ tranId :  tranIdArray[i] , reportName : 'ACITR_AR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+      }
+      this.batchData.reportRequest = selectedBatchData;
+      this.printPDF(this.batchData);
+    }  
+  }
+
+  printPDF(batchData: any){  
+   let result: boolean;    
+   this.accountingService.batchPrint(JSON.stringify(batchData))
+     .pipe(
+           finalize(() => this.finalPrint(result) )
+      )
+          .subscribe(data => {
+           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+           var downloadURL = window.URL.createObjectURL(data);
+           window.open(downloadURL, '_blank');
+           result= false;
+    },
+     error => {
+           result =true;
+           this.dialogIcon = "error-message";
+           this.dialogMessage = "Error generating batch OR PDF file(s)";
+           this.successDiag.open();
+   });     
+
+}
+
+finalPrint(error?){
+  if(!error){
+    this.printMdl.open();
+  }
+  
+}
+
+updateOrStatus(){
+
+}
+
+
+
 
 }
