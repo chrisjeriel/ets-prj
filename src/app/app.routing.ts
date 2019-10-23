@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard, UnsavedChangesGuard, ModuleAccessGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
@@ -196,6 +197,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
     { path: 'quotation', component: QuotationComponent, 
     		canDeactivate: [UnsavedChangesGuard], 
     		canActivate: [AuthGuard, ModuleAccessGuard], 

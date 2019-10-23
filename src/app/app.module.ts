@@ -482,6 +482,7 @@ import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.co
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-dist/batch-dist.component';
 import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
     imports: [
@@ -968,6 +969,7 @@ import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch
         SlComponent,
         BatchDistComponent,
         BatchPostComponent,
+        LogoutComponent,
     ],
 
   	providers: [
