@@ -23,36 +23,42 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('tbl1') tbl1: CustEditableNonDatatableComponent;
+	@ViewChild('tbl2') tbl2: CustEditableNonDatatableComponent;
+	@ViewChild('tbl3') tbl3: CustEditableNonDatatableComponent;
+	@ViewChild('tbl4') tbl4: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+	@ViewChild('combinedStmtOfAcct') combinedStmtOfAcct: ModalComponent;
+	@ViewChild('acctReceivable') acctReceivable: ModalComponent;
+	@ViewChild('acctRemittance') acctRemittance: ModalComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
 	summary:boolean = false;
 	remittances:boolean = false;
 
-	balanceDebit: any = 800071.34;
-	balanceCredit: any = 0;
-	totalDebit: any = 1510787.46;
-	totalCredit: any = 1510787.46;
-
 	QSOAList: any ={
 		tableData: [],
-		tHeader: ['Company','Quarter Ending','Status','Reference No.','Debit','Credit'],
-		dataTypes: ['text','date','text','text','currency','currency'],
-		keys: ['cedingName','quarterEnding','qsoaStatusDesc','refNoTranId','totalDebitAmt','totalCreditAmt'],
+		tHeader: ['Company', 'Currency', 'Quarter Ending','Status','Reference No.','Debit','Credit'],
+		dataTypes: ['text','text','date','text','text','currency','currency'],
+		keys: ['cedingName','currCd','quarterEnding','qsoaStatusDesc','refNoTranId','totalDebitAmt','totalCreditAmt'],
 		widths: ["200"],
 		infoFlag: true,
 		paginateFlag: true,
 		genericBtn: 'View Details',
-		total: [null,null,null,'TOTAL','totalDebitAmt','totalCreditAmt'],
+		total: [null,null,null,null,'TOTAL','totalDebitAmt','totalCreditAmt'],
 		searchFlag:true,
-		uneditable: [true,true,true,true,true,true],
+		uneditable: [true,true,true,true,true,true,true],
 		pageLength: 15,
 		pageID:1,
 		filters: [
 			{
-				key: 'company',
+				key: 'cedingName',
 				title: 'Company',
+				dataType: 'text'
+			},
+			{
+				key: 'currCd',
+				title: 'Currency',
 				dataType: 'text'
 			},
 			{
@@ -61,41 +67,86 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				dataType: 'date'
 			},
 			{
-				key: 'status',
+				key: 'qsoaStatusDesc',
 				title: 'Status',
 				dataType: 'text'
 			},
 			{
-				key: 'referenceNo',
+				key: 'refNoTranId',
 				title: 'Ref. No.',
 				dataType: 'text'
 			},
 			{
-				key: 'debit',
+				key: 'totalDebitAmt',
 				title: 'Debit',
 				dataType: 'text'
 			},
 			{
-				key: 'credit',
+				key: 'totalCreditAmt',
 				title: 'Credit',
 				dataType: 'text'
 			},
 		]
 	}
 
-	passDataCombinedStatementOfItAcct: any ={
+	qsoaDtl: any ={
 		tableData:[],
 		tHeader:["Particulars","DEBIT","CREDIT"],
 		dataTypes: ["text","currency","currency"],
 		uneditable: [true,true,true],
 		total: ['TOTAL','debitAmt','creditAmt'],
 		tableOnly: true,
-		pageLength: 20,
-		pageStatus: true,
-		pagination: true,
+		pageLength: 'unli',
+		infoFlag: false,
+		paginateFlag: false,
 		widths: ['300','120','120'],
-		pageID: 'qsoaCombinedSoa',
+		pageID: 'qsoaDtlTab',
 		keys: ['particulars','debitAmt','creditAmt']
+	}
+
+	qsoaDtlExclude: any = {
+		tableData:[],
+		tHeader:["Particulars","Amount"],
+		dataTypes: ["text","currency"],
+		uneditable: [true,true],
+		total: ['TOTAL','dtlAmt'],
+		tableOnly: true,
+		pageLength: 2,
+		infoFlag: true,
+		paginateFlag: true,
+		widths: ['300','120'],
+		pageID: 'qsoaDtlExcludeTab',
+		keys: ['particulars','dtlAmt']
+	}
+
+	qsoaAcctReceivable: any = {
+		tableData:[],
+		tHeader:["Policy No.","Incept Date","Expiry Date","Effective Date","Premium","RI Commission","Other Charges","Amount Due"],
+		dataTypes: ["text","date","date","date","currency","currency","currency","currency"],
+		uneditable: [true,true,true,true,true,true,true,true],
+		total: [null,null,null,'TOTAL','premAmt','commAmt','commVatAmt','amountDue'],
+		tableOnly: true,
+		pageLength: 15,
+		infoFlag: true,
+		paginateFlag: true,
+		widths: ['auto','auto','auto','auto','auto','auto','auto','auto'],
+		pageID: 'qsoaAcctReceivableTab',
+		keys: ['policyNo','incDate','expDate','effDate','premAmt','commAmt','commVatAmt','amountDue']
+	}
+
+	qsoaAcctRemittance: any = {
+		tableData: [],
+		tHeader:["Tran Class","Tran No.","Tran Date","Payment Type","Payee / Payor","Particulars","Amount"],
+		dataTypes: ["text","text","date","text","text","text","currency"],
+		uneditable: [true,true,true,true,true,true,true],
+		total: [null,null,null,null,null,'TOTAL','amount'],
+		tableOnly: true,
+		pageLength: 15,
+		infoFlag: true,
+		paginateFlag: true,
+		widths: ['auto','auto','auto','auto','auto','auto','auto'],
+		pageID: 'qsoaAcctRemittanceTab',
+		keys: ['tranClass','tranNo','tranDate','tranTypeName','payee','particulars','amount']
 	}
 
 	passDataViewAccountsReceivable: any = {
@@ -164,6 +215,12 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	dialogIcon: string = '';
 	dialogMessage: string = '';
 	selectedQsoa: any = null;
+	balanceDebit: any = 0;
+	balanceCredit: any = 0;
+	totalDebitTbl: any = 0;
+	totalCreditTbl: any = 0;
+	totalDebit: any = 0;
+	totalCredit: any = 0;
 
 	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService) { }
 
@@ -196,23 +253,55 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	showModal(content) {
-		this.comStmt = true;
-		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-
-		setTimeout(() => { this.tbl1.refreshTable(); }, 0);
+		this.totalDebitTbl = 0;
+		this.totalCreditTbl = 0;
+		this.totalDebit = 0;
+		this.totalCredit = 0;
+		this.combinedStmtOfAcct.openNoClose();
+		setTimeout(() => {
+			this.tbl1.refreshTable();
+			this.tbl2.refreshTable();
+			this.tbl1.overlayLoader = true;
+			this.tbl2.overlayLoader = true;
+		}, 0);
 		
 		this.as.getQSOADtl(this.selectedQsoa.qsoaId).subscribe(data => {
-			console.log(data);
+			this.qsoaDtl.tableData = data['qsoaDtlList'];
+			this.qsoaDtlExclude.tableData = data['qsoaDtlExcludeList'];
+			this.qsoaAcctReceivable.tableData = data['qsoaAcctReceivableList'];
+			this.qsoaAcctRemittance.tableData = data['qsoaRemittanceList'];
 
-			this.passDataCombinedStatementOfItAcct.tableData = data['qsoaDtlList'];
+			data['qsoaDtlList'].forEach(a => {
+				this.totalDebitTbl += a.debitAmt;
+				this.totalCreditTbl += a.creditAmt;
+			});
 
-			/*this.comStmt = true;
-			this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });*/
+			var a = this.totalCreditTbl - this.totalDebitTbl;
+
+			this.balanceDebit = a >= 0 ? Math.abs(a) : 0;
+			this.balanceCredit = a < 0 ? Math.abs(a) : 0;
+			this.totalDebit = this.totalDebitTbl + this.balanceDebit;
+			this.totalCredit = this.totalCreditTbl + this.balanceCredit;
 
 			this.tbl1.refreshTable();
+			this.tbl2.refreshTable();
 		});
+	}
 
-		
+	showQsoaAcctReceivableMdl() {
+		this.acctReceivable.openNoClose();
+
+		setTimeout(() => {
+			this.tbl3.refreshTable();
+		}, 0);
+	}
+
+	showQsoaRemittanceMdl() {
+		this.acctRemittance.openNoClose();
+
+		setTimeout(() => {
+			this.tbl4.refreshTable();
+		}, 0);
 	}
 
 	viewRemittances(){
