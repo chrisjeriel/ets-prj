@@ -189,6 +189,7 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 const appRoutes: Routes = [
 
@@ -196,6 +197,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'wf-calendar', component: WfCalendarComponent },
     { path: 'quotation', component: QuotationComponent, 
     		canDeactivate: [UnsavedChangesGuard], 
     		canActivate: [AuthGuard, ModuleAccessGuard], 
