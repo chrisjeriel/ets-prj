@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
+import { FullCalendarModule } from 'primeng/fullcalendar';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -502,6 +503,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
         BrowserAnimationsModule,
         AccordionModule,
         DropdownModule,
+        FullCalendarModule,
     ],
     declarations: [
         AppComponent,
