@@ -13,21 +13,28 @@ export class WfNotesFormComponent implements OnInit {
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
-  title: string = "";
-  notes: string = "";
-  userId: string = "";
-  createdBy: string = "";
-  dateCreated: string = "";
-  updatedBy: string = "";
-  lastUpdate: string = "";
-  ViewMode: boolean = true;	
-  disablebtnBool: boolean = true;
-  noteInfo: any[] =[];
+  note: any = {
+    "noteId"       : null,
+    "title"        : null,
+    "note"         : null,
+    "impTag"       : null,
+    "urgTag"       : null,
+    "module"       : null,
+    "referenceId"  : null,
+    "details"      : null,
+    "assignedTo"   : null,
+    "status"       : null,
+    "createUser"   : null,
+    "createDate"   : null,
+    "updateUser"   : null,
+    "updateDate"   : null,
+  };
+  isReadOnly: boolean = true;	
   dialogIcon:string  = "";
   dialogMessage:string  = "";
 
   constructor(config: NgbModalConfig,
-     public modalService: NgbModal,private workFlowManagerService: WorkFlowManagerService, private ns: NotesService) { }
+     public modalService: NgbModal,private workFlowManagerService: WorkFlowManagerService, public ns: NotesService) { }
 
   ngOnInit() {
   }
@@ -44,11 +51,11 @@ export class WfNotesFormComponent implements OnInit {
   }
 
   onClickSave(){
-    if (this.isEmptyObject(this.notes)){
-        this.openErrorDiag()
-      } else {
-         this.onYes.emit();
-      }
+    if (this.isEmptyObject(this.note.note)){
+      this.openErrorDiag();
+    } else {
+       this.onYes.emit(this.note);
+    }
   }
 
   isEmptyObject(obj) {
@@ -60,6 +67,10 @@ export class WfNotesFormComponent implements OnInit {
     return true;
   }
 
-
+  formatDate(date) {
+    var d = new Date(date);
+    return  ("00" + (d.getMonth() + 1)).slice(-2) + "/" +("00" + d.getDate()).slice(-2)+ "/" + d.getFullYear()+ " "+("00" + d.getHours()).slice(-2) + ":" +("00" + d.getMinutes()).slice(-2) 
+    +":" + ("00" + d.getSeconds()).slice(-2) 
+  }
 
 }

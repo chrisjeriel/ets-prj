@@ -15,7 +15,7 @@ export class WfReminderFormComponent implements OnInit {
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
-  reminderDate: any;
+  /*reminderDate: any;
   alarmDate: any; 
   title: string = "";
   reminder: string = "";
@@ -23,8 +23,27 @@ export class WfReminderFormComponent implements OnInit {
   createdBy: string = "";
   dateCreated: string = "";
   updatedBy: string = "";
-  lastUpdate: string = "";
-  ViewMode: boolean = true;	
+  lastUpdate: string = "";*/
+
+  reminder: any = {
+    "reminderId"   : null,
+    "title"        : null,
+    "reminder"     : null,
+    "module"       : null,
+    "referenceId"  : null,
+    "details"      : null,
+    "alarmTime"    : null,
+    "impTag"       : null,
+    "urgTag"       : null,
+    "assignedTo"   : null,
+    "createDate"   : null,
+    "createUser"   : null,
+    "reminderDate" : null,
+    "status"       : null,
+    "updateUser"   : null,
+    "updateDate"   : null,
+  };
+  isReadOnly: boolean = true;	
   disablebtnBool: boolean = true;
   reminderInfo: any[] =[];
   dialogIcon:string  = "";
@@ -37,7 +56,7 @@ export class WfReminderFormComponent implements OnInit {
   ngOnInit() {
   }
 
-  checkValidTime(event){
+/*  checkValidTime(event){
     if(this.isEmptyObject(event.target.value)){
     } else {
         var reminderTime = this.toTimeString(Date.parse(this.reminderDate));  
@@ -46,9 +65,9 @@ export class WfReminderFormComponent implements OnInit {
             this.setAlarmTime(reminderTime,this.alarmDate);
           }
     }
-  }
+  }*/
 
-  setAlarmTime(reminderTime: string, alarmTime: string){
+/*  setAlarmTime(reminderTime: string, alarmTime: string){
     var arrayTime = reminderTime.split(':');
     var arrayAlarmTime = alarmTime.split(':');
     var endHour = new Date();
@@ -67,7 +86,7 @@ export class WfReminderFormComponent implements OnInit {
     return false;
   }
 
-}
+}*/
 
   isEmptyObject(obj) {
     for(var prop in obj) {
@@ -86,7 +105,7 @@ export class WfReminderFormComponent implements OnInit {
     return pad(d.getHours()) + ':' + pad(d.getMinutes());
   }
 
-  onClickSave(){
+/*  onClickSave(){
     this.disablebtnBool = false;
     var reminderTime = this.toTimeString(Date.parse(this.reminderDate));  
     if (this.isEmptyObject(this.reminderDate) || this.isEmptyObject(this.reminder)){
@@ -101,6 +120,14 @@ export class WfReminderFormComponent implements OnInit {
           }
         }
       }
+  }*/
+
+  onClickSave(){
+    if (this.isEmptyObject(this.reminder.reminder)){
+      this.openErrorDiag();
+    } else {
+       this.onYes.emit(this.reminder);
+    }
   }
 
   onOkSuccessDiag(){

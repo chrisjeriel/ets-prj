@@ -30,12 +30,6 @@
 			                <fieldset class="scheduler-border col-sm" style="width: 550px">
 			                		<div class="form-row custom-row-inline-inset">
 										<div class="input-group">
-											<!-- <label class="form-control-sm col-sm-2" for="inputDate">Reminder Date</label> -->
-											<!-- <input type="datetime-local" id="inputDate" class="form-control form-control-sm cust-sm col-sm-5" appRequired [(ngModel)]="reminderDate"  (change)=checkValidDate($event);> -->
-<!-- 
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="reminderDate?.split('T')[0]" (valueChange)="reminderDate=$event+'T'+reminderDate.split('T')[1];reminderDate=$event+'T'+reminderDate.split('T')[1];"></datepicker>
- -->
-
 											<div class="input-group col-sm-6" style="padding: 0px;">
 												<label class="form-control-sm col-sm-4">Reminder Date</label>
 												<div class="col-sm dp-cont" style="margin-left: 0px !important;">
@@ -45,15 +39,6 @@
 													<datepicker [type]="'time'" [value]="reminderDate?.split('T')[1]" (valueChange)="reminderDate=reminderDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 												</div>
 											</div>
-
-
-											<!-- 
-											<div class="col-sm dp-cont">
-											</div>
-											<div class="col-sm-3 dp-cont">
-												<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
-											</div> -->
-
 											<div class="input-group col-sm-6" style="padding: 0px;">
 												<label class="form-control-sm col-sm-4">Alarm Time</label>
 												<div class="col-sm-4 p-cont">
@@ -125,13 +110,6 @@
 											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
 											<input style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="relatedRecordTxt">
 										</div>
-										<!-- <div class="input-group" style="margin: 0 0 -20px 0 ! important;">
-											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
-											<div class="form-control form-control-sm cust-sm col-sm-10" style="padding: 0px !important; border: none; height: calc(1.3rem + 1px) !important;">
-	                                            <text-editor [table]="false" name="Related Record" [editorContent]="relatedRecordTxt" [readonly]="true" [editablePrev]="false">
-	                                            </text-editor>
-	                                        </div>
-										</div> -->
 									</div>
 			                </fieldset>
 			            </div>
@@ -150,7 +128,6 @@
 											<label class="form-control-sm" for="radio2">Assign to</label>
 										</div>
 										<div class="input-group" style="margin: -10px 0 0 0;">
-											<!-- <input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]= disableAssignTo [(ngModel)]="userInfo.userId" (change)="checkCode($event)" appRequired> -->
 											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]="disableAssignTo" [(ngModel)]="userInfo.userId" appRequired>
 											<div id="search" class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
 											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]="disableAssignTo" readonly [(ngModel)]="userInfo.userName">
@@ -171,10 +148,6 @@
 											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUserGrpLOV('0')"  [disabled]="disableAssignToGroup"><a>Groups</a></button>
 											<input type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToGroup" appRequired>
 										</div>
-										<!-- <div class="input-group" style="margin: 10px 0 0 0;">
-											<input id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
-											<label class="form-control-sm" for="radio4">Assign to all</label>
-										</div> -->
 										<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
 											 <button style="z-index: 20 !important;" type="button" class="cust-btn"><a>Clear</a></button>
 											 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="onClickSave();" [disabled]=disablebtnBool><a>Save</a></button>
