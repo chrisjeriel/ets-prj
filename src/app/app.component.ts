@@ -8,6 +8,10 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
 import { UserService } from './_services';
 
+import { ChangeDetectorRef } from '@angular/core';
+
+
+
 @Component({ 
     selector: 'app',
     templateUrl: 'app.component.html',
@@ -33,6 +37,7 @@ export class AppComponent  {
     content: any;
     theme : any;
     constructor(
+     private cdRef:ChangeDetectorRef,
      private router: Router,
      private userService: UserService,
      private authenticationService: AuthenticationService,
@@ -121,6 +126,7 @@ export class AppComponent  {
 
         this.userService.moduleIdObs.subscribe(value => {
             this.moduleId = value;
+            this.cdRef.detectChanges();
         });
 
         if (this.currentUser != null) {
