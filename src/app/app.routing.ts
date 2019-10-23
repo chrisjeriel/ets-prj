@@ -184,6 +184,7 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
 
 
 const appRoutes: Routes = [
@@ -378,6 +379,7 @@ const appRoutes: Routes = [
     { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] }, 
     { path: 'mtn-invt-sec-type', component: InvtSecTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-payee', component: PayeeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl-type', component: SlTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home

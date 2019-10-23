@@ -2761,4 +2761,22 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
     }
 
+    getAcseBatchOr(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('orDateFrom','')
+				.set('orDateTo','')
+				.set('tranTypeName','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchOr', {params});
+	}
+
+     
+
 }
