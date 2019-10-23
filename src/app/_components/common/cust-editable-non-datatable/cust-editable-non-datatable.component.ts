@@ -798,7 +798,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     markAsDirty(){
         //$('#cust-scroll form').addClass('ng-dirty');
-        this.form.forEach(a=>a.control.markAsDirty());
+        this.form.forEach(a=>{a.control.markAsDirty();a.control.markAsTouched()});
         //this.form.control.markAsDirty();
     }
 
