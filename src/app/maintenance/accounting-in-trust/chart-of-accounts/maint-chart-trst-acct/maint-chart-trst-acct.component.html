@@ -60,7 +60,7 @@
           <div class="cust-btn-container">
               <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
               <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-              <button type="button" class="cust-btn"><a>Print</a></button>
+              <button type="button" class="cust-btn" (click)="print()"><a>Print</a></button>
             </div>
       </div>
     </div>
@@ -94,3 +94,4 @@
   <app-confirm-save (onYes)="save()"></app-confirm-save>
   <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
   <app-cancel-button (onYes)="save(true)" [url]="'/maintenance-acct'" ></app-cancel-button>
+  <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>

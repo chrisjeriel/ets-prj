@@ -8,6 +8,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 
 @Component({
   selector: 'app-maint-chart-trst-acct',
@@ -21,6 +22,7 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
+  @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
   chartOfAccounts: any = {
     tableData: [],
@@ -295,6 +297,9 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
         this.getMtnAcitChartAcct({});
       }
     });
-    //DITO PO NAHINTO ANG LAHAT, BYE MAINTENANCE, HELLO CV, I'M OUT
+  }
+
+  print(){
+    this.printModal.open();
   }
 }
