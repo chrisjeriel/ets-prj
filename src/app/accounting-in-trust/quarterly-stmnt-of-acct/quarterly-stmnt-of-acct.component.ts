@@ -22,7 +22,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
-	@ViewChild('tbl1') tbl1: CustNonDatatableComponent;
+	@ViewChild('tbl1') tbl1: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
 	comStmt:boolean = false;
@@ -93,7 +93,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		pageLength: 20,
 		pageStatus: true,
 		pagination: true,
-		colSize: ['300px','120px','120px'],
+		widths: ['300','120','120'],
 		pageID: 'qsoaCombinedSoa',
 		keys: ['particulars','debitAmt','creditAmt']
 	}
@@ -196,13 +196,18 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	showModal(content) {
+		this.comStmt = true;
+		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+
+		setTimeout(() => { this.tbl1.refreshTable(); }, 0);
+		
 		this.as.getQSOADtl(this.selectedQsoa.qsoaId).subscribe(data => {
 			console.log(data);
 
 			this.passDataCombinedStatementOfItAcct.tableData = data['qsoaDtlList'];
 
-			this.comStmt = true;
-			this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+			/*this.comStmt = true;
+			this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });*/
 
 			this.tbl1.refreshTable();
 		});
@@ -294,13 +299,15 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				this.dialogIcon = 'success-message';
 				this.dialogMessage = 'QSOA successfully generated'
 				this.successDialog.open();
+
+				this.viewQsoa();
 				
-				this.filtCedingId = this.gnrtCedingId;
-				this.filtCedingName = this.gnrtCedingName;
-				this.filtFromQtr = this.gnrtQtr;
-				this.filtFromYear = this.gnrtYear
-				this.filtToQtr = this.gnrtQtr;
-				this.filtToYear = this.gnrtYear
+				// this.filtCedingId = this.gnrtCedingId;
+				// this.filtCedingName = this.gnrtCedingName;
+				// this.filtFromQtr = this.gnrtQtr;
+				// this.filtFromYear = this.gnrtYear
+				// this.filtToQtr = this.gnrtQtr;
+				// this.filtToYear = this.gnrtYear
 
 				var d = new Date();
 				this.gnrtCedingId = '';
@@ -308,7 +315,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 			    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
 			    this.gnrtYear = d.getFullYear();
 
-				this.onClickSearch();
+				// this.onClickSearch();
 			} else if(data['returnCode'] == 1) {
 				this.confModal.openNoClose();
 			} else if(data['returnCode'] == 2) {
@@ -320,5 +327,16 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				this.successDialog.open();
 			}
 		});
+	}
+
+	viewQsoa() {
+		this.filtCedingId = this.gnrtCedingId;
+		this.filtCedingName = this.gnrtCedingName;
+		this.filtFromQtr = this.gnrtQtr;
+		this.filtFromYear = this.gnrtYear
+		this.filtToQtr = this.gnrtQtr;
+		this.filtToYear = this.gnrtYear
+
+		this.onClickSearch();
 	}
 }

@@ -101,7 +101,8 @@
 		</div>
 
 		<div *ngIf="comStmt">
-			<app-cust-non-datatable #tbl1 [passData]="passDataCombinedStatementOfItAcct"></app-cust-non-datatable>
+			<!-- <app-cust-non-datatable #tbl1 [passData]="passDataCombinedStatementOfItAcct"></app-cust-non-datatable> -->
+			<app-cust-editable-non-datatable #tbl1 [passData]="passDataCombinedStatementOfItAcct" (newClick)="selectedQsoa=$event"></app-cust-editable-non-datatable>
 			<div class="form-row custom-row-inline-inset" style="margin-top: 32px !important;">
 				<fieldset class="scheduler-border col-sm-6">
 					<div class="input-group">
@@ -147,7 +148,7 @@
 		</div>
 		
 	</div>
-	<div class="modal-footer" style="max-width: 1090px !important;">
+	<div class="modal-footer text-center" style="max-width: 1090px !important;">
 		<!-- <div *ngIf="comStmt" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
 			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewReceivables()"><a>Accounts Receivables</a></button>
 			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewRemittances()"><a>Remittances</a></button>
@@ -168,7 +169,9 @@
 			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewReceivables()"><a>Return</a></button>
 		</div> -->
 
-		<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewReceivables()"><a>Return</a></button>
+		<div class="w-100 text-center">
+			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="modalService.dismissAll()"><a>Return</a></button>
+		</div>
 	</div>
 </ng-template>
 
@@ -203,7 +206,7 @@
     </div>
     <div footer class="w-100 text-center">
     	<button class="cust-btn" type="button" (click)="saveAcitQsoa()"><a>Generate QSOA</a></button>
-    	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>View QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="modalService.dismissAll(); viewQsoa();"><a>View QSOA</a></button>
     	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
     </div>
 </app-modal>
