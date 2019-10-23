@@ -7,6 +7,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { AccountingService } from '@app/_services/accounting.service';
 import { NotesService } from '@app/_services/notes.service';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
@@ -21,6 +22,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
+	@ViewChild('tbl1') tbl1: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
 	comStmt:boolean = false;
@@ -82,38 +84,18 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	passDataCombinedStatementOfItAcct: any ={
-		tableData:[
-			{particulars: 'BEGINNING BALANCES DECEMBER 31,2017',referenceNo: '',breakdownAmount: null,debit: 145590.21,credit: 580431.73},
-			{particulars: 'PREMIUMS',referenceNo: '',breakdownAmount: 2204840.49,debit:null,credit:null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 29095.37,debit:null,credit: 2175745.12},
-			{particulars: 'COMMISSIONS',referenceNo: '',breakdownAmount: 583237.96,debit:null,credit:null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 8719.97,debit:null,credit: -574517.99},
-			{particulars: 'OTHER UNDERWRITING CHARGES',referenceNo: '',breakdownAmount: 69574.22,debit:null,credit:null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: 1047.37,debit:null,credit: -68499.85},
-			{particulars: 'LOSSES PAID',referenceNo: '',breakdownAmount: null,debit:null,credit: -307936.47},
-			{particulars: 'INTEREST INCOME ON INVESTMENT (Net WHTax)',referenceNo:'',breakdownAmount: null,debit:null,credit: 3536.47},
-			{particulars: 'INTEREST ON SAVINGS (Net WHTax)',referenceNo: '',breakdownAmount: null,debit:null,credit: 174.93},
-			{particulars: 'INTEREST EXPENSES ON PREMIUM RESERVE RELEASED for the 1st Quarter 2018',referenceNo: '',breakdownAmount: null,debit:null,credit: -18315.12},
-			{particulars: 'ACCOUNTS RECEIVABLE',referenceNo: '',breakdownAmount: null,debit: 736563.02,credit:null},
-			{particulars: 'Less: Returns',referenceNo: '',breakdownAmount: null,debit: -24502.60,credit:null},
-			{particulars: 'Service Fee',referenceNo: 'OR-016312',breakdownAmount: -66927.94,debit:null,credit: -66927.94},
-			{particulars: 'Miscellaneous Charges',referenceNo: '',breakdownAmount: null,debit:null,credit: -12298.52},
-			{particulars: 'Excess of Loss 2018 Min. Deposit-1st Installment',referenceNo: '',breakdownAmount: null,debit:null,credit: -212500.63},
-			{particulars: 'Gain on Foreign Exchange',referenceNo: '',breakdownAmount: null,debit:null,credit: 3.78},
-			{particulars: 'Remittances',referenceNo: 'AR-000264',breakdownAmount: -68535.60,debit:null,credit:null},
-			{particulars: '',referenceNo: 'AR-000264',breakdownAmount: -78399.92,debit: -146935.52,credit:null},
-		],
-		tHeader:["Particulars","Reference No.","Breakdown Amount","DEBIT","CREDIT"],
-		dataTypes: ["text","text","currency","currency","currency"],
-		uneditable: [true,true,true,true,true],
-		total: [null,'TOTAL',null,'debit','credit'],
+		tableData:[],
+		tHeader:["Particulars","DEBIT","CREDIT"],
+		dataTypes: ["text","currency","currency"],
+		uneditable: [true,true,true],
+		total: ['TOTAL','debitAmt','creditAmt'],
 		tableOnly: true,
 		pageLength: 20,
 		pageStatus: true,
 		pagination: true,
-		colSize: ['300px','120px','120px','120px','120px'],
+		widths: ['300','120','120'],
 		pageID: 'qsoaCombinedSoa',
-		keys: ['particulars','referenceNo','breakdownAmount','debit','credit']
+		keys: ['particulars','debitAmt','creditAmt']
 	}
 
 	passDataViewAccountsReceivable: any = {
@@ -181,6 +163,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	dialogIcon: string = '';
 	dialogMessage: string = '';
+	selectedQsoa: any = null;
 
 	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService) { }
 
@@ -215,6 +198,21 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	showModal(content) {
 		this.comStmt = true;
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+
+		setTimeout(() => { this.tbl1.refreshTable(); }, 0);
+		
+		this.as.getQSOADtl(this.selectedQsoa.qsoaId).subscribe(data => {
+			console.log(data);
+
+			this.passDataCombinedStatementOfItAcct.tableData = data['qsoaDtlList'];
+
+			/*this.comStmt = true;
+			this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });*/
+
+			this.tbl1.refreshTable();
+		});
+
+		
 	}
 
 	viewRemittances(){
@@ -285,15 +283,13 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		this.gnrtCedingName = ev.cedingName;
 	}
 
-	saveAcitQsoa() {
+	saveAcitQsoa(force?) {
 		var param = {
+			force: force === undefined ? 'N' : 'Y',
 			cedingId: this.gnrtCedingId,
-			gnrtQtr: this.gnrtQtr,
-			gnrtYear: this.gnrtYear,
-			createUser: this.ns.getCurrentUser(),
-			createDate: this.ns.toDateTimeString(0),
-			updateUser: this.ns.getCurrentUser(),
-			updateDate: this.ns.toDateTimeString(0)
+			qtr: this.gnrtQtr,
+			year: this.gnrtYear,
+			user: this.ns.getCurrentUser()
 		}
 
 		$('.qsoaLoader').css('display','block');
@@ -303,13 +299,15 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				this.dialogIcon = 'success-message';
 				this.dialogMessage = 'QSOA successfully generated'
 				this.successDialog.open();
+
+				this.viewQsoa();
 				
-				this.filtCedingId = this.gnrtCedingId;
-				this.filtCedingName = this.gnrtCedingName;
-				this.filtFromQtr = this.gnrtQtr;
-				this.filtFromYear = this.gnrtYear
-				this.filtToQtr = this.gnrtQtr;
-				this.filtToYear = this.gnrtYear
+				// this.filtCedingId = this.gnrtCedingId;
+				// this.filtCedingName = this.gnrtCedingName;
+				// this.filtFromQtr = this.gnrtQtr;
+				// this.filtFromYear = this.gnrtYear
+				// this.filtToQtr = this.gnrtQtr;
+				// this.filtToYear = this.gnrtYear
 
 				var d = new Date();
 				this.gnrtCedingId = '';
@@ -317,11 +315,28 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 			    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
 			    this.gnrtYear = d.getFullYear();
 
-				this.onClickSearch();
+				// this.onClickSearch();
+			} else if(data['returnCode'] == 1) {
+				this.confModal.openNoClose();
+			} else if(data['returnCode'] == 2) {
+				this.dialogIcon = 'error-message';
+				this.dialogMessage = 'Payments have already been made for this QSOA. Regeneration is not allowed.';
+				this.successDialog.open();
 			} else {
 				this.dialogIcon = 'error';
 				this.successDialog.open();
 			}
 		});
+	}
+
+	viewQsoa() {
+		this.filtCedingId = this.gnrtCedingId;
+		this.filtCedingName = this.gnrtCedingName;
+		this.filtFromQtr = this.gnrtQtr;
+		this.filtFromYear = this.gnrtYear
+		this.filtToQtr = this.gnrtQtr;
+		this.filtToYear = this.gnrtYear
+
+		this.onClickSearch();
 	}
 }

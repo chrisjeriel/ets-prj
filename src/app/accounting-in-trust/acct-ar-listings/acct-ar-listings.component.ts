@@ -120,6 +120,8 @@ export class AcctArListingsComponent implements OnInit {
           this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
         }
         this.table.refreshTable();
+
+        this.table.filterDisplay(this.table.filterObj, this.table.searchString);
       },
       (error)=>{
         this.passData.tableData = [];
