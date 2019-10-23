@@ -1499,10 +1499,13 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveJvSeries", {params});
     }
 
-    getMaxTranSeries(tranClass){
+    getMaxTranSeries(tranClass,tranFrom,tranTo,year?){
     	const params = new HttpParams()
-    		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass));
-    	return this.http.get(environment.prodApiUrl + "/maintenance-service/maxTranNo", {params});
+    		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    		.set('tranFrom', (tranFrom === null || tranFrom === undefined ? '' : tranFrom))
+    		.set('tranTo', (tranTo === null || tranTo === undefined ? '' : tranTo))
+    		.set('year', (year === null || year === undefined ? '' : year));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcitAllowGenerate", {params});
     }
 
     generateORSeries(params){
@@ -1784,4 +1787,14 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcitChartAcct', JSON.stringify(params), header);
     }
+
+    saveAcseChartAcct(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
+    }
+    
 }

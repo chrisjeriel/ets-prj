@@ -189,6 +189,7 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 
 const appRoutes: Routes = [
 
@@ -536,6 +537,7 @@ const appRoutes: Routes = [
     { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl-type', component: SlTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

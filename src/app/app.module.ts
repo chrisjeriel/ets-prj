@@ -480,6 +480,7 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 
 @NgModule({
     imports: [
@@ -964,6 +965,7 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
         PayeeClassComponent,
         SlTypeComponent,
         SlComponent,
+        AcseChartAcctComponent,
     ],
 
   	providers: [
