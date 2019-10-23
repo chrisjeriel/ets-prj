@@ -529,32 +529,40 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.totalPayt    = isNaN(Math.round((e.returnAmt + e.cumPayment) * 100)/100)?0:Math.round((e.returnAmt + e.cumPayment) * 100)/100;
       e.remainingBal = isNaN(Math.round((e.prevNetDue - e.totalPayt) * 100)/100)?0:Math.round((e.prevNetDue - e.totalPayt) * 100)/100;
 
-      if(e.prevBalance < 0) {
-        if(e.returnAmt > 0){
-          this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
-        }else{
-          this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.prevBalance)))?2:0);
-        }
-      }else{
-        if(e.returnAmt < 0){
-          this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
-        }else{
-          this.warn.push((e.returnAmt > e.prevBalance)?2:0);
-        }
-      }      
+      // if(e.prevBalance < 0) {
+      //   if(e.returnAmt > 0){
+      //     this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
+      //   }else{
+      //     this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.prevBalance)))?2:0);
+      //   }
+      // }else{
+      //   if(e.returnAmt < 0){
+      //     this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
+      //   }else{
+      //     this.warn.push((e.returnAmt > e.prevBalance)?2:0);
+      //   }
+      // }
+
+      // if(e.prevBalance > 0){
+      //   (e.cumPayment > 0) ? (e.returnAmt < 0) ? this.warn.push((e.returnAmt > e.prevBalance)?2:0)
+      //                                          : this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0)
+      //                      : 
+      // }else{
+      //   if(e.cumPayment < 0){
+      //     (e.returnAmt < 0) ? this.warn.push((e.returnAmt > e.prevBalance)?2:0)
+      //                       : this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0);
+      //   }else{
+      //     (e.returnAmt < 0)?this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0)
+      //                      :this.warn.push((e.returnAmt > e.prevBalance)?2:0);
+      //   }
+      // }  
+
+      (e.prevBalance < 0 || e.cumPayment < 0) 
+        ? (e.returnAmt < 0) ? this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.prevBalance)))?2:0)
+                            : this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0)
+        : (e.returnAmt < 0) ? this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.cumPayment)))?1:0) 
+                            : this.warn.push((Math.abs(Number(e.returnAmt)) > Math.abs(Number(e.prevBalance)))?2:0);
     });
-
-    // if(this.allotedAmt == 0 || this.allotedAmt == '' || this.allotedAmt == null){
-    //   this.allotedAmt = (this.recPrqTrans.length == 0)?this.requestData.reqAmt:this.recPrqTrans[0].allotedAmt;  
-    // }
-
-    // var allAmt = (Number(String(this.allotedAmt).replace(/\,/g,'')) > 0)?Number(String(this.allotedAmt).replace(/\,/g,'')) * Number(-1):Number(String(this.allotedAmt).replace(/\,/g,''));
-    // var returnAmtSum = Number(this.inwardPolBalData.tableData.map(e => e.returnAmt).reduce((a,b) => a+b ,0));
-    // // this.inwardPolBalData.total[14] = (returnAmtSum > 0)?returnAmtSum * Number(-1):returnAmtSum;
-    // this.totalBal = Math.abs(Number(returnAmtSum));
-    // this.variance = Math.abs(Number(allAmt)) - Math.abs(Number(returnAmtSum));
-    // this.allotedAmt = this.decPipe.transform(Number(allAmt), '0.2-2');
-    // this.totalBal = Number(this.totalBal) * Number(-1);
   }
 
   setData(data, from){
