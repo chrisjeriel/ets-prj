@@ -97,6 +97,7 @@ export class MaintCvSeriesTrstComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveCVSeries();
       }
     });
   }

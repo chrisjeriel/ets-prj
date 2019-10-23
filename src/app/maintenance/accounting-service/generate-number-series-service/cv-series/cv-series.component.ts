@@ -4,6 +4,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-cv-series',
@@ -16,6 +17,8 @@ export class CvSeriesComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cvModal') cvModal: ModalComponent;
+  @ViewChild('cvErrorModal') cvErrorModal: ModalComponent;
 
   passData: any = {
       tableData: [],
@@ -42,13 +45,12 @@ export class CvSeriesComponent implements OnInit {
   
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxCVSeries: number = 0;
+  okGenerate: any = '';
   cancelFlag:boolean;
   
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxTran();
   }
 
   retrieveCV(){
@@ -65,28 +67,26 @@ export class CvSeriesComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.checkField()){
-      this.dialogMessage = "Please Check Field Values!";
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.params.cvFrom <= this.maxCVSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.cvFrom + " to " + this.params.cvTo + ".Please adjust your From-To range values.";
+    if(this.params.cvFrom >= this.params.cvTo){
+      this.dialogMessage = "Cv From must not be greater or equal to Cv to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
-    }
+      this.maintenanceService.getAcseMaxTranSeries('CV',this.params.cvFrom,this.params.cvTo,this.params.cvYear).subscribe((data:any) => {
+        console.log(data)
+        this.okGenerate = data.allowGenerate.allowGenerate;
+
+        if(this.okGenerate == 'N'){
+          this.cvErrorModal.openNoClose();
+        }else{
+          this.cvModal.openNoClose();
+        }
+      });
+     }
   }
 
   checkField() :boolean{
-    if(this.params.cvYear.length !== 0 &&
-       this.params.cvTo.length !== 0 &&
-       this.params.cvFrom.length !== 0
-      ){
-      return false;
-    }else{
-      return true;
-    }
+    return this.params.cvFrom == '' || this.params.cvTo == '' || this.params.cvYear == '';
   }
 
   generateCV(cancel?){
@@ -99,14 +99,8 @@ export class CvSeriesComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveCV();
       }
-    });
-  }
-
-  retrieveMaxTran(){
-    this.maintenanceService.getAcseMaxTranSeries('CV',null).subscribe((data:any) => {
-      console.log(data)
-      this.maxCVSeries = data.maxTranNo.tranNo;
     });
   }
 }

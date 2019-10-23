@@ -95,6 +95,7 @@ export class MaintArSeriesTrstComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveARSeries();
       }
     });
   }

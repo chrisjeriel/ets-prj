@@ -1571,11 +1571,14 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseJVSeries", {params});
     }
 
-    getAcseMaxTranSeries(tranClass,orType?){
+    getAcseMaxTranSeries(tranClass,tranFrom,tranTo,tranYear?,orType?){
     	const params = new HttpParams()
     		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    		.set('tranFrom', (tranFrom === null || tranFrom === undefined ? '' : tranFrom))
+    		.set('tranTo', (tranTo === null || tranTo === undefined ? '' : tranTo))
+    		.set('tranYear', (tranYear === null || tranYear === undefined ? '' : tranYear))
     		.set('orType', (orType === null || orType === undefined ? '' : orType));
-    	return this.http.get(environment.prodApiUrl + "/maintenance-service/acseMaxTranNo", {params});
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseAllowGenerate", {params});
     }
 
     getWhTax(whtaxId, taxCd, taxType, creditableTag?, fixedTag?, activeTag?){
@@ -1796,5 +1799,4 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
     }
-    
 }

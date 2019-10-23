@@ -97,6 +97,7 @@ export class MaintJvSeriesTrstComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveJVSeries();
       }
     });
   }
