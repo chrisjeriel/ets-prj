@@ -9,6 +9,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 
 @Component({
   selector: 'app-acct-or-entry',
@@ -25,6 +26,7 @@ export class AcctOrEntryComponent implements OnInit {
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
 
   passData: any = {
         tableData: [],
@@ -101,12 +103,14 @@ export class AcctOrEntryComponent implements OnInit {
   isPrinted: boolean = false;
   loading: boolean = false;
   screenPrint: boolean = false;
+  canOverride: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
   printMethod: string = '2';
+  approvalCd: string = '';
 
   orInfo: any = {
     tranId: '',
@@ -221,7 +225,7 @@ export class AcctOrEntryComponent implements OnInit {
     );
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     //Aug 8, 2019 Thank you for optimizing 
-    if(!this.isAdd){
+    if(!this.isAdd && this.emittedValue === undefined){
       this.retrieveOrEntry(tranId, orNo);
     }else{  //edit
       if(this.emittedValue !== undefined){
@@ -349,7 +353,25 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   openCancelModal(){
-    this.cancelMdl.openNoClose();
+    this.approvalCd = 'AC006';
+    this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+      (data:any)=>{
+        if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+          //User has the authority to cancel AR
+          this.cancelMdl.openNoClose();
+        }else{
+          //User has no authority. Open Override Login
+          this.overrideLogin.getApprovalFn();
+          this.overrideLogin.overrideMdl.openNoClose();
+        }
+      }
+    );
+  }
+
+  toCancelOr(auth){
+    if(auth){
+      this.cancelMdl.openNoClose();
+    }
   }
 
   cancelOr(){
@@ -750,6 +772,16 @@ export class AcctOrEntryComponent implements OnInit {
     );
   }
 
+  whichProcess(mainAuth){
+    if(mainAuth){
+      if(this.approvalCd == 'AC001'){ //Print AR process
+        this.toPrintOr(mainAuth);
+      }else if(this.approvalCd == 'AC006'){ //Cancel AR process
+        this.toCancelOr(mainAuth);
+      }
+    }
+  }
+
   print(){
     this.canPrintScreen();
     if(this.checkOrInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
@@ -791,9 +823,28 @@ export class AcctOrEntryComponent implements OnInit {
         this.reprintMdl.openNoClose();
       }else{
         //this.loading = true;
-        this.printMdl.openNoClose();
+        //this.printMdl.openNoClose();
         //this.retrieveMtnAcitArSeries();
+        this.approvalCd = 'AC001';
+        this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+          (data:any)=>{
+            if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+              //User has the authority to print AR
+              this.printMdl.openNoClose();
+            }else{
+              //User has no authority. Open Override Login
+              this.overrideLogin.getApprovalFn();
+              this.overrideLogin.overrideMdl.openNoClose();
+            }
+          }
+        );
       }
+    }
+  }
+
+  toPrintOr(auth){
+    if(auth){
+      this.printMdl.openNoClose();
     }
   }
 
