@@ -45,7 +45,7 @@
             <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="filterDisplay(filterObj,$event)">
         </label>
     </div>
-    <div ngbDropdown #drop="ngbDropdown" *ngIf="!passData.tableOnly && !passData.filters">
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="!passData.tableOnly && passData.filters">
         <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
