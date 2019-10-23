@@ -5,6 +5,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router, NavigationExtras } from '@angular/router';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 
 @Component({
   selector: 'app-acse-dcb-no',
@@ -16,11 +17,12 @@ export class AcseDcbNoComponent implements OnInit {
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
    passData: any = {
       tableData: [],
       tHeader: ['DCB Date','DCB Year', 'DCB No.', 'DCB Status','Remarks', 'Auto'],
-      dataTypes: ['date','year', 'number', 'text','text', 'checkbox'],
+      dataTypes: ['date','year', 'number', 'select','text', 'checkbox'],
       nData: {
       	new: true,
       	dcbDate: '', 
@@ -36,7 +38,6 @@ export class AcseDcbNoComponent implements OnInit {
       },
       searchFlag: true,
       infoFlag: true,
-      checkFlag: true,
       addFlag: true,
       deleteFlag: false,
       genericBtn:'Delete',
@@ -45,6 +46,13 @@ export class AcseDcbNoComponent implements OnInit {
       pageID: 1,
       uneditable: [false,true,true,true,false,true],
       widths: [115,80,90,120,600,80],
+      opts: [
+        {
+          selector: 'dcbStatus',
+          prev: ['Open','Temporarily Closed','Closed'],
+          vals: ['O','T','C'],
+        }
+      ],
       keys: ['dcbDate', 'dcbYear', 'dcbNo', 'dcbStatus', 'remarks', 'autoTag'],
   };
 
@@ -69,18 +77,22 @@ export class AcseDcbNoComponent implements OnInit {
   }
 
   retrieveDcb(){
+    setTimeout(() => {this.table.loadingFlag = true;});
   	if(this.params.status !== 'O'){
-  		this.passData.addFlag = false;
+  		this.passData.disableAdd = true;
+      this.passData.disableGeneric = true;
   	}else{
-  		this.passData.addFlag = true;
-      this.passData.genericBtn = 'Delete';
+  		this.passData.disableAdd = false;
+      this.passData.disableGeneric = false;
   	}
   	this.maintenanceService.getMtnAcseDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
   		this.passData.tableData = [];
   		for (var i = 0; i < data.dcbNoList.length; i++) {
   			this.passData.tableData.push(data.dcbNoList[i]);
   			this.passData.tableData[this.passData.tableData.length - 1].new = false;
+        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['dcbDate', 'dcbYear', 'dcbNo', 'dcbStatus', 'autoTag'];
   		}
+      this.table.loadingFlag = false;
   		this.table.refreshTable();
   	});
   }
@@ -163,5 +175,9 @@ export class AcseDcbNoComponent implements OnInit {
 
   onClickCancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  print(){
+    this.printModal.open();
   }
 }

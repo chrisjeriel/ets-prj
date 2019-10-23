@@ -25,7 +25,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
 							<div class="row" style="margin-top: 15px">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="update()" (genericBtn)="deleteCurr()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="update()" (genericBtn)="deleteCurr()" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row" style="margin-top: 13px !important;">
@@ -35,7 +35,7 @@
 							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="onClickCancel()"><a>Cancel</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="onClickSave()"><a>Save</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="dcbUser()"><a>DCB User Maintenance</a></button>
-							                <button type="button" class="cust-btn" style="min-width: 135px;"><a>Print</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 135px;" (click)="print()"><a>Print</a></button>
 							            </div>
 							        </div>
 							    </div>
@@ -70,3 +70,4 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveDCBNo()"></app-confirm-save>
 <app-cancel-button (onYes)="saveDCBNo('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
