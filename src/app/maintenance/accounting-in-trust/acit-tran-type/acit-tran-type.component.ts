@@ -7,6 +7,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { Router, NavigationExtras } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 
 @Component({
   selector: 'app-acit-tran-type',
@@ -27,6 +28,7 @@ export class AcitTranTypeComponent implements OnInit {
    @ViewChild('amtDtlLov') amtDtlLov: LovComponent;
    @ViewChild('acctEntryLov') acctEntryLov: LovComponent;
    @ViewChild('acctEntrySave') acctEntrySave: ConfirmSaveComponent;
+   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
    
    passData: any = {
       tableData: [],
@@ -51,8 +53,10 @@ export class AcitTranTypeComponent implements OnInit {
       },
       searchFlag: true,
       infoFlag: true,
-      checkFlag: true,
-      addFlag: false,
+      addFlag: true,
+      disableAdd: true,
+      genericBtn: 'Delete',
+      disableGeneric: true,
       deleteFlag: false,
       paginateFlag: true,
       pageLength: 10,
@@ -65,7 +69,7 @@ export class AcitTranTypeComponent implements OnInit {
    acctEntries: any = {
       tableData: [],
       tHeader: ['Account Code','Account Name', 'SL Type', 'Sub1','Sub2', 'Sub3','Debit/Credit'],
-      dataTypes: ['text','text', 'text', 'text','text', 'text','select'],
+      dataTypes: ['text','text', 'text', 'select','select', 'select','select'],
       nData: {
         showMG: 1,
         shortCode: '',
@@ -89,11 +93,27 @@ export class AcitTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 2,
-      opts: [{
-              selector: 'drCrTag',
-              prev: ['Debit','Credit'],
-              vals: ['D','C'],
-             }
+      opts: [
+      {
+        selector: 'sub1Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub2Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub3Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+      {
+        selector: 'drCrTag',
+        prev: ['Debit','Credit'],
+        vals: ['D','C'],
+       }
       ],
       uneditable: [true,false,false,false,false,false,false],
       widths: [100,300,187,90,90,90,95],
@@ -125,11 +145,12 @@ export class AcitTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 3,
-      opts: [{
-              selector: 'signTag',
-              prev: ['+','-'],
-              vals: ['P','N'],
-             }
+      opts: [
+      {
+        selector: 'signTag',
+        prev: ['+','-'],
+        vals: ['P','N'],
+       }
       ],
       uneditable: [true,false,false,false,false],
       widths: [75,405,325,160,50],
@@ -151,11 +172,13 @@ export class AcitTranTypeComponent implements OnInit {
   };
 
   paramsAmtDtl = {
+    remarks:'',
     delDefAmt: [],
     saveDefAmt: []
   }
 
   paramsAcctEntries = {
+    remarks:'',
     saveAcctEnt: [],
     delAcctEnt : []
   }
@@ -178,8 +201,8 @@ export class AcitTranTypeComponent implements OnInit {
 
   retrieveTranType(){
     this.table.loadingFlag = true
-    this.passData.addFlag = true;
-    this.passData.deleteFlag = true;
+    this.passData.disableGeneric = false;
+    this.passData.disableAdd = false;
   	this.maintenanceService.getAcitTranType(this.params.tranClass,null,null,null,null,null).subscribe((data:any) => {
       console.log(data)
   		this.passData.tableData = [];
@@ -215,6 +238,18 @@ export class AcitTranTypeComponent implements OnInit {
       this.params.tranTypeName = '';
       this.params.tranTypeCd = '';
   	}
+  }
+
+  deleteCurr(ev) {
+    console.log(ev)
+    if(ev.okDelete == 'N'){
+        this.dialogMessage = "Deleting this record is not allowed. This was already used in some accounting records.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    }else{
+      this.table.selected = [this.table.indvSelect];
+      this.table.confirmDelete();
+    }
   }
 
   onClickSave(){
@@ -343,9 +378,9 @@ export class AcitTranTypeComponent implements OnInit {
   defAmtClick(data){
     console.log(data)
     if(data!==null){
-      this.params.remarks = data.remarks;
+      this.paramsAmtDtl.remarks = data.remarks;
     }else{
-      this.params.remarks = '';
+      this.paramsAmtDtl.remarks = '';
     }
   }
 
@@ -370,9 +405,9 @@ export class AcitTranTypeComponent implements OnInit {
   acctEntriesClick(data){
     console.log(data)
     if(data !== null){
-      this.params.remarks = data.remarks;
+      this.paramsAcctEntries.remarks = data.remarks;
     }else{
-      this.params.remarks = '';
+      this.paramsAcctEntries.remarks = '';
     }
   }
 
@@ -440,5 +475,13 @@ export class AcitTranTypeComponent implements OnInit {
         this.retrieveAcctEnt();
       }
     });
+  }
+
+  printPreview(){
+
+  }
+
+  print(){
+    this.printModal.open();
   }
 }
