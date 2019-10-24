@@ -6,6 +6,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 
 @Component({
   selector: 'app-acse-tran-type',
@@ -27,6 +28,7 @@ export class AcseTranTypeComponent implements OnInit {
   @ViewChild('tranTypeCancel') cancelBtn : CancelButtonComponent;
   @ViewChild('acctEntryLov') acctEntryLov: LovComponent;
   @ViewChild('amtDtlLov') amtDtlLov: LovComponent;
+  @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
   passData: any = {
       tableData: [],
@@ -51,8 +53,10 @@ export class AcseTranTypeComponent implements OnInit {
       },
       searchFlag: true,
       infoFlag: true,
-      checkFlag: true,
-      addFlag: false,
+      addFlag: true,
+      disableAdd: true,
+      genericBtn: 'Delete',
+      disableGeneric: true,
       deleteFlag: false,
       paginateFlag: true,
       pageLength: 10,
@@ -65,7 +69,7 @@ export class AcseTranTypeComponent implements OnInit {
   passDataAcctEntries: any = {
       tableData: [],
       tHeader: ['Account Code','Account Name', 'SL Type', 'Sub1','Sub2', 'Sub3','Debit/Credit'],
-      dataTypes: ['text','text', 'text', 'text','text', 'text','select'],
+      dataTypes: ['text','text', 'text', 'select','select', 'select','select'],
       nData: {
         showMG: 1,
         shortCode: '',
@@ -89,11 +93,27 @@ export class AcseTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 2,
-      opts: [{
-              selector: 'drCrTag',
-              prev: ['Debit','Credit'],
-              vals: ['D','C'],
-             }
+      opts: [
+      {
+        selector: 'sub1Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub2Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub3Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+      {
+        selector: 'drCrTag',
+        prev: ['Debit','Credit'],
+        vals: ['D','C'],
+       }
       ],
       uneditable: [true,false,false,false,false,false,false],
       widths: [100,300,187,90,90,90,95],
@@ -230,11 +250,13 @@ export class AcseTranTypeComponent implements OnInit {
   };
 
   paramsAcctEnt = {
+    remarks: '',
     saveAcctEnt: [],
     delAcctEnt: []
   };
 
   paramsAmtDtl = {
+    remarks: '',
     saveDefAmt: [],
     delDefAmt: []
   }
@@ -257,8 +279,8 @@ export class AcseTranTypeComponent implements OnInit {
 
  retrieveTranType(){
  	this.table.loadingFlag = true;
- 	this.passData.addFlag = true;
- 	this.passData.deleteFlag = true;
+ 	this.passData.disableAdd = false;
+ 	this.passData.disableGeneric = false;
  	this.maintenanceService.getMtnAcseTranType(this.params.tranClass).subscribe((data:any) => {
  		this.passData.tableData = [];
  		this.params.tranName = data.tranTypeList[0].tranName;
@@ -346,6 +368,7 @@ export class AcseTranTypeComponent implements OnInit {
         this.passDataAcctEntries.tableData.push(data.defAccEnt[i]);
       }
       this.acctEntTbl.loadingFlag = false;
+      this.acctEntTbl.onRowClick(null,this.passDataAcctEntries.tableData[0]);
       this.acctEntTbl.refreshTable();
     });
   }
@@ -378,9 +401,9 @@ export class AcseTranTypeComponent implements OnInit {
 
   acctEntriesClick(data){
     if(data !== null){
-
+      this.paramsAcctEnt.remarks = data.remarks;
     }else{
-
+      this.paramsAcctEnt.remarks = '';
     }
   }
 
@@ -436,6 +459,7 @@ export class AcseTranTypeComponent implements OnInit {
         this.passDataAmountDtl.tableData.push(data.defAmtDtl[i]);
       }
       this.amtDtlTbl.refreshTable();
+      this.amtDtlTbl.onRowClick(null,this.passDataAmountDtl.tableData[0]);
       this.amtDtlTbl.loadingFlag = false;
     });
   }
@@ -457,11 +481,10 @@ export class AcseTranTypeComponent implements OnInit {
 
   defAmtClick(data){
     if(data !== null){
-
+      this.paramsAmtDtl.remarks = data.remarks;
     }else{
-
+      this.paramsAmtDtl.remarks = '';
     }
-    this.amtDtlTbl.refreshTable();
   }
 
   onClickSaveAmounDtl(){
@@ -504,4 +527,19 @@ export class AcseTranTypeComponent implements OnInit {
     this.taxDetailsMdl.openNoClose();
   }
   
+  deleteCurr(ev) {
+    console.log(ev)
+    if(ev.okDelete == 'N'){
+        this.dialogMessage = "Deleting this record is not allowed. This was already used in some accounting records.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    }else{
+      this.table.selected = [this.table.indvSelect];
+      this.table.confirmDelete();
+    }
+  }
+
+  print(){
+    this.printModal.open();
+  }
 }
