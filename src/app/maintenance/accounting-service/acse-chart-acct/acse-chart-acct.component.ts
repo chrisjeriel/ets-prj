@@ -163,13 +163,15 @@ export class AcseChartAcctComponent implements OnInit {
   	  this.params.remarks = data.remarks;
   	  this.remarksFlag = false;
   	  this.chartOfAccounts.disableGeneric = false;
+      this.printParams.glAcctId = data.glAcctId;
   	}else{
   	  this.chartOfAccounts.disableGeneric = true;
   	  this.selected = null;
   	  this.params.remarks = '';
   	  this.remarksFlag = true;
+      this.printParams.glAcctId = '';
   	}
-  }
+  }l
 
   onClickDelete(ev) {
     console.log(ev)

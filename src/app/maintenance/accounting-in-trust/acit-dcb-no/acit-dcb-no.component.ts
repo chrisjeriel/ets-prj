@@ -6,6 +6,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router, NavigationExtras } from '@angular/router';
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acit-dcb-no',
@@ -71,6 +72,8 @@ export class AcitDcbNoComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  dcbNo: any;
+  dcbYear: any;
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private router: Router) { }
 
@@ -110,11 +113,15 @@ export class AcitDcbNoComponent implements OnInit {
       this.params.createDate = this.ns.toDateTimeString(data.createDate);
       this.params.updateUser = data.updateUser;
       this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
+      this.dcbNo = data.dcbNo;
+      this.dcbYear = data.dcbYear;
     }else{
       this.params.createUser = '';
       this.params.createDate = '';
       this.params.updateUser = '';
       this.params.updateDate = '';
+      this.dcbNo = '';
+      this.dcbYear = '';
     }
   }
 
@@ -184,7 +191,67 @@ export class AcitDcbNoComponent implements OnInit {
     this.printModal.open();
   }
 
-  printPreview(){
-    
-  }
+  printPreview(data){
+     console.log(data);
+     this.passData.tableData = [];
+     if(data[0].basedOn === 'curr'){
+      this.getRecords(this.dcbYear,this.dcbNo);
+     } else if (data[0].basedOn === 'all') {
+      this.getRecords();
+     }
+   }
+
+   getRecords(dcbYear?,dcbNo?){
+     this.maintenanceService.getMtnAcitDCBNo(dcbYear,dcbNo).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+       this.passData.tableData = data.dcbNoList;
+       this.passData.tableData.forEach(a => {
+         if(a.dcbStatus === 'O'){
+           a.dcbStatus = 'Open';
+         }
+
+         if(a.dcbStatus === 'C'){
+           a.dcbStatus = 'Closed';
+         }
+         
+         if(a.dcbStatus === 'T'){
+           a.dcbStatus = 'Temporarily Closed';
+         }
+
+         if(a.remarks === null){
+           a.remarks = '';
+         }
+       });
+     });
+   }
+
+    finalGetRecords(selection?){
+     this.export(this.passData.tableData);
+   };
+
+   export(record?){
+     var today = new Date();
+     var dd = String(today.getDate()).padStart(2, '0');
+     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+     var yyyy = today.getFullYear();
+     var hr = String(today.getHours()).padStart(2,'0');
+     var min = String(today.getMinutes()).padStart(2,'0');
+     var sec = String(today.getSeconds()).padStart(2,'0');
+     var ms = today.getMilliseconds()
+     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+     var filename = 'DcbNo'+currDate+'.xls'
+     var mystyle = {
+         headers:true, 
+         column: {style:{Font:{Bold:"1"}}}
+       };
+
+       alasql.fn.nvl = function(text) {
+         if (text === null){
+           return '';
+         } else {
+           return text;
+         }
+       };
+     
+     alasql('SELECT dcbDate AS [DCB Date],dcbYear AS [DCB Year],dcbNo AS [DCB No],dcbStatus AS [DCB Status],remarks AS [Remarks],autoTag AS [Auto] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+   }
 }

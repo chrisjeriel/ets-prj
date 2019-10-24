@@ -8,6 +8,7 @@ import { Router, NavigationExtras } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acit-tran-type',
@@ -477,11 +478,66 @@ export class AcitTranTypeComponent implements OnInit {
     });
   }
 
-  printPreview(){
-
-  }
-
   print(){
     this.printModal.open();
+  }
+
+  printPreview(data) {
+    this.passData.tableData = [];
+    if(data[0].basedOn === 'curr'){
+     this.getRecords(this.params.tranClass,this.params.tranTypeCd);
+    } else if (data[0].basedOn === 'all') {
+     this.getRecords(this.params.tranClass);
+    }
+  }
+
+  getRecords(tranClass?,tranTypeCd?){
+     this.maintenanceService.getAcitTranType(tranClass,tranTypeCd,null,null,null,null).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+       this.passData.tableData = data.tranTypeList;
+       this.passData.tableData.forEach(a => {
+         if(a.defaultParticulars === null){
+           a.defaultParticulars = '';
+         }
+
+         if(a.masterTranType === null){
+           a.masterTranType = '';
+         }
+
+         if(a.typePrefix === null){
+           a.typePrefix = '';
+         }
+       });
+     });
+  }
+
+   finalGetRecords(selection?){
+    this.export(this.passData.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'DcbNo'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+    
+    alasql('SELECT tranTypeCd AS [Tran Type No],typePrefix AS [Prefix],tranTypeName AS [Transaction Type Name],defaultParticulars AS [Default Particulars],masterTranType AS [Master Transaction Type],autoTag AS [Auto],baeTag AS [BAE],activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 }
