@@ -9,6 +9,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acse-chart-acct',
@@ -94,6 +95,10 @@ export class AcseChartAcctComponent implements OnInit {
     selector:'',
     params:{}
   };
+
+  printParams = {
+    glAcctId:'',
+  }
 
   selected: any = null;
   row: any = null;
@@ -298,6 +303,67 @@ export class AcseChartAcctComponent implements OnInit {
   }
 
   printPreview(data) {
-  	console.log(data)
+  	this.chartOfAccounts.tableData = [];
+    if(data[0].basedOn === 'curr'){
+     this.getRecords(this.printParams);
+    } else if (data[0].basedOn === 'all') {
+     this.getRecords({});
+    }
+  }
+
+  getRecords(printParams?){
+    this.ms.getMtnAcseChartAcct(printParams).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+      this.chartOfAccounts.tableData = data.list;
+      this.chartOfAccounts.tableData.forEach(a => {
+        if(a.slTypeName === null){
+          a.slTypeName = '';
+        }
+
+        if(a.drCrTag === 'D'){
+          a.drCrTag = 'Debit';
+        }else{
+          a.drCrTag = 'Credit';
+        }
+
+        if(a.postTag === 'S'){
+          a.postTag = 'Summary'
+        }
+
+        if(a.postTag === 'D'){
+          a.postTag = 'Detailed'
+        }
+      });
+    });
+  }
+
+   finalGetRecords(selection?){
+    this.export(this.chartOfAccounts.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AcseChartAcct'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+    
+    alasql('SELECT glAcctId AS [Acct ID], glAcctCategory AS [Type], glAcctCategoryDesc AS [Acct Category], glAcctControl AS [Control Acct], glAcctSub1 AS [Sub1], glAcctSub2 AS [Sub2], glAcctSub3 AS [Sub3], shortDesc AS [Short Description], longDesc AS [Long Description], shortCode AS [Short Code], slTypeName AS [SL Type], drCrTag AS [Dr/Cr Normal], postTag AS [Post Tag], activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 }
