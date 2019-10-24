@@ -787,6 +787,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(a["soaDtlList"]);
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
