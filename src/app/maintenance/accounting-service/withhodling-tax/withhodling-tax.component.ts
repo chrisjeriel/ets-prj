@@ -5,7 +5,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 @Component({
   selector: 'app-withhodling-tax',
   templateUrl: './withhodling-tax.component.html',
@@ -20,17 +21,18 @@ export class WithhodlingTaxComponent implements OnInit {
    @ViewChild('whTaxHistSave') confirmWhTax: ConfirmSaveComponent;
    @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
    @ViewChild('taxAmtHist') taxAmtHistMdl: ModalComponent;
+   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
    passData: any = {
       tableData: [],
       tHeader: ['WhTax ID','WhTax Code', 'Withholding Tax Name', 'WhTax Type','Rate', 'Default GL Account', 'GL Account Name', 'Creditable','Fixed','Active'],
-      dataTypes: ['number','text', 'text', 'select','currency','text', 'text', 'checkbox','checkbox','checkbox'],
+      dataTypes: ['number','text', 'text', 'select','number','text', 'text', 'checkbox','checkbox','checkbox'],
       nData: {
         whtaxId : '',
         taxCd : '',
         taxName : '',
         taxType : '',
-        rate : '',
+        taxRate : '',
         defaultAcitGl : '',
         defaultAcseGl : '',
         creditableTag : 'N',
@@ -124,7 +126,6 @@ export class WithhodlingTaxComponent implements OnInit {
       for (var i = 0; i < data.whtax.length; i++) {
         this.passData.tableData.push(data.whtax[i]);
       }
-      this.table.onRowClick(null,this.passData.tableData[0]);
       this.table.refreshTable();
     });
   }
@@ -187,6 +188,7 @@ export class WithhodlingTaxComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.historyFlag = true;
         this.retrieveWhtax();
       }
     });
@@ -253,5 +255,74 @@ export class WithhodlingTaxComponent implements OnInit {
   onClickWhTaxHist(){
     this.confirmWhTax.confirmModal();
   }
+
+  print(){
+    this.printModal.open();
+  }
+
+  printPreview(data){
+    console.log(data);
+    this.passData.tableData = [];
+    if(data[0].basedOn === 'curr'){
+     this.getRecords(this.whTaxId);
+    } else if (data[0].basedOn === 'all') {
+     this.getRecords();
+    }
+  }
+
+  getRecords(whtaxId?){
+    this.maintenanceService.getWhTax(whtaxId,null,null).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+      this.passData.tableData = data.whtax;
+      console.log(this.passData.tableData)
+      this.passData.tableData.forEach(a => {
+        if(a.defaultAcitGl === null){
+          a.defaultAcitGl = '';
+        }
+        if(a.defaultAcseGl === null){
+          a.defaultAcseGl = '';
+        }
+        if(a.taxType === 'I'){
+          a.taxType = 'Individual';
+        }
+
+        if(a.taxType === 'C'){
+          a.taxType = 'Corporate';
+        }
+      });
+    });
+  }
+
+   finalGetRecords(selection?){
+    //console.log(this.allRecords.tableData);
+    this.export(this.passData.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'WithholdingTax'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+    
+    alasql('SELECT whtaxId AS [WhTax ID],taxCd AS [WhTax Code],taxName AS [Withholding Tax Name],taxType AS [WhTax Type],taxRate AS [Rate],defaultAcitGl AS [Default GL Account],defaultAcseGl AS [GL Account Name],creditableTag AS [Creditable],fixedTag AS [Fixed],activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+  }
+
 
 }

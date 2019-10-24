@@ -21,7 +21,7 @@
 							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickCancel()"><a>Cancel</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickSave()"><a>Save</a></button>
 							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="onClickHistory()" [disabled]="historyFlag" [class.cust-btn-disabled]="historyFlag"><a>History</a></button>
-							                <button type="button" class="cust-btn" style="min-width: 85px;"><a>Print</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 85px;" (click)="print()"><a>Print</a></button>
 							            </div>
 							        </div>
 							    </div>
@@ -79,3 +79,4 @@
 <app-confirm-save (onYes)="saveMtnWhTax()" #whTaxSave></app-confirm-save>
 <app-confirm-save (onYes)="saveWhTaxHist()" #whTaxHistSave></app-confirm-save>
 <app-cancel-button (onYes)="saveMtnWhTax('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
