@@ -30,7 +30,7 @@
 	<div class="col-sm-2"></div>
 </div>
 
-<app-modal class="d-none" [id]="confirm-modal" #arModal>
+<app-modal class="d-none" #arModal>
     <div header>Confirmation</div>
     <div body>
     	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Are you sure you want to generate these transactional <br> number series starting from <b>{{ params.arFrom }}</b> to <b>{{ params.arTo }}</b> ?</span> 
@@ -41,7 +41,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" [id]="confirm-modal" #arErrorModal>
+<app-modal class="d-none" #arErrorModal>
     <div header>Warning</div>
     <div body>
     	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">

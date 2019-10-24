@@ -183,4 +183,8 @@ export class AcitDcbNoComponent implements OnInit {
   print(){
     this.printModal.open();
   }
+
+  printPreview(){
+    
+  }
 }

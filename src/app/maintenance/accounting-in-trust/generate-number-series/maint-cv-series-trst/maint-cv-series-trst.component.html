@@ -32,7 +32,7 @@
 	<div class="col-sm-2"></div>
 </div>
 
-<app-modal class="d-none" [id]="confirm-modal" #cvModal>
+<app-modal class="d-none" #cvModal>
     <div header>Confirmation</div>
     <div body>
     	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Are you sure you want to generate these transactional <br> number series starting from <b>{{ params.cvFrom }}</b> to <b>{{ params.cvTo }}</b> ?</span> 
@@ -43,7 +43,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" [id]="confirm-modal" #cvErrorModal>
+<app-modal class="d-none" #cvErrorModal>
     <div header>Confirmation</div>
     <div body>
     	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">
