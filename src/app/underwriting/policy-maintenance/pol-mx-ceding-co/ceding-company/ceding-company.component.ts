@@ -29,12 +29,7 @@ export class CedingCompanyComponent implements OnInit {
         resizable: [false,true,false,true,false,false,false],
         filters: [
             {
-                key: 'coNo',
-                title:'Company No',
-                dataType: 'text'
-            },
-            {
-                key: 'name',
+                key: 'cedingName',
                 title:'Name',
                 dataType: 'text'
             },
@@ -209,5 +204,29 @@ export class CedingCompanyComponent implements OnInit {
         }
       });
     }
+  }
+
+
+  filterDb(params){
+    let passToService: any = {};
+    for(let param of params){
+      passToService[param.key] = param.search
+    }
+
+    this.underwritingService.getCedingCompanyList('','','','','','','','Y','','Y',passToService).subscribe((data: any) => {
+        this.passDataCedingCompanyMember.tableData = [];
+        for(var i=0; i < data.cedingcompany.length;i++){
+          if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {
+            this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
+          }            
+        }
+
+        if(this.treaty !== undefined && this.treaty) {
+          this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'Y');
+        } else if(this.treaty !== undefined && !this.treaty) {
+          this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'N');
+        }
+        this.table.refreshTable();          
+    });
   }
 }

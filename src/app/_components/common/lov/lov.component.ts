@@ -1285,9 +1285,7 @@ export class LovComponent implements OnInit {
     for(let param of params){
       passToService[param.key] = param.search
     }
-    console.log(passToService)
     if(this.passData.selector == 'deductibles'){
-      console.log('eyyyy')
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
         this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
         this.passData.params.defaultTag, passToService

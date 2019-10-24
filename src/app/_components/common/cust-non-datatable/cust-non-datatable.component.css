@@ -219,7 +219,7 @@ div.filler{
 
 .search-filter{
     position: absolute !important;
-    right: 0px;
+    right: 4px;
     z-index: 1000;
 }
 
