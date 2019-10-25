@@ -87,7 +87,8 @@
 				</div>
 			</div>
 			<div class="col-sm-12" style="margin-top: 20px">
-				<app-cust-editable-non-datatable [passData]="acctEntries" (clickLOV)="openAcctEntryLov($event)" (newClick)="acctEntriesClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');chartOfAccounts.disableGeneric=true;"#acctEntTbl></app-cust-editable-non-datatable>
+				<!-- <app-cust-editable-non-datatable [passData]="acctEntries" (clickLOV)="openAcctEntryLov($event)" (newClick)="acctEntriesClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');chartOfAccounts.disableGeneric=true;"#acctEntTbl></app-cust-editable-non-datatable> PROD#ERROR -->
+				<app-cust-editable-non-datatable [passData]="acctEntries" (clickLOV)="openAcctEntryLov($event)" (newClick)="acctEntriesClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');"#acctEntTbl></app-cust-editable-non-datatable>
 			</div>
 			<div class="col-sm-12">
 				<div class="input-group">
