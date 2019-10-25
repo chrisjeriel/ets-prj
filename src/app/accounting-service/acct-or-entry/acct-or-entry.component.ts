@@ -195,6 +195,8 @@ export class AcctOrEntryComponent implements OnInit {
     activeTag: ''
   };
 
+  @Input() inquiryFlag: boolean = false; //added by ENGEL
+
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
@@ -249,6 +251,13 @@ export class AcctOrEntryComponent implements OnInit {
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
       this.paytDtlTbl.refreshTable();
     }
+
+    if(this.inquiryFlag){ //added by ENGEL
+       this.passData.addFlag = false;
+       this.passData.genericBtn = undefined;
+       this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+       this.paytDtlTbl.refreshTable();
+    }
   }
 
   confirmNewOr(){
@@ -262,6 +271,7 @@ export class AcctOrEntryComponent implements OnInit {
   newOr(){
     this.loading = true;
     this.isAdd = true;
+    this.inquiryFlag = false; // added by ENGEL
     this.disableTab.emit(true);
     this.retrieveMtnAcseDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
     this.setDefaultValues();

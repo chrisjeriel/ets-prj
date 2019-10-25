@@ -120,6 +120,8 @@ export class JournalVoucherComponent implements OnInit {
 
       this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
+
+      this.table.filterDisplay(this.table.filterObj, this.table.searchString);
     });
   }
 

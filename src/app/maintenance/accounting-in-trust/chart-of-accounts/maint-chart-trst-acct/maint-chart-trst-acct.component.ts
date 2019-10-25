@@ -8,6 +8,8 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maint-chart-trst-acct',
@@ -16,10 +18,12 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 })
 export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(LovComponent) lov: LovComponent;
+  @ViewChild('slTypeLov') lov: LovComponent;
+  @ViewChild('acctCodeLov') accCodelov: LovComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
+  @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
   chartOfAccounts: any = {
     tableData: [],
@@ -54,11 +58,12 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     genericBtn: 'Delete',
     disableGeneric: true,
     magnifyingGlass: ['slTypeName'],
-    opts: [{
+    opts: [
+    /*{
       selector: 'glAcctCategory',
-      prev: [],
-      vals: [],
-    },
+      prev: ['Asset','Liability','Equity','Revenue','Expense'],
+      vals: ['1','2','3','4','5'],
+    },*/
     {
       selector: 'drCrTag',
       prev: ['Dr','Cr'],
@@ -82,11 +87,30 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     params:{}
   }
 
+  params = {
+    remarks:'',
+    saveAcitChartAcct: [],
+    deleteAcitChartAcct: []
+  };
+
+  searchParams = {
+    glAcctCategory :'',
+    glAcctControl:'',
+    glAcctSub1:'',
+    glAcctSub2:'',
+    glAcctSub3:''
+  };
+
+  printParams = {
+    glAcctId:'',
+  }
+
   selected: any = null;
   row: any = null;
   dialogIcon:string = '';
   dialogMessage: string = '';
   cancel: boolean = false;
+  remarksFlag: boolean = false;
 
   subscription: Subscription = new Subscription();
 
@@ -101,13 +125,21 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   }
 
   getMtnAcitChartAcct(params) {
+    this.table.loadingFlag = true;
     var sub$ = forkJoin(this.ms.getMtnAcitChartAcct(params),
                         this.ms.getRefCode('MTN_ACIT_CHART_ACCT.GL_ACCT_CATEGORY')).pipe(map(([chartAcct, ref]) => { return { chartAcct, ref} }));
 
     this.subscription.add(sub$.subscribe(data => {
-      this.chartOfAccounts.opts[0].prev = data['ref']['refCodeList'].map(a => a.description);
-      this.chartOfAccounts.opts[0].vals = data['ref']['refCodeList'].map(a => a.code);
 
+      this.chartOfAccounts.opts.forEach( a=> {
+        if(a.selector == 'glAcctCategory'){
+          a.prev = [];
+          a.vals = [];
+        }
+      });
+
+      this.chartOfAccounts.opts.push({selector: 'glAcctCategory',prev: data['ref']['refCodeList'].map(a => a.description), vals : data['ref']['refCodeList'].map(a => a.code)});
+      this.chartOfAccounts.tableData = [];
       this.chartOfAccounts.tableData = data['chartAcct']['list'].sort((a, b) => a.glAcctId - b.glAcctId)
                                                                 .map(a => {
                                                                   a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -115,23 +147,48 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
                                                                   a.showMG = 1;
                                                                   return a;
                                                                 });
+      this.table.loadingFlag = false;
       this.table.refreshTable();
       this.table.onRowClick(null, this.chartOfAccounts.tableData[0]);
     }));
   }
 
+  onClickSearch(){
+    this.getMtnAcitChartAcct(this.searchParams);
+  }
+
+  clearAccCode(){
+    this.searchParams.glAcctControl = '';
+    this.searchParams.glAcctSub1 = '';
+    this.searchParams.glAcctSub2 = '';
+    this.searchParams.glAcctSub3 = '';
+  }
+
   onRowClick(data) {
-    this.selected = data;
-    this.chartOfAccounts.disableGeneric = this.selected == null || this.selected == '';
+    if(data!==null){
+      this.selected = data;
+      this.params.remarks = data.remarks;
+      this.remarksFlag = false;
+      this.chartOfAccounts.disableGeneric = false;
+      this.printParams.glAcctId = data.glAcctId;
+    }else{
+      this.chartOfAccounts.disableGeneric = true;
+      this.selected = null;
+      this.params.remarks = '';
+      this.remarksFlag = true;
+      this.printParams.glAcctId = '';
+    }
   }
 
   onClickDelete(ev) {
-    if(ev != undefined) {
+    console.log(ev)
+    if(ev.okDelete == 'N'){
+        this.dialogMessage = "Deleting this record is not allowed. This was already used in some accounting records.";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+    }else{
+      this.table.selected = [this.table.indvSelect];
       this.table.confirmDelete();
-    } else {
-      this.table.indvSelect.edited = true;
-      this.table.indvSelect.deleted = true;
-      this.table.refreshTable();
     }
   }
 
@@ -145,6 +202,22 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   setSLType(data) {
     this.row.slTypeCd = data.data.slTypeCd;
     this.row.slTypeName = data.data.slTypeName;
+    this.row.edited = true;
+    this.table.markAsDirty();
+  }
+
+  showAccCode(){
+    this.passLov.selector = 'acitChartAcct';
+    this.passLov.params = {glAcctCategory: this.searchParams.glAcctCategory};
+    this.accCodelov.openLOV();
+  }
+
+  setAcctCode(data){
+    this.searchParams.glAcctCategory = data.data.glAcctCategory;
+    this.searchParams.glAcctControl = data.data.glAcctControl;
+    this.searchParams.glAcctSub1 = data.data.glAcctSub1;
+    this.searchParams.glAcctSub2 = data.data.glAcctSub2;
+    this.searchParams.glAcctSub3 = data.data.glAcctSub3;
   }
 
   updateShortCode(data) {
@@ -201,10 +274,9 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
       return;
     }
 
-    var params = {
-      saveAcitChartAcct: [],
-      deleteAcitChartAcct: []
-    }
+   
+      this.params.saveAcitChartAcct = [];
+      this.params.deleteAcitChartAcct = [];
 
     var td = this.chartOfAccounts.tableData;
 
@@ -215,13 +287,95 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
         a.updateUser = this.ns.getCurrentUser();
         a.updateDate = this.ns.toDateTimeString(0);
 
-        params.saveAcitChartAcct.push(a);
+        this.params.saveAcitChartAcct.push(a);
       } else if(a.deleted) {
-        params.deleteAcitChartAcct.push(a);
+        this.params.deleteAcitChartAcct.push(a);
       }
     });
 
-    console.log(params);
-    //DITO PO NAHINTO ANG LAHAT, BYE MAINTENANCE, HELLO CV, I'M OUT
+    console.log(this.params);
+    this.ms.saveAcitChartAcct(this.params).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDialog.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDialog.open();
+        this.table.markAsPristine();
+        this.getMtnAcitChartAcct({});
+      }
+    });
+  }
+
+  print(){
+    this.printModal.open();
+  }
+
+  printPreview(data){
+    console.log(data);
+    this.chartOfAccounts.tableData = [];
+    if(data[0].basedOn === 'curr'){
+     this.getRecords(this.printParams);
+    } else if (data[0].basedOn === 'all') {
+     this.getRecords({});
+    }
+  }
+
+  getRecords(printParams?){
+    this.ms.getMtnAcitChartAcct(printParams).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+      this.chartOfAccounts.tableData = data.list;
+      this.chartOfAccounts.tableData.forEach(a => {
+        if(a.slTypeName === null){
+          a.slTypeName = '';
+        }
+
+        if(a.drCrTag === 'D'){
+          a.drCrTag = 'Debit';
+        }else{
+          a.drCrTag = 'Credit';
+        }
+
+        if(a.postTag === 'S'){
+          a.postTag = 'Summary'
+        }
+
+        if(a.postTag === 'D'){
+          a.postTag = 'Detailed'
+        }
+      });
+    });
+  }
+
+   finalGetRecords(selection?){
+    this.export(this.chartOfAccounts.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AcitChartAcct'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+    
+    alasql('SELECT glAcctId AS [Acct ID],glAcctCategoryDesc AS [Type],glAcctCategory AS [Acct Category],glAcctControl AS [Control Acct],glAcctSub1 AS [Sub1],glAcctSub2 AS [Sub2],glAcctSub3 AS [Sub3],shortDesc AS [Short Description],longDesc AS [Long Description],shortCode AS [Short Code],slTypeName AS [SL Type],drCrTag AS [Dr/Cr Normal],postTag AS [Post Tag],activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 }

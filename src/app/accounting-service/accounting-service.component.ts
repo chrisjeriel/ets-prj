@@ -34,17 +34,20 @@ export class AccountingServiceComponent implements OnInit, OnDestroy {
 
   disableTab: boolean = true;
   orDetailsParam: any;
+  inquiryFlag: boolean = false;
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe(params => {
       this.exitLink = params['link'] !== undefined ? params['link'] : 'acct-or-listings';
       this.exitTab = params['tab'] !== undefined ? params['tab'] : '';
   		this.action = params['action'];
+      this.inquiryFlag = params['inquiry'];
 
   		if(this.action == 'edit'){
   			this.record = JSON.parse(params['slctd']);
   		}
     });
+    console.log(this.inquiryFlag);
   }
   ngOnDestroy(){
     this.sub.unsubscribe();

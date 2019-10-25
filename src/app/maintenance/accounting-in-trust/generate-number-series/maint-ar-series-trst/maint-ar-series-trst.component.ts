@@ -4,7 +4,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+ 
 @Component({
   selector: 'app-maint-ar-series-trst',
   templateUrl: './maint-ar-series-trst.component.html',
@@ -16,7 +17,9 @@ export class MaintArSeriesTrstComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild('arModal') arModal: ModalComponent;
+  @ViewChild('arErrorModal') arErrorModal: ModalComponent;
+  
   passData: any = {
       tableData: [],
       tHeader: ['AR No', 'Tran ID', 'Used','Created By', 'Date Created', 'Last Update By', 'Last Update'],
@@ -41,13 +44,12 @@ export class MaintArSeriesTrstComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  okGenerate: any ='';
   cancelFlag:boolean;
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
   }
 
   retrieveARSeries(){
@@ -63,12 +65,23 @@ export class MaintArSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.arFrom <= this.maxARSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.arFrom + " to " + this.params.arTo + ".Please adjust your From-To range values.";
+    if(this.params.arFrom >= this.params.arTo){
+      this.dialogMessage = "AR From must not be greater or equal to AR to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
+      this.maintenanceService.getMaxTranSeries('AR',this.params.arFrom,this.params.arTo).subscribe((data:any) =>{
+        this.okGenerate = data.allowGenerate.allowGenerate;
+
+        if(this.okGenerate === 'N'){
+          /*this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.arFrom + " to " + this.params.arTo + ".Please adjust your From-To range values.";
+          this.dialogIcon = "error-message";*/
+          this.arErrorModal.openNoClose();
+        }else{
+          //this.confirm.confirmModal();
+          this.arModal.openNoClose();
+        }
+      });
     }
   }
 
@@ -82,14 +95,12 @@ export class MaintArSeriesTrstComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveARSeries();
       }
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('AR').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
-    });
+  checkGenerate(){
+    return this.params.arFrom == '' || this.params.arTo == '' ;
   }
-
 }

@@ -97,13 +97,13 @@
               <div class="col-sm-12">
                 <ng-container [ngSwitch]="paymentType">
                   <ng-container *ngSwitchCase="'1'">
-                    <app-or-only [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-only>
+                    <app-or-only [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-only>
                   </ng-container>
                   <ng-container *ngSwitchCase="'2'">
-                    <app-or-service-fee-local [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-local>
+                    <app-or-service-fee-local [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-service-fee-local>
                   </ng-container>
                   <ng-container *ngSwitchCase="'3'">
-                    <app-or-service-fee-munich-re [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-service-fee-munich-re>
+                    <app-or-service-fee-munich-re [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-service-fee-munich-re>
                   </ng-container>
                 </ng-container>
               </div>
@@ -116,7 +116,7 @@
               <div class="col-sm-12">
                 <div class="input-group">
                       <div class="col-sm">
-                        <app-or-others [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-or-others>
+                        <app-or-others [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-others>
                       </div>
                     </div>
               </div>

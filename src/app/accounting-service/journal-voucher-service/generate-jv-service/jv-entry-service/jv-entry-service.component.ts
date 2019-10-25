@@ -280,6 +280,7 @@ export class JvEntryServiceComponent implements OnInit {
   setTranType(data){
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
+    this.entryData.particulars = data.defaultParticulars;
   }
 
   setCurrency(data){

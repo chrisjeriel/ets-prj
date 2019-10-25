@@ -2343,7 +2343,7 @@ export class AccountingService {
 		    })
 		}
 		
-		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOA',JSON.stringify(params),header);
 	}
 
 	/*
@@ -2761,6 +2761,31 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
     }
 
+    getAcseBatchOr(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('orDateFrom','')
+				.set('orDateTo','')
+				.set('tranTypeName','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchOr', {params});
+	}
+
+	batchPrint(params) {  
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          });
+
+          return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
+    }
+
     getAcseBudgetExpense(budgetYear?,itemNo?){
 		const params = new HttpParams()
 			.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
@@ -2851,5 +2876,22 @@ export class AccountingService {
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEnd',{params});	
 	}
+
+	getQSOADtl(qsoaId){
+		const params = new HttpParams()
+			.set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOADtl',{params});
+	}
+
+	printOrBatch(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
+	}
+
 
 }
