@@ -25,6 +25,7 @@ export class BatchOrPrintingComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
+  @ViewChild('printConfirmModal') printConfirmModal: ModalComponent;
 
   exitLink: string;
   exitTab: string;
@@ -212,7 +213,14 @@ export class BatchOrPrintingComponent implements OnInit {
           .subscribe(data => {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
-           window.open(downloadURL, '_blank');
+           //window.open(downloadURL, '_blank');
+           const iframe = document.createElement('iframe');
+           iframe.style.display = 'none';
+           iframe.src = downloadURL;
+           document.body.appendChild(iframe);
+           iframe.contentWindow.print();
+
+
            result= false;
     },
      error => {
@@ -235,13 +243,13 @@ finalPrint(error?){
 updateOrStatus(){
   this.table.overlayLoader = true;
   console.log(JSON.stringify(this.changeStatData));
-
    setTimeout(()=>{
          this.accountingService.printOrBatch(this.changeStatData).subscribe(
            (data:any)=>{
              if(data.returnCode == 0){
                this.dialogIcon = 'error-message';
                this.dialogIcon = 'An error has occured when updating OR status';
+               this.successDiag.open();
              }else{
                this.retrieveBatchORList(this.searchParams);
              }
@@ -263,6 +271,12 @@ viewOR(){
 
    this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit', inquiry: true }], { skipLocationChange: true });
 }
+
+failedOrPrint(){
+   this.printConfirmModal.open();
+}
+
+
 
 
 
