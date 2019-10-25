@@ -83,11 +83,10 @@ export class AcseDcbNoComponent implements OnInit {
     setTimeout(() => {this.table.loadingFlag = true;});
   	if(this.params.status !== 'O'){
   		this.passData.disableAdd = true;
-      this.passData.disableGeneric = true;
   	}else{
   		this.passData.disableAdd = false;
-      this.passData.disableGeneric = false;
   	}
+    this.passData.disableGeneric = true;
   	this.maintenanceService.getMtnAcseDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
   		this.passData.tableData = [];
   		for (var i = 0; i < data.dcbNoList.length; i++) {
@@ -108,6 +107,7 @@ export class AcseDcbNoComponent implements OnInit {
   		this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
       this.dcbNo = data.dcbNo;
       this.dcbYear = data.dcbYear;
+      this.passData.disableGeneric = false;
   	}else{
   		this.params.createUser = '';
   		this.params.createDate = '';
@@ -115,6 +115,7 @@ export class AcseDcbNoComponent implements OnInit {
   		this.params.updateDate = '';
       this.dcbNo = '';
       this.dcbYear = '';
+      this.passData.disableGeneric = true;
   	}
   }
 
@@ -156,6 +157,7 @@ export class AcseDcbNoComponent implements OnInit {
   		  this.dialogIcon = "success";
   		  this.successDiag.open();
   		  this.retrieveDcb();
+        this.table.markAsPristine();
   		}
   	});
   }
@@ -166,6 +168,7 @@ export class AcseDcbNoComponent implements OnInit {
   			this.passData.tableData[i].dcbYear = (this.ns.toDateTimeString(this.passData.tableData[i].dcbDate).split('T')[0]).split('-')[0];
   		}
   	}
+    this.table.markAsDirty();
   }
 
   deleteCurr(){
@@ -216,6 +219,8 @@ export class AcseDcbNoComponent implements OnInit {
          if(a.remarks === null){
            a.remarks = '';
          }
+
+         a.dcbDate = this.ns.toDateTimeString(a.dcbDate);
        });
      });
   }
