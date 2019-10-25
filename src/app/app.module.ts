@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
+import { FullCalendarModule } from 'primeng/fullcalendar';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -483,6 +484,7 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-dist/batch-dist.component';
 import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
 import { LogoutComponent } from './logout/logout.component';
+import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 @NgModule({
     imports: [
@@ -504,6 +506,7 @@ import { LogoutComponent } from './logout/logout.component';
         BrowserAnimationsModule,
         AccordionModule,
         DropdownModule,
+        FullCalendarModule,
     ],
     declarations: [
         AppComponent,
@@ -970,6 +973,7 @@ import { LogoutComponent } from './logout/logout.component';
         BatchDistComponent,
         BatchPostComponent,
         LogoutComponent,
+        WfCalendarComponent,
     ],
 
   	providers: [

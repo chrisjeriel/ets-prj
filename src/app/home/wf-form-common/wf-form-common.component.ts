@@ -6,6 +6,7 @@ import { WorkFlowManagerService, NotesService, UserService, MaintenanceService }
 import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-wf-form-common',
@@ -26,12 +27,14 @@ export class WfFormCommonComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild("recipientsTable") recipientsTable: CustEditableNonDatatableComponent;
   @ViewChild("userGrpTable") userGrpTable: CustEditableNonDatatableComponent;
+  @ViewChild("userGrpListingModal") userGrpListingModal : ModalComponent;
+  
 
   recipientsData: any = {
         tableData: [],
         tHeader: ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'],
         dataTypes: ['text','text', 'text', 'text', 'date'],
-        keys: ['type', 'title', 'note', 'assignedTo','createDate'],
+        keys: ['statusDesc', 'title', 'note', 'assignedTo','createDate'],
         //widths: [60,'auto',100,'auto'],
         nData:{
             type: null,
@@ -148,6 +151,7 @@ export class WfFormCommonComponent implements OnInit {
   details:string = "";
   impTag:boolean = false;
   urgTag:boolean = false;
+  selectsUserGrp: any;
 
   saveNotesParams: any = {
     noteList : [],
@@ -178,6 +182,7 @@ export class WfFormCommonComponent implements OnInit {
 
   handleRadioBtnChange(event){
    	this.disablebtnBool = false;
+    this.disableRad();
    	switch(event.target.value) {
    		case '1': {
         this.boolValue = '1';
@@ -188,13 +193,11 @@ export class WfFormCommonComponent implements OnInit {
         }
         case '2': {
         this.boolValue = '2';
-        this.disableRad();
         this.disableAssignTo = false;
         break;
         }
         case '3': {
         this.boolValue = '3';
-        this.disableRad();
         this.disableAssignToMany = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
@@ -202,7 +205,6 @@ export class WfFormCommonComponent implements OnInit {
         }
         case '4': {
         this.boolValue = '4';
-        this.disableRad();
         this.disableAssignToGroup = false;
         $('#searchicon').removeClass('fa-spinner fa-spin')
         $('#search').css('pointer-events', 'initial');
@@ -231,8 +233,8 @@ export class WfFormCommonComponent implements OnInit {
   	}
   }
 
-  showUserGrpLOV(obj?) {
-    $('#userGrpListing #modalBtn').trigger('click');
+  showUserGrpLOV() {
+    this.userGrpListingModal.openNoClose();
   }
 
   clear(obj){
@@ -266,6 +268,22 @@ export class WfFormCommonComponent implements OnInit {
        }
        this.userGrpTable.refreshTable();
     });
+  }
+
+  confirmUserGrp() {
+    this.selectsUserGrp = [];
+    for(var i = 0; i < this.userGrpListing.tableData.length; i++){
+        if(this.userGrpListing.tableData[i].checked){
+          this.selectsUserGrp.push(this.userGrpListing.tableData[i]);
+        }
+    }
+
+    var temp: string = "";
+    for(let rec of this.selectsUserGrp){
+      temp = temp + (temp != "" ? ", " : "") + rec.userGrpDesc;
+    }
+    this.userInfoToGroup = temp;
+    this.userGrpListingModal.closeModal();
   }
 
   isEmptyObject(obj) {
@@ -304,6 +322,8 @@ export class WfFormCommonComponent implements OnInit {
     this.table.refreshTable();
   }
 
+  
+
   confirm(){
 		this.selects = [];
 	    for(var i = 0; i < this.usersListing.tableData.length; i++){
@@ -312,18 +332,18 @@ export class WfFormCommonComponent implements OnInit {
 	        }
 	    }
 
-	    if (this.selects.length === 0 || this.selects.length === 1 ){
+	    /*if (this.selects.length === 0 || this.selects.length === 1 ){
 	    	this.dialogIcon = "error-message";
 	        this.dialogMessage = "Please select at least 2 users";
 	        this.onOkVar = "showUsersLOV";
 	        this.successDiag.open();
-	    } else {
+	    } else {*/
 	    
       var records = this.selects;
 			var temp: string = "";
 			for(let rec of records){
 				temp = rec.userId + "," + temp;
-			}
+			/*}*/
 			this.userInfoToMany = temp;
 		}
   }
@@ -457,6 +477,32 @@ export class WfFormCommonComponent implements OnInit {
           noteList.push(note);
         }
 
+      } else if (this.boolValue == 4) {
+        //Assign to many this.selectsUserGrp
+
+        for (var i = 0; i < this.selectsUserGrp.length; i++) {
+          var note = {};
+
+          note = {
+              "noteId"       : null,
+              "title"        : this.titleNote,
+              "note"         : this.notes,
+              "impTag"       : this.impTag ? 'Y' : 'N',
+              "urgTag"       : this.urgTag ? 'Y' : 'N',
+              "module"       : this.moduleSource,
+              "referenceId"  : this.referenceId,
+              "details"      : this.details,
+              "assignedToGroup"   : this.selectsUserGrp[i].userGrp,
+              "status"       : "A",
+              "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "createDate"   : this.ns.toDateTimeString(0),
+              "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "updateDate"   : this.ns.toDateTimeString(0),
+          };
+
+          noteList.push(note);
+        }
+
       } else {
 
       }
@@ -545,6 +591,34 @@ export class WfFormCommonComponent implements OnInit {
         }
 
         
+      } else if (this.boolValue == 4) {
+        //Assign to many this.selectsUserGrp
+        for (var i = 0; i < this.selectsUserGrp.length; i++) {
+          var note = {};
+
+          reminder = {
+            "reminderId"   : null,
+            "title"        : this.titleReminder,
+            "reminder"     : this.reminder,
+            "module"       : this.moduleSource,
+            "referenceId"  : this.referenceId,
+            "details"      : this.details,
+            "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+            "impTag"       : this.impTag ? 'Y' : 'N',
+            "urgTag"       : this.urgTag ? 'Y' : 'N',
+            "assignedToGroup"   : this.selectsUserGrp[i].userGrp,
+            "createDate"   : null,
+            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
+            "status"       : "A",
+            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateDate"   : null,
+          }
+
+          reminderList.push(reminder);
+        }
+
+        
       } else {
 
       }
@@ -577,13 +651,13 @@ export class WfFormCommonComponent implements OnInit {
 
     if (this.mode == 'note') {
       this.recipientsData.dataTypes = ['text','text', 'text', 'text', 'date'];
-      this.recipientsData.keys = ['type', 'title', 'note', 'assignedTo','createDate'];
-      this.recipientsData.tHeader = ['Type', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
+      this.recipientsData.keys = ['statusDesc', 'title', 'note', 'assignedTo','createDate'];
+      this.recipientsData.tHeader = ['Status', 'Title', 'Note', 'Assigned To', 'Date Assigned'];
       this.recipientsData.uneditable = [true,true,true,true,true];
     } else if (this.mode == 'reminder') {
       this.recipientsData.dataTypes = ['text','text', 'text', 'datetime', 'time', 'text', 'date'];
-      this.recipientsData.keys = ['type', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'];
-      this.recipientsData.tHeader = ['Type', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'];
+      this.recipientsData.keys = ['statusDesc', 'title', 'reminder', 'reminderDate', 'alarmTime', 'assignedTo','createDate'];
+      this.recipientsData.tHeader = ['Status', 'Title', 'Reminder', 'Reminder Date', 'Alarm Time', 'Assigned To', 'Date Assigned'];
       this.recipientsData.uneditable = [true,true,true,true,true,true,true];
     }
 
@@ -599,6 +673,7 @@ export class WfFormCommonComponent implements OnInit {
             if (data.noteList != null) {          
               for(let rec of data.noteList){
                 rec.type = 'Note';
+                rec.statusDesc = rec.status == 'A' ? 'Assigned' : (rec.status == 'C' ? 'Completed' : 'Deleted');
                 this.recipientsData.tableData.push(rec);
               }
 
@@ -620,6 +695,7 @@ export class WfFormCommonComponent implements OnInit {
             if (data.reminderList != null) {          
               for(let rec of data.reminderList){
                 rec.type = 'Reminder';
+                rec.statusDesc = rec.status == 'A' ? 'Assigned' : (rec.status == 'C' ? 'Completed' : 'Deleted');
                 this.recipientsData.tableData.push(rec);
               }
 

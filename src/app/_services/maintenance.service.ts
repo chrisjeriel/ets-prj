@@ -335,14 +335,14 @@ export class MaintenanceService{
     }
 
     getMtnInsuredLov(pass){
-    	const params = new HttpParams()
-			.set('lovParam', pass.lovParam == undefined ? '' : pass.lovParam)
-			.set('paginationRequest.count', pass.count == undefined ? '' : pass.count)
-			.set('paginationRequest.position', pass.position == undefined ? '' : pass.position)
-			.set('sortRequest.sortKey', pass.sortKey == undefined ? '' : pass.sortKey)
-			.set('sortRequest.order', pass.order == undefined ? '' : pass.order)
+   //  	const params = new HttpParams()
+			// .set('lovParam', pass.lovParam == undefined ? '' : pass.lovParam)
+			// .set('paginationRequest.count', pass.count == undefined ? '' : pass.count)
+			// .set('paginationRequest.position', pass.position == undefined ? '' : pass.position)
+			// .set('sortRequest.sortKey', pass.sortKey == undefined ? '' : pass.sortKey)
+			// .set('sortRequest.order', pass.order == undefined ? '' : pass.order)
 
-    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params});
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retMtnInsuredLov', {params:pass});
     }
 
     saveMtnAdviceWordings(save: any[], del: any[]){
