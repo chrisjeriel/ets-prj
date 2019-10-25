@@ -75,7 +75,7 @@ export class ClaimStatusReasonComponent implements OnInit {
   		console.log(data);
   		for(let i of data.clmReasonList){
   			i.uneditable = 'reasonCd';
-  			i.clmStatCd = i.clmStatCd + ' - ' + i.clmStatDesc;
+  			i.clmStatCd =i.clmStatCd==null ? '': i.clmStatCd + ' - ' + i.clmStatDesc;
   			this.claimStatReasonData.tableData.push(i);
   		}
   		//this.claimStatReasonData.tableData = data.nonRenewalReasonList;
@@ -149,6 +149,15 @@ export class ClaimStatusReasonComponent implements OnInit {
   }
 
   save(cancelFlag?){
+
+    if(!this.checkForDuplicates()){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Unable to save the record. Reason code must be unique.';
+          this.successDiag.open();
+          return;
+     }
+
+
   	this.cancelFlag = cancelFlag !== undefined;
   	this.savedData = [];
   	this.deletedData = [];

@@ -2,9 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import * as alasql from 'alasql';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 
 @Component({
@@ -13,11 +13,12 @@ import * as alasql from 'alasql';
   styleUrls: ['./insured-list.component.css']
 })
 export class InsuredListComponent implements OnInit {
-	@ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 
 	passDataInsuredList : any = {
 		tableData 	: [],
 		tHeader		: ['Insured No', 'Name', 'Abbreviation', 'Active', 'Type', 'Corp Tag', 'VAT Type', 'Address'],
+     sortKeys : ['INSURED_ID','INSURED_NAME','INSURED_ABBR','ACTIVE_TAG','INSURED_TYPE_DESC','CORP_TAG_DESC','VAT_TAG_DESC','ADDRESS'],
 		dataTypes 	: ['sequence-6','text','text','checkbox','text', 'text','text','text'],
 		resizable	: [true,true,true,true,true,true,true,true],
         pagination	: true,
@@ -26,7 +27,7 @@ export class InsuredListComponent implements OnInit {
         addFlag     : true,
         editFlag    : true,
         exportFlag	: true,
-        keys        : ['insuredId','insuredName','insuredAbbr','activeTag','insuredType','corpTag','vatTag','address'],
+        keys        : ['insuredId','insuredName','insuredAbbr','activeTag','insuredTypeDesc','corpTagDesc','vatTagDesc','address'],
         pageID      : 'mtn-insured',
         filters		: [{ key: 'insuredId',title	: 'Insured No',dataType: 'text'},
         			   { key: 'insuredName',title	: 'Name',dataType: 'text'},
@@ -39,6 +40,12 @@ export class InsuredListComponent implements OnInit {
         ]
 	};
 
+  searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,  
+    };
+
+
 	insuredRecord : any = {
 		insuredId		: null,
 		createUser		: null,
@@ -46,8 +53,6 @@ export class InsuredListComponent implements OnInit {
 	    updateUser		: null,
 	    updateDate		: null,
 	}
-
-	searchParams		: any[] = [];
 
   constructor(private titleService: Title ,private mtnService: MaintenanceService, private ns: NotesService, private router: Router,private modalService: NgbModal) { }
 
@@ -58,11 +63,10 @@ export class InsuredListComponent implements OnInit {
 
   getInsuredList(){
   	
-  	this.mtnService.getMtnInsuredList(this.searchParams)
+  	this.mtnService.newGetMtnInsuredList(this.searchParams)
   	.subscribe(data => {
-  		console.log(data);
   		var rec = data['insured'];
-      this.passDataInsuredList.tableData = rec;
+      //this.passDataInsuredList.tableData = rec;
   		// for(let i of rec){
   		// 	this.passDataInsuredList.tableData.push({	
 	  	// 		insuredId      	: i.insuredId,
@@ -80,8 +84,8 @@ export class InsuredListComponent implements OnInit {
 	   //          updateDate		: i.updateDate
   		// 	});	
   		// }
-
-  		this.table.refreshTable();
+      this.passDataInsuredList.count = data['length']
+      this.table.placeData(rec);
       this.table.onRowClick(null, this.passDataInsuredList.tableData[0]);
       console.log(this.table.onRowClick(null, this.passDataInsuredList.tableData[0])); // do not delete, selecting first row upon loading will not work XD
       
@@ -89,9 +93,10 @@ export class InsuredListComponent implements OnInit {
   }
 
   searchQuery(searchParams){
-	this.searchParams = searchParams;
-	this.passDataInsuredList.tableData = [];
-	this.getInsuredList();
+    for(let key of Object.keys(searchParams)){
+        this.searchParams[key] = searchParams[key]
+    }
+  	this.getInsuredList();
   }
 
   export(){

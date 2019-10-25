@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/co
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService, NotesService } from '@app/_services';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { environment } from '@environments/environment';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -12,10 +14,14 @@ import * as SockJS from 'sockjs-client';
 })
 export class MonEndBatchComponent implements OnInit, OnDestroy {
   @ViewChild('txtArea') txtArea: ElementRef;
+  @ViewChild('eomProdMdl') eomProdMdl: ModalComponent;
 
   eomDate: string = '';
   extLog: string = '';
-  webSocketEndPoint: string = 'http://localhost:8888/api/extractionLog';
+  eomMessage: string = '';
+  processing: boolean = false;
+  returnCode: number = null
+  webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/prodLogs";
   stompClient: any;
 
@@ -24,6 +30,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.wsConnect();
+    this.getAcitMonthEnd();
   }
 
   ngOnDestroy() {
@@ -61,20 +68,34 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickGenerate() {
+  getAcitMonthEnd(eomDate?) {
+    var date = eomDate === undefined ? this.ns.toDateTimeString(0) : eomDate;
+
+    this.as.getAcitMonthEnd(date).subscribe(data => {
+      if(data['monthEnd'].length > 0) {
+        this.eomDate = this.ns.toDateTimeString(data['monthEnd'][0].eomDate).split('T')[0];
+        this.extLog = data['monthEnd'][0].batchProdReport;
+      }
+    });
+  }
+
+  onClickGenerate(force?) {
+    this.processing = true;
     this.extLog = '';
 
     var param = {
+      force: force === undefined ? 'N' : 'Y',
       eomDate: this.eomDate,
       eomUser: this.ns.getCurrentUser()
     }
     
     this.as.saveAcitMonthEndBatchProd(param).subscribe(data => {
-      /*if(data['returnCode'] == -1) {
-        
-      } else {
-        
-      }*/
+      this.processing = false;
+      this.returnCode = data['returnCode'];
+      if(this.returnCode == 1 || this.returnCode == 2) {
+        this.eomMessage = data['eomMessage'];
+        this.eomProdMdl.openNoClose();
+      }
     });
   }
 

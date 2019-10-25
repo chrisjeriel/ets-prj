@@ -47,6 +47,7 @@ export class AcctAttachmentComponent implements OnInit {
   dialogIcon: string = "";
 
   filesList: any [] = [];
+  @Input() inquiryFlag: boolean; // added by ENGEL;
 
   constructor(private notes: NotesService, private upload: UploadService, private as: AccountingService) {
   }
@@ -98,7 +99,7 @@ export class AcctAttachmentComponent implements OnInit {
           
           var a = false;
           if(this.record.from.toLowerCase() == 'or'){
-            a = (this.record.orStatDesc.toUpperCase() != 'NEW')?true:false;
+            a = (this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag)?true:false;
           }else if(this.record.from.toLowerCase() == 'cv'){
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
           }

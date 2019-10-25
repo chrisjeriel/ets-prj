@@ -8,8 +8,9 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Line</label>
-                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="line" (ngModelChange)="line = $event.toUpperCase()">
-                            <div class="text-search-ico" style="margin-left: -20px;z-index: 100" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" 
+                            [ngModel]="line" [appCheckForm]="formGroup" [data]="line" (output)="line=$event.target.value;checkCode($event)">
+                            <div class="text-search-ico" style="margin-left: -20px;z-index: 100" [appCheckForm]="formGroup" (output)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" [(ngModel)]="description" readonly>
                             <div class="col-sm-3"></div>
                         </div>

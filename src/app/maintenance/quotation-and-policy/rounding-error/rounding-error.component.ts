@@ -19,7 +19,7 @@ export class RoundingErrorComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(MtnCedingCompanyMemberComponent) mtnCedingLov: MtnCedingCompanyMemberComponent;
   passData: any = {
-    tHeader: [ "Company No","Company Name","Abbreviation","Effective From","Active","Remarks"],
+    tHeader: [ "Cedant No","Cedant Name","Abbreviation","Effective From","Active","Remarks"],
     tableData:[],
     dataTypes: ['lovInput','text','text','date','checkbox', "text"],
     nData: {
@@ -77,8 +77,7 @@ export class RoundingErrorComponent implements OnInit {
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService,private titleService: Title) { }
 
   ngOnInit() {
-    console.log(this.ns.toDateTimeString(1562544000000))
-    this.titleService.setTitle("Mtn | Rounding Error Company");
+    this.titleService.setTitle("Mtn | Rounding Error Cedant");
     this.getRoundingError();
   }
 
@@ -196,9 +195,11 @@ export class RoundingErrorComponent implements OnInit {
             this.dialogMessage = data['errorList'][0].errorMessage;
             this.dialogIcon = "error";
             this.successDiag.open();
+            this.cancelFlag = false;
           } else{
             this.dialogIcon = "success";
             this.successDiag.open();
+            this.table.markAsPristine();
             this.getRoundingError();
             this.passData.disableGeneric = true
         }

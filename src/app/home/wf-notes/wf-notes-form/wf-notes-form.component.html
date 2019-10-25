@@ -1,9 +1,9 @@
 <!-- <button id="noteModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button> TRBT#PROD_GRADE -->
 <button id="noteModalBtn" class="cust-btn d-none"><a></a></button>
 <app-modal id="showNote" class="d-none" [modalSize]="'success-modal-size'" #modal>
-      <div header>View Note</div>
-   <div body>
-        <div layout="row" layout-wrap layout-align="center center">
+    <div header>View Note</div>
+    <div body>
+        <!-- <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
                 <fieldset class="scheduler-border col-sm" style="width: 550px">
                     <div class="form-row custom-row-inline-inset">
@@ -22,9 +22,46 @@
             </div>
                 </fieldset>
             </div>
+            
+        </div> -->
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                <fieldset class="scheduler-border col-sm" style="width: 550px">
+                    <div class="form-row custom-row-inline-inset">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+                        <input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [disabled]="isReadOnly" [(ngModel)]="note.title">
+                        <div class="input-group col-sm-3">
+                          <div class="input-group-prepend" style="height: 22px !important;">
+                            <div class="input-group-text white-bg">
+                              <input name="input197" [checked]="note.impTag == 'Y'" [disabled]="isReadOnly" (change)="note.impTag = (note.impTag == 'Y' ? 'N' : 'Y')" type="checkbox">
+                            </div>
+                          </div>
+                          <input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+                        </div>
+                        <div class="input-group col-sm-3">
+                          <div class="input-group-prepend" style="height: 22px !important;">
+                            <div class="input-group-text white-bg">
+                              <input name="input199" [checked]="note.urgTag == 'Y'" [disabled]="isReadOnly" (change)="note.urgTag = (note.urgTag == 'Y' ? 'N' : 'Y')" type="checkbox">
+                            </div>
+                          </div>
+                          <input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+                        </div>
+                      </div>
+                      <div class="input-group" style="margin: -8px 0 -40px 0 ! important;">
+                        <label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
+                        <textarea id="inputNotes" class="form-control form-control-sm cust-sm col-sm-10" [disabled]="isReadOnly" rows="8" style="font-size: 11px;" appRequired [(ngModel)]="note.note"> </textarea>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2" for="inputTitle">Assigned To</label>
+                        <input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [disabled]="isReadOnly" [(ngModel)]="note.assignedTo">
+                      </div>
+                    </div>
+                </fieldset>
+            </div>
             <div class="input-group" style="margin: 5px 0 -10px 0 ! important;justify-content: center;" >
                  <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
-                 <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]= disablebtnBool><a>Save</a></button>
+                 <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]="isReadOnly"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -38,10 +75,10 @@
         <label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
       </div>
        <div class="input-group" style="margin: 0px 0 12px 0 ! important">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createdBy" disabled >
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="dateCreated" style="margin: 0 0 0 5px" disabled>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updatedBy" style="margin: 0 0 0 5px" disabled>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="lastUpdate" style="margin: 0 0 0 5px" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="note.createUser" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [value]="ns.toDateTimeString(note.createDate)" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="note.updateUser" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [value]="ns.toDateTimeString(note.updateDate)" style="margin: 0 0 0 5px" disabled >
       </div>
         </div>
       </fieldset>

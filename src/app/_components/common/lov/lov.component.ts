@@ -801,6 +801,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = ['slName'];
       this.passData.params.activeTag = 'Y';
+      console.log(this.passData.params);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
        this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
        this.table.refreshTable();
@@ -1227,7 +1228,6 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnAcseChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
-        console.log(this.passTable.tableData);
       })
     }
 

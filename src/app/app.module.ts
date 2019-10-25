@@ -22,6 +22,7 @@ import { fakeBackendProvider } from './_helpers';
 import { AppComponent } from './app.component';
 import { routing } from './app.routing';
 import { UnsavedChangesGuard } from './_guards';
+import { ModuleAccessGuard } from '@app/_guards';
 
 import { AlertComponent } from './_components/common/alert';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
@@ -463,12 +464,25 @@ import { QuoItemComponent } from './quotation/quo-item/quo-item.component';
 import { EmployeeComponent } from './maintenance/accounting-mtn/employee/employee.component';
 import { MtnCompanyComponent } from './maintenance/mtn-company/mtn-company.component';
 import { MtnEmployeeComponent } from './maintenance/mtn-employee/mtn-employee.component';
+import { CheckFormDirective } from './_directives/check-form.directive';
+import { GenerateNumberSeriesServiceComponent } from './maintenance/accounting-service/generate-number-series-service/generate-number-series-service.component';
+import { WithhodlingTaxComponent } from './maintenance/accounting-service/withhodling-tax/withhodling-tax.component';
+import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
+import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
+import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
+//import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
+import { JvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/jv-series/jv-series.component';
+import { CvSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/cv-series/cv-series.component';
+import { OrSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/or-series/or-series.component';
+import { CancelArCvJvComponent } from './accounting-in-trust/utilities/cancel-transactions/cancel-ar-cv-jv/cancel-ar-cv-jv.component';
 import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
 import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
+import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
+
 
 @NgModule({
     imports: [
@@ -937,18 +951,31 @@ import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.compone
         EmployeeComponent,
         MtnCompanyComponent,
         MtnEmployeeComponent,
+        CheckFormDirective,
+        GenerateNumberSeriesServiceComponent,
+        JvSeriesComponent,
+        CvSeriesComponent,
+        OrSeriesComponent,
+        WithhodlingTaxComponent,
+        AcitDcbNoComponent,
+        AcseDcbNoComponent,
+        AcitTranTypeComponent,
+        //AcseTranTypeComponent,
+        CancelArCvJvComponent,
         GenTaxesComponent,
         InvtSecTypeComponent,
         PayeeClassComponent,
         SlTypeComponent,
         SlComponent,
         PayeeComponent,
+        WfCalendarComponent,
     ],
 
   	providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
         { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
         UnsavedChangesGuard,
+        ModuleAccessGuard,
         // provider used to create fake backend
         fakeBackendProvider,
         DecimalPipe

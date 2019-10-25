@@ -107,6 +107,8 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
   @Input() record: any = {};
   createUpdate: any;
 
+  @Input() inquiryFlag: boolean = false; //added by ENGEL
+
   constructor(private accountingService: AccountingService, private titleService: Title,public modalService: NgbModal) { }
   
   ngOnInit() {
@@ -114,6 +116,7 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
   	if(this.paymentType == null){
       this.paymentType = "";
     }
+    console.log(this.inquiryFlag);
   }
   
  openTaxAllocation(){

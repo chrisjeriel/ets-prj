@@ -44,4 +44,4 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" #mainCancel></app-cancel-button>
-<app-cancel-button (onYes)="save('cancel')" [url]="null" #taxAllocCancel></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="null" (no)="taxAllocMdl.closeModal()" #taxAllocCancel></app-cancel-button>

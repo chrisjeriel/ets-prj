@@ -308,7 +308,7 @@ export class ClmClaimHistoryComponent implements OnInit {
                                 i.paytAmt      = (i.paytAmt == '' || i.paytAmt == null)?0:i.paytAmt;
                                 recHistCat.forEach(a => (a.description == i.histCatDesc)?i.histCategory=a.code:i.histCategory);
                                 recHistType.forEach(a => (a.description == i.histTypeDesc)?i.histType=a.code:i.histType);
-                                if(i.refDate != null){
+                                if(i.editable != 'Y'){
                                   i.uneditable = ['bookingMthYr','reserveAmt']
                                 }
                                 

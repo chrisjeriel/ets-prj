@@ -55,14 +55,14 @@ export class BatchOrPrintingComponent implements OnInit {
 
   passData: any = {
         tableData: [],
-        tHeader: ['G', 'P', 'OR Date', 'OR Number', 'Payor', 'Particulars','Amount'],
-        dataTypes: ['checkbox', 'checkbox', 'date', 'text','text','text','currency'],
-        widths: [1,1,150,150,200,350,200],
+        tHeader: ['G', 'P', 'OR Date','OR Type','OR Number', 'Payor', 'Particulars','Amount'],
+        dataTypes: ['checkbox', 'checkbox', 'date', 'text','text','text','text','currency'],
+        widths: [1,1,150,1,100,200,350,200],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 10,
-        keys: ['orNocheck', 'printCheck', 'tranDate', 'orNo', 'payor','particulars','orAmt'],
-        uneditable: [false,false,true,true,true,true,true],
+        keys: ['orNocheck', 'printCheck', 'tranDate','orType','orNo', 'payor','particulars','orAmt'],
+        uneditable: [false,false,true,true,true,true,true,true],
         pageID: 'orBatchPrint',
         addFlag: false,
         genericBtn: 'View OR Details',
@@ -73,7 +73,13 @@ export class BatchOrPrintingComponent implements OnInit {
   searchParams: any[] = [];
   batchData   : any = { 
                     "reportRequest": []
-                    }
+                    };
+  selectedrecord: any = {};
+  record: any = {};
+  loading: boolean = false;
+  changeStatData: any = {
+        printOrList: []
+    };
 
   constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
 
@@ -154,6 +160,7 @@ export class BatchOrPrintingComponent implements OnInit {
 
   onTableClick(data){
     console.log(data);
+    this.selectedrecord = data;
     this.passData.disableGeneric = data == null;
   }
 
@@ -170,10 +177,10 @@ export class BatchOrPrintingComponent implements OnInit {
 
   printOR(){
     let tranIdArray=[];
-
+    this.changeStatData.printOrList = [];
     for(var i=0; i < this.passData.tableData.length;i++){
       if (this.passData.tableData[i].orNo !== null && this.passData.tableData[i].printCheck === 'Y'){
-        tranIdArray.push(this.passData.tableData[i].tranId);
+        tranIdArray.push({ tranId: this.passData.tableData[i].tranId, orNo: this.passData.tableData[i].orNo });
       }
     }
 
@@ -186,12 +193,15 @@ export class BatchOrPrintingComponent implements OnInit {
        this.batchData.reportRequest = [];
 
       for(let i=0;i<tranIdArray.length ;i++){ 
-        selectedBatchData.push({ tranId :  tranIdArray[i] , reportName : 'ACITR_AR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACITR_AR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
+
       this.batchData.reportRequest = selectedBatchData;
       this.printPDF(this.batchData);
+      this.loading = true;
     }  
-  }
+  }      
 
   printPDF(batchData: any){  
    let result: boolean;    
@@ -207,7 +217,7 @@ export class BatchOrPrintingComponent implements OnInit {
     },
      error => {
            result =true;
-           this.dialogIcon = "error-message";
+           this.dialogIcon= "error-message";
            this.dialogMessage = "Error generating batch OR PDF file(s)";
            this.successDiag.open();
    });     
@@ -215,6 +225,7 @@ export class BatchOrPrintingComponent implements OnInit {
 }
 
 finalPrint(error?){
+  this.loading = false;
   if(!error){
     this.printMdl.open();
   }
@@ -222,7 +233,35 @@ finalPrint(error?){
 }
 
 updateOrStatus(){
+  this.table.overlayLoader = true;
+  console.log(JSON.stringify(this.changeStatData));
 
+   setTimeout(()=>{
+         this.accountingService.printOrBatch(this.changeStatData).subscribe(
+           (data:any)=>{
+             if(data.returnCode == 0){
+               this.dialogIcon = 'error-message';
+               this.dialogIcon = 'An error has occured when updating OR status';
+             }else{
+               this.retrieveBatchORList(this.searchParams);
+             }
+           }
+         );
+      },1000);
+}
+ 
+viewOR(){
+   this.record = {
+     tranId : this.selectedrecord.tranId,
+     orNo: this.selectedrecord.orNo == null ? '' : this.selectedrecord.orNo,
+     payor: this.selectedrecord.payor,
+     orDate: this.selectedrecord.tranDate,
+     paymentType: this.selectedrecord.tranTypeName,
+     particulars: this.selectedrecord.particulars,
+     amount: this.selectedrecord.orAmt
+   }
+
+   this.router.navigate(['/accounting-service', { slctd: JSON.stringify(this.record), action: 'edit', inquiry: true }], { skipLocationChange: true });
 }
 
 

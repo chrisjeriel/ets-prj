@@ -149,3 +149,10 @@ div h4{
     background: gray !important;
 }
 
+select {
+	position: absolute;
+	margin-top: 6px;
+	z-index: 20;
+	font-size: 13px;
+	font-weight: 500;
+}

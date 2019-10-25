@@ -104,6 +104,7 @@ export class DistrictComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDialog.open();
             this.getDistrict();
+            this.table.markAsPristine();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();

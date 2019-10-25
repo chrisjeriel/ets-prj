@@ -64,7 +64,7 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 	repData: any = {
 		tableData: [],
 		tHeader: ['Default', 'Designation', 'First Name', 'M.I.', 'Last Name', 'Position', 'Department', 'Contact No', 'Email Address'],
-		dataTypes: ['checkbox', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text'],
+		dataTypes: ['checkbox', 'text', 'text', 'text', 'text', 'text', 'text', 'number', 'text'],
 		keys: ['defaultTag', 'designation', 'firstName', 'middleInitial', 'lastName', 'position', 'department', 'contactNo', 'emailAdd'],
 		nData: {
 			adjId: '',
@@ -85,7 +85,10 @@ export class AdjusterFormComponent implements OnInit, OnDestroy {
 		infoFlag: true,
 		paginateFlag: true,
 		pageLength: 5,
-		pageID: 'adjRepTable'
+		pageID: 'adjRepTable',
+    limit: {
+      middleInitial : 1
+    }
 	}
 
   constructor(private authenticationService: AuthenticationService, private route: ActivatedRoute, 

@@ -228,7 +228,7 @@ export class JvInvestmentPlacementComponent implements OnInit {
       if(!this.passData.tableData[i].deleted){
         this.jvDetails.saveInvPlacement.push(this.passData.tableData[i]);
         this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].bank = this.selectedBankCd;
-        this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].bankAcct = this.accountNo;
+        this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].bankAcct = '';
         this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].createDate = this.ns.toDateTimeString(0);
         this.jvDetails.saveInvPlacement[this.jvDetails.saveInvPlacement.length - 1].updateDate = this.ns.toDateTimeString(0);
       }

@@ -37,7 +37,7 @@ export class AppComponent  {
      private userService: UserService,
      private authenticationService: AuthenticationService,
      config: NgbModalConfig,
-     private modalService: NgbModal,
+     public modalService: NgbModal,
      private eRef: ElementRef,
      @Inject(DOCUMENT) private document) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
@@ -128,7 +128,7 @@ export class AppComponent  {
                 console.log("AppComponent : ");
                 console.log(data['modulesList']);
                 console.log("-------------");
-                this.userService.setAccessModules(data['modulesList']);
+                localStorage.setItem('accessModules', JSON.stringify(data['modulesList']));
                 this.userService.emitAccessModules(data['modulesList']);
             });
         };

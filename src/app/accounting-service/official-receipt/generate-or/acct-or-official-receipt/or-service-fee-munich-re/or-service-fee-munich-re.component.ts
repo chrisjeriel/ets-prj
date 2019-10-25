@@ -65,11 +65,12 @@ export class OrServiceFeeMunichReComponent implements OnInit {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe ) { }
 
   @Input() paymentType;
+  @Input() inquiryFlag: boolean; // added by ENGEL;
 
   ngOnInit() {
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
-  	if(this.record.orStatDesc.toUpperCase() != 'NEW'){
+  	if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
   		this.passData.addFlag = false;
   		this.passData.deleteFlag = false;
   		this.passData.checkFlag = false;

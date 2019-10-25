@@ -9,8 +9,11 @@
                         <div class="input-group">
                             <div class="col-sm-3"></div>
                             <label class="form-control-sm text-right"  style="margin-bottom: 0px">Currency Code</label>
-                            <input class="form-control form-control-sm col-sm-1 not-form" type="text" (change)="checkCode($event)" [ngModel]="currencyCd" (ngModelChange)="currencyCd = $event.toUpperCase()" name="currencyCd">
-                            <div class="text-search-ico" style="margin-left: -20px;z-index: 100"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>&nbsp;
+                            <!-- <input class="form-control form-control-sm col-sm-1 not-form" type="text" [ngModel]="currencyCd"  (change)="checkCode($event)" (ngModelChange)="currencyCd = $event.toUpperCase()" name="currencyCd"> -->
+
+                            <input class="form-control form-control-sm  col-sm-1 not-form" type="text" 
+                              [ngModel]="currencyCd" [appCheckForm]="formGroup" [data]="currencyCd" (output)="currencyCd=$event.target.value;checkCode($event)">
+                            <div class="text-search-ico" style="margin-left: -20px;z-index: 100"  [appCheckForm]="formGroup" (output)="showCurrencyModal()"><a><i class="fa fa-search" ></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description" name="description">
                             <div class="col-sm-3"></div>
                         </div>
@@ -34,13 +37,13 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                         <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                             <label class="form-control-sm col-sm-1">Created By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createUser" readonly name="createUser">
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.createUser" readonly name="createUser">
                             <label class="form-control-sm col-sm-1">Created Date</label>
-                            <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.createDate" readonly name="createDate">
+                            <input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.createDate" readonly name="createDate">
                             <label class="form-control-sm col-sm-1">Last Update By</label>
-                            <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateUser" readonly name="updateUser">
+                            <input type="text" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.updateUser" readonly name="updateUser">
                             <label class="form-control-sm col-sm-1">Last Update</label>
-                            <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="currencyData.updateDate" readonly name="updateDate">
+                            <input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.updateDate" readonly name="updateDate">
                         </div>
                 </fieldset>
 

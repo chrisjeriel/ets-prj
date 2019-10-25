@@ -125,13 +125,55 @@ export class CvEntryServiceComponent implements OnInit {
 
   getAcseCv(){
     this.loadingFunc(true);
-    var subRes = forkJoin(this.accountingService.getAcseCv(this.saveAcseCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACSE_TRAN_TYPE.GROUP_TAG'))
-                          .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries())
-                            .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
+    // var subRes = forkJoin(this.accountingService.getAcseCv(this.saveAcseCv.tranId), this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('CHECK_CLASS'),this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),this.mtnService.getRefCode('MTN_ACSE_TRAN_TYPE.GROUP_TAG'))
+    //                       .pipe(map(([cv,pn,cl,stat,prt]) => { return { cv, pn, cl,stat, prt }; }));
 
-    var subRes3 = forkJoin(subRes,subRes2).pipe(map(([sub1,sub2]) => { return { sub1,sub2 }; }));
+    // var subRes2 = forkJoin(this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId), this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId), this.mtnService.getMtnBankAcct(),this.mtnService.getMtnAcseCheckSeries())
+    //                         .pipe(map(([prl,ae,ba,cn]) => { return { prl, ae, ba, cn }; }));
+
+    // var subRes3 = forkJoin(subRes,subRes2).pipe(map(([sub1,sub2]) => { return { sub1,sub2 }; }));
+
+    const subResKey = ['pn','cl','stat','prt'];
+    const subResKey2 = ['ba','cn'];
+
+    const arrSubRes = {
+      'pn'  :this.mtnService.getMtnPrintableName(''),
+      'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
+      'stat':this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),
+      'prt' :this.mtnService.getRefCode('MTN_ACSE_TRAN_TYPE.GROUP_TAG')
+    };
+
+    const arrSubRes2 = {
+      'ba'  : this.mtnService.getMtnBankAcct(),
+      'cn'  : this.mtnService.getMtnAcseCheckSeries()
+    };
+
+    if(this.saveAcseCv.tranId != '' && this.saveAcseCv.tranId != null && this.saveAcseCv.tranId != undefined){
+      $.extend(arrSubRes,{
+        'cv'  :this.accountingService.getAcseCv(this.saveAcseCv.tranId)
+      });
+      $.extend(arrSubRes2,{
+        'ae'  : this.accountingService.getAcseAcctEntries(this.saveAcseCv.tranId),
+        'prl' : this.accountingService.getAcseCvPaytReqList(this.saveAcseCv.tranId)
+      });
+      subResKey.push('cv');
+      subResKey2.push('ae','prl');
+    }
+
+    var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+      var obj = {};
+      subResKey.forEach((e,i) => {obj[e] = a[i];});
+      return obj;
+    }));
+    
+    var subRes2 = forkJoin(Object.values(arrSubRes2)).pipe(map((b) => { 
+      var obj = {};
+      subResKey2.forEach((e,i) => {obj[e] = b[i];});
+      return obj;
+    }));
+
+    var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
 
     subRes3.subscribe(data => {
       console.log(data);
@@ -147,13 +189,6 @@ export class CvEntryServiceComponent implements OnInit {
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
       var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
-       var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
-      // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
-      // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
-
-      var totalCredit = 0;
-      var totalDebit = 0;
-
 
       if(this.saveAcseCv.tranId == '' || this.saveAcseCv.tranId == null){
         this.loadingFunc(false);
@@ -176,6 +211,11 @@ export class CvEntryServiceComponent implements OnInit {
           }
         });
       }else{
+        var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
+        // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
+        // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
+        var totalCredit = 0;
+        var totalDebit = 0;
         var recCv = data['sub1']['cv']['acseCvList'].map(e => {
           e.createDate = this.ns.toDateTimeString(e.createDate);
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
@@ -375,9 +415,12 @@ export class CvEntryServiceComponent implements OnInit {
   }
 
   setData(data,from){
-    this.removeRedBackShad(from);
-    this.form.control.markAsDirty();
-    this.ns.lovLoader(data.ev, 0);
+    setTimeout(() => {
+      this.removeRedBackShad(from);
+      this.ns.lovLoader(data.ev, 0);
+      this.form.control.markAsDirty();
+    },0);
+    
     if(from.toLowerCase() == 'payee'){
       this.saveAcseCv.payee   = data.data.payeeName;
       this.saveAcseCv.payeeCd = data.data.payeeNo;

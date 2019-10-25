@@ -9,58 +9,6 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { Router } from '@angular/router';
 
 
-interface Country {
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-];
-
 @Component({
   selector: 'app-wf-notes',
   templateUrl: './wf-notes.component.html',
@@ -71,8 +19,8 @@ export class WfNotesComponent implements OnInit {
   @ViewChild(WfNotesFormComponent)  wfNotes : WfNotesFormComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirmsaveDiag: ConfirmSaveComponent;
+  @ViewChild("confirmModal") confirmModal : ModalComponent;
 
-  countries = COUNTRIES;
   currentUser : string;
   selectedNotes: any = null;
   noteBool: boolean = true;
@@ -80,12 +28,14 @@ export class WfNotesComponent implements OnInit {
   loadingFlag: boolean;
   noteNull: boolean = false;
   noteInfo: any[] =[];
-  updateMode: boolean;
+  updateMode: string;
   updateNoteInfoParam = {};
   cancelFlag: boolean;
   dialogIcon:string  = "";
   dialogMessage:string  = "";
   onOkVar: string = "";
+  paramStatus: string = "A";
+  noteParams: any;
 
   constructor(private workFlowManagerService: WorkFlowManagerService, 
               private ns: NotesService,
@@ -109,11 +59,11 @@ export class WfNotesComponent implements OnInit {
        this.loadingFlag = true;
        this.noteNull = false;
        $("#noteDiv").css({"height": "auto"});
-       this.workFlowManagerService.retrieveWfmNotes('',this.currentUser,'','','').pipe(finalize(() => this.setNoteList()))
+       this.workFlowManagerService.retrieveWfmNotes('',this.currentUser,'','','',this.paramStatus).pipe(finalize(() => this.setNoteList()))
        .subscribe((data)=>{
            var records = data['noteList'];
                for(let rec of records){
-                 if(rec.assignedTo === this.currentUser && rec.status === "A"){
+                 if(rec.assignedTo === this.currentUser){
                    this.noteList.push(rec);
                  }
                }
@@ -128,11 +78,11 @@ export class WfNotesComponent implements OnInit {
       this.loadingFlag = true;
       this.noteNull = false;
       $("#noteDiv").css({"height": "auto"});
-       this.workFlowManagerService.retrieveWfmNotes('','',this.currentUser).pipe(finalize(() => this.setNoteList()))
+       this.workFlowManagerService.retrieveWfmNotes('','',this.currentUser,'','',this.paramStatus).pipe(finalize(() => this.setNoteList()))
        .subscribe((data)=>{
            var records = data['noteList'];
                for(let rec of records){
-                 if(rec.createUser === this.currentUser && rec.status === "A"){
+                 if(rec.createUser === this.currentUser){
                    this.noteList.push(rec);
                  }
                }
@@ -177,146 +127,62 @@ export class WfNotesComponent implements OnInit {
      }
   }
 
-  showNoteModal( noteId : string,
-    title : string,
-    note  : string,
-    assignedTo : string, 
-    createUser: string,
-    createDate : string,
-    updateUser : string,
-    updateDate : string ,
-    viewMode : boolean){
-
-    this.noteInfo = [];
-
-    this.noteInfo.push({
-                            noteId : noteId,
-                            createDate : createDate,
-                          });
-    
-    this.wfNotes.title = title;
-    this.wfNotes.notes = note;
-    this.wfNotes.userId = assignedTo;
-    this.wfNotes.createdBy = createUser;
-    this.wfNotes.updatedBy = updateUser;
-    this.wfNotes.dateCreated = this.formatDate(createDate);
-    this.wfNotes.lastUpdate = this.formatDate(updateDate);
-
-
-    if (viewMode){
-       this.wfNotes.ViewMode = true;
-       this.wfNotes.disablebtnBool = true;
-     } else {
-       this.wfNotes.ViewMode = false;
-       this.wfNotes.disablebtnBool = false;
-     }
-
-     $('#noteModal #modalBtn').trigger('click');
+  dpDownStatus(event){
+    this.reloadNotes();
   }
 
-  updateNoteModal( noteId : string,
-    title : string,
-    note : string, 
-    assignedTo : string, 
-    createUser: string,
-    createDate : string,
-    updateUser : string,
-    updateDate : string ,
-    updateMode : boolean){
+  
 
-    this.updateMode = updateMode;
-    var status : any ;
-
-    if (updateMode){
-      status = 'C';
-      $('#confirmModal #modalBtn').trigger('click');
-    } else {
-      status = 'D';
-      $('#confirmModal #modalBtn').trigger('click');
-    }
-    this.updateNoteInfoParam = {};
-
-    this.updateNoteInfoParam = {
-       "assignedTo" : assignedTo,
-       "createDate" : this.ns.toDateTimeString(createDate),
-       "createUser" : createUser,
-       "note"       : note,
-       "noteId"     : noteId,
-       "status"     : status,
-       "title"      : title,
-       "updateUser" : JSON.parse(window.localStorage.currentUser).username,
-       "updateDate" : this.ns.toDateTimeString(0),
-     }
+  showNoteModal(note, viewMode: boolean){
+    this.wfNotes.note = note;
+    this.wfNotes.isReadOnly = viewMode;
+    $('#noteModal #modalBtn').trigger('click');
   }
 
-  onClickYes(updateMode){
-    this.saveNoteParams(this.updateNoteInfoParam);
+  updateNoteModal(note, status){
+    note.status = status;
+    this.updateMode = status;
+    this.noteParams = note;
+    this.confirmModal.openNoClose();
+  }
+
+  onClickSave() {
+    var saveNotesParams = {
+      noteList : [],
+      delNoteList : []
+    };
+
+    saveNotesParams.noteList.push(this.noteParams);
+
+    this.workFlowManagerService.saveWfmNotes(saveNotesParams).subscribe((data: any)=>{
+        if (data.errorList.length > 0) {
+          this.dialogIcon = "error";
+          this.successDiag.open();
+        } else {
+          this.dialogIcon = "success";
+          this.successDiag.open();
+          this.reloadNotes();
+        }
+    });
+  }
+
+  saveNote(data) {
+    this.noteParams = data;
+    this.updateMode = 'U';
+    this.confirmModal.openNoClose();
   }
 
   onClickNo(){
      this.modalService.dismissAll();
   }
 
-  saveNote(event){        
-    this.prepareParam();
-  }
 
-
-  prepareParam(cancelFlag?){
-      this.cancelFlag = cancelFlag !== undefined;
-
-       var saveNoteInfoParam = {
-       "assignedTo" : this.wfNotes.userId,
-       "createDate" : this.ns.toDateTimeString(this.noteInfo[0].createDate),
-       "createUser" : this.wfNotes.createdBy,
-       "note"       : this.wfNotes.notes,
-       "noteId"     : this.noteInfo[0].noteId,
-       "status"     : "A",
-       "title"      : this.wfNotes.title,
-       "updateUser" : JSON.parse(window.localStorage.currentUser).username,
-       "updateDate" : this.ns.toDateTimeString(0),
-       }
-
-       console.log(saveNoteInfoParam);
-       this.saveNoteParams(saveNoteInfoParam);
-
-  }
-
-  saveNoteParams(obj){
-     this.workFlowManagerService.saveWfmNotes(obj).pipe(finalize(() => this.saveFinalProcess())).
-     subscribe(data => {
-             console.log(data);
-
-            if(data['returnCode'] === 0) {
-                 this.dialogIcon = 'error-message';
-                 this.dialogMessage = "Error saving reminder";
-                 this.onOkVar = 'openNoteMdl';
-                 this.successDiag.open();
-            } else if (data['returnCode'] === -1) {  
-                 this.dialogIcon = 'success-message';
-                 this.dialogMessage = "Successfully Saved";;
-                 this.onOkVar = 'closeNoteMdl';
-                 this.successDiag.open();     
-            }
-     })        
-    }
-  
-   saveFinalProcess(){
+  reloadNotes(){
       if (this.selectedNotes == "atm"){
           this.retrieveNotes('atm');
       } else {
           this.retrieveNotes('mr');
       }
-   }
-
-
-  onOkSuccessDiag(obj){
-    if (obj === 'openNoteMdl'){
-      this.modalService.dismissAll();
-      $('#noteModal #modalBtn').trigger('click');
-    }else if(obj === 'closeNoteMdl'){
-        this.modalService.dismissAll();
-    }
   }
 
 
@@ -335,9 +201,6 @@ export class WfNotesComponent implements OnInit {
       data.referenceId = temp.referenceId;
     }
 
-
-    console.log("redirectToQuoteGenInfo");
-    console.log(data);
     var line = data.referenceNo.split("-")[0];
 
     this.quotationService.toGenInfo = [];
@@ -349,30 +212,37 @@ export class WfNotesComponent implements OnInit {
     },100);
   }
 
+  redirectToclaimGenInfo(origin, data) {
+    if (origin == 'detail') {
+      var temp = data;
+      data = {};
+      data.referenceNo = temp.details;
+      data.referenceId = temp.referenceId;
+    }
+
+    let line = data.referenceNo.split('-')[0];
+    setTimeout(() => {
+      this.router.navigate(
+                    ['/claims-claim', {
+                        from: 'edit',
+                        readonly: true,
+                        claimId: data.referenceId,
+                        claimNo: data.referenceNo,
+                        line: line,
+                        exitLink: '/'
+                    }],
+                    { skipLocationChange: true }
+      );    
+    },100);
+  }
+
 
   redirectToPolGenInfo(origin, relData) {
-
-    /*for(let rec of this.fetchedData){
-          if(rec.policyNo === this.uwService.rowData[0]) {
-            this.policyId = rec.policyId;
-            this.statusDesc = rec.statusDesc;
-            this.riskName = rec.project.riskName;
-            this.insuredDesc = rec.insuredDesc;
-            this.quoteId = rec.quoteId; 
-            this.quotationNo = rec.quotationNo; 
-          }
-    }
-    this.polLine = this.uwService.rowData[0].split("-")[0];
-    this.policyNo = this.uwService.rowData[0];*/
-
     if (origin == 'detail') {
       var temp = relData;
       relData = {};
       relData.referenceNo = temp;
     }
-
-    console.log('redirectToPolGenInfo');
-    console.log(relData);
 
     var fetchedData = null;
     var searchParams = [];
@@ -384,20 +254,11 @@ export class WfNotesComponent implements OnInit {
           var records = data['policyList'];
 
           for (var i = 0; i < records.length; i++) {
-            console.log("Relate if : ");
-            console.log(relData.referenceNo);
-            console.log(records[i].policyNo);
-            console.log("-----------")
 
             if (relData.referenceNo == records[i].policyNo) {
               fetchedData = records[i];
             }
           }
-          console.log("records");
-          console.log(records);
-
-          console.log("fetchedData");
-          console.log(fetchedData);
 
           if (fetchedData != null) {
             var polLine = fetchedData.policyNo.split("-")[0];

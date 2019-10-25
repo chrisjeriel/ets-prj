@@ -2343,7 +2343,7 @@ export class AccountingService {
 		    })
 		}
 		
-		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitQSOA',JSON.stringify(params),header);
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOA',JSON.stringify(params),header);
 	}
 
 	/*
@@ -2786,6 +2786,112 @@ export class AccountingService {
           return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
     }
 
-     
+    getAcseBudgetExpense(budgetYear?,itemNo?){
+		const params = new HttpParams()
+			.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBudgetExpense',{params});	
+	}
+
+	saveAcseBudgetExpense(params){
+        let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseBudgetExpense',params,header);
+    }
+
+    getAcseBudExpMonthly(budgetYear?, itemNo?, mm?){
+    	const params = new HttpParams()
+    		.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo))
+    		.set('mm', (mm == null || mm == undefined ? '' : mm));
+
+    	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBudExpMonthly',{params});	
+    }	
+
+    saveAcseBudExpMonthly(params){
+    	let header : any = {
+    	    headers: new HttpHeaders({
+    	         'Content-Type': 'application/json'
+    	    })
+    	};
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseBudExpMonthly',params,header);
+    }
+
+    saveAcitMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndTrialBal',params,header);
+    }
+
+    getAcitMonthEndTrialBal(eomDate){
+		const params = new HttpParams()
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndTrialBal',{params});	
+	}
+
+	postAcitMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/postAcitMonthEndTrialBal',params,header);
+    }
+
+    getAcitMonthEndUnpostedMonths() {
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndUnpostedMonths');	
+	}
+
+	getAcseActExpMonthly(budgetYear?, itemNo?, mm?){
+    	const params = new HttpParams()
+    		.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo))
+    		.set('mm', (mm == null || mm == undefined ? '' : mm));
+
+    	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseActExpMonthly',{params});	
+    }
+
+    printOr(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOr',JSON.stringify(params),header);
+	}
+
+	getAcitMonthEnd(eomDate){
+		const params = new HttpParams()
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEnd',{params});	
+	}
+
+	getQSOADtl(qsoaId){
+		const params = new HttpParams()
+			.set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOADtl',{params});
+	}
+
+	printOrBatch(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
+	}
+
 
 }

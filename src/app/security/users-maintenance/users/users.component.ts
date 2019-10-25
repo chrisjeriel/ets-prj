@@ -50,7 +50,7 @@ export class UsersComponent implements OnInit {
       createDate: '',
       updateUser: null,
       updateDate: '',
-      userTran: []
+      userTran: [],
     },
     magnifyingGlass: ['userGrp'],
     keys:['userId','userName','userGrp','userGrpDesc','activeTag','emailAddress','remarks'],
@@ -70,14 +70,15 @@ export class UsersComponent implements OnInit {
     nData: {
       showMG: 1,
       tranCd: null,
-      tranDesc: null
+      tranDesc: null,
     },
     tHeader: ['Tran Code', 'Description'],
     keys: ['tranCd', 'tranDesc'],
     dataTypes: ['text', 'text'],
     pageID: 1,
     addFlag: true,
-    deleteFlag: true,
+    genericBtn :'Delete',
+    disableGeneric : true,
     pageLength:5,
     searchFlag: true,
     paginateFlag: true,
@@ -207,12 +208,21 @@ export class UsersComponent implements OnInit {
     // transData
     if(data != null){
       this.transData = data;
+      console.log('onRowClickTrans data');
+      console.log(data);
+      this.PassDataModuleTrans.disableGeneric = data == null ? true : false;
       if (data.tranCd != null) {
         this.getModules(accessLevel);
       }
     }else{
       this.transData = {};
     }
+  }
+
+  onClickTransDelete() {
+    this.userTransactions.indvSelect.deleted = true;
+    this.userTransactions.selected  = [this.userTransactions.indvSelect];
+    this.userTransactions.confirmDelete();
   }
 
   getModules(accessLevel) {
@@ -269,6 +279,7 @@ export class UsersComponent implements OnInit {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTrans.tableData.push(data.transactions[i]);
             this.PassDataModuleTrans.tableData[i].showMG = 0;
+            this.PassDataModuleTrans.tableData[i].deleted = false;
             this.PassDataModuleTrans.tableData[i].uneditable = ['tranDesc'];
           }
 
@@ -562,6 +573,13 @@ export class UsersComponent implements OnInit {
       if (this.passDataUsers.tableData[i].edited == true) {
         this.passDataUsers.tableData[i].passwordResetDate = '';
         this.passDataUsers.tableData[i].lastLogin = '';
+        this.passDataUsers.tableData[i].userTran = null;
+        this.passDataUsers.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
+        this.passDataUsers.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        if (this.passDataUsers.tableData[i].password == null) {
+          this.passDataUsers.tableData[i].password = this.passDataUsers.tableData[i].userId;
+        }
+
         this.saveUsersList.push(this.passDataUsers.tableData[i]);
       }
     }

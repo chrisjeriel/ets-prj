@@ -120,6 +120,8 @@ export class JournalVoucherComponent implements OnInit {
 
       this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
+
+      this.table.filterDisplay(this.table.filterObj, this.table.searchString);
     });
   }
 
@@ -128,7 +130,7 @@ export class JournalVoucherComponent implements OnInit {
 
   onClickAdd(event){
     this.accountingService.jvFilter = this.tranStat;
-      this.router.navigate(['/generate-jv', {from: 'add',
+    this.router.navigate(['/generate-jv', {from: 'add',
                                              exitLink:'/journal-voucher'}], { skipLocationChange: true }); 
   }
 

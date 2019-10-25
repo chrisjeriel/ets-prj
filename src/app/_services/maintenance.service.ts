@@ -49,6 +49,13 @@ export class MaintenanceService{
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params});
 	}
 
+	newGetMtnInsuredList(searchParams){
+		
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnInsured", {params:searchParams});
+	}
+
+
+
 	// getEndtCode(lineCd?:string,endtCd?:number){
 	// 	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
 	// 		+(lineCd!==undefined ? '?lineCd='+lineCd : '')
@@ -1397,6 +1404,16 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcseCheckSeries', {params});
     }
 
+
+    generateARSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateARSeries', JSON.stringify(params), header);
+    }
+
     saveMtnDcbUser(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -1436,7 +1453,83 @@ export class MaintenanceService{
     				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
 
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcct", {params});
+    }
 
+    generateCVSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateCVSeries', JSON.stringify(params), header);
+     }
+
+     generateJVSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateJVSeries', JSON.stringify(params), header);
+     }
+
+     getArSeries(arFrom, arTo, usedTag?){
+    	const params = new HttpParams()
+			.set('arFrom', (arFrom === null || arFrom === undefined ? '' : arFrom))
+			.set('arTo', (arTo === null || arTo === undefined ? '' : arTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveArSeries", {params});
+    }
+
+    getCvSeries(cvYear,cvFrom, cvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('cvYear', (cvYear === null || cvYear === undefined ? '' : cvYear))
+			.set('cvFrom', (cvFrom === null || cvFrom === undefined ? '' : cvFrom))
+			.set('cvTo', (cvTo === null || cvTo === undefined ? '' : cvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveCvSeries", {params});
+    }
+
+    getJvSeries(jvYear,jvFrom, jvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('jvYear', (jvYear === null || jvYear === undefined ? '' : jvYear))
+			.set('jvFrom', (jvFrom === null || jvFrom === undefined ? '' : jvFrom))
+			.set('jvTo', (jvTo === null || jvTo === undefined ? '' : jvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveJvSeries", {params});
+    }
+
+    getMaxTranSeries(tranClass){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/maxTranNo", {params});
+    }
+
+    generateORSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseORSeries', JSON.stringify(params), header);
+    }
+
+    generateAcseCVSeries(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseCVSeries', JSON.stringify(params), header);
+    }
+    
+    generateAcseJVSeries(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseJVSeries', JSON.stringify(params), header);
     }
 
      saveMtnGenTax(params){
@@ -1445,8 +1538,62 @@ export class MaintenanceService{
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTax', JSON.stringify(params), header);
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTax', JSON.stringify(params), header);
       }
+
+    getAcseOrSeries(orType,orFrom,orTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('orType', (orType === null || orType === undefined ? '' : orType))
+			.set('orFrom', (orFrom === null || orFrom === undefined ? '' : orFrom))
+			.set('orTo', (orTo === null || orTo === undefined ? '' : orTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseOrSeries", {params});
+    }
+
+    getAcseCvSeries(cvYear,cvFrom,cvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('cvYear', (cvYear === null || cvYear === undefined ? '' : cvYear))
+			.set('cvFrom', (cvFrom === null || cvFrom === undefined ? '' : cvFrom))
+			.set('cvTo', (cvTo === null || cvTo === undefined ? '' : cvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseCVSeries", {params});
+    }
+
+    getAcseJvSeries(jvYear,jvFrom,jvTo, usedTag?){
+    	const params = new HttpParams()
+    		.set('jvYear', (jvYear === null || jvYear === undefined ? '' : jvYear))
+			.set('jvFrom', (jvFrom === null || jvFrom === undefined ? '' : jvFrom))
+			.set('jvTo', (jvTo === null || jvTo === undefined ? '' : jvTo))
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseJVSeries", {params});
+    }
+
+    getAcseMaxTranSeries(tranClass,orType?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    		.set('orType', (orType === null || orType === undefined ? '' : orType));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/acseMaxTranNo", {params});
+    }
+
+    getWhTax(whtaxId, taxCd, taxType, creditableTag?, fixedTag?, activeTag?){
+    	const params = new HttpParams()
+    		.set('whtaxId', (whtaxId === null || whtaxId === undefined ? '' : whtaxId))
+    		.set('taxCd', (taxCd === null || taxCd === undefined ? '' : taxCd))
+    		.set('taxType', (taxType === null || taxType === undefined ? '' : taxType))
+    		.set('creditableTag', (creditableTag === null || creditableTag === undefined ? '' : creditableTag))
+    		.set('fixedTag', (fixedTag === null || fixedTag === undefined ? '' : fixedTag))
+    		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseWHTax", {params});
+    }
+
+    saveWhTax(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnWhTax', JSON.stringify(params), header);
+    }
 
      getMtnGenTaxHist(taxId?){
     	const params = new HttpParams()
@@ -1459,21 +1606,75 @@ export class MaintenanceService{
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
-         };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxHist', JSON.stringify(params), header);
+        };
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxHist', JSON.stringify(params), header);
       }
 
-     saveMtnGenTaxRange(params){
+    saveAcitTrantype(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitTranType', JSON.stringify(params), header);
+    }
+
+    saveMtnGenTaxRange(params){
     	let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
          };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxRange', JSON.stringify(params), header);
-      }
+		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTaxRange', JSON.stringify(params), header);
+    }
+
+    getAcitDefAmt(tranClass,tranTypeCd,itemNo?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcitDefAmt',{params});	
+    }
+
+    saveAcitAmtDtl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAcitDefAmt', JSON.stringify(params), header);
+    }
+
+    getAcitDefAcctEnt(tranClass,tranTypeCd,entryNo?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('entryNo', (entryNo == null || entryNo == undefined ? '' : entryNo));
+
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcitDefAcctEnt',{params});	
+    }
+
+    saveAcitDefAcctEnt(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcitDefAcctEnt', JSON.stringify(params), header);
+    }
+
+    saveAcseTranType(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseTranType', JSON.stringify(params), header);
+    }
 
 
-     getMtnGenTaxRange(taxId?){
+    getMtnGenTaxRange(taxId?){
     	const params = new HttpParams()
 						.set('taxId', (taxId === null || taxId === undefined ? '' : taxId));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGenTaxRange", {params});

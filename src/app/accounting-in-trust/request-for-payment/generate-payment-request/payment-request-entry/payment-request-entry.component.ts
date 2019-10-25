@@ -94,7 +94,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   paymentData  : any = {};
   paymentType  : any;
   passDataLov  : any = {
-    selector     :'',
+    selector     : '',
     payeeClassCd : ''
   };
 
@@ -105,12 +105,24 @@ export class PaymentRequestEntryComponent implements OnInit {
     this.titleService.setTitle('Acct-IT | Request Entry');
     this.getTranType();
     this.sub = this.activatedRoute.params.subscribe(params => {
-      if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
-        this.saveAcitPaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
-        this.initDisabled = false;
+      if(this.rowData.reqId == ''){
+        if(Object.keys(params).length != 0){
+          this.saveAcitPaytReq.reqId = params['reqId'];
+          this.initDisabled = false;
+        }else{
+          this.initDisabled = true;
+        }
       }else{
-        this.initDisabled = true;
+        this.saveAcitPaytReq.reqId = this.rowData.reqId;
       }
+
+      // if(Object.keys(params).length != 0 || (this.rowData.reqId != null && this.rowData.reqId != '')){
+      //   this.saveAcitPaytReq.reqId = Object.keys(params).length != 0 && this.rowData.reqId !== '' && params['reqId'] !== this.rowData.reqId  ? this.rowData.reqId : params['reqId'];
+      //   this.initDisabled = false;
+      // }else{
+      //   this.initDisabled = true;
+      //   this.saveAcitPaytReq.reqId = this.rowData.reqId;
+      // }
 
       this.getAcitPaytReq();
     });
@@ -120,23 +132,43 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   getAcitPaytReq(){
     this.loadingFunc(true);
-    var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS'), 
-                          this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
-                         .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
+    // var subRes = forkJoin(this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),this.mtnService.getMtnPrintableName(''), this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS'), 
+    //                       this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId))
+    //                      .pipe(map(([pr,pn,stat,prq]) => { return { pr,pn,stat,prq }; }));
+
+    const subResKey = ['pn','stat'];
+    const arrSubRes = {
+      'pn'   : this.mtnService.getMtnPrintableName(''),
+      'stat' : this.mtnService.getRefCode('ACIT_PAYMENT_REQUEST.STATUS')
+    };
+
+    if(this.saveAcitPaytReq.reqId != '' && this.saveAcitPaytReq.reqId != null && this.saveAcitPaytReq.reqId != undefined){
+      $.extend(arrSubRes,{
+        'pr'  : this.acctService.getPaytReq(this.saveAcitPaytReq.reqId),
+        'prq' : this.acctService.getAcitPrqTrans(this.saveAcitPaytReq.reqId)
+      });
+      subResKey.push('pr','prq');
+    }
+
+    var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
+      var obj = {};
+      subResKey.forEach((e,i) => {obj[e] = a[i];});
+      return obj;
+    }));
 
     subRes.subscribe(data => {
       console.log(data);
       var recPn = data['pn']['printableNames'];
       var recStat = data['stat']['refCodeList'];
-      var recPrq = data['prq']['acitPrqTrans'];
-      var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
-
-      console.log(totalReqAmts);
       this.prqStatList = recStat;
       
       this.loadingFunc(false);
       if(!this.initDisabled){
-         var recPr =  data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
+        var recPrq = data['prq']['acitPrqTrans'];
+        var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
+
+        console.log(totalReqAmts);
+        var recPr =  data['pr']['acitPaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate);
                                                recPn.forEach(e2 => {
@@ -379,7 +411,6 @@ export class PaymentRequestEntryComponent implements OnInit {
   }
 
   setData(data,from){
-    // $('input').addClass('ng-dirty');
     this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);

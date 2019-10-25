@@ -27,18 +27,19 @@ export class LossCodeComponent implements OnInit {
   passData: any = {
 		tableData:[],
 		tHeader				:["Loss Code","Loss Code Abbr","Description","Loss Code Type","Active","Remarks"],
-		dataTypes			:["reqNumber","reqText","reqText","select", "checkbox", "text"],
+		dataTypes			:["reqNum","reqText","reqText","select", "checkbox", "text"],
 		nData:{
 			lossCd        	: null,
 			lossCdAbbr		: null,
 			description     : null,
 			lossCdType		: null,
-			activeTag       : 'Y',
+			activeTag       : true,
 			remarks         : null,
 			"createUser"    : this.ns.getCurrentUser(),
             "createDate"    : this.ns.toDateTimeString(0),
             "updateUser"	: this.ns.getCurrentUser(),
-      		"updateDate"	: null
+      		"updateDate"	: null,
+      		okDelete		:'Y'
 		},
 		opts: [{
         	selector: 'lossCdType',
@@ -101,8 +102,6 @@ export class LossCodeComponent implements OnInit {
   			this.passData.opts[0].vals = [];
   			this.passData.opts[0].prev = [];
 
-  			console.log(data);
-
   			var td = data['word']['lossCd'].sort((a, b) => b.createDate - a.createDate).map(a => { 
   															   a.lossCd     =  parseInt(a.lossCd);
 		  										   			   a.activeTag  = this.cbFunc(a.activeTag);
@@ -122,13 +121,13 @@ export class LossCodeComponent implements OnInit {
 
   			this.passData.tableData = td;
 	  		this.passData.disableAdd = false;
-	  		this.passData.disableGeneric = false;
+	  		this.passData.disableGeneric = true;
 
 	  		this.passData.opts[0].vals = data['ref']['refCodeList'].map(a => a.code);
 		  	this.passData.opts[0].prev = data['ref']['refCodeList'].map(a => a.description);
 
 		  	this.table.refreshTable();
-	  		this.table.onRowClick(null, this.passData.tableData[0]);
+	  		// this.table.onRowClick(null, this.passData.tableData[0]);	
   		});
   }
 
@@ -143,9 +142,9 @@ export class LossCodeComponent implements OnInit {
   onRowClick(data){
 		this.selected = data;	
 		this.passData.disableGeneric = this.selected == null ? true : false;
-	if(event !== null){
+	if(data !== null){
   		this.selected = data;
-  		this.lossCd = data.lossCd;
+  		// this.lossCd = data.lossCd;
   	    this.passData.disableGeneric    = false;
 	  	this.lossCode.createUser	= data.createUser;
 	  	this.lossCode.createDate	= data.createDate;
@@ -167,13 +166,16 @@ export class LossCodeComponent implements OnInit {
 		      this.dialogMessage="Unable to save the record. Loss Code must be unique.";
 			  this.dialogIcon = "warning-message";
 			  this.successDialog.open();
-		    } else {
+		    } else if (!this.cancelFlag) {
 		      $('#confirm-save #modalBtn2').trigger('click');
+		    }else{
+		    	this.onClickSaveLossCode();
 		    }
       }else{
         this.dialogMessage="Please check field values.";
         this.dialogIcon = "error";
         this.successDialog.open();
+        this.cancelFlag = false;
         this.tblHighlightReq('#mtn-loss-code',this.passData.dataTypes,[0,1,2,3]);
       }
 	
@@ -196,33 +198,34 @@ export class LossCodeComponent implements OnInit {
   }
 
   change(event){
+  	console.log(event);
     $('#cust-table-container').addClass('ng-dirty');
   }
 
 
 	tblHighlightReq(el, dataTypes, reqInd) {
-		setTimeout(() => {
-			$(el).find('tbody').children().each(function() {
-				$(this).children().each(function(i) {
-					if(reqInd.includes(i)) {
-						var val;
-						if(dataTypes[i] == 'reqText' || dataTypes[i] == 'date' || dataTypes[i] == 'time' || dataTypes[i] == 'reqNumber') {
-							val = $(this).find('input').val();
-							highlight($(this), val);
-						} else if(dataTypes[i] == 'select') {
-							val = $(this).find('select').val();
-							highlight($(this), val);
-						} else if(dataTypes[i] == 'number' || dataTypes[i] == 'currency') {
-							val = isNaN(Number($(this).find('input').val())) ? null : $(this).find('input').val();
-						}
-					}
-				});
-			});
+		// setTimeout(() => {
+		// 	$(el).find('tbody').children().each(function() {
+		// 		$(this).children().each(function(i) {
+		// 			if(reqInd.includes(i)) {
+		// 				var val;
+		// 				if(dataTypes[i] == 'reqText' || dataTypes[i] == 'date' || dataTypes[i] == 'time' || dataTypes[i] == 'reqNumber') {
+		// 					val = $(this).find('input').val();
+		// 					highlight($(this), val);
+		// 				} else if(dataTypes[i] == 'select') {
+		// 					val = $(this).find('select').val();
+		// 					highlight($(this), val);
+		// 				} else if(dataTypes[i] == 'number' || dataTypes[i] == 'currency') {
+		// 					val = isNaN(Number($(this).find('input').val())) ? null : $(this).find('input').val();
+		// 				}
+		// 			}
+		// 		});
+		// 	});
 
-			function highlight(td, val) {
-				td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
-			}
-		}, 0);
+		// 	function highlight(td, val) {
+		// 		td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+		// 	}
+		// }, 0);
 	}
 	
 	onClickSaveLossCode(){
@@ -231,29 +234,37 @@ export class LossCodeComponent implements OnInit {
     	this.editedData  = [];
     	this.deletedData =[];
 
-    	for(var i=0;i<this.passData.tableData.length;i++){
+    // 	for(var i=0;i<this.passData.tableData.length;i++){
 
-	  		 if(this.passData.tableData[i].edited){
-	  		 	  this.editedData.push(this.passData.tableData[i]);
-	  		 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
-	              this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
-	              this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
-	         }     
-  		}
+	  	// 	 if(this.passData.tableData[i].edited && ){
+	  	// 	 	  this.editedData.push(this.passData.tableData[i]);
+	  	// 	 	  this.editedData[this.editedData.length - 1].activeTag  = this.cbFunc2(this.passData.tableData[i].activeTag);
+	   //            this.editedData[this.editedData.length - 1].updateUser = this.ns.getCurrentUser();
+	   //            this.editedData[this.editedData.length - 1].updateDate = this.ns.toDateTimeString(0);             
+	   //       }     
+  		// }
+  		this.editedData = this.passData.tableData.filter(a=>{
+  			a.activeTag  = this.cbFunc2(a.activeTag);
+            a.updateUser = this.ns.getCurrentUser();
+            a.updateDate = this.ns.toDateTimeString(0);  
+            return !a.deleted && a.edited;
+  		});
+  		this.deletedData = this.passData.tableData.filter(a=>a.deleted);
 
   		this.mtnLossCdReq.saveLossCd = this.editedData;
         this.mtnLossCdReq.deleteLossCd = this.deletedData;  
 
-        if(this.mtnLossCdReq.saveLossCd.length > 0){
-              this.confirmDialog.showBool = true;
-              this.passData.disableGeneric = true;
-              this.saveLossCd();
-            } else {
-              this.confirmDialog.showBool = false;
-              this.dialogIcon = 'info';
-              this.dialogMessage = 'Nothing to save';
-              this.successDialog.open();
-            }
+        this.confirmDialog.showBool = true;
+        this.passData.disableGeneric = true;
+        this.saveLossCd();
+        // if(this.mtnLossCdReq.saveLossCd.length > 0){
+              
+        //     } else {
+        //       this.confirmDialog.showBool = false;
+        //       this.dialogIcon = 'info';
+        //       this.dialogMessage = 'Nothing to save';
+        //       this.successDialog.open();
+        //     }
 
 
 	}
@@ -268,56 +279,56 @@ export class LossCodeComponent implements OnInit {
 			            this.getMtnLossCode();
 			        }else{
 			            this.dialogIcon = "error";
+			            this.cancelFlag = false;
 			            this.successDialog.open();
-			            this.getMtnLossCode();
 			        }
     });
   }
 
   deleteLossCode(){
-  	    if (this.selected.add){
-  	    	this.deleteBool = false;
-  	    }else {
-  	    	this.deleteBool = true;	
-  	    }
+  	    
+  	    if(this.lossCodeTable.indvSelect.okDelete == 'Y'){
 
+  	    		this.lossCodeTable.selected  = [this.lossCodeTable.indvSelect]	
+  	    		this.lossCodeTable.confirmDelete();
+		}else{
+            this.dialogMessage="You are not allowed to delete a loss code that is used by claim processing";
+       		this.dialogIcon = "warning-message";
+       		this.successDialog.open();
 
-  	  this.lossCodeTable.indvSelect.deleted = true;
-	  	this.lossCodeTable.selected  = [this.lossCodeTable.indvSelect]
-	  	this.lossCodeTable.confirmDelete();
+		}
+  	   //this.lossCodeTable.indvSelect.deleted = true;
   }
 
   onClickDelLOssCode(obj : boolean){
 
-  	this.mtnLossCdReq.deleteLossCd = [];
-	this.mtnLossCdReq.saveLossCd = [];
-    this.editedData  = [];
-    this.deletedData =[];
-    this.passData.disableGeneric = true;
+ //  	this.mtnLossCdReq.deleteLossCd = [];
+	// this.mtnLossCdReq.saveLossCd = [];
+ //    this.editedData  = [];
+ //    this.deletedData =[];
+ //    this.passData.disableGeneric = true;
    
 
-      if(obj){
-      	this.deletedData.push({
-								    "lossCd" : this.lossCd
-								     });
-    	this.mtnLossCdReq.saveLossCd = this.editedData;
-    	this.mtnLossCdReq.deleteLossCd = this.deletedData; 
+     //  if(obj){
 
-      		this.mtnService.saveMtnLossCode(JSON.stringify(this.mtnLossCdReq))
-                .subscribe(data => {
-                	console.log(data);
-                    if(data['returnCode'] == -1){
-			            this.dialogIcon = "success";
-			            this.successDialog.open();
-			            this.getMtnLossCode();
-			        }else{            
-			            this.getMtnLossCode();
-			            this.dialogMessage="You are not allowed to delete a loss code that is used by claim processing";
-			       		this.dialogIcon = "warning-message";
-			       		this.successDialog.open();
-			        }
-    		});
-  	  } 
+     //  	this.deletedData.push({
+					// 			    "lossCd" : this.lossCd
+					// 			     });
+    	// this.mtnLossCdReq.saveLossCd = this.editedData;
+    	// this.mtnLossCdReq.deleteLossCd = this.deletedData; 
+
+     //  		this.mtnService.saveMtnLossCode(JSON.stringify(this.mtnLossCdReq))
+     //            .subscribe(data => {
+     //            	console.log(data);
+     //                if(data['returnCode'] == -1){
+			  //           this.dialogIcon = "success";
+			  //           this.successDialog.open();
+			  //           this.getMtnLossCode();
+			  //       }else{            
+			  //           this.getMtnLossCode();
+			  //       }
+    	// 	});
+  	  // } 
   }
 
   cancel(){

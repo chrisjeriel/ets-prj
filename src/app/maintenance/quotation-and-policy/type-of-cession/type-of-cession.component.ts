@@ -135,7 +135,7 @@ export class TypeOfCessionComponent implements OnInit {
             this.params.saveTypeOfCession 	= [];
 		}else{
 			if(this.params.saveTypeOfCession.length == 0 && this.params.deleteTypeOfCession.length == 0){
-				$('.ng-dirty').removeClass('ng-dirty');
+				this.table.markAsPristine();
 				this.cs.confirmModal();
 				this.params.saveTypeOfCession 	= [];
 				this.passData.tableData = this.passData.tableData.filter(a => a.cessionAbbr != '');

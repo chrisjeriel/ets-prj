@@ -151,11 +151,16 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
         this.tableNonEditable.loadingFlag = true;
         this.qs.getQuoProcessingData([{key: 'quotationNo', search: this.noDataFound ? '' : this.tempQuoteNo.join('%-%')}]).subscribe((data: any)=>{
             if(data.quotationList.length === 0){
-                this.noDataFound = true;
-                if(this.isType){
+                console.log(this.isType)
+                if(this.isType && !this.isIncomplete){
                     setTimeout(()=>{
                         this.showQuoteListLOV();
                     },100);
+                }else if(!this.noDataFound){
+                    this.noDataFound = true;
+                    this.retrieveQuoteListing();
+                }else{
+                    this.tableNonEditable.refreshTable();
                 }
             }else{
                 this.noDataFound = false;

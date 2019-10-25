@@ -1,4 +1,4 @@
-﻿<style>
+<style>
     .btn-link:hover {
     color: #0056b3;
     text-decoration: none;
@@ -7,7 +7,19 @@
     background-color: #f1f1f1;
     width: 95%;
     text-align: left;
-}
+    }
+
+    #chatbox button.dropdown-toggle::after{
+      display: none;
+    }
+
+    #chatbox pre {
+        white-space: pre-wrap;       /* Since CSS 2.1 */
+        white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+        white-space: -pre-wrap;      /* Opera 4-6 */
+        white-space: -o-pre-wrap;    /* Opera 7 */
+        word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
 
 </style>
 
@@ -84,32 +96,32 @@
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel title="Issuance">
                                         <ng-template ngbPanelContent>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL001') > -1">
                                             <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
                                                 Policy</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL012') > -1">
                                             <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
                                                 List</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL013') > -1">
                                             <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
                                                 Alteration</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL016') > -1">
                                             <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
                                                 List</button>
                                             <br />
                                             </ng-container>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL017') > -1">
                                             <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
                                                 Open Cover</button>
                                                 <br />
                                             </ng-container>
-                                            <ng-container > <!-- *ngIf="accessibleModules.indexOf('QUOTEX99') == -1" -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL020') > -1">
                                             <button [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
                                                 <br />
                                             </ng-container>
@@ -117,52 +129,78 @@
                                     </ngb-panel>
                                     <ngb-panel title="Distribution">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/pol-dist']" class="button btn btn-link">Distribution Processing</button>
-                                            <br />
-                                            <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Distribution List</button>
-                                            <br />
-                                            <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL035') > -1">
+                                                <button [routerLink]="['/pol-dist']" class="button btn btn-link">Distribution Processing</button>
+                                                <br />    
+                                            </ng-container>
+
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL036') > -1">
+                                                <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Distribution List</button>
+                                                <br />
+                                            </ng-container>
+
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL041') > -1">
+                                                <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
                                                 Distribution</button>
-                                            <br />
-                                            <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch
-                                                Processing</button>
-                                            <br>
+                                                <br />   
+                                            </ng-container>
+
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL039') > -1 || accessibleModules.indexOf('POL040') > -1">
+                                                <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
+                                                <br />  
+                                            </ng-container>
+                                            
                                         </ng-template>
                                     </ngb-panel>
                                     <ngb-panel title="Expiry & Renewal">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
-                                                Expiring Policies</button>
-                                            <br />
-                                            <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
-                                                Listing</button>
-                                            <br />
-                                            <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
-                                                To Hold Cover</button>
-                                            <br />
-                                            <button [routerLink]="['/pol-hold-cov-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
-                                            <br />
-                                            <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge
-                                                Extracted Policies</button>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL025') > -1">
+                                                <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
+                                                    Expiring Policies</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL027') > -1 || accessibleModules.indexOf('POL028') > -1">
+                                                <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
+                                                    Listing</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL029') > -1">
+                                                <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
+                                                    To Hold Cover</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL030') > -1">
+                                                <button [routerLink]="['/pol-hold-cov-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL026') > -1">
+                                                <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge Extracted Policies</button>    
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                     <ngb-panel title="Inquiry">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL021') > -1">
+                                                <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
                                                 Inquiry</button>
-                                            <br />
-                                            <button [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover
-                                                Inquiry</button>
-                                            <br />
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL024') > -1">
+                                                <button [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                     <ngb-panel title="Generate Documents">
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy
-                                                Printing</button>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
+                                                <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
                                                 <br/>
-                                            <button [routerLink]="['/total-val-pol-print']" class="button btn btn-link">100% Value Policy Printing</button>
-                                            <br/>
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL042') > -1">
+                                                <button [routerLink]="['/total-val-pol-print']" class="button btn btn-link">100% Value Policy Printing</button>
+                                                <br/>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                     <!-- <ngb-panel title="Maintenance">
@@ -182,17 +220,21 @@
                                             <ngb-accordion #acc="ngbAccordion">
                                                 <ngb-panel title="Update Information">
                                                     <ng-template ngbPanelContent>
-                                                        <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update
-                                                            General Info</button>
-                                                        <br />
-                                                        <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update
-                                                            Installment</button>
-                                                        <br />
+                                                        <ng-container *ngIf="accessibleModules.indexOf('POL032') > -1">
+                                                            <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update General Info</button>
+                                                            <br />
+                                                        </ng-container>
+                                                        <ng-container *ngIf="accessibleModules.indexOf('POL033') > -1">
+                                                            <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update Installment</button>
+                                                            <br />
+                                                        </ng-container>
                                                     </ng-template>
                                                 </ngb-panel>
                                             </ngb-accordion>
-                                            <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link">Spoil Policy/Alteration</button>
-                                            <br />
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL034') > -1">
+                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link">Spoil Policy/Alteration</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -561,6 +603,30 @@
                 
             </div>
         </section>
+
+        <!-- CHAT LAYOUT ON-HOLD -->
+        <!-- <div style="float: right; position: sticky; bottom: 0; z-index: 2;" id="chatbox">
+            <div ngbDropdown placement="top-right" class="d-inline-block" [autoClose]="false">
+                <button class="cust-btn" id="dropdownBasic2" ngbDropdownToggle>Chat</button>
+                <div ngbDropdownMenu aria-labelledby="dropdownBasic2" style="width: 16em; height: 17em; border: 1px solid red;">
+                    <div class="container" style="height: 100%">
+                        <div class="row" style="padding: 0; height: 90%; border: 1px solid yellow;">
+                            <pre class="col-sm-12" style="padding: 0; height: inherit;">
+                                <div style="height: inherit; font-family: Arial; font-size: 12px;">{{ 'Test\nTest\nTest\nTest\nTest\nTest\nTest\nTest\nTest' }} </div>
+                            </pre>
+                        </div>
+                        <div class="row" style="padding: 0; border: 1px solid blue;">
+                            <div class="col-sm-9" style="padding: 0;">
+                                <input type="text" style="font-family: Arial; font-size: 12px; width: 100%">
+                            </div>
+                            <div class="col-sm-3" style="padding: 0;">
+                                <button class="cust-btn" style="width: 100%">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
     </div>
 
 </ng-sidebar-container>
@@ -603,3 +669,20 @@
         </div>
     </div>
 </ng-template>
+
+
+<app-modal class="d-none" id="restrictedModule">
+    <div header>Restricted Module</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>
+                  You have no access to this module. Please contact administrator.
+              </p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>

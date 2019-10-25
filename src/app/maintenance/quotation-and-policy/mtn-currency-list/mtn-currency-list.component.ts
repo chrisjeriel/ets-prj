@@ -158,6 +158,7 @@ export class MtnCurrencyListComponent implements OnInit {
          } else{
            this.dialogIcon = "success";
            this.successDialog.open();
+           this.currencyList.markAsPristine();
            this.getMtnCurrency();
          }
        });

@@ -42,6 +42,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @ViewChild(LovComponent) lovMdl: LovComponent;
 
   @Output() emitCreateUpdate: any = new EventEmitter<any>();
+  @Input() inquiryFlag: boolean; // added by ENGEL;
 
   @Input() paymentType: string = "";
   @Input() record: any;
@@ -439,7 +440,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
     var a = false;
       if(this.record.from.toLowerCase() == 'or'){
-            a = (this.record.orStatDesc.toUpperCase() != 'NEW')?true:false;
+            a = (this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag)?true:false;
       }else if(this.record.from.toLowerCase() == 'cv'){
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
       }

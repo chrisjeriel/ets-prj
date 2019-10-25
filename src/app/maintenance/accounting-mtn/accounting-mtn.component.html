@@ -29,6 +29,10 @@
                                     <p-accordionTab header="D">
                                           <button [routerLink]="['/mtn-dcb-user']" class="button btn btn-link">DCB User</button>
                                           <br />
+                                          <button [routerLink]="['/mtn-acit-dcb-no']" class="button btn btn-link">DCB No</button>
+                                          <br />
+                                          <button [routerLink]="['/mtn-acse-dcb-no']" class="button btn btn-link">DCB No - Service</button>
+                                          <br />
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
@@ -47,6 +51,7 @@
                                           <br />
                                           <button [routerLink]="['/generate-number-series']" class="button btn btn-link">Generate Number Series</button>
                                           <br />
+                                          <button [routerLink]="['/generate-number-series-service']" class="button btn btn-link">Generate Number Series - Service</button>
                                     </p-accordionTab>
                               </p-accordion>
                         </div>
@@ -111,8 +116,13 @@
                                           <br />
                                     </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="T">
+                                          <button [routerLink]="['/mtn-acit-tran-type']" class="button btn btn-link">Transaction Type</button>
+                                          <br />
+                                          <button [routerLink]="['/mtn-acse-tran-type']" class="button btn btn-link">Transaction Type - Service</button>
+                                          <br />
+                                          
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
@@ -125,8 +135,10 @@
                                     <p-accordionTab header="V">
                                     </p-accordionTab>
                               </p-accordion>
-                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
                                     <p-accordionTab header="W">
+                                          <button [routerLink]="['/mtn-withholding-tax']" class="button btn btn-link">Withholding Tax</button>
+                                          <br />
                                     </p-accordionTab>
                               </p-accordion>
                               <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">

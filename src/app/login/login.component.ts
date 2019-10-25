@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
 
                     this.userService.userLogin(this.f.username.value.toUpperCase(), this.f.password.value).subscribe(data => {        
           
-                        this.userService.setAccessModules(data['modulesList']);
+                        // this.userService.setAccessModules(data['modulesList']);
                         this.userService.emitAccessModules(data['modulesList']);
 
                     });

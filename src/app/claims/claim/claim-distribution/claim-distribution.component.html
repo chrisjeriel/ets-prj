@@ -207,7 +207,7 @@
 		</app-modal>
 		<button class="cust-btn">Print</button>
 		<button class="cust-btn" (click)="cancel()">Cancel</button>
-		<button class="cust-btn " [disabled]="(currTab=='cummReserve' && cummDistPassData.tableData.length == 0 )||((selected == null || selected == undefined) && (currTab=='payment' || currTab=='reserve'))" (click)="confirmRedsitribute()" *ngIf="!isInquiry">Redistribute</button>
+		<button class="cust-btn " [disabled]="(currTab=='cummReserve' && cummDistPassData.tableData.length == 0 )||((selected == null || selected == undefined) && (currTab=='payment' || currTab=='reserve'))" (click)="confirmRedsitribute()" *ngIf="!isInquiry && currTab=='reserve'">Redistribute</button>
 	</div>
 </div>
 

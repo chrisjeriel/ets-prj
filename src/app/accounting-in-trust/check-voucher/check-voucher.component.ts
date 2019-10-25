@@ -111,11 +111,13 @@ export class CheckVoucherComponent implements OnInit {
           i.cvStatusDesc = i.mainTranStatDesc;
         }
 
-        return i; 
+        return i;
       });
 
       this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
+
+      this.table.filterDisplay(this.table.filterObj, this.table.searchString);
     });
   }
 
