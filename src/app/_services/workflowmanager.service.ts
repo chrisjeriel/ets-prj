@@ -15,13 +15,14 @@ export class WorkFlowManagerService {
     }
 
 
-    retrieveWfmReminders(reminderId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string){
+    retrieveWfmReminders(reminderId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string, status?: string){
          const params = new HttpParams()
                 .set('reminderId', reminderId)
                 .set('assignedTo', assignedTo)
                 .set('createUser', createUser)
                 .set('module', module)
-                .set('referenceId', referenceId);
+                .set('referenceId', referenceId)
+                .set('status',(status === null || status === undefined ? '' : status));
 
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retReminders', {params});
     }
@@ -35,13 +36,14 @@ export class WorkFlowManagerService {
         return this.http.post(environment.prodApiUrl +'/work-flow-service/saveReminders',params,header);
     }
 
-    retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string){
+    retrieveWfmNotes(noteId: string, assignedTo: string , createUser: string, module?: string, referenceId?: string, status?: string){
          const params = new HttpParams()
                 .set('noteId', noteId)
                 .set('assignedTo', assignedTo)
                 .set('createUser', createUser)
                 .set('module', module)
-                .set('referenceId', referenceId);
+                .set('referenceId', referenceId)
+                .set('status',(status === null || status === undefined ? '' : status));
 
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retNotes', {params});
     }

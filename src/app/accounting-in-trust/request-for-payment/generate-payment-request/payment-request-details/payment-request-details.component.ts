@@ -320,6 +320,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
   ngOnInit() {
     this.loadingFunc(true);
 
+    var d = new Date();
+    for(let x = d.getFullYear(); x >= 2018; x--) {
+      this.yearParamOpts.push(x);
+    }
+
     this.inwardPolBalData = this.acctService.getInwardPolicyKeys('PRQ');
     this.getPaytReqPrqTrans();
   }
@@ -1345,11 +1350,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getAcctPrqServFee(gnrt?) {
-    var d = new Date();
-
-    for(let x = d.getFullYear(); x >= 2018; x--) {
-      this.yearParamOpts.push(x);
-    }
+    var d = new Date();    
 
     setTimeout(() => {
       this.servFeeMainTbl.refreshTable();

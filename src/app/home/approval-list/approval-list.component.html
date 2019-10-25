@@ -88,7 +88,7 @@
 				  </thead>
 				  <tbody class="app-active-table">
 					<!-- <tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: p }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);"> TRBT#PROD_GRADE -->
-					<tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: page }; index as i" [class.selected]="mod === selectedData" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);">
+					<tr *ngFor="let mod of approvalList | paginate: { id:'wf', itemsPerPage: 10, currentPage: page }; index as i" [class.selected]="mod === selectedData" (dblclick)="redirectToQuoteGenInfo();" (contextmenu)="onRightClick($event, mod);" (click)="onRowClick($event, mod);">
 					    <td>{{ mod.module }}</td>
 					    <td>{{ mod.details }}</td>
 					    <td>{{ mod.assignedBy }}</td>
@@ -99,8 +99,8 @@
 					</tr>
 				    <div class="dropdown-menu dropdown-menu-sm" id="context-menu">
 			          	<a class="dropdown-item" (click)="redirectToQuoteGenInfo()"><fa name="file-text-o"></fa>&nbsp;&nbsp;View Details</a>
-			          	<a class="dropdown-item" (click)="approveRecord()"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
-			          	<a class="dropdown-item" (click)="rejectRecord()"><fa name="window-close-o"></fa>&nbsp;&nbsp;Reject</a>
+			          	<a class="dropdown-item" (click)="onClickConfirm('approve');"><fa name="check-square-o"></fa>&nbsp;&nbsp;Approve</a>
+			          	<a class="dropdown-item" (click)="onClickConfirm('reject');"><fa name="window-close-o"></fa>&nbsp;&nbsp;Reject</a>
 			        </div>
 				  </tbody>
 				</table>
@@ -108,9 +108,9 @@
 				<div style="float: left;">
 					<button [disabled]="selectedData == null" class="cust-btn" (click)="redirectToQuoteGenInfo()">View Details</button>
 					<!-- <button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()" style="background: #E76B6F !important;">Approve</button> -->
-					<button [disabled]="selectedData == null" class="cust-btn" (click)="approveRecord()">Approve</button> 
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="onClickConfirm('approve');">Approve</button> 
 				<!-- 	<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" style="background: #E76B6F !important;">Reject</button> -->
-					<button [disabled]="selectedData == null" class="cust-btn" (click)="rejectRecord()" >Reject</button>
+					<button [disabled]="selectedData == null" class="cust-btn" (click)="onClickConfirm('reject');" >Reject</button>
 				</div>
 				<div class="pagination">
 		            <!--<div class="pagination" *ngIf="passData.hasPagination">-->
@@ -129,38 +129,16 @@
 	</div>
 </div>
 
-<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-modal #warningConfirmation class="d-none">
+  <div header>Confirmation Message</div>
+  <div body>
+     {{ confirmationMessage }}
+  </div>
+  <div footer class="w-100 text-center">
+
+  	<button type="button" class="cust-btn" (click)="(confirmMethod == 'approve') ? approveRecord() : rejectRecord();warningConfirmation.closeModal();" ><a>Yes</a></button>
+  	<button type="button" class="cust-btn" (click)="warningConfirmation.closeModal();" ><a>No</a></button>
+  </div>
+</app-modal>
+
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<app-confirm-save id="approval" (onYes)="approveRecord()"></app-confirm-save>
-
-<!-- <div>
-	<p>You can bind our <code>NgbPagination</code> component with slicing the data list</p>
-
-	<table class="table table-striped">
-	  <thead>
-	  <tr>
-	    <th scope="col">#</th>
-	    <th scope="col">Country</th>
-	    <th scope="col">Area</th>
-	    <th scope="col">Population</th>
-	  </tr>
-	  </thead>
-	  <tbody>
-	  <tr *ngFor="let country of countries">
-	    <th scope="row">{{ country.id }}</th>
-	    <td>
-	      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
-	      {{ country.name }}
-	    </td>
-	    <td>{{ country.area | number}}</td>
-	    <td>{{ country.population | number }}</td>
-	  </tr>
-	  </tbody>
-	</table>
-
-	<div class="d-flex justify-content-between p-2">
-	  <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
-	  </ngb-pagination>
-	</div>
-
-</div> -->

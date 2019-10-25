@@ -8,13 +8,13 @@
 			<legend class="scheduler-border">O.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">O.R. No.</label>
-				<input id="orNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="orInfo.orNo" (change)="orInfo.orNo = pad($event.target.value, 'orNo')" (blur)="orInfo.orNo=pad(orInfo.orNo, 'orNo')" [readonly]="isCancelled || isPrinted" name="orNo" appRequired>
+				<input id="orNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="orInfo.orNo" (change)="orInfo.orNo = pad($event.target.value, 'orNo')" (blur)="orInfo.orNo=pad(orInfo.orNo, 'orNo')" [readonly]="isCancelled || isPrinted || inquiryFlag" name="orNo" appRequired>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">O.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="orDate.date" (valueChange)="orDate.date = $event; retrieveMtnAcseDCBNo(orDate.date.split('-')[0], orDate.date); retrieveCurrency();" [disabled]="orInfo.orStatDesc?.toUpperCase() !== 'NEW' || orInfo.dcbStatus == 'T' || orInfo.dcbStatus == 'C'"></datepicker>
+					<datepicker [type]="'date'" [required]="true" name="expiryDateParams.date" [value]="orDate.date" (valueChange)="orDate.date = $event; retrieveMtnAcseDCBNo(orDate.date.split('-')[0], orDate.date); retrieveCurrency();" [disabled]="orInfo.orStatDesc?.toUpperCase() !== 'NEW' || orInfo.dcbStatus == 'T' || orInfo.dcbStatus == 'C' || inquiryFlag"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="orDate.time" (valueChange)="orDate.time = $event" [disabled]="orInfo.orStatDesc?.toUpperCase() !== 'NEW' || orInfo.dcbStatus == 'T' || orInfo.dcbStatus == 'C'"></datepicker>
+					<datepicker [type]="'time'" [required]="true" name="expiryDateParams.time" [value]="orDate.time" (valueChange)="orDate.time = $event" [disabled]="orInfo.orStatDesc?.toUpperCase() !== 'NEW' || orInfo.dcbStatus == 'T' || orInfo.dcbStatus == 'C' || inquiryFlag"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">Status</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="orInfo.orStatDesc" readonly name="arStat">
@@ -31,43 +31,43 @@
 				<div class="col-sm-4" style="padding: 0px !important;">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-3" style="margin-right: -2px !important;padding-left: 0px !important;">Reference No.</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="orInfo.refNo" name="refNo" [readonly]="isCancelled || isPrinted">
+						<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="orInfo.refNo" name="refNo" [readonly]="isCancelled || isPrinted || inquiryFlag">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="orInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1" name="tranType">
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="orInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="tranType">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
 				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled || isPrinted" [ngModel]="orInfo.tranTypeName"> -->
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="orInfo.prNo" [readonly]="isCancelled || isPrinted" name="prNo">
+				<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [(ngModel)]="orInfo.prNo" [readonly]="isCancelled || isPrinted || inquiryFlag" name="prNo">
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">P.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
-					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;prDate.time = prDate.time == null || prDate.time == '' ? '08:00' : prDate.time;" [disabled]="isCancelled || isPrinted"></datepicker>
+					<datepicker [type]="'date'" [required]="false" name="expiryDateParams.date" [value]="prDate.date" (valueChange)="prDate.date = $event;prDate.time = prDate.time == null || prDate.time == '' ? '08:00' : prDate.time;" [disabled]="isCancelled || isPrinted || inquiryFlag"></datepicker>
 				</div>
 				<div class="col-sm-1 dp-cont">
-					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted"></datepicker>
+					<datepicker [type]="'time'" [required]="false" name="expiryDateParams.time" [value]="prDate.time" (valueChange)="prDate.time = $event;" [disabled]="isCancelled || isPrinted || inquiryFlag"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm-2">P.R. Prepared By</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="orInfo.prPreparedBy" [readonly]="isCancelled || isPrinted" name="preparedBy">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="orInfo.prPreparedBy" [readonly]="isCancelled || isPrinted || inquiryFlag" name="preparedBy">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="orInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd.length == 0" name="payor">
-				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && orInfo.rstrctTranUp !== 1 && orInfo.tranTypeCd.length != 0"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="orInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd.length == 0 || inquiryFlag" name="payor">
+				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && orInfo.rstrctTranUp !== 1 && orInfo.tranTypeCd.length != 0 && !inquiryFlag"><a><i class="fa fa-search"></i></a></div>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
-				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [(ngModel)]="orInfo.mailAddress" name="address" [readonly]="isCancelled || isPrinted"></textarea>
+				<textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [(ngModel)]="orInfo.mailAddress" name="address" [readonly]="isCancelled || isPrinted || inquiryFlag"></textarea>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-6 business" [(ngModel)]="orInfo.bussTypeName" name="business" [readonly]="isCancelled || isPrinted">
-				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled && !isPrinted"><a><i class="fa fa-search"></i></a></div>
+				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled && !isPrinted && !inquiryFlag"><a><i class="fa fa-search"></i></a></div>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="orInfo.tin" name="tin" [readonly]="isCancelled || isPrinted">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="orInfo.tin" name="tin" [readonly]="isCancelled || isPrinted || inquiryFlag">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Amount</label>
@@ -75,12 +75,12 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="orInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1" name="amt">
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
-						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted" name="amt2">
+						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted || inquiryFlag" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="orInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || orInfo.rstrctTranUp === 1" name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="orInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || orInfo.rstrctTranUp === 1 || inquiryFlag" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>
@@ -89,7 +89,7 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Particulars</label>
-				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="orInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled || isPrinted" name="particulars"></textarea>
+				<textarea class="form-control form-control-sm col-sm required" [(ngModel)]="orInfo.particulars" style="font-size: 11px; min-height: 60px; margin-bottom: 17px !important;" appRequired [readonly]="isCancelled || isPrinted || inquiryFlag" name="particulars"></textarea>
 			</div>
 		</fieldset>
 	</div>
@@ -103,7 +103,7 @@
 				</div>
 				<div class="input-group col-sm-12 text-center" style="margin-bottom: 2px !important;">
 					<label class="form-control-sm col-sm-4">Type</label>
-					<select appRequired name="orType" [(ngModel)]="orInfo.orType" class="form-control form-control-sm cust-sm col-sm" [disabled]="isCancelled || isPrinted">
+					<select appRequired name="orType" [(ngModel)]="orInfo.orType" class="form-control form-control-sm cust-sm col-sm" [disabled]="isCancelled || isPrinted || inquiryFlag">
 						<option [ngValue]="'VAT'">VAT</option>
 						<option [ngValue]="'NON-VAT'">NON-VAT</option>
 					</select>
@@ -114,12 +114,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || isPrinted" [class.cust-btn-disabled]="isAdd || isCancelled || isPrinted" (click)="openCancelModal()">Cancel OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || isPrinted || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || isPrinted || inquiryFlag" (click)="openCancelModal()">Cancel OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted" [class.cust-btn-disabled]="isCancelled || isPrinted">Save</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted || inquiryFlag" [class.cust-btn-disabled]="isCancelled || isPrinted || inquiryFlag">Save</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -127,12 +127,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED'" (click)="print();">Print OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || inquiryFlag" (click)="print();">Print OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED'" (click)="print();">Reprint OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED' || inquiryFlag" (click)="print();">Reprint OR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -149,13 +149,13 @@
 							<label class="form-control-sm col-sm-1">DCB Bank</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="orInfo.dcbBankName" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select name="dcbBank" class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled || isPrinted">
+							<select name="dcbBank" class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankFn" [ngModel]="selectedBank" (ngModelChange)="changeDcbBank($event)" appRequired [disabled]="isCancelled || isPrinted || inquiryFlag">
 								<option *ngFor="let bank of banks" [ngValue]="bank">{{bank.officialName}}</option>
 							</select>
 							<label class="form-control-sm col-sm-2">DCB Bank Acct. No.</label>
 							<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="orInfo.dcbBankAcctNo" appRequired>
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-							<select name="dcbBankAcct" class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled || isPrinted">
+							<select name="dcbBankAcct" class="form-control form-control-sm cust-sm col-sm-2 required" [compareWith]="compareBankAcctFn" [ngModel]="selectedBankAcct" (ngModelChange)="changeDcbBankAcct($event)" appRequired [disabled]="isCancelled || isPrinted || inquiryFlag">
 								<option *ngFor="let bankAcct of bankAccts" [ngValue]="bankAcct">{{bankAcct.accountNo}}</option>
 							</select>
 							<div class="col-sm-1"></div>

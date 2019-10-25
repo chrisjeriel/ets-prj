@@ -28,7 +28,7 @@ Modal -->
 <app-modal id="showReminder" class="d-none" [modalSize]="'success-modal-size'" #modal>
       <div header>View Reminder</div>
    <div body>
-        <div layout="row" layout-wrap layout-align="center center">
+        <!-- <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
                 <fieldset class="scheduler-border col-sm" style="width: 550px">
                     <div class="form-row custom-row-inline-inset">
@@ -57,7 +57,64 @@ Modal -->
                  <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
                  <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]= disablebtnBool id="save"><a>Save</a></button>
             </div>
-        </div>
+        </div> -->
+        <div layout="row" layout-wrap layout-align="center center">
+              <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+                  <fieldset class="scheduler-border col-sm" style="width: 550px">
+                      <div class="form-row custom-row-inline-inset">
+                <div class="input-group">
+                  <div class="input-group col-sm-6" style="padding: 0px;">
+                    <label class="form-control-sm col-sm-4">Reminder Date</label>
+                    <div class="col-sm dp-cont" style="margin-left: 0px !important;">
+                      <datepicker [type]="'date'" [showIcon]="true" [disabled]="isReadOnly" [value]="reminder.reminderDate?.split('T')[0]" (valueChange)="reminder.reminderDate=$event+'T'+reminder.reminderDate.split('T')[1];"></datepicker>
+                    </div>
+                    <div class="col-sm-3 dp-cont">
+                      <datepicker [type]="'time'" [disabled]="isReadOnly" [value]="reminder.reminderDate?.split('T')[1]" (valueChange)="reminder.reminderDate=reminder.reminderDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker> 
+                    </div>
+                  </div>
+                  <div class="input-group col-sm-6" style="padding: 0px;">
+                    <label class="form-control-sm col-sm-4">Alarm Time</label>
+                    <div class="col-sm-4 p-cont">
+                      <datepicker [type]="'time'" [disabled]="isReadOnly" [value]="reminder.alarmTime?.split('T')[1]" (valueChange)="reminder.alarmTime=reminder.alarmTime.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>  
+                    </div>
+                  </div>
+                </div>
+                <div class="input-group" style="margin: -2px 0 0 0;">
+                  <label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+                  <input type="text" id="inputMeeting" [disabled]="isReadOnly" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="reminder.title">
+                  <div class="input-group col-sm-3">
+                    <div class="input-group-prepend" style="height: 22px !important;">
+                      <div class="input-group-text white-bg">
+                        <input name="input197" [disabled]="isReadOnly" [checked]="reminder.impTag == 'Y'" (change)="reminder.impTag = (reminder.impTag == 'Y' ? 'N' : 'Y')" type="checkbox">
+                      </div>
+                    </div>
+                    <input name="input198" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+                  </div>
+                  <div class="input-group col-sm-3">
+                    <div class="input-group-prepend" style="height: 22px !important;">
+                      <div class="input-group-text white-bg">
+                        <input name="input199" [disabled]="isReadOnly" [checked]="reminder.urgTag == 'Y'" (change)="reminder.urgTag = (reminder.urgTag == 'Y' ? 'N' : 'Y')" type="checkbox">
+                      </div>
+                    </div>
+                    <input name="input200" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+                  </div>
+                </div>
+                <div class="input-group" style="margin: -8px 0 -40px 0 ! important;">
+                  <label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
+                  <textarea id="inputReminder" [disabled]="isReadOnly" class="form-control form-control-sm cust-sm col-sm-10" rows="8" style="font-size: 11px;" appRequired [(ngModel)]="reminder.reminder"> </textarea>
+                </div>
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-2" for="inputTitle">Assigned To</label>
+                  <input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [disabled]="isReadOnly" [(ngModel)]="reminder.assignedTo">
+                </div>
+              </div>
+                  </fieldset>
+              </div>
+              <div class="input-group" style="margin: 5px 0 -10px 0 ! important;justify-content: center;" >
+                 <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
+                 <button type="button" class="cust-btn" (click)="onClickSave();" [disabled]="isReadOnly"><a>Save</a></button>
+            </div>
+          </div>
     </div>
     <div footer class="text-center w-100" style="justify-content: center;margin: 0px 0 0 6px ! important">
       <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: 0px ! important">
@@ -69,10 +126,10 @@ Modal -->
         <label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
       </div>
        <div class="input-group" style="margin: 0px 0 12px 0 ! important">
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="createdBy" disabled >
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="dateCreated" style="margin: 0 0 0 5px" disabled>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="updatedBy" style="margin: 0 0 0 5px" disabled>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="lastUpdate" style="margin: 0 0 0 5px" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.createUser" disabled >
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.createDate" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.updateUser" style="margin: 0 0 0 5px" disabled>
+        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.updateDate" style="margin: 0 0 0 5px" disabled >
       </div>
         </div>
       </fieldset>

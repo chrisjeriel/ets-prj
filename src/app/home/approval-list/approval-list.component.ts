@@ -3,6 +3,7 @@ import { WorkFlowManagerService, AuthenticationService, QuotationService } from 
 import { User } from '@app/_models';
 import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 interface Module {
   referenceId: string;
@@ -11,175 +12,6 @@ interface Module {
   assignedBy: string;
   assignedDate: string;
 }
-
-const MODULES: Module[] = [
-  {
-    referenceId: '1',
-    module: 'Quotation',
-    details: 'CAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '2',
-    module: 'Quotation',
-    details: 'EAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '3',
-    module: 'Policy',
-    details: 'DOS-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '4',
-    module: 'Policy',
-    details: 'CAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '5',
-    module: 'Quotation',
-    details: 'EAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '6',
-    module: 'Quotation',
-    details: 'MBI-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '7',
-    module: 'Quotation',
-    details: 'DOS-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '8',
-    module: 'Claim',
-    details: 'CAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '9',
-    module: 'Quotation',
-    details: 'EAR-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '10',
-    module: 'Claim',
-    details: 'MBI-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-  {
-    referenceId: '11',
-    module: 'Claim',
-    details: 'DOS-2019-000001-00-099',
-    assignedBy: 'CASARSONAS',
-    assignedDate: '04/22/2019 01:00 PM'
-  },
-];
-
-interface Country {
-  id?: number;
-  name: string;
-  flag: string;
-  area: number;
-  population: number;
-}
-
-const COUNTRIES: Country[] = [
-  {
-    name: 'Russia',
-    flag: 'f/f3/Flag_of_Russia.svg',
-    area: 17075200,
-    population: 146989754
-  },
-  {
-    name: 'France',
-    flag: 'c/c3/Flag_of_France.svg',
-    area: 640679,
-    population: 64979548
-  },
-  {
-    name: 'Germany',
-    flag: 'b/ba/Flag_of_Germany.svg',
-    area: 357114,
-    population: 82114224
-  },
-  {
-    name: 'Portugal',
-    flag: '5/5c/Flag_of_Portugal.svg',
-    area: 92090,
-    population: 10329506
-  },
-  {
-    name: 'Canada',
-    flag: 'c/cf/Flag_of_Canada.svg',
-    area: 9976140,
-    population: 36624199
-  },
-  {
-    name: 'Vietnam',
-    flag: '2/21/Flag_of_Vietnam.svg',
-    area: 331212,
-    population: 95540800
-  },
-  {
-    name: 'Brazil',
-    flag: '0/05/Flag_of_Brazil.svg',
-    area: 8515767,
-    population: 209288278
-  },
-  {
-    name: 'Mexico',
-    flag: 'f/fc/Flag_of_Mexico.svg',
-    area: 1964375,
-    population: 129163276
-  },
-  {
-    name: 'United States',
-    flag: 'a/a4/Flag_of_the_United_States.svg',
-    area: 9629091,
-    population: 324459463
-  },
-  {
-    name: 'India',
-    flag: '4/41/Flag_of_India.svg',
-    area: 3287263,
-    population: 1324171354
-  },
-  {
-    name: 'Indonesia',
-    flag: '9/9f/Flag_of_Indonesia.svg',
-    area: 1910931,
-    population: 263991379
-  },
-  {
-    name: 'Tuvalu',
-    flag: '3/38/Flag_of_Tuvalu.svg',
-    area: 26,
-    population: 11097
-  },
-  {
-    name: 'China',
-    flag: 'f/fa/Flag_of_the_People%27s_Republic_of_China.svg',
-    area: 9596960,
-    population: 1409517397
-  }
-];
 
 @Component({
   selector: 'app-approval-list',
@@ -193,6 +25,8 @@ export class ApprovalListComponent implements OnInit {
               private quotationService: QuotationService) {}
 
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
+
   currentUser: User;
   approvalList: Module[] = [];
   selectedData:any;
@@ -202,6 +36,8 @@ export class ApprovalListComponent implements OnInit {
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
   dialogIcon:string  = "";
   dialogMessage:string  = "";
+  confirmationMessage:string = "Are you sure you want to Approve Record?";
+  confirmMethod:string = "approve";
   
 
   ngOnInit() {
@@ -312,20 +148,19 @@ export class ApprovalListComponent implements OnInit {
     });
   }
 
-  
+  onClickConfirm(method) {
+    this.confirmMethod = method;
+    
+    if (method == 'approve') {
+      this.confirmationMessage = 'Are you sure you want to Approve Record?';
+    } else if (method == 'reject') {
+      this.confirmationMessage = 'Are you sure you want to Reject Record?';
+    }
 
-  /*get approvalListing(): Module[] {
-    return MODULES
-      .map((mod, i) => ({id: i + 1, ...mod}))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
+    setTimeout(() => {
+        this.warningConfirmation.openNoClose();
+    },100); 
   }
-  */
-
-  /*get countries(): Country[] {
-    return COUNTRIES
-      .map((country, i) => ({id: i + 1, ...country}))
-      .slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
-  }*/
 
 }
 

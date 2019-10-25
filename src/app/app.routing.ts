@@ -190,6 +190,8 @@ import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/pa
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
+import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
+import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 const appRoutes: Routes = [
 
@@ -197,6 +199,7 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'wf-calendar', component: WfCalendarComponent },
     { path: 'quotation', component: QuotationComponent, 
     		canDeactivate: [UnsavedChangesGuard], 
     		canActivate: [AuthGuard, ModuleAccessGuard], 
@@ -535,6 +538,7 @@ const appRoutes: Routes = [
     { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] }, 
     { path: 'mtn-invt-sec-type', component: InvtSecTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'mtn-payee', component: PayeeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl-type', component: SlTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},

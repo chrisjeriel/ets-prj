@@ -481,6 +481,8 @@ import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/pa
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
+import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
+import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 @NgModule({
     imports: [
@@ -966,6 +968,8 @@ import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-ch
         SlTypeComponent,
         SlComponent,
         AcseChartAcctComponent,
+        PayeeComponent,
+        WfCalendarComponent,
     ],
 
   	providers: [

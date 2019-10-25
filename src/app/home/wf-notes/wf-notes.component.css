@@ -35,8 +35,41 @@ display: none;
   word-break: normal;
 }
 
+.selectdiv2:after {
+    content: '\25bc';
+    font: normal normal normal 13px/1 FontAwesome;
+/*    color: #0ebeff;*/
+    right: 11px;
+    height: auto;
+    padding: 6px 0px 0px 4px;
+    border: 0px;
+    position: absolute;
+    pointer-events: none;
+}
+
+.selectdiv2 select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+  
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  float: right;
+  margin: 3px 0px;
+  padding: 0px 24px;
+  font-size: 12px;
+  border: 0px;
+  outline: 0px;
+  -ms-word-break: normal;
+  word-break: normal;
+}
+
 ul.timeline > li:hover {
-    background-color: rgba(82, 168, 236, 0.23); /*#a6d6e24d;*/
+    /*background-color: rgba(82, 168, 236, 0.23); //#a6d6e24d; */
+    background-image: linear-gradient(to right, rgba(82, 168, 236, 0.23) , white);
     cursor: pointer;
     border-radius: 5px;
     /*padding-left: 20px;*/

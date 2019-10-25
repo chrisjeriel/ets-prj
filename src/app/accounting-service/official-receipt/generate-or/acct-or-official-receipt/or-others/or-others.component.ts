@@ -28,6 +28,7 @@ export class OrOthersComponent implements OnInit {
   @ViewChild('taxAllocCancel') taxCancelBtn : CancelButtonComponent;
 
   @Output() emitCreateUpdate: any = new EventEmitter<any>();
+  @Input() inquiryFlag: boolean; // added by ENGEL;
 
    passData : any = {
       tableData: [],
@@ -146,7 +147,7 @@ export class OrOthersComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
-    if(this.record.orStatDesc.toUpperCase() != 'NEW'){
+    if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;

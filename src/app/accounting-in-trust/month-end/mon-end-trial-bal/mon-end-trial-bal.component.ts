@@ -237,7 +237,7 @@ export class MonEndTrialBalComponent implements OnInit {
     };
 
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
-                  'longDesc AS [GL Account Name], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal] ' +
+                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
   }
 
