@@ -202,6 +202,8 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   setSLType(data) {
     this.row.slTypeCd = data.data.slTypeCd;
     this.row.slTypeName = data.data.slTypeName;
+    this.row.edited = true;
+    this.table.markAsDirty();
   }
 
   showAccCode(){
@@ -301,6 +303,7 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDialog.open();
+        this.table.markAsPristine();
         this.getMtnAcitChartAcct({});
       }
     });
