@@ -63,11 +63,15 @@ export class MaintenanceService{
 	// 		);
 	// }
 
-	getEndtCode(lineCd,endtCd){
-		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode"
-			+(lineCd!==undefined ? '?lineCd='+lineCd : '')
-			+(endtCd!==undefined ? (lineCd!==undefined ? '&' : '?')+'endtCd='+endtCd : '')
-			);
+	getEndtCode(lineCd,endtCd,filters?){
+		let params = {
+			lineCd : lineCd,
+			endtCd : endtCd
+		}
+		params = {...params,...filters};
+
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveEndtCode", {params:params});
+			
 	}
 
 	getMtnCity(regionCd?,provinceCd?,cityCd?){

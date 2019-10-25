@@ -29,7 +29,24 @@ export class MtnEndtCodeComponent implements OnInit {
         	'endtCd',
         	'endtTitle',
         	'description',
-        	'remarks']
+        	'remarks'],
+         filters:[
+           {
+            key: 'endtTitle',
+            title: 'Endt Title',
+            dataType: 'text'
+           },
+           {
+               key: 'endtDesc',
+               title: 'Endt Description',
+               dataType: 'text'
+           },
+           {
+               key: 'remarks',
+               title: 'Remarks',
+               dataType: 'text'
+           },
+         ]
 
     }
     selected: any;
@@ -73,6 +90,23 @@ export class MtnEndtCodeComponent implements OnInit {
       }
       this.table.refreshTable();
     });
+  }
+
+  filterDb(params){
+    let passToService: any = {};
+    for(let param of params){
+      passToService[param.key] = param.search
+    }
+    this.passData.tableData = [];
+    this.mtnService.getEndtCode(this.line,'',passToService).subscribe((data: any) => {
+      for (var i = 0; i< data.endtCode.length ; i++) {
+        if(this.hide!== undefined && this.hide.indexOf(data.endtCode[i].endtCd) != -1)
+          continue;
+        this.passData.tableData.push(data.endtCode[i]);
+      }
+      this.table.refreshTable();
+    });
+
   }
 
 }
