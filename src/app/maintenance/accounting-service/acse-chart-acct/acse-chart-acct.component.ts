@@ -215,6 +215,8 @@ export class AcseChartAcctComponent implements OnInit {
   setSLType(data) {
     this.row.slTypeCd = data.data.slTypeCd;
     this.row.slTypeName = data.data.slTypeName;
+    this.row.edited = true;
+    this.table.markAsDirty();
   }
 
   showAccCode(){
@@ -294,6 +296,7 @@ export class AcseChartAcctComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDialog.open();
+        this.table.markAsPristine();
         this.getMtnAcseChartAcct({});
       }
     });
