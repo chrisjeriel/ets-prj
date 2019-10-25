@@ -33,15 +33,14 @@ export class AcseTranTypeComponent implements OnInit {
 
   passData: any = {
       tableData: [],
-      tHeader: ['Tran Type No','Prefix', 'Transaction Type Name', 'Default Particulars','Master Transaction Type', 'Auto','BAE','Active'],
-      dataTypes: ['number','text', 'text', 'text','text', 'checkbox','checkbox','checkbox'],
+      tHeader: ['Tran Type No','Prefix', 'Transaction Type Name', 'Default Particulars', 'Auto','BAE','Active'],
+      dataTypes: ['number','text', 'text', 'text', 'checkbox','checkbox','checkbox'],
       nData: {
       	tranClass:'',
       	tranTypeCd:'',
       	typePrefix:'',
       	tranTypeName:'',
       	defaultParticulars:'',
-      	masterTranType:'',
       	remarks:'',
       	autoTag:'N',
       	baeTag:'N',
@@ -62,9 +61,9 @@ export class AcseTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 1,
-      uneditable: [true,false,false,false,false,false,true,false],
-      widths: [85,100,305,310,165,50,50,50],
-      keys: ['tranTypeCd', 'typePrefix', 'tranTypeName', 'defaultParticulars', 'masterTranType', 'autoTag','baeTag', 'activeTag'],
+      uneditable: [true,false,false,false,false,true,false],
+      widths: [85,100,305,310,50,50,50],
+      keys: ['tranTypeCd', 'typePrefix', 'tranTypeName', 'defaultParticulars', 'autoTag','baeTag', 'activeTag'],
   };
 
   passDataAcctEntries: any = {
@@ -351,6 +350,7 @@ export class AcseTranTypeComponent implements OnInit {
  		  this.dialogMessage = "";
  		  this.dialogIcon = "success";
  		  this.successDiag.open();
+      this.table.markAsPristine();
  		  this.retrieveTranType();
  		}
  	});
@@ -368,6 +368,7 @@ export class AcseTranTypeComponent implements OnInit {
       for(var i = 0; i < data.defAccEnt.length; i++){
         this.passDataAcctEntries.tableData.push(data.defAccEnt[i]);
       }
+      this.paramsAcctEnt.remarks = '';
       this.acctEntTbl.loadingFlag = false;
       this.acctEntTbl.onRowClick(null,this.passDataAcctEntries.tableData[0]);
       this.acctEntTbl.refreshTable();
@@ -459,6 +460,7 @@ export class AcseTranTypeComponent implements OnInit {
       for (var i = 0; i < data.defAmtDtl.length; i++) {
         this.passDataAmountDtl.tableData.push(data.defAmtDtl[i]);
       }
+      this.paramsAmtDtl.remarks = '';
       this.amtDtlTbl.refreshTable();
       this.amtDtlTbl.onRowClick(null,this.passDataAmountDtl.tableData[0]);
       this.amtDtlTbl.loadingFlag = false;
@@ -586,7 +588,7 @@ export class AcseTranTypeComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'DcbNo'+currDate+'.xls'
+    var filename = 'AcseTranType'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"}}}
@@ -601,5 +603,9 @@ export class AcseTranTypeComponent implements OnInit {
       };
     
     alasql('SELECT tranTypeCd AS [Tran Type No],typePrefix AS [Prefix],tranTypeName AS [Transaction Type Name],defaultParticulars AS [Default Particulars],masterTranType AS [Master Transaction Type],autoTag AS [Auto],baeTag AS [BAE],activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }

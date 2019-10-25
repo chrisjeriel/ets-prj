@@ -177,5 +177,5 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveData()" #tranTypeSave></app-confirm-save>
 <app-confirm-save (onYes)="savAcctEntries()" #acctEntrySave></app-confirm-save>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" #tranTypeCancel></app-cancel-button>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-acct'" #tranTypeCancel></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
