@@ -65,6 +65,9 @@ export class ListOfQuotationsComponent implements OnInit {
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+                 
+
+
         sortKeys:['QUOTATION_NO','CESSION_DESCRIPTION','CLASS_DESCRIPTION','STATUS','CEDING_NAME','PRINCIPAL_NAME','CONTRACTOR_NAME','RISK_NAME','OBJECT_DESCRIPTION','SITE','CURRENCY_CD','TOTAL_SI','OPTION_RT','ISSUE_DATE','EXPIRY_DATE','REQ_BY','CREATE_USER'],
         dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text', 'text'],     
         filters: [
@@ -119,10 +122,26 @@ export class ListOfQuotationsComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'policyNo',
-                title: 'Policy No.',
-                dataType: 'seq'
+                key: 'currencyCd',
+                title: 'Currency',
+                dataType: 'text'
             },
+
+
+            { keys: {
+                from: 'siFrom',
+                to: 'siTo'
+            },                        title: 'Sum Insured',         dataType: 'textspan'},
+            { keys: {
+                from: 'rateFrom',
+                to: 'rateTo'
+            },                        title: '1st Option Rate',         dataType: 'textspan'},
+
+            // {
+            //     key: 'policyNo',
+            //     title: 'Policy No.',
+            //     dataType: 'seq'
+            // },
             {
                 keys: {
                         from: 'issueDateFrom',
@@ -131,16 +150,10 @@ export class ListOfQuotationsComponent implements OnInit {
                 title: 'Quote Date',
                 dataType: 'datespan'
             },
-            {
-                key: 'expiryDate',
-                title: 'Valid Until',
-                dataType: 'date'
-            },
-            {
-                key: 'currencyCd',
-                title: 'Currency',
-                dataType: 'text'
-            },
+            { keys: {
+                from: 'expiryDateFrom',
+                to: 'expiryDateTo'
+            },                        title: 'Valid Until',         dataType: 'datespan'},
             {
                 key: 'reqBy',
                 title: 'Requested By',
@@ -336,6 +349,7 @@ export class ListOfQuotationsComponent implements OnInit {
                 var parts = parseFloat(currency).toFixed(2).split(".");
                 var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                     (parts[1] ? "." + parts[1] : "");
+                var num = num == 'NaN' ? '' : num;
                 return num
           };
 
@@ -357,7 +371,10 @@ export class ListOfQuotationsComponent implements OnInit {
 
                                          return i;
                                      });
-                alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
+                alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal,'+
+                        ' contractorName AS Contractor, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(sumInsured) AS SumInsured, firstOptionRt AS FirstOptnRt,'+
+                        'datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',
+                        [mystyle,records]);
             });
 
         
