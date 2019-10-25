@@ -26,18 +26,18 @@ export class MtnQuotationWordingsComponent implements OnInit {
         fixedCol: false,
         pageID: 'quotation-wordings'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
         keys:['wordingId','wording'],
-        filters:[
-          {
-            key: 'wordingId',
-            title: 'Wording Id',
-            dataType: 'text'
-          },
-          {
-            key: 'wording',
-            title: 'Wording',
-            dataType: 'text'
-          },
-        ]
+        // filters:[
+        //   {
+        //     key: 'wordingId',
+        //     title: 'Wording Id',
+        //     dataType: 'text'
+        //   },
+        //   {
+        //     key: 'wording',
+        //     title: 'Wording',
+        //     dataType: 'text'
+        //   },
+        // ]
     }
 
   selected: any;
