@@ -957,7 +957,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         };
 
         if(e.edited && !e.deleted){
-          this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.instNo != e.instNo);
+          //this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.instNo != e.instNo);
           this.params.savePrqTrans.push(rec);
         }else if(e.edited && e.deleted){
           this.params.deletePrqTrans.push(rec);
