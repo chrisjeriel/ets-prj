@@ -213,7 +213,7 @@ export class ExtractFromLastYearComponent implements OnInit {
       var sec = String(today.getSeconds()).padStart(2,'0');
       var ms = today.getMilliseconds()
       var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;*/
-      var filename = this.selectedYear + 'BudgetByMonth.xlsx'
+      var filename = this.selectedYear + 'ActualExpenseByMonth.xlsx'
       var mystyle = {
           headers:false, 
           column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
@@ -263,7 +263,7 @@ export class ExtractFromLastYearComponent implements OnInit {
         monthlyBudget.oct += i.oct;
         monthlyBudget.nov += i.nov;
         monthlyBudget.dec += i.dec;
-        alasql('INSERT INTO sample VALUES(?,?,?,?,currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?))', [i.glShortCd, i.glShortDesc, i.slTypeName == null ? '' : i.slTypeName, i.slName == null ? '' : i.slName, i.totalBudget, i.jan, i.feb, i.mar, i.apr, i.may, i.jun, i.jul, i.aug, i.sep, i.oct, i.nov, i.dec]);
+        alasql('INSERT INTO sample VALUES(?,?,?,?,currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?))', [i.glShortCd, i.glShortDesc, i.slTypeName == null ? '' : i.slTypeName, i.slName == null ? '' : i.slName, i.totalExpense, i.jan, i.feb, i.mar, i.apr, i.may, i.jun, i.jul, i.aug, i.sep, i.oct, i.nov, i.dec]);
       }
       alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '','','','','','','','','','','','',]);
       alasql('INSERT INTO sample VALUES(?,?,?,?,currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?),currency(?))', ['', '', 'TOTAL', '', totalExpense, monthlyBudget.jan, monthlyBudget.feb, monthlyBudget.mar, monthlyBudget.apr, monthlyBudget.may, monthlyBudget.jun, monthlyBudget.jul, monthlyBudget.aug, monthlyBudget.sep, monthlyBudget.oct, monthlyBudget.nov, monthlyBudget.dec]);

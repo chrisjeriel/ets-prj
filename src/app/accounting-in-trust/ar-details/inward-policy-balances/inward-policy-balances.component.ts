@@ -255,6 +255,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not be zero.';
       this.successDiag.open();
+    }else if(this.checkPaymentSigns().length !== 0){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = this.checkPaymentSigns();
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
@@ -445,6 +449,17 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
 
   //ALL VALIDATIONS STARTS HERE
+  checkPaymentSigns(): string{
+    for(var i of this.passData.tableData){
+      if(Math.sign(i.prevBalance) == 1 && Math.sign(i.balPaytAmt) == -1){
+        return 'Cannot save. Please check your payment for Policy No. ' + i.policyNo + ' with Inst. No ' + i.instNo;
+      }else if(Math.sign(i.prevBalance) == -1 && Math.sign(i.balPaytAmt) == 1){
+        return 'Cannot save. Please check your payment for Policy No. ' + i.policyNo + ' with Inst. No ' + i.instNo;
+      }
+    }
+    return '';
+  }
+
   checkVariance(): boolean{
     return this.variance < 0;
   }

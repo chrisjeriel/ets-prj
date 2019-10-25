@@ -11,8 +11,8 @@
       <div class="col-md-13 text-center">
         <br>
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
-          <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+          <button type="button" class="cust-btn" (click)="onClickCancel()" [class.d-none]="inquiryFlag"><a>Cancel</a></button>
+          <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="inquiryFlag"><a>Save</a></button>
         </div>
       </div>
     </div>

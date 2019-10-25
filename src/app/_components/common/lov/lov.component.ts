@@ -99,13 +99,11 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
-            console.log(data);
             this.passData.data = data;
           }
           setTimeout(()=>{this.successDiag.open();this.table.refreshTable();},0)
           break;
         }else{
-          console.log(data);
           this.passData.data = data;
         }
         index += 1;
@@ -191,11 +189,9 @@ export class LovComponent implements OnInit {
     let selects:any[] = [];
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
-      console.log(this.passData);
     }
     else{
       selects = this.passTable.tableData.filter(a=>a.checked);
-      console.log(selects)
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
@@ -783,7 +779,6 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
-        console.log(this.passTable.tableData);
       })
     }else if(this.passData.selector == 'slType'){
       this.passTable.tHeader = ['SL Type Code','SL Type Name'];

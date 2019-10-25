@@ -69,7 +69,7 @@ textarea {
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 9999 !important;
+    z-index: 100 !important;
     border-radius: 2px;
     background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%) ! important;
     min-width: 60px;

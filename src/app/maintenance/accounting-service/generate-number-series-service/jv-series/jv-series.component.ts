@@ -4,6 +4,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-jv-series',
@@ -16,6 +17,8 @@ export class JvSeriesComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('jvModal') jvModal: ModalComponent;
+  @ViewChild('jvErrorModal') jvErrorModal: ModalComponent;
 
   passData: any = {
       tableData: [],
@@ -42,13 +45,12 @@ export class JvSeriesComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxJVSeries: number = 0;
+  okGenerate: any = '';
   cancelFlag:boolean;
   
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxTran();
   }
 
   retrieveJV(){
@@ -65,28 +67,26 @@ export class JvSeriesComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.checkField()){
-      this.dialogMessage = "Please Check Field Values!";
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else if(this.params.jvFrom <= this.maxJVSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.jvFrom + " to " + this.params.jvTo + ".Please adjust your From-To range values.";
+    if(this.params.jvFrom >= this.params.jvTo){
+      this.dialogMessage = "Jv From must not be greater or equal to jv to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
+      this.maintenanceService.getAcseMaxTranSeries('JV',this.params.jvFrom,this.params.jvTo,this.params.jvYear).subscribe((data:any) => {
+        console.log(data)
+        this.okGenerate = data.allowGenerate.allowGenerate;
+
+        if(this.okGenerate == 'N'){
+          this.jvErrorModal.openNoClose();
+        }else{
+          this.jvModal.openNoClose();
+        }
+      });
     }
   }
 
   checkField() :boolean{
-    if(this.params.jvYear.length !== 0 &&
-       this.params.jvTo.length !== 0 &&
-       this.params.jvFrom.length !== 0
-      ){
-      return false;
-    }else{
-      return true;
-    }
+    return this.params.jvFrom == '' || this.params.jvTo == '' || this.params.jvYear == '';
   }
 
   generateJV(cancel?){
@@ -99,14 +99,8 @@ export class JvSeriesComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveJV();
       }
-    });
-  }
-
-  retrieveMaxTran(){
-    this.maintenanceService.getAcseMaxTranSeries('JV',null).subscribe((data:any) => {
-      console.log(data)
-      this.maxJVSeries = data.maxTranNo.tranNo;
     });
   }
 }

@@ -4,6 +4,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-maint-jv-series-trst',
@@ -16,6 +17,8 @@ export class MaintJvSeriesTrstComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('jvModal') jvModal: ModalComponent;
+  @ViewChild('jvErrorModal') jvErrorModal: ModalComponent;
 
   passData: any = {
       tableData: [],
@@ -42,13 +45,12 @@ export class MaintJvSeriesTrstComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxARSeries: number = 0;
+  okGenerate: any = '';
   cancelFlag:boolean;
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxSeries();
   }
 
   retrieveJVSeries(){
@@ -64,12 +66,24 @@ export class MaintJvSeriesTrstComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.jvFrom <= this.maxARSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.jvFrom + " to " + this.params.jvTo + ".Please adjust your From-To range values.";
+    if(this.params.jvFrom >= this.params.jvTo){
+      this.dialogMessage = "Jv From must not be greater or equal to Jv to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      this.confirm.confirmModal();
+      this.maintenanceService.getMaxTranSeries('JV',this.params.jvFrom,this.params.jvTo,this.params.jvYear).subscribe((data:any) =>{
+        this.okGenerate = data.allowGenerate.allowGenerate;
+
+        if(this.okGenerate === 'N'){
+          /*this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.jvFrom + " to " + this.params.jvTo + ".Please adjust your From-To range values.";
+            this.dialogIcon = "error-message";
+            this.successDiag.open();*/
+          this.jvErrorModal.openNoClose();
+        }else{
+          //this.confirm.confirmModal();
+          this.jvModal.openNoClose();
+        }
+      });
     }
   }
 
@@ -83,13 +97,12 @@ export class MaintJvSeriesTrstComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveJVSeries();
       }
     });
   }
 
-  retrieveMaxSeries(){
-    this.maintenanceService.getMaxTranSeries('JV').subscribe((data:any) =>{
-      this.maxARSeries = data.maxTranNo.tranNo;
-    });
+  checkGenerate(){
+    return this.params.jvFrom == '' || this.params.jvTo == '' || this.params.jvYear == '';
   }
 }

@@ -2761,6 +2761,31 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseOrServFee',params,header);
     }
 
+    getAcseBatchOr(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('orDateFrom','')
+				.set('orDateTo','')
+				.set('tranTypeName','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchOr', {params});
+	}
+
+	batchPrint(params) {  
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          });
+
+          return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
+    }
+
     getAcseBudgetExpense(budgetYear?,itemNo?){
 		const params = new HttpParams()
 			.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))
@@ -2859,6 +2884,7 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOADtl',{params});
 	}
 
+<<<<<<< HEAD
 	saveAcitProfComm(params) {
     	let header : any = {
             headers: new HttpHeaders({
@@ -2868,5 +2894,16 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitProfComm',params,header);
     }
+=======
+	printOrBatch(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
+	}
+
+>>>>>>> 83d3ebd585937990f8fa0a857f1b39d84125ef5d
 
 }
