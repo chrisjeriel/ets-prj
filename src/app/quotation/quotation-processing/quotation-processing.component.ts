@@ -125,15 +125,18 @@ export class QuotationProcessingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            key: 'policyNo',
-            title: 'Policy No.',
-            dataType: 'seq'
-        },
-        {
             key: 'currencyCd',
             title: 'Currency',
             dataType: 'text'
         },
+        { keys: {
+            from: 'siFrom',
+            to: 'siTo'
+        },                        title: 'Sum Insured',         dataType: 'textspan'},
+        { keys: {
+            from: 'rateFrom',
+            to: 'rateTo'
+        },                        title: '1st Option Rate',         dataType: 'textspan'},
         // {
         //     key: 'issueDate',
         //     title: 'Quote Date',
