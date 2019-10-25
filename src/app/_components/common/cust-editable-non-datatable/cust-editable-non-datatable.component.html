@@ -586,6 +586,10 @@
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                 </div>
+                                <div *ngSwitchCase="'reqCurrency'" style="text-align: right">
+                                    <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                    <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                </div>
                                 <div *ngSwitchCase="'percent'" style="text-align: right">
                                     <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
                                     <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
@@ -1036,6 +1040,10 @@
                                         <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
                                         <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                                     </div>
+                                    <div *ngSwitchCase="'reqCurrency'" style="text-align: right">
+                                        <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                        <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                                    </div>
                                     <div *ngSwitchCase="'percent'" style="text-align: right">
                                         <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.10-10' | negativeAmount}}</span>
                                         <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
@@ -1462,6 +1470,10 @@
                     <tr *ngIf="passData.total !== undefined" style="height: 29px !important">
                         <th *ngFor="let data of passData.total; let i = index" [ngSwitch]="passData.dataTypes[i]" [class.d-none]="pinKeysRight.indexOf(dataKeys[i])== -1">
                             <div *ngSwitchCase="'currency'" style="text-align: right">
+                                <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
+                                <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
+                            </div>
+                            <div *ngSwitchCase="'reqCurrency'" style="text-align: right">
                                 <span *ngIf="typeOf(getSum(data)) == 'number'" class="unclickable" [ngClass]="{'negativeNumber': getSum(data)<0}">{{ getSum(data) | number: '1.2-2' | negativeAmount}}</span>
                                 <span *ngIf="typeOf(getSum(data)) == 'string'" class="unclickable">{{ getSum(data) }}</span>
                             </div>

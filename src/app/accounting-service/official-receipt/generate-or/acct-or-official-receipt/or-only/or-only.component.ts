@@ -90,6 +90,7 @@ export class OrOnlyComponent implements OnInit {
 	    },
 	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
 	    widths: [1,150,120,120],
+      uneditable: [true,true,true,true],
 	    pageID: 'genTaxTbl'
 	  }
 
@@ -120,6 +121,7 @@ export class OrOnlyComponent implements OnInit {
 	    },
 	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
 	    widths: [1,150,120,120],
+      uneditable: [true,true,true,true],
 	    pageID: 'whTaxTbl'
 	  }
 
@@ -144,8 +146,10 @@ export class OrOnlyComponent implements OnInit {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    console.log(this.record.vatTag);
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
+    this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
   	if(this.record.orStatDesc.toUpperCase() != 'NEW'){
   		this.passData.addFlag = false;
   		this.passData.deleteFlag = false;
@@ -155,12 +159,42 @@ export class OrOnlyComponent implements OnInit {
   		this.passDataGenTax.deleteFlag = false;
   		this.passDataWhTax.checkFlag = false;
   		this.passDataWhTax.addFlag = false;
-		this.passDataWhTax.deleteFlag = false;
+		  this.passDataWhTax.deleteFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true];
   		this.passDataGenTax.uneditable = [true,true,true,true];
   		this.passDataWhTax.uneditable = [true,true,true,true];
   	}
   	this.retrieveOrTransDtl();
+  }
+
+  checkPayeeVsVat(){
+    if(this.record.vatTag == 3 || this.record.vatTag == 2){
+      console.log('pasok boi');
+      this.ms.getMtnGenTax('VAT').subscribe(
+         (data: any)=>{
+           var vatDetails: any = {
+             tranId: this.record.tranId,
+             billId: 1, // 1 for Official Receipt
+             itemNo: '',
+             taxType: 'G', //for General Tax, Tax Type
+             taxCd: data.genTaxList[0].taxCd,
+             taxName: data.genTaxList[0].taxName,
+             taxRate: data.genTaxList[0].taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0
+           }
+           this.passData.nData.taxAllocation.push(vatDetails);
+           console.log(this.passData.nData);
+         },
+         (error)=>{
+           console.log('An error occured when fetching maintenance gentax');
+         }
+      );
+    }
   }
 
   openTaxAllocation(){
@@ -222,6 +256,9 @@ export class OrOnlyComponent implements OnInit {
   	this.passLov.activeTag = 'Y';
   	this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    if(this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT')
+    }
     console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
@@ -246,7 +283,12 @@ export class OrOnlyComponent implements OnInit {
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxCd = selected[i].taxCd; 
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxName = selected[i].taxName; 
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxRate = selected[i].taxRate;
-	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+	      //this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+        if(selected[i].taxRate == null || (selected[i].taxRate !== null && selected[i].taxRate == 0)){ //if fixed tax
+          this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+        }else{ //else if rated tax
+          this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedItem.localAmt;
+        }
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].tranId = this.record.tranId;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].billId = 1;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
@@ -262,7 +304,7 @@ export class OrOnlyComponent implements OnInit {
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxCd = selected[i].taxCd; 
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxName = selected[i].taxName; 
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxRate = selected[i].taxRate;
-    	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = 1 * selected[i].taxRate; //placeholder
+    	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedItem.localAmt; //placeholder
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].tranId = this.record.tranId;
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].billId = 1;
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].edited = true;
@@ -279,6 +321,14 @@ export class OrOnlyComponent implements OnInit {
     if(data.key == 'currAmt'){
       for(var i of this.passData.tableData){
         i.localAmt = i.currAmt * i.currRate;
+        for(var j of i.taxAllocation){
+          if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
+            i.taxAmt = 0;
+          }else{
+            j.taxAmt = i.localAmt * (j.taxRate / 100);
+          }
+          j.edited = true;
+        }
       }
     }
   }

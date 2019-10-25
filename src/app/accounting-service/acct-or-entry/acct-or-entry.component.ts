@@ -155,7 +155,8 @@ export class AcctOrEntryComponent implements OnInit {
     rstrctTranUp: '',
     orDtlSum: '',
     acctEntriesSum: '',
-    allocTag: 'N'
+    allocTag: 'N',
+    vatTag: ''
   }
 
   orDate: any = {
@@ -316,7 +317,8 @@ export class AcctOrEntryComponent implements OnInit {
       rstrctTranUp: '',
       orDtlSum: '',
       acctEntriesSum: '',
-      allocTag: ''
+      allocTag: '',
+      vatTag: ''
     }
     this.prDate = {
       date: '',
@@ -463,6 +465,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.orInfo.mailAddress = data.data.mailAddress;
       this.orInfo.cedingId = data.data.cedingId;
       this.orInfo.bussTypeName = data.data.bussTypeName;
+      this.orInfo.vatTag = data.data.vatTag;
       this.form.control.markAsDirty();
       setTimeout(()=>{
         $('.payor').focus().blur();
@@ -541,6 +544,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.rstrctTranUp   = data.orEntry.rstrctTranUp;
           this.orInfo.orDtlSum       = data.orEntry.orDtlSum;
           this.orInfo.acctEntriesSum = data.orEntry.acctEntriesSum;
+          this.orInfo.vatTag         = data.orEntry.vatTag;
           this.selectedCurrency       = data.orEntry.currCd;
           if(this.orInfo.orStatDesc.toUpperCase() === 'DELETED' || this.orInfo.orStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.orInfo.orStatDesc.toUpperCase() !== 'NEW'){
@@ -617,6 +621,7 @@ export class AcctOrEntryComponent implements OnInit {
             tranId: this.orInfo.tranId,
             formattedOrNo: this.orInfo.formattedOrNo,
             orNoDigits: this.orInfo.orNoDigits,
+            orType: this.orInfo.orType,
             orNo: this.orInfo.orNo,
             orStatus: this.orInfo.orStatus,
             orStatDesc: this.orInfo.orStatDesc,
@@ -636,6 +641,7 @@ export class AcctOrEntryComponent implements OnInit {
             cedingId: this.orInfo.payeeNo,
             bussTypeName: this.orInfo.bussTypeName,
             refCd: this.orInfo.refCd,
+            vatTag: this.orInfo.vatTag,
             from: 'or'
           }
           this.emitOrInfo.emit(orDetailParams);

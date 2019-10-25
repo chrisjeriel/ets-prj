@@ -117,13 +117,13 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     pageID: 'genTax',
     addFlag: true,
     deleteFlag: true,
-    total: [null,null,null,null, null, null, 'Total', 'baseAmt', 'taxAmt'],
+    total: [null,null,null,null, null, null, null, 'Total', 'taxAmt'],
     pageLength:5,
     widths: [1,1,50,150,'auto',100,200,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,true,false,false,false],
+    uneditable: [true,true,true,true,true,true,false,false,true],
     magnifyingGlass: ['taxCd']
   }
 
@@ -160,12 +160,12 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     addFlag: true,
     deleteFlag: true,
     pageLength:5,
-    total: [null,null,null,null, null, 'Total', 'baseAmt', 'taxAmt'],
+    total: [null,null,null,null, null, null, 'Total', 'taxAmt'],
     widths: [1,1,50,200,100,200,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,false,false,false],
+    uneditable: [true,true,true,true,true,false,false,true],
     magnifyingGlass: ['taxCd']
   }
 
@@ -226,19 +226,19 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data, table){
-    /*if(table == 'genTax'){
+    if(table == 'genTax'){
        if(data.key == 'baseAmt'){
          for(var i of this.genTaxData.tableData){
-           i.taxAmt = (i.taxRate == null ? 1 : i.taxRate) * i.baseAmt;
+           i.taxAmt = ((i.taxRate == null || (i.taxRate !== null && i.taxRate == 0)) ? i.taxAmt : ((i.taxRate/100) * i.baseAmt));
          }
        }
     }else if(table =='whTax'){
       if(data.key == 'baseAmt'){
-        for(var i of this.genTaxData.tableData){
-          i.taxAmt = (i.taxRate == null ? 1 : i.taxRate) * i.baseAmt;
+        for(var i of this.whTaxData.tableData){
+          i.taxAmt = ((i.taxRate == null || (i.taxRate !== null && i.taxRate == 0)) ? i.taxAmt : ((i.taxRate/100) * i.baseAmt));
         }
       }
-    }*/
+    }
   }
 
   onRowClick(data){
@@ -324,7 +324,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxCd = selected[i].taxCd; 
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxName = selected[i].taxName; 
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxRate = selected[i].taxRate;
-        this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxAmt = 1 * selected[i].taxRate; //placeholder
+        this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxAmt = 0; //placeholder
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].tranId = this.record.tranId;
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].billId = 1;
         this.whTaxData.tableData[this.whTaxData.tableData.length - 1].edited = true;
@@ -446,7 +446,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
       }
 
-          if(a){
+          if(a && this.currentTab == 'taxDtl'){
             this.genTaxData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
             this.genTaxData.addFlag         = false;
             this.genTaxData.deleteFlag      = false;
@@ -458,7 +458,13 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             this.whTaxData.deleteFlag       = false;
             this.whTaxData.checkFlag        = false;
             this.whTaxData.magnifyingGlass  = [];
-    }
+
+            this.acctEntriesData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
+            this.acctEntriesData.addFlag         = false;
+            this.acctEntriesData.deleteFlag      = false;
+            this.acctEntriesData.checkFlag       = false;
+            this.acctEntriesData.magnifyingGlass = [];
+          }
   }
 
   onClickSave(){
