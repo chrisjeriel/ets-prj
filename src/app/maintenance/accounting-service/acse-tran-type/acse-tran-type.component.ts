@@ -27,12 +27,15 @@ export class AcseTranTypeComponent implements OnInit {
   @ViewChild('tranTypeSave') tranTypeSave: ConfirmSaveComponent;
   @ViewChild('acctEntrySave') acctEntrySave: ConfirmSaveComponent;
   @ViewChild('amtDetailSave') amtDetailSave: ConfirmSaveComponent;
+  @ViewChild('defTaxSave') defTaxSave: ConfirmSaveComponent;
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('amountDetails') amountDtlMdl: ModalComponent;
   @ViewChild('taxDetails') taxDetailsMdl: ModalComponent;
   @ViewChild('tranTypeCancel') cancelBtn : CancelButtonComponent;
   @ViewChild('acctEntryLov') acctEntryLov: LovComponent;
   @ViewChild('amtDtlLov') amtDtlLov: LovComponent;
+  @ViewChild('defTaxLov') defTaxLov: LovComponent;
+  @ViewChild('defWhTaxLov') defWhTaxLov: LovComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
 
   passData: any = {
@@ -166,20 +169,13 @@ export class AcseTranTypeComponent implements OnInit {
     dataTypes: ['text', 'text', 'percent','currency'],
     //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
     nData: {
-            tranId: '',
-            taxType: 'G',
-            taxSeqNo: '',
             taxCd: '',
-            genType: 'M',
-            taxName: '',
-            genBirRlf: '',
+            taxDesc: '',
             taxRate: '',
-            payor: '',
-            baseAmt: 0,
-            taxAmt: 0,
-            createUser: '',
+            fixedAmount: '',
+            createUser: this.ns.getCurrentUser(),
             createDate: '',
-            updateUser: '',
+            updateUser: this.ns.getCurrentUser(),
             updateDate: '',
             showMG: 1
     },
@@ -208,23 +204,15 @@ export class AcseTranTypeComponent implements OnInit {
     //   }
     // ],
     nData: {
-            tranId: '',
-            taxType: 'W',
-            taxSeqNo: '',
             taxCd: '',
-            genType: 'M',
-            taxName: '',
-            purchaseType: '',
+            taxDesc: '',
             taxRate: '',
-            payor: '',
-            baseAmt: 0,
-            taxAmt: 0,
-            createUser: '',
+            createUser: this.ns.getCurrentUser(),
             createDate: '',
-            updateUser: '',
+            updateUser: this.ns.getCurrentUser(),
             updateDate: '',
             showMG: 1
-    },
+    }, 
     keys: ['taxCd', 'taxDesc', 'taxRate'],
     pageID: 'whTax',
     addFlag: true,
@@ -265,6 +253,13 @@ export class AcseTranTypeComponent implements OnInit {
     delDefAmt: []
   }
 
+  paramsDefTax = {
+    saveDefTax: [],
+    delDefTax: [],
+    saveDefWhTax :[],
+    delDefWhTax : []
+  }
+
   passLov:any = {
     selector:'',
     params:{}
@@ -275,6 +270,8 @@ export class AcseTranTypeComponent implements OnInit {
   dialogMessage : any;
   acctEntryBut:boolean = true;
   cancelFlag: boolean = false;
+  genTaxIndex:any = '';
+  lovCheckbox: boolean = false;
   subscription: Subscription = new Subscription();
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
@@ -630,5 +627,108 @@ export class AcseTranTypeComponent implements OnInit {
       this.whTaxTable.loadingFlag = false;
       this.whTaxTable.refreshTable();
     }));
+  }
+
+  clickLovTax(data){
+    console.log(data)
+    this.passLov.activeTag = 'Y';
+    this.passLov.selector = 'mtnGenTax';
+    this.lovCheckbox = true;
+    this.passLov.hide = this.genTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    this.defTaxLov.openLOV();
+  }
+
+  setDefTax(data){
+    console.log(data.data)
+    this.genTaxData.tableData = this.genTaxData.tableData.filter(a=>a.showMG!=1);
+    for(var i = 0; i < data.data.length; i++){
+      this.genTaxData.tableData.push(JSON.parse(JSON.stringify(this.genTaxData.nData)));
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].showMG = 0;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxCd = data.data[i].taxCd;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxDesc = data.data[i].taxName;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxId = data.data[i].taxId;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].taxRate = data.data[i].taxRate;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].fixedAmount = data.data[i].amount;
+      this.genTaxData.tableData[this.genTaxData.tableData.length - 1].edited = true;
+    }
+    this.genTable.refreshTable();
+  }
+
+  clickDefWhTax(data){
+    this.passLov.activeTag = 'Y';
+    this.passLov.selector = 'mtnWhTax';
+    this.lovCheckbox = true;
+    this.passLov.hide = this.whTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    this.defWhTaxLov.openLOV();
+  }
+
+  setDefWhTax(data){
+    console.log(data.data)
+    this.whTaxData.tableData = this.whTaxData.tableData.filter(a=>a.showMG!=1);
+    for(var i = 0; i < data.data.length; i++){
+      this.whTaxData.tableData.push(JSON.parse(JSON.stringify(this.whTaxData.nData)));
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].showMG = 0;
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxCd = data.data[i].taxCd;
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxDesc = data.data[i].taxName;
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].whTaxId = data.data[i].whTaxId;
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].taxRate = data.data[i].taxRate;
+      this.whTaxData.tableData[this.whTaxData.tableData.length - 1].edited = true;
+    }
+    this.whTaxTable.refreshTable();
+  }
+
+  onClickSaveTax(){
+    this.defTaxSave.confirmModal();
+  }
+
+  saveDefTax(){
+    this.paramsDefTax.saveDefTax = [];
+    this.paramsDefTax.saveDefWhTax = [];
+    this.paramsDefTax.delDefTax = [];
+    this.paramsDefTax.delDefWhTax = [];
+
+    this.genTaxData.tableData.forEach((a) =>{
+      if(a.edited && !a.deleted){
+        this.paramsDefTax.saveDefTax.push(a);
+        this.paramsDefTax.saveDefTax[this.paramsDefTax.saveDefTax.length - 1].tranClass = this.params.tranClass;
+        this.paramsDefTax.saveDefTax[this.paramsDefTax.saveDefTax.length - 1].tranTypeCd = this.params.tranTypeCd;
+        this.paramsDefTax.saveDefTax[this.paramsDefTax.saveDefTax.length - 1].createDate = this.ns.toDateTimeString(0);
+        this.paramsDefTax.saveDefTax[this.paramsDefTax.saveDefTax.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+
+      if(a.deleted){
+        this.paramsDefTax.delDefTax.push(a);
+      }
+    });
+
+    this.whTaxData.tableData.forEach((a) => {
+      if(a.edited && !a.deleted){
+        this.paramsDefTax.saveDefWhTax.push(a);
+        this.paramsDefTax.saveDefWhTax[this.paramsDefTax.saveDefWhTax.length - 1].tranClass = this.params.tranClass;
+        this.paramsDefTax.saveDefWhTax[this.paramsDefTax.saveDefWhTax.length - 1].tranTypeCd = this.params.tranTypeCd;
+        this.paramsDefTax.saveDefWhTax[this.paramsDefTax.saveDefWhTax.length - 1].createDate = this.ns.toDateTimeString(0);
+        this.paramsDefTax.saveDefWhTax[this.paramsDefTax.saveDefWhTax.length - 1].updateDate = this.ns.toDateTimeString(0);
+      }
+
+      if(a.deleted){
+        this.paramsDefTax.delDefWhTax.push(a);
+      }
+    });
+
+    console.log(this.paramsDefTax);
+
+    this.maintenanceService.saveAcseDefTax(this.paramsDefTax).subscribe((data:any) => {
+      console.log(data)
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveAmtDetl();
+      }
+    });
   }
 }

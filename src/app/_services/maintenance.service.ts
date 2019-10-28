@@ -1819,4 +1819,13 @@ export class MaintenanceService{
     		.set('whTaxId', (whTaxId == null || whTaxId == undefined ? '' : whTaxId));
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseDefWhTax',{params});	
     } 
+
+    saveAcseDefTax(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseDefTax', JSON.stringify(params), header);
+    }
 }
