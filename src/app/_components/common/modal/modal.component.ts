@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, AfterViewInit, ViewChild} from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, AfterViewInit, ViewChild, OnDestroy} from '@angular/core';
 import {NgbModal,NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -6,7 +6,7 @@ import {NgbModal,NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
     templateUrl: './modal.component.html',
     styleUrls: ['./modal.component.css']
 })
-export class ModalComponent implements OnInit/*, AfterViewInit*/ {
+export class ModalComponent implements OnInit, OnDestroy/*, AfterViewInit*/ {
 
     @Input() mdlConfig = {
         mdlType: "",
@@ -47,6 +47,12 @@ export class ModalComponent implements OnInit/*, AfterViewInit*/ {
     }
     ngAfterViewInit(){
         
+    }
+
+    ngOnDestroy(){
+        if(this.modalRef != undefined){
+            this.modalRef.close();
+        }
     }
 
 

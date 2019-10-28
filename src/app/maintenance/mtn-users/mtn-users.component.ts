@@ -20,16 +20,16 @@ selected: any = null;
     tHeader: ['User ID', 'User Name'],
     dataTypes: ['text', 'text'],
     filters: [
-	    {
-	    	key: 'userId',
-	    	title: 'User Id',
-	    	dataType: 'text',
-	    },
-	    {
-	    	key: 'userName',
-	    	title: 'User Name',
-	    	dataType: 'text',
-	    },
+	    // {
+	    // 	key: 'userId',
+	    // 	title: 'User Id',
+	    // 	dataType: 'text',
+	    // },
+	    // {
+	    // 	key: 'userName',
+	    // 	title: 'User Name',
+	    // 	dataType: 'text',
+	    // },
     ],
     pageLength: 10,
     searchFlag: true,

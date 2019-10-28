@@ -165,7 +165,6 @@
                                 </div>
                                 <div *ngIf="data===fillData" class="filler">
                                     <span></span>
-<!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->
                                 </div>
                             </td>
                         </tr>
@@ -177,7 +176,7 @@
         </div>
         <div [id]="'notPin'+passData.pageID">
             
-            <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol">
+            <div class="table-scroll table-scroll-unli" id="cust-scroll" *ngIf="!passData.fixedCol" #tableDiv>
                 <table id="non-datatable" class="content-container keypress-class" [ngClass]="{'margin-table': passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly, 'table-scroll-unli': unliFlag}" >
                     <thead >
                         <tr>

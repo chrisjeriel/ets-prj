@@ -324,7 +324,12 @@ export class ClmClaimsInquiryComponent implements OnInit {
 
   	export(){
         //do something
-     var today = new Date();
+    let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+    
+    delete paramsCpy['paginationRequest.count'];
+    delete paramsCpy['paginationRequest.position'];
+
+    var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -348,28 +353,52 @@ export class ClmClaimsInquiryComponent implements OnInit {
             var parts = parseFloat(currency).toFixed(2).split(".");
             var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                 (parts[1] ? "." + parts[1] : "");
-            return num
+                num = num == 'NaN' ? '' : num;
+            return num;
       };
 
-      var toAlaSQLData: any[] = [];
-      for(var i  of this.passData.tableData){
-      	i.totalLossExpRes = i.totalLossExpRes === null || i.totalLossExpRes === undefined || (i.totalLossExpRes !== null && i.totalLossExpRes !== undefined && i.totalLossExpRes.length === 0) ? 0 : i.totalLossExpRes;
-      	i.totalLossExpPd = i.totalLossExpPd === null || i.totalLossExpPd === undefined || (i.totalLossExpPd !== null && i.totalLossExpPd !== undefined && i.totalLossExpPd.length === 0) ? 0 : i.totalLossExpPd;
-      	i.coClaimNo = i.coClaimNo === null || i.coClaimNo === undefined || (i.coClaimNo !== null && i.coClaimNo !== undefined && i.coClaimNo.length === 0) ? '' : i.coClaimNo;
-      	i.coRefNo = i.coRefNo === null || i.coRefNo === undefined || (i.coRefNo !== null && i.coRefNo !== undefined && i.coRefNo.length === 0) ? '' : i.coRefNo;
-      	i.reportedBy = i.reportedBy === null || i.reportedBy === undefined || (i.reportedBy !== null && i.reportedBy !== undefined && i.reportedBy.length === 0) ? '' : i.reportedBy;
-      	i.eventTypeDesc = i.eventTypeDesc === null || i.eventTypeDesc === undefined || (i.eventTypeDesc !== null && i.eventTypeDesc !== undefined && i.eventTypeDesc.length === 0) ? '' : i.eventTypeDesc;
-      	i.eventDesc = i.eventDesc === null || i.eventDesc === undefined || (i.eventDesc !== null && i.eventDesc !== undefined && i.eventDesc.length === 0) ? '' : i.eventDesc;
-      	i.secISiTag = i.secISiTag === null || i.secISiTag === undefined || (i.secISiTag !== null && i.secISiTag !== undefined && i.secISiTag.length === 0) ? 'N' : i.secISiTag;
-      	i.secIISiTag = i.secIISiTag === null || i.secIISiTag === undefined || (i.secIISiTag !== null && i.secIISiTag !== undefined && i.secIISiTag.length === 0) ? 'N' : i.secIISiTag;
-      	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? 'N' : i.secIIISiTag;
-      	i.remarks = i.remarks === null || i.remarks === undefined || (i.remarks !== null && i.remarks !== undefined && i.remarks.length === 0) ? '' : i.remarks;
-      	toAlaSQLData.push(i);
-      }
-      alasql('SELECT claimNo AS ClaimNo,clmStatus AS Status, policyNo AS PolicyNo, coClaimNo AS CoClaimNo, cessionDesc AS TypeOfCession, lineClassDesc AS LineClass, cedingName AS CedingCompany, insuredDesc AS Insured,'+
-			        'coRefNo AS CoRefNo, adjName AS Adjuster, adjRefNo AS AdjusterRefNo, riskName AS Risk, datetime(lossDate) AS LossDate, datetime(reportDate) AS ReportDate, reportedBy AS ReportedBy, datetime(createDate) AS CreationDate, processedBy AS ProcessedBy,'+ 
-					'lossAbbr AS LossCause, lossPeriod AS LossPeriod, eventTypeDesc AS EventType, eventDesc AS Event, lossDtl AS LossDetails, remarks AS Remarks, secISiTag AS SectionI, secIISiTag AS SectionII, secIIISiTag AS SectionIII,'+
-					'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve, currency(totalLossExpPd) AS TotalPayment'+
-      	     ' INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,toAlaSQLData]);
+
+      this.claimsService.newGetClaimsListing(paramsCpy).subscribe((data:any)=>{
+       	 if(data != null){
+	         for(var i of data.claimsList){
+	           for(var j of i.clmAdjusterList){
+	             if(i.adjName === null){
+	               i.adjName = j.adjName;
+	               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
+	             }else{
+	               i.adjName = i.adjName + '/' + j.adjName;
+	               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
+	             }
+	           }
+	         }
+
+
+
+	       }
+
+         var toAlaSQLData: any[] = [];
+         for(var i  of data.claimsList){
+         	i.totalLossExpRes = i.totalLossExpRes === null || i.totalLossExpRes === undefined || (i.totalLossExpRes !== null && i.totalLossExpRes !== undefined && i.totalLossExpRes.length === 0) ? 0 : i.totalLossExpRes;
+         	i.totalLossExpPd = i.totalLossExpPd === null || i.totalLossExpPd === undefined || (i.totalLossExpPd !== null && i.totalLossExpPd !== undefined && i.totalLossExpPd.length === 0) ? 0 : i.totalLossExpPd;
+         	i.coClaimNo = i.coClaimNo === null || i.coClaimNo === undefined || (i.coClaimNo !== null && i.coClaimNo !== undefined && i.coClaimNo.length === 0) ? '' : i.coClaimNo;
+         	i.coRefNo = i.coRefNo === null || i.coRefNo === undefined || (i.coRefNo !== null && i.coRefNo !== undefined && i.coRefNo.length === 0) ? '' : i.coRefNo;
+         	i.reportedBy = i.reportedBy === null || i.reportedBy === undefined || (i.reportedBy !== null && i.reportedBy !== undefined && i.reportedBy.length === 0) ? '' : i.reportedBy;
+         	i.eventTypeDesc = i.eventTypeDesc === null || i.eventTypeDesc === undefined || (i.eventTypeDesc !== null && i.eventTypeDesc !== undefined && i.eventTypeDesc.length === 0) ? '' : i.eventTypeDesc;
+         	i.eventDesc = i.eventDesc === null || i.eventDesc === undefined || (i.eventDesc !== null && i.eventDesc !== undefined && i.eventDesc.length === 0) ? '' : i.eventDesc;
+         	i.secISiTag = i.secISiTag === null || i.secISiTag === undefined || (i.secISiTag !== null && i.secISiTag !== undefined && i.secISiTag.length === 0) ? 'N' : i.secISiTag;
+         	i.secIISiTag = i.secIISiTag === null || i.secIISiTag === undefined || (i.secIISiTag !== null && i.secIISiTag !== undefined && i.secIISiTag.length === 0) ? 'N' : i.secIISiTag;
+         	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? 'N' : i.secIIISiTag;
+         	i.remarks = i.remarks === null || i.remarks === undefined || (i.remarks !== null && i.remarks !== undefined && i.remarks.length === 0) ? '' : i.remarks;
+         	i.adjName = i.adjName === null || i.adjName === undefined || (i.adjName !== null && i.adjName !== undefined && i.adjName.length === 0) ? '' : i.adjName;
+         	toAlaSQLData.push(i);
+         }
+         alasql('SELECT claimNo AS ClaimNo,clmStatus AS Status, policyNo AS PolicyNo, coClaimNo AS CoClaimNo, cessionDesc AS TypeOfCession, lineClassDesc AS LineClass, cedingName AS CedingCompany, insuredDesc AS Insured,'+
+   			        'coRefNo AS CoRefNo, adjName AS Adjuster, adjRefNo AS AdjusterRefNo, riskName AS Risk, datetime(lossDate) AS LossDate, datetime(reportDate) AS ReportDate, reportedBy AS ReportedBy, datetime(createDate) AS CreationDate, processedBy AS ProcessedBy,'+ 
+   					'lossAbbr AS LossCause, lossPeriod AS LossPeriod, eventTypeDesc AS EventType, eventDesc AS Event, lossDtl AS LossDetails, remarks AS Remarks, secISiTag AS SectionI, secIISiTag AS SectionII, secIIISiTag AS SectionIII,'+
+   					'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve, currency(totalLossExpPd) AS TotalPayment'+
+         	     ' INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,toAlaSQLData]);
+       });
+
+      
   }
 }

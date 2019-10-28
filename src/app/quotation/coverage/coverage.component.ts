@@ -278,6 +278,7 @@ export class CoverageComponent implements OnInit {
                this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
                this.editedData[this.editedData.length -1].coverName = this.passData.tableData[i].coverName
+               this.editedData[this.editedData.length-1].updateUser     = this.ns.getCurrentUser();
           }else if(this.passData.tableData[i].deleted){
              this.deletedData.push(this.passData.tableData[i]);
              this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
@@ -292,6 +293,7 @@ export class CoverageComponent implements OnInit {
        this.coverageData.quoteId             = this.quotationInfo.quoteId;
        this.coverageData.projId              = 1;
        this.coverageData.riskId              = this.riskId;
+       this.coverageData.updateUser          = this.ns.getCurrentUser();
     }else {
         for (var i = 0 ; this.passData.tableData.length > i; i++) {
            if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted ){
@@ -299,11 +301,13 @@ export class CoverageComponent implements OnInit {
                this.editedData[this.editedData.length-1].createDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].createDate) ;
                this.editedData[this.editedData.length-1].updateDate = this.ns.toDateTimeString(this.editedData[this.editedData.length-1].updateDate);
                this.editedData[this.editedData.length-1].lineCd     = this.lineCd;
+               this.editedData[this.editedData.length-1].updateUser     = this.ns.getCurrentUser();
            }else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
              this.deletedData.push(this.passData.tableData[i]);
              this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].createDate);
              this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(this.deletedData[this.deletedData.length-1].updateDate);
              this.deletedData[this.deletedData.length-1].lineCd = this.lineCd;
+             this.deletedData[this.deletedData.length-1].updateUser     = this.ns.getCurrentUser();
            }
          }
          this.coverageData.createDate          = this.ns.toDateTimeString(this.coverageData.createDate);
@@ -313,6 +317,7 @@ export class CoverageComponent implements OnInit {
          this.coverageData.quoteId             = this.quotationInfo.quoteId;
          this.coverageData.projId              = 1;
          this.coverageData.riskId              = this.riskId;
+         this.coverageData.updateUser          = this.ns.getCurrentUser();
     }
     
   }

@@ -1,7 +1,7 @@
 <app-modal id="cedingCompany" class="d-none" (modalOpened)="openModal()" id="cedingCompanyMdl" #mdl>
     <div header>List of Values</div>
     <div body>
-        <app-cust-non-datatable [passData]="passDataCedingCompanyMember" (rowClick)="onRowClick($event)"></app-cust-non-datatable>
+        <app-cust-non-datatable [passData]="passDataCedingCompanyMember" (rowClick)="onRowClick($event)" (searchToDb)="filterDb($event)"></app-cust-non-datatable>
     </div>
     <div footer>
         <div class="d-flex justify-content-center">

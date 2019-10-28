@@ -45,7 +45,7 @@
             <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (ngModelChange)="filterDisplay(filterObj,$event)">
         </label>
     </div>
-    <div ngbDropdown #drop="ngbDropdown" *ngIf="!passData.tableOnly">
+    <div ngbDropdown #drop="ngbDropdown" *ngIf="!passData.tableOnly && passData.filters">
         <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
         <div ngbDropdownMenu aria-labelledby="dropdownConfig">
             <div class="dropdown-item">
@@ -170,7 +170,7 @@
         <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
     </div>
 
-    <div *ngIf="!loadingTableFlag" class="loadDiv"> <!-- Div of table -->
+    <div *ngIf="!loadingTableFlag" class="loadDiv" style="min-width:  400px"> <!-- Div of table -->
         <div style="position: absolute;left: 0px;top:0px" [id]="'pinTable'+passData.pageID">
             <table id="non-datatable" [class.margin-table]="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.expireFilter || !passData.tableOnly">
                     <thead>
@@ -211,7 +211,7 @@
                                 </div>
                                 <div *ngIf="data===fillData" class="filler">
                                     <span></span>
-<!-- >>>>>>> 52f0de4d81d86a7c64b1a521d9cfffd09d471ab1 -->
+
                                 </div>
                             </td>
                         </tr>

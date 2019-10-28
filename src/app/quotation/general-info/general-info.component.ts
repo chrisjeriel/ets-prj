@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { QuotationGenInfo } from '../../_models';
 import { callLifecycleHooksChildrenFirst } from '@angular/core/src/view/provider';
 import { QuotationService, MaintenanceService, NotesService, UserService } from '../../_services';
@@ -19,7 +19,13 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 	templateUrl: './general-info.component.html',
 	styleUrls: ['./general-info.component.css']
 })
-export class GeneralInfoComponent implements OnInit {  
+export class GeneralInfoComponent implements OnInit, AfterViewInit {  
+	@ViewChild('start')start:any;
+	ngAfterViewInit(){
+		console.log(this.start)
+		
+	}
+
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
 	@ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
@@ -270,6 +276,7 @@ export class GeneralInfoComponent implements OnInit {
 					setTimeout(() => {
 						$('input[appCurrencyRate]').focus();
 						$('input[appCurrencyRate]').blur();
+						$(this.start.nativeElement).focus()
 					},0) 
 				}
 
@@ -341,6 +348,7 @@ export class GeneralInfoComponent implements OnInit {
 					setTimeout(() => {
 						$('input[appCurrencyRate]').focus();
 						$('input[appCurrencyRate]').blur();
+						$(this.start.nativeElement).focus()
 					},0)
 				});
 
@@ -395,6 +403,7 @@ export class GeneralInfoComponent implements OnInit {
 		}
 		setTimeout(() => {
 			$("#firstFocus").focus();
+			$(this.start.nativeElement).focus()
 			$('.ng-dirty').removeClass('ng-dirty');
 
 			if(this.savingType == 'modification') {
@@ -569,6 +578,7 @@ export class GeneralInfoComponent implements OnInit {
 				if(data['returnCode'] == 0) {
 					this.dialogMessage = data['errorList'][0].errorMessage;
 					this.dialogIcon = "error";
+					this.cancelFlag = false;
 					$('#genInfo #successModalBtn').trigger('click');
 				} else {
 					this.genInfoData.quoteId = data['quoteId'];
@@ -621,7 +631,7 @@ export class GeneralInfoComponent implements OnInit {
 			this.dialogMessage = "Please complete all the required fields.";
 			$('#genInfo #successModalBtn').trigger('click');
 			setTimeout(()=>{$('.globalLoading').css('display','none');},0);
-       		
+       		this.cancelFlag = false;
 
 			//this.focusBlur();
 		}
@@ -859,6 +869,7 @@ export class GeneralInfoComponent implements OnInit {
   			setTimeout(()=>{
   				$('.req').focus();
 				$('.req').blur();
+				$(this.start.nativeElement).focus()
   			},0)  
   		}
   	}

@@ -171,7 +171,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			//this.table.refreshTable();
 =======*/
   			quoList = data['quo']['quotationList'].filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER')
-  					  .map(i => { i.riskName = (i.riskName == null || i.riskName == undefined)?'':i.riskName; return i;});
+  					  .map(i => { i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName; return i;});
   			console.log(quoList);
   			this.passDataQuoteLOV.tableData = quoList;
   			console.log(this.passDataOptionsLOV.tableData);
@@ -292,9 +292,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  			this.dialogIcon 	= '';
 				this.dialogMessage 	= '';
 				$('app-sucess-dialog #modalBtn').trigger('click');
-				var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
+				// var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
 				
-				this.searchParams.quotationNo = this.searchArr.join('-');
+				// this.searchParams.quotationNo = this.searchArr.join('-');
 				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     			this.passDataQuoteLOV.filters[0].enabled =true;
 				this.getQuoteList('manual');
