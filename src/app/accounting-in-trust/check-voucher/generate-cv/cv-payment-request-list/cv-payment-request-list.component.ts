@@ -236,6 +236,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     var rec = data['data'];
 
     rec.forEach(e2 => {
+      e2.edited = true;
       this.passDataPaytReqList.tableData.push(e2);
     
     });
@@ -244,7 +245,6 @@ export class CvPaymentRequestListComponent implements OnInit {
       e.createDate   = this.ns.toDateTimeString(e.createDate);
       e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
       e.updateDate   = this.ns.toDateTimeString(e.updateDate);
-      e.edited       = true; 
       e.checked      = false;
       return e;
     });;
