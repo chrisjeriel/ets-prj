@@ -8,6 +8,8 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import { finalize } from 'rxjs/operators';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acse-tran-type',
@@ -19,6 +21,8 @@ export class AcseTranTypeComponent implements OnInit {
   @ViewChild('tranType') table: CustEditableNonDatatableComponent;
   @ViewChild('acctEntTbl') acctEntTbl: CustEditableNonDatatableComponent;
   @ViewChild('amtDtlTbl') amtDtlTbl: CustEditableNonDatatableComponent;
+  @ViewChild('genTable') genTable: CustEditableNonDatatableComponent;
+  @ViewChild('whTaxTable') whTaxTable: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tranTypeSave') tranTypeSave: ConfirmSaveComponent;
   @ViewChild('acctEntrySave') acctEntrySave: ConfirmSaveComponent;
@@ -158,8 +162,8 @@ export class AcseTranTypeComponent implements OnInit {
 
    genTaxData: any = {
     tableData: [],
-    tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
-    dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
+    tHeader: ['Tax Code', 'Description', 'Tax Rate', 'Fixed Amount'],
+    dataTypes: ['text', 'text', 'percent','currency'],
     //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
     nData: {
             tranId: '',
@@ -179,24 +183,24 @@ export class AcseTranTypeComponent implements OnInit {
             updateDate: '',
             showMG: 1
     },
-    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'genBirRlf', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    keys: [ 'taxCd', 'taxDesc','taxRate', 'fixedAmount'],
     pageID: 'genTax',
     addFlag: true,
     deleteFlag: true,
-    total: [null,null,null,null, null, null, 'Total', 'baseAmt', 'taxAmt'],
+    total: [null, null, 'Total', 'fixedAmount'],
     pageLength:5,
-    widths: [1,1,50,150,'auto',100,200,150,150],
+    widths: [100,200,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,false,true,true,true,false,false,true],
+    uneditable: [true,false,false,true],
     magnifyingGlass: ['taxCd']
   }
 
   whTaxData: any = {
    tableData: [],
-    tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
+    tHeader: ['BIR Tax Code', 'Description', 'Tax Rate'],
+    dataTypes: ['text', 'text', 'percent'],
     // opts:[
     //   {
     //     selector: 'birTaxCode',
@@ -221,17 +225,17 @@ export class AcseTranTypeComponent implements OnInit {
             updateDate: '',
             showMG: 1
     },
-    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    keys: ['taxCd', 'taxDesc', 'taxRate'],
     pageID: 'whTax',
     addFlag: true,
     deleteFlag: true,
     pageLength:5,
-    total: [null,null,null,null, null, 'Total', 'baseAmt', 'taxAmt'],
-    widths: [1,1,50,200,100,200,150,150],
+    total: [null, null, null],
+    widths: [100,200,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,false,true,true,false,false,true],
+    uneditable: [true,false,false],
     magnifyingGlass: ['taxCd']
   }
 
@@ -271,6 +275,7 @@ export class AcseTranTypeComponent implements OnInit {
   dialogMessage : any;
   acctEntryBut:boolean = true;
   cancelFlag: boolean = false;
+  subscription: Subscription = new Subscription();
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
@@ -528,6 +533,7 @@ export class AcseTranTypeComponent implements OnInit {
 
   onClickTaxDetails(){
     this.taxDetailsMdl.openNoClose();
+    this.retrieveTax();
   }
   
   deleteCurr(ev) {
@@ -607,5 +613,22 @@ export class AcseTranTypeComponent implements OnInit {
 
   onClickCancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  retrieveTax(){
+    var sub$ = forkJoin(this.maintenanceService.getAcseDefTax(this.params.tranClass,this.params.tranTypeCd),
+                        this.maintenanceService.getAcseDefWhTax(this.params.tranClass,this.params.tranTypeCd)).pipe(map(([genTax, whTaxId]) => { return { genTax, whTaxId} }));
+
+    this.genTable.loadingFlag = true;
+    this.whTaxTable.loadingFlag = true;
+    this.subscription.add(sub$.subscribe((data:any) => {
+      this.genTaxData.tableData = data.genTax.defTax;
+      this.whTaxData.tableData = data.whTaxId.defWhTax;
+
+      this.genTable.loadingFlag = false;
+      this.genTable.refreshTable();
+      this.whTaxTable.loadingFlag = false;
+      this.whTaxTable.refreshTable();
+    }));
   }
 }

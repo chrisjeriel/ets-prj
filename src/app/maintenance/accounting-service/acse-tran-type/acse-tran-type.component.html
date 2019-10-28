@@ -152,13 +152,13 @@
 			<div class="col-sm-12" style="margin-top: 20px">
 				<fieldset class="scheduler-border" style="padding-top: 10px !important; margin-top: -25px !important;">
 				    <legend class="scheduler-border">General Taxes</legend>
-					<app-cust-editable-non-datatable [passData]="genTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" ></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="genTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" #genTable></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
 			<div class="col-sm-12">
 				 <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 10px !important;">
                     <legend class="scheduler-border">Creditable Withholding Taxes</legend>
-					<app-cust-editable-non-datatable [passData]="whTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" ></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="whTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" #whTaxTable></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
 		</div>

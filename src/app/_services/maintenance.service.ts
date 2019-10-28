@@ -1799,4 +1799,20 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
     }
+
+    getAcseDefTax(tranClass,tranTypeCd,taxId?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('taxId', (taxId == null || taxId == undefined ? '' : taxId));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseDefTax',{params});	
+    }
+
+    getAcseDefWhTax(tranClass,tranTypeCd,whTaxId?){
+    	const params = new HttpParams()
+    		.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+    		.set('tranTypeCd', (tranTypeCd == null || tranTypeCd == undefined ? '' : tranTypeCd))
+    		.set('whTaxId', (whTaxId == null || whTaxId == undefined ? '' : whTaxId));
+    	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveAcseDefWhTax',{params});	
+    } 
 }
