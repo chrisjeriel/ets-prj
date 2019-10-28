@@ -174,7 +174,7 @@ export class OrOthersComponent implements OnInit {
          (data: any)=>{
            var vatDetails: any = {
              tranId: this.record.tranId,
-             billId: 1, // 1 for Official Receipt
+             billId: 2, // 1 for Official Receipt Others
              itemNo: '',
              taxType: 'G', //for General Tax, Tax Type
              taxCd: data.genTaxList[0].taxCd,

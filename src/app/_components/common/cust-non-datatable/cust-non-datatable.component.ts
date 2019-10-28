@@ -614,7 +614,7 @@ export class CustNonDatatableComponent implements OnInit {
             }
         }
         this.searchToDb.emit(this.searchQuery);
-        this.loadingTableFlag = true;
+        this.overlayLoader = true;
     }
 
     addFiller(){

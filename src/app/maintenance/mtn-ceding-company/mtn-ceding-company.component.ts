@@ -28,12 +28,7 @@ export class MtnCedingCompanyComponent implements OnInit {
       resizable: [false,true,false,true,false,false,false],
       filters: [
           {
-              key: 'coNo',
-              title:'Company No',
-              dataType: 'text'
-          },
-          {
-              key: 'name',
+              key: 'cedingName',
               title:'Name',
               dataType: 'text'
           },
@@ -130,6 +125,27 @@ export class MtnCedingCompanyComponent implements OnInit {
         }      
       });
    }
+  }
+
+  filterDb(params){
+    let passToService: any = {};
+    for(let param of params){
+      passToService[param.key] = param.search
+    }
+
+    this.underwritingService.getCedingCompanyList('','','','','','','','Y','','N',passToService).subscribe((data: any) => {
+         // for(var i=0;i< data.cedingcompany.length;i++){
+         //    // this.passData.tableData.push(new CedingCompanyListing(data.cedingcompany[i].cedingId,data.cedingcompany[i].cedingName,data.cedingcompany[i].cedingAbbr,data.cedingcompany[i].address,(data.cedingcompany[i].membershipDate == null ? null : new Date(data.cedingcompany[i].membershipDate[0],data.cedingcompany[i].membershipDate[1]-1,data.cedingcompany[i].membershipDate[2])),(data.cedingcompany[i].terminationDate == null ? null : new Date(data.cedingcompany[i].terminationDate[0],data.cedingcompany[i].terminationDate[1]-1,data.cedingcompany[i].terminationDate[2])),(data.cedingcompany[i].inactiveDate == null ? null : new Date(data.cedingcompany[i].inactiveDate[0],data.cedingcompany[i].inactiveDate[1]-1,data.cedingcompany[i].inactiveDate[2]))));
+         //   /*this.passData.tableData.push({
+         //       cedingId: data.cedingcompany[i].cedingId,
+         //       cedingName: data.cedingcompany[i].cedingName,
+         //       address: data.cedingcompany[i].address
+         //   });*/
+         //   this.passData.tableData.push(data.cedingcompany[i]);
+         // }
+         this.passData.tableData = data.cedingcompany
+         this.table.refreshTable(); 
+     });
   }
 
 }

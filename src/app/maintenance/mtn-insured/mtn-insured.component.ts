@@ -12,6 +12,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 export class MtnInsuredComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
+  @ViewChild('drop') drop :any;
 
     @ViewChild('paw') page: any;
     @ViewChild(ModalComponent) modal : ModalComponent;
@@ -29,7 +30,19 @@ export class MtnInsuredComponent implements OnInit {
         tabIndexes: [],   
         pageLength: 10,         
         pageID: 1,
-        dbKeys:['INSURED_ID','INSURED_NAME','ADDRESS']               
+        dbKeys:['INSURED_ID','INSURED_NAME','ADDRESS'],
+        filters:[
+            {
+                key: 'insuredName',
+                title: 'Insured Name',
+                dataType: 'text'
+            },
+            {
+                key: 'address',
+                title: 'Address',
+                dataType: 'text'
+            },
+        ]               
     }
 
     start:    any;
@@ -235,13 +248,15 @@ export class MtnInsuredComponent implements OnInit {
         this.loadingTableFlag = true;
         this.request = {
             lovParam:this.searchString,
-            count:this.passData.pageLength,
-            position:'1',
-            sortKey:this.request.sortKey,
-            order:this.request.order
+            'paginationRequest.count':this.passData.pageLength,
+            'paginationRequest.position':'1',
+            'sortRequest.sortKey':this.request.sortKey,
+            'sortRequest.order':this.request.order,
+            address: this.passData.filters[1].enabled ? this.passData.filters[1].search : '',
+            insuredName: this.passData.filters[0].enabled ? this.passData.filters[0].search :''
         }
         this.p = 1;
-        
+        console.log(this.request)
         this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
             this.count = a['count'];
             this.addFiller();
@@ -259,14 +274,19 @@ export class MtnInsuredComponent implements OnInit {
         }
     }
 
-    updatePage(){
-        this.request.position = this.p;
+    updatePage(p?){
+        this.request.position = p==undefined ? this.p : p;
         if(this.passData.tableData[(this.p - 1) * this.passData.pageLength] == this.fillData){
             this.loadingTableFlag = true;
-          this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
-            this.placeData(a['list']);
-            this.loadingTableFlag = false;
-          })
+          if(p == undefined)
+              this.mtnService.getMtnInsuredLov(this.request).subscribe(a=>{
+                this.placeData(a['list']);
+                this.loadingTableFlag = false;
+              })
+
+          else{
+              this.search();
+          }
         }
     }
 
@@ -316,4 +336,9 @@ export class MtnInsuredComponent implements OnInit {
     return String(str).padStart(num != null ? num : 3, '0');
   }
 
+  pressEnterFilter(){
+     this.addFiller();
+      this.updatePage(1); 
+      this.drop.close();
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Renderer, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Renderer, Output, EventEmitter, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
@@ -9,7 +9,9 @@ import { AppComponent } from '@app/app.component';
   styleUrls: ['./loading-table.component.css']
 })
 
-export class LoadingTableComponent implements OnInit {
+export class LoadingTableComponent implements OnInit, AfterViewInit {
+    @ViewChild('tableDiv')tableDiv : ElementRef;
+    pastWidth:number=405;
     @Input() tableData: any[] = [];
     @Input() resizable: boolean[] = [];
     @Input() tHeader: any[] = [];
@@ -229,10 +231,33 @@ export class LoadingTableComponent implements OnInit {
         }
         this.loadingFlag = false;
         this.overlayLoader = false;
+        console.log(this.tableDiv);
+
+        setTimeout(a=>{
+            if($(this.tableDiv.nativeElement).width() > this.pastWidth){
+                this.pastWidth = $(this.tableDiv.nativeElement).width()
+                console.log(this.pastWidth)
+                console.log('if')
+            }else{
+                console.log(this.pastWidth)
+                $(this.tableDiv.nativeElement).css('min-width',this.pastWidth);
+                console.log('else')
+            }
+        })
 
     }
 
-    
+    ngAfterViewInit(){
+        if($(this.tableDiv.nativeElement).width() > this.pastWidth){
+            this.pastWidth = $(this.tableDiv.nativeElement).width()
+            console.log(this.pastWidth)
+            console.log('if')
+        }else{
+            console.log(this.pastWidth)
+            $(this.tableDiv.nativeElement).css('min-width',this.pastWidth);
+            console.log('else')
+        }
+    }
 
     ngOnInit(): void {
         

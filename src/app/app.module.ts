@@ -484,6 +484,9 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { OverrideLoginComponent } from './_components/common/override-login/override-login.component';
 import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
+import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-dist/batch-dist.component';
+import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
+import { LogoutComponent } from './logout/logout.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 @NgModule({
@@ -973,6 +976,9 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
         OverrideLoginComponent,
         AcseChartAcctComponent,
         PayeeComponent,
+        BatchDistComponent,
+        BatchPostComponent,
+        LogoutComponent,
         WfCalendarComponent,
     ],
 

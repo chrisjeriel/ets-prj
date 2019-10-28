@@ -143,9 +143,9 @@ export class InsuredComponent implements OnInit {
   		this.insuredRecord.lastName		= (this.insuredRecord.lastName === null || this.insuredRecord.lastName === undefined)?'':this.insuredRecord.lastName;
 		this.insuredRecord.addrLine1	= (this.insuredRecord.addrLine1 === null || this.insuredRecord.addrLine1 === undefined)?'':this.insuredRecord.addrLine1;
 
-  		if(this.insuredRecord.insuredName === '' || this.insuredRecord.insuredAbbr === '' || this.insuredRecord.zipCd === '' || this.insuredRecord.insuredType === '' ||
+  		if(this.insuredRecord.insuredName === '' || this.insuredRecord.insuredAbbr === '' ||  
   		   this.insuredRecord.corpTag === null || this.insuredRecord.vatTag === null ||  this.insuredRecord.addrLine1 === '' ||
-  		   (this.insuredRecord.corpTag === 'I' && (this.insuredRecord.firstName === '' || this.insuredRecord.lastName === '') )){
+  		   (this.insuredRecord.corpTag === 'I' && (this.insuredRecord.lastName === '') )){
 	  			this.dialogIcon = 'error';
            		this.success.open();
 	  		    $('.warn').focus();

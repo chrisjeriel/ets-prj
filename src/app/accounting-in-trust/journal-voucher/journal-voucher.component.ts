@@ -116,9 +116,6 @@ export class JournalVoucherComponent implements OnInit {
           a.jvStatus = a.transactions.tranStat;
           a.jvStatusName = a.transactions.tranStatDesc;
         }
-
-        if(a.jvStatus == 'P')
-        console.log(a);
       });
 
       this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());

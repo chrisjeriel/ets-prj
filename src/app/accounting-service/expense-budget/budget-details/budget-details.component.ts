@@ -206,7 +206,6 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   setData(data){
-    console.log(data);
     var rec = data['data'];
     console.log(rec);
     if(data.selector == 'acseChartAcct'){
@@ -237,6 +236,7 @@ export class BudgetDetailsComponent implements OnInit {
       }
       return e;
     });
+    
     console.log(this.budgetYrData.tableData);
     this.budgetYrTbl.refreshTable();
   }
@@ -258,7 +258,7 @@ export class BudgetDetailsComponent implements OnInit {
 
   yearsRange(){
     var d = new Date().getFullYear();
-    for(var i=(d-10);i<=d;i++){
+    for(var i=2000;i<=d;i++){
       this.budgetYearArr.push(i);
     }
     this.budgetYearArr.sort((a,b) => b-a);

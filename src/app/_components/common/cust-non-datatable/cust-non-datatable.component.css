@@ -207,7 +207,7 @@ div.filler{
 
 .cust-search-form{
     height: calc(1.3rem + 1px) !important;
-    width: 150px !important;
+    width: 180px !important;
     font-size: 0.7rem !important;
     border-radius: 0.2rem !important;
     margin-bottom: -5px !important;
@@ -219,7 +219,7 @@ div.filler{
 
 .search-filter{
     position: absolute !important;
-    right: 34px;
+    right: 4px;
     z-index: 1000;
 }
 

@@ -76,6 +76,8 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   currencyArray: any[] = [];
 
+  quarterEndingDates: string [] = [];
+
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
   ngOnInit() {
@@ -103,6 +105,8 @@ export class ArDetailsQsoaComponent implements OnInit {
           //i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
+        this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
+        console.log(this.quarterEndingDates);
         //this.passData.tableData = data.negTrtyBalList;
         this.table.refreshTable();
       }
