@@ -231,9 +231,9 @@ export class QuoteEndorsementComponent implements OnInit {
         console.log(this.quotationInfo.quoteId)
         this.quoteId = this.quotationInfo.quoteId;
 
-        setTimeout(()=>{
-            $('#endorsmentTable button').attr("disabled","disabled");
-          },0)
+        // setTimeout(()=>{
+        //     $('#endorsmentTable button').attr("disabled","disabled");
+        //   },0)
 
         this.titleService.setTitle("Quo | Endorsements");
         this.userService.emitModuleId("QUOTE005");
@@ -381,6 +381,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     clickRow(event) {
 /*           this.quotationService.getEndorsements(null,this.quotationNum,event.optionNo).subscribe((data: any) => {*/
+   console.log(event)
     if(event.optionId !== undefined){
      //neco
        this.copyEndtMethod(event.optionId);
@@ -388,8 +389,6 @@ export class QuoteEndorsementComponent implements OnInit {
      //end neco
      this.endorsementData.disableAdd = false;
      this.table.loadingFlag = true;
-      $('#endorsmentTable button').removeAttr("disabled");
-      $('#endorsmentOCTable button').removeAttr("disabled");
       this.opId = event.optionId;
        this.quotationService.getEndorsements(this.quotationInfo.quoteId,'',event.optionId).subscribe((data: any) => {
              while(this.endorsementData.tableData.length > 0) {
@@ -420,9 +419,12 @@ export class QuoteEndorsementComponent implements OnInit {
        });
       }
       else{
+          this.deductibleTable.selected = []
+          this.table.selected = []
           this.endorsementData.tableData = [];
+          this.deductiblesData.tableData = [];
           this.endorsementData.disableAdd = true;
-          this.endorsementData.btnDisabled = true;
+          this.deductiblesData.disableAdd = true;
           this.table.refreshTable();
           this.opId = null;
       }
@@ -601,7 +603,8 @@ export class QuoteEndorsementComponent implements OnInit {
     //end neco
 
     onClickSave(){
-      $('#endtSave #confirm-save #modalBtn2').trigger('click');
+      console.log(this.table.selected);
+      // $('#endtSave #confirm-save #modalBtn2').trigger('click');
     }
 
     cancel(){
@@ -725,6 +728,8 @@ export class QuoteEndorsementComponent implements OnInit {
     //}
 
     updateDed(data){
+        this.deductibleTable.selected = [];
+        this.deductiblesData.tableData.forEach(a=>a.checked = false);
         if(data==null || data.endtCd ==null){
             this.deductiblesData.disableAdd = true;
             this.deductiblesData.tableData = [];
