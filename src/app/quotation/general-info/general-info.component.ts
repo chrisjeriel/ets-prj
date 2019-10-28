@@ -606,6 +606,7 @@ this.form.control.markAsDirty();}
 		            this.dialogMessage="";
 		            this.dialogIcon = "";
 		            this.form.control.markAsPristine();
+		            this.ns.formGroup.markAsPristine();
 					$('#genInfo #successModalBtn').trigger('click');
 						//for internal comp
 						if(this.savingType === 'internalComp'){
