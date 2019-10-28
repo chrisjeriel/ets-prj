@@ -508,7 +508,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
           this.arInfo.arNo           = this.pad(data.ar.arNo, 'arNo');
-          this.arInfo.formattedArNo  = data.ar.formattedArNo;
+          this.arInfo.formattedArNo  = parseInt(data.ar.formattedArNo.split('-')[1]) == 0 ? '' : data.ar.formattedArNo;
           this.arInfo.arNoDigits     = data.ar.arNoDigits;
           this.arInfo.arDate         = this.ns.toDateTimeString(data.ar.arDate);
           this.arDate.date           = this.arInfo.arDate.split('T')[0];
