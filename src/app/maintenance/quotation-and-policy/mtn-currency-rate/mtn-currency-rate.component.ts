@@ -26,7 +26,7 @@ export class MtnCurrencyRateComponent implements OnInit, AfterViewInit {
   passData: any = {
     tHeader: [ "Hist No","Currency Rate","Eff Date From", "Active","Remarks"],
     tableData:[],
-    dataTypes: ['sequence-3','percent','date',"checkbox", "text"],
+    dataTypes: ['sequence-3','currencyRate','date',"checkbox", "text"],
     nData: {
       histNo: null,
       currencyRt: null,
