@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -18,7 +18,12 @@ import { DatepickerComponent } from '@app/_components/datepicker/datepicker.comp
     styleUrls: ['./cust-editable-non-datatable.component.css'],
     providers: [NgbDropdownConfig]
 })
-export class CustEditableNonDatatableComponent implements OnInit {
+export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit {
+    ngAfterViewInit(){
+        console.log(this.componentRef);
+    }
+
+    @ViewChild('overallCont') componentRef: ElementRef;
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChildren('myForm') form: QueryList<NgForm>;
     @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
@@ -793,6 +798,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     markAsPristine(){
         $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty');
+        $(this.componentRef.nativeElement).parent().find('.ng-dirty').removeClass('ng-dirty');
         this.form.forEach(a=>a.control.markAsPristine());
         this.dps.forEach(a=>a.markAsPristine());
     }
