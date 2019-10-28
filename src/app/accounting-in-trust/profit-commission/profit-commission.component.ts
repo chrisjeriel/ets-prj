@@ -247,25 +247,18 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	searchProfitComm(){
-       if(this.dateTo < this.dateFrom){
-        this.dialogMessage="To Date must be greater than From Date";
-        this.dialogIcon = "error-message";
-        this.successDialog.open();
-     }else {
-        this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
-        this.dateFrom === null || this.dateFrom === undefined ?'':this.dateFrom;
-        this.dateTo === null || this.dateTo === undefined ?'':this.dateTo;
-        this.passData.tableData = [];
-        this.table.overlayLoader = true;
+	    this.cedingId === null   || this.cedingId === undefined ?'':this.cedingId;
+	    this.dateFrom === null || this.dateFrom === undefined ?'':this.dateFrom;
+	    this.dateTo === null || this.dateTo === undefined ?'':this.dateTo;
+	    this.passData.tableData = [];
+	    this.table.overlayLoader = true;
 
-        this.searchParams = [{key: "cedingId", search: this.cedingId },
-                             {key: "dateTo", search: this.dateTo },
-                             {key: "dateFrom", search: this.dateFrom },
-                             ]; 
-        console.log(this.searchParams);
-        this.getProfCommList(this.searchParams);
-  	}
-
+	    this.searchParams = [{key: "cedingId", search: this.cedingId },
+	                         {key: "dateTo", search: this.dateTo },
+	                         {key: "dateFrom", search: this.dateFrom },
+	                         ]; 
+	    console.log(this.searchParams);
+	    this.getProfCommList(this.searchParams);
   }
 
   onClickGenerate() {
@@ -293,4 +286,12 @@ export class ProfitCommissionComponent implements OnInit {
   		this.successDialog.open();
   	});
   }
+
+  valChanged(fromVal, toVal) {
+        if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+            return new Date(fromVal) > new Date(toVal) ? '' : toVal;
+        } else {
+            return fromVal === undefined || fromVal === '' ? toVal : '';
+        }
+    }
 }

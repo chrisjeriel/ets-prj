@@ -8,13 +8,17 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1 text-right">Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCode($event)" [(ngModel)]="cedingDesc">
-							<div class="text-search-ico" (click)="showCedCompLOV()"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCode($event)" [(ngModel)]="cedingDesc" placeholder="All">
+							<div class="text-search-ico" (click)="showCedCompLOV()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm text-right" style="margin-left: 10px">Period</label>
 							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
-							<input [(ngModel)]="dateFrom" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [value]="dateFrom" (valueChange)="dateFrom=$event; dateTo=valChanged(dateFrom, dateTo)"></datepicker>
+							</div>
 							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
-							<input [(ngModel)]="dateTo" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [(value)]="dateTo" [minDate]="dateFrom"></datepicker>
+							</div>
 							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
 								<button type="button" class="cust-btn" (click)="searchProfitComm()"><a>Search</a></button>
 							</div>
