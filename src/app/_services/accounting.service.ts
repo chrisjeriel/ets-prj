@@ -2902,5 +2902,5 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
 	}
-
+	
 }
