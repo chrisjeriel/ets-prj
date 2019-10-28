@@ -8,8 +8,6 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
-
-
 @Component({
   selector: 'app-profit-commission',
   templateUrl: './profit-commission.component.html',
@@ -28,9 +26,9 @@ export class ProfitCommissionComponent implements OnInit {
 	dateTo: any = '';   
     yearCdLov: any;
     monthCdLov: any;
-    cedingDesc: any = '';
+    cedingName: any = '';
     cedingId: any = '';
-    cedingDescLov: any = '';
+    gnrtCedingName: any = '';
 	disableBtn: boolean = true;
 	cedingCompDesc: any;
 	month: any;
@@ -108,14 +106,14 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	setSelectedCedComp(data){
-  	  this.cedingDesc = data.cedingName;
+  	  this.cedingName = data.cedingName;
   	  this.cedingId = data.cedingId;
   	  this.ns.lovLoader(data.ev, 0);
   	}
 
   	checkCode(event){
   	  this.ns.lovLoader(event, 1);
-      this.cedingCoLOV.checkCode(this.cedingDesc, event);
+      this.cedingCoLOV.checkCode(this.cedingName, event);
   	}
 
   	showCedCompModal(){
@@ -124,13 +122,13 @@ export class ProfitCommissionComponent implements OnInit {
 
   	setSelectedCedCompModal(data){
   	  this.gnrtCedingId = data.cedingId;
-  	  this.cedingDescLov = data.cedingName;
+  	  this.gnrtCedingName = data.cedingName;
   	  this.ns.lovLoader(data.ev, 0);
   	}
 
   	checkCodeModal(event){
   	  this.ns.lovLoader(event,1);
-  	  this.cedingCoModal.checkCode(this.cedingDescLov,event);
+  	  this.cedingCoModal.checkCode(this.gnrtCedingName,event);
   	}
 
   	onClickShowDetails(event){
@@ -156,7 +154,9 @@ export class ProfitCommissionComponent implements OnInit {
   }
 
   onRowDblClick(event){
-  	 this.onClickShowDetails(event);
+  	if(!event.target.classList.contains('filler')) {
+  		this.onClickShowDetails(event);	
+  	}
   }
 
   clearProfitComm(){
@@ -221,7 +221,7 @@ export class ProfitCommissionComponent implements OnInit {
   			/*for (let i = 0; i < records.length; i++) {
 			  	if (records[i].itemNo === '1'){
 			  		this.passDataProfitComm.tableData[0].actual = records[i].actualAmt;
-			  		this.passDataProfitComm.tableData[0].natcat = records[i].natcatAmt;
+			  		this.passDataProfitComm.tableData[0].natcat = records[i].natcedcatAmt;
 			  		this.passDataProfitComm.tableData[0].income = records[i].income;
 			  		this.quotaIncome = records[i].income;
 			  	}else if (records[i].itemNo === '2'){
@@ -261,6 +261,19 @@ export class ProfitCommissionComponent implements OnInit {
 	    this.getProfCommList(this.searchParams);
   }
 
+  onClickView() {
+  	this.cedingId = this.gnrtCedingId;
+  	this.cedingName = this.gnrtCedingId == '' ? '' : this.gnrtCedingName;
+  	this.dateFrom = this.gnrtDate;
+  	this.dateTo = this.gnrtDate;
+
+  	this.gnrtCedingId = '';
+  	this.gnrtCedingName = '';
+  	this.gnrtDate = '';
+
+  	this.searchProfitComm();
+  }
+
   onClickGenerate() {
   	var a = {
   		cedingId: this.gnrtCedingId,
@@ -285,9 +298,9 @@ export class ProfitCommissionComponent implements OnInit {
 
   		this.successDialog.open();
   	});
-  }
+   }
 
-  valChanged(fromVal, toVal) {
+	valChanged(fromVal, toVal) {
         if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
             return new Date(fromVal) > new Date(toVal) ? '' : toVal;
         } else {
