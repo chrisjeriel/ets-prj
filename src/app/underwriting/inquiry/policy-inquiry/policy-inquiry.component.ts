@@ -222,7 +222,13 @@ export class PolicyInquiryComponent implements OnInit {
 
   export(){
         //do something
-     var today = new Date();
+
+    let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+    
+    delete paramsCpy['paginationRequest.count'];
+    delete paramsCpy['paginationRequest.position'];
+        
+    var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
     var yyyy = today.getFullYear();
@@ -246,10 +252,28 @@ export class PolicyInquiryComponent implements OnInit {
             var parts = parseFloat(currency).toFixed(2).split(".");
             var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                 (parts[1] ? "." + parts[1] : "");
+            num = num == 'NaN' ?'' : num;
             return num
       };
 
-     alasql('SELECT lineCd AS Line, policyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS TotalSi, currency(totalPrem) AS TotalPremium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+
+      this.underwritingService.newGetParListing(paramsCpy).subscribe((data:any)=>{
+         let recs = data.policyList.filter(a=>{
+           
+             a.lineCd = a.policyNo.substring(0,3);
+             a.totalSi = a.project.coverage.totalSi;
+             a.riskName = a.project.riskName;
+             a.objectDesc = a.project.objectDesc;
+             a.site = a.project.site;
+             a.totalPrem = a.project.coverage.totalPrem;
+             return true;
+         });
+
+
+         alasql('SELECT lineCd AS Line, policyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS TotalSi, currency(totalPrem) AS TotalPremium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
+       })
+
+     
   }
 
 

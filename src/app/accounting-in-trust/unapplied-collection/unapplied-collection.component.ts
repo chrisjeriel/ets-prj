@@ -46,8 +46,8 @@ export class UnappliedCollectionComponent implements OnInit {
       remarks: '',
       currCd: '',
       currRate: '',
-      currAmt: '',
-      localAmt: ''
+      currAmt: 0,
+      localAmt: 0
     },
     total:[null,null,null,null,null,'Total','currAmt','localAmt'],
     checkFlag: true,

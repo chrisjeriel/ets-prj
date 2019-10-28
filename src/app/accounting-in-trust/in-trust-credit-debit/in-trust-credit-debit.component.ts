@@ -65,7 +65,7 @@ export class InTrustCreditDebitComponent implements OnInit {
   }
 
   onClickEdit(){
-    this.router.navigate(['/acct-it-generate-cmdm',{tranId:this.selected.tranId,memoType:this.selected.memoType,exitLink: '/acc-s-credit-debit-memo'}], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm',{memoId:this.selected.memoId,memoType:this.selected.memoType,exitLink: '/acc-s-credit-debit-memo'}], { skipLocationChange: true }); 
   }
 
   onRowClick(data){
@@ -74,6 +74,6 @@ export class InTrustCreditDebitComponent implements OnInit {
   }
 
   onRowDblClick(data){
-     this.router.navigate(['/acct-it-generate-cmdm',{tranId:data.tranId,memoType:data.memoType,exitLink: '/acc-s-credit-debit-memo'}], { skipLocationChange: true }); 
+     this.router.navigate(['/acct-it-generate-cmdm',{memoId:data.memoId,memoType:data.memoType,exitLink: '/acc-s-credit-debit-memo'}], { skipLocationChange: true }); 
   }
 }

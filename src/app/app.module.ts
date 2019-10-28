@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
+import { FullCalendarModule } from 'primeng/fullcalendar';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -480,8 +481,12 @@ import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { OverrideLoginComponent } from './_components/common/override-login/override-login.component';
 import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
+import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-dist/batch-dist.component';
+import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
+import { LogoutComponent } from './logout/logout.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 
 @NgModule({
@@ -504,6 +509,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
         BrowserAnimationsModule,
         AccordionModule,
         DropdownModule,
+        FullCalendarModule,
     ],
     declarations: [
         AppComponent,
@@ -967,8 +973,12 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
         PayeeClassComponent,
         SlTypeComponent,
         SlComponent,
+        OverrideLoginComponent,
         AcseChartAcctComponent,
         PayeeComponent,
+        BatchDistComponent,
+        BatchPostComponent,
+        LogoutComponent,
         WfCalendarComponent,
     ],
 

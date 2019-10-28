@@ -44,10 +44,16 @@ export class QuarterEndingLovComponent implements OnInit {
 
   openModal(){
   	this.quarters = this.quarters.sort();
-    this.year = new Date().getFullYear() - 10;
+    //this.year = new Date().getFullYear() - 10;
     this.yearOptions = [];
-    for (var i = 1; i <= 10; i++) {
-      this.yearOptions.push(this.year+i);
+    //for (var i = 1; i <= 10; i++) {
+    //  this.yearOptions.push(this.year+i);
+    //}
+    var startYear: number = 2000;
+    var currYear: number = new Date().getFullYear();
+    while(startYear <= currYear){
+      this.yearOptions.push(currYear);
+      currYear -= 1;
     }
   }
 
@@ -66,10 +72,16 @@ export class QuarterEndingLovComponent implements OnInit {
         // for(var i = 0 ; i <  this.quarters.length; i++){
         //   this.quarterOptions.push({label: String(this.quarters[i]).slice(0,2) + '/' + String(this.quarters[i]).slice(2,4) , value:this.quarters[i]})
         // }
-        this.year = new Date().getFullYear() - 10;
+        //this.year = new Date().getFullYear() - 10;
         this.yearOptions = [];
-        for (var i = 1; i <= 10; i++) {
-          this.yearOptions.push(this.year+i);
+        //for (var i = 1; i <= 10; i++) {
+        //  this.yearOptions.push(this.year+i);
+        //}
+        var startYear: number = 2000;
+        var currYear: number = new Date().getFullYear();
+        while(startYear <= currYear){
+          this.yearOptions.push(currYear);
+          currYear -= 1;
         }
         /*for (var i = 1; i <= 7; i++) {
           this.yearOptions.push({label: this.year + i, value: this.year + i});

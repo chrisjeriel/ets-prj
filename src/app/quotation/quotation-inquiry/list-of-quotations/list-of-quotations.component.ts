@@ -65,6 +65,9 @@ export class ListOfQuotationsComponent implements OnInit {
     passData: any = {
         tableData: [],
         tHeader: ['Quotation No.', 'Type of Cession', 'Line Class', 'Status', 'Ceding Company', 'Principal', 'Contractor', 'Risk', 'Object', 'Site', 'Currency', 'Sum Insured', '1st Option Rate (%)', 'Quote Date', 'Valid Until', 'Requested By', 'Created By'],
+                 
+
+
         sortKeys:['QUOTATION_NO','CESSION_DESCRIPTION','CLASS_DESCRIPTION','STATUS','CEDING_NAME','PRINCIPAL_NAME','CONTRACTOR_NAME','RISK_NAME','OBJECT_DESCRIPTION','SITE','CURRENCY_CD','TOTAL_SI','OPTION_RT','ISSUE_DATE','EXPIRY_DATE','REQ_BY','CREATE_USER'],
         dataTypes: ['text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'currency', 'percent', 'date', 'date', 'text', 'text'],     
         filters: [
@@ -119,10 +122,26 @@ export class ListOfQuotationsComponent implements OnInit {
                 dataType: 'text'
             },
             {
-                key: 'policyNo',
-                title: 'Policy No.',
-                dataType: 'seq'
+                key: 'currencyCd',
+                title: 'Currency',
+                dataType: 'text'
             },
+
+
+            { keys: {
+                from: 'siFrom',
+                to: 'siTo'
+            },                        title: 'Sum Insured',         dataType: 'textspan'},
+            { keys: {
+                from: 'rateFrom',
+                to: 'rateTo'
+            },                        title: '1st Option Rate',         dataType: 'textspan'},
+
+            // {
+            //     key: 'policyNo',
+            //     title: 'Policy No.',
+            //     dataType: 'seq'
+            // },
             {
                 keys: {
                         from: 'issueDateFrom',
@@ -131,16 +150,10 @@ export class ListOfQuotationsComponent implements OnInit {
                 title: 'Quote Date',
                 dataType: 'datespan'
             },
-            {
-                key: 'expiryDate',
-                title: 'Valid Until',
-                dataType: 'date'
-            },
-            {
-                key: 'currencyCd',
-                title: 'Currency',
-                dataType: 'text'
-            },
+            { keys: {
+                from: 'expiryDateFrom',
+                to: 'expiryDateTo'
+            },                        title: 'Valid Until',         dataType: 'datespan'},
             {
                 key: 'reqBy',
                 title: 'Requested By',
@@ -278,30 +291,94 @@ export class ListOfQuotationsComponent implements OnInit {
         this.router.navigate(['/quotation', { line: this.line, typeOfCession: this.typeOfCession,  quotationNo : this.quotationNo,quoteId: this.quoteId,status: this.status, from: 'quo-processing', inquiry: true,exitLink:'/quotation-inquiry'}], { skipLocationChange: true }); 
     }
 
+    // export(){
+    //     //do something
+    //  var today = new Date();
+    // var dd = String(today.getDate()).padStart(2, '0');
+    // var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    // var yyyy = today.getFullYear();
+    // var hr = String(today.getHours()).padStart(2,'0');
+    // var min = String(today.getMinutes()).padStart(2,'0');
+    // var sec = String(today.getSeconds()).padStart(2,'0');
+    // var ms = today.getMilliseconds()
+    // var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    // var filename = 'QuotationInquiryList_'+currDate+'.xls'
+    // var mystyle = {
+    //     headers:true, 
+    //     column: {style:{Font:{Bold:"1"}}}
+    //   };
+
+    //   alasql.fn.datetime = function(dateStr) {
+    //         var date = new Date(dateStr);
+    //         return date.toLocaleString();
+    //   };
+
+    //  alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession,lineClassCdDesc AS LineClass, status AS Status,cedingName AS CedingCompany,principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    // }
+
+
     export(){
         //do something
-     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var hr = String(today.getHours()).padStart(2,'0');
-    var min = String(today.getMinutes()).padStart(2,'0');
-    var sec = String(today.getSeconds()).padStart(2,'0');
-    var ms = today.getMilliseconds()
-    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'QuotationInquiryList_'+currDate+'.xls'
-    var mystyle = {
-        headers:true, 
-        column: {style:{Font:{Bold:"1"}}}
-      };
+        let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+        
+        delete paramsCpy['paginationRequest.count'];
+        delete paramsCpy['paginationRequest.position'];
+        console.log(paramsCpy);
 
-      alasql.fn.datetime = function(dateStr) {
-            var date = new Date(dateStr);
-            return date.toLocaleString();
-      };
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = String(today.getHours()).padStart(2,'0');
+        var min = String(today.getMinutes()).padStart(2,'0');
+        var sec = String(today.getSeconds()).padStart(2,'0');
+        var ms = today.getMilliseconds()
+        var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+        var filename = 'QuotationInquiryList_'+currDate+'.xlsx'
+        var mystyle = {
+            headers:true, 
+            column: {style:{Font:{Bold:"1"}}}
+          };
 
-     alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession,lineClassCdDesc AS LineClass, status AS Status,cedingName AS CedingCompany,principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
-    }
+          alasql.fn.datetime = function(dateStr) {
+                var date = new Date(dateStr);
+                return date.toLocaleString();
+          };
+
+           alasql.fn.currency = function(currency) {
+                var parts = parseFloat(currency).toFixed(2).split(".");
+                var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                    (parts[1] ? "." + parts[1] : "");
+                var num = num == 'NaN' ? '' : num;
+                return num
+          };
+
+          this.quotationService.newGetQuoProcessingData(paramsCpy).subscribe(data => {
+                var records = data['quotationList'];
+                //this.table.refreshTable();
+                records = records.map(i => {
+                                         if(i.project != null){
+                                             i.riskId = i.project.riskId;
+                                             i.riskName = i.project.riskName;
+                                             i.objectDesc = i.project.objectDesc;
+                                             i.site = i.project.site;
+                                         }
+                                         i.issueDate = this.notes.toDateTimeString(i.issueDate);
+                                         i.expiryDate = this.notes.toDateTimeString(i.expiryDate);
+                                         for(let key of Object.keys(i)){
+                                             i[key] = i[key]==null ? '' : i[key];
+                                         }
+
+                                         return i;
+                                     });
+                alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal,'+
+                        ' contractorName AS Contractor, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(sumInsured) AS SumInsured, firstOptionRt AS FirstOptnRt,'+
+                        'datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',
+                        [mystyle,records]);
+            });
+
+        
+      }
 
 
     dateParser(arr){

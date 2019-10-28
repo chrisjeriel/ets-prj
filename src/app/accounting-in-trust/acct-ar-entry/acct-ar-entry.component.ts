@@ -4,6 +4,7 @@ import { AccountingService, NotesService, MaintenanceService } from '@app/_servi
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
@@ -25,6 +26,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
 
   passData: any = {
         tableData: [],
@@ -101,12 +103,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   isPrinted: boolean = false;
   loading: boolean = false;
   screenPrint: boolean = false;
+  canOverride: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
   printMethod: string = '2';
+  approvalCd: string = '';
 
   arInfo: any = {
     tranId: '',
@@ -230,7 +234,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     //Aug 8, 2019 Thank you for optimizing 
-    if(!this.isAdd){
+    if(!this.isAdd && this.emittedValue === undefined){
       this.retrieveArEntry(tranId, arNo);
     }else{  //edit
       if(this.emittedValue !== undefined){
@@ -362,7 +366,25 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   openCancelModal(){
-    this.cancelMdl.openNoClose();
+    this.approvalCd = 'AC006';
+    this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+      (data:any)=>{
+        if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+          //User has the authority to cancel AR
+          this.cancelMdl.openNoClose();
+        }else{
+          //User has no authority. Open Override Login
+          this.overrideLogin.getApprovalFn();
+          this.overrideLogin.overrideMdl.openNoClose();
+        }
+      }
+    );
+  }
+
+  toCancelAr(auth){
+    if(auth){
+      this.cancelMdl.openNoClose();
+    }
   }
 
   cancelAr(){
@@ -763,6 +785,16 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     );
   }
 
+  whichProcess(mainAuth){
+    if(mainAuth){
+      if(this.approvalCd == 'AC001'){ //Print AR process
+        this.toPrintAr(mainAuth);
+      }else if(this.approvalCd == 'AC006'){ //Cancel AR process
+        this.toCancelAr(mainAuth);
+      }
+    }
+  }
+
   print(){
     this.canPrintScreen();
     if(this.arAmtEqualsArDtlPayt()){
@@ -797,9 +829,30 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         this.printMdl.openNoClose();*/
         this.reprintMdl.openNoClose();
       }else{
-        this.loading = true;
-        this.retrieveMtnAcitArSeries();
+        /*this.loading = true;
+        this.retrieveMtnAcitArSeries();*/
+        this.approvalCd = 'AC001';
+        this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+          (data:any)=>{
+            if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+              //User has the authority to print AR
+              this.loading = true;
+              this.retrieveMtnAcitArSeries();
+            }else{
+              //User has no authority. Open Override Login
+              this.overrideLogin.getApprovalFn();
+              this.overrideLogin.overrideMdl.openNoClose();
+            }
+          }
+        );
       }
+    }
+  }
+
+  toPrintAr(auth){
+    if(auth){
+      this.loading = true;
+      this.retrieveMtnAcitArSeries();
     }
   }
 

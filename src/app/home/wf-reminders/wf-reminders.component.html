@@ -17,7 +17,7 @@
 				</div> -->
 				<div class="input-group">
 					<div class="col-sm-12">
-						<h4 class="text-center" style="margin-top: 5px !important">Notes</h4>
+						<h4 class="text-center" style="margin-top: 5px !important">Reminders</h4>
 					</div>
 				</div>
 				<div class="input-group" style="margin-top: 10px !important;">
@@ -26,7 +26,7 @@
 							<label class="form-control-sm col-sm-4">Type</label>
 							<select class="form-control form-control-sm cust-sm" name="selNotes" [(ngModel)]="selectedReminder" (change)="tabSelectedRemindersController($event);">
 					            <option value="atm"><a>Assigned To Me</a></option>
-					            <option value="mn"><a>My Notes</a></option>
+					            <option value="mn"><a>My Reminders</a></option>
 			        		</select>
 						</div>
 					</div>
@@ -51,12 +51,9 @@
 			        	<div>
 							<div class="float-left a-date">
 								<a href="#">
-									<!-- <i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" class="fa fa-warning span-div-flag" style="color: #ffff00;"></i> -->
-									<img style="width:40px;margin-right: -5px;margin-top: -5px;" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" src="app/resources/images/wfm-icons/bell-yellow.png"/>
-									<!-- <i *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" class="fa fa-warning span-div-flag" style="color: #ffa500;"></i> -->
-									<img style="width:40px;margin-right: -5px;margin-top: -5px;" *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/bell-orange.png"/>
-									<!-- <i *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" class="fa fa-warning span-div-flag" style="color: #ff0000;"></i> -->
-									<img style="width:40px;margin-right: -5px;margin-top: -5px;" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/bell-red.png"/>
+									<img class="spanBadge" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" src="app/resources/images/wfm-icons/ex-yellow.png"/>
+									<img class="spanBadge" *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/ex-orange.png"/>
+									<img class="spanBadge" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/ex-red.png"/>
 									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm a' }}<br>
 									<div class="span-div"><span>{{ reminder.alarmTime | date:'hh:mm a' }}</span></div>
 								</a>

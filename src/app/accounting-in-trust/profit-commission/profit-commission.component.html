@@ -28,8 +28,8 @@
 						<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickShowDetails($event)" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>	
 					</div> 
 					<div class="text-center" style="width: 100% !important;margin-top: 30px ! important">
-		                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="disableBtn"><a>Regenerate</a></button>
-		                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="disableBtn"><a>Print</a></button>
+		                <button type="button" class="cust-btn" (click)="queryModal.openNoClose()"><a>Regenerate</a></button>
+		                <button type="button" class="cust-btn" [disabled]="disableBtn"><a>Print</a></button>
           			</div>
 				</fieldset>
 			</ng-template>
@@ -68,7 +68,7 @@
 		</div>
 		<div class="input-group" style="margin-bottom: -3px !important;">
 			<div class="col-sm-9"></div>
-			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">-----------------------------------------</div>
+			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">---------------------------------------</div>
 		</div>
 		<div class="input-group" style="margin-bottom: -25px !important;">
 			<label class="form-control-sm col-sm-9" style="padding-left:0px !important;text-align: left !important;"></label>
@@ -87,28 +87,36 @@
 				<legend class="scheduler-border">Summary</legend>
 					<div class="custom-row-inline-inset">
 						<div class="input-group" style="margin-bottom: -25px !important;">
-							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year 2018</label>
-							<label class="form-control-sm col-sm-3">404,777.58</label>
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year {{ yearParam }}</label>
+							<label class="form-control-sm col-sm-3">{{ profitCurrYear | number: '1.2-2'}}</label>
 						</div>
 							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year 2016(3rd Year)</label>
-								<label class="form-control-sm col-sm-3">(393,269.40)</label>
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year {{ yearParam - 1 }}</label>
+								<label class="form-control-sm col-sm-3">{{ profitLastYear | number: '1.2-2' }}</label>
 							</div>
-							<div class="input-group" style="margin-bottom: -30px !important;">
+							<!-- <div class="input-group" style="margin-bottom: -30px !important;">
 								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
 								<label class="form-control-sm col-sm-3">(223,604.64)</label>
-							</div>
+							</div> -->
 							<div class="input-group" style="margin-bottom: -25px !important;">
 								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
 								<label class="form-control-sm col-sm-3">--------------------------</label>
 							</div>
-							<div class="input-group" style="margin-bottom: -30px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year 2018</label>
-								<label class="form-control-sm col-sm-3">(212,096.46)</label>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year {{ yearParam }}</label>
+								<label class="form-control-sm col-sm-3">{{ carriedForward | number: '1.2-2' }}</label>
 							</div>
 							<div class="input-group" style="margin-bottom: -25px !important;">
 								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-								<label class="form-control-sm col-sm-3">------------------------</label>
+								<label class="form-control-sm col-sm-3">x 20%</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+								<label class="form-control-sm col-sm-3">-----------------------</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -30px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT COMMISSION</label>
+								<label class="form-control-sm col-sm-3">{{ profitCommission | number: '1.2-2' }}</label>
 							</div>
 					</div>
 			</fieldset>
@@ -147,35 +155,39 @@
 
 <app-modal [btnTitle]="'Compute Profit Commission'" hidden id="modalProfComm" #queryMdl>
     <div header>Compute Profit Commission</div>
-         <div body>
+         <div body style="min-width: 550px !important;">
             <div>
                 <fieldset class="scheduler-border">
                     <br />
                     <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
-                            <label class="form-control-sm col-sm-3 text-right">Company</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-10" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov">
+                            <label class="form-control-sm col-sm-2 text-right">Company</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov" placeholder="All">
 							<div class="text-search-ico" (click)="showCedCompModal()"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-1 text-right" style="margin-left: 20px;">As of</label>
+							<div class="dp-cont col-sm-3" style="margin-left: 0">
+								<datepicker type="date" [(value)]="gnrtDate"></datepicker>
+							</div>
                         </div>
                      </div>
-                     <div class="form-row custom-row-inline-inset" style="margin-top: -13px !important;">
+                     <!-- <div class="form-row custom-row-inline-inset" style="margin-top: -13px !important;">
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
                             <label class="form-control-sm col-sm-3 text-right">Month</label>
                             <select id="m-list" [(ngModel)]="monthCdLov" class="form-control form-control-sm cust-sm col-sm-5">
-								<!-- <option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option> -->
+								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
 							</select>
 							<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Year</label>
 							<select id="y-list" [(ngModel)]="yearCdLov" class="form-control form-control-sm cust-sm col-sm-3">
-								<!-- <option *ngFor="let y of yearList" [value]="y">{{ y }}</option> -->
+								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
 							</select>
                         </div>
-                     </div>
+                     </div> -->
                 </fieldset>
             </div>
           </div>
           <div footer class="text-center" style="width: 100% !important;">
-                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="cedingDescLov == '' || monthCdLov == undefined || yearCdLov == undefined"><a>Generate</a></button>
-                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="cedingDescLov == '' || monthCdLov == undefined || yearCdLov == undefined"><a>View</a></button>
+                <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="gnrtDate == ''"><a>Generate</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="gnrtCedingId == '' || gnrtDate == ''"><a>View</a></button>
                 <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
           </div>
 </app-modal>
@@ -183,4 +195,4 @@
 
 <app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
 <app-ceding-company #cedingCompModal (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
-<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?cancelBtn.onNo():null" ></app-sucess-dialog> -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="queryModal.closeModal()"></app-sucess-dialog>

@@ -9,6 +9,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 
 @Component({
   selector: 'app-acct-or-entry',
@@ -25,6 +26,7 @@ export class AcctOrEntryComponent implements OnInit {
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
 
   passData: any = {
         tableData: [],
@@ -101,12 +103,14 @@ export class AcctOrEntryComponent implements OnInit {
   isPrinted: boolean = false;
   loading: boolean = false;
   screenPrint: boolean = false;
+  canOverride: boolean = false;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
   generatedArNo: string = '';
   printMethod: string = '2';
+  approvalCd: string = '';
 
   orInfo: any = {
     tranId: '',
@@ -151,7 +155,8 @@ export class AcctOrEntryComponent implements OnInit {
     rstrctTranUp: '',
     orDtlSum: '',
     acctEntriesSum: '',
-    allocTag: 'N'
+    allocTag: 'N',
+    vatTag: ''
   }
 
   orDate: any = {
@@ -223,7 +228,7 @@ export class AcctOrEntryComponent implements OnInit {
     );
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     //Aug 8, 2019 Thank you for optimizing 
-    if(!this.isAdd){
+    if(!this.isAdd && this.emittedValue === undefined){
       this.retrieveOrEntry(tranId, orNo);
     }else{  //edit
       if(this.emittedValue !== undefined){
@@ -322,7 +327,8 @@ export class AcctOrEntryComponent implements OnInit {
       rstrctTranUp: '',
       orDtlSum: '',
       acctEntriesSum: '',
-      allocTag: ''
+      allocTag: '',
+      vatTag: ''
     }
     this.prDate = {
       date: '',
@@ -332,12 +338,16 @@ export class AcctOrEntryComponent implements OnInit {
     this.passData.tableData = [];
     this.paytDtlTbl.refreshTable();
     this.retrieveCurrency();
+    this.isPrinted = false;
+    this.isCancelled = false;
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
+    this.form.control.markAsPristine();
   }
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+    this.ns.clearFormGroup();
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
     }
@@ -355,7 +365,25 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   openCancelModal(){
-    this.cancelMdl.openNoClose();
+    this.approvalCd = 'AC006';
+    this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+      (data:any)=>{
+        if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+          //User has the authority to cancel AR
+          this.cancelMdl.openNoClose();
+        }else{
+          //User has no authority. Open Override Login
+          this.overrideLogin.getApprovalFn();
+          this.overrideLogin.overrideMdl.openNoClose();
+        }
+      }
+    );
+  }
+
+  toCancelOr(auth){
+    if(auth){
+      this.cancelMdl.openNoClose();
+    }
   }
 
   cancelOr(){
@@ -447,6 +475,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.orInfo.mailAddress = data.data.mailAddress;
       this.orInfo.cedingId = data.data.cedingId;
       this.orInfo.bussTypeName = data.data.bussTypeName;
+      this.orInfo.vatTag = data.data.vatTag;
       this.form.control.markAsDirty();
       setTimeout(()=>{
         $('.payor').focus().blur();
@@ -525,6 +554,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.rstrctTranUp   = data.orEntry.rstrctTranUp;
           this.orInfo.orDtlSum       = data.orEntry.orDtlSum;
           this.orInfo.acctEntriesSum = data.orEntry.acctEntriesSum;
+          this.orInfo.vatTag         = data.orEntry.vatTag;
           this.selectedCurrency       = data.orEntry.currCd;
           if(this.orInfo.orStatDesc.toUpperCase() === 'DELETED' || this.orInfo.orStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.orInfo.orStatDesc.toUpperCase() !== 'NEW'){
@@ -601,6 +631,7 @@ export class AcctOrEntryComponent implements OnInit {
             tranId: this.orInfo.tranId,
             formattedOrNo: this.orInfo.formattedOrNo,
             orNoDigits: this.orInfo.orNoDigits,
+            orType: this.orInfo.orType,
             orNo: this.orInfo.orNo,
             orStatus: this.orInfo.orStatus,
             orStatDesc: this.orInfo.orStatDesc,
@@ -620,6 +651,7 @@ export class AcctOrEntryComponent implements OnInit {
             cedingId: this.orInfo.payeeNo,
             bussTypeName: this.orInfo.bussTypeName,
             refCd: this.orInfo.refCd,
+            vatTag: this.orInfo.vatTag,
             from: 'or'
           }
           this.emitOrInfo.emit(orDetailParams);
@@ -750,9 +782,20 @@ export class AcctOrEntryComponent implements OnInit {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.form.control.markAsPristine();
+          this.ns.formGroup.markAsPristine();
         }
       }
     );
+  }
+
+  whichProcess(mainAuth){
+    if(mainAuth){
+      if(this.approvalCd == 'AC001'){ //Print AR process
+        this.toPrintOr(mainAuth);
+      }else if(this.approvalCd == 'AC006'){ //Cancel AR process
+        this.toCancelOr(mainAuth);
+      }
+    }
   }
 
   print(){
@@ -796,9 +839,28 @@ export class AcctOrEntryComponent implements OnInit {
         this.reprintMdl.openNoClose();
       }else{
         //this.loading = true;
-        this.printMdl.openNoClose();
+        //this.printMdl.openNoClose();
         //this.retrieveMtnAcitArSeries();
+        this.approvalCd = 'AC001';
+        this.ms.getMtnApprovalFunction(this.approvalCd).subscribe(
+          (data:any)=>{
+            if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+              //User has the authority to print AR
+              this.printMdl.openNoClose();
+            }else{
+              //User has no authority. Open Override Login
+              this.overrideLogin.getApprovalFn();
+              this.overrideLogin.overrideMdl.openNoClose();
+            }
+          }
+        );
       }
+    }
+  }
+
+  toPrintOr(auth){
+    if(auth){
+      this.printMdl.openNoClose();
     }
   }
 
@@ -1105,6 +1167,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeTranType(data){
+    console.log(data);
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.orInfo.tranTypeCd = data;
     //this.orInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
@@ -1114,7 +1177,47 @@ export class AcctOrEntryComponent implements OnInit {
         break;
       }
     }
-    if(data == 7){
+
+    if(data == 1 || data == 2){
+      this.selectedCurrency = 'PHP';
+      this.passData.nData.currCd = 'PHP';
+      this.orInfo.currCd = 'PHP';
+      for(var i of this.currencies){
+        if(i.currencyCd == 'PHP'){
+          this.orInfo.currRate = i.currencyRt;
+          this.passData.nData.currRate = i.currencyRt;
+          setTimeout(()=>{
+            $('.rate').focus().blur();
+          },0);
+          break;
+        }
+      }
+      
+    }else if(data == 3){
+      this.selectedCurrency = 'USD';
+      this.passData.nData.currCd = 'USD';
+      this.orInfo.currCd = 'USD';
+      for(var i of this.currencies){
+        if(i.currencyCd == 'USD'){
+          this.orInfo.currRate = i.currencyRt;
+          this.passData.nData.currRate = i.currencyRt;
+          setTimeout(()=>{
+            $('.rate').focus().blur();
+          },0);
+          break;
+        }
+      }
+    }
+    
+    //apply changes to payment details
+      for(var j = 0; j < this.passData.tableData.length; j++){
+        this.passData.tableData[j].currCd = this.selectedCurrency;
+        this.passData.tableData[j].currRate = this.orInfo.currRate;
+        this.passData.tableData[j].edited = true;
+      }
+      this.paytDtlTbl.refreshTable();
+      this.retrieveMtnBankAcct();
+    /*if(data == 7){
       this.disablePayor = true;
       this.ms.getMtnPayee().subscribe(
         (data:any)=>{
@@ -1136,7 +1239,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.orInfo.bussTypeCd = '';
       this.orInfo.bussTypeName = '';
       this.orInfo.tin = '';
-    }
+    }*/
   }
 
   compareCurrencyFn(c1: any, c2: any): boolean {

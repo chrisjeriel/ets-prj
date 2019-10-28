@@ -83,7 +83,7 @@
     </div> -->
 
     <div class="cust-tabs-container" style="margin-top:10px !important">
-      <ngb-tabset>
+      <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab>
           <ng-template ngbTabTitle>
             <ng-container [ngSwitch]="paymentType">

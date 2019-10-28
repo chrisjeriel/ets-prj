@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard, UnsavedChangesGuard, ModuleAccessGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
@@ -192,6 +193,7 @@ import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
 import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
+import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 
 const appRoutes: Routes = [
 
@@ -199,7 +201,9 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
     { path: 'wf-calendar', component: WfCalendarComponent },
+    { path: 'wf-form-common', component: WfFormCommonComponent },
     { path: 'quotation', component: QuotationComponent, 
     		canDeactivate: [UnsavedChangesGuard], 
     		canActivate: [AuthGuard, ModuleAccessGuard], 
@@ -420,8 +424,8 @@ const appRoutes: Routes = [
     { path: 'generate-or', component: GenerateOrComponent },
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
-    { path: 'accounting-service', component: AccountingServiceComponent},
-    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent},
+    { path: 'accounting-service', component: AccountingServiceComponent, canDeactivate: [UnsavedChangesGuard]},
+    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent, canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-service-extract', component: AccountingServiceExtractComponent},
     { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent },
     { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},

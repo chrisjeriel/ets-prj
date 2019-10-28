@@ -467,6 +467,7 @@ export class LovComponent implements OnInit {
   openModal(){
     this.showButton = false;
     this.passTable.tableData = [];
+    this.passTable.filters = undefined;
   	if(this.passData.selector == 'insured'){
   		this.passTable.keys = ['insuredId', 'insuredName' ];
       this.passTable.tHeader =  ['Insured Id', 'Insured Name' ];
@@ -555,6 +556,39 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = [ 'Deductible', 'Title', 'Deductible Type', 'Rate', 'Deductible Amount','Deductible Text'];
       this.passTable.dataTypes = [ 'text', 'text', 'text', 'percent', 'currency'];
       this.passTable.keys = ['deductibleCd','deductibleTitle','typeDesc','deductibleRate','deductibleAmt','deductibleText'];
+      this.passTable.filters = [
+          {
+              key: 'deductibleTitle',
+              title: 'Title',
+              dataType: 'text'
+          },
+          {
+            key: 'deductibleType',
+            title: 'Type',
+            dataType: 'text'
+          },
+          { 
+            keys: {
+              from: 'rateFrom',
+              to: 'rateTo'
+            },                        
+            title: 'Rate',         
+            dataType: 'textspan'
+          },
+          { 
+            keys: {
+              from: 'amtFrom',
+              to: 'amtTo'
+            },                        
+            title: 'Amount',         
+            dataType: 'textspan'
+          },
+          {
+            key: 'deductibleText',
+            title: 'Text',
+            dataType: 'text'
+          },
+      ]
       this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
         this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
         this.passData.params.defaultTag
@@ -811,6 +845,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(a["soaDtlList"]);
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -906,7 +941,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal)
       .subscribe((a:any)=>{
         var rec = a["soaDtlList"].filter(e => e.payeeNo == this.passData.payeeNo).map(a => { a.returnAmt = a.paytAmt; return a; });
-        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.prevBalance; e.edited = true; e.validate = true; return e; });
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -1238,5 +1273,26 @@ export class LovComponent implements OnInit {
 
   openLOV(){
     this.modal.openNoClose();
+  }
+
+
+  filterDb(params){
+    let passToService: any = {};
+    for(let param of params){
+      passToService[param.key] = param.search
+    }
+    if(this.passData.selector == 'deductibles'){
+      this.underwritingService.getMaintenanceDeductibles(this.passData.lineCd,
+        this.passData.params.deductibleCd,this.passData.params.coverCd,this.passData.params.endtCd,this.passData.params.activeTag,
+        this.passData.params.defaultTag, passToService
+        ).subscribe((data: any) => {
+          this.passTable.tableData = data.deductibles.filter((data)=>{return  this.passData.hide.indexOf(data.deductibleCd)==-1});
+          if(this.passData.endtCd !== undefined){
+            this.passTable.tableData = this.passTable.tableData.filter(data=> data.endtCd==this.passData.endtCd || data.endtCd == 0  )
+          }
+          this.showButton = true;
+          this.table.refreshTable();
+      });
+    }
   }
 }

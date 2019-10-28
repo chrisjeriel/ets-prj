@@ -4,6 +4,7 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { AccountingService, NotesService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { environment } from '@environments/environment';
+import { Title } from '@angular/platform-browser';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 
@@ -25,10 +26,11 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   topic: string = "/prodLogs";
   stompClient: any;
 
-  constructor(private router: Router, private as: AccountingService, private ns: NotesService) {
+  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title) {
   }
 
   ngOnInit() {
+    this.titleService.setTitle("Acct-IT | Batch Processing");
     this.wsConnect();
     this.getAcitMonthEnd();
   }

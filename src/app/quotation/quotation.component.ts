@@ -78,6 +78,8 @@ export class QuotationComponent implements OnInit {
   exitLink:string;
   accessibleModules:any [] = [];
 
+  @ViewChild('active')activeComp:any;
+
 	ngOnInit() {
       this.sub = this.route.params.subscribe(params => {
           this.line = params['line'];
@@ -131,36 +133,31 @@ export class QuotationComponent implements OnInit {
 	onTabChange($event: NgbTabChangeEvent) {
 		 // if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
 		 // 	  $event.preventDefault();
-   //   }                   
-  		if ($event.nextId === 'approval-tab') {
-			$event.preventDefault();
-      this.showApprovalModal(this.content);
-		  }else
+   //   }   
+    if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude):not(.not-form)').length != 0 ){
+           $event.preventDefault();
+           const subject = new Subject<boolean>();
+           const modal = this.modalService.open(ConfirmLeaveComponent,{
+               centered: true, 
+               backdrop: 'static', 
+               windowClass : 'modal-size'
+           });
+           modal.componentInstance.subject = subject;
 
-      if ($event.nextId === 'Print') {
+           subject.subscribe(a=>{
+             if(a){
+               $('.ng-dirty').removeClass('ng-dirty');
+               this.tabset.select($event.nextId)
+             }
+           })
+      }else if ($event.nextId === 'approval-tab') {
+  			$event.preventDefault();
+        this.updateGenInfo();
+        this.showApprovalModal(this.content);
+		  }else if ($event.nextId === 'Print') {
         $event.preventDefault();
         $('#printListQuotation > #printModalBtn').trigger('click');
-      } else
-
-     if($('.ng-dirty.ng-touched:not([type="search"])').length != 0 ){
-        $event.preventDefault();
-        const subject = new Subject<boolean>();
-        const modal = this.modalService.open(ConfirmLeaveComponent,{
-            centered: true, 
-            backdrop: 'static', 
-            windowClass : 'modal-size'
-        });
-        modal.componentInstance.subject = subject;
-
-        subject.subscribe(a=>{
-          if(a){
-            $('.ng-dirty').removeClass('ng-dirty');
-            this.tabset.select($event.nextId)
-          }
-        })
-
-
-      } else if ($event.nextId === 'Exit') {
+      }  else if ($event.nextId === 'Exit') {
         $event.preventDefault();
         this.router.navigateByUrl(this.exitLink);
       }
@@ -210,6 +207,7 @@ export class QuotationComponent implements OnInit {
               console.log("Status Failed to Update.");
             } else {
               console.log("Status Released");
+              this.updateGenInfo();
             }
           });
         }
@@ -382,6 +380,8 @@ export class QuotationComponent implements OnInit {
         console.log(this.quoteInfo.statusDesc)
         if(this.quoteInfo.status == '3'){
           this.inquiryFlag = true;
+          this.activeComp.inquiryFlag = true;
+          this.activeComp.ngOnInit();
         }
       })
     }

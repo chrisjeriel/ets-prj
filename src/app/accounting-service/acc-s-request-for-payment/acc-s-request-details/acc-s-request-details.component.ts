@@ -233,7 +233,7 @@ export class AccSRequestDetailsComponent implements OnInit {
 
   showLOV(event, from){
     if(from.toUpperCase() == 'PCVDATA'){
-      this.passData.selector = 'acitChartAcct';
+      this.passData.selector = 'acseChartAcct';
       this.lov.openLOV();
     }
   }

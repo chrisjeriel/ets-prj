@@ -3,10 +3,9 @@
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Batch Distribution">
 			<ng-template ngbTabContent>
-				<div class="form-row">
+				<!-- <div class="form-row">
 					<div class="col-md-12">
 						<div style="margin-top: 10px !important;">
-							<!-- <app-cust-non-datatable [passData]="passDataDistribution"></app-cust-non-datatable> -->
 							<app-cust-non-datatable  [passData]="passDataProcessing" #distListProcessing (rowClick)="selected=$event" (newRowDblClick)="selected=$event;gotoInfo()" (searchToDb)="searchQuery($event)" (export)="export()"></app-cust-non-datatable>
 						</div>
 					</div>
@@ -20,12 +19,13 @@
 				            </div>
 				        </div>
 				    </div>
-				</div>
+				</div> -->
+				<app-batch-dist></app-batch-dist>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Batch Posting">
 			<ng-template ngbTabContent>
-				<div class="form-row">
+				<!-- <div class="form-row">
 					<div class="col-md-12">
 						<div style="margin-top: 10px !important;">
 							<app-cust-non-datatable  [passData]="passDataPosting" #distListPosting></app-cust-non-datatable>
@@ -42,7 +42,8 @@
 				            </div>
 				        </div>
 				    </div>
-				</div>
+				</div> -->
+				<app-batch-post></app-batch-post>
 			</ng-template>
 		</ngb-tab>
 	</ngb-tabset>

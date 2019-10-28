@@ -212,6 +212,7 @@ export class AttachmentComponent implements OnInit {
        if(data.returnCode === 0){
          this.dialogIcon = 'error';
          this.successDiag.open();
+         this.cancelFlag = false;
        }else{
          this.dialogIcon = 'success';
          this.successDiag.open();
