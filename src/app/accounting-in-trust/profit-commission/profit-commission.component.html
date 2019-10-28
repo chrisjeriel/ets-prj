@@ -28,8 +28,8 @@
 						<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickShowDetails($event)" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>	
 					</div> 
 					<div class="text-center" style="width: 100% !important;margin-top: 30px ! important">
-		                <button type="button" class="cust-btn" (click)="queryModal.openNoClose()" [disabled]="disableBtn"><a>Regenerate</a></button>
-		                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="disableBtn"><a>Print</a></button>
+		                <button type="button" class="cust-btn" (click)="queryModal.openNoClose()"><a>Regenerate</a></button>
+		                <button type="button" class="cust-btn" [disabled]="disableBtn"><a>Print</a></button>
           			</div>
 				</fieldset>
 			</ng-template>
@@ -162,7 +162,7 @@
                     <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
                             <label class="form-control-sm col-sm-2 text-right">Company</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov" placeholder="All">
 							<div class="text-search-ico" (click)="showCedCompModal()"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm col-sm-1 text-right" style="margin-left: 20px;">As of</label>
 							<div class="dp-cont col-sm-3" style="margin-left: 0">
@@ -186,7 +186,7 @@
             </div>
           </div>
           <div footer class="text-center" style="width: 100% !important;">
-                <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="gnrtCedingId == '' || gnrtDate == ''"><a>Generate</a></button>
+                <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="gnrtDate == ''"><a>Generate</a></button>
                 <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="gnrtCedingId == '' || gnrtDate == ''"><a>View</a></button>
                 <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
           </div>
