@@ -61,7 +61,8 @@ export class ReadyForPrintingComponent implements OnInit {
 
   passData: any = {
     tHeader: [
-      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Currency", "Quote Date", "Valid Until", "Requested By","Created By"
+      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site",
+       "Currency", "Quote Date", "Valid Until", "Requested By","Created By"
     ],
     resizable: [
       true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,true
@@ -70,10 +71,15 @@ export class ReadyForPrintingComponent implements OnInit {
       "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text","text"
     ],
     filters: [
-                {
+        {
             key: 'quotationNo',
             title: 'Quotation No.',
             dataType: 'text'
+        },
+        {
+          key: 'approvedBy',
+          title: 'Approved By',
+          dataType: 'text'
         },
         {
             key: 'cessionDesc',
@@ -126,24 +132,29 @@ export class ReadyForPrintingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            keys: {
-                    from: 'issueDateFrom',
-                    to: 'issueDateTo'
-                },
-            title: 'Quote Date',
-            dataType: 'datespan'
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
         },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
+        { keys: {
+            from: 'issueDateFrom',
+            to: 'issueDateTo'
+        },                        title: 'Quote Date',         dataType: 'datespan'},
+        // {
+        //     key: 'expiryDate',
+        //     title: 'Valid Until',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'expiryDateFrom',
+            to: 'expiryDateTo'
+        },                        title: 'Valid Until',         dataType: 'datespan'},
         {
             key: 'reqBy',
             title: 'Requested By',
             dataType: 'text'
         },
-       {
+        {
             key: 'createUser',
             title: 'Created By',
             dataType: 'text'
@@ -172,15 +183,16 @@ export class ReadyForPrintingComponent implements OnInit {
     this.printModal.default = false;
     this.printModal.reports = true;
     this.btnDisabled = true;
-    this.searchParams.push({
-                              key : "status", 
-                              search : "APPROVED"
-                          });
+    // this.searchParams.push({
+    //                           key : "status", 
+    //                           search : "APPROVED"
+    //                       });
     this.retrieveQuoteListingMethod();
     this.userService.emitModuleId("QUOTE010");
   }
 
   retrieveQuoteListingMethod(){
+    this.searchParams.push({key: 'statusArr',search:['A']})
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
             for(let rec of this.records){
@@ -217,10 +229,10 @@ export class ReadyForPrintingComponent implements OnInit {
 
   //Method for DB query
   searchQuery(searchParams){  
-         let params = searchParams.find((p) => {
-          return p.key === 'status';
-         });
-         params.search = 'APPROVED';
+         // let params = searchParams.find((p) => {
+         //  return p.key === 'status';
+         // });
+         // params.search = 'APPROVED';
 
         this.searchParams = [];
         this.searchParams = searchParams;
@@ -489,6 +501,11 @@ export(){
                 (parts[1] ? "." + parts[1] : "");
             return num
       };
+
+      for(let a of this.passData.keys){
+        this.passData.tableData.forEach(data=>data[a] = data[a]==null ? '' : data[a]);
+      }
+      
 
     alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }

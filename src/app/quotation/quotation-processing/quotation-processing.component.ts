@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuotationService, NotesService, MaintenanceService, UserService, AuthenticationService } from '@app/_services';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
@@ -26,6 +26,7 @@ export class QuotationProcessingComponent implements OnInit {
     @ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
     @ViewChild('ceding') cedingLov: CedingCompanyComponent;
     @ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
+    @ViewChild(NgbTabset) tabset: NgbTabset;
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -245,6 +246,13 @@ export class QuotationProcessingComponent implements OnInit {
         this.userService.emitModuleId("QUOTE001");
         this.retrieveQuoteListingMethod();
         this.getAccessibleModules();
+        this.tabset.tabChange
+    }
+
+    onTabChange(data:NgbTabChangeEvent){
+        if(data.nextId == "quoteListing"){
+            this.retrieveQuoteListingMethod();
+        }
     }
 
     getAccessibleModules() {

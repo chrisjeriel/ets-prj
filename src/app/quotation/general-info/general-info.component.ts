@@ -13,6 +13,7 @@ import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.compo
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { NgForm} from '@angular/forms';
 
 @Component({
 	selector: 'app-general-info',
@@ -21,6 +22,7 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 })
 export class GeneralInfoComponent implements OnInit, AfterViewInit {  
 	@ViewChild('start')start:any;
+	@ViewChild('myForm') form : NgForm;
 	ngAfterViewInit(){
 		console.log(this.start)
 		
@@ -404,7 +406,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		setTimeout(() => {
 			$("#firstFocus").focus();
 			$(this.start.nativeElement).focus()
-			$('.ng-dirty').removeClass('ng-dirty');
+			this.form.control.markAsPristine();
 
 			if(this.savingType == 'modification') {
 				$('#wordingAltIdLov #modalBtn').addClass('ng-dirty');
@@ -603,7 +605,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 		            this.dialogMessage="";
 		            this.dialogIcon = "";
-		            $('.ng-dirty').removeClass('ng-dirty');
+		            this.form.control.markAsPristine();
 					$('#genInfo #successModalBtn').trigger('click');
 						//for internal comp
 						if(this.savingType === 'internalComp'){
