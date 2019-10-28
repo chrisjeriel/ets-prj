@@ -511,6 +511,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             this.dialogIcon = '';
             this.successDiag.open();
             this.retrieveAcseOrPreview();
+            this.genTaxTbl.markAsPristine();
+            this.whTaxTbl.markAsPristine();
           }
         }
       );
