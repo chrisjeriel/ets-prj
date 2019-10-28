@@ -1,3 +1,5 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
 <div class="cust-tabs-container">
 	<h4>Accounting Service / Utilities/ Batch OR Printing</h4>
 		<ngb-tabset (tabChange)="onTabChange($event)">
@@ -12,9 +14,8 @@
 								<div class="col-sm-4">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-5">Payment Type</label>
-										<select class="form-control form-control-sm cust-sm col-sm">
-										    <option>Credit Memo</option>
-										    <option>Debit Memo</option>
+										<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="tranTypeCd" (ngModelChange)="this.boolSearch = false" name="tranType">
+											<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 										</select>
 									</div>
 								</div>
@@ -22,102 +23,107 @@
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">OR Date: </label>
 										<label class="form-control-sm col-sm-1">From </label>
-										<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01">
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="fromDate.split('T')[0]" (valueChange)="fromDate=$event"></datepicker>
+										</div>
 										<label class="form-control-sm col-sm-1">To </label>
-										<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-02">
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="toDate.split('T')[0]" (valueChange)="toDate=$event"></datepicker>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-1">
 									<div class="input-group cust-ig">
-										<button type="button" class="cust cust-btn"><a>Search</a></button>
-									</div>
+										<button type="button" class="cust-btn" [disabled]="boolSearch" (click)="onClickSearch()"><a>Search</a></button>
+									</div> 
 								</div>
 							</div>
 						</fieldset>
-						<fieldset class="scheduler-border" style="margin-top: 10px !important;margin-bottom: 15px !important"> 
+						<fieldset class="scheduler-border" style="margin-top: 5px !important;margin-bottom: 5px !important"> 
 							<div class="form-row custom-row-inline-inset">
-								<div class="col-sm-12" style="margin-top: 15px !important;">
-										<app-cust-editable-non-datatable [passData]="PassData"></app-cust-editable-non-datatable>
-									<div class="input-group cust-ig" style="margin-top: 35px !important;">
+								<div class="col-sm-12">
+										<app-cust-editable-non-datatable #batchOR [passData]="passData" (genericBtn)="viewOR()" (newClick)="onTableClick($event)">
+											<ng-container controls-l>
+													<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
+													<label class="form-control-sm">Untag All</label> 
+													<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="tag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()"> 
+													<label class="form-control-sm">Tag All</label> 
+							                </ng-container>
+										</app-cust-editable-non-datatable>
+									<!-- <div class="input-group cust-ig" style="margin-top: 35px !important;">
 										<label class="form-control-sm col-sm-1">Particulars</label>
 										<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="Payment For" readonly>
-									</div>
+									</div> -->
 								</div>
 							</div>
 						</fieldset>
-						<div class="form-row custom-row-inline-inset">
-							<div class="col-sm-5">
-								<fieldset class="scheduler-border">
-									<div class="input-group cust-ig" style="margin-top: 37px !important">
-										<div class="col-sm-1"></div>
-										<label class="form-control-sm col-sm-3">Destination</label>
-										<select class="form-control form-control-sm cust-sm col-sm">
-										    <option>Printer</option>
-										    <option>Mock Data</option>
-										</select>
-										<div class="col-sm-2"></div>
-									</div>
-									<div class="input-group cust-ig" style="margin-bottom: 20px !important">
-										<div class="col-sm-1"></div>
-										<label class="form-control-sm col-sm-3">Printer Name</label>
-										<select class="form-control form-control-sm cust-sm col-sm">
-										    <option></option>
-										    <option>Mock Data</option>
-										</select>
-										<div class="col-sm-2"></div>
-									</div>
-								</fieldset>
+						<div class="input-group">
+							<div class="col-sm-2"></div>
+							<div class="form-row custom-row-inline-inset col-sm-8">
+								<div class="col-sm-6">
+									<fieldset class="scheduler-border">
+										<div class="input-group cust-ig" style="margin-top: 10px !important;">
+			<!-- 								<div class="col-sm-4">
+												<div class="row">
+													<input type="radio" name ="Tag" class="radio-btn">
+													<label class="form-control-sm col-sm-4 text">Untag All</label>
+													<input type="radio" name ="Tag"  class="radio-btn">
+													<label class="form-control-sm col-sm-5 text">Tag All</label>
+												</div>
+											</div> -->
+											<label class="form-control-sm col-sm-3 text">Start With:</label>
+											<div class="col-sm">
+												<div class="row">
+													<input class="form-control-sm " type="radio" name="optradio" id="byVat" value="byvat" [(ngModel)]="radioVal" (change)="this.genORBool = false;">
+													<label class="form-control-sm col-sm-4 text">VAT OR</label>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="radioVal != 'byvat'"  [(ngModel)] = "vatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+												</div>
+											</div>
+										</div>
+										<div class="input-group cust-ig">
+											<div class="col-sm-3"></div>
+											<div class="col-sm">
+												<div class="row">
+													<input class="form-control-sm " type="radio" name="optradio" id="byNonVat" value="bynonvat" [(ngModel)]="radioVal" (change)="this.genORBool = false;">
+													<label class="form-control-sm col-sm-4 text">Non VAT OR</label>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="radioVal != 'bynonvat'" [(ngModel)] = "nonVatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+												</div>
+											</div>
+										</div>
+										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
+											<div class="col-sm-7"></div> 
+											<button type="button" class="cust-btn col-sm" [disabled]="genORBool" (click)="generateOR()"><a>Generate OR</a></button>
+										</div>
+									
+									</fieldset>
+								</div>
+								<div class="col-sm-6">
+									<fieldset class="scheduler-border">
+										<div class="input-group cust-ig" style="margin-top: 10px !important">
+											<label class="form-control-sm col-sm-3">Destination</label>
+											<select class="form-control form-control-sm cust-sm col-sm">
+											    <option>Printer</option>
+											</select>
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-3">Printer Name</label>
+											<select class="form-control form-control-sm cust-sm col-sm">
+											    <option>Default</option>
+											</select> 
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
+											<div class="col-sm-3"></div>
+											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="printORBool" (click)="printOR()"><a>Print OR</a></button>
+											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="stopPrintBool" (click)="stopPrintOR()"><a>Stop Printing</a></button>
+											<div class="col-sm-1"></div>
+									    </div>
+
+									</fieldset>
+								</div>
 							</div>
-							<div class="col-sm-7">
-								<fieldset class="scheduler-border">
-									<div class="input-group cust-ig" style="margin-top: 10px !important;">
-										<div class="col-sm-4">
-											<div class="row">
-												<input type="radio" name ="Tag" class="radio-btn">
-												<label class="form-control-sm col-sm-4 text">Untag All</label>
-												<input type="radio" name ="Tag"  class="radio-btn">
-												<label class="form-control-sm col-sm-5 text">Tag All</label>
-											</div>
-										</div>
-										<label class="form-control-sm col-sm-2 text">Start With</label>
-										<div class="col-sm-6">
-											<div class="row">
-												<input type="radio" name ="Start"  class="radio-btn">
-												<label class="form-control-sm col-sm-4 text">VAT OR</label>
-												<input type="text" class="form-control form-control-sm cust-sm col-sm">
-											</div>
-										</div>
-									</div>
-									<div class="input-group cust-ig">
-										<div class="col-sm-4">
-										</div>
-										<div class="col-sm-2"></div>
-										<div class="col-sm-6">
-											<div class="row">
-												<input type="radio" name ="Start"  class="radio-btn">
-												<label class="form-control-sm col-sm-4 text">Non VAT OR</label>
-												<input type="text" class="form-control form-control-sm cust-sm col-sm">
-											</div>
-										</div>
-									</div>
-									<div class="input-group cust-ig" style="margin-bottom: 2px !important;">
-										<div class="col-sm-4"></div>
-										<button type="button" class="cust cust-btn"><a>View OR Details</a></button>
-										<button type="button" class="cust cust-btn"><a>Generate OR Number</a></button>
-										<div class="col-sm-4"></div>
-									</div>
-									<div class="input-group cust-ig" style="margin-bottom: 10px !important;">
-										<div class="col-sm-4"></div>
-										<button type="button" class="cust cust-btn"><a>Print OR</a></button>
-										<button type="button" class="cust cust-btn"><a>Stop Printing</a></button>
-										<div class="col-sm-4"></div>
-									</div>
-									<!-- <div class="input-group cust-ig">
-										<button type="button" class="cust cust-btn"><a>Search</a></button>
-										<button type="button" class="cust cust-btn"><a>Search</a></button>
-									</div> -->
-								</fieldset>
-							</div>
+							<div class="col-sm-2"></div>
 						</div>
 				</ng-template>
 			</ngb-tab>
@@ -130,8 +136,42 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 
+<app-modal class="d-none" #printModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Was the printing of OR successful?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateOrStatus();"><a>Yes</a></button>
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();failedOrPrint();"><a>No</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
 
+<app-modal class="d-none" #printConfirmModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Indicate the last successfully printed OR Number:</p>
+	  </div>
+	  <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "lastOrNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'> PROD#ERROR -->
+	  <input type="text" class="form-control form-control-sm cust-sm col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+	</div>
+	<div footer class="text-center w-100">
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();"><a>OK</a></button>
+        </div>
+      </div>
+  	</div>
+</app-modal>
 
 
 

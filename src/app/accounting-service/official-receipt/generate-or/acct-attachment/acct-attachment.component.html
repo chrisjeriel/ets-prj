@@ -149,8 +149,8 @@
   </div> -->
   <div class="form-group col-sm text-center" style="margin-bottom: 5px" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N'">
     <div class="cust-btn-container">
-      <button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-      <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+      <button type="button" class="cust-btn" (click)="cancel();" [class.d-none]="inquiryFlag" ><a>Cancel</a></button>
+      <button type="button" class="cust-btn" (click)="onClickSave();" [class.d-none]="inquiryFlag" ><a>Save</a></button>
     </div>
   </div>
 

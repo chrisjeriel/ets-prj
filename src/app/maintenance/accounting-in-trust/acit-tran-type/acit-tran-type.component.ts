@@ -7,6 +7,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { Router, NavigationExtras } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-acit-tran-type',
@@ -27,11 +29,12 @@ export class AcitTranTypeComponent implements OnInit {
    @ViewChild('amtDtlLov') amtDtlLov: LovComponent;
    @ViewChild('acctEntryLov') acctEntryLov: LovComponent;
    @ViewChild('acctEntrySave') acctEntrySave: ConfirmSaveComponent;
+   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
    
    passData: any = {
       tableData: [],
-      tHeader: ['Tran Type No','Prefix', 'Transaction Type Name', 'Default Particulars','Master Transaction Type', 'Auto','BAE','Active'],
-      dataTypes: ['number','text', 'text', 'text','text', 'checkbox','checkbox','checkbox'],
+      tHeader: ['Tran Type No','Prefix', 'Transaction Type Name', 'Default Particulars', 'Auto','BAE','Active'],
+      dataTypes: ['number','text', 'text', 'text', 'checkbox','checkbox','checkbox'],
       nData: {
       	tranClass:'',
       	tranTypeCd:'',
@@ -49,23 +52,26 @@ export class AcitTranTypeComponent implements OnInit {
       	updateDate:'',
       	groupTag:''
       },
+      magnifyingGlass: ['masterTranType'],
       searchFlag: true,
       infoFlag: true,
-      checkFlag: true,
-      addFlag: false,
+      addFlag: true,
+      disableAdd: true,
+      genericBtn: 'Delete',
+      disableGeneric: true,
       deleteFlag: false,
       paginateFlag: true,
       pageLength: 10,
       pageID: 1,
-      uneditable: [true,false,false,false,false,false,true,false],
-      widths: [85,100,305,310,165,50,50,50],
-      keys: ['tranTypeCd', 'typePrefix', 'tranTypeName', 'defaultParticulars', 'masterTranType', 'autoTag','baeTag', 'activeTag'],
+      uneditable: [true,false,false,false,false,true,false],
+      widths: [85,100,305,310,50,50,50],
+      keys: ['tranTypeCd', 'typePrefix', 'tranTypeName', 'defaultParticulars', 'autoTag','baeTag', 'activeTag'],
   };
 
    acctEntries: any = {
       tableData: [],
       tHeader: ['Account Code','Account Name', 'SL Type', 'Sub1','Sub2', 'Sub3','Debit/Credit'],
-      dataTypes: ['text','text', 'text', 'text','text', 'text','select'],
+      dataTypes: ['text','text', 'text', 'select','select', 'select','select'],
       nData: {
         showMG: 1,
         shortCode: '',
@@ -89,11 +95,27 @@ export class AcitTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 2,
-      opts: [{
-              selector: 'drCrTag',
-              prev: ['Debit','Credit'],
-              vals: ['D','C'],
-             }
+      opts: [
+      {
+        selector: 'sub1Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub2Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+       {
+        selector: 'sub3Dep',
+        prev: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+        vals: ['LI','BP','BN','CO','CU','IT','TS','DS'],
+       },
+      {
+        selector: 'drCrTag',
+        prev: ['Debit','Credit'],
+        vals: ['D','C'],
+       }
       ],
       uneditable: [true,false,false,false,false,false,false],
       widths: [100,300,187,90,90,90,95],
@@ -125,11 +147,12 @@ export class AcitTranTypeComponent implements OnInit {
       paginateFlag: true,
       pageLength: 10,
       pageID: 3,
-      opts: [{
-              selector: 'signTag',
-              prev: ['+','-'],
-              vals: ['P','N'],
-             }
+      opts: [
+      {
+        selector: 'signTag',
+        prev: ['+','-'],
+        vals: ['P','N'],
+       }
       ],
       uneditable: [true,false,false,false,false],
       widths: [75,405,325,160,50],
@@ -151,11 +174,13 @@ export class AcitTranTypeComponent implements OnInit {
   };
 
   paramsAmtDtl = {
+    remarks:'',
     delDefAmt: [],
     saveDefAmt: []
   }
 
   paramsAcctEntries = {
+    remarks:'',
     saveAcctEnt: [],
     delAcctEnt : []
   }
@@ -178,8 +203,8 @@ export class AcitTranTypeComponent implements OnInit {
 
   retrieveTranType(){
     this.table.loadingFlag = true
-    this.passData.addFlag = true;
-    this.passData.deleteFlag = true;
+    this.passData.disableGeneric = false;
+    this.passData.disableAdd = false;
   	this.maintenanceService.getAcitTranType(this.params.tranClass,null,null,null,null,null).subscribe((data:any) => {
       console.log(data)
   		this.passData.tableData = [];
@@ -217,20 +242,31 @@ export class AcitTranTypeComponent implements OnInit {
   	}
   }
 
-  onClickSave(){
-    var errorFlag = false;
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(this.passData.tableData[i].masterTranType === '' && this.passData.tableData[i].autoTag === 'Y'){
-        errorFlag = true;
-      }
+  deleteCurr(ev) {
+    console.log(ev)
+    if(ev.okDelete == 'N'){
+        this.dialogMessage = "Deleting this record is not allowed. This was already used in some accounting records.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    }else{
+      this.table.selected = [this.table.indvSelect];
+      this.table.confirmDelete();
     }
+  }
 
-    if(errorFlag){
-      this.dialogMessage = "Tran type with auto tag must have master transaction type";
-      this.dialogIcon = "error-message";
+  onClickSave(){
+      this.tranTypeSave.confirmModal();
+  }
+
+  onClickDelete(data){
+    if(this.table.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'The selected Tran Type. cannot be deleted. This was already used in Acknowledgement Reciept/s.';
       this.successDiag.open();
     }else{
-      this.tranTypeSave.confirmModal();
+      this.table.indvSelect.deleted = true;
+      this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
     }
   }
 
@@ -264,6 +300,7 @@ export class AcitTranTypeComponent implements OnInit {
   		  this.dialogMessage = "";
   		  this.dialogIcon = "success";
   		  this.successDiag.open();
+        this.table.markAsPristine();
   		  this.retrieveTranType();
   		}
   	});
@@ -343,9 +380,9 @@ export class AcitTranTypeComponent implements OnInit {
   defAmtClick(data){
     console.log(data)
     if(data!==null){
-      this.params.remarks = data.remarks;
+      this.paramsAmtDtl.remarks = data.remarks;
     }else{
-      this.params.remarks = '';
+      this.paramsAmtDtl.remarks = '';
     }
   }
 
@@ -370,9 +407,9 @@ export class AcitTranTypeComponent implements OnInit {
   acctEntriesClick(data){
     console.log(data)
     if(data !== null){
-      this.params.remarks = data.remarks;
+      this.paramsAcctEntries.remarks = data.remarks;
     }else{
-      this.params.remarks = '';
+      this.paramsAcctEntries.remarks = '';
     }
   }
 
@@ -440,5 +477,72 @@ export class AcitTranTypeComponent implements OnInit {
         this.retrieveAcctEnt();
       }
     });
+  }
+
+  print(){
+    this.printModal.open();
+  }
+
+  printPreview(data) {
+    this.passData.tableData = [];
+    if(data[0].basedOn === 'curr'){
+     this.getRecords(this.params.tranClass,this.params.tranTypeCd);
+    } else if (data[0].basedOn === 'all') {
+     this.getRecords(this.params.tranClass);
+    }
+  }
+
+  getRecords(tranClass?,tranTypeCd?){
+     this.maintenanceService.getAcitTranType(tranClass,tranTypeCd,null,null,null,null).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+       this.passData.tableData = data.tranTypeList;
+       this.passData.tableData.forEach(a => {
+         if(a.defaultParticulars === null){
+           a.defaultParticulars = '';
+         }
+
+         if(a.masterTranType === null){
+           a.masterTranType = '';
+         }
+
+         if(a.typePrefix === null){
+           a.typePrefix = '';
+         }
+       });
+     });
+  }
+
+   finalGetRecords(selection?){
+    this.export(this.passData.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AcitTranType'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+    
+    alasql('SELECT tranTypeCd AS [Tran Type No],typePrefix AS [Prefix],tranTypeName AS [Transaction Type Name],defaultParticulars AS [Default Particulars],masterTranType AS [Master Transaction Type],autoTag AS [Auto],baeTag AS [BAE],activeTag AS [Active] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }

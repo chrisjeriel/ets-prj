@@ -99,13 +99,11 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
-            console.log(data);
             this.passData.data = data;
           }
           setTimeout(()=>{this.successDiag.open();this.table.refreshTable();},0)
           break;
         }else{
-          console.log(data);
           this.passData.data = data;
         }
         index += 1;
@@ -191,11 +189,9 @@ export class LovComponent implements OnInit {
     let selects:any[] = [];
     if(!this.lovCheckBox){
       this.selectedData.emit(this.passData);
-      console.log(this.passData);
     }
     else{
       selects = this.passTable.tableData.filter(a=>a.checked);
-      console.log(selects)
       this.passData.data = selects;
       this.selectedData.emit(this.passData);
     }
@@ -817,7 +813,6 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnAcitChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
-        console.log(this.passTable.tableData);
       })
     }else if(this.passData.selector == 'slType'){
       this.passTable.tHeader = ['SL Type Code','SL Type Name'];
@@ -850,6 +845,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
         this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        console.log(a["soaDtlList"]);
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;
@@ -945,7 +941,7 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal)
       .subscribe((a:any)=>{
         var rec = a["soaDtlList"].filter(e => e.payeeNo == this.passData.payeeNo).map(a => { a.returnAmt = a.paytAmt; return a; });
-        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.prevBalance; e.edited = true; e.validate = true; return e; });
+        this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; });
         for(var i of this.passTable.tableData){
           if(i.processing !== null && i.processing !== undefined){
             i.preventDefault = true;

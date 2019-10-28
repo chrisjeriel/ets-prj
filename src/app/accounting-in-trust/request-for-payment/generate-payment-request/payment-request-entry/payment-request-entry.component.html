@@ -182,19 +182,6 @@
         <div class="input-group">
           <p class="col-sm-12">Are you sure you want to approve this Payment Request?</p>
         </div>
-        <!-- <div class="input-group">
-          <label class="form-control-sm col-sm-4 labels">Approved By</label>
-          <div class="input-group col-sm" style="padding: 0px; margin-right: 36px !important;">
-            <input type="text" class="form-control form-control-sm cust-sm col-sm-12 cap-input warn" (change)="checkCode($event,'app-user')" [(ngModel)]="saveAcitPaytReq.approvedBy" appRequired>
-            <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('app-user')"><i class="fa fa-search"></i></a></div>
-          </div>
-        </div>
-        <div class="input-group">
-          <label class="form-control-sm col-sm-4 no-margin">Date Approved</label>
-          <div class="col-sm-7 dp-cont" style="margin-left: 0px !important">
-            <datepicker type="datetime" [required]="true" [(value)]="saveAcitPaytReq.approvedDate"></datepicker>
-          </div>
-        </div> -->
       </div>
       <div *ngIf="fromBtn == 'cancel-req'">
         <div class="input-group">
@@ -208,8 +195,6 @@
       </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">               
-        <!-- <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?onYesCancelReq():onYesAppby();">Yes</button>
-        <button class="cust-btn" type="button" (click)="(fromBtn == 'cancel-req')?confirmMdl.closeModal():onNoAppby();">No</button> -->
         <button class="cust-btn" type="button" (click)="onYesConfirmed()">Yes</button>
         <button class="cust-btn" type="button" (click)="confirmMdl.closeModal()">No</button>
     </div>
@@ -218,7 +203,7 @@
 <app-modal class="d-none" #warnMdl >
     <div header style="min-width:460px !important;">Warning</div>
     <div body class="container-flex text-center">
-      <p>{{ warnMsg }}</p>
+      <pre style="font-family: inherit !important;width: inherit !important; margin-bottom: 0px !important;"><p style="margin-bottom: 0px !important;">{{ warnMsg }}</p></pre>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>

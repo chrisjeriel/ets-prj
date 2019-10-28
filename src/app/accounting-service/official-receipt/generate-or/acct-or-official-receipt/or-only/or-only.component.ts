@@ -26,13 +26,13 @@ export class OrOnlyComponent implements OnInit {
   	@ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   	@ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
   	@ViewChild('taxAllocCancel') taxCancelBtn : CancelButtonComponent;
-
   	@Output() emitCreateUpdate: any = new EventEmitter<any>();
+    @Input() inquiryFlag: boolean; // added by ENGEL;
 
 	 passData : any = {
 	    tableData: [],
 	    tHeader : ["Item","Reference No","Curr","Curr Rate","Amount","Amount(PHP)"],
-	    dataTypes: ["text","text","text","percent","currency","currency"],
+	    dataTypes: ["reqTxt","text","text","percent","reqCurrency","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
 	    checkFlag: true,
@@ -90,6 +90,7 @@ export class OrOnlyComponent implements OnInit {
 	    },
 	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
 	    widths: [1,150,120,120],
+      uneditable: [true,true,true,true],
 	    pageID: 'genTaxTbl'
 	  }
 
@@ -120,6 +121,7 @@ export class OrOnlyComponent implements OnInit {
 	    },
 	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
 	    widths: [1,150,120,120],
+      uneditable: [true,true,true,true],
 	    pageID: 'whTaxTbl'
 	  }
 
@@ -144,9 +146,11 @@ export class OrOnlyComponent implements OnInit {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    console.log(this.record.vatTag);
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
-  	if(this.record.orStatDesc.toUpperCase() != 'NEW'){
+    this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
+  	if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
   		this.passData.addFlag = false;
   		this.passData.deleteFlag = false;
   		this.passData.checkFlag = false;
@@ -155,12 +159,42 @@ export class OrOnlyComponent implements OnInit {
   		this.passDataGenTax.deleteFlag = false;
   		this.passDataWhTax.checkFlag = false;
   		this.passDataWhTax.addFlag = false;
-		this.passDataWhTax.deleteFlag = false;
+		  this.passDataWhTax.deleteFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true];
   		this.passDataGenTax.uneditable = [true,true,true,true];
   		this.passDataWhTax.uneditable = [true,true,true,true];
   	}
   	this.retrieveOrTransDtl();
+  }
+
+  checkPayeeVsVat(){
+    if(this.record.vatTag == 3 || this.record.vatTag == 2){
+      console.log('pasok boi');
+      this.ms.getMtnGenTax('VAT').subscribe(
+         (data: any)=>{
+           var vatDetails: any = {
+             tranId: this.record.tranId,
+             billId: 1, // 1 for Official Receipt
+             itemNo: '',
+             taxType: 'G', //for General Tax, Tax Type
+             taxCd: data.genTaxList[0].taxCd,
+             taxName: data.genTaxList[0].taxName,
+             taxRate: data.genTaxList[0].taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0
+           }
+           this.passData.nData.taxAllocation.push(vatDetails);
+           console.log(this.passData.nData);
+         },
+         (error)=>{
+           console.log('An error occured when fetching maintenance gentax');
+         }
+      );
+    }
   }
 
   openTaxAllocation(){
@@ -222,6 +256,9 @@ export class OrOnlyComponent implements OnInit {
   	this.passLov.activeTag = 'Y';
   	this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    if(this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT')
+    }
     console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
@@ -246,7 +283,12 @@ export class OrOnlyComponent implements OnInit {
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxCd = selected[i].taxCd; 
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxName = selected[i].taxName; 
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxRate = selected[i].taxRate;
-	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+	      //this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+        if(selected[i].taxRate == null || (selected[i].taxRate !== null && selected[i].taxRate == 0)){ //if fixed tax
+          this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+        }else{ //else if rated tax
+          this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedItem.localAmt;
+        }
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].tranId = this.record.tranId;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].billId = 1;
 	      this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
@@ -262,7 +304,7 @@ export class OrOnlyComponent implements OnInit {
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxCd = selected[i].taxCd; 
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxName = selected[i].taxName; 
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxRate = selected[i].taxRate;
-    	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = 1 * selected[i].taxRate; //placeholder
+    	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedItem.localAmt; //placeholder
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].tranId = this.record.tranId;
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].billId = 1;
     	  this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].edited = true;
@@ -279,16 +321,33 @@ export class OrOnlyComponent implements OnInit {
     if(data.key == 'currAmt'){
       for(var i of this.passData.tableData){
         i.localAmt = i.currAmt * i.currRate;
+        for(var j of i.taxAllocation){
+          if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
+            i.taxAmt = 0;
+          }else{
+            j.taxAmt = i.localAmt * (j.taxRate / 100);
+          }
+          j.edited = true;
+        }
       }
     }
   }
 
   onClickSave(){
-  	this.confirm.confirmModal();
+  	if(this.checkFields()){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
   	this.cancelBtn.clickCancel();
+  }
+
+  test(event){
+    console.log(event);
   }
 
   save(cancelFlag?){
@@ -334,6 +393,7 @@ export class OrOnlyComponent implements OnInit {
       delOrTransDtl: this.deletedData,
       delOrItemTaxes: this.deletedTaxData
     }
+    console.log(params);
 
     this.as.saveAcseOrTransDtl(params).subscribe(
       (data:any)=>{
@@ -360,28 +420,21 @@ export class OrOnlyComponent implements OnInit {
   }
 
   confirmLeaveTaxAlloc(){
-    /*for(var i of this.passDataGenTax.tableData){
-      if(i.add || i.edited || i.deleted){
-        return true;
-      }
-    }
-    for(var i of this.passDataWhTax.tableData){
-      if(i.add || i.edited || i.deleted){
-        return true;
-      }
-    }*/
     if(this.genTaxTbl.form.first.dirty || this.whTaxTbl.form.first.dirty){
       return true;
     }
     return false;
   }
 
-  /*openLeaveTaxConfirmation(){
-  	this.modalService.open(ConfirmLeaveComponent,{
-          centered: true, 
-          backdrop: 'static', 
-          windowClass : 'modal-size'
-      });
-  }*/
+  //VALIDATIONS STARTS HERE
+  checkFields(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.itemName == null || (i.itemName !== null && i.itemName.length == 0) ||
+         i.currAmt == null || (i.currAmt !== null && String(i.currAmt).toString().length == 0)){
+        return true;
+      }
+    }
+    return false;
+  }
 
 }

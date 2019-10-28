@@ -1,0 +1,25 @@
+<app-modal class="d-none" #overrideMdl >
+    <div header>Override</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">User ID</label>
+              <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="userId" required>
+              <div class="col-sm-1"></div>
+            </div>
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">Password</label>
+              <input type="password" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="password" required>
+              <div class="col-sm-1"></div>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="overrideMdl.closeModal(); this.clearFields()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onOkOver()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="resultMethod()"></app-sucess-dialog>

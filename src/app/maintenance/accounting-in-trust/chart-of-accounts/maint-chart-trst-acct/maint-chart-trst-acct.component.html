@@ -4,22 +4,26 @@
     <div class="col-sm-3">
       <div class="input-group">
         <label class="form-control-sm col-sm-4">Account Type</label>
-        <select class="form-control form-control-sm cust-sm col-sm">
-          <option value="all">ALL</option>
-          <option value="asset">Asset</option>
+        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="searchParams.glAcctCategory" (ngModelChange)="searchParams.glAcctCategory = $event;clearAccCode()">
+          <option value="">ALL</option>
+          <option value="1">Asset</option>
+          <option value="2">Liability</option>
+          <option value="3">Equity</option>
+          <option value="4">Revenue</option>
+          <option value="5">Expense</option>
         </select>
       </div>
     </div>
     <div class="col-sm-4">
       <div class="input-group">
         <label class="form-control-sm col-sm-4">Account Code</label>
-        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
-        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
-        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
-        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
-        <input type="text" class="form-control form-control-sm col-sm cust-m text-right">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctCategory">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctControl">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub1">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub2">
+        <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub3">
         <div class="text-search-ico">
-          <a><i class="fa fa-search"></i></a>
+          <a><i class="fa fa-search" (click)="showAccCode()"></i></a>
         </div>
       </div>
     </div>
@@ -28,7 +32,7 @@
         <label class="form-control-sm col-sm-3">Account Description</label>
         <input type="text" class="form-control form-control-sm col-sm">
         <div class="cust-btn-container" style="margin-left:3px !important;margin-top: -2px !important;">
-          <button class="cust-btn col-sm-1">Search</button>
+          <button type="button" class="cust-btn col-sm-1" (click)="onClickSearch()">Search</button>
         </div>
       </div>
     </div>
@@ -38,14 +42,25 @@
 <fieldset class="scheduler-border">
   <legend class="scheduler-border">Accounts Setup</legend>
   <div class="custom-row-inline-inset">
-    <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="chartOfAccounts.tableData=$event; updateShortCode($event)" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force'); chartOfAccounts.disableGeneric=true;" (clickLOV)="showSLTypeLOV($event)"></app-cust-editable-non-datatable>
-    <br><br>
+    <div class="col-sm-12">
+      <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="chartOfAccounts.tableData=$event; updateShortCode($event)" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');chartOfAccounts.disableGeneric=true;" (clickLOV)="showSLTypeLOV($event)"></app-cust-editable-non-datatable>
+    </div>
+    <div class="row" style="margin-top: 50px;"> 
+      <div class="col-sm-12">
+        <div class="input-group">
+          <div class="col-sm-1"></div>
+          <label class="form-control-sm col-sm-1">Remarks</label>
+          <input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true" [disabled]="remarksFlag">
+        </div>
+      </div>
+    </div>
+    <br>
     <div class="form-row">
       <div class="col-sm-12 text-center">
           <div class="cust-btn-container">
               <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
               <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-              <button type="button" class="cust-btn"><a>Print</a></button>
+              <button type="button" class="cust-btn" (click)="print()"><a>Print</a></button>
             </div>
       </div>
     </div>
@@ -74,7 +89,9 @@
     </div>
   </div>
 
-  <app-lov [passData]="passLov" (selectedData)="setSLType($event)"></app-lov>
+  <app-lov [passData]="passLov" (selectedData)="setAcctCode($event)" #acctCodeLov></app-lov>
+  <app-lov [passData]="passLov" (selectedData)="setSLType($event)" #slTypeLov></app-lov>
   <app-confirm-save (onYes)="save()"></app-confirm-save>
   <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
   <app-cancel-button (onYes)="save(true)" [url]="'/maintenance-acct'" ></app-cancel-button>
+  <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>

@@ -33,7 +33,7 @@ aside.ng-sidebar{
     outline: none !important;
     border-style: none;
     border: 1px solid gray;
-    z-index: 9999 !important;
+    z-index: 100 !important;
     border-radius: 2px;
     background: linear-gradient(to bottom, #303F9F 0%, #283593 100%) ! important;
     min-width: 60px;

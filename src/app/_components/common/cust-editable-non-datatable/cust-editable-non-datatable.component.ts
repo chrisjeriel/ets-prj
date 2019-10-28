@@ -315,6 +315,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
+            this.onDelete.emit();
             if(this.passData.genericBtn == 'Delete'){
                 this.passData.disableGeneric = true
             }

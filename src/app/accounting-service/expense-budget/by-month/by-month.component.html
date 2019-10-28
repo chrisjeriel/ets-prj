@@ -5,15 +5,19 @@
 	 	<div class="container-fluid">
 	 		<div class="row" style="padding-top: 5px;">
 			    <div class="col-sm-12" style="padding: 0">
+
+					<form #myForm="ngForm">
 			    		<div class="row">
 			    			<div class="col-sm-5"></div>
 				    		<div class="input-group col-sm" style="margin: 0px">
 				    			<label class="form-control-sm">Year</label>
-				    			<select class="form-control form-control-sm cust-sm col-sm-2" id="selectYear" [ngModel]="selectedYear" (ngModelChange)="retrieveAcseBudExpMonthly($event, true)" style="z-index: 50 !important;">
+				    			<select class="form-control form-control-sm cust-sm col-sm-2" id="selectYear" [ngModel]="selectedYear" (ngModelChange)="retrieveAcseBudExpMonthly($event, true); form.control.markAsPristine()" style="z-index: 50 !important;" name="year">
 				    				<option *ngFor="let years of yearArray" [value]="years">{{years}}</option>
 								</select>
 				    		</div>
 			    		</div>
+
+					</form>
 			    	   	<div>
 			    	   		<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)"></app-cust-editable-non-datatable>
 			    	   	</div>

@@ -17,31 +17,31 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
   styleUrls: ['./quarterly-stmnt-of-acct.component.css']
 })
 export class QuarterlyStmntOfAcctComponent implements OnInit {
-	@ViewChild('confModal') confModal: ModalComponent;
-	@ViewChild('generateModal') generateModal: ModalComponent;
 	@ViewChild('qsoaListTbl') qsoaListTbl: CustEditableNonDatatableComponent;
+	@ViewChild('qsoaListDtlTbl') qsoaListDtlTbl: CustEditableNonDatatableComponent;
+	@ViewChild('qsoaDtlExcludeTbl') qsoaDtlExcludeTbl: CustEditableNonDatatableComponent;
+	@ViewChild('qsoaAcctReceivableTbl') qsoaAcctReceivableTbl: CustEditableNonDatatableComponent;
+	@ViewChild('qsoaAcctRemittanceTbl') qsoaAcctRemittanceTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
-	@ViewChild('tbl1') tbl1: CustEditableNonDatatableComponent;
-	@ViewChild('tbl2') tbl2: CustEditableNonDatatableComponent;
-	@ViewChild('tbl3') tbl3: CustEditableNonDatatableComponent;
-	@ViewChild('tbl4') tbl4: CustEditableNonDatatableComponent;
 	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
-	@ViewChild('combinedStmtOfAcct') combinedStmtOfAcct: ModalComponent;
-	@ViewChild('acctReceivable') acctReceivable: ModalComponent;
-	@ViewChild('acctRemittance') acctRemittance: ModalComponent;
+	@ViewChild('generateMdl') generateMdl: ModalComponent;
+	@ViewChild('confMdl') confMdl: ModalComponent;
+	@ViewChild('combinedStmtOfAcctMdl') combinedStmtOfAcctMdl: ModalComponent;
+	@ViewChild('acctReceivableMdl') acctReceivableMdl: ModalComponent;
+	@ViewChild('acctRemittanceMdl') acctRemittanceMdl: ModalComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
 	summary:boolean = false;
 	remittances:boolean = false;
 
-	QSOAList: any ={
+	qsoaList: any = {
 		tableData: [],
 		tHeader: ['Company', 'Currency', 'Quarter Ending','Status','Reference No.','Debit','Credit'],
 		dataTypes: ['text','text','date','text','text','currency','currency'],
 		keys: ['cedingName','currCd','quarterEnding','qsoaStatusDesc','refNoTranId','totalDebitAmt','totalCreditAmt'],
-		widths: ["200"],
+		widths: ['auto','1','auto','auto','auto','auto','auto'],
 		infoFlag: true,
 		paginateFlag: true,
 		genericBtn: 'View Details',
@@ -49,7 +49,8 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		searchFlag:true,
 		uneditable: [true,true,true,true,true,true,true],
 		pageLength: 15,
-		pageID:1,
+		pageID: 'QSOAListTab',
+		disableGeneric: true,
 		filters: [
 			{
 				key: 'cedingName',
@@ -149,56 +150,6 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		keys: ['tranClass','tranNo','tranDate','tranTypeName','payee','particulars','amount']
 	}
 
-	passDataViewAccountsReceivable: any = {
-		tableData:[],
-		tHeader:["Policy No.","Memo No.","Incept Date","Expiry Date","Effective Date","Premium","RI Commission","Other Charges","Amount Due"],
-		dataTypes: ["text","text","date","date","date","currency","currency","currency","currency"],
-		keys: ['policyNo','memoNo','inceptDate','expiryDate','effDate','premium','riCommission','otherCharges','amountDue'],
-		uneditable: [true,true,true,true,true,true,true,true,true],
-		tableOnly: true,
-		pageStatus: true,
-		pagination: true,
-		pageLength: 15,
-		total: [null,null,null,null,'TOTAL','premium','riCommission','otherCharges','amountDue'],
-		pageID: 'qsoaAccReceivables'
-	}
-
-	passDataSummary: any = {
-		tableData: [],
-		tHeader:["Line","Premium","RI Commission","Other Charges","Amount Due"],
-		dataTypes: ["text","currency","currency","currency","currency"],
-		keys: ['lineCd','premium','riCommission','otherCharges','amountDue'],
-		total: ['TOTAL','premium','ricommission','otherCharges','amountDue'],
-		tableOnly: true,
-		pageStatus: true,
-		pagination: true,
-		pageLength: 10,
-		pageID: 'qsoaSummary',
-		uneditable:[true,true,true,true,true]
-	}
-
-    passDataViewRemittances: any = {
-		tableData: [
-			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-02-2018"),paymentType:"Inward Policy Balance",payee:"AFPGEN",particulars:"Payment for",amount:100000},
-			{tranType:'AR',tranNo:"00373244",tranDate:new Date("12-03-2018"),paymentType:"Inward Policy Balance",payee:"AUII",particulars:"Payment for",amount:50000},
-			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-04-2018"),paymentType:"Negative Treaty Balance",payee:"ALLIED",particulars:"Payment for",amount:250000},
-			{tranType:'AR',tranNo:"00372890",tranDate:new Date("12-5-2018"),paymentType:"Negative Treaty Balance",payee:"UCPBGEN",particulars:"Payment for",amount:100000},
-			{tranType:'CV',tranNo:"2018-003892",tranDate:new Date("12-5-2018"),paymentType:"Treaty Balance Due Participant",payee:"UCPBGEN",particulars:"Payment for",amount:100000},
-			{tranType:'CV',tranNo:"2018-003893",tranDate:new Date("12-5-2018"),paymentType:"Treaty Balance Due Participant",payee:"ALLIED",particulars:"Payment for",amount:250000},
-			{tranType:'CV',tranNo:"2018-003894",tranDate:new Date("12-5-2018"),paymentType:"Inward Policy Balances",payee:"AUII",particulars:"Payment for",amount:50000},
-		],
-		tHeader:["Tran Type","Tran No.","Tran Date","Payment Type","Payee/Payor","Particulars","Amount"],
-		dataTypes: ["text","text","date","text","text","text","currency"],
-		total: [null,null,null,null,null,'TOTAL','amount'],
-		tableOnly: true,
-		pageStatus: true,
-		pagination: true,
-		pageLength: 10,
-		pageID: 5,
-		uneditable:[true,true,true,true,true],
-		widths:[1,150,1,'auto','auto',200,200]
-	}
-
 	confMsg: number = 1;
 	filtCedingId: string = '';
 	filtCedingName: string = '';
@@ -235,7 +186,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	    	this.yearParamOpts.push(x);
 	    }
 
-		this.showGenerateModal();
+		this.showGenerateMdl();
 	}
 
 	getQSOAList(param) {
@@ -243,26 +194,39 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		this.as.getQSOAList(param).subscribe(data => {
 			this.qsoaListTbl.overlayLoader = false;
 			console.log(data);
-			this.QSOAList.tableData = data['qsoaList'];
+			this.qsoaList.tableData = data['qsoaList'];
 			this.qsoaListTbl.refreshTable();
 		});
 	}
 
-	showGenerateModal() {
-		setTimeout(() => { $('#generateQSOAModal #modalBtn').trigger('click'); }, 0);
+	showGenerateMdl() {
+		setTimeout(() => {
+			this.generateMdl.openNoClose();
+		}, 0);
 	}
 
-	showModal(content) {
+	toggleGeneric(ev) {
+		this.qsoaList.disableGeneric = this.selectedQsoa == null;
+	}
+
+	onDblClick(ev) {
+		this.selectedQsoa = ev;
+		this.showCombinedStmtOfAcctMdl();
+	}
+
+	showCombinedStmtOfAcctMdl() {
 		this.totalDebitTbl = 0;
 		this.totalCreditTbl = 0;
 		this.totalDebit = 0;
 		this.totalCredit = 0;
-		this.combinedStmtOfAcct.openNoClose();
+
+		this.combinedStmtOfAcctMdl.openNoClose();
+
 		setTimeout(() => {
-			this.tbl1.refreshTable();
-			this.tbl2.refreshTable();
-			this.tbl1.overlayLoader = true;
-			this.tbl2.overlayLoader = true;
+			this.qsoaListDtlTbl.refreshTable();
+			this.qsoaDtlExcludeTbl.refreshTable();
+			this.qsoaListDtlTbl.overlayLoader = true;
+			this.qsoaDtlExcludeTbl.overlayLoader = true;
 		}, 0);
 		
 		this.as.getQSOADtl(this.selectedQsoa.qsoaId).subscribe(data => {
@@ -283,63 +247,31 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 			this.totalDebit = this.totalDebitTbl + this.balanceDebit;
 			this.totalCredit = this.totalCreditTbl + this.balanceCredit;
 
-			this.tbl1.refreshTable();
-			this.tbl2.refreshTable();
+			this.qsoaListDtlTbl.refreshTable();
+			this.qsoaDtlExcludeTbl.refreshTable();
 		});
 	}
 
 	showQsoaAcctReceivableMdl() {
-		this.acctReceivable.openNoClose();
+		this.acctReceivableMdl.openNoClose();
 
 		setTimeout(() => {
-			this.tbl3.refreshTable();
+			this.qsoaAcctReceivableTbl.refreshTable();
 		}, 0);
 	}
 
 	showQsoaRemittanceMdl() {
-		this.acctRemittance.openNoClose();
+		this.acctRemittanceMdl.openNoClose();
 
 		setTimeout(() => {
-			this.tbl4.refreshTable();
+			this.qsoaAcctRemittanceTbl.refreshTable();
 		}, 0);
-	}
-
-	viewRemittances(){
-		this.comStmt = false;
-		this.receivables = false;
-		this.summary	= false;
-		this.remittances = true;
-	}
-
-	viewComStmt(){
-		this.comStmt = true;
-		this.receivables = false;
-		this.summary	= false;
-		this.remittances = false;
-	}
-
-	viewSummary(){
-		this.comStmt = false;
-		this.receivables = false;
-		this.summary	= true;	
-		this.remittances = false;
-	}
-
-	viewReceivables(){
-		this.comStmt = false;
-		this.receivables = true;
-		this.summary	= false;
-		this.remittances = false;
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
 		if ($event.nextId === 'Exit') {
 			this.route.navigateByUrl('');
 		}
-	}
-
-	showConfModal() {
-		this.confModal.openNoClose();
 	}
 
 	onClickSearch() {
@@ -390,23 +322,14 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				this.successDialog.open();
 
 				this.viewQsoa();
-				
-				// this.filtCedingId = this.gnrtCedingId;
-				// this.filtCedingName = this.gnrtCedingName;
-				// this.filtFromQtr = this.gnrtQtr;
-				// this.filtFromYear = this.gnrtYear
-				// this.filtToQtr = this.gnrtQtr;
-				// this.filtToYear = this.gnrtYear
 
 				var d = new Date();
 				this.gnrtCedingId = '';
 				this.gnrtCedingName = '';
 			    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
 			    this.gnrtYear = d.getFullYear();
-
-				// this.onClickSearch();
 			} else if(data['returnCode'] == 1) {
-				this.confModal.openNoClose();
+				this.confMdl.openNoClose();
 			} else if(data['returnCode'] == 2) {
 				this.dialogIcon = 'error-message';
 				this.dialogMessage = 'Payments have already been made for this QSOA. Regeneration is not allowed.';

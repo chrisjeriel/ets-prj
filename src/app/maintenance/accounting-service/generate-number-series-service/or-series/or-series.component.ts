@@ -4,6 +4,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-or-series',
@@ -16,6 +17,8 @@ export class OrSeriesComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('orModal') orModal: ModalComponent;
+  @ViewChild('orErrorModal') orErrorModal: ModalComponent;
 
   passData: any = {
       tableData: [],
@@ -42,13 +45,12 @@ export class OrSeriesComponent implements OnInit {
 
   dialogMessage: string = "";
   dialogIcon: string = "";
-  maxORSeries: number = 0;
+  okGenerate: any = '';
   cancelFlag:boolean;
   
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.retrieveMaxTran();
   }
 
   retrieveOrSeries(){
@@ -65,28 +67,25 @@ export class OrSeriesComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.checkField()){
-      this.dialogMessage = "Please Check Field Values!";
+    if(this.params.orFrom >= this.params.orTo){
+      this.dialogMessage = "Or From must not be greater or equal to Or to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
-    }else if(this.params.orFrom <= this.maxORSeries){
-      this.dialogMessage = "Existing number series was already created for the specified transaction numbers " + this.params.orFrom + " to " + this.params.orTo + ".Please adjust your From-To range values.";
-      this.dialogIcon = "error-message";
-      this.successDiag.open();
-    }else {
-      this.confirm.confirmModal();
+    }else{
+      this.maintenanceService.getAcseMaxTranSeries('OR',this.params.orFrom,this.params.orTo,null,this.params.orType).subscribe((data:any) => {
+        console.log(data)
+        this.okGenerate = data.allowGenerate.allowGenerate;
+        if(this.okGenerate == 'N'){
+          this.orErrorModal.openNoClose();
+        }else{
+          this.orModal.openNoClose();
+        }
+      });
     }
   }
 
   checkField() :boolean{
-    if(this.params.orType.length !== 0 &&
-       this.params.orTo.length !== 0 &&
-       this.params.orFrom.length !== 0
-      ){
-      return false;
-    }else{
-      return true;
-    }
+      return this.params.orType == '' || this.params.orTo == '' || this.params.orFrom == '';
   }
 
   generateOR(cancel?){
@@ -99,14 +98,8 @@ export class OrSeriesComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
+        this.retrieveOrSeries();
       }
-    });
-  }
-
-  retrieveMaxTran(){
-    this.maintenanceService.getAcseMaxTranSeries('OR',this.params.orType).subscribe((data:any) => {
-      console.log(data)
-      this.maxORSeries = data.maxTranNo.tranNo;
     });
   }
 }
