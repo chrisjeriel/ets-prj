@@ -10,6 +10,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-payee',
@@ -24,7 +25,9 @@ export class PayeeComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(LovComponent) payeeLov: LovComponent;
+  @ViewChild('bussTypeLov') bussTypeLov: LovComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
+  @ViewChild('mdl') modal : ModalComponent;
 
   dialogIcon:string = '';
   dialogMessage: string = '';
@@ -41,14 +44,21 @@ export class PayeeComponent implements OnInit {
     hide: []
   }
 
+  passBussTypeLov: any = {
+    selector: '',
+    activeTag: '',
+    hide: []
+  }
+
   passTable:any={
   	tableData:[],
   	widths:[1,1,1,250,1,1,80,80,200,200],
   	tHeader:['Auto','Active','Payee No','Payee Name','Reference Code','Business Type','Tin','Contact No','Mailing Address','Email Address'],
   	dataTypes:['checkbox','checkbox','number','text','text','text','text','text','text','text'],
   	tooltip:[],
-  	uneditable:[true,false,true,false,true,false,false,false,false,false],
+  	uneditable:[true,false,true,false,false,true,false,false,false,false],
   	keys:['autoTag','activeTag','payeeNo','payeeName','refCd','bussTypeName','tin','contactNo','mailAddress','email'],
+    magnifyingGlass: [ "bussTypeName"],
   	addFlag: true,
   	genericBtn:'Delete',
   	paginateFlag:true, 
@@ -56,6 +66,7 @@ export class PayeeComponent implements OnInit {
   	infoFlag:true,
   	searchFlag:true,
   	nData:{
+      showMG : 1,
       autoTag : 'N',
       activeTag : 'Y',
       payeeNo		: null,
@@ -77,6 +88,11 @@ export class PayeeComponent implements OnInit {
 
   payee:any = {};
   boolPrint: boolean = true;
+  boolOtherDet : boolean = true;
+  payeeLOVRow : number;
+  oldRecord : any ={
+      tableData:[]
+  };
 
 
   constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute) { }
@@ -103,8 +119,30 @@ export class PayeeComponent implements OnInit {
     this.payeeLov.openLOV();
   }
 
+  clickTblLOV(data){
+    console.log(data);
+    this.payeeLOVRow = null;
+
+     if(data.key=='bussTypeName'){
+        this.passBussTypeLov.selector = 'mtnBussType';
+        this.passBussTypeLov.params = {};
+        this.bussTypeLov.openLOV();
+        this.payeeLOVRow = data.index;
+     }
+  }
+
+  setSelectedBussType(data){
+    console.log(data.data);
+    if(data === null){
+         this.passTable.tableData[this.payeeLOVRow].bussTypeName = null;
+         this.passTable.tableData[this.payeeLOVRow].bussTypeCd = null;
+    }else {
+         this.passTable.tableData[this.payeeLOVRow].bussTypeName = data.data.bussTypeName;
+         this.passTable.tableData[this.payeeLOVRow].bussTypeCd = data.data.bussTypeCd;
+    }
+  }
+
   setSelectedPayeeType(data){
-  
    if(data.data === null){
     this.ns.lovLoader(data.ev, 0);
     this.payeeClassCd = null;
@@ -160,6 +198,7 @@ export class PayeeComponent implements OnInit {
         this.passTable.tableData.forEach(a=>{
           a.createDate = this.ns.toDateTimeString(a.createDate);
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          a.showMG = 1;
          /* if (a.okDelete === 'N'){
             a.uneditable = ['accountNo','accountName','currCd'];
           }*/
@@ -170,9 +209,9 @@ export class PayeeComponent implements OnInit {
         this.passTable.distableGeneric = false;
         this.passTable.disableAdd = false;
         this.boolPrint = false;
+         this.boolOtherDet = false;
       })
     }
-
   }
 
   onClickCancel(){
@@ -183,6 +222,7 @@ export class PayeeComponent implements OnInit {
     console.log(data);
     this.info = data;
     this.passTable.disableGeneric = data == null;
+    this.boolOtherDet = data == null;
 
     if (data === null) {
     } else {
@@ -190,6 +230,11 @@ export class PayeeComponent implements OnInit {
         this.passTable.disableGeneric = true;
       } 
     } 
+ }
+
+ onOtherDetails(){
+   this.modal.openNoClose();
+   this.oldRecord = JSON.parse(JSON.stringify(this.table.indvSelect));
  }
 
 

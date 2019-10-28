@@ -18,7 +18,7 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
                     <div class="row">
                         <div class="col-sm" id="mtn-payee">
-	                	  <app-cust-editable-non-datatable #payee [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+	                	  <app-cust-editable-non-datatable #payee [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"  (clickLOV)="clickTblLOV($event);"></app-cust-editable-non-datatable>
                         </div>
                     </div>
 	                <div class="w-100 text-center my-2">
@@ -28,7 +28,7 @@
                         <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
                     </div>
                 </fieldset>
-                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                <fieldset class="scheduler-border" style="margin-top: 10px !important      ;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
                         <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
@@ -55,5 +55,97 @@
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
 <app-lov [passData]="passLov" (selectedData)="setSelectedPayeeType($event)" [lovCheckBox]="lovCheckbox">
+<app-lov #bussTypeLov [passData]="passBussTypeLov" (selectedData)="setSelectedBussType($event)" [lovCheckBox]="lovCheckbox">
+
+
+<app-modal class="d-none" id="otherDetailMdl" #mdl>
+    <div header>Payee Details</div>
+    <div body>
+        <fieldset class="scheduler-border" style="width: 800px">
+            <legend class="scheduler-border">Other Details</legend>
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Payee</label>
+                        <input name="payeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.payeeNo" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm ml-2" [ngModel]="info?.payeeName" readonly>
+                   </div>
+                   <div class="input-group" style="margin-top: -13px !important;">
+                        <label class="form-control-sm col-sm-2">Designation</label>
+                        <input name="designation" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.designation" (ngModelChange)="info.designation=$event;">
+                        <label class="form-control-sm col-sm-2">Department</label>
+                        <input name="department" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.department" (ngModelChange)="info.department=$event;">
+
+                   </div>
+                   <div class="input-group" style="margin-top: -13px !important;">
+                         <label class="form-control-sm col-sm-2">Alternate Mailing Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor [editorContent]="info?.mailAddress2" (fetchContent)="info.mailAddress2 = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                   <div class="input-group" style="margin-top: -13px !important;">
+                         <label class="form-control-sm col-sm-2">Permanent Address</label>
+                         <div class="form-control-sm col-sm edtr-cont" style="height: 40px; padding-right: 0px !important;">
+                                <text-editor  [editorContent]="info?.permAddress" (fetchContent)="info.permAddress = $event">
+                                </text-editor>
+                         </div>
+                  </div>
+                   <div class="input-group" style="margin-top: -13px !important;" >
+                        <label class="form-control-sm col-sm-2">Contact Person 1:</label>
+                        <input name="contactPerson1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.contactPerson1" (ngModelChange)="info.contactPerson1=$event;">
+                        <label class="form-control-sm col-sm-2">Contact Person 2:</label>
+                        <input name="contactPerson2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.contactPerson2" (ngModelChange)="info.contactPerson2=$event;">
+                   </div>
+                   <div class="input-group" style="margin-top: -13px !important; margin-bottom: 1px ! important">
+                        <label class="form-control-sm col-sm-2">Phone No.</label>
+                        <input name="phoneNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.phoneNo" (ngModelChange)="info.phoneNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                        <label class="form-control-sm col-sm-2">Mobile No.</label>
+                        <input name="mobileNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.mobileNo" (ngModelChange)="info.mobileNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                        <label class="form-control-sm col-sm-2">Fax No.</label>
+                        <input name="faxNo" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.faxNo" (ngModelChange)="info.faxNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                   </div>
+        </fieldset>
+        <fieldset class="scheduler-border" style="width: 800px">
+            <legend class="scheduler-border">Bank Details</legend>
+                <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Bank 1:</label>
+                        <input name="bank1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankCd1" (ngModelChange)="info.bankCd1=$event;"> 
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickBankLov()"></i></a></div>
+                        <label class="form-control-sm col-sm-2">Bank 2:</label>
+                        <input name="bank2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bank2" (ngModelChange)="info.bank2=$event;">
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickBankLov()"></i></a></div>
+                </div>
+                <div class="input-group" style="margin-top: -13px !important;" >
+                        <label class="form-control-sm col-sm-2">Bank Branch 1:</label>
+                        <input name="bankBranch1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankBranch1" (ngModelChange)="info.bankBranch1=$event;">
+                        <label class="form-control-sm col-sm-2">Bank Branch 2:</label>
+                        <input name="bankBranch2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankBranch2" (ngModelChange)="info.bankBranch2=$event;">
+                </div> 
+                <div class="input-group" style="margin-top: -13px !important;" >
+                        <label class="form-control-sm col-sm-2">Bank Account Type 1:</label>
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="info?.bankAcctType1" (ngModelChange)="info.bankAcctType1=$event;"> </select>
+                        <label class="form-control-sm col-sm-2">Bank Account Type 2:</label>
+                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="info?.bankAcctType2" (ngModelChange)="info.bankAcctType2=$event;"> </select>
+                </div>
+               <div class="input-group" style="margin-top: -15px !important;" >
+                        <label class="form-control-sm col-sm-2">Bank Account Name 1:</label>
+                        <input name="bankAcctName1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankAcctName1" (ngModelChange)="info.bankAcctName1=$event;">
+                        <label class="form-control-sm col-sm-2">Bank Account Name 2:</label>
+                        <input name="bankAcctName2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankAcctName2" (ngModelChange)="info.bankAcctName2=$event;">
+                </div> 
+                <div class="input-group" style="margin-top: -15px !important;">
+                        <label class="form-control-sm col-sm-2">Bank Account No 1:</label>
+                        <input name="bankAcctNo1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankAcctNo1" (ngModelChange)="info.bankAcctNo1=$event;">
+                        <label class="form-control-sm col-sm-2">Bank Account No 2:</label>
+                        <input name="bankAcctNo2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankAcctNo2" (ngModelChange)="info.bankAcctNo2=$event;">
+                </div> 
+        </fieldset>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();cancelOtherDetails();"><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="modal.closeModal();saveOtherDetails();"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
 
 
