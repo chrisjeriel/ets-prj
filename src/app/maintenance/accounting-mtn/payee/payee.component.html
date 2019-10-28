@@ -51,4 +51,4 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? cnclBtn.onNo():null;"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
-<app-lov [passData]="passLov" (selectedData)="setSelectedSLType($event)" [lovCheckBox]="lovCheckbox">
+<app-lov [passData]="passLov" (selectedData)="setSelectedPayeeType($event)" [lovCheckBox]="lovCheckbox">

@@ -203,7 +203,7 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,ev?) {
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,payeeClassCd?, ev?) {
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -406,8 +406,31 @@ export class LovComponent implements OnInit {
               this.modal.openNoClose();
             }
         });
-      }
-    }
+      } 
+    } else if (selector == 'payeeClass') {
+      if (payeeClassCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnPayeeClass(payeeClassCd,'Y').subscribe((data: any) => {
+            if(data.payeeClassList.length > 0) {
+              data.payeeClassList[0]['ev'] = ev;
+              data.payeeClassList[0]['selector'] = selector;
+              this.selectedData.emit({data: data['payeeClassList'][0], ev : ev});
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.selector = 'payeeClass';
+              this.modal.openNoClose();
+            }
+        });
+      } 
+    } 
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -772,6 +795,15 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'payeeName','payeeClassName'];
       this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
         this.passTable.tableData = a["payeeList"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'payeeClass'){
+      this.passTable.tHeader = ['Payee Class','Payee Class Name'];
+      this.passTable.widths =[500,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'payeeClassCd','payeeClassName'];
+      this.mtnService.getMtnPayeeClass(this.passData.payeeClassCd, 'Y').subscribe(a=>{
+        this.passTable.tableData = a["payeeClassList"];
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitChartAcct'){
