@@ -284,34 +284,85 @@ export class ParListingComponent implements OnInit {
 
     export(){
         //do something
-     var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var hr = String(today.getHours()).padStart(2,'0');
-    var min = String(today.getMinutes()).padStart(2,'0');
-    var sec = String(today.getSeconds()).padStart(2,'0');
-    var ms = today.getMilliseconds()
-    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'PolicyList_'+currDate+'.xlsx'
-    var mystyle = {
+
+        let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+        
+        delete paramsCpy['paginationRequest.count'];
+        delete paramsCpy['paginationRequest.position'];
+        
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = String(today.getHours()).padStart(2,'0');
+        var min = String(today.getMinutes()).padStart(2,'0');
+        var sec = String(today.getSeconds()).padStart(2,'0');
+        var ms = today.getMilliseconds()
+        var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+        var filename = 'PolicyList_'+currDate+'.xlsx'
+        var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"}}}
-      };
+        };
 
-      alasql.fn.datetime = function(dateStr) {
+        alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
             return date.toLocaleString();
-      };
+        };
 
-       alasql.fn.currency = function(currency) {
+        alasql.fn.currency = function(currency) {
             var parts = parseFloat(currency).toFixed(2).split(".");
             var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
                 (parts[1] ? "." + parts[1] : "");
+            if(num == 'NaN'){
+                num = '0';
+            }
             return num
-      };
+        };
 
-     alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataListing.tableData]);
+
+          this.uwService.newGetParListing(paramsCpy).subscribe(data => {
+             var records = data['policyList'];
+             let recs:any[] = [];
+             for(let rec of records){
+
+                 
+               recs.push(
+                           {
+                               policyId: rec.policyId,
+                               policyNo: rec.policyNo,
+                               cessionDesc: rec.cessionDesc,
+                               cedComp: rec.cedingName, 
+                               insured: rec.insuredDesc,
+                               risk: (rec.project == null) ? '' : rec.project.riskName,
+                               object: (rec.project == null) ? '' : rec.project.objectDesc,
+                               site: (rec.project == null) ? '' : rec.project.site,
+                               currency: rec.currencyCd,
+                               sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+                               premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+                               issueDate: this.ns.toDateTimeString(rec.issueDate),
+                               inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+                               expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+                               accDate: this.ns.toDateTimeString(rec.acctDate),
+                               status: rec.statusDesc
+
+                           }
+                       );
+              }
+              recs = recs.map(rec=>{
+                  for(let key of Object.keys(rec)){
+                      rec[key] = rec[key]==null ? '' : rec[key];
+                  }  
+                  return rec;
+              })
+              
+
+              alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
+
+          }
+        );
+
+     
     }
 
 }

@@ -4,6 +4,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { NgForm } from '@angular/forms';
 @Component({
   selector: 'app-by-month',
   templateUrl: './by-month.component.html',
@@ -15,6 +16,7 @@ export class ByMonthComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('myForm') form: NgForm;
 
    passData: any = {
     tableData: [],
@@ -217,8 +219,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+1)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+1)].budgetAmt = data.lastEditedRow.jan;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'1')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'1')].budgetAmt = data.lastEditedRow.jan;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -254,8 +256,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+2)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+2)].budgetAmt = data.lastEditedRow.feb;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'2')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'2')].budgetAmt = data.lastEditedRow.feb;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -291,8 +293,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+3)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+3)].budgetAmt = data.lastEditedRow.mar;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'3')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'3')].budgetAmt = data.lastEditedRow.mar;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -328,8 +330,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+4)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+4)].budgetAmt = data.lastEditedRow.apr;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'4')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'4')].budgetAmt = data.lastEditedRow.apr;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -365,8 +367,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+5)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+5)].budgetAmt = data.lastEditedRow.may;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'5')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'5')].budgetAmt = data.lastEditedRow.may;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -402,8 +404,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+6)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+6)].budgetAmt = data.lastEditedRow.jun;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'6')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'6')].budgetAmt = data.lastEditedRow.jun;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -439,8 +441,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+7)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+7)].budgetAmt = data.lastEditedRow.jul;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'7')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'7')].budgetAmt = data.lastEditedRow.jul;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -476,8 +478,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+8)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+8)].budgetAmt = data.lastEditedRow.aug;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'8')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'8')].budgetAmt = data.lastEditedRow.aug;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -513,8 +515,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+9)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+9)].budgetAmt = data.lastEditedRow.sep;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'9')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'9')].budgetAmt = data.lastEditedRow.sep;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -550,8 +552,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+10)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+10)].budgetAmt = data.lastEditedRow.oct;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'10')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'10')].budgetAmt = data.lastEditedRow.oct;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -587,8 +589,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+11)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+11)].budgetAmt = data.lastEditedRow.nov;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'11')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'11')].budgetAmt = data.lastEditedRow.nov;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,
@@ -624,8 +626,8 @@ export class ByMonthComponent implements OnInit {
             slTypeCd: data.lastEditedRow.slTypeCd
           });
         }else{
-          if(this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).includes(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+12)){
-            this.savedData[this.savedData.map(a=>{return a.budgetYear+a.itemNo+a.glAcctId+a.mm}).indexOf(data.lastEditedRow.budgetYear+data.lastEditedRow.itemNo+data.lastEditedRow.glAcctId+12)].budgetAmt = data.lastEditedRow.dec;
+          if(this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).includes(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'12')){
+            this.savedData[this.savedData.map(a=>{return String(a.budgetYear).toString()+String(a.itemNo).toString()+String(a.glAcctId).toString()+String(a.mm).toString()}).indexOf(String(data.lastEditedRow.budgetYear).toString()+String(data.lastEditedRow.itemNo).toString()+String(data.lastEditedRow.glAcctId).toString()+'12')].budgetAmt = data.lastEditedRow.dec;
           }else{
             this.savedData.push({
               budgetYear: data.lastEditedRow.budgetYear,

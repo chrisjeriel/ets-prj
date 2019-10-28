@@ -24,7 +24,6 @@ export class ProfitCommissionComponent implements OnInit {
     @ViewChild('profitComm') profitCommtable: CustEditableNonDatatableComponent;
     @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
-
 	dateFrom : any = '';
 	dateTo: any = '';   
     yearCdLov: any;
@@ -52,13 +51,13 @@ export class ProfitCommissionComponent implements OnInit {
 
 	passData:any = {
 		tableData: [],
-		tHeader: ["Company","Month","Year","INCOME","OUTGO"],
-		dataTypes:["text","text","text","currency","currency"],
-		total: [null,null,'TOTAL','income','outgo'],
-		keys: ['company', 'month', 'year', 'income', 'outgo'],
+		tHeader: ["Company","Currency", "Month","Year","INCOME","OUTGO"],
+		dataTypes:["text","text","text","text","currency","currency"],
+		total: [null,null,null,'TOTAL','income','outgo'],
+		keys: ['company', 'currCd', 'month', 'year', 'income', 'outgo'],
 		pageLength: 15,
-		uneditable: [true,true,true,true,true],
-		widths:['auto',100,100,150,150],
+		uneditable: [true,true,true,true,true,true],
+		widths:['auto',1,100,100,150,150],
 	    paginateFlag: true,
   		infoFlag: true,
   	    genericBtn: 'View Details',
@@ -67,71 +66,11 @@ export class ProfitCommissionComponent implements OnInit {
 	}
 
 	passDataProfitComm:any = {
-		tableData: [{ 	particulars : "NET PREMIUM WRITTEN-QUOTA***",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "OUTSTANDING CLAIMS-" +this.cedingAbbr+"-"+ this.profDateLastYr,
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "40% OF UNEXPIRED RISKS FROM PREVIOUS YEAR-RELEASED ",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "UNEARNED AT ",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "LOSSES PAID-" + this.cedingAbbr+"-"+this.profDate,
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "OUTSTANDING CLAIMS-" + this.cedingAbbr+"-"+this.profDate,
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "ORIGINAL EXPENSES :",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "-"+" POOL EXP - QUOTA (W/RMC)",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "-"+" AGENCY & GEN. EXPENSES - QUOTA",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "-"+" Vat on Commission***",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "MANAGEMENT EXPENSES :",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null },
-				  	{ 	particulars : "-"+" 15 % of ",
-				  	 	actual		: null,
-				  		natcat      : null,
-				  		income		: null,
-				  		outgo		: null }
-				   ],
+		tableData: [],
 		tHeader: ["Particulars","Actual","Nat Cat","INCOME","OUTGO"],
 		dataTypes:["text","currency","currency","currency","currency"],
 		total: [null,null,null,'income','outgo'],
-		keys: ['particulars', 'actual', 'natcat', 'income', 'outgo'],
+		keys: ['particulars', 'actualAmt', 'natcatAmt', 'income', 'outgo'],
 		pageLength: 12,
 		uneditable: [true,true,true,true,true],
 		widths:['auto','auto','auto',120,120],
@@ -142,6 +81,10 @@ export class ProfitCommissionComponent implements OnInit {
 	outgo1:any;			  /* TRBT#PROD_GRADE */
 	income2:any;		  /* TRBT#PROD_GRADE */
 	outgo2:any;			  /* TRBT#PROD_GRADE */
+
+	gnrtCedingId: string = '';
+	gnrtDate: string = '';
+	yearParam: number = 0;
 
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
@@ -180,6 +123,7 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	setSelectedCedCompModal(data){
+  	  this.gnrtCedingId = data.cedingId;
   	  this.cedingDescLov = data.cedingName;
   	  this.ns.lovLoader(data.ev, 0);
   	}
@@ -223,6 +167,8 @@ export class ProfitCommissionComponent implements OnInit {
   	getProfCommList(search?){
   		this.as.getProfitCommSumm(search).subscribe(data => {
       		var records = data['acitProfCommSummList'];
+
+      		this.passData.tableData = [];
 			for(let rec of records){
 				this.passData.tableData.push({
 											profCommId	: rec.profCommId,
@@ -236,7 +182,8 @@ export class ProfitCommissionComponent implements OnInit {
  											createUser  : rec.createUser,
  											createDate  : this.ns.toDateTimeString(rec.createDate),
  											updateUser  : rec.updateUser,
- 											updateDate  : this.ns.toDateTimeString(rec.updateDate)
+ 											updateDate  : this.ns.toDateTimeString(rec.updateDate),
+ 											currCd		: rec.currCd
 											});
 		    }                        
       			this.table.refreshTable();
@@ -248,6 +195,11 @@ export class ProfitCommissionComponent implements OnInit {
     	return day;
 	}
 
+	profitCurrYear: any = '';
+	profitLastYear: any = '0';
+	carriedForward: any = '0';
+	profitCommission: any = '0';
+
   	getProfCommDtl(){
   		//this.clearProfitComm();
   		this.profDate		= this.selectedData.month + '/' + this.getEndDate(this.selectedData.month,this.selectedData.year) + '/' + this.selectedData.year;
@@ -256,8 +208,17 @@ export class ProfitCommissionComponent implements OnInit {
 
   		this.profitCommtable.overlayLoader = true;
   		this.as.getProfitCommDtl(this.selectedData.profCommId).subscribe(data => {
-  			var records = data['acitProfCommDtl']; 
-  			for (let i = 0; i < records.length; i++) {
+  			var records = data['acitProfCommDtl'];
+  			this.passDataProfitComm.tableData = records;
+
+  			if(data['acitProfCommDtl'].length > 0) {
+  				this.yearParam = this.selectedData.year;
+  				this.profitCurrYear = this.diff;
+  				this.carriedForward = parseFloat(this.profitCurrYear) + parseFloat(this.profitLastYear);
+  				this.profitCommission = parseFloat(this.carriedForward) * 0.2;
+  			}
+
+  			/*for (let i = 0; i < records.length; i++) {
 			  	if (records[i].itemNo === '1'){
 			  		this.passDataProfitComm.tableData[0].actual = records[i].actualAmt;
 			  		this.passDataProfitComm.tableData[0].natcat = records[i].natcatAmt;
@@ -280,7 +241,7 @@ export class ProfitCommissionComponent implements OnInit {
 			  		this.passDataProfitComm.tableData[9].natcat = records[i].natcatAmt;
 			  		this.passDataProfitComm.tableData[9].outgo  = records[i].outgo;
 			  	}
-			}			
+			}*/
 			this.profitCommtable.refreshTable(); 		
   		});
   	}
@@ -302,9 +263,34 @@ export class ProfitCommissionComponent implements OnInit {
                              {key: "dateFrom", search: this.dateFrom },
                              ]; 
         console.log(this.searchParams);
-        this.getProfCommList(this.searchParams)
-                    
+        this.getProfCommList(this.searchParams);
   	}
 
+  }
+
+  onClickGenerate() {
+  	var a = {
+  		cedingId: this.gnrtCedingId,
+  		gnrtDate: this.gnrtDate,
+  		createUser: this.ns.getCurrentUser(),
+  		createDate: this.ns.toDateTimeString(0),
+  		updateUser: this.ns.getCurrentUser(),
+  		updateDate: this.ns.toDateTimeString(0)
+  	}
+
+  	this.as.saveAcitProfComm(a).subscribe(data => {
+  		console.log(data);
+
+  		if(data['returnCode'] == -1) {
+  			this.dialogIcon = 'success-message';
+  			this.dialogMessage = 'Profit Commision successfully generated';
+  			this.getProfCommList(this.searchParams);
+  		} else {
+  			this.dialogIcon = 'error-message';
+  			this.dialogMessage = 'Profit Commision failed';
+  		}
+
+  		this.successDialog.open();
+  	});
   }
 }

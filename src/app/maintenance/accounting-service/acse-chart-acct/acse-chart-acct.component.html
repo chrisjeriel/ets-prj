@@ -1,0 +1,109 @@
+<div class="cust-tabs-container">
+  <h4>Maintenance / Accounting Service / Chart of Accounts</h4>
+  <ngb-tabset>
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        <div>Chart of Accounts</div>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Filter Options</legend>
+          <div class="form-row custom-row-inline-inset">
+            <div class="col-sm-3">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-4">Account Type</label>
+                <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="searchParams.glAcctCategory" (ngModelChange)="searchParams.glAcctCategory = $event;clearAccCode()">
+                  <option value="">ALL</option>
+                  <option value="1">Asset</option>
+                  <option value="2">Liability</option>
+                  <option value="3">Equity</option>
+                  <option value="4">Revenue</option>
+                  <option value="5">Expense</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-4">Account Code</label>
+                <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctCategory">
+                <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctControl">
+                <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub1">
+                <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub2">
+                <input type="text" class="form-control form-control-sm col-sm cust-m text-right" [(ngModel)]="searchParams.glAcctSub3">
+                <div class="text-search-ico">
+                  <a><i class="fa fa-search" (click)="showAccCode()"></i></a>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-3">Account Description</label>
+                <input type="text" class="form-control form-control-sm col-sm">
+                <div class="cust-btn-container" style="margin-left:3px !important;margin-top: -2px !important;">
+                  <button type="button" class="cust-btn col-sm-1" (click)="onClickSearch()">Search</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Accounts Setup</legend>
+          <div class="custom-row-inline-inset">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable [passData]="chartOfAccounts" (tableDataChange)="chartOfAccounts.tableData=$event; updateShortCode($event)" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');chartOfAccounts.disableGeneric=true;" (clickLOV)="showSLTypeLOV($event)"></app-cust-editable-non-datatable>
+            </div>
+            <div class="row" style="margin-top: 50px;"> 
+              <div class="col-sm-12">
+                <div class="input-group">
+                  <div class="col-sm-1"></div>
+                  <label class="form-control-sm col-sm-1">Remarks</label>
+                  <input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true" [disabled]="remarksFlag">
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="form-row">
+              <div class="col-sm-12 text-center">
+                  <div class="cust-btn-container">
+                      <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                      <button type="button" class="cust-btn" (click)="print()"><a>Print</a></button>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+        <div class="row" style="margin-top: 12px">
+            <div class="col-sm-12">
+              <fieldset class="scheduler-border" style="padding-top: 4px !important;">
+                <div class="custom-row-inline-inset">
+                  <div class="input-group" style="margin-bottom: -14px !important;">
+                    <label class="form-control-sm col-sm-1 no-margin">Created By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
+                    <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                    <div class="col-sm-2 dp-cont">
+                      <datepicker [value]="selected?.createDate" [showSeconds]="true" [disabled]="true"></datepicker>
+                    </div>
+                    <label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+                    <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
+                    <label class="form-control-sm col-sm-1 no-margin">Last Update</label>                 
+                    <div class="col-sm-2 dp-cont">
+                      <datepicker [value]="selected?.updateDate" [showSeconds]="true" [disabled]="true"></datepicker>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+
+<app-lov [passData]="passLov" (selectedData)="setAcctCode($event)" #acctCodeLov></app-lov>
+<app-lov [passData]="passLov" (selectedData)="setSLType($event)" #slTypeLov></app-lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-acct'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>

@@ -145,7 +145,15 @@ export class CustEditableNonDatatableComponent implements OnInit {
     pinKeysRight:any[] = [];
 
     refreshTable(initLoad?, selectAll?){
+        // for(let a of this.passData.tableData){
+        //     for(let key of Object.keys(a)){
+        //         if(key == 'percent' && a[key]==null){
+        //             a[key]='';
+        //         }
+        //     }
+        // }
 
+        this.displayData = this.displayData.filter(a=>a!=this.fillData);
         if(initLoad === undefined){
             this.loadingFlag = false;
         }else{
@@ -307,6 +315,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
+            this.onDelete.emit();
             if(this.passData.genericBtn == 'Delete'){
                 this.passData.disableGeneric = true
             }
@@ -483,11 +492,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
        }
 
        if(data[key] != parseFloat(temp.split(',').join(''))){
-           data[key] = data[key]==null || data[key].toString().length == 0 ?'' : parseFloat(temp.split(',').join('')) ;
+           data[key] = parseFloat(temp.split(',').join('')).toString().length == 0 ?'' : parseFloat(temp.split(',').join('')) ;
        }else{
            //fix for rate not formatting properly when entered the same value twice or more (Neco 05/02/2019)
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join('')) + parseFloat('1')},0);
            setTimeout(()=>{data[key]=parseFloat(temp.split(',').join(''))},0);
+           data[key]=parseFloat(temp.split(',').join(''));
        }
    }
 
@@ -789,7 +799,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     markAsDirty(){
         //$('#cust-scroll form').addClass('ng-dirty');
-        this.form.forEach(a=>a.control.markAsDirty());
+        this.form.forEach(a=>{a.control.markAsDirty();a.control.markAsTouched()});
         //this.form.control.markAsDirty();
     }
 

@@ -8,6 +8,7 @@
 			<legend class="scheduler-border">O.R. Info</legend>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">O.R. No.</label>
+
 				<input id="orNo" type="text" class="form-control form-control-sm cust-sm text-right col-sm-2" [ngModel]="orInfo.orNo" (change)="orInfo.orNo = pad($event.target.value, 'orNo')" (blur)="orInfo.orNo=pad(orInfo.orNo, 'orNo')" [readonly]="isCancelled || isPrinted || inquiryFlag" name="orNo" appRequired>
 				<label class="form-control-sm col-sm-1" style="margin-left: -2px;">O.R. Date</label>
 				<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
@@ -75,7 +76,7 @@
 					<div class="input-group">
 						<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="orInfo.currCd" appRequired>
 						<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div> -->
-						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="amt">
+						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd == 2 || orInfo.tranTypeCd == 3 || inquiryFlag" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
 						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted || inquiryFlag" name="amt2">
@@ -114,7 +115,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || isPrinted || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || isPrinted || inquiryFlag" (click)="openCancelModal()">Cancel OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || inquiryFlag" (click)="openCancelModal()">Cancel OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
@@ -281,3 +282,5 @@ padding-right: 0px !important;">
       </div>
   	</div>
 </app-modal>
+
+<app-override-login [approvalCd]="approvalCd" (isSuccess)="whichProcess($event)" #override></app-override-login>

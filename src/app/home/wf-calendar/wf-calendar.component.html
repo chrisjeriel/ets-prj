@@ -1,3 +1,16 @@
-<p>
-  wf-calendar works!
-</p>
+<style>
+	.fc-toolbar h2 {
+		font-size: 20px !important;
+	}
+
+</style>
+
+<div class="row">
+	<!-- <div class="col-sm-2">&nbsp;</div>
+	<div class="col-sm-8"></div>
+	<div class="col-sm-2">&nbsp;</div> -->
+	<div class="col-sm">
+		<p-fullCalendar [options]="options" [events]="events"></p-fullCalendar>
+		<button class="cust-btn" style="position: absolute; right: 12px; bottom: -30px;" type="button" (click)="modalService.dismissAll();"><a>Close</a></button>
+	</div>
+</div>

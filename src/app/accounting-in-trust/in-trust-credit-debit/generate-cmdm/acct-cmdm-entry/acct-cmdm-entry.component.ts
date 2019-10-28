@@ -99,7 +99,7 @@ export class AcctCmdmEntryComponent implements OnInit {
 constructor(private accountingService: AccountingService, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
-  	if(this.passData.tranId != undefined && this.passData.memoType != undefined){
+  	if(this.passData.memoId != undefined && this.passData.memoType != undefined){
 	  	this.getTranTypes();
 	  	this.getSeqDigits();
 	  }else
@@ -115,7 +115,7 @@ constructor(private accountingService: AccountingService, private titleService: 
 
   getListing(){
   	$('.globalLoading').css('display','block');
-    this.accountingService.getCMDMListing({tranId:this.passData.tranId}).subscribe(a=>{
+    this.accountingService.getCMDMListing({tranId:this.passData.memoId}).subscribe(a=>{
    	  $('.globalLoading').css('display','none');
       this.memoInfo = a['cmdmList'][0];
       this.memoInfo.memoDate = this.ns.toDateTimeString(this.memoInfo.memoDate);
@@ -263,7 +263,7 @@ constructor(private accountingService: AccountingService, private titleService: 
 
    cancelCMDM(){
      let params:any = {
-       tranId : this.memoInfo.tranId,
+       tranId : this.memoInfo.memoId,
        updateUser : this.ns.getCurrentUser(),
        updateDate : this.ns.toDateTimeString(0)
      }
@@ -276,7 +276,7 @@ constructor(private accountingService: AccountingService, private titleService: 
 
    printCMDM(){
      let params:any = {
-       tranId : this.memoInfo.tranId,
+       tranId : this.memoInfo.memoId,
        updateUser : this.ns.getCurrentUser(),
        updateDate : this.ns.toDateTimeString(0)
      }

@@ -2,6 +2,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
+import { LogoutComponent } from './logout/logout.component';
 import { AuthGuard, UnsavedChangesGuard, ModuleAccessGuard } from './_guards';
 import { QuotationComponent } from './quotation/quotation.component'
 import { QuotationInquiryComponent } from './quotation/quotation-inquiry/quotation-inquiry.component';
@@ -183,15 +184,16 @@ import { WithhodlingTaxComponent } from './maintenance/accounting-service/withho
 import { AcitDcbNoComponent } from './maintenance/accounting-in-trust/acit-dcb-no/acit-dcb-no.component';
 import { AcseDcbNoComponent } from './maintenance/accounting-service/acse-dcb-no/acse-dcb-no.component';
 import { AcitTranTypeComponent } from './maintenance/accounting-in-trust/acit-tran-type/acit-tran-type.component';
-//import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
+import { AcseTranTypeComponent } from './maintenance/accounting-service/acse-tran-type/acse-tran-type.component';
 import { GenTaxesComponent } from './maintenance/accounting-mtn/gen-taxes/gen-taxes.component';
 import { InvtSecTypeComponent } from './maintenance/accounting-mtn/invt-sec-type/invt-sec-type.component';
 import { PayeeClassComponent } from './maintenance/accounting-mtn/payee-class/payee-class.component';
 import { SlTypeComponent } from './maintenance/accounting-mtn/sl-type/sl-type.component';
 import { SlComponent } from './maintenance/accounting-mtn/sl/sl.component';
+import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-chart-acct/acse-chart-acct.component';
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
-
+import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 
 const appRoutes: Routes = [
 
@@ -199,7 +201,9 @@ const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'dummy', component: DummyComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
     { path: 'wf-calendar', component: WfCalendarComponent },
+    { path: 'wf-form-common', component: WfFormCommonComponent },
     { path: 'quotation', component: QuotationComponent, 
     		canDeactivate: [UnsavedChangesGuard], 
     		canActivate: [AuthGuard, ModuleAccessGuard], 
@@ -420,8 +424,8 @@ const appRoutes: Routes = [
     { path: 'generate-or', component: GenerateOrComponent },
     { path: 'official-receipt', component: OfficialReceiptComponent },
     { path: 'acct-or-listings', component: AcctOrListingsComponent },
-    { path: 'accounting-service', component: AccountingServiceComponent},
-    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent},
+    { path: 'accounting-service', component: AccountingServiceComponent, canDeactivate: [UnsavedChangesGuard]},
+    { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent, canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-service-extract', component: AccountingServiceExtractComponent},
     { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent },
     { path: 'accounting-service-pcv-listings', component: PcvListingsComponent},
@@ -534,13 +538,14 @@ const appRoutes: Routes = [
 	{ path: 'mtn-acit-dcb-no',component: AcitDcbNoComponent},
 	{ path: 'mtn-acse-dcb-no',component: AcseDcbNoComponent},
 	{ path: 'mtn-acit-tran-type',component: AcitTranTypeComponent},
-	//{ path: 'mtn-acse-tran-type',component: AcseTranTypeComponent},
+	{ path: 'mtn-acse-tran-type',component: AcseTranTypeComponent},
     { path: 'mtn-gen-taxes', component: GenTaxesComponent, canDeactivate: [UnsavedChangesGuard] }, 
     { path: 'mtn-invt-sec-type', component: InvtSecTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-payee-class', component: PayeeClassComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-payee', component: PayeeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl-type', component: SlTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

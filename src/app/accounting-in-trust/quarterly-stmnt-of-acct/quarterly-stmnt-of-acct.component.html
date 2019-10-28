@@ -45,11 +45,11 @@
 				<fieldset class="scheduler-border">
 					<legend class="scheduler-border">List of QSOA per Company</legend>
 					<div class="custom-row-inline-inset">
-						<app-cust-editable-non-datatable #qsoaListTbl [passData]="QSOAList" (genericBtn)="showModal(content)" (newClick)="selectedQsoa=$event">
+						<app-cust-editable-non-datatable #qsoaListTbl [passData]="qsoaList" (genericBtn)="showCombinedStmtOfAcctMdl()" (newClick)="selectedQsoa=$event; toggleGeneric();">
 						</app-cust-editable-non-datatable>
 						<div class="input-group">
 							<div class="w-100 text-center" style="margin-bottom: 15px">
-								<button class="cust-btn" type="button" (click)="showGenerateModal()"><a>Regenerate</a></button>
+								<button class="cust-btn" type="button" (click)="showGenerateMdl()"><a>Regenerate</a></button>
     							<button class="cust-btn" type="button"><a>Print</a></button>
 							</div>
 						</div>
@@ -67,115 +67,99 @@
 	</ngb-tabset>
 </div>
 
+<app-modal class="d-none" #combinedStmtOfAcctMdl>
+    <div header>
+        <ng-container>Combined Statement of In-Trust Account</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaListDtlTbl [passData]="qsoaDtl"></app-cust-editable-non-datatable>
+        <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: 0px !important;">
+        	<fieldset class="scheduler-border col-sm-6">
+        		<div class="input-group">
+        			<label class="form-control-sm col-sm-12" style="text-align: center !important;">
+        				NOTE: Remittances made after this quarter are not included in this statement.
+        			</label>
+        		</div>
+        		<app-cust-editable-non-datatable #qsoaDtlExcludeTbl [passData]="qsoaDtlExclude"></app-cust-editable-non-datatable>
+        	</fieldset>
+        	<div class="col-sm-6">
+        		<div class="input-group">
+        			<div class="col-sm-1"></div>
+        			<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"	[ngModel]="balanceDebit | number: '1.2-2'" style="max-width: 139px; font-weight: bold; z-index: 3;" disabled>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" style="margin-left: 3px !important; min-width: 142px; font-weight: bold; z-index: 3;" [ngModel]="balanceCredit | number: '1.2-2'" disabled>
+        		</div>
+        		<div class="input-group" style="margin-bottom: 10px !important; margin-top: -30px !important;">
+        			<div class="col-sm-5"></div>
+        			<div class="col-sm" style="padding-left: 0; padding-right: 0; border-bottom: 1px dashed; margin-right: 1em;">&nbsp;</div>
+        		</div>
+        		<div class="input-group">
+        			<div class="col-sm-1"></div>
+        			<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+        			[ngModel]="totalDebit | number: '1.2-2'" style="max-width: 139px; font-weight: bold;" disabled>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+        			style="margin-left: 3px !important;" style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" disabled>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" style="max-width: max-content;" (click)="showQsoaAcctReceivableMdl()"><a>Accounts Receivables</a></button>
+    	<button type="button" class="cust-btn" (click)="showQsoaRemittanceMdl()"><a>Remittances</a></button>
+    	<button type="button" class="cust-btn" (click)="combinedStmtOfAcctMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
 
-<!-- MODAL -->
-<ng-template #content>
-	<div class="modal-header" style="min-width: 1090px !important;">
-		<span *ngIf="comStmt" class="modal-title" id="modal-basic-title">Combined Statement of In-Trust Account</span>
-		<span *ngIf="receivables" class="modal-title" id="modal-basic-title">Accounts Receivable</span>
-		<span *ngIf="summary" class="modal-title" id="modal-basic-title">Summary per Line</span>
-	    <span *ngIf="remittances" class="modal-title" id="modal-basic-title">Remittances</span>
-	</div>
-	<div class="modal-body" style="max-width: 1090px !important;">
-		<div *ngIf="!summary" class="custom-row-inline-inset">
-			<div class="input-group">
-				<div class="col-sm-1"></div>
-				<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
-				<input type="text" class="form-control form-control-sm cust-sm col-sm-4" value="Charter Ping An" disabled>
-				<label class="form-control-sm col-sm-2">Quarter Ending</label>
-				<div class="dp-cont col-sm-2">
-					<datepicker [type]="'date'" [disabled]="true" [value]="'2018-03-31'"></datepicker>
-				</div>
-				<div class="col-sm-2"></div>
-			</div>
-		</div>
+<app-modal class="d-none" #acctReceivableMdl>
+    <div header>
+        <ng-container>Accounts Receivable</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaAcctReceivableTbl [passData]="qsoaAcctReceivable"></app-cust-editable-non-datatable>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" (click)="acctReceivableMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
 
-		<div *ngIf="summary">
-			<app-cust-non-datatable [passData]="passDataSummary"></app-cust-non-datatable>
-		</div>
-		<div *ngIf="receivables">
-			<app-cust-non-datatable [passData]="passDataViewAccountsReceivable"></app-cust-non-datatable>
-		</div>
-		<div *ngIf="remittances">
-			<app-cust-non-datatable [passData]="passDataViewRemittances"></app-cust-non-datatable>
-		</div>
+<app-modal class="d-none" #acctRemittanceMdl>
+    <div header>
+        <ng-container>Remittances</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaAcctRemittanceTbl [passData]="qsoaAcctRemittance"></app-cust-editable-non-datatable>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" (click)="acctRemittanceMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
 
-		<div *ngIf="comStmt">
-			<!-- <app-cust-non-datatable #tbl1 [passData]="passDataCombinedStatementOfItAcct"></app-cust-non-datatable> -->
-			<app-cust-editable-non-datatable #tbl1 [passData]="passDataCombinedStatementOfItAcct" (newClick)="selectedQsoa=$event"></app-cust-editable-non-datatable>
-			<div class="form-row custom-row-inline-inset" style="margin-top: 32px !important;">
-				<fieldset class="scheduler-border col-sm-6">
-					<div class="input-group">
-						<label class="form-control-sm col-sm-12" style="text-align: center !important;">
-							NOTE: Remittances made after this quarter are not included in this statement.
-						</label>
-					</div> 
-					<div class="input-group">
-						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Company Share on Outstanding Claims</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="4,703,270.49" numbers-only readonly>
-						<div class="col-sm-1"></div>
-					</div>
-					<div class="input-group">
-						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-5" style="text-align: left !important;">Loss Reserve Deposit</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-5 text-right"	value="581,859.90" numbers-only readonly>
-						<div class="col-sm-1"></div>
-					</div>
-				</fieldset>
-				<div class="col-sm-6">
-					<div class="input-group">
-						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="balanceDebit | number: '1.2-2'" (ngModelChange)="balanceDebit=$event" numbers-only style="max-width: 139px; font-weight: bold; z-index: 3;" readonly>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" numbers-only style="margin-left: 3px !important; min-width: 142px; font-weight: bold; z-index: 3;" [ngModel]="balanceCredit | number: '1.2-2'" (ngModelChange)="balanceCredit=$event" readonly>
-					</div>
-					<div class="input-group" style="margin-bottom: 10px !important; margin-top: -30px !important;">
-						<div class="col-sm-5"></div>
-						<div class="col-sm" style="padding-left: 0; padding-right: 0; border-bottom: 1px dashed; margin-right: 1em;">&nbsp;</div>
-					</div>
-					<div class="input-group">
-						<div class="col-sm-1"></div>
-						<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						[ngModel]="totalDebit | number: '1.2-2'" (ngModelChange)="totalDebit=$event" numbers-only style="max-width: 139px; font-weight: bold;" readonly>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
-						style="margin-left: 3px !important;" value="1,510,787.46" numbers-only style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" (ngModelChange)="totalCredit=$event" readonly>
-					</div>
-				</div>
-			</div>
-		</div>
-		
-	</div>
-	<div class="modal-footer text-center" style="max-width: 1090px !important;">
-		<!-- <div *ngIf="comStmt" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewReceivables()"><a>Accounts Receivables</a></button>
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewRemittances()"><a>Remittances</a></button>
-			<button type="button" class="cust-btn" style="min-width: 125px !important" (click)="modalService.dismissAll() "><a>Return</a></button>
-		</div>
-
-		<div *ngIf="receivables" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewSummary()"><a>View Summary</a></button>
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewComStmt()"><a>Return</a></button>
-		</div>
-
-		<div *ngIf="remittances" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
-			<button type="button" class="cust-btn" style="min-width: 125px !important;"><a>View Summary</a></button>
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewComStmt()"><a>Return</a></button>
-		</div>
-
-		<div *ngIf="summary" class="cust-btn-container col-sm-12 text-center" style="z-index: 3 !important;">
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="viewReceivables()"><a>Return</a></button>
-		</div> -->
-
-		<div class="w-100 text-center">
-			<button type="button" class="cust-btn" style="min-width: 125px !important;" (click)="modalService.dismissAll()"><a>Return</a></button>
-		</div>
-	</div>
-</ng-template>
-
-<app-modal class="d-none" id="generateQSOAModal" #generateModal>
+<app-modal class="d-none" id="generateQSOAModal" #generateMdl>
     <div header>
         <ng-container>Generate Quarterly Statement of Account</ng-container>
     </div>
@@ -183,12 +167,12 @@
         <fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 20px !important;">
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Company</label>
-            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" appRequired placeholder="All" [(ngModel)]="gnrtCedingName">
+            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="All" [(ngModel)]="gnrtCedingName">
 				<div class="text-search-ico"><a><i class="fa fa-search" (click)="showGnrtCedingCoLOV()"></i></a></div>
             </div>
             <div class="input-group">
             	<label class="form-control-sm col-sm-2">Quarter</label>
-            	<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtQtr">
+            	<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="gnrtQtr">
 					<option value="1">First Quarter</option>
 					<option value="2">Second Quarter</option>
 					<option value="3">Third Quarter</option>
@@ -196,7 +180,7 @@
 				</select>
 				<div class="col-sm-2"></div>
 				<label class="form-control-sm col-sm-2">Year</label>
-				<select class="form-control form-control-sm cust-sm col-sm-3" appRequired [(ngModel)]="gnrtYear">
+				<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="gnrtYear">
 					<ng-container *ngFor="let y of yearParamOpts">
 						<option [value]="y">{{ y }}</option>
 					</ng-container>
@@ -211,7 +195,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" id="confModal" #confModal>
+<app-modal class="d-none" #confMdl>
     <div header>
         <ng-container>Confirmation</ng-container>
     </div>
@@ -227,8 +211,8 @@
         </fieldset>
     </div>
     <div footer class="w-100 text-right">
-    	<button class="cust-btn" type="button" (click)="confModal.closeModal(); saveAcitQsoa(true);"><a>Yes</a></button>
-    	<button class="cust-btn" type="button" (click)="confModal.closeModal()"><a>No</a></button>
+    	<button class="cust-btn" type="button" (click)="confMdl.closeModal(); saveAcitQsoa(true);"><a>Yes</a></button>
+    	<button class="cust-btn" type="button" (click)="confMdl.closeModal()"><a>No</a></button>
     </div>
 </app-modal>
 

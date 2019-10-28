@@ -9,7 +9,7 @@ import { unHighlight, highlight, hideTooltip, showTooltip} from '@app/_directive
 import { WfRemindersComponent } from '@app/home/wf-reminders/wf-reminders.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-
+import { WfCalendarComponent } from '@app/home/wf-calendar/wf-calendar.component';
 
 
 
@@ -29,6 +29,9 @@ export class WfActionsComponent implements OnInit {
   @ViewChild("userGrpListingModal") userGrpListingModal : ModalComponent;
   @ViewChild("usersToManyMdl") usersToManyMdl : ModalComponent;
   @ViewChild("warningModal") warningModal : ModalComponent;
+  @ViewChild("calendarModal") calendarModal : ModalComponent;
+  @ViewChild(WfCalendarComponent) wfCalendar : WfCalendarComponent;
+
 
   content: any ;
   disablebtnBool: boolean;
@@ -134,6 +137,8 @@ export class WfActionsComponent implements OnInit {
 
   relatedRecordTxt:string  = "";
 
+  events: any;
+
   constructor(config: NgbModalConfig,
      public modalService: NgbModal,
      private ns: NotesService,
@@ -142,7 +147,6 @@ export class WfActionsComponent implements OnInit {
      private mtnService: MaintenanceService){ }
 
   ngOnInit() {
-
   }
 
   open(content, mode) {
@@ -409,6 +413,61 @@ export class WfActionsComponent implements OnInit {
 
   }
 
+  changeModalSize() {
+
+/*    this.setEventsForCalendar();
+    console.log("EVENTS:");
+    console.log(this.events);*/
+
+/*    this.wfCalendar.loadData();*/
+
+    var elements = document.getElementsByClassName("modal-content");
+
+    for (var i = elements.length - 1; i >= 0; i--) {
+      elements[i].setAttribute("style", "max-height: 800px !important;");
+    }
+
+    var elementsX = document.getElementsByTagName("H2");
+
+    for (var i = elementsX.length - 1; i >= 0; i--) {
+      elementsX[i].setAttribute("style", "font-size: 20px !important;");
+    }
+
+  }
+
+  onClickCalendarModal() {
+
+
+    this.calendarModal.openNoClose();
+
+    var elements = document.getElementsByClassName("modal-content");
+
+    for (var i = elements.length - 1; i >= 0; i--) {
+      elements[i].setAttribute("style", "max-height: 800px !important; min-height: 800px;");
+    }
+  }
+
+  setEventsForCalendar() {
+    var currentUser = JSON.parse(window.localStorage.currentUser).username;
+    this.events = [];
+
+    this.workFlowService.retrieveWfmReminders('',currentUser,'','','', 'A').subscribe((data)=>{
+           var records = data['reminderList'];
+               for(let rec of records){
+                 if(rec.assignedTo === currentUser){
+                   var event = {
+                     title : rec.title,
+                     start : rec.reminderDate.substring(0, 10),
+                   };
+                   this.events.push(event);
+                 }
+               }
+        },
+            error => {
+              console.log("ERROR:::" + JSON.stringify(error));
+       });
+  }
+
   toTimeString(millis: any) {
       var d = (millis == 0) ? new Date() : new Date(millis);
 
@@ -613,6 +672,32 @@ export class WfActionsComponent implements OnInit {
               "referenceId"  : '',
               "details"      : '',
               "assignedTo"   : this.selects[i].userId,
+              "status"       : "A",
+              "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "createDate"   : this.ns.toDateTimeString(0),
+              "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "updateDate"   : this.ns.toDateTimeString(0),
+          };
+
+          noteList.push(note);
+        }
+
+      } else if (this.boolValue == 4) {
+        //Assign to many this.selects
+
+        for (var i = 0; i < this.selectsUserGrp.length; i++) {
+          var note = {};
+
+          note = {
+              "noteId"       : null,
+              "title"        : this.titleNote,
+              "note"         : this.notes,
+              "impTag"       : this.impTag ? 'Y' : 'N',
+              "urgTag"       : this.urgTag ? 'Y' : 'N',
+              "module"       : '',
+              "referenceId"  : '',
+              "details"      : '',
+              "assignedToGroup"   : this.selectsUserGrp[i].userGrp,
               "status"       : "A",
               "createUser"   : JSON.parse(window.localStorage.currentUser).username,
               "createDate"   : this.ns.toDateTimeString(0),

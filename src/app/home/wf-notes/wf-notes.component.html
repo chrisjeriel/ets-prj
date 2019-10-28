@@ -90,10 +90,13 @@
 	    /*margin-left: -19px;*/
 	    -webkit-text-stroke-width: 1px;
     	-webkit-text-stroke-color: black;
-    	margin-top: -7px;
+    	/*margin-top: -7px;
 	    margin-left: -22px;
 	    width: 40px;
-	    height: 53px;
+	    height: 53px;*/
+	    margin-top: -1px;
+	    margin-left: -20px;
+	    width: 30px;
 	}
 
 </style>
@@ -141,9 +144,9 @@
 							<!-- <i *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="fa fa-bookmark spanBadge" style="color: #ffff00;"></i>
 							<i *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="fa fa-bookmark spanBadge" style="color: #ffa500;"></i>
 							<i *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="fa fa-bookmark spanBadge" style="color: #ff0000;"></i> -->
-							<img src="app/resources/images/wfm-icons/writing-yellow.png" *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="spanBadge" />
-							<img src="app/resources/images/wfm-icons/writing-orange.png" *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="spanBadge" />
-							<img src="app/resources/images/wfm-icons/writing-red.png" *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="spanBadge" />
+							<img src="app/resources/images/wfm-icons/bookmark-yellow.png" *ngIf="notes.impTag == 'Y' && notes.urgTag == 'N'" class="spanBadge" />
+							<img src="app/resources/images/wfm-icons/bookmark-orange.png" *ngIf="notes.impTag == 'N' && notes.urgTag == 'Y'" class="spanBadge" />
+							<img src="app/resources/images/wfm-icons/bookmark-red.png" *ngIf="notes.impTag == 'Y' && notes.urgTag == 'Y'" class="spanBadge" />
 							<span style="float: left; color: black;"><a class="note-title" style="text-decoration: none;" href="#">&nbsp;{{ notes.title }}</a></span>
 						</div>
 						<br/>

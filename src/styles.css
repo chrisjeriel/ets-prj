@@ -792,4 +792,6 @@ body span.ui-state-default.ui-state-disabled {
 }
 
 
-
+.modal-content-maxh-800 {
+    max-height: 800px !important;
+}

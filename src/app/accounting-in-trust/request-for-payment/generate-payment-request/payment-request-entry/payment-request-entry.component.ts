@@ -233,6 +233,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       if(this.saveAcitPaytReq.tranTypeCd == 5){
         this.isReqAmtEqDtlAmts = true;
       }else{
+        console.log('here');
         this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
       }
     });
@@ -535,8 +536,15 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.onClickNewReq();
       }
     }else{
-      this.confirmMdl.openNoClose();
-      this.fromBtn = from;
+      if(this.saveAcitPaytReq.processing == null){
+        this.confirmMdl.openNoClose();
+        this.fromBtn = from;
+      }else{
+        this.warnMsg = 'Please delete or cancel the transaction with Check Voucher No. ' + this.saveAcitPaytReq.processing + 
+                       ' \nbefore cancelling this payment request.';
+        this.warnMdl.openNoClose();
+      }
+      
     }
     // (from.toLowerCase() == 'approve')?this.saveAcitPaytReq.reqStatusNew = '':'';
   }

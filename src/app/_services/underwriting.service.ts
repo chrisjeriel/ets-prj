@@ -436,20 +436,22 @@ export class UnderwritingService {
     // }
     getMaintenanceDeductibles(lineCd?:string,deductibleCd?:string,
                               coverCd?:string,endtCd?:string,
-                              activeTag?:string,defaultTag?:string){
+                              activeTag?:string,defaultTag?:string, filterObj?:any){
         // this.maintenanceDeductiblesData = [
         //     new MaintenanceDeductibles(true,'AOG30', 'ACTS OF GOD 30', 'L', 0.4, 10000000000),
         //     new MaintenanceDeductibles(true,'OC31', 'OTHER CAUSES 31', 'L', 0.5, 10000000),
         //     new MaintenanceDeductibles(false,'TPL5', 'THIRD PARTY LIABILITY 30', 'F', 0.4, 20000000000),
         // ];
-        const params = new HttpParams()
-            .set('lineCd', lineCd !== undefined ? lineCd:'')
-            .set('deductibleCd', deductibleCd !== undefined ? deductibleCd:'')
-            .set('coverCd', coverCd !== undefined ? coverCd:'')
-            .set('endtCd', endtCd !== undefined ? endtCd:'')
-            .set('activeTag', activeTag !== undefined ? activeTag:'')
-            .set('defaultTag', defaultTag !== undefined ? defaultTag:'')
-        return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDeductibles",{params}) ;
+        let params : any = {
+                                'lineCd' : lineCd !== undefined ? lineCd:'' ,
+                                'deductibleCd' : deductibleCd !== undefined ? deductibleCd:'' ,
+                                'coverCd' : coverCd !== undefined ? coverCd:'' ,
+                                'endtCd' : endtCd !== undefined ? endtCd:'' ,
+                                'activeTag' : activeTag !== undefined ? activeTag:'' ,
+                                'defaultTag' : defaultTag !== undefined ? defaultTag:'' 
+                            }
+        params = {...params , ...filterObj};
+        return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnDeductibles",{params:params}) ;
     }
     
     getMaintenanceRisksListData(){
@@ -503,24 +505,27 @@ export class UnderwritingService {
         return this.rowData;
     }
 
-    getCedingCompanyList(cedingId,cedingName,cedingAbbr,address,membershipDate,terminationDate,inactiveDate,activeTag,govtTag,membershipTag){
+    getCedingCompanyList(cedingId,cedingName,cedingAbbr,address,membershipDate,terminationDate,inactiveDate,activeTag,govtTag,membershipTag,filters?){
         /*this.cedingCompanyList = [
             new CedingCompanyList('y','y','',1,'AFP GENERAL INSURANCE CORP.','AFP', 'Col. Boni Serrano Road E. Delos Santos Ave.', new Date(2015,2,9),null,null),
         ]
         return this.cedingCompanyList; */
-        const params = new HttpParams()
-            .set('cedingId',cedingId)
-            .set('cedingName',cedingName)
-            .set('cedingAbbr',cedingAbbr)
-            .set('address',address)
-            .set('membershipDate',membershipDate)
-            .set('terminationDate',terminationDate)
-            .set('inactiveDate',inactiveDate)
-            .set('activeTag',activeTag)
-            .set('govtTag',govtTag)
-            .set('membershipTag',membershipTag);
+        let params = {
+            'cedingId':cedingId,
+            'cedingName':cedingName,
+            'cedingAbbr':cedingAbbr,
+            'address':address,
+            'membershipDate':membershipDate,
+            'terminationDate':terminationDate,
+            'inactiveDate':inactiveDate,
+            'activeTag':activeTag,
+            'govtTag':govtTag,
+            'membershipTag':membershipTag
+        };
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params});
+        params = {...params,...filters};
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMaintenanceCedingCompanyListing', {params:params});
     }
 
     getCedingCompany(){
@@ -1185,6 +1190,24 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/updatePolOpenCoverStatus',JSON.stringify(params),header);
         
+    }
+
+    batchDist(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/batchDistribution',JSON.stringify(params),header);
+    }
+
+    batchPost(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/batchPosting',JSON.stringify(params),header);
     }
 }            
 

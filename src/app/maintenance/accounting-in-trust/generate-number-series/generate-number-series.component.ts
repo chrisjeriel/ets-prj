@@ -17,7 +17,7 @@ export class GenerateNumberSeriesComponent implements OnInit {
 
 	onTabChange($event: NgbTabChangeEvent) {
 		if ($event.nextId === 'Exit') {
-			this.router.navigateByUrl('');
+			this.router.navigateByUrl('/maintenance-acct');
 		}
 	}
 }

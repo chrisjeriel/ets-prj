@@ -3,6 +3,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
 import { NotesService } from '@app/_services/notes.service';
+import { QuillEditorComponent } from 'ngx-quill';
 
 
 @Component({
@@ -14,6 +15,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('edtrMdl') edtrMdl: ModalComponent;
   @ViewChild('edtrMdlForm') edtrMdlForm:  NgForm;
   @ViewChild('edtrPrevForm') edtrPrevForm:  NgForm;
+  @ViewChild('frontEditor')frontEditor:QuillEditorComponent;
 
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;
@@ -62,6 +64,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngAfterViewInit() {
+    $('.ql-editor').attr("tabindex","-1");
     if(!this.table) {
       this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
     }
