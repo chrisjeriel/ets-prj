@@ -184,7 +184,6 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     printMethod(){
-      console.log(this.destination);
       if(this.destination === 'SCREEN'){
         for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
           console.log(this.custEditableNonDatatableComponent.selected[i].adviceNo);
@@ -192,15 +191,14 @@ export class InternalCompetitionComponent implements OnInit {
                       this.quotationInfo.quoteId + '&adviceNo=' + this.custEditableNonDatatableComponent.selected[i].adviceNo, '_blank');
         }
       }else if(this.destination === 'PDF'){
-        for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
-            this.quotationService.downloadPDFIntComp(this.custEditableNonDatatableComponent.selected[i].adviceNo,this.quotationInfo.quoteId).subscribe( data => {
-                 var newBlob = new Blob([data], { type: "application/pdf" });
-                 var downloadURL = window.URL.createObjectURL(data);
-                 var link = document.createElement('a');
+        for(let i of this.custEditableNonDatatableComponent.selected){
+            this.quotationService.downloadPDFIntComp(i.adviceNo,this.quotationInfo.quoteId).subscribe( data => {
+                 let newBlob = new Blob([data], { type: "application/pdf" });
+                 let downloadURL = window.URL.createObjectURL(data);
+                 let link = document.createElement('a');
                  link.href = downloadURL;
-                 link.download = this.quotationInfo.quotationNo + '-' + i;
+                 link.download = this.quotationInfo.quotationNo + '-' + i.adviceNo;
                  link.click();
-                
             },
              error => {
                  /*if (this.isEmptyObject(error)) {
