@@ -2884,7 +2884,6 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOADtl',{params});
 	}
 
-<<<<<<< HEAD
 	saveAcitProfComm(params) {
     	let header : any = {
             headers: new HttpHeaders({
@@ -2894,7 +2893,7 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitProfComm',params,header);
     }
-=======
+
 	printOrBatch(params){
 		let header : any = {
 		    headers: new HttpHeaders({
@@ -2903,7 +2902,5 @@ export class AccountingService {
 		};
 		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
 	}
-
->>>>>>> 83d3ebd585937990f8fa0a857f1b39d84125ef5d
 
 }
