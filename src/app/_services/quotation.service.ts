@@ -970,11 +970,12 @@ export class QuotationService {
           return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
     }
 
-    downloadPDF(reportName : string, quoteId : string){
+    downloadPDF(reportName : string, quoteId : string, reportId?:string){
          const params = new HttpParams()
              .set('reportName', reportName)
              .set('quoteId', quoteId)
-             .set('userId', this.currentUserId);
+             .set('userId', this.currentUserId)
+             .set('reportId', reportId);
         return this.http.get(environment.prodApiUrl + '/util-service/generateReport',{ params,'responseType': 'blob'});
     }
 
@@ -1075,6 +1076,19 @@ export class QuotationService {
             })
         }
         return this.http.post(environment.prodApiUrl + '/quote-service/saveQuItem',JSON.stringify(params),header);
+    }
+
+    saveReptext(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/quote-service/saveQuReptext',JSON.stringify(params),header);
+    }
+
+    getReptext(params){
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuReptext',{params:params});
     }
 
 }

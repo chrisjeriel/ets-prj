@@ -463,7 +463,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	showLineClassLOV(){
 		$('#lineClassLOV #modalBtn').trigger('click');
 		this.form.control.markAsDirty();
-this.form.control.markAsDirty();}
+		this.form.control.markAsDirty();
+		}
 
 	showIntLOV(){
 		$('#intLOV #modalBtn').trigger('click');
@@ -880,7 +881,7 @@ this.form.control.markAsDirty();}
 
   	checkCode(ev, field) {
   		this.ns.lovLoader(ev, 1);
-  		this.form.control.markAsDirty();
+  		//this.form.control.markAsDirty();
 
   		if(field === 'cedingCo') {
   			this.genInfoData.cedingId = this.pad(this.genInfoData.cedingId);  		  			
@@ -993,7 +994,7 @@ this.form.control.markAsDirty();}
   }
 
   compute(ev,str) {
-  	this.form.control.markAsDirty();
+  	// this.form.control.markAsDirty();
 
   	if(str === 'pctShare' && this.project.totalSi != '') {
   		if(Number(this.project.pctShare) > 100) {
