@@ -153,10 +153,12 @@ export class ProfitCommissionComponent implements OnInit {
 	  	}
   }
 
-  onRowDblClick(event){
-  	if(!event.target.classList.contains('filler')) {
+  onRowDblClick(event) {
+  	//removed due to known bug
+
+  	/*if(!event.target.classList.contains('filler')) {
   		this.onClickShowDetails(event);	
-  	}
+  	}*/
   }
 
   clearProfitComm(){
@@ -213,9 +215,9 @@ export class ProfitCommissionComponent implements OnInit {
 
   			if(data['acitProfCommDtl'].length > 0) {
   				this.yearParam = this.selectedData.year;
-  				this.profitCurrYear = this.diff;
-  				this.carriedForward = parseFloat(this.profitCurrYear) + parseFloat(this.profitLastYear);
-  				this.profitCommission = parseFloat(this.carriedForward) * 0.2;
+  				this.profitCurrYear = this.selectedData.profitLossAmt;
+  				this.carriedForward = this.selectedData.profitLossTotal; //parseFloat(this.profitCurrYear) + parseFloat(this.profitLastYear);
+  				this.profitCommission = this.selectedData.profitLossComm; //parseFloat(this.carriedForward) * 0.2;
   			}
 
   			/*for (let i = 0; i < records.length; i++) {
