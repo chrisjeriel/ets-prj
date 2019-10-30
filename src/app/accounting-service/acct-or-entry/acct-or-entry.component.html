@@ -104,7 +104,7 @@
 				</div>
 				<div class="input-group col-sm-12 text-center" style="margin-bottom: 2px !important;">
 					<label class="form-control-sm col-sm-4">Type</label>
-					<select appRequired name="orType" [(ngModel)]="orInfo.orType" class="form-control form-control-sm cust-sm col-sm" [disabled]="isCancelled || isPrinted || inquiryFlag">
+					<select appRequired name="orType" [(ngModel)]="orInfo.orType" class="form-control form-control-sm cust-sm col-sm" [disabled]="isCancelled || isPrinted || inquiryFlag || orInfo.rstrctTranUp === 1">
 						<option [ngValue]="'VAT'">VAT</option>
 						<option [ngValue]="'NON-VAT'">NON-VAT</option>
 					</select>
