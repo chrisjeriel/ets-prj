@@ -660,7 +660,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 			"createDate"	: this.genInfoData.createDate,
 			"createUser"	: this.genInfoData.createUser,
 			"currencyCd"	: this.genInfoData.currencyCd,
-			"currencyRt"	: this.genInfoData.currencyRt,
+			"currencyRt"	: parseFloat(this.genInfoData.currencyRt).toFixed(6) ,
 			"declarationTag": this.genInfoData.declarationTag,
 			"duration"		: this.project.duration,
 			"expiryDate"	: this.genInfoData.expiryDate,

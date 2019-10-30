@@ -312,6 +312,9 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
                    }
                }
             }
+            if(this.passData.tableData.filter(a=>a.deleted || a.edited).length == 0){
+                this.markAsPristine();
+            }
             this.selectAllFlag = false;
             this.markAsDirty();
             //$('#cust-scroll').addClass('ng-dirty');
