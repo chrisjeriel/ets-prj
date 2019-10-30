@@ -783,6 +783,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.successDiag.open();
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
+          this.paytDtlTbl.markAsPristine();
         }
       }
     );

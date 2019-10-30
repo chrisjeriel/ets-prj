@@ -780,6 +780,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.successDiag.open();
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
+          this.paytDtlTbl.markAsPristine();
         }
       }
     );
