@@ -445,6 +445,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             a = (this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag)?true:false;
       }else if(this.record.from.toLowerCase() == 'cv'){
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
+      }else if(this.record.from.toLowerCase() == 'jv'){
+            a = (this.record.statusType.toUpperCase() != 'N');
       }
 
           if(a && this.currentTab == 'taxDtl'){
