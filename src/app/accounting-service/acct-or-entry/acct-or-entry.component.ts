@@ -867,11 +867,11 @@ export class AcctOrEntryComponent implements OnInit {
 
   reprintMethod(){
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR ' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
     }else if(this.printMethod == '2'){
-      this.as.acitGenerateReport('ACITR_AR', this.orInfo.tranId).subscribe(
+      this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
         (data:any)=>{
           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
                        var downloadURL = window.URL.createObjectURL(data);
