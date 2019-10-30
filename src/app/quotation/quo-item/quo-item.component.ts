@@ -23,7 +23,7 @@ export class QuoItemComponent implements OnInit {
     eeiPassData:any={
         tableData:[],
         tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['number', 'reqText', 'string', 'string', 'currency'],
+        dataTypes:['wholenumber', 'reqText', 'string', 'string', 'currency'],
         nData: {
             "quantity": null,
             "itemDesc": null,

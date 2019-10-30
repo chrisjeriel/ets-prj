@@ -136,7 +136,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   				this.searchParams.quotationNo = this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%');
   				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     			this.passDataQuoteLOV.filters[0].enabled =true;
-  				this.getQuoteList([{ key: 'quotationNo', search: this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%') }]);
+  				this.getQuoteList('manual');
   				console.log('entered if');
   			}else{
   				console.log('entered else');
