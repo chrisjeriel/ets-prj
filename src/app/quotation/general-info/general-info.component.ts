@@ -188,6 +188,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@Output() enblOptTab = new EventEmitter<any>(); //Paul
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
 
+	compCedList:any = [];
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 	ngOnInit() {
@@ -225,6 +227,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					}
 				}
 			});
+			this.quotationService.getIntCompAdvInfo({quoteId:this.quoteId, quotationNo: this.plainQuotationNo(this.quotationNo)}).subscribe(a=>{
+				this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+			})
+
 
 			this.quotationService.getQuoteGenInfo(this.quoteId, this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;

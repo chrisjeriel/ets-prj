@@ -495,7 +495,6 @@ export class QuotationService {
         const params = new HttpParams()
                 .set('quoteId', intCompParams.quoteId)
                 .set('quotationNo', intCompParams.quotationNo);
-         console.log(params);
         return this.http.get(environment.prodApiUrl + "/quote-service/retrieveQuoteCompetition", {params});
     }
 

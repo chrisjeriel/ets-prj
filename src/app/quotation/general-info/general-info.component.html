@@ -976,7 +976,7 @@
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)" [exclude]="excludeCedingCo"></app-ceding-company>
-<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)"></app-mtn-ceding-company>
+<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [exclude]="excludeCedingCo"></app-mtn-ceding-company>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>

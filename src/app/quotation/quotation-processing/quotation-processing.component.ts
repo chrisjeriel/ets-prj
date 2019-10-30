@@ -382,6 +382,7 @@ export class QuotationProcessingComponent implements OnInit {
             this.loading = false;
             if(a['quotationList']!= null && a['quotationList'].length != 0){
                 this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
+                this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
             }
@@ -699,16 +700,21 @@ showCedingCompanyIntCompLOV() {
     }
 
     onClickIntCompCopy(fromScreen?) {
+        
+
         if(fromScreen !== undefined) {
-            this.exclude = [];
+            //this.exclude = [];
 
             var sq = this.selectedQuotation;
+            this.quotationService.getIntCompAdvInfo({quoteId:this.selectedQuotation.quoteId, quotationNo: this.selectedQuotation.quotationNo}).subscribe(a=>{
+                this.exclude = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+            })
 
-            for(let i of this.validationList) {
-                if(sq.lineCd == i.lineCd && sq.quotationNo.split('T')[1] == i.quotationNo.split('T')[1] && sq.project.riskId == i.project.riskId && sq.cessionDesc == i.cessionDesc) {
-                    this.exclude.push(i.quotationNo.split('-')[4]);
-                }
-            }    
+            // for(let i of this.validationList) {
+            //     if(sq.lineCd == i.lineCd && sq.quotationNo.split('T')[1] == i.quotationNo.split('T')[1] && sq.project.riskId == i.project.riskId && sq.cessionDesc == i.cessionDesc) {
+            //         this.exclude.push(i.quotationNo.split('-')[4]);
+            //     }
+            // }    
         } else {
             this.copyQuoteId = this.riskIdList[0].quoteId;
             this.copyFromQuotationNo = this.riskIdList[0].quotationNo;
@@ -873,7 +879,7 @@ export(){
 
                                      return i;
                                  });
-            alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
+            alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
         });
 
     
