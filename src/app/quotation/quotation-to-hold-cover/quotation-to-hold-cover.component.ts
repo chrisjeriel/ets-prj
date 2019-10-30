@@ -12,6 +12,7 @@ import { Subject, forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -24,6 +25,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	@ViewChild('opt') opt: CustNonDatatableComponent;
 	@ViewChild('tabset') tabset: any;
 	@ViewChild('approvalMdl') approvalMdl : ModalComponent;
+	@ViewChild(NgForm) form: NgForm;
 
 	passDataQuoteLOV : any = {
 		tableData	: [],
@@ -145,6 +147,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
+  		this.form.control.markAsPristine();
   // 		var parameter;
 		// if(param !== undefined){
 		// 	parameter = param;
@@ -173,12 +176,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			quoList = data['quo']['quotationList'].filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER')
   					  .map(i => { i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName; return i;});
   			console.log(quoList);
-  			this.passDataQuoteLOV.tableData = quoList;
+  			//this.passDataQuoteLOV.tableData = quoList;
+  			this.passDataQuoteLOV.count = data['quo']['length'];
   			console.log(this.passDataOptionsLOV.tableData);
-			this.table.refreshTable();
+			this.table.placeData(quoList);
 /*>>>>>>> f62aa0e0e32c1dbcd1a4f85d054353c21f70a58c*/
 			
-				if(quoList.length == 1){
+				if((quoList.length == 1 && this.completeSearch)|| param=='manual'){
 					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
 					this.holdCover.quoteId		= quoList[0].quoteId;
 					this.quoteInfo.cedingName	= quoList[0].cedingName;
@@ -231,7 +235,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 						this.clearHc();
 					}
 
-				}else{
+				}else if( this.completeSearch){
 					this.newHc(true);
 					this.clearAll();
 					if(quoList.length == 0 && param != undefined){
@@ -537,7 +541,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		(this.passDataOptionsLOV.tableData.some(i => i.optionId == this.holdCover.optionId) == true)?setTimeout(()=>{this.ns.lovLoader(this.passEvent,0)},500):this.holdCover.optionId='';
   		this.holdCover.optionId == ''?this.showOptionsLov():'';
   	}
-
+  	completeSearch:boolean = false;
 	search(key,ev) {
 		console.log(this.searchArr.join('-'));
 		this.quoteInfo.quotationNo[2] =  (this.quoteInfo.quotationNo[2] == undefined || this.quoteInfo.quotationNo[2] == '')?'':this.quoteInfo.quotationNo[2].padStart(5,'0');
@@ -558,12 +562,14 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		}else{
 			console.log(' else , nothing found');
 		}
-
-		if(this.searchArr.includes('')) {
+		console.log(this.searchArr);
+		if(this.searchArr.includes('') || this.searchArr.includes('%%') ) {
 			console.log('entered here includes');
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+			this.completeSearch = false;
 		}else{
 			console.log('other else');
+			this.completeSearch = true;
 		}
 
 
@@ -620,6 +626,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.periodToTime				 = '';
 		this.disableCancelHc 			 = true;
 		this.disableApproval			 = true;
+
+		this.searchParams = {
+	        statusArr:['3','6'],
+	        'paginationRequest.count':10,
+	        'paginationRequest.position':1,   
+	    };
 		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 		$('.warn').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}
