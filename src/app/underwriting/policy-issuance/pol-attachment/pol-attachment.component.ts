@@ -75,7 +75,10 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
-                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = i.fileName;
+                    i.module = 'policy';
+                    i.refId = this.policyInfo.policyId;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -89,7 +92,10 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.attachmentsList !== null){
                 for(var i of data.attachmentsList.attachmentsOc){
-                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = i.fileName;
+                    i.module = 'policyOc';
+                    i.refId = this.policyInfo.policyIdOc;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -157,6 +163,7 @@ export class PolAttachmentComponent implements OnInit {
                 }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachment();
+                this.table.markAsPristine();
             }
           });
         }
@@ -174,7 +181,7 @@ export class PolAttachmentComponent implements OnInit {
         let file: File = files[0];
         //var newFile = new File([file], date + file.name, {type: file.type});
 
-        this.upload.uploadFile(file, date)
+        this.upload.uploadFile(file, date, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {
@@ -200,7 +207,7 @@ export class PolAttachmentComponent implements OnInit {
       let deleteFile = this.deletedData;
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer).subscribe(
+        this.upload.deleteFile(i.fileNameServer, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId).subscribe(
             data =>{
               console.log(data);
             },

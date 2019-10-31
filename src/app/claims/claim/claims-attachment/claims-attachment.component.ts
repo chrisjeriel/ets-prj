@@ -118,7 +118,9 @@ export class ClaimsAttachmentComponent implements OnInit {
             var records = data['claimsAttachmentList'];
             for(let rec of records){
               this.passData.tableData.push({
-                                            fileNameServer  : this.notes.toDateTimeString(rec.createDate).match(/\d+/g).join('') + rec.fileName,
+                                            fileNameServer  : rec.fileName,
+                                            module          : 'claims',
+                                            refId           : this.claimInfo.claimId,
                                             fileName        : rec.fileName,
                                             fileNo          : rec.fileNo,
                                             description     : rec.description,
@@ -147,7 +149,7 @@ export class ClaimsAttachmentComponent implements OnInit {
         }
         let file: File = files[0];
         /*var newFile = new File([file], date + file.name, {type: file.type});*/
-        this.upload.uploadFile(file, date)
+        this.upload.uploadFile(file, date, 'claims', this.claimInfo.claimId)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {
@@ -251,6 +253,7 @@ export class ClaimsAttachmentComponent implements OnInit {
                 }
                 $('#attchmntMdl > #successModalBtn').trigger('click');
                 this.getAttachment();
+                this.table.markAsPristine();
             }
       });         
   }
@@ -260,7 +263,7 @@ export class ClaimsAttachmentComponent implements OnInit {
       console.log(this.deletedData);
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer).subscribe(
+        this.upload.deleteFile(i.fileNameServer, 'claims', this.claimInfo.claimId).subscribe(
             data =>{
               console.log(data);
             },

@@ -169,7 +169,9 @@ export class AttachmentComponent implements OnInit {
         this.attachmentData =  data['quotation'][0].attachmentsList;
         //this.passData.tableData = this.attachmentData;
         for(var i of this.attachmentData){
-          i.fileNameServer = this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+          i.fileNameServer = /*this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') +*/ i.fileName;
+          i.module = 'quotation';
+          i.refId = this.quotationInfo.quoteId;
           this.passData.tableData.push(i);
         }
         this.table.refreshTable();
@@ -210,9 +212,10 @@ export class AttachmentComponent implements OnInit {
      .subscribe((data: any) => {
        console.log(data);
        if(data.returnCode === 0){
+         this.cancelFlag = false;
          this.dialogIcon = 'error';
          this.successDiag.open();
-         this.cancelFlag = false;
+         console.log(this.cancelFlag);
        }else{
          this.dialogIcon = 'success';
          this.successDiag.open();
@@ -223,6 +226,7 @@ export class AttachmentComponent implements OnInit {
            this.deleteFileMethod();
          }
          this.getAttachment();
+         this.table.markAsPristine();
        }
        this.loading = false;
      });
@@ -242,7 +246,7 @@ export class AttachmentComponent implements OnInit {
      }
      let file: File = files[0];
      //var newFile = new File([file], date + file.name, {type: file.type});
-     this.upload.uploadFile(file, date)
+     this.upload.uploadFile(file, date, 'quotation', this.quotationInfo.quoteId)
        .subscribe(
          event => {
            if (event.type == HttpEventType.UploadProgress) {
@@ -268,7 +272,7 @@ export class AttachmentComponent implements OnInit {
       let deleteFile = this.deletedData;
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer).subscribe(
+        this.upload.deleteFile(i.fileNameServer, 'quotation', this.quotationInfo.quoteId).subscribe(
             data =>{
               console.log(data);
             },
@@ -284,7 +288,6 @@ export class AttachmentComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
-
   }
 
   onClickSave(){
@@ -300,6 +303,7 @@ export class AttachmentComponent implements OnInit {
    //get the emitted files from the table
     uploads(event){
       this.filesList = event;
+      console.log(this.filesList);
     }
 
     checkFields(){

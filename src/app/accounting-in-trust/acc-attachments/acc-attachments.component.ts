@@ -89,7 +89,10 @@ export class AccAttachmentsComponent implements OnInit {
           this.passData.tableData = [];
           if(data.acitAttachmentsList !== null){
               for(var i of data.acitAttachmentsList){
-                  i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                  //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                  i.fileNameServer = i.fileName;
+                  i.module = 'acct-in-trust';
+                  i.refId = this.record.tranId;
                   this.passData.tableData.push(i);
               }
           }
@@ -186,7 +189,7 @@ export class AccAttachmentsComponent implements OnInit {
       let file: File = files[0];
       //var newFile = new File([file], date + file.name, {type: file.type});
 
-      this.upload.uploadFile(file, date)
+      this.upload.uploadFile(file, date, 'acct-in-trust', this.record.tranId)
         .subscribe(
           event => {
             console.log('nandato kore');
@@ -213,7 +216,7 @@ export class AccAttachmentsComponent implements OnInit {
     let deleteFile = this.deletedData;
     for(var i of deleteFile){
       console.log(i.fileNameServer);
-      this.upload.deleteFile(i.fileNameServer).subscribe(
+      this.upload.deleteFile(i.fileNameServer, 'acct-in-trust', this.record.tranId).subscribe(
           data =>{
             console.log(data);
           },

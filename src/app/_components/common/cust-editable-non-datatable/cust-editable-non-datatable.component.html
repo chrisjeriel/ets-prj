@@ -356,7 +356,7 @@
                                         <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                         </button>
                                     </div>
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
@@ -805,7 +805,7 @@
                                             <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                         <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                     </button> -->
-                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                             </button>
                                         </div>
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
@@ -1027,7 +1027,7 @@
                                 <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                 <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                             </button> -->
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer, data.module, data.refId)">
                                 </button>
                             </td>
                         </tr>
@@ -1265,7 +1265,7 @@
                                         <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                         </button>
                                     </div>
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
