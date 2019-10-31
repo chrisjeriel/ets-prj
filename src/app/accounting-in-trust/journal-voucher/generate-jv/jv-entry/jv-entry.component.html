@@ -239,10 +239,11 @@
 <app-modal class="d-none" id="cancelAcct" #CancelEntries>
     <div header>Confirmation</div>  
     <div body>
-        <div class="form-row custom-row-inline-inset">
+        <!-- <div class="form-row custom-row-inline-inset">
             <span class="col-sm-2"></span>
             <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 12px !important">Are you sure you want to cancel this Journal Voucher?</label>
-        </div>
+        </div> -->
+        <span>Are you sure you want to cancel this Journal Voucher?</span>
     </div>
     <div footer class="text-center">
         <button type="button" class="cust-btn" (click)="cancelEntries.closeModal();cancelJournalVoucher()"><a>Yes</a></button>
@@ -253,10 +254,11 @@
 <app-modal class="d-none" id="printAcct" #PrintEntries>
     <div header>Confirmartion</div>  
     <div body>
-        <div class="form-row custom-row-inline-inset">
+        <!-- <div class="form-row custom-row-inline-inset">
             <span class="col-sm-2"></span>
             <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
-        </div>
+        </div> -->
+        <span>Was the printing of the Journal Voucher successful?</span>
     </div>
     <div footer class="text-center">
         <button type="button" class="cust-btn" (click)="printEntries.closeModal();printJV()"><a>Yes</a></button>
@@ -266,8 +268,8 @@
 
 <app-modal class="d-none" id="approve" #ApproveJV>
     <div header>Confirmation</div>  
-    <div body style=" max-width: 450px;">
-        <div class="form-row custom-row-inline-inset">
+    <div body>
+        <!-- <div class="form-row custom-row-inline-inset">
             <span class="col-sm-2"></span>
             <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Are you sure you want to approve this Journal Voucher?</label>
             <div class="input-group">
@@ -281,10 +283,24 @@
                     <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approverDate?.split('T')[0]" (valueChange)="entryData.approverDate=dc($event,entryData.approverDate,'d')"></datepicker>
                 </div>
             </div>
+        </div> -->
+        <div class="text-center">
+            <span>Are you sure you want to approve this Journal Voucher?</span>    
+        </div>
+        <div class="input-group" style="margin-top: 10px !important; margin-bottom: -14px !important;">
+            <label class="form-control-sm col-sm-4 text-right labels">Approved By</label>
+            <input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="entryData.approver">
+            <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickApproval()"></i></a></div>
+        </div>
+        <div class="input-group" style="margin-bottom: -14px !important;">
+            <label class="form-control-sm col-sm-4 text-right labels">Date Approved</label>
+            <div class="col-sm-6 dp-cont" style="margin-left: 0 !important;">
+                <datepicker [type]="'date'" required [showIcon]="true" [value]="entryData.approverDate?.split('T')[0]" (valueChange)="entryData.approverDate=dc($event,entryData.approverDate,'d')"></datepicker>
+            </div>
         </div>
     </div>
-    <div footer class="text-center">
-        <button type="button" class="cust-btn" (click)="ApproveJVStatus();approveJV.closeModal();"><a>Approve</a></button>
+    <div footer class="w-100 text-center">
+        <button type="button" class="cust-btn" (click)="ApproveJVStatus(); approveJV.closeModal();"><a>Approve</a></button>
         <button type="button" class="cust-btn" (click)="approveJV.closeModal();"><a>Cancel</a></button>
     </div>
 </app-modal>
