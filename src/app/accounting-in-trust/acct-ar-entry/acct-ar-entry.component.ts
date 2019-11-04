@@ -701,7 +701,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.successDiag.open();
       $('.required').focus().blur();
-      $('table input').focus().blur();
+      $('table input:not(.tbl-dp)').focus().blur();
       $('table select').focus().blur();
     }
     /*else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
