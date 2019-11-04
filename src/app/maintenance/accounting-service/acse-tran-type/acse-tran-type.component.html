@@ -152,20 +152,20 @@
 			<div class="col-sm-12" style="margin-top: 20px">
 				<fieldset class="scheduler-border" style="padding-top: 10px !important; margin-top: -25px !important;">
 				    <legend class="scheduler-border">General Taxes</legend>
-					<app-cust-editable-non-datatable [passData]="genTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" ></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="genTaxData" (clickLOV)="clickLovTax($event)" #genTable></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
 			<div class="col-sm-12">
 				 <fieldset class="scheduler-border" style="margin-bottom:10px !important; padding-top: 10px !important;">
                     <legend class="scheduler-border">Creditable Withholding Taxes</legend>
-					<app-cust-editable-non-datatable [passData]="whTaxData" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" ></app-cust-editable-non-datatable>
+					<app-cust-editable-non-datatable [passData]="whTaxData" (clickLOV)="clickDefWhTax($event)" #whTaxTable></app-cust-editable-non-datatable>
 				</fieldset>
 			</div>
 		</div>
     </div>
     <div footer class="text-center">
 		<div class="input-group">
-			<button type="button" class="cust-btn" (click)="onClickSaveAmounDtl()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="onClickSaveTax()"><a>Save</a></button>
 			<button type="button" class="cust-btn" (click)="taxDetailsMdl.closeModal();"><a>Cancel</a></button>
 		</div>
     </div>
@@ -173,9 +173,12 @@
 
 <app-lov [passData]="passLov" (selectedData)="setLov($event)" #amtDtlLov></app-lov>
 <app-lov [passData]="passLov" (selectedData)="setLovAcct($event)" #acctEntryLov></app-lov>
+<app-lov [passData]="passLov" (selectedData)="setDefTax($event)" #defTaxLov [lovCheckBox]="lovCheckbox"></app-lov>
+<app-lov [passData]="passLov" (selectedData)="setDefWhTax($event)" #defWhTaxLov [lovCheckBox]="lovCheckbox"></app-lov>
 <app-confirm-save (onYes)="saveAmtDtl()" #amtDetailSave></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 <app-confirm-save (onYes)="saveData()" #tranTypeSave></app-confirm-save>
 <app-confirm-save (onYes)="savAcctEntries()" #acctEntrySave></app-confirm-save>
+<app-confirm-save (onYes)="saveDefTax()" #defTaxSave></app-confirm-save>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-acct'" #tranTypeCancel></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
