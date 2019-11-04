@@ -39,9 +39,9 @@ export class InwardPolBalanceComponent implements OnInit {
       "premAmt": 0,
       "otherChargesInw": 0,
       "amtDue": 0,
-      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createUser": this.ns.getCurrentUser(),
       "createDate": this.ns.toDateTimeString(0),
-      "updateUser": JSON.parse(window.localStorage.currentUser).username,
+      "updateUser": this.ns.getCurrentUser(),
       "updateDate": this.ns.toDateTimeString(0),
       otherCharges:[]
     },
@@ -70,9 +70,9 @@ export class InwardPolBalanceComponent implements OnInit {
       instNo: 0,
       chargeCd: null,
       amount: 0,
-      createUser: JSON.parse(window.localStorage.currentUser).username,
+      createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
-      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       showMG :1
     },
