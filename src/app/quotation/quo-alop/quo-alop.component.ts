@@ -253,7 +253,6 @@ export class QuoAlopComponent implements OnInit {
 
     clickRow(data) {
       console.log(data)
-      console.log(this.table.indvSelect)
       if(data !== null){
         this.alopDetails.optionId = data.optionId;
         this.alopDetails.annSi = data.annSi;
@@ -299,7 +298,6 @@ export class QuoAlopComponent implements OnInit {
 
     save(cancel?) {
       this.cancelFlag = cancel !== undefined;
-      console.log(this.cancelFlag);
       this.alopData.quoteId = this.quotationInfo.quoteId;
       this.alopData.createUser = this.ns.getCurrentUser();
       this.alopData.createDate = this.ns.toDateTimeString(0);
@@ -308,7 +306,6 @@ export class QuoAlopComponent implements OnInit {
       this.alopData.alopDetails = [];
 
       for (let option of this.quoteOptionsData.tableData) {
-        console.log()
         if(option.edited){
           this.alopData.alopDetails.push(option);
           this.alopData.alopDetails[this.alopData.alopDetails.length - 1].issueDate = this.ns.toDateTimeString(option.issueDate);
