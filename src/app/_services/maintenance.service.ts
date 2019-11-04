@@ -1803,4 +1803,10 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
     }
+
+    getMtnUserLov(searchStr){
+    	const params = new HttpParams()
+    		.set('searchStr', (searchStr === null || searchStr === undefined ? '' : searchStr))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnUserLov", {params});
+    }
 }

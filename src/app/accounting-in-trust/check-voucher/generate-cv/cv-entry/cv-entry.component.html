@@ -69,13 +69,13 @@
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Prepared By</label>
-                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user" [(ngModel)]="saveAcitCv.preparedByName" appRequired>
+                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user" [(ngModel)]="saveAcitCv.preparedByName" (change)="checkCode($event, 'prep-user')" appRequired>
                         <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
                     </div>
 
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels"></label>
-                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="saveAcitCv.preparedByDes" readonly>
+                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="saveAcitCv.preparedDes" readonly>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin">Date Prepared</label>
@@ -111,7 +111,7 @@
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Certified Correct</label>
-                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.certifiedByName">
+                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [(ngModel)]="saveAcitCv.certifiedByName" (change)="checkCode($event, 'cert-user')">
                         <div *ngIf="!removeIcon" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('cert-user')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">

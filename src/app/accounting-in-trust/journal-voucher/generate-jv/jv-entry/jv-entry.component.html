@@ -93,7 +93,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Prepared By</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName" [readonly]="approvedStat">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" [(ngModel)]="entryData.preparedName" appRequired name="entryData.preparedName" [readonly]="approvedStat" (change)="checkCode($event, 'preparedName')">
                             <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPrintable()"></i></a></div>
                         </div>
                     </div>
@@ -327,7 +327,7 @@
 
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
 <app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
-<app-mtn-printable-names id="printableNames" (selectedData)="setPrintable($event)"></app-mtn-printable-names>
+<app-mtn-printable-names #printableNames (selectedData)="setPrintable($event)"></app-mtn-printable-names>
 <app-mtn-printable-names #ApproverNames (selectedData)="setApproval($event)"></app-mtn-printable-names>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE -->

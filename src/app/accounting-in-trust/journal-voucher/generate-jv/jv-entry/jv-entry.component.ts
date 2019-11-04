@@ -30,6 +30,7 @@ export class JvEntryComponent implements OnInit {
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild('Alloc') allocJV: ModalComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
+  @ViewChild('printableNames') printableNames: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
@@ -524,7 +525,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrintable(){
-    $('#printableNames #modalBtn').trigger('click');
+    // $('#printableNames #modalBtn').trigger('click');
+    this.printableNames.modal.openNoClose();
   }
 
   onClickApproval(){
@@ -541,6 +543,8 @@ export class JvEntryComponent implements OnInit {
   }
   
   setPrintable(data){
+    this.ns.lovLoader(data.ev, 0);
+
     this.entryData.preparedBy       = data.userId;
     this.entryData.preparedName     = data.printableName
     this.entryData.preparedPosition = data.designation;
@@ -569,6 +573,14 @@ export class JvEntryComponent implements OnInit {
 
   onClickAlloc(){
     this.allocJV.openNoClose();
+  }
+
+  checkCode(ev, str) {
+    this.ns.lovLoader(ev, 1);
+
+    if(str == 'preparedName') {
+      this.printableNames.checkCode(this.entryData.preparedName, ev);
+    }
   }
 
 }
