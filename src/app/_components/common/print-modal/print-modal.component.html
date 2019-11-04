@@ -35,7 +35,7 @@
                                     		</div>
                                     		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
                                     			<input type="text" id="title" class="form-control form-control-sm" appRequired [disabled]="wordings" readonly [(ngModel)]="titleText" >
-												<div class="text-search-ico" ><a class="disabled-a"><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
+												<div class="text-search-ico" *ngIf="!wordings"><a><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
                                     		</div>
                                     	</div>	
                                     </div>

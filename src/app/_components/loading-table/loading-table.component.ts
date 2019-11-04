@@ -160,18 +160,18 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
                 this.indvSelect = this.passData.tableData[this.currentIndex];
             }
         }
-        //console.log(this.currentIndex);
+        
 
         if((this.p - 1) * this.passData.pageLength > this.currentIndex ){
             //this.page.previous();
             this.p -= 1;
             setTimeout(()=>{$('#tableRow').focus();},100);
-            console.log('prev');
+            
         }else if(this.p * this.passData.pageLength -1 < this.currentIndex){
             //this.page.next();
             this.p += 1;
             setTimeout(()=>{$('#tableRow').focus();},100);
-            console.log('next');
+            
         }
         
         this.rowClick.emit(this.indvSelect);
@@ -179,8 +179,8 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
 
     //when enter key is pressed
     enterKey(event, data){
-        //console.log(this.indvSelect);
-        console.log(event);
+        
+        
        this.onRowDblClick(event,this.indvSelect);
     }
 
@@ -231,17 +231,17 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
         }
         this.loadingFlag = false;
         this.overlayLoader = false;
-        console.log(this.tableDiv);
+        
 
         setTimeout(a=>{
             if($(this.tableDiv.nativeElement).width() > this.pastWidth){
                 this.pastWidth = $(this.tableDiv.nativeElement).width()
-                console.log(this.pastWidth)
-                console.log('if')
+                
+                
             }else{
-                console.log(this.pastWidth)
+                
                 $(this.tableDiv.nativeElement).css('min-width',this.pastWidth);
-                console.log('else')
+                
             }
         })
 
@@ -250,12 +250,12 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(){
         if($(this.tableDiv.nativeElement).width() > this.pastWidth){
             this.pastWidth = $(this.tableDiv.nativeElement).width()
-            console.log(this.pastWidth)
-            console.log('if')
+            
+            
         }else{
-            console.log(this.pastWidth)
+            
             $(this.tableDiv.nativeElement).css('min-width',this.pastWidth);
-            console.log('else')
+            
         }
     }
 
@@ -381,7 +381,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     }
 
     onRowClick(event, data, index?) {
-        console.log(data)
+        
         this.currentIndex = index + ((this.p - 1) * this.passData.pageLength );   //this.p is the current page number
         if(this.passData.checkFlag === undefined || !this.passData.checkFlag){
             if(data !== null){
@@ -417,7 +417,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
             this.selected = [];
              for (let data of this.passData.tableData) {
                 if(data != this.fillData){
-                    console.log('test');
+                    
                     data.checked = value;
                     this.selected.push(data);
                 }
@@ -509,7 +509,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
 
     dbQuery(filterObj?){
         
-        //console.log(filterObj);
+        
         //this.searchQuery = [];
         if(this.passData.filter != undefined || this.passData.filters != null){
 	        for(var e of this.passData.filters){

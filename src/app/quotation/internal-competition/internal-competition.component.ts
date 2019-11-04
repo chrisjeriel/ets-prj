@@ -184,7 +184,6 @@ export class InternalCompetitionComponent implements OnInit {
     }
 
     printMethod(){
-      console.log(this.destination);
       if(this.destination === 'SCREEN'){
         for(var i = 0; i < this.custEditableNonDatatableComponent.selected.length; i++){
           console.log(this.custEditableNonDatatableComponent.selected[i].adviceNo);
@@ -201,9 +200,7 @@ export class InternalCompetitionComponent implements OnInit {
                  var link = document.createElement('a');
                  link.href = downloadURL;
                  link.download =  quoteNoFileName;
-
                  link.click();
-                
             },
              error => {
                  /*if (this.isEmptyObject(error)) {

@@ -12,7 +12,7 @@
                             <!-- <input class="form-control form-control-sm col-sm-1 not-form" type="text" [ngModel]="currencyCd"  (change)="checkCode($event)" (ngModelChange)="currencyCd = $event.toUpperCase()" name="currencyCd"> -->
 
                             <input class="form-control form-control-sm  col-sm-1 not-form" type="text" 
-                              [ngModel]="currencyCd" [appCheckForm]="formGroup" [data]="currencyCd" (output)="currencyCd=$event.target.value;checkCode($event)">
+                              [ngModel]="currencyCd" [appCheckForm]="formGroup" [data]="currencyCd" (output)="currencyCd=$event.target.value;checkCode($event)" name="currencyCd">
                             <div class="text-search-ico" style="margin-left: -20px;z-index: 100"  [appCheckForm]="formGroup" (output)="showCurrencyModal()"><a><i class="fa fa-search" ></i></a></div>&nbsp;
                             <input class="form-control form-control-sm  col-sm" type="text" style="margin-left: 5px;" readonly [(ngModel)]="description" name="description">
                             <div class="col-sm-3"></div>
