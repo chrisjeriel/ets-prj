@@ -1186,16 +1186,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.params.savePrqTrans[i]['inwPol'] = prqInwPol.saveAcitPrqInwPol[i];
     }
 
-    // var saveSubs = forkJoin(this.acctService.saveAcitPrqTrans(JSON.stringify(this.params)),this.acctService.saveAcitPrqInwPol(JSON.stringify(prqInwPol)))
-    //                        .pipe(map(([trans,inw]) => { return { trans,inw }; }));
-
-    // saveSubs.subscribe(data =>{
-    //   console.log(data);
-    //   this.getPaytReqPrqTrans();
-    //   this.sucInw.open();
-    //   this.params.savePrqTrans  = [];
-    //   this.params.deletePrqTrans  = [];
-    // });
     this.acctService.saveAcitPrqTrans(JSON.stringify(this.params))
     .subscribe(data => {
       console.log(data);

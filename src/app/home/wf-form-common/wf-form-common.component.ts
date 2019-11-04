@@ -7,6 +7,7 @@ import { finalize } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-wf-form-common',
@@ -20,7 +21,8 @@ export class WfFormCommonComponent implements OnInit {
      public modalService: NgbModal,
      private workFlowManagerService: WorkFlowManagerService, 
      private ns: NotesService,
-     private mtnService: MaintenanceService) { }
+     private mtnService: MaintenanceService,
+     private titleService : Title) { }
   
   @ViewChild(MtnUsersComponent) usersLov: MtnUsersComponent;
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
@@ -166,6 +168,7 @@ export class WfFormCommonComponent implements OnInit {
   relatedRecordTxt:string  = "";
 
   ngOnInit() {
+    this.titleService.setTitle('Pol | Notes & Reminders');
   	console.log("NG ON INIT : ");
     console.log(this.quotationInfo);
     console.log(this.policyInfo);
