@@ -214,7 +214,7 @@ export class InwardPolBalanceComponent implements OnInit {
       saveOtherCharges : [],
       delOtherCharges : [],
       newSavePolInward: [],
-      user: JSON.parse(window.localStorage.currentUser).username
+      user: this.ns.getCurrentUser()
     }
     for(let inst of this.passData.tableData){
         inst.commAmt = '';
@@ -224,7 +224,7 @@ export class InwardPolBalanceComponent implements OnInit {
         inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
         inst.createDate     = this.ns.toDateTimeString(inst.createDate);
         inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
-        inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        inst.updateUser = this.ns.getCurrentUser();
         params.savePolInward.push(inst);
       }else if(inst.deleted){
         params.delPolInward.push(inst);
@@ -235,7 +235,7 @@ export class InwardPolBalanceComponent implements OnInit {
           if(chrg.edited && !chrg.deleted ){
             chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
             chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
-            chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            chrg.updateUser = this.ns.getCurrentUser();
             params.saveOtherCharges.push(chrg);
             instFlag = true;
           }else if(chrg.deleted){
@@ -248,7 +248,7 @@ export class InwardPolBalanceComponent implements OnInit {
           inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
           inst.createDate     = this.ns.toDateTimeString(inst.createDate);
           inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
-          inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          inst.updateUser = this.ns.getCurrentUser();
           params.savePolInward.push(inst);
         }
       }
