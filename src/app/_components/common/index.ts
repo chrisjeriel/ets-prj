@@ -7,3 +7,4 @@ export * from './confirm-leave/confirm-leave.component';
 export * from './confirm-save/confirm-save.component';
 export * from './modal/modal.component';
 export * from './lov/lov.component';
+export * from './sucess-dialog/sucess-dialog.component'

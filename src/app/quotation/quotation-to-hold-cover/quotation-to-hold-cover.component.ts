@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
+import { SucessDialogComponent } from '@app/_components/common';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -26,6 +27,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	@ViewChild('tabset') tabset: any;
 	@ViewChild('approvalMdl') approvalMdl : ModalComponent;
 	@ViewChild(NgForm) form: NgForm;
+	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+	@ViewChild('modifMdl') modifMdl: ModalComponent;
 
 	passDataQuoteLOV : any = {
 		tableData	: [],
@@ -158,6 +161,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		// if(param == undefined){
 		// 	delete this.searchParams.quotationNo;
 		// }
+
+		if(param == 'manual'){
+			delete this.searchParams.statusArr;
+		}else{
+			this.searchParams.statusArr = ['3','6'];
+		}
 		console.log(this.searchParams)
 		var parameter = this.searchParams;
   		const subRes =  forkJoin(this.quotationService.newGetQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
@@ -173,7 +182,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			this.table.placeData(quoList);
 			//this.table.refreshTable();
 =======*/
-  			quoList = data['quo']['quotationList'].filter(i => i.status.toUpperCase() == 'RELEASED' || i.status.toUpperCase() == 'ON HOLD COVER')
+  			quoList = data['quo']['quotationList']
   					  .map(i => { i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName; return i;});
   			console.log(quoList);
   			//this.passDataQuoteLOV.tableData = quoList;
@@ -373,8 +382,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	onClickView(){
   		this.newHc(true);
   		this.disableSave = true;
-  		this.disableApproval = true;
-  		this.modalService.dismissAll();
+  		this.disableApproval = false;
+  		this.modifMdl.closeModal();
+  		//this.modalService.dismissAll();
   	}
 
   	validateUser(){
@@ -400,7 +410,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
 
   	onClickPrint(){
-  		this.loading = true;
+  		
   		setTimeout(()=>{
   			if(this.destination.toUpperCase() == 'SCREEN'){
 	  			this.printPDFHC('SCREEN');
@@ -450,10 +460,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		console.log(ids);
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
 	  	.subscribe(data => {
-	  		console.log(data);
-  			$('app-sucess-dialog #modalBtn').trigger('click');
+  			//$('app-sucess-dialog #modalBtn2').trigger('click');
+  			this.successDiag.modal.openNoClose();
   			this.loading = false;
   			(this.holdCover.status.toUpperCase() == 'RELEASED')?this.onClickView():'';
+  			this.getQuoteList('manual')
 	  	});
   	}
 
@@ -489,7 +500,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
                setTimeout(()=>{$('.globalLoading').css('display','none');},0);
             }          
         });
-  		this.updateHcStatus('print-btn');
+        if(this.holdCover.status != 'Released'){
+  			this.updateHcStatus('print-btn');
+        }
   	}
 
     isEmptyObject(obj) {
@@ -567,6 +580,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			console.log('entered here includes');
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
 			this.completeSearch = false;
+			this.clearHc();
 		}else{
 			console.log('other else');
 			this.completeSearch = true;

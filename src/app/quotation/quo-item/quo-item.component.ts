@@ -81,7 +81,7 @@ export class QuoItemComponent implements OnInit {
     mlpPassData: any = {
         tableData: [],
         tHeader:  ['Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
-        dataTypes:  [ 'number', 'reqText', 'number', 'percent', 'number'],
+        dataTypes:  [ 'wholenumber', 'reqText', 'wholenumber', 'percent', 'number'],
         nData:  {
             "itemNo":null,
             "quantity": null,
@@ -111,7 +111,7 @@ export class QuoItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "reqText", "number", "currency"],
+        dataTypes: [ "text", "reqText", "wholenumber", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -142,7 +142,7 @@ export class QuoItemComponent implements OnInit {
     dosMachineryPassData: any = {
         tableData: [],
         tHeader: ["Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
-        dataTypes: [ "number", "reqText", "text", "currency"],
+        dataTypes: [ "wholenumber", "reqText", "text", "currency"],
         nData: {
             "itemNo":null,
             "standbyUnit": null,

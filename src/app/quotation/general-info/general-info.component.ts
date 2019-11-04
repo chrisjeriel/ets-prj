@@ -24,8 +24,11 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@ViewChild('start')start:any;
 	@ViewChild('myForm') form : NgForm;
 	ngAfterViewInit(){
-		console.log(this.start)
 		
+		if(this.form.dirty && this.form.untouched){
+			console.log('huli ka boi')
+			this.form.control.markAsPristine();
+		}
 	}
 
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
