@@ -260,6 +260,9 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     this.passLov.selector = 'mtnGenTax';
     this.lovCheckbox = true;
     this.passLov.hide = this.genTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    if(this.record.vatTag !== undefined && this.record.vatTag == 1 && !this.passLov.hide.includes('VAT') || (this.record.orType != undefined && this.record.orType == 'NON-VAT') ){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT')
+    }
     console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
@@ -513,6 +516,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             this.dialogIcon = '';
             this.successDiag.open();
             this.retrieveAcseOrPreview();
+            this.genTaxTbl.markAsPristine();
+            this.whTaxTbl.markAsPristine();
           }
         }
       );

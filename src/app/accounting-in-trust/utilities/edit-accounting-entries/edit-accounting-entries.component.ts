@@ -27,6 +27,22 @@ export class EditAccountingEntriesComponent implements OnInit {
   tranListData: any = {};
   tranClass: string = 'AR';
 
+  tranNo: string = '';
+
+  tranDetails: any = {
+    tranDate: '',
+    backupBy: '',
+    currCd: '',
+    tranAmount: '',
+    localCurrCd: 'PHP',
+    localAmt: '',
+    payeeName: '',
+    tranStatDesc: '',
+    backupDate: '',
+    tranTypeName: '',
+    particulars: '',
+  }
+
   passLov: any = {
     selector: 'arList',
     searchParams: []
@@ -63,6 +79,25 @@ export class EditAccountingEntriesComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data);
+    this.table.overlayLoader = true;
+    switch(this.tranClass){
+      case 'AR':
+        this.tranNo = data.data.formattedArNo;
+        break;
+      case 'CV':
+        this.tranNo = data.data.cvGenNo;
+        break;
+      case 'JV':
+        this.tranNo = data.data.jvNo;
+        break;
+    }
+    this.accountingService.getAcitAcctEntries(data.data.tranId).subscribe(
+      (data: any)=>{
+        console.log(data);
+        this.passData.tableData = data.list;
+        this.table.refreshTable();
+        this.table.overlayLoader = false;
+      }
+    );
   }
 }

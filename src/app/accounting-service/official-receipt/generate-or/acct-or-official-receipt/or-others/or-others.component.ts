@@ -168,13 +168,13 @@ export class OrOthersComponent implements OnInit {
   }
 
   checkPayeeVsVat(){
-    if(this.record.vatTag == 3 || this.record.vatTag == 2){
+    if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
       console.log('pasok boi');
       this.ms.getMtnGenTax('VAT').subscribe(
          (data: any)=>{
            var vatDetails: any = {
              tranId: this.record.tranId,
-             billId: 1, // 1 for Official Receipt
+             billId: 2, // 1 for Official Receipt Others
              itemNo: '',
              taxType: 'G', //for General Tax, Tax Type
              taxCd: data.genTaxList[0].taxCd,
@@ -254,7 +254,7 @@ export class OrOthersComponent implements OnInit {
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    if(this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')){ //if Payee is VAT EXEMPT, hide VAT in LOV
+    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
       this.passLov.hide.push('VAT')
     }
     console.log(this.passLov.hide);
