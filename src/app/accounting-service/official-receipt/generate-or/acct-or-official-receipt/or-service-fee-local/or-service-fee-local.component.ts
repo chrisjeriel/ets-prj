@@ -63,6 +63,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 	dialogIcon: string = '';
 	savedData: any = [];
 	deletedData: any = [];
+  quarterEndingDates: string[] = [];
 
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe ) { }
 
@@ -85,6 +86,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   		(data:any)=>{
   			if(data.servFeeList.length !== 0){
   				this.passData.tableData = data.servFeeList.map(a=>{a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a;});
+          this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
   				this.table.refreshTable();
   			}
   		}
@@ -112,6 +114,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   	console.log(this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy'));
     this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
     this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+    this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 

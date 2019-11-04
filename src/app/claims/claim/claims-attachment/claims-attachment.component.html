@@ -57,4 +57,4 @@
 <app-sucess-dialog></app-sucess-dialog>
 <app-confirm-save #confirmSave (onYes)="onSaveAttachment()"></app-confirm-save>
 <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onSaveAttachment('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSavecancel()" [url]="'/clm-claim-processing'" ></app-cancel-button>

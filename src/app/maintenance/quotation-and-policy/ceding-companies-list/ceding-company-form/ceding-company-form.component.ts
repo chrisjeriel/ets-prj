@@ -44,6 +44,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 	dialogIcon: string = '';
 	dialogMessage: string = '';
 	defaultTagCounter: number = 0;
+  cedingId: string = '';
 
 	selected: any;
 
@@ -131,6 +132,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		//if edit
   		if(params.info === undefined){
   			this.loading = true;
+        this.cedingId = params.cedingId;
   			this.retrieveMtnCedingCompanyMethod(params.cedingId);
   		}
   	});
@@ -144,7 +146,10 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   			//put eSignature to filename for the table to recognize it
   			for(var i = 0; i < data.cedingCompany[0].cedingRepresentative.length; i++){
   				data.cedingCompany[0].cedingRepresentative[i].fileName = data.cedingCompany[0].cedingRepresentative[i].eSignature;
-          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].createDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          //data.cedingCompany[0].cedingRepresentative[i].fileNameServer = this.ns.toDateTimeString(data.cedingCompany[0].cedingRepresentative[i].createDate).match(/\d+/g).join('') + data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          data.cedingCompany[0].cedingRepresentative[i].fileNameServer = data.cedingCompany[0].cedingRepresentative[i].eSignature;
+          data.cedingCompany[0].cedingRepresentative[i].module = 'ceding-rep-signature';
+          data.cedingCompany[0].cedingRepresentative[i].refId = data.cedingCompany[0].cedingRepresentative[i].cedingId;
   			}
         this.histData.tableData = data.cedingCompany[0].cedingHistory;
         this.histTable.refreshTable();
@@ -314,7 +319,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
       let file: File = files[0];
       //var newFile = new File([file], date + file.name, {type: file.type});
 
-      this.upload.uploadFile(file, date)
+      this.upload.uploadFile(file, date, 'ceding-rep-signature', this.cedingId)
         .subscribe(
           event => {
             if (event.type == HttpEventType.UploadProgress) {
@@ -340,7 +345,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
     let deleteFile = this.deletedData;
     for(var i of deleteFile){
       console.log(i.fileNameServer);
-      this.upload.deleteFile(i.fileNameServer).subscribe(
+      this.upload.deleteFile(i.fileNameServer, 'ceding-rep-signature', this.cedingId).subscribe(
           data =>{
             console.log(data);
           },
