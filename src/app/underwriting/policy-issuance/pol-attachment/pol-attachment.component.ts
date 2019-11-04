@@ -129,6 +129,7 @@ export class PolAttachmentComponent implements OnInit {
           this.underwritingService.savePolAttachmentOc(this.policyInfo.policyIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
             console.log(data);
             if(data.returnCode === 0){
+                this.cancelFlag = false;
                 this.dialogMessage="The system has encountered an unspecified error.";
                 this.dialogIcon = "error";
                 $('#polAttachment > #successModalBtn').trigger('click');
@@ -149,6 +150,7 @@ export class PolAttachmentComponent implements OnInit {
           this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
             console.log(data);
             if(data.returnCode === 0){
+                this.cancelFlag = false;
                 this.dialogMessage="The system has encountered an unspecified error.";
                 this.dialogIcon = "error";
                 $('#polAttachment > #successModalBtn').trigger('click');
@@ -226,13 +228,51 @@ export class PolAttachmentComponent implements OnInit {
     }
 
     onClickSave(){
-      if(this.checkFields()){
+      /*if(this.checkFields()){
        $('#confirm-save #modalBtn2').trigger('click');
       }else{
         this.dialogMessage="Please fill up required fields.";
         this.dialogIcon = "info";
         $('#polAttachment > #successModalBtn').trigger('click');
+      }*/
+
+      this.filesList = this.filesList.filter(a=>{return this.attachmentData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+      if(!this.checkFields()){
+        this.dialogMessage="";
+        this.dialogIcon = "error";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else if(this.checkFileSize().length !== 0){
+        this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+        this.dialogIcon = "error-message";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else if(this.checkFileNameLength()){
+        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogIcon = "error-message";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else{
+        $('#confirm-save #modalBtn2').trigger('click');
       }
+    }
+
+    onClickCancelSave(){
+      this.filesList = this.filesList.filter(a=>{return this.attachmentData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+        if(!this.checkFields()){
+          this.dialogMessage="";
+          this.dialogIcon = "error";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else if(this.checkFileSize().length !== 0){
+          this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+          this.dialogIcon = "error-message";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else if(this.checkFileNameLength()){
+          this.dialogMessage= "File name exceeded the maximum 50 characters";
+          this.dialogIcon = "error-message";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else{
+          console.log('tf');
+          this.saveData('cancel');
+        }
     }
 
     //get the emitted files from the table
@@ -247,6 +287,25 @@ export class PolAttachmentComponent implements OnInit {
         }
       }
       return true;
+    }
+
+    checkFileSize(){
+      for(let files of this.filesList){
+        console.log(files[0].size);
+        if(files[0].size > 26214400){ //check if a file exceeded 25MB
+          return files[0].name;
+        }
+      }
+      return '';
+    }
+
+    checkFileNameLength(){
+      for(var i of this.attachmentData.tableData){
+        if(i.fileName.length > 50){
+          return true;
+        }
+      }
+      return false;
     }
 
 }

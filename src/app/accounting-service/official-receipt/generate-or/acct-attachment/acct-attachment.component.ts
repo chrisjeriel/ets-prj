@@ -148,6 +148,7 @@ export class AcctAttachmentComponent implements OnInit {
       this.as.saveAcseAttachments(params).subscribe((data: any) => {
         console.log(data);
         if(data.returnCode === 0){
+            this.cancelFlag = false;
             this.dialogMessage="The system has encountered an unspecified error.";
             this.dialogIcon = "error";
             this.successDiag.open();
@@ -189,6 +190,7 @@ export class AcctAttachmentComponent implements OnInit {
             } else if (event instanceof HttpResponse) {
               console.log('File is completely loaded!');
             }
+            console.log(event);
           },
           (err) => {
             console.log("Upload Error:", err);
@@ -225,18 +227,49 @@ export class AcctAttachmentComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.checkFields()){
-      this.confirm.confirmModal();
-    }else{
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+    if(!this.checkFields()){
       this.dialogMessage="";
       this.dialogIcon = "error";
       this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+  }
+
+  onClickSaveCancel(){
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+    if(!this.checkFields()){
+      this.dialogMessage="";
+      this.dialogIcon = "error";
+      this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.saveData('cancel');
     }
   }
 
   //get the emitted files from the table
   uploads(event){
     this.filesList = event;
+    console.log(event);
   }
 
   checkFields(){
@@ -246,6 +279,25 @@ export class AcctAttachmentComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  checkFileSize(){
+    for(let files of this.filesList){
+      console.log(files[0].size);
+      if(files[0].size > 26214400){ //check if a file exceeded 25MB
+        return files[0].name;
+      }
+    }
+    return '';
+  }
+
+  checkFileNameLength(){
+    for(var i of this.passData.tableData){
+      if(i.fileName.length > 50){
+        return true;
+      }
+    }
+    return false;
   }
 
   pad(str, field) {

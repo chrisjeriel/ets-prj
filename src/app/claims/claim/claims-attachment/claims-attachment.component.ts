@@ -185,13 +185,51 @@ export class ClaimsAttachmentComponent implements OnInit {
   }
 
   onClickSave(){
-      if(this.checkFields()){
+      /*if(this.checkFields()){
        $('#confirm-save #modalBtn2').trigger('click');
       }else{
         this.dialogMessage="Please fill up required fields.";
         this.dialogIcon = "info";
         $('#attchmntMdl > #successModalBtn').trigger('click');
+      }*/
+
+      this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+      if(!this.checkFields()){
+        this.dialogMessage="";
+        this.dialogIcon = "error";
+        $('#attchmntMdl > #successModalBtn').trigger('click');
+      }else if(this.checkFileSize().length !== 0){
+        this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+        this.dialogIcon = "error-message";
+        $('#attchmntMdl > #successModalBtn').trigger('click');
+      }else if(this.checkFileNameLength()){
+        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogIcon = "error-message";
+        $('#attchmntMdl > #successModalBtn').trigger('click');
+      }else{
+        $('#confirm-save #modalBtn2').trigger('click');
       }
+  }
+
+  onClickSavecancel(){
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+    if(!this.checkFields()){
+      this.dialogMessage="";
+      this.dialogIcon = "error";
+      $('#attchmntMdl > #successModalBtn').trigger('click');
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      $('#attchmntMdl > #successModalBtn').trigger('click');
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      $('#attchmntMdl > #successModalBtn').trigger('click');
+    }else{
+      this.onSaveAttachment('cancel');
+    }
   }
 
   onSaveAttachment(cancelFlag?){
@@ -240,8 +278,9 @@ export class ClaimsAttachmentComponent implements OnInit {
       this.claimsService.saveClaimAttachment(this.attachmentInfo).subscribe((data: any) => {
             console.log(data);
             if(data['returnCode'] === 0){
+              this.cancelFlag = false;
                 this.dialogMessage="The system has encountered an unspecified error.";
-                this.dialogIcon = "error-message";
+                this.dialogIcon = "error";
                 $('#attchmntMdl > #successModalBtn').trigger('click');
             }else{
                 this.dialogIcon = "success";
@@ -286,6 +325,25 @@ export class ClaimsAttachmentComponent implements OnInit {
     } else {
       this.attachRecord = [];
     }
+  }
+
+  checkFileSize(){
+    for(let files of this.filesList){
+      console.log(files[0].size);
+      if(files[0].size > 26214400){ //check if a file exceeded 25MB
+        return files[0].name;
+      }
+    }
+    return '';
+  }
+
+  checkFileNameLength(){
+    for(var i of this.passData.tableData){
+      if(i.fileName.length > 50){
+        return true;
+      }
+    }
+    return false;
   }
 
 }
