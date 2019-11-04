@@ -6,7 +6,7 @@
 					<div>JV Entry</div>
 				</ng-template>
 				<ng-template ngbTabContent>
-					<app-jv-entry-service [data]="jvType" (onChange)="tabController($event)" (emitData)="jvInfo($event)" (disableTab)= "disableTab = $event"></app-jv-entry-service>
+					<app-jv-entry-service [data]="jvType" (onChange)="tabController($event)" (emitData)="jvInfo($event)" (disableTab)= "disableTab = $event" [jvData]="jvData"></app-jv-entry-service>
 				</ng-template>
 			</ngb-tab>
 

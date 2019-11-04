@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { MaintenanceService, AccountingService } from '@app/_services';
 
 
@@ -11,9 +12,11 @@ import { MaintenanceService, AccountingService } from '@app/_services';
 export class QuarterEndingLovComponent implements OnInit {
   
   @ViewChild('modal') modal: ModalComponent; 
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() tranClass;
   @Input() cedingId;
+  @Input() quarterDates: string[];
 
   constructor(private maintenanceService: MaintenanceService, private accService: AccountingService) { }
 
@@ -30,6 +33,9 @@ export class QuarterEndingLovComponent implements OnInit {
   quarterYear:any;
   quarterval:any;
   quarterEnd:any;
+
+  dialogIcon: string = '';
+  dialogMessage: string = '';
 
   sendData : any = {
     fundsHeld : '',
@@ -112,20 +118,44 @@ export class QuarterEndingLovComponent implements OnInit {
     function pad(num) {
       return (num < 10) ? '0' + num : num;
     }
+    if(this.quarterDates == undefined || this.quarterDates == null){ //default setup without the quarter ending validation
+      this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+      this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
+      if(this.tranClass !== undefined){
+        this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
+          console.log(data)
+          this.sendData = data;
+          this.selectedData.emit(this.sendData)
+        });
+      }else{
+        this.selectedData.emit(this.quarterval);
+      }
 
-    this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
-    this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
-    if(this.tranClass !== undefined){
-      this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
-        console.log(data)
-        this.sendData = data;
-        this.selectedData.emit(this.sendData)
-      });
+      this.quarterYear = '';
+      this.quarter = '';
+      this.modal.closeModal();
     }else{
-      this.selectedData.emit(this.quarterval);
-    }
+      this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
+      this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
+      if(this.quarterDates.includes(this.quarterval)){ //If inputed date is already in the table, show error message
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'The date specified is already in the records.';
+        this.successDiag.open();
+      }else{
+        if(this.tranClass !== undefined){
+          this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
+            console.log(data)
+            this.sendData = data;
+            this.selectedData.emit(this.sendData)
+          });
+        }else{
+          this.selectedData.emit(this.quarterval);
+        }
 
-    this.quarterYear = '';
-    this.quarter = '';
+        this.quarterYear = '';
+        this.quarter = '';
+        this.modal.closeModal();
+      }
+    }
   }
 }

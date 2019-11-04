@@ -142,6 +142,7 @@ import { MtnCurrencyRateComponent } from './maintenance/quotation-and-policy/mtn
 import { MtnCATPerilComponent } from './maintenance/quotation-and-policy/mtn-cat-peril/mtn-cat-peril.component';
 import { MtnCrestaComponent } from './maintenance/quotation-and-policy/mtn-cresta/mtn-cresta.component';
 import { PolValueCoverageComponent } from './underwriting/generate-documents/pol-value-coverage/pol-value-coverage.component';
+import { PolicyReportsComponent } from './underwriting/generate-documents/policy-reports/policy-reports.component';
 import { TypeOfCessionComponent } from './maintenance/quotation-and-policy/type-of-cession/type-of-cession.component';
 import { IntermediaryListComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary-list.component';
 import { IntermediaryComponent } from './maintenance/quotation-and-policy/intermediary-list/intermediary/intermediary.component';
@@ -376,6 +377,8 @@ const appRoutes: Routes = [
     { path: 'pol-value-coverage', component: PolValueCoverageComponent , canDeactivate: [UnsavedChangesGuard],
     		canActivate: [AuthGuard, ModuleAccessGuard],
     		data: { moduleId : 'POL043', verifyWithData: true }
+    },
+    { path: 'pol-reports', component: PolicyReportsComponent
     },
 
 

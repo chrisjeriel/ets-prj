@@ -209,20 +209,31 @@ export class AcctOrEntryComponent implements OnInit {
     this.onChange.emit({ type: this.orInfo.tranTypeCd });
     this.sub = this.route.params.subscribe(
        data=>{
-         if('add' === data['action'].trim()){
-           this.isAdd = true;
+         console.log(data)
+         if(data.from === 'CancelledTran'){
+           tranId = data.tranId;
+           orNo = '';
+           this.isCancelled = true;
+           this.passData.addFlag = false;
+           this.passData.genericBtn = undefined;
+           this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+           this.paytDtlTbl.refreshTable();
          }else{
-           this.isAdd = false;
-           let params = JSON.parse(data['slctd']);
-           tranId = params.tranId;
-           orNo = params.orNo;
-           if(params.status === 'Cancelled' || params.status === 'Deleted'){
-             this.isCancelled = true;
-             this.passData.addFlag = false;
-             this.passData.genericBtn = undefined;
-             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-             this.paytDtlTbl.refreshTable();
-           }         
+           if('add' === data['action'].trim()){
+             this.isAdd = true;
+           }else{
+             this.isAdd = false;
+             let params = JSON.parse(data['slctd']);
+             tranId = params.tranId;
+             orNo = params.orNo;
+             if(params.status === 'Cancelled' || params.status === 'Deleted'){
+               this.isCancelled = true;
+               this.passData.addFlag = false;
+               this.passData.genericBtn = undefined;
+               this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+               this.paytDtlTbl.refreshTable();
+             }         
+           }
          }
        }
     );
@@ -783,6 +794,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.successDiag.open();
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
+          this.paytDtlTbl.markAsPristine();
         }
       }
     );
@@ -866,11 +878,11 @@ export class AcctOrEntryComponent implements OnInit {
 
   reprintMethod(){
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR ' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
     }else if(this.printMethod == '2'){
-      this.as.acitGenerateReport('ACITR_AR', this.orInfo.tranId).subscribe(
+      this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
         (data:any)=>{
           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
                        var downloadURL = window.URL.createObjectURL(data);

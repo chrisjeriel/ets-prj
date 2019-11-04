@@ -2903,5 +2903,45 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printOrBatch',JSON.stringify(params),header);
 	}
 
+	getOrCancelled(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseChangeToNewOR',{params});
+	}
+
+	getCvCancelled(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseChangeToNewCV',{params});
+	}
+
+	getJvCancelled(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseChangeToNewJV',{params});
+	}
+
+	updateAcseChangeStat(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcseChangeStat',params,header);
+    }
+
+    getAcseCancelledTran(tranId,tranClass,cancelFrom,cancelTo){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+			.set('cancelFrom', (cancelFrom == null || cancelFrom == undefined ? '' : cancelFrom))
+			.set('cancelTo', (cancelTo == null || cancelTo == undefined ? '' : cancelTo));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCancelledTran',{params});
+	}
 
 }

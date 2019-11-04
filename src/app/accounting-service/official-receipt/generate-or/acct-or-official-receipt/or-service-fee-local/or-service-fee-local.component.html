@@ -18,7 +18,7 @@
     </div>
 </div>
 
-<app-quarter-ending-lov (selectedData)="setSelectedData($event)"></app-quarter-ending-lov>
+<app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates"></app-quarter-ending-lov>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

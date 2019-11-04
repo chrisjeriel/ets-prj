@@ -31,7 +31,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','Actual Overdue Days','Overdue Days w/ Interest','Currency','Currency Rate', 'Interest Rate','Net Due','Overdue Interest'],    
+    tHeader: ['Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','Actual||Overdue Days','Overdue Days ||w/ Interest','Currency','Currency Rate', 'Interest Rate','Net Due','Overdue Interest'],    
     dataTypes: ['text','sequence-2','text','date','date','number','number','text','percent','percent','currency','currency'],
     nData: {
       showMG : 1,

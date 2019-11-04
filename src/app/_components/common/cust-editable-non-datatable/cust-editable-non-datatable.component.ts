@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Renderer, ViewChild, ElementRef, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from '@app/app.component';
 import { retry, catchError } from 'rxjs/operators';
@@ -18,7 +18,12 @@ import { DatepickerComponent } from '@app/_components/datepicker/datepicker.comp
     styleUrls: ['./cust-editable-non-datatable.component.css'],
     providers: [NgbDropdownConfig]
 })
-export class CustEditableNonDatatableComponent implements OnInit {
+export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit {
+    ngAfterViewInit(){
+        console.log(this.componentRef);
+    }
+
+    @ViewChild('overallCont') componentRef: ElementRef;
     @ViewChild("deleteModal") deleteModal:ModalComponent;
     @ViewChildren('myForm') form: QueryList<NgForm>;
     @ViewChildren(DatepickerComponent) dps: QueryList<DatepickerComponent>;
@@ -307,6 +312,9 @@ export class CustEditableNonDatatableComponent implements OnInit {
                    }
                }
             }
+            if(this.passData.tableData.filter(a=>a.deleted || a.edited).length == 0){
+                this.markAsPristine();
+            }
             this.selectAllFlag = false;
             this.markAsDirty();
             //$('#cust-scroll').addClass('ng-dirty');
@@ -315,7 +323,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
-            this.onDelete.emit();
+            this.indvSelect = null;
             if(this.passData.genericBtn == 'Delete'){
                 this.passData.disableGeneric = true
             }
@@ -764,7 +772,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     //download
-    download(file){
+    download(file, module, refId){
         console.log(file);
         /*this.up.downloadFile(file).subscribe((data: any)=>{
            var newBlob = new Blob([data], { type: "application/pdf" });
@@ -775,11 +783,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         error =>{
             console.log(error);
         });*/
-        let url = this.up.downloadFile(file);
+        let url = this.up.downloadFile(file, module, refId);
         //window.open(url);
         var link = document.createElement('a');
         link.href = url;
-        link.download = file;
+        link.download = String(file).substring(13);
+        console.log(link.download);
         link.target = "_blank";
         link.click();
     }
@@ -793,6 +802,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
 
     markAsPristine(){
         $('table.non-datatable' + this.passData.pageID).parent().removeClass('ng-dirty');
+        $(this.componentRef.nativeElement).parent().find('.ng-dirty').removeClass('ng-dirty');
         this.form.forEach(a=>a.control.markAsPristine());
         this.dps.forEach(a=>a.markAsPristine());
     }

@@ -389,6 +389,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     this.router.navigate([this.params.exitLink])
   }
 
+  goToDistList(){
+    this.router.navigate(['/pol-dist-list'])
+  }
+
   goToRiskDistribution(){
     // this.params.writable = true;
     // this.params.fromNegate = false;

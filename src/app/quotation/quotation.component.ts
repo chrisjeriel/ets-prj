@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { environment } from '@environments/environment';
-import { QuotationService, UserService } from '@app/_services';
+import { QuotationService, UserService, NotesService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
@@ -18,7 +18,8 @@ import { Subject } from 'rxjs';
 	styleUrls: ['./quotation.component.css']
 })
 export class QuotationComponent implements OnInit {
-	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, private quotationService: QuotationService, private userService: UserService) { 
+	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, 
+              private quotationService: QuotationService, private userService: UserService, private ns: NotesService) { 
   }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
@@ -216,6 +217,8 @@ export class QuotationComponent implements OnInit {
   	}
 
     showPrintDialog(event){
+          console.log(event)
+          this.wordingText = event[0].wordingTxt;
           if(this.quoteInfo.status == '97'){
             this.printDialog(event[0].printType,event[0].reportName)
           } else if (this.quoteInfo.status == '2' || this.quoteInfo.status == '96' || this.quoteInfo.status == '98'){
@@ -233,23 +236,57 @@ export class QuotationComponent implements OnInit {
           //END NECO 05/23/2019
     }
 
+    wordingText = '';
+    reportName = '';
+
     printDialog(obj,selectedReport: string){
-      if (obj.toUpperCase() == 'SCREEN'){
-        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
-        this.modalService.dismissAll();
-        this.selectedReport = null;
-      } else if (obj.toUpperCase() == 'PDF'){
-        this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
-        this.selectedReport = null;
-      } else if (obj.toUpperCase() == 'PRINTER'){
-        this.printPDF(selectedReport,this.quoteInfo.quoteId);
-        this.selectedReport = null;
-      }
+        let saveRepTextParam:any = {
+          quoteId:this.quoteInfo.quoteId,
+          reportId:selectedReport,
+          repText: this.wordingText,
+          createUser:this.ns.getCurrentUser(),
+          createDate: this.ns.toDateTimeString(0),
+          updateUser: this.ns.getCurrentUser(),
+          updateDate: this.ns.toDateTimeString(0)
+        }
+
+        if(selectedReport == "QUOTER009C" || selectedReport == "QUOTER009E"){
+          this.quotationService.saveReptext(saveRepTextParam).subscribe(a=>{
+            this.reportName = (selectedReport == 'QUOTER009C' ? 'QUOTER009B' : selectedReport);
+            if (obj.toUpperCase() == 'SCREEN'){
+              window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.reportName
+                + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId 
+                + '&reportId=' + selectedReport
+                , '_blank');
+              this.modalService.dismissAll();
+              this.selectedReport = null;
+            } else if (obj.toUpperCase() == 'PDF'){
+              this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+              this.selectedReport = null;
+            } else if (obj.toUpperCase() == 'PRINTER'){
+              this.printPDF(selectedReport,this.quoteInfo.quoteId);
+              this.selectedReport = null;
+            }
+          })
+        }else{
+          this.reportName = selectedReport;
+          if (obj.toUpperCase() == 'SCREEN'){
+            window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
+            this.modalService.dismissAll();
+            this.selectedReport = null;
+          } else if (obj.toUpperCase() == 'PDF'){
+            this.downloadPDF(selectedReport,this.quoteInfo.quoteId);
+            this.selectedReport = null;
+          } else if (obj.toUpperCase() == 'PRINTER'){
+            this.printPDF(selectedReport,this.quoteInfo.quoteId);
+            this.selectedReport = null;
+          }
+        }
     }
 
-  	downloadPDF(reportName : string, quoteId : string){
+  	downloadPDF(reportId : string, quoteId : string){
        var fileName = this.quoteInfo.quotationNo;
-       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+       this.quotationService.downloadPDF(this.reportName,quoteId,reportId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
               var link = document.createElement('a');
@@ -268,9 +305,9 @@ export class QuotationComponent implements OnInit {
        });
     }
 
-    printPDF(reportName : string, quoteId : string){
+    printPDF(reportId : string, quoteId : string){
        var fileName = this.quoteInfo.quotationNo;
-       this.quotationService.downloadPDF(reportName,quoteId).subscribe( data => {
+       this.quotationService.downloadPDF(this.reportName,quoteId,reportId).subscribe( data => {
               var newBlob = new Blob([data], { type: "application/pdf" });
               var downloadURL = window.URL.createObjectURL(data);
               const iframe = document.createElement('iframe');

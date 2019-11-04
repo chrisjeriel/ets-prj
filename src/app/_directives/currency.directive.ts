@@ -1,12 +1,13 @@
 import { Directive, ElementRef, HostListener, HostBinding, OnInit } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
+import { NgModel } from '@angular/forms';
 
 
 @Directive({
   selector: '[appCurrency]'
 })
 export class CurrencyDirective implements OnInit{
-  constructor(private el: ElementRef) {
+  constructor(private el: ElementRef, private model: NgModel) {
 
   }
 
@@ -15,6 +16,11 @@ export class CurrencyDirective implements OnInit{
   }
 
   @HostListener("blur", ["$event.target"]) onBlur(target) {
+    if(this.model.control.untouched){
+      console.log('eyoeyoeyoeyoeyoeyo')
+      this.model.control.markAsPristine();
+    }
+
   	if(target.value !=''){
 	  	let sNum = target.value.split(/[.]/g);
 	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
