@@ -315,7 +315,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
             this.search(this.searchString);
             this.tableDataChange.emit(this.passData.tableData);
             this.uploadedFiles.emit(this.filesToUpload);
-            this.onDelete.emit();
+            this.indvSelect = null;
             if(this.passData.genericBtn == 'Delete'){
                 this.passData.disableGeneric = true
             }
@@ -764,7 +764,7 @@ export class CustEditableNonDatatableComponent implements OnInit {
     }
 
     //download
-    download(file){
+    download(file, module, refId){
         console.log(file);
         /*this.up.downloadFile(file).subscribe((data: any)=>{
            var newBlob = new Blob([data], { type: "application/pdf" });
@@ -775,11 +775,12 @@ export class CustEditableNonDatatableComponent implements OnInit {
         error =>{
             console.log(error);
         });*/
-        let url = this.up.downloadFile(file);
+        let url = this.up.downloadFile(file, module, refId);
         //window.open(url);
         var link = document.createElement('a');
         link.href = url;
-        link.download = file;
+        link.download = String(file).substring(13);
+        console.log(link.download);
         link.target = "_blank";
         link.click();
     }

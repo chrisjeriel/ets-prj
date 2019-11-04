@@ -13,14 +13,17 @@ import { CustNonDatatableComponent } from '@app/_components/common/cust-non-data
 import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
- 
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 @Component({
     selector: 'app-quo-alop',
     templateUrl: './quo-alop.component.html',
     styleUrls: ['./quo-alop.component.css']
 })
 export class QuoAlopComponent implements OnInit {
-  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('quoteTable') table: CustEditableNonDatatableComponent;
+  @ViewChild('itemTable') itemTable: CustEditableNonDatatableComponent;
   @ViewChild('mainCancel') cancelBtn : CancelButtonComponent;
   @ViewChild('itemInfoCancel') itemInfoCancel : CancelButtonComponent;
   @ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
@@ -30,7 +33,9 @@ export class QuoAlopComponent implements OnInit {
   @ViewChildren(RequiredDirective) inputs: QueryList<RequiredDirective>;
   @ViewChild('myForm') form:any;
   @ViewChildren(MtnInsuredComponent) insuredLovs: QueryList<MtnInsuredComponent>;
-  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('mainSuccess') successDiag: SucessDialogComponent;
+  @ViewChild('itemSuccess') itemSuccess: SucessDialogComponent;
+  @ViewChild('mainConfirm') confirmSave: ConfirmSaveComponent;
 
 
 
@@ -78,10 +83,10 @@ export class QuoAlopComponent implements OnInit {
             indemFromDate: null,
             timeExc: null,
             repInterval: null,
-            updateDateAlop: new Date(),
-            updateUserAlop: JSON.parse(window.localStorage.currentUser).username,
-            createDateAlop:  new Date(),
-            createUserAlop: JSON.parse(window.localStorage.currentUser).username
+            updateDateAlop: '',
+            updateUserAlop: this.ns.getCurrentUser(),
+            createDateAlop:  '',
+            createUserAlop: this.ns.getCurrentUser()
     }
 
     newAlopDetails: any = {
@@ -108,15 +113,15 @@ export class QuoAlopComponent implements OnInit {
         dataTypes: ["number", "number", "text", "text"],
         uneditable: [true,false,false,false,false],
         nData: {
-          createDate: new Date(),
-          createUser: JSON.parse(window.localStorage.currentUser).username,
+          createDateItem: '',
+          createUserItem: this.ns.getCurrentUser(),
           description: null,
           itemNo: null,
           importance: null,
           lossMin: null,
           quantity: null,
-          updateDate: new Date(),
-          updateUser: JSON.parse(window.localStorage.currentUser).username,
+          updateDateItem: '',
+          updateUserItem: this.ns.getCurrentUser(),
         },
         addFlag: true,
         deleteFlag: true,
@@ -128,17 +133,16 @@ export class QuoAlopComponent implements OnInit {
     }
 
     quoteOptionsData: any = {
-        tableData: [],
-        tHeader: ['Option No', 'ALOP Rate (%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
-        dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
-        resizable: [false, false, true, false, false, false],
-        pagination: true,
-        pageStatus: true,
-        tableOnly: true,
-        pageLength: 3,
-        keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
-        pageID: 'quoteOptionData'
-    } 
+     tableData:[],
+     tHeader: ['Option No', 'ALOP Rate (%)', 'Conditions', 'Comm Rate Quota(%)', 'Comm Rate Surplus(%)', 'Comm Rate Fac(%)'],
+     dataTypes: ['text', 'percent', 'text', 'percent', 'percent', 'percent', 'percent'],
+     keys: ['optionId','optionRt','condition','commRtQuota','commRtSurplus','commRtFac'],
+     uneditable:[true,true,true,true,true,true,true],
+     pageLength: 3,
+     paginateFlag:true,
+     infoFlag:true,
+     pageID: 'quoteOptionData'
+   };
 
     passLOV: any = {
       selector: 'insured',
@@ -153,7 +157,10 @@ export class QuoAlopComponent implements OnInit {
     optionsList:any = [];
     disabledFlag:boolean = true;
     promptClickItem:boolean = false;
+    cancelFlag: boolean = false;
+    cancelItemFlag: boolean = false;
     OpenCover:boolean; /*Added OpenCover. TRBT#PROD_GRADE*/
+    subscription: Subscription = new Subscription();
 
     constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title, private route: ActivatedRoute, private mtnService: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 
@@ -186,12 +193,289 @@ export class QuoAlopComponent implements OnInit {
            this.itemInfoData.widths = [1,1,1,1,1]
        }
         this.getAlop();
-        this.getQuoteOption();
-        this.getAlopSumInsured();
     }
 
-    getQuoteOption(){
+    getAlop(){
+      this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
+        this.loading = false;
+        if(data.quotation !== null){
+          this.alopData = data.quotation.alop;
+          this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
+
+          this.quoteOptionsData.tableData = [];
+          for (var i = 0; i < this.alopData.alopDetails.length; i++) {
+            this.quoteOptionsData.tableData.push(this.alopData.alopDetails[i]);
+          }
+          this.table.refreshTable();
+          this.table.onRowClick(null,this.quoteOptionsData.tableData[0]);
+        }else{
+          this.disabledFlag = true;
+
+          var sub$ = forkJoin(this.mtnService.getMtnInsured(this.quotationInfo.principalId),
+                              this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId),
+                              this.quotationService.getQuoteOptions(this.quotationInfo.quoteId, '')).pipe(map(([mtnInsured, quoCoverage,quoteOption]) => { return { mtnInsured, quoCoverage, quoteOption}}));
+
+          this.subscription.add(sub$.subscribe((data:any) => {
+            console.log(data)
+            //FOR ALOP INFO
+            this.alopData.insuredId = data.mtnInsured.insured[0].insuredId;
+            this.alopData.insuredName = data.mtnInsured.insured[0].insuredAbbr;
+            this.alopData.insuredDesc = data.mtnInsured.insured[0].insuredName;
+            this.alopData.address = data.mtnInsured.insured[0].address;
+            this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
+
+            //FOR ANNUAL SUM INSURED
+            var sectionCover = data.quoCoverage.quotation.project.coverage.sectionCovers;
+            for(var i=0;i < sectionCover.length;i++){
+              if(sectionCover[i].coverName == 'Advance Loss of Profit'){
+                  this.alopDetails.annSi = sectionCover[i].sumInsured;
+              }
+            }
+
+            //FOR OPTIONSLIST
+            this.quoteOptionsData.tableData = [];
+            var optionsList = data.quoteOption.quotation.optionsList;
+            for(var i = 0; i < optionsList.length; i++){
+              optionsList[i].optionRt = optionsList[i].otherRatesList.find(a=>a.coverCd==16).rate;
+              optionsList[i].annSi = this.alopDetails.annSi;
+              optionsList[i].issueDate = '';
+              optionsList[i].expiryDate = '';
+              optionsList[i].indemFromDate = '';
+              this.quoteOptionsData.tableData.push(optionsList[i]);
+            }
+            this.table.onRowClick(null,this.quoteOptionsData.tableData[0]);
+            this.table.refreshTable();
+          }));
+        }
+      });
+    }
+
+
+    clickRow(data) {
+      console.log(data)
+      console.log(this.table.indvSelect)
+      if(data !== null){
+        this.alopDetails.optionId = data.optionId;
+        this.alopDetails.annSi = data.annSi;
+        this.alopDetails.maxIndemPdSi = data.maxIndemPdSi;
+        this.alopDetails.issueDate = data.issueDate;
+        this.alopDetails.expiryDate = data.expiryDate;
+        this.alopDetails.maxIndemPd = data.maxIndemPd;
+        this.alopDetails.indemFromDate = data.indemFromDate;
+        this.alopDetails.timeExc = data.timeExc;
+        this.alopDetails.repInterval = data.repInterval;
+        this.readonlyFlag = false;
+        this.disabledFlag = false;
+      }else{
+        this.alopDetails.optionId = '';
+        this.alopDetails.annSi = '';
+        this.alopDetails.maxIndemPdSi = '';
+        this.alopDetails.issueDate = '';
+        this.alopDetails.expiryDate = '';
+        this.alopDetails.maxIndemPd = '';
+        this.alopDetails.indemFromDate = '';
+        this.alopDetails.timeExc = '';
+        this.alopDetails.repInterval = '';
+        this.readonlyFlag = true;
+        this.disabledFlag = true;
+      }
+    }
+
+    setInsured(data){
+      // this.alopData.insuredName = data.insuredName;
+      // this.alopData.insuredId = data.insuredId;
+      this.alopData.insuredName = data.insuredAbbr;
+      this.alopData.insuredId = data.insuredId;
+      this.alopData.insuredDesc = data.insuredName;
+      this.alopData.address = data.address;
+      this.ns.lovLoader(data.ev, 0);
+      this.form.control.markAsDirty();
+    }
+
+    openGenericLOV(selector){
+      this.passLOV.selector = selector;
+      $('#insuredLOV #modalBtn').trigger('click');
+    }
+
+    save(cancel?) {
+      this.cancelFlag = cancel !== undefined;
+      console.log(this.cancelFlag);
+      this.alopData.quoteId = this.quotationInfo.quoteId;
+      this.alopData.createUser = this.ns.getCurrentUser();
+      this.alopData.createDate = this.ns.toDateTimeString(0);
+      this.alopData.updateUser = this.ns.getCurrentUser();
+      this.alopData.updateDate = this.ns.toDateTimeString(0);
+      this.alopData.alopDetails = [];
+
+      for (let option of this.quoteOptionsData.tableData) {
+        console.log()
+        if(option.edited){
+          this.alopData.alopDetails.push(option);
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].issueDate = this.ns.toDateTimeString(option.issueDate);
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].expiryDate = this.ns.toDateTimeString(option.expiryDate);
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].indemFromDate = this.ns.toDateTimeString(option.indemFromDate);
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].createUserAlop = this.ns.getCurrentUser();
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].createDateAlop = this.ns.toDateTimeString(0);
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].updateUserAlop = this.ns.getCurrentUser();
+          this.alopData.alopDetails[this.alopData.alopDetails.length - 1].updateDateAlop = this.ns.toDateTimeString(0);
+        }
+      }
+
+      this.quotationService.saveQuoteAlop(this.alopData).subscribe((data: any) => {
+        if(data['returnCode'] == 0) {
+          this.dialogMessage = data['errorList'][0].errorMessage;
+          this.dialogIcon = "error";
+          this.successDiag.open();
+        } else{
+          this.dialogMessage = "";
+          this.dialogIcon = "success";
+          this.successDiag.open();
+          this.getAlop();
+          this.form.control.markAsPristine();
+        }
+      });
+    }
+
+    cancel(){
+      this.cancelBtn.clickCancel();
+    }
+
+    checkFields() : boolean{
+      return this.alopDetails.maxIndemPdSi == '' || 
+             this.alopDetails.maxIndemPd == '' ||
+             this.alopDetails.timeExc == '' ||
+             this.alopDetails.repInterval == '';
+    }
+
+    onClickSave(){
+      if(this.dateErFlag){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Please Check Field Values.';
+        this.successDiag.open();
+      }else if(this.checkFields() && !this.readonlyFlag){
+        this.dialogIcon = 'error';
+        this.successDiag.open();
+      }else{
+       this.confirmSave.confirmModal();
+      }
+    }
+
+    onClickSaveAlopItem(){
+      $('#alopItem #confirm-save #modalBtn2').trigger('click');
+    }
+
+    openAlopItem(){
+      if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
+        this.onClickSave();
+        this.promptClickItem = true;
+      }else{
+        this.promptClickItem = false;
+        this.itmInfoMdl.openNoClose();
+        this.alopItem();
+      }
+    }
+
+    alopItem(){
+      this.itemTable.loadingFlag = true;
+      this.quotationService.getALOPItemInfos(this.quotationInfo.quoteId,this.table.indvSelect.optionId).subscribe((data: any) => {
+        this.itemInfoData.tableData = [];
+        if(data.alopItem.length !== 0){
+          this.itemTable.markAsPristine();
+          var dataInfos = data.alopItem;
+
+          for(var i=0; i< dataInfos.length;i++){
+            this.itemInfoData.tableData.push(dataInfos[i]);
+          }
+        }    
+        this.itemTable.refreshTable();
+        this.itemTable.loadingFlag = false;
+      });
+    }
+
+    saveAlopItem(cancelFlag?){
+      this.cancelItemFlag = cancelFlag !== undefined;
+      let savedData: any = {};
+      savedData.quoteId = this.quotationInfo.quoteId;
+      
+      savedData.saveAlopItemList=[];
+      savedData.deleteAlopItemList=[];
+
+      for (var i = 0 ; this.itemInfoData.tableData.length > i; i++) {
+        if(this.itemInfoData.tableData[i].edited && !this.itemInfoData.tableData[i].deleted){
+            savedData.saveAlopItemList.push(this.itemInfoData.tableData[i]);
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].optionId = this.table.indvSelect.optionId
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].createDateItem = this.ns.toDateTimeString(0);
+            savedData.saveAlopItemList[savedData.saveAlopItemList.length-1].updateDateItem = this.ns.toDateTimeString(0);
+        }else if(this.itemInfoData.tableData[i].deleted){
+            savedData.deleteAlopItemList.push(this.itemInfoData.tableData[i]);
+            savedData.deleteAlopItemList[savedData.deleteAlopItemList.length-1].optionId = this.table.indvSelect.optionId
+        }
+      }
+      
+      if(savedData.saveAlopItemList.length === 0 && savedData.deleteAlopItemList.length === 0){
+          this.dialogIcon = "info";
+          this.dialogMessage = "Nothing to save.";
+          this.itemSuccess.open();
+      }else{
+        this.quotationService.saveQuoteAlopItem(savedData).subscribe((data: any) => {
+          if(data['returnCode'] == 0) {
+            this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error";
+            this.itemSuccess.open();
+          } else{
+            this.dialogIcon = "success";
+            this.itemSuccess.open();
+            if(cancelFlag !== undefined){
+              this.itmInfoMdl.closeModal();
+            }
+            this.table.markAsPristine();
+            this.alopItem();
+          }
+        });
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*getQuoteOption(){
       var id = this.quotationInfo.quoteId == '' ? '' : this.quotationInfo.quoteId;
+      console.log(this.quotationInfo.quoteId)
       this.quotationService.getQuoteOptions(id, '').subscribe((data: any) => {
 
           // this.optionRecords = data.QuotationOption.optionsList; this.plainQuotationNo(this.quotationNum)
@@ -208,22 +492,16 @@ export class QuoAlopComponent implements OnInit {
       });
     }
 
-    getAlop(){
+    getAlop1(){
       this.quotationService.getALop(this.quotationInfo.quoteId,'').subscribe((data: any) => {
              this.loading = false;
              this.optionsList = [];
              if(data.quotation != null){
               this.quoteId = data.quotation.quoteId;
               this.alopData = data.quotation.alop===null ? this.alopData : data.quotation.alop;
-              this.alopData.createDate = this.ns.toDateTimeString(this.alopData.createDate);
-              this.alopData.updateDate = this.ns.toDateTimeString(this.alopData.updateDate);
-              //this.optionsList = data.quotation.optionsList;
               
               var alop = data.quotation.optionsList;
               for(let i of alop){
-                i.alopDetails.issueDate = i.alopDetails.issueDate == null ? '' : i.alopDetails.issueDate;
-                i.alopDetails.expiryDate = i.alopDetails.expiryDate == null ? '' : i.alopDetails.expiryDate;
-                i.alopDetails.indemFromDate = i.alopDetails.indemFromDate == null ? '' : i.alopDetails.indemFromDate;
                 this.optionsList.push(i);
               }
 
@@ -238,12 +516,22 @@ export class QuoAlopComponent implements OnInit {
                   this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
                 })
 
-                this.alopData.createUser = JSON.parse(window.localStorage.currentUser).username
-                this.alopData.createDate = this.ns.toDateTimeString(new Date());
-                this.alopData.updateDate = this.ns.toDateTimeString(new Date());
-                this.alopData.updateUser = JSON.parse(window.localStorage.currentUser).username;
+                this.alopData.createUser = this.ns.getCurrentUser();
+                this.alopData.createDate = this.ns.toDateTimeString(0);
+                this.alopData.updateDate = this.ns.toDateTimeString(0);
+                this.alopData.updateUser = this.ns.getCurrentUser();
             }
-            
+       });
+    }
+
+    getAlopSumInsured(){
+       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
+         var sectionCover = data.quotation.project.coverage.sectionCovers;
+         for(var i=0;i < sectionCover.length;i++){
+           if(sectionCover[i].coverName == 'Advance Loss of Profit'){
+               this.alopDetails.annSi = sectionCover[i].sumInsured;
+           }
+         }
        });
     }
 
@@ -257,7 +545,7 @@ export class QuoAlopComponent implements OnInit {
 
     cancelFlag:boolean;
 
-    save(cancel?) {
+    save1(cancel?) {
       this.cancelFlag = cancel !== undefined;
 
       if(this.dateErFlag){
@@ -331,7 +619,7 @@ export class QuoAlopComponent implements OnInit {
       // this.ngOnInit();
     }
 
-    openAlopItem(){
+    openAlopItem1(){
       if($('.ng-dirty:not([type="search"]):not(.not-form)').length != 0){
         this.onClickSave();
         this.promptClickItem = true;
@@ -354,10 +642,10 @@ export class QuoAlopComponent implements OnInit {
         $('#alopItemModal #modalBtn').trigger('click');
       },0)*/
       
-       
+    /*   
     }
 
-    alopItem(){
+    alopItem1(){
       this.quotationService.getALOPItemInfos(this.quoteNo[0],this.quotationInfo.quoteId,this.tableNonEditable.indvSelect.optionId).subscribe((data: any) => {
             this.table.markAsPristine();
             this.itemInfoData.tableData = [];
@@ -375,7 +663,7 @@ export class QuoAlopComponent implements OnInit {
 
     }
 
-    saveAlopItem(cancelFlag?){
+    saveAlopItem1(cancelFlag?){
       //this.cancelFlag = cancelFlag !== undefined;
       let savedData: any = {};
       savedData.quoteId = this.quotationInfo.quoteId;
@@ -427,17 +715,13 @@ export class QuoAlopComponent implements OnInit {
         });
       }
       
-  }
+  }*/
 
-  test(data){
-    console.log(data)
-  }
-
-  showInsuredLOV(){
+  /*showInsuredLOV(){
     $('#insuredLOV #modalBtn').trigger('click');
-  }
+  }*/
 
-  setInsured(data){
+  /*setInsured1(data){
     // this.alopData.insuredName = data.insuredName;
     // this.alopData.insuredId = data.insuredId;
     this.alopData.insuredName = data.insuredAbbr;
@@ -448,13 +732,13 @@ export class QuoAlopComponent implements OnInit {
     this.form.control.markAsDirty();
   }
 
-  openGenericLOV(selector){
+  openGenericLOV1(selector){
     this.passLOV.selector = selector;
     $('#insuredLOV #modalBtn').trigger('click');
-  }
+  }*/
 
-  updateItemInfoData(data){
-    /*let delCount : number = 0;
+  /*updateItemInfoData(data){
+    let delCount : number = 0;
     let delFlag:boolean ;
     do {
       delFlag = false;
@@ -479,8 +763,8 @@ export class QuoAlopComponent implements OnInit {
 
     this.itemInfoData.tableData=data;
     //this.itemInfoData.nData.itemNo =  this.itemInfoData.tableData.filter((data)=>{return !data.deleted}).length + 1 ; 
-    this.table.refreshTable();*/
-  }
+    this.table.refreshTable();
+  }*/
 
   /*adjustItemNo(data,index){
     let keys:string[] = Object.keys(data[index]);
@@ -494,11 +778,12 @@ export class QuoAlopComponent implements OnInit {
       data[i].edited = true;
     }
   }*/
-  cancel(){
-      this.cancelBtn.clickCancel();
-  }
 
-  checkDates(){
+  /*cancel(){
+      this.cancelBtn.clickCancel();
+  }*/
+
+ /* checkDates(){
     if((new Date(this.alopDetails.issueDate) >= new Date(this.alopDetails.expiryDate))){
      highlight(this.to);
      highlight(this.from);
@@ -514,9 +799,9 @@ export class QuoAlopComponent implements OnInit {
     }else if(this.alopDetails.expiryDate == ""){
       this.alopDetails.expiryDate = null
     }
-  }
+  }*/
 
-  onClickSave(){
+  /*onClickSave(){
     if(this.dateErFlag){
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Please Check Field Values.';
@@ -528,39 +813,29 @@ export class QuoAlopComponent implements OnInit {
 
   onClickSaveAlopItem(){
     $('#alopItem #confirm-save #modalBtn2').trigger('click');
-  }
+  }*/
 
 
-  getAlopSumInsured(){
-     this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
-       var sectionCover = data.quotation.project.coverage.sectionCovers;
-       for(var i=0;i < sectionCover.length;i++){
-         if(sectionCover[i].coverName == 'Advance Loss of Profit'){
-             this.alopSI = sectionCover[i].sumInsured;
-             this.alopDetails.annSi = this.alopSI;
-         }
-       }
-     });
-  }
+  
 
-  clickRow(data) {
+  /*clickRow1(data) {
       if(data === null || (data !== null && Object.keys(data).length == 0)){
         this.readonlyFlag = true;
-        /*this.alopDetails.annSi = '';
+        this.alopDetails.annSi = '';
         this.alopDetails.maxIndemPdSi = '';
         this.alopDetails.maxIndemPd = '';
         this.alopDetails.timeExc = '';
-        this.alopDetails.repInterval = '';*/
+        this.alopDetails.repInterval = '';
         this.emptyVar();
         unHighlight(this.to);
         unHighlight(this.from);
         this.disabledFlag = true;
         console.log(this.alopDetails.annSi);
       }else{
-        /*console.log(this.optionsList)
-        if(this.optionsList.length > 1){
-          this.getAlop();
-        }*/
+        //console.log(this.optionsList)
+        //if(this.optionsList.length > 1){
+        //  this.getAlop();
+        //}
         //this.getAlop();
         this.getAlopSumInsured();
         unHighlight(this.to);
@@ -603,7 +878,7 @@ export class QuoAlopComponent implements OnInit {
 
   focusBlur() {
    // setTimeout(() => {$('.req').focus();$('.req').blur()},0)
-  }
+  }*/
 
   checkCode(ev, field) {
     this.ns.lovLoader(ev, 1);
@@ -625,7 +900,6 @@ export class QuoAlopComponent implements OnInit {
   //end
 
   itemCancelClick(){
-    console.log(this.itemInfoCancel);
     this.itemInfoCancel.clickCancel();
   }
 }

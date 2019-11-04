@@ -169,7 +169,9 @@ export class AttachmentComponent implements OnInit {
         this.attachmentData =  data['quotation'][0].attachmentsList;
         //this.passData.tableData = this.attachmentData;
         for(var i of this.attachmentData){
-          i.fileNameServer = this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+          i.fileNameServer = /*this.ns.toDateTimeString(i.createDate).match(/\d+/g).join('') +*/ i.fileName;
+          i.module = 'quotation';
+          i.refId = this.quotationInfo.quoteId;
           this.passData.tableData.push(i);
         }
         this.table.refreshTable();
@@ -210,9 +212,10 @@ export class AttachmentComponent implements OnInit {
      .subscribe((data: any) => {
        console.log(data);
        if(data.returnCode === 0){
+         this.cancelFlag = false;
          this.dialogIcon = 'error';
          this.successDiag.open();
-         this.cancelFlag = false;
+         console.log(this.cancelFlag);
        }else{
          this.dialogIcon = 'success';
          this.successDiag.open();
@@ -223,6 +226,7 @@ export class AttachmentComponent implements OnInit {
            this.deleteFileMethod();
          }
          this.getAttachment();
+         this.table.markAsPristine();
        }
        this.loading = false;
      });
@@ -242,7 +246,7 @@ export class AttachmentComponent implements OnInit {
      }
      let file: File = files[0];
      //var newFile = new File([file], date + file.name, {type: file.type});
-     this.upload.uploadFile(file, date)
+     this.upload.uploadFile(file, date, 'quotation', this.quotationInfo.quoteId)
        .subscribe(
          event => {
            if (event.type == HttpEventType.UploadProgress) {
@@ -268,7 +272,7 @@ export class AttachmentComponent implements OnInit {
       let deleteFile = this.deletedData;
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer).subscribe(
+        this.upload.deleteFile(i.fileNameServer, 'quotation', this.quotationInfo.quoteId).subscribe(
             data =>{
               console.log(data);
             },
@@ -284,22 +288,51 @@ export class AttachmentComponent implements OnInit {
 
   cancel(){
     this.cancelBtn.clickCancel();
-
   }
 
   onClickSave(){
-    if(this.checkFields()){
-       $('#confirm-save #modalBtn2').trigger('click');
-      }else{
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+      if(!this.checkFields()){
         this.dialogMessage="";
         this.dialogIcon = "error";
         this.successDiag.open();
+      }else if(this.checkFileSize().length !== 0){
+        this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else if(this.checkFileNameLength()){
+        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else{
+        $('#confirm-save #modalBtn2').trigger('click');
+      }
+  }
+
+  onClickCancelSave(){
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+      if(!this.checkFields()){
+        this.dialogMessage="";
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else if(this.checkFileSize().length !== 0){
+        this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else if(this.checkFileNameLength()){
+        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+      }else{
+        console.log('tf');
+        this.onSaveAttachment('cancel');
       }
   }
 
    //get the emitted files from the table
     uploads(event){
       this.filesList = event;
+      console.log(this.filesList);
     }
 
     checkFields(){
@@ -310,5 +343,24 @@ export class AttachmentComponent implements OnInit {
         }
       }
       return true;
+    }
+
+    checkFileSize(){
+      for(let files of this.filesList){
+        console.log(files[0].size);
+        if(files[0].size > 26214400){ //check if a file exceeded 25MB
+          return files[0].name;
+        }
+      }
+      return '';
+    }
+
+    checkFileNameLength(){
+      for(var i of this.passData.tableData){
+        if(i.fileName.length > 50){
+          return true;
+        }
+      }
+      return false;
     }
 }

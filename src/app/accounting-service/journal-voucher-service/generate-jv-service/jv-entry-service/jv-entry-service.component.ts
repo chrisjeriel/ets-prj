@@ -17,6 +17,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 export class JvEntryServiceComponent implements OnInit {
    
   @Input() data: any = {};
+  @Input() jvData:any;
   @Output() onChange: EventEmitter<any> = new EventEmitter();
   @Output() emitData = new EventEmitter<any>();
   @Output() disableTab : EventEmitter<any> = new EventEmitter();  
@@ -93,10 +94,13 @@ export class JvEntryServiceComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Acc-Service | Journal Voucher");
     this.route.params.subscribe(params => {
-      console.log(params)
       if(params.from === 'add'){
+        if(this.jvData.jvNo === ''){
+          this.newJV();
+        }else{
+          this.tranId = this.jvData.tranId;
+        }
         this.from = 'add';
-        this.newJV();
       }else{
         this.tranId = params.tranId;
         this.from = 'jvList';
@@ -380,7 +384,6 @@ export class JvEntryServiceComponent implements OnInit {
 
   saveData(cancel?){
     this.prepareData();
-    console.log(this.jvDatas);
     this.accountingService.saveAcseJVEntry(this.jvDatas).subscribe((data:any) =>{
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -391,6 +394,7 @@ export class JvEntryServiceComponent implements OnInit {
         this.dialogIcon = "success";
         this.successDiag.open();
         this.tranId = data.tranIdOut;
+        this.from = 'jvList';
         this.retrieveJVEntry();
       }
     });
@@ -402,7 +406,6 @@ export class JvEntryServiceComponent implements OnInit {
 
   onClickApprove(){
     this.accountingService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
-      console.log(data);
       this.entryData.approver = data.employee.employeeName;
       this.entryData.approvedBy = data.employee.userName;
       this.entryData.approverDate = this.ns.toDateTimeString(0);

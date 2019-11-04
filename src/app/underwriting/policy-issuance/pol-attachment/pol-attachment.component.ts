@@ -75,7 +75,10 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.polAttachmentList !== null){
                 for(var i of data.polAttachmentList.attachments){
-                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = i.fileName;
+                    i.module = 'policy';
+                    i.refId = this.policyInfo.policyId;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -89,7 +92,10 @@ export class PolAttachmentComponent implements OnInit {
             this.attachmentData.tableData = [];
             if(data.attachmentsList !== null){
                 for(var i of data.attachmentsList.attachmentsOc){
-                    i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                    i.fileNameServer = i.fileName;
+                    i.module = 'policyOc';
+                    i.refId = this.policyInfo.policyIdOc;
                     this.attachmentData.tableData.push(i);
                 }
             }
@@ -123,6 +129,7 @@ export class PolAttachmentComponent implements OnInit {
           this.underwritingService.savePolAttachmentOc(this.policyInfo.policyIdOc,this.savedData,this.deletedData).subscribe((data: any) => {
             console.log(data);
             if(data.returnCode === 0){
+                this.cancelFlag = false;
                 this.dialogMessage="The system has encountered an unspecified error.";
                 this.dialogIcon = "error";
                 $('#polAttachment > #successModalBtn').trigger('click');
@@ -143,6 +150,7 @@ export class PolAttachmentComponent implements OnInit {
           this.underwritingService.savePolAttachment(this.policyInfo.policyId,this.savedData,this.deletedData).subscribe((data: any) => {
             console.log(data);
             if(data.returnCode === 0){
+                this.cancelFlag = false;
                 this.dialogMessage="The system has encountered an unspecified error.";
                 this.dialogIcon = "error";
                 $('#polAttachment > #successModalBtn').trigger('click');
@@ -157,6 +165,7 @@ export class PolAttachmentComponent implements OnInit {
                 }
                 $('#polAttachment > #successModalBtn').trigger('click');
                 this.retrievePolAttachment();
+                this.table.markAsPristine();
             }
           });
         }
@@ -174,7 +183,7 @@ export class PolAttachmentComponent implements OnInit {
         let file: File = files[0];
         //var newFile = new File([file], date + file.name, {type: file.type});
 
-        this.upload.uploadFile(file, date)
+        this.upload.uploadFile(file, date, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {
@@ -200,7 +209,7 @@ export class PolAttachmentComponent implements OnInit {
       let deleteFile = this.deletedData;
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer).subscribe(
+        this.upload.deleteFile(i.fileNameServer, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId).subscribe(
             data =>{
               console.log(data);
             },
@@ -219,13 +228,51 @@ export class PolAttachmentComponent implements OnInit {
     }
 
     onClickSave(){
-      if(this.checkFields()){
+      /*if(this.checkFields()){
        $('#confirm-save #modalBtn2').trigger('click');
       }else{
         this.dialogMessage="Please fill up required fields.";
         this.dialogIcon = "info";
         $('#polAttachment > #successModalBtn').trigger('click');
+      }*/
+
+      this.filesList = this.filesList.filter(a=>{return this.attachmentData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+
+      if(!this.checkFields()){
+        this.dialogMessage="";
+        this.dialogIcon = "error";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else if(this.checkFileSize().length !== 0){
+        this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+        this.dialogIcon = "error-message";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else if(this.checkFileNameLength()){
+        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogIcon = "error-message";
+        $('#polAttachment > #successModalBtn').trigger('click');
+      }else{
+        $('#confirm-save #modalBtn2').trigger('click');
       }
+    }
+
+    onClickCancelSave(){
+      this.filesList = this.filesList.filter(a=>{return this.attachmentData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+        if(!this.checkFields()){
+          this.dialogMessage="";
+          this.dialogIcon = "error";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else if(this.checkFileSize().length !== 0){
+          this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+          this.dialogIcon = "error-message";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else if(this.checkFileNameLength()){
+          this.dialogMessage= "File name exceeded the maximum 50 characters";
+          this.dialogIcon = "error-message";
+          $('#polAttachment > #successModalBtn').trigger('click');
+        }else{
+          console.log('tf');
+          this.saveData('cancel');
+        }
     }
 
     //get the emitted files from the table
@@ -240,6 +287,25 @@ export class PolAttachmentComponent implements OnInit {
         }
       }
       return true;
+    }
+
+    checkFileSize(){
+      for(let files of this.filesList){
+        console.log(files[0].size);
+        if(files[0].size > 26214400){ //check if a file exceeded 25MB
+          return files[0].name;
+        }
+      }
+      return '';
+    }
+
+    checkFileNameLength(){
+      for(var i of this.attachmentData.tableData){
+        if(i.fileName.length > 50){
+          return true;
+        }
+      }
+      return false;
     }
 
 }

@@ -89,7 +89,10 @@ export class AccAttachmentsComponent implements OnInit {
           this.passData.tableData = [];
           if(data.acitAttachmentsList !== null){
               for(var i of data.acitAttachmentsList){
-                  i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                  //i.fileNameServer = this.notes.toDateTimeString(i.createDate).match(/\d+/g).join('') + i.fileName;
+                  i.fileNameServer = i.fileName;
+                  i.module = 'acct-in-trust';
+                  i.refId = this.record.tranId;
                   this.passData.tableData.push(i);
               }
           }
@@ -155,6 +158,7 @@ export class AccAttachmentsComponent implements OnInit {
       this.as.saveAcitAttachments(params).subscribe((data: any) => {
         console.log(data);
         if(data.returnCode === 0){
+            this.cancelFlag = false;
             this.dialogMessage="The system has encountered an unspecified error.";
             this.dialogIcon = "error";
             this.successDiag.open();
@@ -186,7 +190,7 @@ export class AccAttachmentsComponent implements OnInit {
       let file: File = files[0];
       //var newFile = new File([file], date + file.name, {type: file.type});
 
-      this.upload.uploadFile(file, date)
+      this.upload.uploadFile(file, date, 'acct-in-trust', this.record.tranId)
         .subscribe(
           event => {
             console.log('nandato kore');
@@ -213,7 +217,7 @@ export class AccAttachmentsComponent implements OnInit {
     let deleteFile = this.deletedData;
     for(var i of deleteFile){
       console.log(i.fileNameServer);
-      this.upload.deleteFile(i.fileNameServer).subscribe(
+      this.upload.deleteFile(i.fileNameServer, 'acct-in-trust', this.record.tranId).subscribe(
           data =>{
             console.log(data);
           },
@@ -232,12 +236,40 @@ export class AccAttachmentsComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.checkFields()){
-      this.confirm.confirmModal();
-    }else{
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+    if(!this.checkFields()){
       this.dialogMessage="";
       this.dialogIcon = "error";
       this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+  }
+
+  onClickSaveCancel(){
+    this.filesList = this.filesList.filter(a=>{return this.passData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
+    if(!this.checkFields()){
+      this.dialogMessage="";
+      this.dialogIcon = "error";
+      this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.saveData('cancel');
     }
   }
 
@@ -279,6 +311,25 @@ export class AccAttachmentsComponent implements OnInit {
       this.record.createUser = '';
       this.record.updateUser = '';
     }
+  }
+
+  checkFileSize(){
+    for(let files of this.filesList){
+      console.log(files[0].size);
+      if(files[0].size > 26214400){ //check if a file exceeded 25MB
+        return files[0].name;
+      }
+    }
+    return '';
+  }
+
+  checkFileNameLength(){
+    for(var i of this.passData.tableData){
+      if(i.fileName.length > 50){
+        return true;
+      }
+    }
+    return false;
   }
 
 }
