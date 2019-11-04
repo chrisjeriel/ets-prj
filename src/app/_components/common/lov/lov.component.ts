@@ -1202,7 +1202,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'];
       this.passTable.checkFlag = false;
       this.accountingService.getArList(this.passData.searchParams).subscribe((a:any)=>{
-        this.passTable.tableData = a["ar"];
+        this.passTable.tableData = a.ar.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitJvList'){
@@ -1212,6 +1212,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','jvStatusName','jvAmt'];
       this.passTable.checkFlag = false;
       this.accountingService.getJVListing(null).subscribe((data:any)=>{
+        data.transactions = data.transactions.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
         for(var i=0; i< data.transactions.length;i++){
                 this.passTable.tableData.push(data.transactions[i].jvListings);
                 this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo);
@@ -1232,6 +1233,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['cvGenNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt'];
       this.passTable.checkFlag = false;
       this.accountingService.getAcitCvList(this.passData.searchParams).subscribe((data:any)=>{
+        data.acitCvList = data.acitCvList.filter(a=>{return a.mainTranStat !== 'D' && a.mainTranStat !== 'P'});
         var rec = data['acitCvList'].map(i => { 
                 /*i.createDate     = this.ns.toDateTimeString(i.createDate); 
                 i.updateDate     = this.ns.toDateTimeString(i.updateDate);

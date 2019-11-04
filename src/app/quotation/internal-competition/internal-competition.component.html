@@ -68,7 +68,7 @@
         </div>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); printMethod();" [class.cust-btn-disabled]="destination === '' || (destination === 'PRINTER' && (printerName === '' || printNoCopies === 0))" ><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); printMethod();" ><a>Print</a></button>
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
     </div>
 </app-modal>

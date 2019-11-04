@@ -670,10 +670,7 @@ export class QuotationService {
     }
 
 
-    getALOPItemInfos(car: string, quoteId: string, optionId: any, quotationNo?: any) {
-        if (car == "CAR") {
-            this.aLOPItemInfos.forEach(function (itm) { delete itm.relativeImportance; });
-        }
+    getALOPItemInfos(quoteId: string, optionId: any, quotationNo?: any) {
         const params = new HttpParams()
              .set('quotationNo', (quotationNo === null || quotationNo === undefined ? '' : quotationNo) )
              .set('quoteId',(quoteId === null || quoteId === undefined ? '' : quoteId) )
