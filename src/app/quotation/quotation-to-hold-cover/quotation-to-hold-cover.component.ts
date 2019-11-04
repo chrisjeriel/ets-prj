@@ -127,6 +127,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	tempHcNo		: string = '';
 	private sub		: any;
 
+
   	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
 		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
 	}
@@ -139,8 +140,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
   				this.searchParams.quotationNo = this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%');
   				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     			this.passDataQuoteLOV.filters[0].enabled =true;
+    			this.holdCoverNo = JSON.parse(params['tableInfo']).holdCoverNo;
   				this.getQuoteList('manual');
-  				console.log('entered if');
+  				console.log(params);
   			}else{
   				console.log('entered else');
   				this.getQuoteList();
@@ -169,7 +171,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		}
 		console.log(this.searchParams)
 		var parameter = this.searchParams;
-  		const subRes =  forkJoin(this.quotationService.newGetQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([]))
+
+  		const subRes =  forkJoin(this.quotationService.newGetQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([
+  				{
+  					key :'holdCoverNo',
+  					search : this.holdCoverNo == undefined ? '' : this.holdCoverNo
+  				} 
+  			]))
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
   		this.subs = subRes.subscribe(data => {
@@ -205,7 +213,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 					this.getQuoteOptions();
 
 					var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
-					if(selectedRow.length != 0 && selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION'){
+					if(selectedRow.length != 0 && (this.holdCoverNo != undefined ||  selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION')){
 						this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
 						this.tempHcNo					 = selectedRow[0].holdCover.holdCoverNo;
 						this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
@@ -557,6 +565,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	completeSearch:boolean = false;
 	search(key,ev) {
 		console.log(this.searchArr.join('-'));
+		this.holdCoverNo = undefined;
 		this.quoteInfo.quotationNo[2] =  (this.quoteInfo.quotationNo[2] == undefined || this.quoteInfo.quotationNo[2] == '')?'':this.quoteInfo.quotationNo[2].padStart(5,'0');
 		this.quoteInfo.quotationNo[3] =  (this.quoteInfo.quotationNo[3] == undefined || this.quoteInfo.quotationNo[3] == '')?'':this.quoteInfo.quotationNo[3].padStart(2,'0');
 		this.quoteInfo.quotationNo[4] =  (this.quoteInfo.quotationNo[4] == undefined || this.quoteInfo.quotationNo[4] == '')?'':this.quoteInfo.quotationNo[4].padStart(3,'0');
@@ -576,10 +585,18 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			console.log(' else , nothing found');
 		}
 		console.log(this.searchArr);
-		if(this.searchArr.includes('') || this.searchArr.includes('%%') ) {
+		if(this.quoteInfo.quotationNo.includes('')) {
 			console.log('entered here includes');
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
 			this.completeSearch = false;
+			this.quoteInfo  = {
+				quotationNo 	: this.quoteInfo.quotationNo,
+				cedingName		: '',
+				insuredDesc		: '',
+				riskName		: '',
+				totalSi			: '',
+				status			: ''
+			};
 			this.clearHc();
 		}else{
 			console.log('other else');
@@ -587,7 +604,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		}
 
 
-		this.searchParams.quotationNo = this.searchArr.join('-');
+		this.searchParams.quotationNo = this.quoteInfo.quotationNo.join('%-%');
 		this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     	this.passDataQuoteLOV.filters[0].enabled =true;
 		this.getQuoteList([{ key: 'quotationNo', search: this.searchArr.join('-') }]);
@@ -620,7 +637,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	}
 
 	clearHc(){
-		this.holdCoverNo 		 		 = '';
+		this.holdCoverNo 		 		 = undefined;
 		this.holdCover.approvedBy		 = '';
 		this.holdCover.compRefHoldCovNo  = '';
 		this.holdCover.holdCoverId		 = '';
