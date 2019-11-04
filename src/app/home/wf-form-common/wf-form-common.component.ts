@@ -106,15 +106,22 @@ export class WfFormCommonComponent implements OnInit {
 				  	userName: null,
 				  };
 
-  createInfo: any = { 
-  					createdBy: "Test",
-				  	dateCreated: 0,
-				  };			  
+  // createInfo: any = { 
+  // 					createdBy: "Test",
+		// 		  	dateCreated: 0,
+		// 		  };			  
 
-  updateInfo: any = { 
-  					updatedBy: "Test",
-				  	lastUpdate: 0,
-				  };
+  // updateInfo: any = { 
+  // 					updatedBy: "Test",
+		// 		  	lastUpdate: 0,
+		// 		  };
+
+    otherInfo : any = {
+      createDate : null,
+      createUser : null,
+      updateDate : null,
+      updateUser : null
+    };
 
   //Notes Variables
   titleNote: string = "";
@@ -766,6 +773,22 @@ export class WfFormCommonComponent implements OnInit {
       alert("Error calling WFM Services in NOTE loadTable(): " + e);
     } finally {
 
+    }
+  }
+
+
+  onRowClick(event){
+    console.log(event);
+    if(event != null){
+      this.otherInfo.createUser = event.createUser;
+      this.otherInfo.updateUser = event.updateUser;
+      this.otherInfo.createDate = this.ns.toDateTimeString(event.createDate);
+      this.otherInfo.updateDate = this.ns.toDateTimeString(event.updateDate);  
+    }else{
+      this.otherInfo.createUser = null;
+      this.otherInfo.updateUser = null;
+      this.otherInfo.createDate = null;
+      this.otherInfo.updateDate = null;
     }
   }
 }

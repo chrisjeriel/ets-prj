@@ -170,14 +170,14 @@
 									<label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
 								</div>
 								<div class="input-group" style="margin: 0px 0 12px 0 ! important">
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="createInfo.createdBy">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="otherInfo.createUser">
 									<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="createInfo.dateCreated  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px"> -->
 									<div class="col-sm dp-cont">
-							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="createInfo.dateCreated"></datepicker>
+							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="otherInfo.createDate"></datepicker>
 							        </div>
-									<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="updateInfo.updatedBy" style="margin: 0 0 0 5px">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="otherInfo.updateUser" style="margin: 0 0 0 5px">
 									<div class="col-sm dp-cont">
-							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="updateInfo.lastUpdate"></datepicker>
+							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="otherInfo.updateDate"></datepicker>
 							        </div>
 									<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="updateInfo.lastUpdate  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px"> -->
 								</div>
@@ -221,7 +221,7 @@
 				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 			</div>
 			<div class="col-sm-6" style="padding-top: 8px; padding-bottom: 10px;">
-				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" class="d-block py-2">
+				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" (newClick)="onRowClick($event)" class="d-block py-2">
 				</app-cust-editable-non-datatable>
 			</div>
 		</div> <!-- End of row class -->
