@@ -776,7 +776,6 @@ export class WfFormCommonComponent implements OnInit {
     }
   }
 
-
   onRowClick(event){
     console.log(event);
     if(event != null){
