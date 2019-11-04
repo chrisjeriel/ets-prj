@@ -66,7 +66,7 @@
 		    <div class="row">
 		        <div class="col-sm-1"></div>
 		        <div class="col-sm-10" style=" margin-bottom: -0.4%;">
-		            <app-cust-non-datatable [passData]="quoteOptionsData" (rowClick)="clickRow($event)"></app-cust-non-datatable>
+		            <app-cust-editable-non-datatable [passData]="quoteOptionsData" (newClick)="clickRow($event)" #quoteTable></app-cust-editable-non-datatable>
 		        </div>
 		        <div class="col-sm-1"></div>
 		    </div>
@@ -85,7 +85,7 @@
 				<div class="input-group" style="padding-bottom: 0.9%;">
 					<label class="col-sm-2"></label>
 					<label class="form-control-sm col-sm-4 text-right" for="sumInsForMaxIndem">Sum Insured for Maximum Indemnity Period</label>
-					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="sumInsForMaxIndem" [ngModel]="alopDetails?.maxIndemPdSi | number: '1.2-2'" (ngModelChange)="alopDetails.maxIndemPdSi = $event"  appRequired appCurrency name="siMaxIndem" style="min-width: 231px !important;">
+					<input [readonly]="true" class="form-control form-control-sm  col-sm-2 text-right req" type="text" id="sumInsForMaxIndem" [ngModel]="alopDetails?.maxIndemPdSi | number: '1.2-2'" (ngModelChange)="alopDetails.maxIndemPdSi = $event;"  appRequired appCurrency name="siMaxIndem" style="min-width: 231px !important;">
 				</div>
 			</div>
 		</fieldset>
@@ -93,30 +93,30 @@
 
 		<fieldset class="scheduler-border bottom">
 			<div class="form-row custom-row-inline-inset" style="margin-top: 12px !important;">
-				<div class="input-group" [hidden]="true">
+				<!-- REMOVE COMMENT IF ISSUE_DATE,EXPIRY_DATE & INDEMFROMDATE WILL RETURN-->
+				<!-- <div class="input-group" [hidden]="true">
 					<label class="form-control-sm col-sm-4" for="periodFrom">Period of Insurance from</label>
-					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event;test($event)"  (change)="checkDates()" name="from">
+					<input #from [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodFrom" [ngModel]="alopDetails?.issueDate?.split('T')[0]" (ngModelChange)="alopDetails.issueDate=$event;"  (change)="checkDates()" name="from">
 					<label class="form-control-sm col-sm-1" style="margin-left: -5.19%; z-index: -1;" for="periodTo" >to</label>
-					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event; test($event)"  (change)="checkDates()" name="to">
+					<input #to [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="periodTo" [ngModel]="alopDetails?.expiryDate?.split('T')[0]" (ngModelChange)="alopDetails.expiryDate=$event; "  (change)="checkDates()" name="to">
 					<label class="form-control-sm col-sm-2 text-left" >(Scheduled Date of Completion)</label>
-
-				</div>
+				</div> -->
 				<div class="input-group">
 					<label class="form-control-sm col-sm-6" for="maxIndemPeriod">Maximum Indemnity Period</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;focusBlur()" numbers-only appRequired name="maxIndemPeriod">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;table.indvSelect.maxIndemPd = $event;table.indvSelect.edited = true" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;table.indvSelect.maxIndemPdSi = alopDetails.maxIndemPdSi" numbers-only appRequired name="maxIndemPeriod">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
-				<div class="input-group" [hidden]="true">
+				<!-- <div class="input-group" [hidden]="true">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event; test($event)"  name="fromIndem">
-				</div>
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="alopDetails?.indemFromDate?.split('T')[0]" (ngModelChange)="alopDetails.indemFromDate=$event;table.indvSelect.indemFromDate = $event; "  name="fromIndem">
+				</div> -->
 				<div class="input-group">
 					<label class="form-control-sm col-sm-6" for="timeExcess">Time Excess</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event"appRequired name="timeExcess">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="fromIndem" [ngModel]="alopDetails?.timeExc" (ngModelChange)="alopDetails.timeExc = $event;table.indvSelect.timeExc = $event;table.indvSelect.edited = true" appRequired name="timeExcess">
 				</div>
 				<div class="input-group">
 					<label class="form-control-sm col-sm-6" for="interval">Progress reports to be presented at intervals of</label>
-					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [ngModel]="alopDetails?.repInterval" (ngModelChange)="alopDetails.repInterval = $event" numbers-only appRequired name="interval">
+					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [ngModel]="alopDetails?.repInterval" (ngModelChange)="alopDetails.repInterval = $event;table.indvSelect.repInterval = $event;table.indvSelect.edited = true" numbers-only appRequired name="interval">
 					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 				</div>
 			</div>
@@ -141,7 +141,7 @@
 		<div header>Item Information</div>
 		<div body>
 			 <div>
-	                <app-cust-editable-non-datatable [passData]="itemInfoData" (tableDataChange)="updateItemInfoData($event)"></app-cust-editable-non-datatable>
+	                <app-cust-editable-non-datatable [passData]="itemInfoData" #itemTable></app-cust-editable-non-datatable>
 	         </div>
 		</div>
 		<div footer class="text-center">
@@ -150,13 +150,14 @@
 				<button *ngIf="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Close</a></button>
 		</div>
 	</app-modal>
-	<app-cancel-button (onYes)="saveAlopItem('cancel')" (no)="itmInfoMdl.closeModal();" #itemInfoCancel [form]="table.form?.first"></app-cancel-button>
+	<app-cancel-button (onYes)="saveAlopItem('cancel')" (no)="itmInfoMdl.closeModal();" #itemInfoCancel></app-cancel-button>
+	<app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>
+	<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelItemFlag ? this.itemInfoCancel.onNo():null" #itemSuccess></app-sucess-dialog>
 </ng-container>
 
 <app-mtn-insured id="insuredLOV" (selectedData)="setInsured($event)"></app-mtn-insured>
 <app-lov id="lov" [passData]="passLOV" (selectedData)="setInsured($event)"></app-lov>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null; promptClickItem ? openAlopItem() : null;"></app-sucess-dialog>
-<app-confirm-save id="alop" (onYes)="save()"></app-confirm-save>
+<app-confirm-save (onYes)="save()" #mainConfirm></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo() : null;promptClickItem ? openAlopItem():null" #mainSuccess></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/quotation-processing'" #mainCancel></app-cancel-button>
-<app-confirm-save id="alopItem" (onYes)="saveAlopItem()"></app-confirm-save>
