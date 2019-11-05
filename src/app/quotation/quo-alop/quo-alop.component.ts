@@ -211,9 +211,12 @@ export class QuoAlopComponent implements OnInit {
         }else{
           this.disabledFlag = true;
 
+          var params = this.quoteNo.substr(0, 3).toUpperCase()+'_ALOP';
+          console.log(params);
           var sub$ = forkJoin(this.mtnService.getMtnInsured(this.quotationInfo.principalId),
                               this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId),
-                              this.quotationService.getQuoteOptions(this.quotationInfo.quoteId, '')).pipe(map(([mtnInsured, quoCoverage,quoteOption]) => { return { mtnInsured, quoCoverage, quoteOption}}));
+                              this.quotationService.getQuoteOptions(this.quotationInfo.quoteId, ''),
+                              this.mtnService.getMtnParameters(null,params)).pipe(map(([mtnInsured, quoCoverage,quoteOption,secCovers]) => { return { mtnInsured, quoCoverage, quoteOption,secCovers}}));
 
           this.subscription.add(sub$.subscribe((data:any) => {
             console.log(data)
@@ -224,11 +227,15 @@ export class QuoAlopComponent implements OnInit {
             this.alopData.address = data.mtnInsured.insured[0].address;
             this.alopData.insuredId = this.pad(this.alopData.insuredId, 6);
 
+            //GET THE COVERCD FOR ALOP
+            var coverCd = data.secCovers.parameters;
+                coverCd = parseInt(coverCd[0].paramValueN);
+
             //FOR ANNUAL SUM INSURED
             var sectionCover = data.quoCoverage.quotation.project.coverage.sectionCovers;
             for(var i=0;i < sectionCover.length;i++){
-              if(sectionCover[i].coverName == 'Advance Loss of Profit'){
-                  this.alopDetails.annSi = sectionCover[i].sumInsured;
+              if(sectionCover[i].coverCd == coverCd){
+                this.alopDetails.annSi = sectionCover[i].sumInsured;
               }
             }
 
@@ -236,7 +243,7 @@ export class QuoAlopComponent implements OnInit {
             this.quoteOptionsData.tableData = [];
             var optionsList = data.quoteOption.quotation.optionsList;
             for(var i = 0; i < optionsList.length; i++){
-              optionsList[i].optionRt = optionsList[i].otherRatesList.find(a=>a.coverCd==16).rate;
+              optionsList[i].optionRt = optionsList[i].otherRatesList.find(a=>a.coverCd==coverCd).rate;
               optionsList[i].annSi = this.alopDetails.annSi;
               optionsList[i].issueDate = '';
               optionsList[i].expiryDate = '';
