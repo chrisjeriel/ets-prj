@@ -177,7 +177,7 @@ export class CvEntryComponent implements OnInit {
       this.checkSeriesList = recCn;
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
+      var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
       
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
@@ -230,6 +230,8 @@ export class CvEntryComponent implements OnInit {
         console.log(this.saveAcitCv);
         this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
 
+        console.log(totalCredit);
+        console.log(totalDebit);
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
 

@@ -30,6 +30,7 @@ export class WfFormCommonComponent implements OnInit {
   @ViewChild("recipientsTable") recipientsTable: CustEditableNonDatatableComponent;
   @ViewChild("userGrpTable") userGrpTable: CustEditableNonDatatableComponent;
   @ViewChild("userGrpListingModal") userGrpListingModal : ModalComponent;
+  @ViewChild("warnMdl") warnMdl : ModalComponent;
   
 
   recipientsData: any = {
@@ -45,7 +46,8 @@ export class WfFormCommonComponent implements OnInit {
             createDate: 0,
         },
         pageLength: 15,
-        deleteFlag: true,
+        //deleteFlag: true,
+        genericBtn  :'Delete',
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
@@ -161,7 +163,8 @@ export class WfFormCommonComponent implements OnInit {
   impTag:boolean = false;
   urgTag:boolean = false;
   selectsUserGrp: any;
-
+  id : any;
+  from :string = '';
   saveNotesParams: any = {
     noteList : [],
     delNoteList : []
@@ -175,11 +178,13 @@ export class WfFormCommonComponent implements OnInit {
   relatedRecordTxt:string  = "";
 
   ngOnInit() {
-    this.titleService.setTitle('Pol | Notes & Reminders');
+    var tabTitle = this.moduleSource.toLowerCase() == 'quotation'? 'Quo' :(this.moduleSource.toLowerCase() == 'policy'? 'Pol' : 'Clm');
+    this.titleService.setTitle(tabTitle + ' | Notes & Reminders');
   	console.log("NG ON INIT : ");
     console.log(this.quotationInfo);
     console.log(this.policyInfo);
     console.log(this.claimInfo);
+
     this.referenceId = (this.moduleSource == 'Quotation') ? this.quotationInfo.quoteId : (this.moduleSource == 'Policy' ? this.policyInfo.policyId : this.claimInfo.claimId);
     this.details = (this.moduleSource == 'Quotation') ? this.quotationInfo.quotationNo : (this.moduleSource == 'Policy' ? this.policyInfo.policyNo : this.claimInfo.claimNo);
     this.retrieveRelatedRecords();
@@ -187,6 +192,7 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   onClickSave() {
+    this.from = 'save';
   	$('#warningModal > #modalBtn').trigger('click');
   }
 
@@ -369,6 +375,7 @@ export class WfFormCommonComponent implements OnInit {
 
     if (this.mode == 'note') {
 
+
       this.workFlowManagerService.saveWfmNotes(this.saveNotesParams).subscribe((data: any)=>{
           if (data.errorList.length > 0) {
             this.dialogIcon = "error";
@@ -377,6 +384,7 @@ export class WfFormCommonComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDiag.open();
             this.loadTable();
+            this.recipientsTable.markAsPristine();
           }
       });
 
@@ -390,6 +398,7 @@ export class WfFormCommonComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDiag.open();
             this.loadTable();
+            this.recipientsTable.markAsPristine();
           }
       });
 
@@ -419,7 +428,7 @@ export class WfFormCommonComponent implements OnInit {
         var note = {};
 
         note = {
-            "noteId"       : null,
+            "noteId"       : this.id,
             "title"        : this.titleNote,
             "note"         : this.notes,
             "impTag"       : this.impTag ? 'Y' : 'N',
@@ -443,7 +452,7 @@ export class WfFormCommonComponent implements OnInit {
         var note = {};
 
         note = {
-            "noteId"       : null,
+            "noteId"       : this.id,
             "title"        : this.titleNote,
             "note"         : this.notes,
             "impTag"       : this.impTag ? 'Y' : 'N',
@@ -451,7 +460,7 @@ export class WfFormCommonComponent implements OnInit {
             "module"       : this.moduleSource,
             "referenceId"  : this.referenceId,
             "details"      : this.details,
-            "assignedTo"   : this.userInfo.userId,
+            "assignedTo"   : (this.id == ''|| this.id == null)?this.userInfo.userId:this.userInfoToMany,
             "status"       : "A",
             "createUser"   : JSON.parse(window.localStorage.currentUser).username,
             "createDate"   : this.ns.toDateTimeString(0),
@@ -468,7 +477,7 @@ export class WfFormCommonComponent implements OnInit {
           var note = {};
 
           note = {
-              "noteId"       : null,
+              "noteId"       : this.id,
               "title"        : this.titleNote,
               "note"         : this.notes,
               "impTag"       : this.impTag ? 'Y' : 'N',
@@ -494,7 +503,7 @@ export class WfFormCommonComponent implements OnInit {
           var note = {};
 
           note = {
-              "noteId"       : null,
+              "noteId"       : this.id,
               "title"        : this.titleNote,
               "note"         : this.notes,
               "impTag"       : this.impTag ? 'Y' : 'N',
@@ -528,7 +537,7 @@ export class WfFormCommonComponent implements OnInit {
         var reminder = {};
 
         reminder = {
-          "reminderId"   : null,
+          "reminderId"   : this.id,
           "title"        : this.titleReminder,
           "reminder"     : this.reminder,
           "module"       : this.moduleSource,
@@ -553,7 +562,7 @@ export class WfFormCommonComponent implements OnInit {
         var reminder = {};
 
         reminder = {
-          "reminderId"   : null,
+          "reminderId"   : this.id,
           "title"        : this.titleReminder,
           "reminder"     : this.reminder,
           "module"       : this.moduleSource,
@@ -562,7 +571,7 @@ export class WfFormCommonComponent implements OnInit {
           "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
           "impTag"       : this.impTag ? 'Y' : 'N',
           "urgTag"       : this.urgTag ? 'Y' : 'N',
-          "assignedTo"   : this.userInfo.userId,
+          "assignedTo"   : (this.id == ''|| this.id == null)?this.userInfo.userId:this.userInfoToMany,
           "createDate"   : null,
           "createUser"   : JSON.parse(window.localStorage.currentUser).username,
           "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
@@ -579,7 +588,7 @@ export class WfFormCommonComponent implements OnInit {
           var note = {};
 
           reminder = {
-            "reminderId"   : null,
+            "reminderId"   : this.id,
             "title"        : this.titleReminder,
             "reminder"     : this.reminder,
             "module"       : this.moduleSource,
@@ -607,7 +616,7 @@ export class WfFormCommonComponent implements OnInit {
           var note = {};
 
           reminder = {
-            "reminderId"   : null,
+            "reminderId"   : this.id,
             "title"        : this.titleReminder,
             "reminder"     : this.reminder,
             "module"       : this.moduleSource,
@@ -644,6 +653,8 @@ export class WfFormCommonComponent implements OnInit {
       delReminderList : delReminderList
     };
 
+    console.log(this.saveNotesParams);
+    console.log(this.saveReminderParams);
   }
 
   setSec(d) {
@@ -652,11 +663,12 @@ export class WfFormCommonComponent implements OnInit {
   }
 
   switchScreen() {
+    this.clearFields();  
     this.loadTable();
   }
 
   loadTable() {
-
+    // this.clearFields();
     this.recipientsData.tableData = [];
 
     if (this.mode == 'note') {
@@ -782,12 +794,95 @@ export class WfFormCommonComponent implements OnInit {
       this.otherInfo.createUser = event.createUser;
       this.otherInfo.updateUser = event.updateUser;
       this.otherInfo.createDate = this.ns.toDateTimeString(event.createDate);
-      this.otherInfo.updateDate = this.ns.toDateTimeString(event.updateDate);  
+      this.otherInfo.updateDate = this.ns.toDateTimeString(event.updateDate);
+
+      this.titleNote       = event.title;
+      this.notes           = event.note;
+      this.impTag          = (event.impTag == 'Y')?true:false;
+      this.urgTag          = (event.urgTag == 'Y')?true:false;
+      this.boolValue       = 2;
+      this.userInfoToMany  = event.assignedTo;
+      this.userInfo.userId = event.assignedTo;
+      this.id              = event.type.toLowerCase() == 'reminder' ? event.reminderId : event.noteId;
+      this.referenceId     = event.referenceId;
+      this.details         = event.details;
+      this.moduleSource    = event.module;
+
+      this.titleReminder   = event.title;
+      this.reminder        = event.reminder;
+      this.alarmTime       = event.alarmTime;
+      this.reminderDate    = event.reminderDate;
+
     }else{
-      this.otherInfo.createUser = null;
-      this.otherInfo.updateUser = null;
-      this.otherInfo.createDate = null;
-      this.otherInfo.updateDate = null;
+      this.clearFields();
     }
+    console.log(this.id);
+  }
+
+  clearFields(){
+    this.titleNote       = null;
+    this.notes           = null;
+    this.impTag          = false;
+    this.urgTag          = false;
+    this.boolValue       = null;
+    this.userInfoToMany  = null;
+    this.userInfo.userId = null;
+    this.id              = null;
+    this.titleReminder   = null;
+    this.reminder        = null;
+    this.alarmTime       = this.ns.toDateTimeString(0);
+    this.reminderDate    = this.ns.toDateTimeString(0);
+    this.otherInfo.createUser = null;
+    this.otherInfo.updateUser = null;
+    this.otherInfo.createDate = null;
+    this.otherInfo.updateDate = null;
+  }
+
+  onClickDelete(){
+    console.log('test for delete');
+    this.from = 'delete';
+    this.saveNotesParams.delNoteList = [];
+    this.saveReminderParams.delReminderList = [];
+
+    this.recipientsData.tableData.forEach(e => {
+       if(e.checked){
+         console.log(e);
+         (this.mode == 'note')?this.saveNotesParams.delNoteList.push(e):this.saveReminderParams.delReminderList.push(e);
+       }
+    });
+    // this.recipientsTable.confirmDelete();
+    this.warnMdl.openNoClose();
+  }
+
+  onYesDelete(){
+    this.saveNotesParams.noteList = [];
+    this.saveReminderParams.reminderList = [];
+
+    if(this.mode == 'note'){
+      this.workFlowManagerService.saveWfmNotes(this.saveNotesParams).subscribe((data: any)=>{
+          if (data.errorList.length > 0) {
+            this.dialogIcon = "error";
+            this.successDiag.open();
+          } else {
+            this.dialogIcon = "success";
+            this.successDiag.open();
+            this.loadTable();
+            this.recipientsTable.markAsPristine();
+          }
+      });
+    }else{
+      this.workFlowManagerService.saveWfmReminders(this.saveReminderParams).subscribe((data: any)=>{
+          if (data.errorList.length > 0) {
+            this.dialogIcon = "error";
+            this.successDiag.open();
+          } else {
+            this.dialogIcon = "success";
+            this.successDiag.open();
+            this.loadTable();
+            this.recipientsTable.markAsPristine();
+          }
+      });
+    }
+    
   }
 }
