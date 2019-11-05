@@ -11,6 +11,8 @@ import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component'
+
 
 @Component({
   selector: 'app-payee',
@@ -24,10 +26,12 @@ export class PayeeComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild('myForm') form:any;
-  @ViewChild(LovComponent) payeeLov: LovComponent;
+  @ViewChild('passLOV') payeeLov: LovComponent;
   @ViewChild('bussTypeLov') bussTypeLov: LovComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
   @ViewChild('mdl') modal : ModalComponent;
+  @ViewChild(MtnBankComponent) bankLov: MtnBankComponent;
+
 
   dialogIcon:string = '';
   dialogMessage: string = '';
@@ -38,7 +42,7 @@ export class PayeeComponent implements OnInit {
   private sub: any;
   from: string;
 
-   passLov: any = {
+  passLov: any = {
     selector: '',
     activeTag: '',
     hide: []
@@ -65,6 +69,7 @@ export class PayeeComponent implements OnInit {
   	pageLength: 10,
   	infoFlag:true,
   	searchFlag:true,
+    pageID: 'mtnPayee',
   	nData:{
       showMG : 1,
       autoTag : 'N',
@@ -73,6 +78,7 @@ export class PayeeComponent implements OnInit {
       payeeName 	: null,
       refCd 	: null,
       bussTypeName : null,
+      bussTypeCd : null,
       tin : null,
       contactNo : null,
       mailAddress : null,
@@ -83,7 +89,7 @@ export class PayeeComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
   	},
     disableGeneric: true,
-    disableAdd:true,
+    disableAdd:true
   }
 
   payee:any = {};
@@ -93,6 +99,10 @@ export class PayeeComponent implements OnInit {
   oldRecord : any ={
       tableData:[]
   };
+  indexRow:any;
+  bankAcctType: any[] = [];
+  bank: any;
+  lovType: any;
 
 
   constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute) { }
@@ -100,12 +110,22 @@ export class PayeeComponent implements OnInit {
   ngOnInit() {
     this.form.control.markAsPristine();
     this.titleService.setTitle('Mtn | Payee');
+    this.retrieveBankAcctType();
+  }
+
+   retrieveBankAcctType(){
+    this.bankAcctType = [];
+    this.ms.getRefCode('MTN_BANK_ACCT.ACCOUNT_TYPE').subscribe(a=>{
+      this.bankAcctType =  a['refCodeList'];
+      console.log(this.bankAcctType);
+    });
   }
 
   checkCode(ev){
     $('.ng-dirty').removeClass('ng-dirty');
     this.passTable.tableData = [];
     this.boolPrint = false;
+    this.boolOtherDet = true;
     this.table.refreshTable();
     this.ns.lovLoader(ev, 1);
     this.table.overlayLoader = true;
@@ -114,6 +134,7 @@ export class PayeeComponent implements OnInit {
   }
 
   clickLov(){
+    this.lovType = 'payeeClass';
     this.passLov.selector = 'payeeClass';
     this.passLov.params = {};
     this.payeeLov.openLOV();
@@ -121,42 +142,20 @@ export class PayeeComponent implements OnInit {
 
   clickTblLOV(data){
     console.log(data);
+    this.lovType = 'bussTypeName';
     this.payeeLOVRow = null;
 
      if(data.key=='bussTypeName'){
-        this.passBussTypeLov.selector = 'mtnBussType';
-        this.passBussTypeLov.params = {};
-        this.bussTypeLov.openLOV();
+        this.passLov.selector = 'mtnBussType';
+        this.passLov.params = {};
+        this.payeeLov.openLOV();
         this.payeeLOVRow = data.index;
      }
   }
 
-  setSelectedBussType(data){
-    console.log(data.data);
-    if(data === null){
-         this.passTable.tableData[this.payeeLOVRow].bussTypeName = null;
-         this.passTable.tableData[this.payeeLOVRow].bussTypeCd = null;
-    }else {
-         this.passTable.tableData[this.payeeLOVRow].bussTypeName = data.data.bussTypeName;
-         this.passTable.tableData[this.payeeLOVRow].bussTypeCd = data.data.bussTypeCd;
-    }
-  }
-
-  setSelectedPayeeType(data){
-   if(data.data === null){
-    this.ns.lovLoader(data.ev, 0);
-    this.payeeClassCd = null;
-    this.payeeClassName = null;
-    this.passTable.disableAdd = true;
-    this.passTable.disableGeneric = true;
-    this.passTable.tableData = [];
-    this.table.refreshTable();
-  } else {
-    let selected = data.data;
-      this.payeeClassCd = selected.payeeClassCd;
-      this.payeeClassName = selected.payeeClassName;
-
-      if(this.payeeClassCd === '' || this.payeeClassCd === undefined || this.payeeClassCd === null ){
+  setSelectedData(data){
+    if(this.lovType === 'payeeClass'){
+      if(data.data === null){
         this.ns.lovLoader(data.ev, 0);
         this.payeeClassCd = null;
         this.payeeClassName = null;
@@ -164,15 +163,38 @@ export class PayeeComponent implements OnInit {
         this.passTable.disableGeneric = true;
         this.passTable.tableData = [];
         this.table.refreshTable();
-      }else {
-        this.ns.lovLoader(data.ev, 0);
-        this.payee = selected;
-        this.table.overlayLoader = true;
-        this.passTable.disableGeneric = true;
-        this.getMtnPayee(this.payeeClassCd);
+      } else {
+        let selected = data.data;
+          this.payeeClassCd = selected.payeeClassCd;
+          this.payeeClassName = selected.payeeClassName;
+
+          if(this.payeeClassCd === '' || this.payeeClassCd === undefined || this.payeeClassCd === null ){
+            this.ns.lovLoader(data.ev, 0);
+            this.payeeClassCd = null;
+            this.payeeClassName = null;
+            this.passTable.disableAdd = true;
+            this.passTable.disableGeneric = true;
+            this.passTable.tableData = [];
+            this.table.refreshTable();
+          }else {
+            this.ns.lovLoader(data.ev, 0);
+            this.payee = selected;
+            this.table.overlayLoader = true;
+            this.passTable.disableGeneric = true;
+            this.getMtnPayee(this.payeeClassCd);
+          }
       }
-  }
-      
+
+    }else if (this.lovType === 'bussTypeName'){
+        if(data === null){
+             this.passTable.tableData[this.payeeLOVRow].bussTypeName = null;
+             this.passTable.tableData[this.payeeLOVRow].bussTypeCd = null;
+        }else {
+             this.passTable.tableData[this.payeeLOVRow].bussTypeName = data.data.bussTypeName;
+             this.passTable.tableData[this.payeeLOVRow].bussTypeCd = data.data.bussTypeCd;
+             this.passTable.tableData[this.payeeLOVRow].edited = true;
+        }
+    }   
   }
 
   delete(){
@@ -181,6 +203,7 @@ export class PayeeComponent implements OnInit {
       this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
       this.successDialog.open();
     }else{
+      this.boolOtherDet = true;
       this.table.selected  = [this.table.indvSelect]
       this.table.confirmDelete();
        $('#cust-table-container').addClass('ng-dirty');
@@ -209,7 +232,7 @@ export class PayeeComponent implements OnInit {
         this.passTable.distableGeneric = false;
         this.passTable.disableAdd = false;
         this.boolPrint = false;
-         this.boolOtherDet = false;
+        this.boolOtherDet = true;
       })
     }
   }
@@ -219,7 +242,12 @@ export class PayeeComponent implements OnInit {
   }
 
   onTableClick(data){
-    console.log(data);
+    for (var i = this.passTable.tableData.length - 1; i >= 0; i--) {
+            if(data == this.passTable.tableData[i]){
+                this.indexRow = i;
+                break;
+            }
+    }
     this.info = data;
     this.passTable.disableGeneric = data == null;
     this.boolOtherDet = data == null;
@@ -237,7 +265,174 @@ export class PayeeComponent implements OnInit {
    this.oldRecord = JSON.parse(JSON.stringify(this.table.indvSelect));
  }
 
+  onClickSave(cancelFlag?){
+     if (this.checkValidation()){
+        this.conSave.confirmModal();
+     }else {
+         this.successDialog.open();
+         this.tblHighlightReq('#mtn-payee',this.passTable.dataTypes,[3,5]);
+     }
+  }
 
+  checkFields(){
+      for(let check of this.passTable.tableData){
+         if( 
+             check.payeeName === null || check.payeeName === '' ||
+             check.bussTypeCd === null ||  check.bussTypeCd === ''
+          ) {   
+            return false;
+          }   
+      }
+       return true;
+   }
+
+   checkValidation(){
+      if(this.checkFields()){
+        return true;
+     }else{
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          return false;
+       }
+  }
+
+  tblHighlightReq(el, dataTypes, reqInd) {
+    setTimeout(() => {
+      $(el).find('tbody').children().each(function() {
+        $(this).children().each(function(i) {
+          if(reqInd.includes(i)) {
+            var val;
+            if(dataTypes[i] == 'text') {
+              if($(this).find('.align-middle.uneditable').length === 1){
+                 val = $(this).find('span').text();
+                 highlight($(this), val);
+              } else{
+                 val = $(this).find('input').val();
+                 highlight($(this), val);
+              }
+            }
+          }
+        });
+      });
+
+      function highlight(td, val) {
+        td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+      }
+      }, 0);
+
+   }
+
+onClickSaveCancel(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
+    if(this.cancelFlag){
+       if (this.checkValidation()){
+           this.save();
+
+       }else {
+           this.successDialog.open();
+           this.tblHighlightReq('#mtn-payee',this.passTable.dataTypes,[3,5]);
+       }
+    }else {
+      this.save();
+    } 
+}
+
+save(){
+    let params: any = {
+      saveList:[],
+      delList:[]
+    }
+    params.saveList = this.passTable.tableData.filter(a=>a.edited && !a.deleted);
+    params.saveList.forEach(a=>{
+      a.updateUser = this.ns.getCurrentUser();
+      a.updateDate = this.ns.toDateTimeString(0);
+      a.slTypeCd   = this.payeeClassCd;
+      a.payeeClassCd = this.payeeClassCd;
+    });
+    params.delList = this.passTable.tableData.filter(a=>a.deleted);
+   
+    if(params.saveList.length === 0 && params.delList.length === 0 ){    
+          this.conSave.showBool = false;
+          this.dialogIcon = "success";
+          this.successDialog.open();
+           $('.ng-dirty').removeClass('ng-dirty');
+    }else {
+      console.log(JSON.stringify(params));
+      this.ms.saveMtnPayee(params).subscribe(a=>{
+        if(a['returnCode'] == -1){
+              this.dialogIcon = "success";
+              this.successDialog.open();
+              this.table.overlayLoader = true;
+              this.passTable.disableGeneric = true;
+              this.getMtnPayee(this.payeeClassCd);              
+              $('.ng-dirty').removeClass('ng-dirty');
+
+          }else{
+              this.dialogIcon = "error";
+              this.successDialog.open();
+          }
+      });
+    }
+  }
+
+  cancelOtherDetails(){
+    console.log(this.oldRecord);
+     this.passTable.tableData[this.indexRow].designation = this.oldRecord.designation;
+     this.passTable.tableData[this.indexRow].department = this.oldRecord.department;
+     this.passTable.tableData[this.indexRow].mailAddress2 = this.oldRecord.mailAddress2;
+     this.passTable.tableData[this.indexRow].permAddress = this.oldRecord.permAddress;
+     this.passTable.tableData[this.indexRow].contactPerson1 = this.oldRecord.contactPerson1;
+     this.passTable.tableData[this.indexRow].contactPerson2 = this.oldRecord.contactPerson2;
+     this.passTable.tableData[this.indexRow].phoneNo = this.oldRecord.phoneNo;
+     this.passTable.tableData[this.indexRow].mobileNo = this.oldRecord.mobileNo;
+     this.passTable.tableData[this.indexRow].faxNo = this.oldRecord.faxNo;
+     this.passTable.tableData[this.indexRow].bankCd1 = this.oldRecord.bankCd1;
+     this.passTable.tableData[this.indexRow].bankBranch1 = this.oldRecord.bankBranch1;
+     this.passTable.tableData[this.indexRow].bankAcctType1 = this.oldRecord.bankAcctType1;
+     this.passTable.tableData[this.indexRow].bankAcctName1 = this.oldRecord.bankAcctName1;
+     this.passTable.tableData[this.indexRow].bankAcctNo1 = this.oldRecord.bankAcctNo1;
+     this.passTable.tableData[this.indexRow].bankCd2 = this.oldRecord.bankCd2;
+     this.passTable.tableData[this.indexRow].bankBranch2 = this.oldRecord.bankBranch2;
+     this.passTable.tableData[this.indexRow].bankAcctType2 = this.oldRecord.bankAcctType2;
+     this.passTable.tableData[this.indexRow].bankAcctName2 = this.oldRecord.bankAcctName2;
+     this.passTable.tableData[this.indexRow].bankAcctNo2 = this.oldRecord.bankAcctNo2;
+  }
+
+  saveOtherDetails(){
+     this.passTable.tableData[this.indexRow].edited = true;
+     $('#cust-table-container').addClass('ng-dirty');
+  }
+
+  setSelectedBank(data){
+    console.log(data);
+   if(this.bank === 'bank1'){
+     if (data === null){
+       this.info.bank1 = null;
+       this.passTable.tableData[this.indexRow].bankCd1 = null;
+     } else {
+       this.info.bank1 = data.shortName;
+       this.passTable.tableData[this.indexRow].bankCd1 = data.bankCd;
+     }
+   } else if (this.bank === 'bank2') {
+      if (data === null){
+       this.info.bank2 = null;
+       this.passTable.tableData[this.indexRow].bankCd2 = null;
+     } else {
+       this.info.bank2 = data.shortName;
+       this.passTable.tableData[this.indexRow].bankCd2 = data.bankCd;
+     }
+   }
+
+  }
+
+  checkBankCode(ev){
+    if (this.bank === 'bank1'){
+      this.bankLov.checkCode(this.info.bank1,ev);
+    } else if (this.bank === 'bank2'){
+      this.bankLov.checkCode(this.info.bank2,ev);
+    }
+    
+  }
 
 
 }

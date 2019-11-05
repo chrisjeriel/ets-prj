@@ -8,7 +8,7 @@
             		<div class="input-group" style="margin-top: 10px !important;">
             			<label class="form-control-sm col-sm-2"></label>
                         <label class="form-control-sm col-sm-2">Payee Class</label>
-                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee'); lovType = 'payeeClass'" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
                         <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov()"></i></a></div>
                         <input name="payeeClassName" type="text" class="form-control form-control-sm col-sm ml-2" [(ngModel)]="payeeClassName" readonly>
             			<label class="form-control-sm col-sm-2"></label>
@@ -47,15 +47,16 @@
 </div>
 </form>
 
-<!-- <app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save> PROD#ERROR -->
-<app-confirm-save></app-confirm-save>
+<app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save> 
+
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? cnclBtn.onNo():null;"></app-sucess-dialog>
 
 <app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
 <app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
-<app-lov [passData]="passLov" (selectedData)="setSelectedPayeeType($event)" [lovCheckBox]="lovCheckbox">
-<app-lov #bussTypeLov [passData]="passBussTypeLov" (selectedData)="setSelectedBussType($event)" [lovCheckBox]="lovCheckbox">
+<app-lov #passLOV [passData]="passLov" (selectedData)="setSelectedData($event)" [lovCheckBox]="lovCheckbox">
+<!-- <app-lov #bussTypeLov [passData]="passBussTypeLov" (selectedData)="setSelectedBussType($event)" [lovCheckBox]="lovCheckbox"> -->
+<app-mtn-bank (selectedData)="setSelectedBank($event)" ></app-mtn-bank>
 
 
 <app-modal class="d-none" id="otherDetailMdl" #mdl>
@@ -108,11 +109,11 @@
             <legend class="scheduler-border">Bank Details</legend>
                 <div class="input-group" style="margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-2">Bank 1:</label>
-                        <input name="bank1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bankCd1" (ngModelChange)="info.bankCd1=$event;"> 
-                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickBankLov()"></i></a></div>
+                        <input name="bank1" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bank1" (ngModelChange)="info.bank1=$event;" (change)="bank='bank1';checkBankCode($event);"> 
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="bankLov.modal.openNoClose(); bank='bank1'"></i></a></div>
                         <label class="form-control-sm col-sm-2">Bank 2:</label>
-                        <input name="bank2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bank2" (ngModelChange)="info.bank2=$event;">
-                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickBankLov()"></i></a></div>
+                        <input name="bank2" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.bank2" (ngModelChange)="info.bank2=$event;" (change)="bank='bank2';checkBankCode($event);">
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="bankLov.modal.openNoClose(); bank='bank2'"></i></a></div>
                 </div>
                 <div class="input-group" style="margin-top: -13px !important;" >
                         <label class="form-control-sm col-sm-2">Bank Branch 1:</label>
@@ -122,9 +123,13 @@
                 </div> 
                 <div class="input-group" style="margin-top: -13px !important;" >
                         <label class="form-control-sm col-sm-2">Bank Account Type 1:</label>
-                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="info?.bankAcctType1" (ngModelChange)="info.bankAcctType1=$event;"> </select>
+                        <select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="info?.bankAcctType1" (ngModelChange)="info.bankAcctType1=$event;" name="bankAcctType1">
+                            <option *ngFor="let bankAcct of bankAcctType" [value]="bankAcct.code">{{bankAcct.description}}</option>
+                        </select>
                         <label class="form-control-sm col-sm-2">Bank Account Type 2:</label>
-                        <select class="form-control form-control-sm cust-sm col-sm" [ngModel]="info?.bankAcctType2" (ngModelChange)="info.bankAcctType2=$event;"> </select>
+                        <select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="info?.bankAcctType2" (ngModelChange)="info.bankAcctType2=$event;" name="bankAcctType2">
+                            <option *ngFor="let bankAcct of bankAcctType" [value]="bankAcct.code">{{bankAcct.description}}</option>
+                        </select>
                 </div>
                <div class="input-group" style="margin-top: -15px !important;" >
                         <label class="form-control-sm col-sm-2">Bank Account Name 1:</label>

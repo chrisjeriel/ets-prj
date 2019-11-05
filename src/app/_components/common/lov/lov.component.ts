@@ -1172,17 +1172,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null);
         this.table.refreshTable();
       });
-    }else if(this.passData.selector == 'mtnBussType'){
+   /* }else if(this.passData.selector == 'mtnBussType'){
       this.passTable.tHeader = ['Business Type'];
       this.passTable.widths = ['auto']
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = [ 'bussTypeName'];
-      this.passTable.checkFlag = false;
-      this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
+      this.passTable.checkFlag = false;*/
+     /* this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
         this.passTable.tableData = a["bussTypeList"];
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
-      });
+      });*/
     }else if(this.passData.selector == 'mtnTransactions'){
       this.passTable.tHeader = ['Tran Code', 'Description'];
       this.passTable.widths = [77,'auto']
