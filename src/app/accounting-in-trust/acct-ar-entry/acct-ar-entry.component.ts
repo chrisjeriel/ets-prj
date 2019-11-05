@@ -508,7 +508,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data.ar !== null){
           this.arInfo.tranId         = data.ar.tranId;
           this.arInfo.arNo           = this.pad(data.ar.arNo, 'arNo');
-          this.arInfo.formattedArNo  = data.ar.formattedArNo;
+          this.arInfo.formattedArNo  = parseInt(data.ar.formattedArNo.split('-')[1]) == 0 ? '' : data.ar.formattedArNo;
           this.arInfo.arNoDigits     = data.ar.arNoDigits;
           this.arInfo.arDate         = this.ns.toDateTimeString(data.ar.arDate);
           this.arDate.date           = this.arInfo.arDate.split('T')[0];
@@ -701,7 +701,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.successDiag.open();
       $('.required').focus().blur();
-      $('table input').focus().blur();
+      $('table input:not(.tbl-dp)').focus().blur();
       $('table select').focus().blur();
     }
     /*else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
@@ -780,6 +780,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.successDiag.open();
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
+          this.paytDtlTbl.markAsPristine();
         }
       }
     );

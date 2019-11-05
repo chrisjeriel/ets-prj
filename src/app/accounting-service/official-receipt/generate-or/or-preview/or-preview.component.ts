@@ -260,6 +260,9 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     this.passLov.selector = 'mtnGenTax';
     this.lovCheckbox = true;
     this.passLov.hide = this.genTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
+    if(this.record.vatTag !== undefined && this.record.vatTag == 1 && !this.passLov.hide.includes('VAT') || (this.record.orType != undefined && this.record.orType == 'NON-VAT') ){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT')
+    }
     console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
@@ -445,6 +448,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             a = (this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag)?true:false;
       }else if(this.record.from.toLowerCase() == 'cv'){
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
+      }else if(this.record.from.toLowerCase() == 'jv'){
+            a = (this.record.statusType.toUpperCase() != 'N');
       }
 
           if(a && this.currentTab == 'taxDtl'){
@@ -511,6 +516,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             this.dialogIcon = '';
             this.successDiag.open();
             this.retrieveAcseOrPreview();
+            this.genTaxTbl.markAsPristine();
+            this.whTaxTbl.markAsPristine();
           }
         }
       );

@@ -1,3 +1,4 @@
+<ng-container #overallCont>
 <style>
     thead tr th {
         position: relative;
@@ -254,7 +255,16 @@
                                                  type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
                                                  [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" numbers-only [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
                                              </ng-template>
-                                         </ng-container>                               
+                                         </ng-container>  
+
+                                         <ng-container *ngSwitchCase="'wholenumber'">
+                                             <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else number" class="unclickable text-right">{{ data[key] | number: '1.0-0'}}</span>
+                                             <ng-template #wholenumber>
+                                                 <input  (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" (blur)="format($event , data, 'number')" mask="separator.0" thousandSeparator=","
+                                                 type="text" [(ngModel)]="data[key]" [ngModelOptions]="{updateOn:'change'}" 
+                                                 [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
+                                             </ng-template>
+                                         </ng-container>                                         
 
                                          <ng-container *ngSwitchCase="'currency'">
                                              <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
@@ -356,7 +366,7 @@
                                         <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                         </button>
                                     </div>
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
@@ -542,13 +552,7 @@
                                     </ng-container>
                                     <span *ngSwitchDefault class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
 
-<!-- <<<<<<< HEAD
-=======
-                            <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
-                                <a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && ((data.colMG !== undefined && data.colMG.indexOf(key) == -1) || data.colMG == undefined) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a>
-                                <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
->>>>>>> da942923d488c9952815df80657a17307b25a1d7 -->
+
                                 </div>
 
                                 <div *ngIf="data===fillData" class="filler">
@@ -556,21 +560,6 @@
                                 </div>
                             </td>
                         </ng-container>
-                        <!-- <td *ngIf="passData.tHeader.indexOf('Edit Flag')!= -1">
-                            <input type="checkbox" name="" *ngIf="!(data===fillData)">
-                        </td>
-                        <td *ngIf="passData.selectFlag">
-                            <select class="editable-select" *ngIf="!(data===fillData)">
-                                <option *ngFor="let options of options">{{options}}</option>
-                            </select>
-                        </td> -->
-                        <!-- <td *ngIf="passData.tHeader.indexOf('Actions')!=-1 || passData.tHeader.indexOf('Action')!=-1" class="icon" style="padding-right: 0px !important">
-                            <button class="fa fa-paperclip btn-file" title="Attach File" *ngIf="!(data===fillData) && (passData.uneditable===undefined || !passData.uneditable[passData.uneditable.length-1]) && data.attach">
-                                <input type="file" *ngIf="!(data===fillData)" (change)="upload(data,$event)">
-                            </button>
-                            <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
-                            </button>
-                        </td> -->
                     </tr>
 
                     <tr *ngIf="passData.total !== undefined" style="height: 29px !important">
@@ -686,6 +675,10 @@
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'percent'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.10-10'" (blur)="format($event , data, key,'percent')" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'currencyRate'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.6-6'" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)">
 
+
+                                        <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'wholenumber'" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key]" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" mask="comma_separator.0" thousandSeparator="," [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1">
+
+
                                         <ng-container *ngSwitchCase="'fasymbol'">
                                             <i class="{{data[key]}}">&nbsp;</i>
                                             
@@ -715,6 +708,8 @@
                                                      <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
                                                  </ng-template>
                                              </ng-container>
+
+                                             
 
                                              <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;" [appRequired]="false">
                                                  <ng-container *ngFor="let data of passData.opts">
@@ -805,7 +800,7 @@
                                             <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                         <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                     </button> -->
-                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                            <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                             </button>
                                         </div>
                                         <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
@@ -1027,7 +1022,7 @@
                                 <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                 <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                             </button> -->
-                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer)">
+                                <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData) && !data.attach" (click)="download(data.fileNameServer, data.module, data.refId)">
                                 </button>
                             </td>
                         </tr>
@@ -1265,7 +1260,7 @@
                                         <!--  <button class="fa fa-folder-open btn-file" title="Open File" *ngIf="!(data===fillData)">
                                     <input type="file" *ngIf="!(data===fillData)" (change)="data.fileName=$event.target.files[0].name;data.edited=true;"> 
                                 </button> -->
-                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer)">
+                                        <button class="fa fa-folder-open btn-file" title="Open File" (click)="download(data.fileNameServer, data.module, data.refId)">
                                         </button>
                                     </div>
                                     <input (keydown)="traverse($event,data,key,ti)" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1">
@@ -1401,12 +1396,7 @@
                                     <div><a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1 && data.showMG == 1 && ((data.colMG !== undefined && data.colMG.indexOf(key) == -1) || data.colMG == undefined)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
 
                                     <!--  -->
-<!-- =======
-                            <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
-                                <a *ngIf="passData.magnifyingGlass.indexOf(key)!=-1  && data.showMG == 1 && ((data.colMG !== undefined && data.colMG.indexOf(key) == -1) || data.colMG == undefined) && (data.uneditable===undefined || data.uneditable.indexOf(key)==-1)"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a>
-                                <div *ngSwitchCase="'percent'" style="text-align: right">
-                                    <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.10-10'}}</span>
->>>>>>> da942923d488c9952815df80657a17307b25a1d7 -->
+
                                 </div>
 
                                 <div *ngIf="!(data===fillData) && ( passData.uneditable!== undefined && passData.uneditable[i] ) || (data.uneditable!==undefined && data.uneditable.indexOf(key)!=-1)" class="align-middle uneditable" style="position: relative;">
@@ -1417,12 +1407,6 @@
                                     <div *ngSwitchCase="'currencyRate'" style="text-align: right">
                                         <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: '1.6-6'}}</span>
                                     </div>
-                                    <!-- <div *ngSwitchCase="'currency'" style="text-align: right">
-                                <span class="unclickable">{{ data[key] | number: '1.2-2'}}</span>
-                            </div>
-                            <div  *ngSwitchCase="'number'" style="text-align: right">
-                                <span class="unclickable">{{ data[key] | number: '1.0-0'}}</span>
-                            </div> -->
                                     <div *ngSwitchCase="'select'">
                                         <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
                                             <ng-container *ngFor="let data of passData.opts">
@@ -1524,3 +1508,4 @@
     <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 
 </div>
+</ng-container>

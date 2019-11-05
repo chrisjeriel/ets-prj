@@ -8,13 +8,17 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1 text-right">Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCode($event)" [(ngModel)]="cedingDesc">
-							<div class="text-search-ico" (click)="showCedCompLOV()"><a><i class="fa fa-search"></i></a></div>
-							<label class="form-control-sm text-right" style="margin-left: 10px">Period</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-4" (change)="checkCode($event)" [(ngModel)]="cedingName" placeholder="All">
+							<div class="text-search-ico" (click)="showCedCompLOV()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm text-right col-sm-1" style="margin-left: 10px">Period:</label>
 							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
-							<input [(ngModel)]="dateFrom" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [value]="dateFrom" (valueChange)="dateFrom=$event; dateTo=valChanged(dateFrom, dateTo)"></datepicker>
+							</div>
 							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
-							<input [(ngModel)]="dateTo" class = "textbox-n form-control form-control-sm cust-sm col-sm-2" type = "text" onfocus = "(this.type = 'date')"  id = "date">
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [(value)]="dateTo" [minDate]="dateFrom"></datepicker>
+							</div>
 							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
 								<button type="button" class="cust-btn" (click)="searchProfitComm()"><a>Search</a></button>
 							</div>
@@ -22,12 +26,12 @@
 					</div>
 				</fieldset>
 
-				<fieldset class="scheduler-border" style="margin-top: 5px !important;">
+				<fieldset class="scheduler-border" style="margin-top: 5px !important; padding-bottom: 10px !important;">
 				  <legend class="scheduler-border">List of Profit Commission Companies</legend>
-					<div class="custom-row-inline-inset">
+					<div class="custom-row-inline-inset" style="margin-bottom: 30px !important;">
 						<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickShowDetails($event)" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>	
 					</div> 
-					<div class="text-center" style="width: 100% !important;margin-top: 30px ! important">
+					<div class="w-100 text-center">
 		                <button type="button" class="cust-btn" (click)="queryModal.openNoClose()"><a>Regenerate</a></button>
 		                <button type="button" class="cust-btn" [disabled]="disableBtn"><a>Print</a></button>
           			</div>
@@ -82,12 +86,12 @@
 			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">=======================</div>
 		</div>
 	  <div class="row">
-		<div class="col-sm-6" style="padding-bottom: 9px;">
-			<fieldset class="scheduler-border">
+		<div class="col-sm-6">
+			<fieldset class="scheduler-border" style="padding-bottom: 10px !important;">
 				<legend class="scheduler-border">Summary</legend>
 					<div class="custom-row-inline-inset">
 						<div class="input-group" style="margin-bottom: -25px !important;">
-							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT-Year {{ yearParam }}</label>
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT - Year {{ yearParam }}</label>
 							<label class="form-control-sm col-sm-3">{{ profitCurrYear | number: '1.2-2'}}</label>
 						</div>
 							<div class="input-group" style="margin-bottom: -25px !important;">
@@ -100,7 +104,7 @@
 							</div> -->
 							<div class="input-group" style="margin-bottom: -25px !important;">
 								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-								<label class="form-control-sm col-sm-3">--------------------------</label>
+								<label class="form-control-sm col-sm-3">-----------------------</label>
 							</div>
 							<div class="input-group" style="margin-bottom: -25px !important;">
 								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year {{ yearParam }}</label>
@@ -162,7 +166,7 @@
                     <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
                         <div class="input-group alignment" style="margin-bottom: -13px !important;">
                             <label class="form-control-sm col-sm-2 text-right">Company</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="cedingDescLov" placeholder="All">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="gnrtCedingName" placeholder="All">
 							<div class="text-search-ico" (click)="showCedCompModal()"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm col-sm-1 text-right" style="margin-left: 20px;">As of</label>
 							<div class="dp-cont col-sm-3" style="margin-left: 0">
@@ -170,24 +174,12 @@
 							</div>
                         </div>
                      </div>
-                     <!-- <div class="form-row custom-row-inline-inset" style="margin-top: -13px !important;">
-                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
-                            <label class="form-control-sm col-sm-3 text-right">Month</label>
-                            <select id="m-list" [(ngModel)]="monthCdLov" class="form-control form-control-sm cust-sm col-sm-5">
-								<option *ngFor="let m of monthList" [value]="m.key">{{ m.value }}</option>
-							</select>
-							<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Year</label>
-							<select id="y-list" [(ngModel)]="yearCdLov" class="form-control form-control-sm cust-sm col-sm-3">
-								<option *ngFor="let y of yearList" [value]="y">{{ y }}</option>
-							</select>
-                        </div>
-                     </div> -->
                 </fieldset>
             </div>
           </div>
           <div footer class="text-center" style="width: 100% !important;">
                 <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="gnrtDate == ''"><a>Generate</a></button>
-                <button type="button" class="cust-btn" (click)="queryModal.closeModal()" [disabled]="gnrtCedingId == '' || gnrtDate == ''"><a>View</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal(); onClickView();" [disabled]="gnrtDate == ''"><a>View</a></button>
                 <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
           </div>
 </app-modal>

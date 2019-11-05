@@ -39,4 +39,4 @@
 <app-confirm-save (onYes)="saveData();"></app-confirm-save>
 
 <app-sucess-dialog id="polAttachment" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="saveData('cancel')" [url]="'/policy-listing'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickCancelSave()" [url]="'/policy-listing'" ></app-cancel-button>

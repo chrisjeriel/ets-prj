@@ -11,12 +11,13 @@ export class UploadService {
  constructor(private http: HttpClient) { }
 
    // file from event.target.files[0]
-   uploadFile(file: File, date?: any): Observable<HttpEvent<any>> {
+   uploadFile(file: File, date?: any, module?: string, refId?: string): Observable<HttpEvent<any>> {
 
      let url = environment.prodApiUrl + "/file-upload-service/";
 
      let formData = new FormData();
-     formData.append('file', file, date+file.name);
+     //formData.append('file', file, date+file.name);
+     formData.append('file', file, file.name);
 
      let params = new HttpParams();
 
@@ -25,18 +26,18 @@ export class UploadService {
        reportProgress: true,
      };
 
-     const req = new HttpRequest('POST', url, formData, options);
+     const req = new HttpRequest('POST', url+'?module='+module+'&refId='+refId, formData, options);
      return this.http.request(req);
    }
 
-   downloadFile(fileName: string){
-     const url = environment.prodApiUrl +'/file-upload-service/files/'+ fileName;
+   downloadFile(fileName: string, module?: string, refId?: string){
+     const url = environment.prodApiUrl +'/file-upload-service/files/'+ fileName+'?module='+module+'&refId='+refId;
      console.log(url);
      //return this.http.get(url);
      return url;
    }
 
-   deleteFile(fileName){
-     return this.http.delete(environment.prodApiUrl +'/file-upload-service/?fileNames='+fileName);
+   deleteFile(fileName, module?: string, refId?: string){
+     return this.http.delete(environment.prodApiUrl +'/file-upload-service/?fileNames='+fileName+'&module='+module+'&refId='+refId);
    }
 }

@@ -488,6 +488,7 @@ import { BatchDistComponent } from './underwriting/policy-distribution/pol-batch
 import { BatchPostComponent } from './underwriting/policy-distribution/pol-batch-processing/batch-post/batch-post.component';
 import { LogoutComponent } from './logout/logout.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
+import { PolicyReportsComponent } from './underwriting/generate-documents/policy-reports/policy-reports.component';
 
 @NgModule({
     imports: [
@@ -980,6 +981,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
         BatchPostComponent,
         LogoutComponent,
         WfCalendarComponent,
+        PolicyReportsComponent,
     ],
 
   	providers: [

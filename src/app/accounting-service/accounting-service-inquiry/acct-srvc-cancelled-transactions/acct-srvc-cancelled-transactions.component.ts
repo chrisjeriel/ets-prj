@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AccountingService } from '../../../_services/accounting.service';
-import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { AccountingService, NotesService } from '@app/_services';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-acct-srvc-cancelled-transactions',
@@ -11,86 +14,80 @@ import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 })
 export class AcctSrvcCancelledTransactionsComponent implements OnInit {
 
-  cancelledTransactionsData: any = {
-  	tableData: this.accountingService.getAccountingSrvcCancelledTransactions(),
-  	tHeader: ['Tran Type', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Cancelled By', 'Cancelled Date', 'Reason', 'Amount'],
-  	dataTypes: ['text', 'text', 'date', 'text', 'text', 'text', 'date', 'text', 'number'],
-  	filters: [
-  		{
-  		    key: 'tranType',
-  		    title:'Tran. Type',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'refNo',
-  		    title:'Ref. No.',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'tranDate',
-  		    title:'Tran Date',
-  		    dataType: 'date'
-  		},
-  		{
-  		    key: 'payeePayor',
-  		    title:'Payee/Payor',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'particulars',
-  		    title:'Particulars',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'cancelledBy',
-  		    title:'Cancelled By',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'cancelledDate',
-  		    title:'Cancelled Date',
-  		    dataType: 'date'
-  		},
-  		{
-  		    key: 'reason',
-  		    title:'Reason',
-  		    dataType: 'text'
-  		},
-  		{
-  		    key: 'amount',
-  		    title:'Amount',
-  		    dataType: 'text'
-  		},
-  	],
-    colSize: ['30px', '50px', '40px', '', '60px', '', '40px', '', '60px'],
-  	total: [null,null,null,null,null,null,null,'Total','amount'],
-  	pageLength: 15,
-  	pagination: true,
-  	pageStatus: true,
-  }
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
 
-  tranType: string = '';
+  passData: any = {
+     tableData:[],
+     tHeader: ['Tran Class', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Cancelled By', 'Cancelled Date', 'Reason', 'Amount'],
+     dataTypes: ['text', 'text', 'date', 'text', 'text', 'text', 'date', 'text', 'currency'],
+     keys: ['tranClass', 'refNo', 'tranDate', 'payee','particulars','cancelledBy','cancelledDate','reason','amount'],
+     nData: {
+               createUser: this.ns.getCurrentUser(),
+               createDate: '',
+               updateUser: this.ns.getCurrentUser(),
+               updateDate: ''
+      },
+      uneditable:[true,true,true,true,true,true,true],
+      pageLength: 10,
+      genericBtn: 'View Transaction Details',
+      disableGeneric: true,
+      paginateFlag:true,
+      infoFlag:true
+   };
 
-  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router) { }
+  params :any ={
+    tranId:'',
+    tranClass:'',
+    cancelFrom:'',
+    cancelTo:''
+  };
+
+  tranId: any;
+  tranClass: any;
+  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router, private ns: NotesService) { }
 
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-Srvc | Cancelled Transactions");
+    this.retrieveList();
+  }
+
+  retrieveList(){
+    setTimeout(()=>{this.table.loadingFlag = true;});
+    this.accountingService.getAcseCancelledTran(this.params.tranId,this.params.tranClass,this.params.cancelFrom,this.params.cancelTo).subscribe((data:any) => {
+      console.log(data);
+      this.passData.tableData = [];
+      for (var i = 0; i < data.cancelledTran.length; i++) {
+        this.passData.tableData.push(data.cancelledTran[i]);
+      }
+      this.table.loadingFlag = false;
+      this.table.refreshTable();
+    });
+  }
+
+  onClickSearch(){
+    this.retrieveList();
   }
 
   onRowClick(data){
-    this.tranType = data.tranType;
+    if(data !== null){
+      this.passData.disableGeneric = false;
+      this.tranId = data.tranId;
+      this.tranClass = data.tranClass;
+    }else{
+      this.passData.disableGeneric = true;
+      this.tranId = '';
+      this.tranClass = '';
+    }
   }
 
   viewTranDetails(){
-    if(this.tranType == 'AR'){
-      this.route.navigate(['accounting-in-trust',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'CV'){
-      this.route.navigate(['generate-cv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'JV'){
-      this.route.navigate(['generate-jv',{link:'/acct-it-cancelled-trans'}],{ skipLocationChange: true });
-    }else{
-      //do something
+    if(this.tranClass == 'OR'){
+      this.route.navigate(['accounting-service',{link:'/acct-srvc-inquiry-cncld-trans',tranId: this.tranId,from:'CancelledTran'}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'CV'){
+      this.route.navigate(['generate-cv-service',{link:'/acct-srvc-inquiry-cncld-trans',tranId: this.tranId}],{ skipLocationChange: true });
+    }else if(this.tranClass == 'JV'){
+      this.route.navigate(['generate-jv-service',{link:'/acct-srvc-inquiry-cncld-trans',tranId: this.tranId}],{ skipLocationChange: true });
     }
   }
 

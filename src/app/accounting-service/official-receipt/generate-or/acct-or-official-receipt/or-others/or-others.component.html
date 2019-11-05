@@ -1,7 +1,7 @@
 <div class="input-group">
   <div class="col-sm">
-      <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" (onDelete)="disableTaxBtn = true;" #mainTbl>
-        <button controls-r class="cust-btn" [disabled]="disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+      <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" #mainTbl>
+        <button controls-r class="cust-btn" [disabled]="mainTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
       </app-cust-editable-non-datatable>
   </div>
 </div>

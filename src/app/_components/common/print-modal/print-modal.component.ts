@@ -3,6 +3,7 @@ import { Component, OnInit, Input, ViewChild, Output, EventEmitter,ViewChildren,
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { QuotationService } from '@app/_services';
 
 
 
@@ -23,13 +24,13 @@ export class PrintModalComponent implements OnInit {
      reasonCd: null
    }
 
-  constructor(public modalService: NgbModal) { }
+  constructor(public modalService: NgbModal, private qs: QuotationService) { }
    reportsList: any[] = [
 								{val:"QUOTER009A", desc:"Quotation Letter" },
 								{val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
-                {val:"QUOTER009B1", desc:"RI Confirmation of Acceptance Letter" },
-								{val:"QUOTER009C", desc:"Risk Not Commensurate" },
-								{val:"QUOTER009D", desc:"Treaty Exclusion Letter" },
+                {val:"QUOTER009C", desc:"RI Confirmation of Acceptance Letter" },
+								{val:"QUOTER009D", desc:"Risk Not Commensurate" },
+								{val:"QUOTER009E", desc:"Treaty Exclusion Letter" },
                 {val:"QUOTER012", desc:"Hold Cover Letter (Quotation)"}
 					     ]               
    selected: any[] = [];
@@ -57,23 +58,32 @@ export class PrintModalComponent implements OnInit {
 
   }
  
-tabSelectedReportController(event){
+tabSelectedReportController(event?){
+        if(this.selectedReport == "QUOTER009C" || this.selectedReport == "QUOTER009E"){
+          this.qs.getReptext({quoteId : this.passData.quoteId, reportId : this.selectedReport}).subscribe(a=>{
+            this.wordingText = a['repText'];
+          })
+        }
 
         if (this.selectedReport == "QUOTER009A"){
           this.refreshModal(true);
         } else if (this.selectedReport == "QUOTER009B"){
+          this.reportId = "QUOTER009C"
           this.refreshModal(true);
-        } else if (this.selectedReport == "QUOTER009B1"){
+        } else if (this.selectedReport == "QUOTER009C"){
+
           this.reportId = "QUOTER009C"
           this.refreshModal(false);
-        } else if (this.selectedReport == "QUOTER009C"){
-          this.refreshModal(true); 
         } else if (this.selectedReport == "QUOTER009D"){
+          this.reportId = "QUOTER009D"
+          this.refreshModal(true); 
+        } else if (this.selectedReport == "QUOTER009E"){
           this.reportId = "QUOTER009D"
           this.refreshModal(false);
         } else if (this.selectedReport == "QUOTER012"){
-          this.refreshModal(true);
+          this.refreshModal(false);
         }
+        this.reportId = this.selectedReport;
 
 }
 
@@ -100,38 +110,42 @@ refreshModal(isDisable : boolean){
      if(this.isEmptyObject(this.passData.cessionDesc)){
      } else {
         if(this.passData.cessionDesc.toUpperCase() === 'RETROCESSION'){
+
           this.reportsList = [];
+          this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" });
+          this.reportsList.push({val:"QUOTER009C", desc:"RI Confirmation of Acceptance Letter" });
           if (this.passData.status === '10'){
-            this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
-            this.selectedReport = this.reportsList[0].val;
+            this.reportsList.push({val:"QUOTER009D", desc:"Risk Not Commensurate" });
+            
           } else if (this.passData.status === '9' && this.passData.reasonCd === 'NT'){
-            this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
-            this.selectedReport = this.reportsList[0].val;
+            this.reportsList.push({val:"QUOTER009E", desc:"Treaty Exclusion Letter"});
+            
             this.reportId = this.reportsList[0].val;
             this.refreshModal(false);
           } else {
-             this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" },
-                      {val:"QUOTER009B1", desc:"RI Confirmation of Acceptance Letter" });
-            this.selectedReport = this.reportsList[0].val;
+             
+            
             this.refreshModal(true);
             $("#title").css({"box-shadow": ""});
             $("#word").css({"box-shadow": ""});
           }
+
        } else if (this.passData.cessionDesc.toUpperCase() === 'DIRECT'){
           this.reportsList = [];
+          this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
           if (this.passData.status === '10'){
-            this.reportsList.push({val:"QUOTER009C", desc:"Risk Not Commensurate" });
-            this.selectedReport = this.reportsList[0].val;
+            this.reportsList.push({val:"QUOTER009D", desc:"Risk Not Commensurate" });
+
+            
           } else if (this.passData.status === '9' && this.passData.reasonCd === 'NT'){
-            this.reportsList.push({val:"QUOTER009D", desc:"Treaty Exclusion Letter"});
-            this.selectedReport = this.reportsList[0].val;
+            this.reportsList.push({val:"QUOTER009E", desc:"Treaty Exclusion Letter"});
+            
             this.reportId = this.reportsList[0].val;
             this.refreshModal(false);
-          } else {
-            this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
-            this.selectedReport = this.reportsList[0].val;
           }
        } 
+       this.selectedReport = this.reportsList[0].val;
+       this.tabSelectedReportController();
 
     }
     
@@ -166,10 +180,11 @@ refreshModal(isDisable : boolean){
     }
 
  okBtnClick($event){
-   if (this.selectedReport == "QUOTER009B1" || this.selectedReport == "QUOTER009D"){
+   if (this.selectedReport == "QUOTER009C" || this.selectedReport == "QUOTER009E"){
         if (this.isEmptyObject(this.wordingText)){
              this.dialogIcon = "error-message";
              this.dialogMessage = "Please choose wordings";
+             console.log('teststststs')
              $('#quotation #successModalBtn').trigger('click');
              setTimeout(()=>{$('.globalLoading').css('display','none');},0);
         } else {

@@ -13,6 +13,7 @@ import { MtnObjectComponent } from '@app/maintenance/mtn-object/mtn-object.compo
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { NgForm} from '@angular/forms';
 
 @Component({
 	selector: 'app-general-info',
@@ -21,9 +22,13 @@ import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.componen
 })
 export class GeneralInfoComponent implements OnInit, AfterViewInit {  
 	@ViewChild('start')start:any;
+	@ViewChild('myForm') form : NgForm;
 	ngAfterViewInit(){
-		console.log(this.start)
 		
+		if(this.form.dirty && this.form.untouched){
+			console.log('huli ka boi')
+			this.form.control.markAsPristine();
+		}
 	}
 
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -186,6 +191,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@Output() enblOptTab = new EventEmitter<any>(); //Paul
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
 
+	compCedList:any = [];
+
 	constructor(private quotationService: QuotationService, private modalService: NgbModal, private titleService: Title,
 			    private route: ActivatedRoute, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 	ngOnInit() {
@@ -223,6 +230,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					}
 				}
 			});
+			this.quotationService.getIntCompAdvInfo({quoteId:this.quoteId, quotationNo: this.plainQuotationNo(this.quotationNo)}).subscribe(a=>{
+				this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+			})
+
 
 			this.quotationService.getQuoteGenInfo(this.quoteId, this.plainQuotationNo(this.quotationNo)).subscribe(data => {
 				this.loading = false;
@@ -313,7 +324,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 			}
 
 		/*setTimeout(() => { 
-			$('.ng-dirty').removeClass('ng-dirty');
+			this.form.control.markAsDirty();
 
 			
 		},1000);*/
@@ -404,10 +415,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		setTimeout(() => {
 			$("#firstFocus").focus();
 			$(this.start.nativeElement).focus()
-			$('.ng-dirty').removeClass('ng-dirty');
+			this.form.control.markAsPristine();
 
 			if(this.savingType == 'modification') {
-				$('#wordingAltIdLov #modalBtn').addClass('ng-dirty');
+				this.form.control.markAsDirty();
 			}
 		},1000);
 
@@ -443,7 +454,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	setPrincipal(data){
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
@@ -460,8 +471,9 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 	showLineClassLOV(){
 		$('#lineClassLOV #modalBtn').trigger('click');
-		$('#lineClassLOV #modalBtn').addClass('ng-dirty')
-	}
+		this.form.control.markAsDirty();
+		this.form.control.markAsDirty();
+		}
 
 	showIntLOV(){
 		$('#intLOV #modalBtn').trigger('click');
@@ -469,7 +481,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 
 	setContractor(data){
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
 		this.genInfoData.contractorName = data.insuredName;
 		this.genInfoData.contractorId = data.insuredId;
@@ -485,7 +497,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	setCurrency(data){
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
 		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
@@ -511,7 +523,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 
 	setCedingcompany(event){
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
 		this.genInfoData.cedingId = this.pad(event.cedingId);
 		this.genInfoData.cedingName = event.cedingName;
@@ -524,7 +536,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	setReinsurer(event) {
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
 		this.genInfoData.reinsurerId = this.pad(event.cedingId);
 		this.genInfoData.reinsurerName = event.cedingName;
@@ -549,7 +561,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
     }
 
     setInt(event){
-    	$('#hiddenInp').addClass('ng-touched ng-dirty');
+    	this.form.control.markAsDirty();
 
         this.genInfoData.intmId = this.pad(event.intmId, 6);
         this.genInfoData.intmName = event.intmName;
@@ -603,7 +615,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 		            this.dialogMessage="";
 		            this.dialogIcon = "";
-		            $('.ng-dirty').removeClass('ng-dirty');
+		            this.form.control.markAsPristine();
+		            this.ns.formGroup.markAsPristine();
 					$('#genInfo #successModalBtn').trigger('click');
 						//for internal comp
 						if(this.savingType === 'internalComp'){
@@ -650,7 +663,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 			"createDate"	: this.genInfoData.createDate,
 			"createUser"	: this.genInfoData.createUser,
 			"currencyCd"	: this.genInfoData.currencyCd,
-			"currencyRt"	: this.genInfoData.currencyRt,
+			"currencyRt"	: parseFloat(this.genInfoData.currencyRt).toFixed(6) ,
 			"declarationTag": this.genInfoData.declarationTag,
 			"duration"		: this.project.duration,
 			"expiryDate"	: this.genInfoData.expiryDate,
@@ -746,7 +759,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	setObj(data){
-		$('#hiddenInp').addClass('ng-touched ng-dirty');
+		this.form.control.markAsDirty();
 
     	this.project.objectId = this.pad(String(data.objectId),4);
     	this.project.objectDesc = data.description;
@@ -760,7 +773,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
   	}
 
   	setOpeningWording(data) {
-  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+  		this.form.control.markAsDirty();
 
   		this.genInfoData.openingParag = data.wording;
   		this.focusBlur();
@@ -771,7 +784,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
   	}
 
   	setClosingWording(data) {
-  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+  		this.form.control.markAsDirty();
 
   		this.genInfoData.closingParag = data.wording;
   		this.focusBlur();
@@ -782,7 +795,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
   	}
 
   	setAltWording(data) {
-  		$('#hiddenInp').addClass('ng-touched ng-dirty');
+  		this.form.control.markAsDirty();
   		
   		this.genInfoData.altWordings = data.wording;
   		this.focusBlur();
@@ -877,7 +890,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
   	checkCode(ev, field) {
   		this.ns.lovLoader(ev, 1);
-  		$(ev.target).addClass('ng-dirty');
+  		//this.form.control.markAsDirty();
 
   		if(field === 'cedingCo') {
   			this.genInfoData.cedingId = this.pad(this.genInfoData.cedingId);  		  			
@@ -925,7 +938,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 	showUsersLOV() {
 		$('#usersLOV #modalBtn').trigger('click');
-		$('#usersLOV #modalBtn').addClass('ng-dirty');
+		$('#usersLOV #modalBtn').addClass('nga-dirty');
 	}
 
 	setPreparedBy(data) {
@@ -979,7 +992,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	cbToggle(ev) {
-		$(ev.target).addClass('ng-dirty');
+		this.form.control.markAsDirty();
 	}
 
 	lineClasses: any[] = [];
@@ -990,7 +1003,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
   }
 
   compute(ev,str) {
-  	$(ev.target).addClass('ng-dirty');
+  	// this.form.control.markAsDirty();
 
   	if(str === 'pctShare' && this.project.totalSi != '') {
   		if(Number(this.project.pctShare) > 100) {
