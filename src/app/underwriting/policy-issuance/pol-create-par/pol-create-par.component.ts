@@ -111,7 +111,7 @@ export class PolCreatePARComponent implements OnInit {
   getQuoteListing(param?) {
     this.lovTable.loadingFlag = true;
 /*<<<<<<< HEAD*/
-    let params = [{ key: 'statusArr', search: [3,5] }]
+    let params = [{ key: 'statusArr', search: [3,5] },{key:'openCoverTag' , search:'N'}]
     if(param != undefined){
       params = params.concat(param);
     }
