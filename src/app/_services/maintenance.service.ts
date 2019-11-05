@@ -183,10 +183,10 @@ export class MaintenanceService{
 	}
 
 
-	getMtnSectionCovers(lineCd,coverCd) {
+	getMtnSectionCovers(lineCd?,coverCd?) {
 		const params = new HttpParams()
-                .set('lineCd',lineCd)
-                .set('coverCd',coverCd);
+				.set('lineCd',lineCd===undefined || lineCd===null ? '' : lineCd)
+				.set('coverCd',coverCd===undefined || coverCd===null ? '' : coverCd);
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCovers', {params});
 	}
