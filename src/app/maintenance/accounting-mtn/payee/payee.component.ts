@@ -54,9 +54,18 @@ export class PayeeComponent implements OnInit {
     hide: []
   }
 
+  allRecords:any = {
+    tableData:[],
+    keys:['payeeClassName','payeeNo','payeeName','bussTypeName','tin','contactNo','mailAddress','email','remarks','designation',
+          'department','mailAddress2','permAddress','contactPerson1','contactPerson2','phoneNo','mobileNo','faxNo',
+          'bank1','bankBranch1','bankAcctType1','bankAcctName1','bankAcctNo1',
+          'bank2','bankBranch2','bankAcctType2','bankAcctName2','bankAcctNo2',
+          ]
+  }
+
   passTable:any={
   	tableData:[],
-  	widths:[1,1,1,250,1,1,80,80,200,200],
+  	widths:[1,1,1,250,1,120,80,80,200,200],
   	tHeader:['Auto','Active','Payee No','Payee Name','Reference Code','Business Type','Tin','Contact No','Mailing Address','Email Address'],
   	dataTypes:['checkbox','checkbox','number','text','text','text','text','text','text','text'],
   	tooltip:[],
@@ -124,6 +133,7 @@ export class PayeeComponent implements OnInit {
   checkCode(ev){
     $('.ng-dirty').removeClass('ng-dirty');
     this.passTable.tableData = [];
+    this.info = [];
     this.boolPrint = false;
     this.boolOtherDet = true;
     this.table.refreshTable();
@@ -432,6 +442,68 @@ save(){
       this.bankLov.checkCode(this.info.bank2,ev);
     }
     
+  }
+
+  print(){
+    this.printModal.open();
+  }
+
+  printPreview(data){
+   this.allRecords.tableData = [];
+   if(data[0].basedOn === 'curr'){
+      this.getRecords(this.payeeClassCd);
+   } else if (data[0].basedOn === 'all') {
+      this.getRecords(null);
+   }
+  }
+
+
+  getRecords(payeeClassCd?){
+      this.ms.getMtnPayee('',payeeClassCd).pipe(
+           finalize(() => this.finalGetRecords())).subscribe(a=>{
+        this.passTable.tableData = a['payeeList'];
+        this.passTable.tableData.forEach(a=>{
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+      
+        })
+      });
+  }
+
+   finalGetRecords(selection?){
+    this.export(this.allRecords.tableData);
+  };
+
+  export(record?){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'BankAccount'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+        for(var prop in dateStr) {
+           if (dateStr.hasOwnProperty(prop)) {
+              var newdate = new Date(dateStr);
+              return newdate.toLocaleString();
+           } else {
+              var date = "";
+              return date;
+           }
+        } 
+      };
+
+    alasql('SELECT bankName AS Bank,bankAcctCd AS Code, accountNo AS [Account No], accountName AS [Account Name], acctStatusName AS [Account Status],currCd AS Currency, bankBranch AS [Bank Branch], acctTypeName AS [Account Type], datetime(openDate) AS [Open Date], datetime(closeDate) AS [Close Date], dcbTag AS [Dcb Tag] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
   }
 
 
