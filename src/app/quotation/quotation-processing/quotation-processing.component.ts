@@ -708,6 +708,9 @@ showCedingCompanyIntCompLOV() {
             var sq = this.selectedQuotation;
             this.quotationService.getIntCompAdvInfo({quoteId:this.selectedQuotation.quoteId, quotationNo: this.selectedQuotation.quotationNo}).subscribe(a=>{
                 this.exclude = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+                if(this.exclude.length == 0 ){
+                    this.exclude = [this.selectedQuotation.cedingId];
+                }
             })
 
             // for(let i of this.validationList) {
