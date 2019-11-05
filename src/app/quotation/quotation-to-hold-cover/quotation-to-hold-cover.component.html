@@ -67,7 +67,7 @@
 												<label class="form-control-sm col-sm-2">Hold Cover No</label>
 												<input name="input9" type="text" class="form-control form-control-sm cust-sm" readonly [(ngModel)]="holdCoverNo">
 												<label class="form-control-sm col-sm-2">Option No</label>
-												<input name="input10" type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId($event);addDirty();">
+												<input name="input10" type="text" class="form-control form-control-sm col-sm-7 warn r-only" readonly appRequired numbers-only [(ngModel)]="holdCover.optionId" (change)="searchQuoteId($event);">
 												<div *ngIf="!fieldIconDsbl" class="text-search-ico" (click)="showOptionsLov()"><a><i class="fa fa-search"></i></a></div>
 											</div>
 											<div class="input-group" style="margin-bottom: -14px !important;">
@@ -78,14 +78,14 @@
 								                            <datepicker id="perFrom" [type]="'date'" [value]="periodFromDate" (valueChange)="periodFromDate=$event; setPeriodTo()" [required]="true" [disabled]="fieldIconDsbl"></datepicker>
 								                        </div>
 								                        <div class="warn pf1 col-sm-3 r-only dp-cont">
-								                            <datepicker [type]="'time'" [value]="periodFromTime" (valueChange)="periodFromTime=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+								                            <datepicker [type]="'time'" [value]="periodFromTime" (valueChange)="periodFromTime=$event;;" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 								                        </div>
 													</div>
 												</div>
 												<div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
 													<div class="input-group" style="margin-bottom: -0px !important;">
 														<label class="form-control-sm col-sm-4">Requested By</label>
-														<input name="input11" type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50" [ngModel]="holdCover.reqBy" (ngModelChange)="holdCover.reqBy=$event;addDirty();">
+														<input name="input11" type="text" class="form-control form-control-sm col-sm r-only" readonly  maxlength="50" [ngModel]="holdCover.reqBy" (ngModelChange)="holdCover.reqBy=$event;;">
 													</div>
 												</div>
 											</div>
@@ -94,10 +94,10 @@
 													<div class="input-group" style="margin-bottom: -0px !important;">
 														<label class="form-control-sm col-sm-4">Period To</label>
 														<div id="periodTo" class="warn pt0 col-sm r-only dp-cont" style="margin-left: 0px !important">
-								                            <datepicker [type]="'date'" [value]="periodToDate" (valueChange)="periodToDate=$event;addDirty();" [disabled]="fieldIconDsbl"  [minDate]="periodFromDate" [required]="true"></datepicker>
+								                            <datepicker [type]="'date'" [value]="periodToDate" (valueChange)="periodToDate=$event;;" [disabled]="fieldIconDsbl"  [minDate]="periodFromDate" [required]="true"></datepicker>
 								                        </div>
 								                        <div class="warn pt1 col-sm-3 r-only dp-cont">
-								                            <datepicker [type]="'time'" [value]="periodToTime" (valueChange)="periodToTime=$event;addDirty();" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
+								                            <datepicker [type]="'time'" [value]="periodToTime" (valueChange)="periodToTime=$event;;" [disabled]="fieldIconDsbl" [required]="true"></datepicker>
 								                        </div>
 													</div>
 												</div>
@@ -105,14 +105,14 @@
 													<div class="input-group" style="margin-bottom: -0px !important;">
 														<label class="form-control-sm col-sm-4">Request Date</label>
 														<div class="col-sm r-only dp-cont" style="margin-left: 0px !important">
-								                            <datepicker [type]="'date'" [value]="holdCover.reqDate" (valueChange)="holdCover.reqDate=$event;addDirty();" [disabled]="fieldIconDsbl"></datepicker>
+								                            <datepicker [type]="'date'" [value]="holdCover.reqDate" (valueChange)="holdCover.reqDate=$event;;" [disabled]="fieldIconDsbl"></datepicker>
 								                        </div>
 													</div>
 												</div>
 											</div>
 											<div class="input-group" style="margin-bottom: -14px !important;">
 												<label class="form-control-sm col-sm-2" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-												<input name="input12" type="text" class="form-control form-control-sm col-sm r-only" maxlength="25" readonly [ngModel]="holdCover.compRefHoldCovNo" (ngModelChange)="holdCover.compRefHoldCovNo=$event;addDirty();">
+												<input name="input12" type="text" class="form-control form-control-sm col-sm r-only" maxlength="25" readonly [ngModel]="holdCover.compRefHoldCovNo" (ngModelChange)="holdCover.compRefHoldCovNo=$event;;">
 												<label class="form-control-sm col-sm-2">Prepared By</label>
 												<input name="input13" type="text" class="form-control form-control-sm col-sm-7" maxlength="50" readonly tabindex="-1" [(ngModel)]="holdCover.preparedBy">
 											</div>
