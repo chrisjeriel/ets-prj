@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { Router } from '@angular/router'
 import { ModalComponent } from '@app/_components/common/modal/modal.component'
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pol-post',
@@ -37,7 +39,7 @@ export class PolPostComponent implements OnInit {
   cummSi:any;
 
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, public modalService: NgbModal,
-   private uwService: UnderwritingService, private ns: NotesService, private router: Router) {
+   private uwService: UnderwritingService, private ns: NotesService, private router: Router, private mtnService: MaintenanceService) {
   	config.backdrop = 'static';
     config.keyboard = false;
     configprogress.max = 100;
@@ -97,7 +99,14 @@ export class PolPostComponent implements OnInit {
     checkCoverage(){
       const coveragaAmts: string[] = ['totalValue','cumSecISi','cumSecIISi','cumSecIIISi','cumTSi','cumSecIPrem','cumSecIIPrem','cumSecIIIPrem','cumTPrem'];
       this.loadMsg = "Checking Coverage"
-      this.uwService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe(a=>{
+
+      var sub$ = forkJoin(this.mtnService.getMtnParameters('N',this.lineCd+'_ALOP'),
+                              this.uwService.getUWCoverageInfos(null,this.policyInfo.policyId))
+                    .pipe(map(([mtnParameter, uwCoverage]) => { return { mtnParameter, uwCoverage}}));
+
+      sub$.subscribe(data=>{
+        let a = data['uwCoverage'];
+        let coverCd = data['mtnParameter']['parameters'][0] == undefined ? null : data['mtnParameter']['parameters'][0].paramValueN;
         if(a['policy'] == null || a['policy'].project.coverage.totalPrem == 0){
           this.progress +=50;
           this.affectingTag = false;
@@ -132,7 +141,7 @@ export class PolPostComponent implements OnInit {
         }else if(covData.totalValue<covData.cumTSi){
           this.loadMsg = '100% Value must be greater than or equal to the Total Sum Insured. Please check Coverage tab.';
         }else{
-          if((secCvrs.filter(a=>(a.lineCd == 'CAR' && a.coverCd == '16')|| (a.lineCd == 'EAR' && a.coverCd == '31'))).length > 0){
+          if(secCvrs.filter(a=>a.coverCd == coverCd).length > 0){
             this.alopSi = secCvrs.filter(a=>(a.lineCd == 'CAR' && a.coverCd == '16')|| (a.lineCd == 'EAR' && a.coverCd == '31'))[0].cumSi;
             this.checkAlop();
           }
