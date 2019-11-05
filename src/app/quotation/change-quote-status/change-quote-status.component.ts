@@ -158,10 +158,9 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                     },100);
                 }else if(!this.noDataFound){
                     this.noDataFound = true;
-                    this.retrieveQuoteListing();
-                }else{
-                    this.tableNonEditable.refreshTable();
+                    //this.retrieveQuoteListing();
                 }
+                    this.tableNonEditable.refreshTable();
             }else{
                 this.noDataFound = false;
                 for(var i of data.quotationList){
@@ -279,6 +278,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
             this.passData.tableData = [];
             this.table.selected = [];
             this.table.refreshTable();
+            this.getChangeQuote();
         }
         this.statusCd = statusCd;
     }
@@ -353,6 +353,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
 
     prepareData(){
         this.saveData.changeQuoteStatus = [];
+        this.saveData.user = this.ns.getCurrentUser();
         for(let data of this.passData.tableData){
             if(data.checked){
                 this.saveData.changeQuoteStatus.push({
