@@ -53,7 +53,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">JV Type</label>
                     <div class="col-sm-8">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName" [readonly]="approvedStat">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm required tranTypeName" style="margin-right: 1px !important;" [(ngModel)]="entryData.tranTypeName" appRequired name="entryData.tranTypeName" [readonly]="approvedStat" (change)="checkCode($event, 'jvType')">
                          <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 0px !important;z-index: 200;font-size: 14px;"><a (click)="openJVType()"><i class="fa fa-search"></i></a></div> 
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                     <label class="form-control-sm col-sm-1" style="height: auto;">Amount</label>
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [(ngModel)]="entryData.currCd" appRequired name="entryData.currCd" [readonly]="approvedStat">
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-2 required currCd" style="margin-right: -1px !important;" [ngModel]="entryData.currCd" (ngModelChange)="entryData.currCd=$event.toUpperCase()" appRequired name="entryData.currCd" [readonly]="approvedStat" (change)="checkCode($event, 'currCd')" maxlength="3">
                             <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm required" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired [(ngModel)]="entryData.jvAmt" (change)="validateCurr();" appCurrency name="entryData.jvAmt" [readonly]="approvedStat">
                             <label class="form-control-sm col-sm-3" style="height: auto;">Currency Rate</label>
@@ -326,7 +326,7 @@
 </app-modal>
 
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
-<app-jv-type-lov id="jvTypeModal" (selectedData)="setTranType($event)"></app-jv-type-lov>
+<app-jv-type-lov #jvTypeLov (selectedData)="setTranType($event)"></app-jv-type-lov>
 <app-mtn-printable-names #printableNames (selectedData)="setPrintable($event)"></app-mtn-printable-names>
 <app-mtn-printable-names #ApproverNames (selectedData)="setApproval($event)"></app-mtn-printable-names>
 <app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>

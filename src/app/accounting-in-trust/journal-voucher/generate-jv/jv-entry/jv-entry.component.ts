@@ -10,6 +10,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { Router } from '@angular/router';
 import { environment } from '@environments/environment';
+import { JvTypeLovComponent } from '@app/accounting-in-trust/journal-voucher/generate-jv/jv-type-lov/jv-type-lov.component';
 
 @Component({
   selector: 'app-jv-entry',
@@ -33,10 +34,11 @@ export class JvEntryComponent implements OnInit {
   @ViewChild('printableNames') printableNames: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
-  @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
+  @ViewChild('currencyModal') currLov: MtnCurrencyComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild('myForm') form:any;
+  @ViewChild('jvTypeLov') jvTypeLov: JvTypeLovComponent;
 
   passData: any = {
     tableData: [],
@@ -307,7 +309,9 @@ export class JvEntryComponent implements OnInit {
                        });
   }
 
-  setTranType(data){
+  setTranType(data) {
+    this.ns.lovLoader(data.ev, 0);
+
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
     this.entryData.particulars = data.defaultParticulars;
@@ -319,7 +323,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   openJVType(){
-    $('#jvTypeModal #modalBtn').trigger('click');
+    // $('#jvTypeModal #modalBtn').trigger('click');
+    this.jvTypeLov.modal.openNoClose();
   }
 
   setCurrency(data){
@@ -580,6 +585,10 @@ export class JvEntryComponent implements OnInit {
 
     if(str == 'preparedName') {
       this.printableNames.checkCode(this.entryData.preparedName, ev);
+    } else if(str == 'currCd') {
+      this.currLov.checkCode(this.entryData.currCd, ev);
+    } else if(str == 'jvType') {
+      this.jvTypeLov.checkCode(this.entryData.tranTypeName, ev);
     }
   }
 

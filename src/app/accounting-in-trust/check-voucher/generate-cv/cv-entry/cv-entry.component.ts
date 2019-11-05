@@ -177,7 +177,7 @@ export class CvEntryComponent implements OnInit {
       this.checkSeriesList = recCn;
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
+      var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
       
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
@@ -468,6 +468,7 @@ export class CvEntryComponent implements OnInit {
 
   checkCode(event,from){
     this.ns.lovLoader(event, 1);
+    
     if(from.toLowerCase() == 'curr'){
       this.currLov.checkCode(this.saveAcitCv.currCd.toUpperCase(), event);
     }else if(from.toLowerCase() == 'prep-user'){

@@ -62,7 +62,7 @@
    		                <div class="input-group">
    		                    <label class="form-control-sm col-sm-1 labels">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
-                              <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-3 warn curr" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired [disabled]="existsInReqDtl">
+                              <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-3 warn curr" maxlength="3" [ngModel]="saveAcitPaytReq.currCd" (ngModelChange)="saveAcitPaytReq.currCd=$event.toUpperCase()" (change)="checkCode($event,'curr')" appRequired [disabled]="existsInReqDtl">
                               <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="!removeIcon && !existsInReqDtl"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
                               <input name="input8" *ngIf="saveAcitPaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcitPaytReq.reqAmt" (ngModelChange)="saveAcitPaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
                               <input name="input8" *ngIf="saveAcitPaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcitPaytReq.reqAmt"  numbers-only maxlength="26" readonly>
@@ -174,6 +174,7 @@
     </fieldset>
   </div>
 </div>
+</form>
 
 <app-modal class="d-none" #confirmMdl >
     <div header>Confirmation</div>
@@ -261,4 +262,4 @@
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
-</form>
+

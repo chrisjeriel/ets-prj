@@ -53,7 +53,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
-                        <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-2 warn curr" [(ngModel)]="saveAcitCv.currCd" maxlength="3" appRequired [disabled]="existsInCvDtl">
+                        <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-2 warn curr" [ngModel]="saveAcitCv.currCd" (ngModelChange)="saveAcitCv.currCd=$event.toUpperCase()" maxlength="3" appRequired [disabled]="existsInCvDtl" (change)="checkCode($event, 'curr')">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
                         <input name="input8" type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" maxlength="24" [(ngModel)]="saveAcitCv.cvAmt" (change)="setLocalAmt();" numbers-only appRequired style="margin-left: 3px;">
                     </div>
@@ -166,6 +166,7 @@
     </fieldset>
   </div>
 </div>
+</form>
 
 <app-modal class="d-none" #confirmMdl >
     <div header>Confirmation</div>
@@ -252,4 +253,3 @@
 <app-confirm-save (onYes)="onSaveAcitCv()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/generate-cv'" ></app-cancel-button>
-</form>
