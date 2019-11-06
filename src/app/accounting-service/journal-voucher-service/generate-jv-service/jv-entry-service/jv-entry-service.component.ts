@@ -285,6 +285,10 @@ export class JvEntryServiceComponent implements OnInit {
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
     this.entryData.particulars = data.defaultParticulars;
+    this.form.control.markAsDirty();
+    setTimeout(()=>{
+      $('.tranTypeName').focus().blur();
+    }, 0);
   }
 
   setCurrency(data){
@@ -340,7 +344,7 @@ export class JvEntryServiceComponent implements OnInit {
 
   checkEntryFields(){
     if(this.entryData.tranTypeName.length === 0 || 
-       this.entryData.particulars.length === 0 ||
+       this.entryData.particulars === '' ||
        this.entryData.currCd.length === 0 || 
        this.entryData.jvAmt.length === 0 || 
        this.entryData.currRate.length === 0 || 
@@ -396,6 +400,7 @@ export class JvEntryServiceComponent implements OnInit {
         this.tranId = data.tranIdOut;
         this.from = 'jvList';
         this.retrieveJVEntry();
+        this.form.control.markAsPristine();
       }
     });
   }

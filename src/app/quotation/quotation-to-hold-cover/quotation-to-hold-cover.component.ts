@@ -13,7 +13,8 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
-import { SucessDialogComponent } from '@app/_components/common';
+//import { SucessDialogComponent } from '@app/_components/common';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',

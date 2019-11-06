@@ -177,7 +177,7 @@ export class CvEntryComponent implements OnInit {
       this.checkSeriesList = recCn;
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
+      var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
       
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
@@ -196,7 +196,7 @@ export class CvEntryComponent implements OnInit {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitCv.preparedByName  = e.printableName;
             this.saveAcitCv.preparedBy   = e.userId;
-            this.saveAcitCv.preparedByDes = e.designation;
+            this.saveAcitCv.preparedDes = e.designation;
           }
         });
       }else{
@@ -215,12 +215,12 @@ export class CvEntryComponent implements OnInit {
             if(e.preparedBy.toUpperCase() == e2.userId.toUpperCase()){
               e.preparedByName = e2.printableName;
               this.saveAcitCv.preparedBy = e2.userId;
-              e.preparedByDes = e2.designation;
+              e.preparedDes = e2.designation;
             }
             if(e.certifiedBy == e2.userId){
               e.certifiedByName = e2.printableName;
               this.saveAcitCv.certifiedBy = e2.userId;
-              e.certifiedByDes = e2.designation;
+              e.certifiedDes = e2.designation;
             }
           });
           return e;
@@ -230,6 +230,8 @@ export class CvEntryComponent implements OnInit {
         console.log(this.saveAcitCv);
         this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
 
+        console.log(totalCredit);
+        console.log(totalDebit);
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
 
@@ -467,11 +469,14 @@ export class CvEntryComponent implements OnInit {
   }
 
   checkCode(event,from){
-    this.ns.lovLoader(event.ev, 1);
+    this.ns.lovLoader(event, 1);
+    
     if(from.toLowerCase() == 'curr'){
-      this.currLov.checkCode(this.saveAcitCv.currCd.toUpperCase(),event.ev);
+      this.currLov.checkCode(this.saveAcitCv.currCd.toUpperCase(), event);
     }else if(from.toLowerCase() == 'prep-user'){
-      this.prepUserLov.checkCode(this.saveAcitCv.preparedBy.toUpperCase(),event.ev);
+      this.prepUserLov.checkCode(this.saveAcitCv.preparedByName.toUpperCase(), event);
+    } else if(from.toLowerCase() == 'cert-user') {
+      this.certUserLov.checkCode(this.saveAcitCv.certifiedByName.toUpperCase(), event);
     }
   }
 
@@ -493,7 +498,8 @@ export class CvEntryComponent implements OnInit {
   }
 
   removeRedBackShad(fromClass){
-    $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+    // $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+    $('.'+fromClass).focus().blur();
   }
 
 

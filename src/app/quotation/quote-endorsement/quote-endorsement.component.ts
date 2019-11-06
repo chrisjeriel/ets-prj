@@ -8,9 +8,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-import { LovComponent } from '@app/_components/common';
-
-
+//import { LovComponent } from '@app/_components/common';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
     selector: 'app-quote-endorsement',
@@ -603,8 +602,8 @@ export class QuoteEndorsementComponent implements OnInit {
     //end neco
 
     onClickSave(){
-      console.log(this.table.selected);
-      // $('#endtSave #confirm-save #modalBtn2').trigger('click');
+      //console.log(this.table.selected);
+      $('#endtSave #confirm-save #modalBtn2').trigger('click');
     }
 
     cancel(){

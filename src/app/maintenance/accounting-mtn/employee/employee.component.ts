@@ -38,7 +38,7 @@ export class EmployeeComponent implements OnInit {
       middleName : null,
       printableName : null,
       gender : null,
-      birthDate : null,
+      birthDate : '',
       hireDate : null,
       terminationDate : null,
       dept : null,
@@ -64,7 +64,7 @@ export class EmployeeComponent implements OnInit {
   };
   company:any = {};
   boolPrint: boolean = true;
-  boolOtherDetails: boolean = false;
+  boolOtherDetails: boolean = true;
   cancelFlag:boolean;
   inquiryFlag:boolean;
   indexRow:any;
