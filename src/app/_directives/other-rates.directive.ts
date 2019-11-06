@@ -21,6 +21,7 @@ export class OtherRatesDirective implements OnInit {
   	    }else{
   	    	unHighlight(this.el);
   	    	sNum[1] = sNum[1] !== undefined ? sNum[1] : '0000000000';
+          sNum[1] = (sNum[1] + "0000000000").substring(0,10);
   	  		target.value = sNum.join('.');
   	    }
      }else {
