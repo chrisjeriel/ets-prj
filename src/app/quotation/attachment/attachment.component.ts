@@ -301,7 +301,7 @@ export class AttachmentComponent implements OnInit {
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(this.checkFileNameLength()){
-        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogMessage= "File name exceeded the maximum 250 characters";
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else{
@@ -320,7 +320,7 @@ export class AttachmentComponent implements OnInit {
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else if(this.checkFileNameLength()){
-        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogMessage= "File name exceeded the maximum 250 characters";
         this.dialogIcon = "error-message";
         this.successDiag.open();
       }else{
@@ -357,7 +357,7 @@ export class AttachmentComponent implements OnInit {
 
     checkFileNameLength(){
       for(var i of this.passData.tableData){
-        if(i.fileName.length > 50){
+        if(i.fileName.length > 250){
           return true;
         }
       }
