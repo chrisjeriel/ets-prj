@@ -85,6 +85,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     deleteFlag: true,
     editFlag: false,
     pageLength: 10,
+    paginateFlag:true,
+    infoFlag:true,
     widths: [105,240,125,170,120,120,120,120],
     checkFlag: true,
     magnifyingGlass: ['glShortCd','slTypeName','slName'],
@@ -372,8 +374,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   acctEntriesTableDataChange(data){
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
       for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
-        this.acctEntriesData.tableData[i].debitAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
-        this.acctEntriesData.tableData[i].creditAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
+        this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
+        this.acctEntriesData.tableData[i].foreignCreditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0:this.acctEntriesData.tableData[i].foreignCreditAmt;
+        this.acctEntriesData.tableData[i].debitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
+        this.acctEntriesData.tableData[i].creditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
       }
       this.computeTotals();
     }
