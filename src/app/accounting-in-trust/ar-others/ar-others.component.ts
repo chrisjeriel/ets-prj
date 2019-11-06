@@ -166,6 +166,7 @@ export class ArOthersComponent implements OnInit {
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveOthers();
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();
