@@ -141,6 +141,7 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.suc.open();
       this.params.savePaytReqList  = [];
       this.params.deletePaytReqList  = [];
+      $('input').removeClass('ng-dirty');
     });
   }
 
@@ -148,6 +149,8 @@ export class CvPaymentRequestListComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    this.params.savePaytReqList = [];
+    this.params.deletePaytReqList = [];
     var isEmpty = 0;
     this.passDataPaytReqList.tableData.forEach(e => {
       e.tranId    = this.passData.tranId;
@@ -175,6 +178,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     });
   
     console.log(this.passDataPaytReqList.tableData);
+    console.log(this.params);
       if(isEmpty){
         this.dialogIcon = 'error';
         this.suc.open();
