@@ -139,7 +139,7 @@ export class InwardPolBalanceComponent implements OnInit {
       if(data.policyList.length != 0){
         this.currency = data.policyList[0].project.coverage.currencyCd;
         if(data.policyList[0].inwPolBalance.length !=0){
-          this.passData.nData.dueDate = new Date(data.policyList[0].inwPolBalance[0].dueDate).setMonth(new Date(data.policyList[0].inwPolBalance[0].dueDate).getMonth+1);
+          this.passData.nData.dueDate = new Date(data.policyList[0].inwPolBalance[0].dueDate).setMonth(new Date(data.policyList[0].inwPolBalance[0].dueDate).getMonth()+1);
           //this.passData.nData.bookingDate
 
           this.passData.tableData = data.policyList[0].inwPolBalance.filter((a,i)=>{

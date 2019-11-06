@@ -31,17 +31,17 @@
 						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Report</label>
-								<select class="form-control form-control-sm cust-sm col-sm-8">
-									<option value="">Policy Schedule</option>
+								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="POLR010">Policy Schedule</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Destination</label>
-								<select class="form-control form-control-sm cust-sm col-sm-8">
-									<option value="">Screen</option>
-									<option value="">PDF</option>
-									<option value="">Printer</option>
+								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+									<option value="screen">Screen</option>
+									<option value="dlPdf">PDF</option>
+									<option value="printPdf">Printer</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>

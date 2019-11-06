@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {  NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-import { UnderwritingService, NotesService} from '@app/_services';
+import { UnderwritingService, NotesService, PrintService} from '@app/_services';
 
 @Component({
   selector: 'app-pol-issuance-open-cover-letter',
@@ -12,7 +12,8 @@ import { UnderwritingService, NotesService} from '@app/_services';
 })
 export class PolIssuanceOpenCoverLetterComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, private uw: UnderwritingService, private ns: NotesService) { }
+  constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, 
+              private uw: UnderwritingService, private ns: NotesService, private ps: PrintService) { }
 
   @ViewChild('tabset') tabset: any;
   policyInfo:any;
@@ -69,12 +70,19 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
       this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
 
+    printDestination:string;
+    printReport:string;
+
     changeOpenCovStatus(){
       let params:any = {
                           policyIdOc:this.policyInfo.policyIdOc,
-                          updateUser:this.ns.getCurrentUser()
+                          updateUser:this.ns.getCurrentUser(),
+
                         };
       this.uw.updateOCStatus(params).subscribe(a=>console.log(a));
+      params.reportId=this.printReport;
+      params.user
+      this.ps.print(this.printDestination,this.printReport,params)
     }
 
 }

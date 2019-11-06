@@ -136,6 +136,7 @@ export class PolAttachmentComponent implements OnInit {
             }else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
+                this.table.markAsPristine();
                 if(data.uploadDate != null){
                   this.uploadMethod(data.uploadDate);
                 }
