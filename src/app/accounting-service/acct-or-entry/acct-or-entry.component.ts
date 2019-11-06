@@ -1145,7 +1145,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   orAmtEqualsOrDtlPayt(): boolean{
-    if(this.orInfo.orDtlSum != this.orInfo.orAmt * this.orInfo.currRate){
+    if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
       return true;
     }
     return false;
