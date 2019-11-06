@@ -198,7 +198,7 @@ export class AccSRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
         this.reqDateDate = this.saveAcsePaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcsePaytReq.reqDate.split('T')[1];
-        this.existsInReqDtl = (this.saveAcsePaytReq.reqStatus == 'N')?false:true;
+        this.existsInReqDtl =(this.saveAcsePaytReq.reqStatus == 'N')?false:true;
         console.log(this.existsInReqDtl);
         //console.log(recPrq.length);
         ((this.saveAcsePaytReq.reqStatus == 'N' || this.saveAcsePaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
@@ -309,7 +309,9 @@ export class AccSRequestEntryComponent implements OnInit {
       reqMm           : (this.saveAcsePaytReq.reqMm == '' || this.saveAcsePaytReq.reqMm == null)?Number(this.reqDateDate.split('-')[1]):Number(this.saveAcsePaytReq.reqMm),
       reqPrefix       : this.tranTypeList.filter(i => i.tranTypeCd == this.saveAcsePaytReq.tranTypeCd).map(i => i.typePrefix).toString(),
       reqSeqNo        : this.saveAcsePaytReq.reqSeqNo,
-      reqStatus       : (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) > 0)?'F':this.saveAcsePaytReq.reqStatus,
+      reqStatus       : (this.saveAcsePaytReq.tranTypeCd == 3 || this.saveAcsePaytReq.tranTypeCd == 4)
+                          ?(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) > 0)?'F':this.saveAcsePaytReq.reqStatus
+                          :this.saveAcsePaytReq.reqStatus,
       reqYear         : (this.saveAcsePaytReq.reqYear == '' || this.saveAcsePaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcsePaytReq.reqYear,
       requestedBy     : this.saveAcsePaytReq.requestedBy,
       tranTypeCd      : this.saveAcsePaytReq.tranTypeCd,
