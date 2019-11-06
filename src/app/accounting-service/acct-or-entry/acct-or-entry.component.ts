@@ -715,7 +715,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.dialogIcon = 'error';
       this.successDiag.open();
       $('.required').focus().blur();
-      $('table input').focus().blur();
+      $('table input:not(.tbl-dp)').focus().blur();
       $('table select').focus().blur();
     }
     /*else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
@@ -1145,7 +1145,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   orAmtEqualsOrDtlPayt(): boolean{
-    if(this.orInfo.orDtlSum != this.orInfo.orAmt * this.orInfo.currRate){
+    if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
       return true;
     }
     return false;

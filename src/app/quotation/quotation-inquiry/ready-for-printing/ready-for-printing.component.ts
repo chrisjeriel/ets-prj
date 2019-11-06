@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { QuotationService, UserService } from '@app/_services'
+import { QuotationService, UserService, NotesService } from '@app/_services'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { PrintModalComponent } from '@app/_components/common/print-modal/print-m
 import * as alasql from 'alasql';
 import * as jsPDF from 'jspdf';
 import { finalize } from 'rxjs/operators';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 
 
@@ -20,12 +21,13 @@ import { finalize } from 'rxjs/operators';
 export class ReadyForPrintingComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @ViewChild(PrintModalComponent) printModal: PrintModalComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
 
 
 
   records: any[] = [];
 
-  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient, private userService: UserService) { }
+  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient, private userService: UserService,private ns:NotesService) { }
   reportsList: any[] = [
                                 {val:"QUOTER009A", desc:"Quotation Letter" },
                                 {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
@@ -50,7 +52,8 @@ export class ReadyForPrintingComponent implements OnInit {
   saveData: any = {
         changeQuoteStatus: [],
         statusCd: "3",
-        reasonCd: ""
+        reasonCd: "",
+        user: this.ns.getCurrentUser()
     };
   line: any = null;    
   quotationNo: any = null;
@@ -61,7 +64,8 @@ export class ReadyForPrintingComponent implements OnInit {
 
   passData: any = {
     tHeader: [
-      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site", "Currency", "Quote Date", "Valid Until", "Requested By","Created By"
+      "Quotation No", "Approved By", "Type of Cession", "Line Class", "Status", "Ceding Company", "Principal", "Contractor", "Insured", "Risk", "Object", "Site",
+       "Currency", "Quote Date", "Valid Until", "Requested By","Created By"
     ],
     resizable: [
       true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,true
@@ -70,10 +74,15 @@ export class ReadyForPrintingComponent implements OnInit {
       "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", "date", "text","text"
     ],
     filters: [
-                {
+        {
             key: 'quotationNo',
             title: 'Quotation No.',
             dataType: 'text'
+        },
+        {
+          key: 'approvedBy',
+          title: 'Approved By',
+          dataType: 'text'
         },
         {
             key: 'cessionDesc',
@@ -126,24 +135,29 @@ export class ReadyForPrintingComponent implements OnInit {
             dataType: 'text'
         },
         {
-            keys: {
-                    from: 'issueDateFrom',
-                    to: 'issueDateTo'
-                },
-            title: 'Quote Date',
-            dataType: 'datespan'
+            key: 'currencyCd',
+            title: 'Currency',
+            dataType: 'text'
         },
-        {
-            key: 'expiryDate',
-            title: 'Valid Until',
-            dataType: 'date'
-        },
+        { keys: {
+            from: 'issueDateFrom',
+            to: 'issueDateTo'
+        },                        title: 'Quote Date',         dataType: 'datespan'},
+        // {
+        //     key: 'expiryDate',
+        //     title: 'Valid Until',
+        //     dataType: 'date'
+        // },
+        { keys: {
+            from: 'expiryDateFrom',
+            to: 'expiryDateTo'
+        },                        title: 'Valid Until',         dataType: 'datespan'},
         {
             key: 'reqBy',
             title: 'Requested By',
             dataType: 'text'
         },
-       {
+        {
             key: 'createUser',
             title: 'Created By',
             dataType: 'text'
@@ -165,22 +179,23 @@ export class ReadyForPrintingComponent implements OnInit {
                     "reportRequest": []
                     }
   selectedBatchData:any[] =[];
-
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+  loading: boolean = false;
 
   ngOnInit() {
     this.printModal.default = false;
     this.printModal.reports = true;
     this.btnDisabled = true;
-    this.searchParams.push({
-                              key : "status", 
-                              search : "APPROVED"
-                          });
+    // this.searchParams.push({
+    //                           key : "status", 
+    //                           search : "APPROVED"
+    //                       });
     this.retrieveQuoteListingMethod();
     this.userService.emitModuleId("QUOTE010");
   }
 
   retrieveQuoteListingMethod(){
+    this.searchParams.push({key: 'statusArr',search:['A']})
     this.quotationService.getQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
             for(let rec of this.records){
@@ -211,16 +226,17 @@ export class ReadyForPrintingComponent implements OnInit {
             }
 
             this.table.refreshTable();
+            this.table.overlayLoader = false;
         });
 
   }
 
   //Method for DB query
   searchQuery(searchParams){  
-         let params = searchParams.find((p) => {
-          return p.key === 'status';
-         });
-         params.search = 'APPROVED';
+         // let params = searchParams.find((p) => {
+         //  return p.key === 'status';
+         // });
+         // params.search = 'APPROVED';
 
         this.searchParams = [];
         this.searchParams = searchParams;
@@ -325,7 +341,6 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   printDestination(obj){
-
                 if (obj === 'SCREEN'){  
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                          if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
@@ -336,7 +351,8 @@ export class ReadyForPrintingComponent implements OnInit {
                             window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
                          }
                      }
-                     this.changeQuoteStatus();
+                      this.printMdl.open();
+                     //this.changeQuoteStatus();
                 }else  if (obj === 'PRINTER'){
                     this.selectedBatchData = [];
                     this.batchData.reportRequest = [];
@@ -352,7 +368,7 @@ export class ReadyForPrintingComponent implements OnInit {
                     
                     this.batchData.reportRequest = this.selectedBatchData;
                     this.printPDF(this.batchData);
-
+                    this.loading = true;
                 }else if (obj === 'PDF'){
                    this.resultPrint = [];
                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
@@ -368,7 +384,10 @@ export class ReadyForPrintingComponent implements OnInit {
 }
 
 changeQuoteStatus() {
+   console.log(this.saveData);
+
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
+        console.log(data['returnCode']);
         this.changeQuoteError = data['returnCode'];
             if(data['returnCode'] == 0) {
                 console.log(data['errorList'][0].errorMessage);
@@ -377,8 +396,8 @@ changeQuoteStatus() {
                 this.selectedOnOk = false;
                 $('#readyPrinting #successModalBtn').trigger('click');
             } else {
+                this.table.overlayLoader = true;
                 this.searchQuery(this.searchParams);
-                this.table.refreshTable("first");
             }
         this.btnDisabled = true;
     });
@@ -432,14 +451,18 @@ batchPDF(obj){
                }
              this.changeQuoteStatus();
         } else {
-             this.changeQuoteStatus();
+             //this.changeQuoteStatus();
+              this.printMdl.open();
         }
 
      }
 }
 
-printPDF(batchData: any){      
-   this.quotationService.batchPrint(JSON.stringify(batchData)).
+printPDF(batchData: any){    
+  console.log(JSON.stringify(batchData)) ; 
+   this.quotationService.batchPrint(JSON.stringify(batchData)).pipe(
+           finalize(() => this.printMdl.open())
+           ).
           subscribe(data => {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
@@ -448,7 +471,8 @@ printPDF(batchData: any){
            iframe.src = downloadURL;
            document.body.appendChild(iframe);
            iframe.contentWindow.print();
-           this.changeQuoteStatus();
+           this.loading = false;
+           //this.changeQuoteStatus();
     },
      error => {
            this.modalService.dismissAll();
@@ -480,7 +504,7 @@ export(){
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
-            return date.toLocaleString();
+            return date.toLocaleString().split(',')[0];
       };
 
        alasql.fn.currency = function(currency) {
@@ -490,7 +514,12 @@ export(){
             return num
       };
 
-    alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+      for(let a of this.passData.keys){
+        this.passData.tableData.forEach(data=>data[a] = data[a]==null ? '' : data[a]);
+      }
+      
+
+    alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
   modalOnOk(){

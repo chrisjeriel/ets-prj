@@ -239,6 +239,7 @@ export class QuoAlopComponent implements OnInit {
               }
             }
 
+
             //FOR OPTIONSLIST
             this.quoteOptionsData.tableData = [];
             var optionsList = data.quoteOption.quotation.optionsList;

@@ -12,9 +12,13 @@
                                 <div class="input-group">
                                     <label class="form-control-sm col-sm-2 text-right labels">Risk No.</label>
                                     <input type="text" class="form-control form-control-sm col-sm-2 text-right" disabled="disabled" [ngModel]="riskData.riskId | number: '5.0' | sequence" name="riskData.riskId">
-                                    <input type="checkbox" class="checkbox text-right" [ngModel]="riskData.activeTag=='Y'" 
-                                    (change)="riskData.activeTag = $event.target.checked?'Y':'N'" name="riskData.activeTag">
-                                    <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
+                                    <div class="col-sm-2">
+                                        <input type="checkbox" class="checkbox text-right" [ngModel]="riskData.activeTag=='Y'" 
+                                        (change)="riskData.activeTag = $event.target.checked?'Y':'N'" name="riskData.activeTag">
+                                        <label class="form-control-sm labels" style="text-align: left !important">Active Tag</label>
+                                    </div>
+                                    <label class="form-control-sm col-sm-2 text-right labels">Old Risk No.</label>
+                                    <input type="text" class="form-control form-control-sm col-sm-3"  [(ngModel)]="riskData.oldRiskId" name="oldRiskId"> 
                                 </div>
                             </div>
                             <div class="form-row custom-row-inline-inset">

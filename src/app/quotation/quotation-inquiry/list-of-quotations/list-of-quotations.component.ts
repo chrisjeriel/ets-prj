@@ -342,7 +342,7 @@ export class ListOfQuotationsComponent implements OnInit {
 
           alasql.fn.datetime = function(dateStr) {
                 var date = new Date(dateStr);
-                return date.toLocaleString();
+                return date.toLocaleString().split(',')[0];
           };
 
            alasql.fn.currency = function(currency) {
@@ -371,7 +371,7 @@ export class ListOfQuotationsComponent implements OnInit {
 
                                          return i;
                                      });
-                alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal,'+
+                alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal,'+
                         ' contractorName AS Contractor, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(sumInsured) AS SumInsured, firstOptionRt AS FirstOptnRt,'+
                         'datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',
                         [mystyle,records]);

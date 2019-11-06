@@ -378,7 +378,7 @@ export class OrOthersComponent implements OnInit {
     let params: any = {
       tranId: this.record.tranId,
       billId: 2, //2 for Others Transaction Type
-      billType: 3, //4 for Others
+      billType: 4, //4 for Others
       totalLocalAmt: totalLocalAmt,
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),

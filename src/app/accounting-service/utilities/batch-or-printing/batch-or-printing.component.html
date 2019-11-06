@@ -149,7 +149,7 @@
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
           <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateOrStatus();"><a>Yes</a></button>
-          <button class="cust-btn" type="button" (click)="printMdl.closeModal();failedOrPrint();"><a>No</a></button>
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();printConfirmModal.open();"><a>No</a></button>
         </div>
       </div>
   	</div>
@@ -167,7 +167,7 @@
 	<div footer class="text-center w-100">
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
-          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();"><a>OK</a></button>
+          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();failedOrPrint();"><a>OK</a></button>
         </div>
       </div>
   	</div>

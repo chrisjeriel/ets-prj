@@ -99,7 +99,7 @@ export class CedingCompanyComponent implements OnInit {
              this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
            }            
          }
-
+         console.log(this.exclude);
          if(this.treaty !== undefined && this.treaty) {
            this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'Y');
          } else if(this.treaty !== undefined && !this.treaty) {
@@ -220,7 +220,7 @@ export class CedingCompanyComponent implements OnInit {
             this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
           }            
         }
-
+        console.log(this.exclude);
         if(this.treaty !== undefined && this.treaty) {
           this.passDataCedingCompanyMember.tableData = this.passDataCedingCompanyMember.tableData.filter(a => a.treatyTag == 'Y');
         } else if(this.treaty !== undefined && !this.treaty) {

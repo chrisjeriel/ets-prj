@@ -1,5 +1,6 @@
 import { Directive, ElementRef, HostListener, HostBinding, OnInit } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
+import { NgModel } from '@angular/forms';
 
 @Directive({
   selector: '[appCurrencyRate]'
@@ -7,7 +8,7 @@ import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 
 export class CurrencyRateDirective implements OnInit{
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef,private model: NgModel) { }
 
     ngOnInit(){
       this.el.nativeElement.style.textAlign = "right"
@@ -25,6 +26,7 @@ export class CurrencyRateDirective implements OnInit{
           sNum[1] = (sNum[1] + "000000").substring(0,6);
   	  		target.value = sNum.join('.');
   	    }
+        this.model.valueAccessor.writeValue(parseFloat(this.model.value).toFixed(6));
      }else {
   	    unHighlight(this.el);
       }

@@ -3,8 +3,8 @@
 </div>
 <div class="cust-tabs-container">
     <h4>Quotation</h4>
-    <ngb-tabset [destroyOnHide]="false">
-        <ngb-tab class="ngb-tab" title="Quotation Processing">
+    <ngb-tabset (tabChange)="onTabChange($event)">
+        <ngb-tab id="quoteListing" class="ngb-tab" title="Quotation Processing">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 <div>
                     <app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="selectedQuotation = $event; onRowDblClick()"

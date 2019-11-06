@@ -183,10 +183,10 @@ export class MaintenanceService{
 	}
 
 
-	getMtnSectionCovers(lineCd,coverCd) {
+	getMtnSectionCovers(lineCd?,coverCd?) {
 		const params = new HttpParams()
-			.set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
-			.set('coverCd', (coverCd === null || coverCd === undefined ? '' : coverCd));
+				.set('lineCd',lineCd===undefined || lineCd===null ? '' : lineCd)
+				.set('coverCd',coverCd===undefined || coverCd===null ? '' : coverCd);
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnSectionCovers', {params});
 	}
@@ -1803,6 +1803,15 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
     }
+    
+    saveMtnPayee(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPayee', JSON.stringify(params), header);
+    }
 
     getAcseDefTax(tranClass,tranTypeCd,taxId?){
     	const params = new HttpParams()
@@ -1827,5 +1836,24 @@ export class MaintenanceService{
             })
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseDefTax', JSON.stringify(params), header);
+    }
+
+    getMtnUserLov(searchStr){
+    	const params = new HttpParams()
+    		.set('searchStr', (searchStr === null || searchStr === undefined ? '' : searchStr))
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnUserLov", {params});
+    }
+
+    getMtnAcitTranTypeLov(searchStr?, tranClass?, tranTypeCd?, typePrefix?, autoTag?, baeTag?, activeTag?){
+    	const params = new HttpParams()
+    				.set('searchStr', (searchStr === null || searchStr === undefined ? '' : searchStr))
+    				.set('tranClass', (tranClass === null || tranClass === undefined ? '' : tranClass))
+    	     		.set('tranTypeCd', (tranTypeCd === null || tranTypeCd === undefined ? '' : tranTypeCd))
+    	     		.set('typePrefix', (typePrefix === null || typePrefix === undefined ? '' : typePrefix))
+    	     		.set('autoTag', (autoTag === null || autoTag === undefined ? '' : autoTag))
+    	     		.set('baeTag', (baeTag === null || baeTag === undefined ? '' : baeTag))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag));
+    	     		
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranTypeLov", {params});
     }
 }

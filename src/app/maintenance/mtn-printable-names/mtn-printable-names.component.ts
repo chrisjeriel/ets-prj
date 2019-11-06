@@ -29,6 +29,7 @@ export class MtnPrintableNamesComponent implements OnInit {
     pageID: 5,
     keys:['printableName', 'designation']
   };
+  fromInput: boolean = false;
 
   constructor(private maintenanceService: MaintenanceService, public modalService: NgbModal) { }
 
@@ -36,14 +37,19 @@ export class MtnPrintableNamesComponent implements OnInit {
   }
 
   openModal(){
-  	setTimeout(()=>{  
+  	setTimeout(()=>{
+     if(!this.fromInput) {
      this.maintenanceService.getMtnPrintableName(null).subscribe((data:any) => {
      	for( var i = 0 ; i < data.printableNames.length; i++){
      		this.passData.tableData.push(data.printableNames[i]);
      	}
      	this.table.refreshTable();
      });
-      this.modalOpen = true;
+    } else {
+      this.fromInput = false;
+    }
+
+    this.modalOpen = true;
     }, 0);
   }
 
@@ -74,15 +80,15 @@ export class MtnPrintableNamesComponent implements OnInit {
   }
 
   checkCode(code, ev) {
-     console.log(code);
-
     if(code.trim() === ''){
       this.selectedData.emit({
         printableName: '',
+        designation: '',
+        userId: '',
         ev: ev
       });
     } else {
-      this.maintenanceService.getMtnPrintableName(code).subscribe(data => {
+      /*this.maintenanceService.getMtnPrintableName(code).subscribe(data => {
         if(data['printableNames'].length > 0) {
           data['printableNames'][0]['ev'] = ev;
           this.selectedData.emit(data['printableNames'][0]);
@@ -97,6 +103,34 @@ export class MtnPrintableNamesComponent implements OnInit {
           this.modal.openNoClose();
         }
         
+      });*/
+
+      this.maintenanceService.getMtnUserLov(code).subscribe(data => {
+        if(data['userList'].length == 1) {
+          data['userList'][0]['ev'] = ev;
+          this.selectedData.emit(data['userList'][0]);
+        } else if(data['userList'].length > 1) {
+          this.fromInput = true;
+
+          this.selectedData.emit({
+            printableName: '',
+            designation: '',
+            userId: '',
+            ev: ev
+          });
+
+          this.passData.tableData = data['userList'];
+          this.modal.openNoClose();
+        } else {
+          this.selectedData.emit({
+            printableName: '',
+            designation: '',
+            userId: '',
+            ev: ev
+          });
+
+          this.modal.openNoClose();
+        }
       });
    }
   }
