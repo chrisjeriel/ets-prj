@@ -97,10 +97,11 @@ export class JvEntryServiceComponent implements OnInit {
       if(params.from === 'add'){
         if(this.jvData.jvNo === ''){
           this.newJV();
+          this.from = 'add';
         }else{
           this.tranId = this.jvData.tranId;
+          this.from = 'jvList';
         }
-        this.from = 'add';
       }else{
         this.tranId = params.tranId;
         this.from = 'jvList';
@@ -196,7 +197,8 @@ export class JvEntryServiceComponent implements OnInit {
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
                          localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
                          jvType: ev.tranTypeName,
-                         tranType: ev.tranTypeCd
+                         tranType: ev.tranTypeCd,
+                         from: this.from
                        });
   }
 

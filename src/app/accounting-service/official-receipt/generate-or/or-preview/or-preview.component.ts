@@ -341,12 +341,14 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
       this.acctEntriesTbl.refreshTable();
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
       this.acctEntriesTbl.refreshTable();
     }else if(data.selector == 'acseChartAcct'){
 
