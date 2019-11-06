@@ -854,7 +854,7 @@ export(){
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
-            return date.toLocaleString();
+            return date.toLocaleString().split(',')[0];
       };
 
        alasql.fn.currency = function(currency) {

@@ -338,7 +338,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
             if(date == 'Invalid Date'){
               date = '';
             }
-            return date;
+            return date.split(',')[0];
       };
 
       let records = this.passData.tableData.map(i => {
@@ -348,7 +348,7 @@ export class HoldCoverMonitoringListComponent implements OnInit {
                                      return i;
                                  });
 
-     alasql('SELECT holdCoverNo AS HoldCoverNo, status AS Status, cedingName AS CedingCompany, quotationNo AS QuotationNo, riskName AS Risk, insuredDesc AS Insured, datetime(periodFrom) AS PeriodFrom, datetime(periodTo) AS PeriodTo, compRefHoldCovNo AS CompRefHoldCoverNo, reqBy AS RequestedBy, datetime(reqDate) AS RequestedDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+     alasql('SELECT holdCoverNo AS HoldCoverNo, status AS Status, cedingName AS CedingCompany, quotationNo AS QuotationNo, riskName AS Risk, insuredDesc AS Insured, datetime(periodFrom) AS PeriodFrom, datetime(periodTo) AS PeriodTo, compRefHoldCovNo AS CompRefHoldCoverNo, reqBy AS RequestedBy, datetime(reqDate) AS RequestedDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
     }
 
    /* print(){
