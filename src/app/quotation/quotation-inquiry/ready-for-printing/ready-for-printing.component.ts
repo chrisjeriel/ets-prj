@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
-import { QuotationService, UserService } from '@app/_services'
+import { QuotationService, UserService, NotesService } from '@app/_services'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -9,6 +9,7 @@ import { PrintModalComponent } from '@app/_components/common/print-modal/print-m
 import * as alasql from 'alasql';
 import * as jsPDF from 'jspdf';
 import { finalize } from 'rxjs/operators';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 
 
@@ -20,12 +21,13 @@ import { finalize } from 'rxjs/operators';
 export class ReadyForPrintingComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @ViewChild(PrintModalComponent) printModal: PrintModalComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
 
 
 
   records: any[] = [];
 
-  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient, private userService: UserService) { }
+  constructor(private quotationService: QuotationService, private router: Router, private modalService: NgbModal, private er: ElementRef, private http: HttpClient, private userService: UserService,private ns:NotesService) { }
   reportsList: any[] = [
                                 {val:"QUOTER009A", desc:"Quotation Letter" },
                                 {val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" },
@@ -50,7 +52,8 @@ export class ReadyForPrintingComponent implements OnInit {
   saveData: any = {
         changeQuoteStatus: [],
         statusCd: "3",
-        reasonCd: ""
+        reasonCd: "",
+        user: this.ns.getCurrentUser()
     };
   line: any = null;    
   quotationNo: any = null;
@@ -176,8 +179,8 @@ export class ReadyForPrintingComponent implements OnInit {
                     "reportRequest": []
                     }
   selectedBatchData:any[] =[];
-
   currentUserId: string = JSON.parse(window.localStorage.currentUser).username;
+  loading: boolean = false;
 
   ngOnInit() {
     this.printModal.default = false;
@@ -223,6 +226,7 @@ export class ReadyForPrintingComponent implements OnInit {
             }
 
             this.table.refreshTable();
+            this.table.overlayLoader = false;
         });
 
   }
@@ -337,7 +341,6 @@ export class ReadyForPrintingComponent implements OnInit {
   }
 
   printDestination(obj){
-
                 if (obj === 'SCREEN'){  
                      for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
                          if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
@@ -348,7 +351,8 @@ export class ReadyForPrintingComponent implements OnInit {
                             window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
                          }
                      }
-                     this.changeQuoteStatus();
+                      this.printMdl.open();
+                     //this.changeQuoteStatus();
                 }else  if (obj === 'PRINTER'){
                     this.selectedBatchData = [];
                     this.batchData.reportRequest = [];
@@ -364,7 +368,7 @@ export class ReadyForPrintingComponent implements OnInit {
                     
                     this.batchData.reportRequest = this.selectedBatchData;
                     this.printPDF(this.batchData);
-
+                    this.loading = true;
                 }else if (obj === 'PDF'){
                    this.resultPrint = [];
                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
@@ -380,7 +384,10 @@ export class ReadyForPrintingComponent implements OnInit {
 }
 
 changeQuoteStatus() {
+   console.log(this.saveData);
+
     this.quotationService.saveChangeQuoteStatus(this.saveData).subscribe( data => {
+        console.log(data['returnCode']);
         this.changeQuoteError = data['returnCode'];
             if(data['returnCode'] == 0) {
                 console.log(data['errorList'][0].errorMessage);
@@ -389,8 +396,8 @@ changeQuoteStatus() {
                 this.selectedOnOk = false;
                 $('#readyPrinting #successModalBtn').trigger('click');
             } else {
+                this.table.overlayLoader = true;
                 this.searchQuery(this.searchParams);
-                this.table.refreshTable("first");
             }
         this.btnDisabled = true;
     });
@@ -444,14 +451,18 @@ batchPDF(obj){
                }
              this.changeQuoteStatus();
         } else {
-             this.changeQuoteStatus();
+             //this.changeQuoteStatus();
+              this.printMdl.open();
         }
 
      }
 }
 
-printPDF(batchData: any){      
-   this.quotationService.batchPrint(JSON.stringify(batchData)).
+printPDF(batchData: any){    
+  console.log(JSON.stringify(batchData)) ; 
+   this.quotationService.batchPrint(JSON.stringify(batchData)).pipe(
+           finalize(() => this.printMdl.open())
+           ).
           subscribe(data => {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
@@ -460,7 +471,8 @@ printPDF(batchData: any){
            iframe.src = downloadURL;
            document.body.appendChild(iframe);
            iframe.contentWindow.print();
-           this.changeQuoteStatus();
+           this.loading = false;
+           //this.changeQuoteStatus();
     },
      error => {
            this.modalService.dismissAll();

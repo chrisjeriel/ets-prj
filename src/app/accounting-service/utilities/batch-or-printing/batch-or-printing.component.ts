@@ -81,6 +81,7 @@ export class BatchOrPrintingComponent implements OnInit {
   changeStatData: any = {
         printOrList: []
     };
+  lastOrNo: any;
 
   constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
 
@@ -273,11 +274,8 @@ viewOR(){
 }
 
 failedOrPrint(){
-   this.printConfirmModal.open();
+  console.log(this.lastOrNo);
 }
-
-
-
 
 
 

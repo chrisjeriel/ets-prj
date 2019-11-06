@@ -1803,6 +1803,15 @@ export class MaintenanceService{
          };
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveAcseChartAcct', JSON.stringify(params), header);
     }
+    
+    saveMtnPayee(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPayee', JSON.stringify(params), header);
+    }
 
     getAcseDefTax(tranClass,tranTypeCd,taxId?){
     	const params = new HttpParams()
