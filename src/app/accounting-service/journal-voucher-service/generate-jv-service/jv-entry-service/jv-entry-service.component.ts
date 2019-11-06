@@ -9,6 +9,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry-service',
@@ -493,11 +494,13 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.tranId, '_blank');
     this.printEntries.openNoClose();
   }
 
   printJV(){
-    
+
   }
 
   /*getAcctEnt(){
