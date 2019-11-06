@@ -169,6 +169,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 		if(param == 'manual'){
 			delete this.searchParams.statusArr;
+			this.searchParams['paginationRequest.position'] = 1;
+			this.table.p = 1;
 		}else{
 			this.searchParams.statusArr = ['3','6'];
 		}
@@ -256,6 +258,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 					}
 
 				}else if( this.completeSearch){
+					console.log('dito?')
 					this.newHc(true);
 					this.clearAll();
 					if(quoList.length == 0 && param != undefined){
@@ -340,7 +343,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	  				quoNo += '%'+ parseInt(data) + '%-';
 	  			}
 	  		});
-	  		this.searchParams.quotationNo = quoNo;
+	  		this.searchParams.quotationNo = this.table.indvSelect.quotationNo;
 	  		this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     		this.passDataQuoteLOV.filters[0].enabled =true;
 	  		this.getQuoteList('manual');
@@ -602,6 +605,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				status			: ''
 			};
 			this.clearHc();
+			this.disableFieldsHc(true);
+			this.disableSave				 = true;
+			console.log('pasok')
 		}else{
 			
 			this.completeSearch = true;
@@ -661,7 +667,6 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.periodToTime				 = '';
 		this.disableCancelHc 			 = true;
 		this.disableApproval			 = true;
-
 		this.searchParams = {
 	        statusArr:['3','6'],
 	        'paginationRequest.count':10,
