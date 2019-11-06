@@ -698,11 +698,17 @@
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Date Created</label>
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createDate" name="genInfoOcData.createDate">
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createDate" name="genInfoOcData.createDate"> -->
+								<div class="cust-sm dp-cont">
+									<datepicker [value]="genInfoOcData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>	
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Last Update</label>
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateDate" name="genInfoOcData.updateDate">
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateDate" name="genInfoOcData.updateDate"> -->
+								<div class="cust-sm dp-cont">
+									<datepicker [value]="genInfoOcData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>	
 							</div>
 						</div>
 					</div>
