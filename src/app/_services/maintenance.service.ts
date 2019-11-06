@@ -1182,6 +1182,15 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
     }
 
+    getBankLov(bankCd?, officialName?, activeTag?, dcbTag?){
+    	const params = new HttpParams()
+    				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
+    				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
+    	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
+    	     		.set('dcbTag', (dcbTag === null || dcbTag === undefined ? '' : dcbTag));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveBankLov", {params});
+    }
+
     getMtnBankAcct(bankCd?, bankAcctCd?, accountNo?, dcbTag?){
     	const params = new HttpParams()
     				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))

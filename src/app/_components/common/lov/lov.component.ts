@@ -1093,7 +1093,35 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
       });
-    }else if(this.passData.selector == 'checkClass'){
+    }
+    // else if(this.passData.selector == 'mtnBank2'){
+    //   this.passTable.tHeader = ['Bank', 'Official Name'];
+    //   this.passTable.widths =['100','auto']
+    //   this.passTable.dataTypes = [ 'text','text'];
+    //   this.passTable.keys = [ 'shortName','officialName']; 
+    //   this.mtnService.getBankLov('','','Y','Y').subscribe((a:any)=>{
+    //     console.log(a.bankLovList);
+    //     if(this.passData.for == 'acit'){
+    //       this.passTable.tableData = a.bankLovList.filter((e,i) => e.acitGlDepNo != null && a.bankLovList.indexOf(e) == i);  
+    //     }else if(this.passData.for == 'acse'){
+    //      // this.passTable.tableData = a.bankLovList.filter(e => e.acseGlDepNo != null);
+    //      var arr = []; 
+    //      var arr2 = a.bankLovList.filter(e => e.acseGlDepNo != null).map(e => {
+    //        arr.forEach(w => {
+    //          if(w.shortName != e.shortName){
+    //            arr.push(e);
+    //          }
+    //        });
+    //        this.passTable.tableData = arr;
+    //      }); 
+    //     }else{
+    //       this.passTable.tableData = a.bankLovList.filter(e => e.currCd == this.passData.currCd);
+    //     }
+        
+    //     this.table.refreshTable();
+    //   });
+    // }
+    else if(this.passData.selector == 'checkClass'){
       this.passTable.tHeader = ['Code', 'Description'];
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];

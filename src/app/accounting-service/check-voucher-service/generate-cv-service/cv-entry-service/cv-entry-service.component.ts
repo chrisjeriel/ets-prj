@@ -392,6 +392,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'mtnBank';
+      this.passDataLov.for = 'acse';
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
@@ -466,11 +467,11 @@ export class CvEntryServiceComponent implements OnInit {
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcseCv.preparedByName = data.printableName;
       this.saveAcseCv.preparedBy  = data.userId;
-      this.saveAcseCv.preparedDes  = data.designation;
+      this.saveAcseCv.preparedByDes  = data.designation;
     }else if(from.toLowerCase() == 'cert-user'){
       this.saveAcseCv.certifiedByName = data.printableName;
       this.saveAcseCv.certifiedBy  = data.userId;
-      this.saveAcseCv.certifiedDes  = data.designation;
+      this.saveAcseCv.certifiedByDes  = data.designation;
     }
   }
 
