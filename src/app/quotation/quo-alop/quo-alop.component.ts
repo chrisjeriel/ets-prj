@@ -239,14 +239,6 @@ export class QuoAlopComponent implements OnInit {
               }
             }
 
-            //GET THE COVERCD FOR ALOP
-            var coverCd = data.secCovers.sectionCovers;
-            for (var i = 0; i < coverCd.length; i++) {
-              console.log(coverCd[i]);
-              if(coverCd[i].coverCdAbbr == 'ALOP'){
-                coverCd = coverCd[i].coverCd;
-              }
-            }
 
             //FOR OPTIONSLIST
             this.quoteOptionsData.tableData = [];
