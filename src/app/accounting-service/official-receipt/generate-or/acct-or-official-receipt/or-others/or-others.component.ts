@@ -368,7 +368,7 @@ export class OrOthersComponent implements OnInit {
          this.deletedData[this.deletedData.length-1].billId = 2; //2 for Others Transaction Type
          this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
          this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
-         this.deletedTaxData = this.deletedData[this.deletedData.length-1].taxAllocation;
+         this.deletedTaxData.push(this.deletedData[this.deletedData.length-1].taxAllocation);
       }
     }
     this.passData.tableData.filter(a=>{return !a.deleted}).forEach(b=>{
@@ -386,7 +386,7 @@ export class OrOthersComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
       saveOrTransDtl: this.savedData,
       delOrTransDtl: this.deletedData,
-      delOrItemTaxes: this.deletedTaxData
+      delOrItemTaxes: this.deletedTaxData.flat()
     }
 
     this.as.saveAcseOrTransDtl(params).subscribe(

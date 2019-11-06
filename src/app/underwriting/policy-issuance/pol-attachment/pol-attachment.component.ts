@@ -183,7 +183,7 @@ export class PolAttachmentComponent implements OnInit {
         let file: File = files[0];
         //var newFile = new File([file], date + file.name, {type: file.type});
 
-        this.upload.uploadFile(file, date, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId)
+        this.upload.uploadFile(file, date, this.openCoverFlag ? 'policyOc' : 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId)
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {
@@ -209,7 +209,7 @@ export class PolAttachmentComponent implements OnInit {
       let deleteFile = this.deletedData;
       for(var i of deleteFile){
         console.log(i.fileNameServer);
-        this.upload.deleteFile(i.fileNameServer, 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId).subscribe(
+        this.upload.deleteFile(i.fileNameServer, this.openCoverFlag ? 'policyOc' : 'policy', this.openCoverFlag ? this.policyInfo.policyIdOc : this.policyInfo.policyId).subscribe(
             data =>{
               console.log(data);
             },
