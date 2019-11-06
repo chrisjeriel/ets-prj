@@ -11,8 +11,7 @@ import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component'
-
+import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component';
 
 @Component({
   selector: 'app-payee',
@@ -59,7 +58,7 @@ export class PayeeComponent implements OnInit {
     keys:['payeeClassName','payeeNo','payeeName','bussTypeName','tin','contactNo','mailAddress','email','remarks','designation',
           'department','mailAddress2','permAddress','contactPerson1','contactPerson2','phoneNo','mobileNo','faxNo',
           'bank1','bankBranch1','bankAcctType1','bankAcctName1','bankAcctNo1',
-          'bank2','bankBranch2','bankAcctType2','bankAcctName2','bankAcctNo2',
+          'bank2','bankBranch2','bankAcctType2','bankAcctName2','bankAcctNo2'
           ]
   }
 
@@ -120,6 +119,18 @@ export class PayeeComponent implements OnInit {
     this.form.control.markAsPristine();
     this.titleService.setTitle('Mtn | Payee');
     this.retrieveBankAcctType();
+
+    this.sub = this.route.params.subscribe(params => {
+
+      this.from = params['from'];
+      if (this.from == "mtn-payee-class") {
+        this.payeeClassCd = params['payeeClassCd'];
+        this.payeeClassName = params['payeeClassName'];
+        this.getMtnPayee(this.payeeClassCd);        
+      }
+
+    });
+    
   }
 
    retrieveBankAcctType(){
@@ -461,8 +472,8 @@ save(){
   getRecords(payeeClassCd?){
       this.ms.getMtnPayee('',payeeClassCd).pipe(
            finalize(() => this.finalGetRecords())).subscribe(a=>{
-        this.passTable.tableData = a['payeeList'];
-        this.passTable.tableData.forEach(a=>{
+        this.allRecords.tableData = a['payeeList'];
+        this.allRecords.tableData.forEach(a=>{
           a.createDate = this.ns.toDateTimeString(a.createDate);
           a.updateDate = this.ns.toDateTimeString(a.updateDate);
       
@@ -471,6 +482,7 @@ save(){
   }
 
    finalGetRecords(selection?){
+     console.log(this.allRecords.tableData);
     this.export(this.allRecords.tableData);
   };
 
@@ -485,25 +497,21 @@ save(){
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'BankAccount'+currDate+'.xls'
+    var filename = 'Payee'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"}}}
       };
 
-      alasql.fn.datetime = function(dateStr) {
-        for(var prop in dateStr) {
-           if (dateStr.hasOwnProperty(prop)) {
-              var newdate = new Date(dateStr);
-              return newdate.toLocaleString();
-           } else {
-              var date = "";
-              return date;
-           }
-        } 
+       alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
       };
 
-    alasql('SELECT bankName AS Bank,bankAcctCd AS Code, accountNo AS [Account No], accountName AS [Account Name], acctStatusName AS [Account Status],currCd AS Currency, bankBranch AS [Bank Branch], acctTypeName AS [Account Type], datetime(openDate) AS [Open Date], datetime(closeDate) AS [Close Date], dcbTag AS [Dcb Tag] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
+    alasql('SELECT payeeClassName AS [Payee Class Name],payeeNo AS [Payee No], payeeName AS [Payee Name], bussTypeName AS [Bussiness Type Name], nvl(tin) AS [Tin No],nvl(contactNo) AS [Contact No], nvl(mailAddress) AS [Mail Address], nvl(email) AS [Email], nvl(remarks) AS [Remarks], nvl(designation) AS [Designation], nvl(department) AS [Department], nvl(mailAddress2) AS [Alternative Address], nvl(permAddress) AS [Permanent Address], nvl(contactPerson1) AS [Contact Person 1], nvl(contactPerson2) AS [Contact Person 2], nvl(phoneNo) AS [Phone No], nvl(mobileNo) AS [Mobile No], nvl(faxNo) AS [Fax No],nvl(bank1) AS [Bank 1], nvl(bankBranch1) AS [Bank Branch 1], nvl(bankAcctType1) AS [Bank Account Type 1], nvl(bankAcctName1) AS [Bank Account Name 1], nvl(bankAcctNo1) AS [Bank Account No. 1],nvl(bank2) AS [Bank 2], nvl(bankBranch2) AS [Bank Branch 2], nvl(bankAcctType2) AS [Bank Account Type 2], nvl(bankAcctName2) AS [Bank Account Name 2], nvl(bankAcctNo2) AS [Bank Account No. 2] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
   }
 
 
