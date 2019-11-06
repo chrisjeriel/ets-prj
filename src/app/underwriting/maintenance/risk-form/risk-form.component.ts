@@ -347,6 +347,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
               this.dialogIcon = "";
               this.successDiag.open();
               //this.riskData.riskId = data.riskId;
+              this.form.control.markAsPristine();
               this.mtnService.getMtnRisk(data.riskId).subscribe((data: any)=>{
                   this.riskData = data.risk;
                   this.riskData.createDate = this.ns.toDateTimeString(this.riskData.createDate).split('T')[0];

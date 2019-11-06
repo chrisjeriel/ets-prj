@@ -142,9 +142,9 @@ export class QuotationToHoldCoverComponent implements OnInit {
     			this.passDataQuoteLOV.filters[0].enabled =true;
     			this.holdCoverNo = JSON.parse(params['tableInfo']).holdCoverNo;
   				this.getQuoteList('manual');
-  				console.log(params);
+  				
   			}else{
-  				console.log('entered else');
+  				
   				this.getQuoteList();
   			}
   		});
@@ -153,6 +153,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	getQuoteList(param?){
   		this.table.loadingFlag = true;
   		this.form.control.markAsPristine();
+  		this.ns.formGroup.markAsPristine();
+  		
   // 		var parameter;
 		// if(param !== undefined){
 		// 	parameter = param;
@@ -169,7 +171,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		}else{
 			this.searchParams.statusArr = ['3','6'];
 		}
-		console.log(this.searchParams)
+		
 		var parameter = this.searchParams;
 
   		const subRes =  forkJoin(this.quotationService.newGetQuoProcessingData(parameter),this.quotationService.getQuotationHoldCoverList([
@@ -181,7 +183,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   								.pipe(map(([quo, hc]) => { return { quo, hc };}));
 
   		this.subs = subRes.subscribe(data => {
-  			//console.log(data);
+  			
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
 /*<<<<<<< HEAD
@@ -192,10 +194,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 =======*/
   			quoList = data['quo']['quotationList']
   					  .map(i => { i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName; return i;});
-  			console.log(quoList);
+  			
   			//this.passDataQuoteLOV.tableData = quoList;
   			this.passDataQuoteLOV.count = data['quo']['length'];
-  			console.log(this.passDataOptionsLOV.tableData);
+  			
 			this.table.placeData(quoList);
 /*>>>>>>> f62aa0e0e32c1dbcd1a4f85d054353c21f70a58c*/
 			
@@ -308,14 +310,14 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 	  		this.quotationService.saveQuoteHoldCover(JSON.stringify(this.holdCover))
 	  		.subscribe(data => {
-	  			console.log(data);
+	  			
 	  			this.holdCoverNo 	= data['holdCoverNo'];
 	  			this.dialogIcon 	= '';
 				this.dialogMessage 	= '';
 				$('app-sucess-dialog #modalBtn').trigger('click');
 				// var qNo = this.quoteInfo.quotationNo.map((a,i) => (isNaN(a) == false && i!=4)? parseInt(a):(i==4)?a.padStart(3,'0'):a);;
 				
-				// this.searchParams.quotationNo = this.searchArr.join('-');
+				this.searchParams.quotationNo = this.quoteInfo.quotationNo.join('-');
 				this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
     			this.passDataQuoteLOV.filters[0].enabled =true;
 				this.getQuoteList('manual');
@@ -346,13 +348,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
 
   	getQuoteOptions(){
-  		console.log(this.holdCover.quoteId);
+  		
   		this.opt.loadingFlag = true;
   		this.quotationService.getQuoteOptions(this.holdCover.quoteId,'')
   		.subscribe(data => {
   			this.ns.lovLoader(this.passEvent,0);
   			this.passDataOptionsLOV.tableData = [];
-  			console.log('Entered in Quote Options');
+  			
   			var rec = data['quotation']['optionsList'];
   			this.passDataOptionsLOV.tableData = rec;
   			this.opt.refreshTable();
@@ -370,7 +372,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		$('.globalLoading').css('display','block');
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
   		.subscribe(data => {
-  			console.log(data);
+  			
   			this.dialogIcon = 'success-message';
   			this.dialogMessage = 'Cancelled Successfully';
   			$('app-sucess-dialog #modalBtn').trigger('click');
@@ -400,7 +402,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		const subRes =  forkJoin(this.userService.retMtnUsers(this.ns.getCurrentUser()),this.userService.retMtnUserAmtLmt('',''))
   								.pipe(map(([usr, usrAmtLmt]) => { return { usr, usrAmtLmt };}));
 	  	subRes.subscribe(data => {
-	  		console.log(data);
+	  		
 	  		var usrGrp 		  = data['usr']['usersList'][0].userGrp;
 	  		var curRow		  = data['usrAmtLmt']['userAmtLmtList'].filter(a => a.userGrp == usrGrp && a.lineCd.toUpperCase() == this.holdCover.lineCd.toUpperCase());
 	  		var rec			  = curRow[0];
@@ -462,10 +464,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			if(this.holdCover.status.toUpperCase() == 'APPROVED'){
 	  			ids.hcStatus = '2';
 	  			this.holdCover.status = 'Released';
-	  			console.log(ids.hcStatus);
+	  			
   			}
   		}
-		console.log(ids);
+		
   		this.quotationService.updateHoldCoverStatus(JSON.stringify(ids))
 	  	.subscribe(data => {
   			//$('app-sucess-dialog #modalBtn2').trigger('click');
@@ -480,7 +482,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		var fileName = this.holdCoverNo;
   		this.quotationService.downloadPDFHC(this.reportName,this.holdCover.quoteId,this.holdCover.holdCoverId)
 	  	.subscribe(data => {
-	  		console.log(data);
+	  		
 	  		this.loading = false;
 	  		var newBlob = new Blob([data], { type: "application/pdf" });
             var downloadURL = window.URL.createObjectURL(data);
@@ -526,6 +528,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   		this.holdCover.optionId = this.rowRecOpt.optionId;
   		if(this.holdCover.optionId == '' || this.holdCover.optionId == undefined){
   		}else{
+  			
   			$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 			this.addDirty();  			
 			this.modalService.dismissAll();
@@ -564,12 +567,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
   	completeSearch:boolean = false;
 	search(key,ev) {
-		console.log(this.searchArr.join('-'));
+		
 		this.holdCoverNo = undefined;
 		this.quoteInfo.quotationNo[2] =  (this.quoteInfo.quotationNo[2] == undefined || this.quoteInfo.quotationNo[2] == '')?'':this.quoteInfo.quotationNo[2].padStart(5,'0');
 		this.quoteInfo.quotationNo[3] =  (this.quoteInfo.quotationNo[3] == undefined || this.quoteInfo.quotationNo[3] == '')?'':this.quoteInfo.quotationNo[3].padStart(2,'0');
 		this.quoteInfo.quotationNo[4] =  (this.quoteInfo.quotationNo[4] == undefined || this.quoteInfo.quotationNo[4] == '')?'':this.quoteInfo.quotationNo[4].padStart(3,'0');
-		console.log(this.searchArr.join('-'));
+		
 		var a = ev.target.value;
 		if(key == 'lineCd') {
 			this.searchArr[0] = a === '' ? '%%' : a.toUpperCase() + '%';
@@ -582,11 +585,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		} else if(key == 'cedingId') {
 			this.searchArr[4] = a === '' ? '%%' : '%' + a.padStart(3, '0');
 		}else{
-			console.log(' else , nothing found');
+			
 		}
-		console.log(this.searchArr);
+		
 		if(this.quoteInfo.quotationNo.includes('')) {
-			console.log('entered here includes');
+			
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
 			this.completeSearch = false;
 			this.quoteInfo  = {
@@ -599,7 +602,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			};
 			this.clearHc();
 		}else{
-			console.log('other else');
+			
 			this.completeSearch = true;
 		}
 
@@ -678,12 +681,13 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		var d = new Date(this.periodFromDate);
 		var s = d.setDate(d.getDate()+30);
 		this.periodToDate = (isNaN(s) == true)?'':this.ns.toDateTimeString(s).split('T')[0];
+		
 		this.addDirty();
 		$('#periodTo').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}
 
 	addDirty(){
-		$('.r-only').find('input').addClass('ng-dirty ng-touched');
+		//$('.r-only').find('input').addClass('ng-dirty ng-touched');
 	}
 
 	newHc(isNew:boolean){
