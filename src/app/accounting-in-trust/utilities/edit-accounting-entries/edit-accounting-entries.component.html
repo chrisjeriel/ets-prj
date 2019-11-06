@@ -16,7 +16,7 @@
 						           	    <div class="input-group" style="margin-bottom: -8px !important;">
 						           	    	<label class="form-control-sm col-sm-1 outer-labels labels">Transaction Class</label>
 						           	    	<div class="input-group div-group col-sm-2">
-						           	    		<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="tranClass" (change)="passData.tableData = []; table.refreshTable(); tranNo = '';" appRequired>
+						           	    		<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="tranClass" (change)="passData.tableData = []; table.refreshTable(); tranNo = ''; clearTranDetails();" appRequired>
 						           	    			<option [value]="'AR'">Acknowledgement Receipt</option>
 						           	    			<option [value]="'CV'">Check Voucher</option>
 						           	    			<option [value]="'JV'">Journal Voucher</option>
@@ -36,7 +36,7 @@
 						           	    		<label class="form-control-sm col-sm-4">Tran Amount</label>
 						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="tranDetails.currCd" readonly>
 						           	        	<span>&nbsp;</span>
-						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.tranAmount" readonly>
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.tranAmount | number: '1.2-2'" readonly appCurrency>
 						           	    	</div>
 						           	    </div>
 						           	    <div class="input-group" style="margin-bottom: -8px !important;">
@@ -59,7 +59,7 @@
 				           	        			<label class="form-control-sm col-sm-4">Local Amount</label>
 				           	        	    	<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="tranDetails.localCurrCd" readonly>
 				           	        	    	<span>&nbsp;</span>
-				           	        	    	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.localAmt" readonly>
+				           	        	    	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.localAmt | number: '1.2-2'" readonly appCurrency>
 				           	        		</div>
 						           	    </div>
 						           	    <div class="input-group">
@@ -88,7 +88,7 @@
 							<fieldset class="scheduler-border">
 								<legend class="scheduler-border">Accounting Entries</legend>
 								<div style="margin-bottom: 11px;margin-top:11px;">
-									<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"></app-cust-editable-non-datatable>
 									<div class="form-row" style="padding-top: 7px;">
 										<div class="input-group col-sm-2"></div>
 										<div class="input-group div-group col-sm-8">
@@ -149,3 +149,4 @@
 </div>
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-lov [passData]="passLovAe" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox" #aeLov></app-lov>

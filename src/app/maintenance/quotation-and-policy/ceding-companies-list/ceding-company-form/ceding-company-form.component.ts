@@ -167,6 +167,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(fromCancel?){
+    this.filesList = this.filesList.filter(a=>{return this.repData.tableData.map(a=>{return a.fileName}).includes(a[0].name)});
   	if(!this.checkParams()){
   		this.dialogIcon = 'error';
   		//this.dialogMessage = 'Please fill all required fields.';
@@ -179,13 +180,37 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
         this.dialogMessage = 'Please enter one default company representative.';
       }
   		this.successDiag.open();
-  	}else{
+  	}else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
       if(fromCancel !== undefined){
         this.save('cancel');
       }else{
   		  $('#confirm-save #modalBtn2').trigger('click');
       }
   	}
+
+    /*if(!this.checkFields()){
+      this.dialogMessage="";
+      this.dialogIcon = "error";
+      this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
+      this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else if(this.checkFileNameLength()){
+      this.dialogMessage= "File name exceeded the maximum 50 characters";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }*/
   }
 
   checkParams(){
@@ -399,5 +424,23 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
     this.companyData.inactiveDate = '';
   }
 
+  checkFileSize(){
+    for(let files of this.filesList){
+      console.log(files[0].size);
+      if(files[0].size > 26214400){ //check if a file exceeded 25MB
+        return files[0].name;
+      }
+    }
+    return '';
+  }
+
+  checkFileNameLength(){
+    for(var i of this.repData.tableData){
+      if(i.fileName.length > 50){
+        return true;
+      }
+    }
+    return false;
+  }
 
 }
