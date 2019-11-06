@@ -16,7 +16,6 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
-import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-cv-entry-service',
