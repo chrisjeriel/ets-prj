@@ -193,6 +193,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
   savedData: any = [];
   deletedData: any = [];
+  notBalanced: boolean = false;
 
   constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
@@ -476,7 +477,33 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    if(this.record.from.toLowerCase() == 'jv'){
+      var debitTotal = 0;
+      var creditTotal = 0;
+      var variance = 0;
+
+      if(this.record.forApproval === 'Y'){
+        for (var i = 0; i < this.acctEntriesData.tableData.length; i++) {
+          debitTotal += this.acctEntriesData.tableData[i].foreignDebitAmt;
+          creditTotal += this.acctEntriesData.tableData[i].foreignCreditAmt;
+        }
+
+        variance = debitTotal - creditTotal;
+        variance = Math.round(variance * 100)/100;
+
+        if(variance != 0){
+          this.dialogMessage = "Accounting Entries does not tally.";
+          this.dialogIcon = "error-message";
+          this.successDiag.open();
+        }else{
+          this.confirm.confirmModal();
+        }
+      }else{
+        this.confirm.confirmModal();
+      }
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
@@ -538,10 +565,11 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           a.updateUser = this.ns.getCurrentUser();
           a.updateDate = this.ns.toDateTimeString(0);
         }
-      })
+      });
 
       let params = {
         tranId: this.record.tranId,
+        forApproval : this.record.from.toLowerCase() == 'jv' ? (this.record.forApproval === 'Y' ? 'Y':'N'):'',
         saveList: this.savedData,
         delList: this.deletedData
       }
@@ -559,6 +587,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onClickApproval(){
+    this.acctEntriesTbl.markAsDirty();
   }
 
 }
