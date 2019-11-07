@@ -5,7 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { Router } from '@angular/router';
-import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { ConfirmLeaveComponent, ModalComponent } from '@app/_components/common';
 import { Subject } from 'rxjs';
 
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
@@ -22,6 +22,7 @@ export class SpoilPolAltComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	@ViewChild('tabset') tabset: any;
 	@ViewChild(ConfirmLeaveComponent) conleave : ConfirmLeaveComponent;
+	@ViewChild('polLov') polLov: ModalComponent;
 
 	passData : any = {
 		tableData: [],
@@ -141,6 +142,7 @@ export class SpoilPolAltComponent implements OnInit {
 	}
 
 	getPolicyList(param?){
+		$('.ng-dirty').removeClass('ng-dirty');
 		if(param!=undefined){
 	      this.passData.filters[0].search = param[0].search;
 	      this.passData.filters[0].enabled =true;
@@ -157,8 +159,10 @@ export class SpoilPolAltComponent implements OnInit {
 			this.table.placeData(rec);
 			if(rec.length === 0){
 				this.clearAll();
-				this.getPolicyList();
-				$('#polLov > #modalBtn').trigger('click');
+				if(this.polLov.modalRef == null || this.polLov.modalRef == undefined){
+					this.getPolicyList();
+					this.polLov.openNoClose();
+				}
 			}else if(rec.length === 1){
 				this.spoilPolRecord.policyNo = rec[0].policyNo;
 				if(this.spoilPolRecord.line !== '' && this.spoilPolRecord.year !== '' && this.spoilPolRecord.seqNo !== '' && this.spoilPolRecord.coCode !== '' && this.spoilPolRecord.coSeriesNo !== '' && this.spoilPolRecord.altNo !== ''){
@@ -217,6 +221,7 @@ export class SpoilPolAltComponent implements OnInit {
 		this.passEvent = event;
 		this.ns.lovLoader(this.passEvent,1);
 		this.checkSpoilCd = 0;
+		$('.dirty').addClass('ng-dirty');
 		this.getSpoilList();
 		if(this.spoilPolRecord.reason === '' || this.spoilPolRecord.reason === null){
 			this.postBtnEnabled = false;
