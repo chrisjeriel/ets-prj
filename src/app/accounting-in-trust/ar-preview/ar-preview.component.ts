@@ -399,11 +399,13 @@ export class ArPreviewComponent implements OnInit {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
     }else if(data.selector == 'acitChartAcct'){
 
       let firstRow = data.data.pop();
@@ -417,6 +419,7 @@ export class ArPreviewComponent implements OnInit {
         this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
         this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortCd = row.shortCode;
         this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
+        this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].edited = true;
       }
       this.acctEntryTbl.refreshTable();
     }

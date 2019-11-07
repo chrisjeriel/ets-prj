@@ -181,6 +181,7 @@ export class UnappliedCollectionComponent implements OnInit {
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveArUnappliedCollection();
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();

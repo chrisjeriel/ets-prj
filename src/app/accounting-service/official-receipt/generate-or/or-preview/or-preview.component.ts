@@ -372,6 +372,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   acctEntriesTableDataChange(data){
+    console.log('yeet');
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
       for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
         this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
