@@ -67,6 +67,7 @@ export class JournalVoucherComponent implements OnInit {
       pageLength: 10,
       pageStatus: true,
       pagination: true,
+      exportFlag: true,
       keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvAmt'],
       uneditable:[true,true,true,true,true,true,true],
       colSize: ['120px','98px','171px','335px','110px','118px','115px'],
@@ -194,4 +195,37 @@ export class JournalVoucherComponent implements OnInit {
       this.dataInfo.updateDate = '';
     }
   }
+
+  export(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'JournalVoucherList_'+currDate+'.xlsx'
+
+    var mystyle = {
+      headers:true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
+  }
+
+  searchQuery(data){
+    this.searchParams = searchParams;
+    this.passData.tableData = [];
+    console.log(this.searchParams);
+    this.retrieveJVlist();
+  }
+
 }
