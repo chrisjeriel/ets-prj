@@ -586,6 +586,11 @@ export class WfActionsComponent implements OnInit {
           } else {
             this.dialogIcon = "success";
             this.successDiag.open();
+            this.createInfo.createdBy = this.ns.getCurrentUser();
+            this.createInfo.dateCreated = this.ns.toDateTimeString(0);
+            this.updateInfo.updatedBy = this.ns.getCurrentUser();
+            this.updateInfo.lastUpdate = this.ns.toDateTimeString(0);
+            $('.ng-dirty').removeClass('ng-dirty');
           }
       });
 
@@ -856,5 +861,9 @@ export class WfActionsComponent implements OnInit {
     this.createInfo.dateCreated = '';
     this.updateInfo.updatedBy = '';
     this.updateInfo.lastUpdate = '';
+    this.reminderDate = this.ns.toDateTimeString(0);
+    this.alarmTime = this.ns.toDateTimeString(0);
+    this.titleReminder = '';
+    this.reminder = '';
   }
 }
