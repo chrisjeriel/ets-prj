@@ -86,7 +86,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-left: 5px !important;padding-right: 5px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border">Period of Insurance</legend>
 					<div class="col-sm-1">
@@ -143,7 +143,7 @@
 					</div>
 				</fieldset>
 
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: -3.5px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: -3.5px !important;padding-left: 5px !important;padding-right: 5px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border">Production Booking</legend>
 					<div class="col-sm-1">
@@ -186,7 +186,7 @@
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-3">Accounting Date</label>
+								<label class="form-control-sm col-sm-3">Booking Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="accDateParams.date" name="accDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
 									<datepicker [type]="'date'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="accDateParams.date" (valueChange)="accDateParams.date=$event;" name="accDateParams.date"></datepicker>
