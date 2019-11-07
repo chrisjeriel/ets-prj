@@ -183,10 +183,16 @@
             <ng-template ngbTabContent>
               <div class="input-group cust-border" style="padding-top: 0.6em">
                 <div class="col-sm-12">
-                <div style="position: relative;">
+                <!-- <div style="position: relative;"> -->
                   <!-- <button class="cust-btn cust-button" (click)="viewTranDetails()">Print AE</button> -->
-                   <app-cust-editable-non-datatable [passData]="acctEntriesData" (newClick)="onRowClick($event)" (clickLOV)="acctEntriesLOV($event)" (tableDataChange)="acctEntriesTableDataChange($event)" #acctEntriesTbl></app-cust-editable-non-datatable>
-                </div>
+                   <app-cust-editable-non-datatable [passData]="acctEntriesData" (newClick)="onRowClick($event)" (clickLOV)="acctEntriesLOV($event)" (tableDataChange)="acctEntriesTableDataChange($event)" #acctEntriesTbl>
+                     
+                     <ng-container controls-l *ngIf="record?.from.toLowerCase() == 'jv' && genTaxData.checkFlag">
+                         <label class="form-control-sm">For Approval</label> 
+                         <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="record.statusType === 'F'" (change)="record.forApproval = (record.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
+                     </ng-container>
+                   </app-cust-editable-non-datatable>
+                <!-- </div> -->
                 <div class="input-group" style="margin-top: 7px;">
                     <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
                     <label class="form-control-sm col-sm-2" >Variance</label>

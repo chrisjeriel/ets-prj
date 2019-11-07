@@ -85,6 +85,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     deleteFlag: true,
     editFlag: false,
     pageLength: 10,
+    paginateFlag:true,
+    infoFlag:true,
     widths: [105,240,125,170,120,120,120,120],
     checkFlag: true,
     magnifyingGlass: ['glShortCd','slTypeName','slName'],
@@ -193,6 +195,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
   savedData: any = [];
   deletedData: any = [];
+  notBalanced: boolean = false;
 
   constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
 
@@ -341,12 +344,14 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
       this.acctEntriesTbl.refreshTable();
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
       this.acctEntriesTbl.refreshTable();
     }else if(data.selector == 'acseChartAcct'){
 
@@ -367,10 +372,13 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   acctEntriesTableDataChange(data){
+    console.log('yeet');
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
       for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
-        this.acctEntriesData.tableData[i].debitAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
-        this.acctEntriesData.tableData[i].creditAmt = this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
+        this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
+        this.acctEntriesData.tableData[i].foreignCreditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0:this.acctEntriesData.tableData[i].foreignCreditAmt;
+        this.acctEntriesData.tableData[i].debitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
+        this.acctEntriesData.tableData[i].creditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
       }
       this.computeTotals();
     }
@@ -474,7 +482,33 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    if(this.record.from.toLowerCase() == 'jv'){
+      var debitTotal = 0;
+      var creditTotal = 0;
+      var variance = 0;
+
+      if(this.record.forApproval === 'Y'){
+        for (var i = 0; i < this.acctEntriesData.tableData.length; i++) {
+          debitTotal += this.acctEntriesData.tableData[i].foreignDebitAmt;
+          creditTotal += this.acctEntriesData.tableData[i].foreignCreditAmt;
+        }
+
+        variance = debitTotal - creditTotal;
+        variance = Math.round(variance * 100)/100;
+
+        if(variance != 0){
+          this.dialogMessage = "Accounting Entries does not tally.";
+          this.dialogIcon = "error-message";
+          this.successDiag.open();
+        }else{
+          this.confirm.confirmModal();
+        }
+      }else{
+        this.confirm.confirmModal();
+      }
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
@@ -536,10 +570,11 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           a.updateUser = this.ns.getCurrentUser();
           a.updateDate = this.ns.toDateTimeString(0);
         }
-      })
+      });
 
       let params = {
         tranId: this.record.tranId,
+        forApproval : this.record.from.toLowerCase() == 'jv' ? (this.record.forApproval === 'Y' ? 'Y':'N'):'',
         saveList: this.savedData,
         delList: this.deletedData
       }
@@ -557,6 +592,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+
+  onClickApproval(){
+    this.acctEntriesTbl.markAsDirty();
   }
 
 }

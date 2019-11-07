@@ -9,16 +9,19 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-accounting-entries',
   templateUrl: './edit-accounting-entries.component.html',
   styleUrls: ['./edit-accounting-entries.component.css']
 })
-export class EditAccountingEntriesComponent implements OnInit {
+export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild('lov') lovMdl: LovComponent;
+  @ViewChild('aeLov') aeLov: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -26,6 +29,8 @@ export class EditAccountingEntriesComponent implements OnInit {
   passData: any = {};
   tranListData: any = {};
   tranClass: string = 'AR';
+
+  forkSub: any;
 
   tranNo: string = '';
 
@@ -48,12 +53,26 @@ export class EditAccountingEntriesComponent implements OnInit {
     searchParams: []
   }
 
+  passLovAe:any = {
+    selector:'',
+    params:{}
+  }
+
+  lovRow: any;
+  lovCheckBox:boolean = true;
+
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
    }
 
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
+  }
+
+  ngOnDestroy(){
+    if(this.forkSub !== undefined){
+      this.forkSub.unsubscribe();
+    }
   }
 
   retrieveTransactions(){
@@ -91,13 +110,101 @@ export class EditAccountingEntriesComponent implements OnInit {
         this.tranNo = data.data.jvNo;
         break;
     }
-    this.accountingService.getAcitAcctEntries(data.data.tranId).subscribe(
+    /*this.accountingService.getAcitAcctEntries(data.data.tranId).subscribe(
       (data: any)=>{
         console.log(data);
         this.passData.tableData = data.list;
         this.table.refreshTable();
         this.table.overlayLoader = false;
       }
+    );*/
+
+    var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(data.data.tranId),
+                        this.accountingService.getAcitEditedAcctEntries(data.data.tranId))
+                       .pipe(map(([acctEntries, acctEntriesDetails]) => { return { acctEntries, acctEntriesDetails}; }));
+    this.forkSub = sub$.subscribe(
+      (forkData:any)=>{
+        console.log(forkData);
+        let acctEntries = forkData.acctEntries;
+        let acctEntriesDetails = forkData.acctEntriesDetails;
+        this.tranDetails.tranDate = this.ns.toDateTimeString(acctEntriesDetails.editedAcctEntries.tranDate).split('T')[0];
+        this.tranDetails.backupBy = acctEntriesDetails.editedAcctEntries.editedBy;
+        this.tranDetails.currCd = acctEntriesDetails.editedAcctEntries.currCd;
+        this.tranDetails.tranAmount = acctEntriesDetails.editedAcctEntries.amount;
+        this.tranDetails.localAmt = acctEntriesDetails.editedAcctEntries.localAmt;
+        this.tranDetails.payeeName = acctEntriesDetails.editedAcctEntries.payee;
+        this.tranDetails.tranStatDesc = acctEntriesDetails.editedAcctEntries.status;
+        this.tranDetails.backupDate = this.ns.toDateTimeString(acctEntriesDetails.editedAcctEntries.editDate).split('T')[0];
+        this.tranDetails.tranTypeName = acctEntriesDetails.editedAcctEntries.tranTypeName;
+        this.tranDetails.particulars = acctEntriesDetails.editedAcctEntries.particulars;
+        this.passData.tableData = acctEntries.list.map(a=>{a.showMG = 1; return a;});
+        this.table.refreshTable();
+        this.table.overlayLoader = false;
+      }
     );
+  }
+
+  clearTranDetails(){
+    this.tranDetails.tranDate = '';
+    this.tranDetails.backupBy = '';
+    this.tranDetails.currCd = '';
+    this.tranDetails.tranAmount = '';
+    this.tranDetails.localCurrCd = 'PHP';
+    this.tranDetails.localAmt = '';
+    this.tranDetails.payeeName = '';
+    this.tranDetails.tranStatDesc = '';
+    this.tranDetails.backupDate = '';
+    this.tranDetails.tranTypeName = '';
+    this.tranDetails.particulars = '';
+  }
+
+  clickLov(data){
+    this.lovRow = data.data;
+    if(data.key == 'glShortCd'){
+      this.passLovAe.selector = 'acitChartAcct';
+      this.lovCheckBox = true;
+      this.passLovAe.params = {};
+    }else if(data.key == 'slTypeName'){
+      this.passLovAe.selector = 'slType';
+      this.lovCheckBox = false;
+      this.passLovAe.params = {};
+    }else if(data.key == 'slName'){
+      this.passLovAe.selector = 'sl';
+      this.lovCheckBox = false;
+      this.passLovAe.params = {
+        slTypeCd: data.data.slTypeCd
+      };
+    }
+
+    this.aeLov.openLOV();
+  }
+
+  setLov(data){
+    if(data.selector == 'slType'){
+      this.lovRow.slTypeName = data.data.slTypeName;
+      this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = '';
+      this.lovRow.slCd = '';
+    }else if(data.selector == 'sl'){
+      this.lovRow.slTypeName = data.data.slTypeName; 
+      this.lovRow.slTypeCd = data.data.slTypeCd;
+      this.lovRow.slName = data.data.slName;
+      this.lovRow.slCd = data.data.slCd;
+    }else if(data.selector == 'acitChartAcct'){
+
+      let firstRow = data.data.pop();
+      this.lovRow.glAcctId = firstRow.glAcctId;
+      this.lovRow.glShortCd = firstRow.shortCode;
+      this.lovRow.glShortDesc = firstRow.shortDesc;
+
+      this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
+      for(let row of data.data){
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length - 1].glAcctId = row.glAcctId;
+        this.passData.tableData[this.passData.tableData.length - 1].glShortCd = row.shortCode;
+        this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
+      }
+      this.table.refreshTable();
+    }
   }
 }

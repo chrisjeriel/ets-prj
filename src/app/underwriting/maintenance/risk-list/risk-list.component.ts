@@ -98,25 +98,7 @@ export class RiskListComponent implements OnInit {
     retrieveRiskListingMethod(){
         this.maintenanceService.getMtnRiskListing(this.searchParams).subscribe(data => {
             var records = data['risk'];
-            for(let rec of records){
-                this.maintenanceRiskListData.tableData.push(
-                    rec
-                // {
-                //     activeTag: (rec.activeTag.toUpperCase() === 'Y'),
-                //     riskId: rec.riskId,
-                //     riskName: rec.riskName,
-                //     riskAbbr: rec.riskAbbr,
-                //     regionDesc: rec.regionDesc,
-                //     provinceDesc: rec.provinceDesc,
-                //     cityDesc: rec.cityDesc,
-                //     districtDesc: rec.districtDesc,
-                //     blockDesc: rec.blockDesc,
-                //     latitude: rec.latitude,
-                //     longitude: rec.longitude
-                // }
-                );
-            }
-        
+            this.maintenanceRiskListData.tableData = records
             this.table.refreshTable();
         },
         (error)=>{

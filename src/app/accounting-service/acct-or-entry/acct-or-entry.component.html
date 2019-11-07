@@ -81,7 +81,7 @@
 						</select>
 						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted || inquiryFlag" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
-						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="orInfo.currRate" (change)="changeCurrencyRt();" appCurrencyRate [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || orInfo.rstrctTranUp === 1 || inquiryFlag" name="rate">
+						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="orInfo.currRate" (change)="changeCurrencyRt();" appOtherRates [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || orInfo.rstrctTranUp === 1 || inquiryFlag" name="rate">
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Local Amount</label>

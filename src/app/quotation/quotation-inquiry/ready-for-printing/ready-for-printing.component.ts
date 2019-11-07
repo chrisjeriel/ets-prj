@@ -504,7 +504,7 @@ export(){
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
-            return date.toLocaleString();
+            return date.toLocaleString().split(',')[0];
       };
 
        alasql.fn.currency = function(currency) {
@@ -519,7 +519,7 @@ export(){
       }
       
 
-    alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineCLass, status AS STATUS, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    alasql('SELECT quotationNo AS QuotationNo, approvedBy AS ApprovedBy, cessionDesc AS TypeCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createdBy AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
   modalOnOk(){

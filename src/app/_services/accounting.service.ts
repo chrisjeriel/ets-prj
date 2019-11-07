@@ -2944,4 +2944,11 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseCancelledTran',{params});
 	}
 
+	getAcitEditedAcctEntries(tranId){
+		const params = new HttpParams()
+			.set('tranId', tranId);
+		      	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitEditedAcctEntries',{params});
+	}
+
 }

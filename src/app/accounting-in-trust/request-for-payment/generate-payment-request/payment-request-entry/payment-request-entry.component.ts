@@ -409,6 +409,7 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   removeRedBackShad(fromClass){
     $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+    // $('.'+fromClass).focus().blur();
   }
 
   setData(data,from){
@@ -441,17 +442,16 @@ export class PaymentRequestEntryComponent implements OnInit {
 
   checkCode(event,from){
     console.log(event.ev);
-    this.ns.lovLoader(event.ev, 1);
+    this.ns.lovLoader(event, 1);
     if(from.toLowerCase() == 'curr'){
-      this.currLov.checkCode(this.saveAcitPaytReq.currCd.toUpperCase(),event.ev);
+      this.currLov.checkCode(this.saveAcitPaytReq.currCd.toUpperCase(),event);
+    } else if(from.toLowerCase() == 'prep-user') {
+      this.prepUserLov.checkCode(this.saveAcitPaytReq.preparedName.toUpperCase(), event);
+    } else if(from.toLowerCase() == 'req-user') {
+      this.reqUserLov.checkCode(this.saveAcitPaytReq.requestedName.toUpperCase(), event);
+    } else if(from.toLowerCase() == 'app-user') {
+      this.appUserLov.checkCode(this.saveAcitPaytReq.approvedName.toUpperCase(), event);
     }
-    // else if(from.toLowerCase() == 'prep-user'){
-    //   this.prepUserLov.checkCode(this.saveAcitPaytReq.preparedName.toUpperCase(),event.ev);
-    // }else if(from.toLowerCase() == 'req-user'){
-    //   this.reqUserLov.checkCode(this.saveAcitPaytReq.requestedName.toUpperCase(),event.ev);
-    // }else if(from.toLowerCase() == 'app-user'){
-    //   this.appUserLov.checkCode(this.saveAcitPaytReq.approvedName.toUpperCase(),event.ev);
-    // }
   }
 
   showLov(fromUser){

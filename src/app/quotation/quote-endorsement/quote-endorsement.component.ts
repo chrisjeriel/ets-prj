@@ -602,8 +602,8 @@ export class QuoteEndorsementComponent implements OnInit {
     //end neco
 
     onClickSave(){
-      console.log(this.table.selected);
-      // $('#endtSave #confirm-save #modalBtn2').trigger('click');
+      //console.log(this.table.selected);
+      $('#endtSave #confirm-save #modalBtn2').trigger('click');
     }
 
     cancel(){
