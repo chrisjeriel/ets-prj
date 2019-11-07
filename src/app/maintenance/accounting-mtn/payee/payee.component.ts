@@ -130,7 +130,7 @@ export class PayeeComponent implements OnInit {
       }
 
     });
-    
+
   }
 
    retrieveBankAcctType(){
@@ -150,7 +150,13 @@ export class PayeeComponent implements OnInit {
     this.table.refreshTable();
     this.ns.lovLoader(ev, 1);
     this.table.overlayLoader = true;
-    this.payeeLov.checkCode('payeeClass','','','','','','',this.payeeClassCd,ev);
+    if (this.payeeClassCd === null || this.payeeClassCd === ''){
+      this.ns.lovLoader(ev, 0);
+      this.clear();
+    }else{
+       this.payeeLov.checkCode('payeeClass','','','','','','',this.payeeClassCd,ev);
+    }
+ 
     /*this.bankLov.checkCode(this.bank.bankCd,ev);*/
   }
 
@@ -174,16 +180,21 @@ export class PayeeComponent implements OnInit {
      }
   }
 
+  clear(){
+     this.payeeClassCd = null;
+     this.payeeClassName = null;
+     this.passTable.disableAdd = true;
+     this.passTable.disableGeneric = true;
+     this.passTable.tableData = [];
+     this.boolPrint = true;
+     this.table.refreshTable();
+  }
+
   setSelectedData(data){
     if(this.lovType === 'payeeClass'){
       if(data.data === null){
         this.ns.lovLoader(data.ev, 0);
-        this.payeeClassCd = null;
-        this.payeeClassName = null;
-        this.passTable.disableAdd = true;
-        this.passTable.disableGeneric = true;
-        this.passTable.tableData = [];
-        this.table.refreshTable();
+        this.clear();
       } else {
         let selected = data.data;
           this.payeeClassCd = selected.payeeClassCd;
@@ -191,12 +202,7 @@ export class PayeeComponent implements OnInit {
 
           if(this.payeeClassCd === '' || this.payeeClassCd === undefined || this.payeeClassCd === null ){
             this.ns.lovLoader(data.ev, 0);
-            this.payeeClassCd = null;
-            this.payeeClassName = null;
-            this.passTable.disableAdd = true;
-            this.passTable.disableGeneric = true;
-            this.passTable.tableData = [];
-            this.table.refreshTable();
+            this.clear();
           }else {
             this.ns.lovLoader(data.ev, 0);
             this.payee = selected;
