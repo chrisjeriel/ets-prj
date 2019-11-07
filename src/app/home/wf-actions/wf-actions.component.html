@@ -99,7 +99,7 @@
                 		<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
-								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleNote">
+								<input type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleNote" name="titleNote">
 								<div class="input-group col-sm-3">
 									<div class="input-group-prepend" style="height: 22px !important;">
 										<div class="input-group-text white-bg">
@@ -119,7 +119,7 @@
 							</div>
 							<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
 								<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
-								<textarea id="inputNotes" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="notes"> </textarea>
+								<textarea id="inputNotes" name="titleNote128" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="notes"> </textarea>
 							</div>
 						</div>
                 </fieldset>
@@ -162,7 +162,7 @@
 								<div class="col-sm-1"></div>
 							</div>
 							<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
-								 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Close</a></button>
+								 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Close</a></button>
 								 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
 							</div>
 				 	</div>
@@ -338,7 +338,9 @@
 
 <app-mtn-users class="d-none" #usersLOV (selectedData)="setPreparedBy($event)"></app-mtn-users>
 
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveNotesAndReminders()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? clearValues(): null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveNotesAndReminders(true)" (no)="clearValues()"></app-cancel-button>
 
 
 
