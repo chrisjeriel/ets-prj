@@ -192,11 +192,11 @@ export class JournalVoucherServiceComponent implements OnInit {
     alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
   }
 
-  searchQuery(data){
+  /*searchQuery(data){
     this.searchParams = searchParams;
     this.passData.tableData = [];
     console.log(this.searchParams);
     this.retrieveJVlist();
-  }
+  }*/
 
 }

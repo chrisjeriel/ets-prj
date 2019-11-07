@@ -18,7 +18,7 @@ export class JournalVoucherComponent implements OnInit {
       tableData: [],
       tHeader: ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Prepared By","Amount"],
       dataTypes: ['text','date','text','text','text','text','currency',],
-       filters: [
+      filters: [
       {
         key: 'jvNo',
         title: 'J.V. No.',
@@ -221,11 +221,11 @@ export class JournalVoucherComponent implements OnInit {
     alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
   }
 
-  searchQuery(data){
+  /*searchQuery(data){
     this.searchParams = searchParams;
     this.passData.tableData = [];
     console.log(this.searchParams);
     this.retrieveJVlist();
-  }
+  }*/
 
 }
