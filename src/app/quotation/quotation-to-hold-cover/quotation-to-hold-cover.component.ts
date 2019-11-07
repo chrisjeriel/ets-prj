@@ -261,7 +261,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 						this.showQuoteLov();
 						this.getQuoteList();
 					}
-				}			
+				}	
+				
+				this.form.control.markAsPristine();
+				this.ns.formGroup.markAsPristine();		
   		});
 
   	}

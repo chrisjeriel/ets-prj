@@ -144,6 +144,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	approveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
+	fromFilter:boolean = false;
+
 	ngOnInit() {
 		this.printType = 'SCREEN';
 		console.log(this.userName);
@@ -276,8 +278,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		//this.table.loadingFlag = true;
 		//setTimeout(()=>{
 			//[{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]
-
-			if(!this.noDataFound){
+			if(this.fromFilter){
+				this.fromFilter = false;
+			}
+			else if(!this.noDataFound){
 		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
 		      this.policyListingData.filters[0].enabled =true;
 		      this.searchParams.policyNo = this.tempPolNo.join('%-%');
@@ -423,6 +427,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		//this.tempPolNo[0] = this.tempPolNo[0].length === 0 ? ' '
 		$('#lovMdl #modalBtn').trigger('click');
 		this.selectedPolicy = null;
+		this.table.p = 1;
+		this.searchParams['paginationRequest.position'] = 1,   
 		this.retrievePolListing();
 	}
 
@@ -732,6 +738,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
       for(let key of Object.keys(searchParams)){
           this.searchParams[key] = searchParams[key]
       }
+      this.fromFilter = true;
       this.retrievePolListing();
     }
 
