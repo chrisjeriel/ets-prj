@@ -128,6 +128,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	tempHcNo		: string = '';
 	private sub		: any;
 
+	renewFlag: boolean = false;
+
 
   	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
 		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
@@ -189,20 +191,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			
   			var quoList = data['quo']['quotationList'];
   			var hcList 	= data['hc']['quotationList'];
-/*<<<<<<< HEAD
-  			quoList = quoList.map(i => {i.riskName = i.project!=null ? i.project.riskName : null; return i;});
-  			this.passDataQuoteLOV.count = data['quo']['length'];
-  			this.table.placeData(quoList);
-			//this.table.refreshTable();
-=======*/
   			quoList = data['quo']['quotationList']
   					  .map(i => { i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName; return i;});
   			
-  			//this.passDataQuoteLOV.tableData = quoList;
   			this.passDataQuoteLOV.count = data['quo']['length'];
   			
 			this.table.placeData(quoList);
-/*>>>>>>> f62aa0e0e32c1dbcd1a4f85d054353c21f70a58c*/
 			
 				if((quoList.length == 1 && this.completeSearch)|| param=='manual'){
 					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
@@ -217,8 +211,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 					this.newHc(false);
 					this.getQuoteOptions();
 
-					var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo);
-					if(selectedRow.length != 0 && (this.holdCoverNo != undefined ||  selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION')){
+					var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo && 
+						(!this.renewFlag || i.holdCover.status.toUpperCase() != 'CANCELLED'));
+					if(selectedRow.length != 0 && (this.holdCoverNo != undefined ||  selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION') 
+						){
 						this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
 						this.tempHcNo					 = selectedRow[0].holdCover.holdCoverNo;
 						this.holdCover.approvedBy		 = selectedRow[0].holdCover.approvedBy;
@@ -331,6 +327,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	
   	onClickOkQuoteLov(){
   		if(Object.keys(this.rowRec).length != 0){
+
+  			this.renewFlag = true;
   			var quoteNoArr = this.rowRec.quotationNo.split('-');
 	  		var quoNo = '';
 
@@ -571,7 +569,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   	}
   	completeSearch:boolean = false;
 	search(key,ev) {
-		
+		this.renewFlag = true;
 		this.holdCoverNo = undefined;
 		this.quoteInfo.quotationNo[2] =  (this.quoteInfo.quotationNo[2] == undefined || this.quoteInfo.quotationNo[2] == '')?'':this.quoteInfo.quotationNo[2].padStart(5,'0');
 		this.quoteInfo.quotationNo[3] =  (this.quoteInfo.quotationNo[3] == undefined || this.quoteInfo.quotationNo[3] == '')?'':this.quoteInfo.quotationNo[3].padStart(2,'0');
