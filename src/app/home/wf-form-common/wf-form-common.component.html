@@ -221,7 +221,7 @@
 				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 			</div>
 			<div class="col-sm-6" style="padding-top: 8px; padding-bottom: 10px;">
-				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete()"  class="d-block py-2">
+				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" (newClick)="onRowClick($event)" (genericBtn)="onClickDelete()"  class="d-block py-2" (tableDataChange)="recipientsData.tableData=$event;">
 				</app-cust-editable-non-datatable>
 			</div>
 		</div> <!-- End of row class -->

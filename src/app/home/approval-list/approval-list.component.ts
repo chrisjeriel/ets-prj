@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { WorkFlowManagerService, AuthenticationService, QuotationService } from '@app/_services';
+import { WorkFlowManagerService, AuthenticationService, QuotationService, NotesService } from '@app/_services';
 import { User } from '@app/_models';
 import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -22,7 +22,8 @@ export class ApprovalListComponent implements OnInit {
   constructor(private workFlowManagerService: WorkFlowManagerService,
               private authenticationService: AuthenticationService,
               private router: Router,
-              private quotationService: QuotationService) {}
+              private quotationService: QuotationService,
+              private ns : NotesService) {}
 
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
@@ -74,6 +75,7 @@ export class ApprovalListComponent implements OnInit {
 
 
       this.workFlowManagerService.retrieveWfmApprovals(this.currentUser.username).subscribe((data)=>{
+        console.log(data["approvalList"]);
           if (data["approvalList"].length > 0) {
             this.collectionSize = data["approvalList"].length;
 
@@ -83,8 +85,10 @@ export class ApprovalListComponent implements OnInit {
               this.approvalList.push({'referenceId' : data["approvalList"][i].referenceId,
                                           'module' : data["approvalList"][i].module,
                                           'details' : data["approvalList"][i].quotationNo,
-                                          'assignedBy' : data["approvalList"][i].preparedBy,
-                                          'assignedDate' : data["approvalList"][i].createDate
+                                          // 'assignedBy' : data["approvalList"][i].preparedBy,
+                                          // 'assignedDate' : data["approvalList"][i].createDate
+                                          'assignedBy' : data["approvalList"][i].assignedBy,
+                                          'assignedDate' : this.ns.toDateTimeString(data["approvalList"][i].assignedDate)
                                         });
             }
           }

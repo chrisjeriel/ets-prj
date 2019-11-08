@@ -365,7 +365,8 @@ export class QuotationComponent implements OnInit {
             }
         })
       } else {
-        this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', '').subscribe((data)=>{
+        // this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', '').subscribe((data)=>{
+          this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'P', this.currentUserId).subscribe((data)=>{  // YELE NOV. 8, 2019
           console.log(this.approver)
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
