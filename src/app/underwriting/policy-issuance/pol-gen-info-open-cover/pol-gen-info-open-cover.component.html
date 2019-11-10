@@ -86,7 +86,7 @@
 				</div>
 			</div>
 			<div class="col-sm-6" style="padding-left: 0px;">
-				<fieldset class="scheduler-border cust-fs-padlr-offset">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="padding-left: 5px !important;padding-right: 5px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border">Period of Insurance</legend>
 					<div class="col-sm-1">
@@ -97,11 +97,11 @@
 								<label class="form-control-sm col-sm-3 cust-lbl-left-offset">Inception Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="inceptionDateParams.date" appRequired name="inceptionDateParams.date"> -->
 								<div class="col-sm dp-cont">
-									<datepicker [type]="'date'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="inceptionDateParams.date" (valueChange)="inceptionDateParams.date=$event;updateExpiryDate()" name="inceptionDateParams.date"></datepicker>
+									<datepicker [type]="'date'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="inceptionDateParams.date" (valueChange)="inceptionDateParams.date=$event;updateExpiryDate();effDateParams.date=$event;" name="inceptionDateParams.date"></datepicker>
 								</div>
 								<!-- <input type="time" class="form-control form-control-sm col-sm-3 input-ig-row" [(ngModel)]="inceptionDateParams.time" appRequired name="inceptionDateParams.time"> -->
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'time'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="inceptionDateParams.time" (valueChange)="inceptionDateParams.time=$event;expiryDateParams.time=$event;" name="inceptionDateParams.time"></datepicker>
+									<datepicker [type]="'time'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="inceptionDateParams.time" (valueChange)="inceptionDateParams.time=$event;expiryDateParams.time=$event;effDateParams.time=$event;" name="inceptionDateParams.time"></datepicker>
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row" style="margin-top: 13px ! important;">
@@ -143,7 +143,7 @@
 					</div>
 				</fieldset>
 
-				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: -3.5px !important;">
+				<fieldset class="scheduler-border cust-fs-padlr-offset" style="margin-top: -3.5px !important;padding-left: 5px !important;padding-right: 5px !important;">
 					<!-- style="height: 100%;" -->
 					<legend class="scheduler-border">Production Booking</legend>
 					<div class="col-sm-1">
@@ -186,7 +186,7 @@
 								</div>
 							</div>
 							<div class="input-group col-sm-6 ig-row">
-								<label class="form-control-sm col-sm-3">Accounting Date</label>
+								<label class="form-control-sm col-sm-3">Booking Date</label>
 								<!-- <input type="date" class="form-control form-control-sm" [(ngModel)]="accDateParams.date" name="accDateParams.date" appRequired> -->
 								<div class="col-sm dp-cont">
 									<datepicker [type]="'date'" [required]="true" [disabled]="policyInfo.fromInq=='true'" [value]="accDateParams.date" (valueChange)="accDateParams.date=$event;" name="accDateParams.date"></datepicker>
@@ -698,11 +698,17 @@
 						<div class="form-row">
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Date Created</label>
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createDate" name="genInfoOcData.createDate">
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.createDate" name="genInfoOcData.createDate"> -->
+								<div class="cust-sm dp-cont">
+									<datepicker [value]="genInfoOcData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>	
 							</div>
 							<div class="form-group col-sm-6" style="margin-bottom: 10px;">
 								<label class="form-control-sm top-label">Last Update</label>
-								<input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateDate" name="genInfoOcData.updateDate">
+								<!-- <input type="datetime-local" class="form-control form-control-sm cust-sm" readonly tabindex="-1" [ngModel]="genInfoOcData.updateDate" name="genInfoOcData.updateDate"> -->
+								<div class="cust-sm dp-cont">
+									<datepicker [value]="genInfoOcData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>	
+								</div>	
 							</div>
 						</div>
 					</div>

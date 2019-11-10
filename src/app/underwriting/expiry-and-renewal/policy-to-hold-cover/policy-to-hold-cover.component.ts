@@ -7,7 +7,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-import { FormsModule }   from '@angular/forms';
+import { NgForm }   from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'; // ARNEILLE DATE: Apr.10, 2019 
 
 @Component({
@@ -23,7 +23,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild(LoadingTableComponent) table : LoadingTableComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 	//@ViewChild(PrintModalComponent) print : PrintModalComponent;
-	@ViewChild('myForm') form:any;
+	@ViewChild('myForm') form:NgForm;
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, public modalService: NgbModal, private router: Router,
@@ -63,7 +63,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	}
 
 	searchParams: any = {
-        statusArr:['3','4'],
+        statusArr:['2','3','4'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
         altNo:0    
@@ -144,6 +144,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	approveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
+	fromFilter:boolean = false;
+
 	ngOnInit() {
 		this.printType = 'SCREEN';
 		console.log(this.userName);
@@ -190,14 +192,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
 
 	test(content){
 		this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-		this.approveListMethod(this.policyInfo.policyId);
+		//this.approveListMethod(this.policyInfo.policyId);
 	}
 
 	showPrintDialog(event){
 	}
 
 	approveListMethod(policyId: string){
-		this.approveLoading = true;
+		//this.approveLoading = true;
 		this.us.retrievePolicyApprover(policyId).subscribe((data: any) =>{
 			this.approveList = data.approverList;
 			console.log(this.approveList);
@@ -245,6 +247,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				//}
 			}
 
+			if(!this.approveBtnDisabledStatus.includes(this.polHoldCoverParams.status)){
+				this.approveListMethod(this.polHoldCoverParams.policyId);
+			}
+
 			if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
 				this.periodFromDate.date 						= this.polHoldCoverParams.periodFrom.split('T')[0];
 				this.periodFromDate.time 						= this.polHoldCoverParams.periodFrom.split('T')[1];
@@ -269,6 +275,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			if(this.polHoldCoverParams.status == '5' || this.polHoldCoverParams.status == '6'){
 				this.isForViewing = true;
 			}
+
+			this.form.control.markAsPristine();
+			this.noteService.formGroup.markAsPristine();
 		});
 	}
 
@@ -276,8 +285,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		//this.table.loadingFlag = true;
 		//setTimeout(()=>{
 			//[{key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]
-
-			if(!this.noDataFound){
+			if(this.fromFilter){
+				this.fromFilter = false;
+			}
+			else if(!this.noDataFound){
 		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
 		      this.policyListingData.filters[0].enabled =true;
 		      this.searchParams.policyNo = this.tempPolNo.join('%-%');
@@ -331,6 +342,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				}else{
 					this.noDataFound = true;
 					this.policyListingData.tableData = [];
+					this.table.placeData([]);
 					if(this.isType){
 						this.clearHcFields();
 						this.policyInfo.cedingName = '';
@@ -423,6 +435,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		//this.tempPolNo[0] = this.tempPolNo[0].length === 0 ? ' '
 		$('#lovMdl #modalBtn').trigger('click');
 		this.selectedPolicy = null;
+		this.table.p = 1;
+		this.searchParams['paginationRequest.position'] = 1,   
 		this.retrievePolListing();
 	}
 
@@ -732,6 +746,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
       for(let key of Object.keys(searchParams)){
           this.searchParams[key] = searchParams[key]
       }
+      this.fromFilter = true;
       this.retrievePolListing();
     }
 

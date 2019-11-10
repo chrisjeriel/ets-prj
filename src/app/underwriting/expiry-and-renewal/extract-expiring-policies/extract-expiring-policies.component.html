@@ -22,12 +22,12 @@
 									<label class="form-control-sm cust-sm from" for="fromDate">From</label>
 									<!-- <input [(ngModel)]="expiryParameters.fromExpiryDate" type="date" class="form-control form-control-sm cust-sm col-sm-4" id="fromDate" value="2018-12-04" [disabled]="byDate != 'bydate'"> -->
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="fromExpiryDate.split('T')[0]" (valueChange)="fromExpiryDate=$event" [disabled]="radioVal != 'bydate'" [maxDate]="toExpiryDate"></datepicker>
 									</div>
 
 									<label class="form-control-sm cust-sm" style="margin-left: 15px">To</label>
 									<div class="col-sm dp-cont">
-										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="radioVal != 'bydate'"></datepicker>
+										<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="toExpiryDate.split('T')[0]" (valueChange)="toExpiryDate=$event" [disabled]="radioVal != 'bydate'" [minDate]="fromExpiryDate"></datepicker>
 									</div>
 									<div class="col-sm-2"></div>
 								</div>
@@ -45,7 +45,7 @@
 								<div class="input-group" style="margin-top: -19px;">
 									<div class="col-sm-2"></div>
 									<label class="form-control-sm cust-sm from">From</label>
-									<select [(ngModel)]="fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="radioVal != 'bymoyo'">
+									<select (change)="checkMonth()" #fromMonthEl [(ngModel)]="fromMonth" class="form-control form-control-sm cust-sm col-sm-3" name="fromMonth" [disabled]="radioVal != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -59,9 +59,9 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="fromYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'bymoyo'">
+									<input (change)="checkYear()" #fromYearEl [(ngModel)]="fromYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'bymoyo'">
 									<label class="form-control-sm cust-sm toMonth" style="margin-left: 15px">To</label>
-									<select [(ngModel)]="toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="radioVal != 'bymoyo'">
+									<select (change)="checkMonth()" #toMonthEl [(ngModel)]="toMonth" class="form-control form-control-sm cust-sm col-sm-3" name="toMonth" [disabled]="radioVal != 'bymoyo'">
 										<option value="1">January</option>
 										<option value="2">February</option>
 										<option value="3">March</option>
@@ -75,7 +75,7 @@
 										<option value="11">November</option>
 										<option value="12">December</option>
 									</select>
-									<input [(ngModel)]="toYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'bymoyo'">
+									<input (change)="checkYear()" #toYearEl [(ngModel)]="toYear" mask="9999" class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'bymoyo'">
 									<div class="col-sm-2"></div>
 								</div>
 							</div>
@@ -108,7 +108,7 @@
 		                            <input type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" [readonly]="radioVal != 'bypolno'">
 		                             <input type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" [readonly]="radioVal != 'bypolno'">
 		                            <span>&nbsp;</span>
-		                            <div class="text-search-ico" style="margin-left: 0 !important;"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
+		                            <div *ngIf="radioVal == 'bypolno'" class="text-search-ico" style="margin-left: 0 !important;"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
 		                            <div class="col-sm-2"></div>
 								</div>
 							</div>
@@ -150,11 +150,17 @@
 											padding-left: 40px !important;
 											padding-right: 3px !important;">
 											<label class="form-control-sm col-sm-4">Extracted By</label>
-											<input [(ngModel)]="lastExtraction.extractedBy" class="form-control form-control-sm col-sm" type="text"  checked="checked">
+											<input [ngModel]="lastExtraction?.extractedBy" readonly class="form-control form-control-sm col-sm" type="text"  checked="checked">
 										</div>
 										<div class="col-sm input-group" style="padding-left: 0px !important; padding-right: 40px !important;">
 											<label class="form-control-sm col-sm-4">Extraction Date</label>
-											<input [(ngModel)]="lastExtraction.extractionDate" class="form-control form-control-sm col-sm" type="date" checked="checked" id="extractionDate">
+											<!-- <input [ngModel]="lastExtraction?.extractionDate" readonly class="form-control form-control-sm col-sm" type="date" checked="checked" id="extractionDate">
+ -->
+											<div class="col-sm dp-cont">
+												<datepicker [type]="'datetime'" [value]="lastExtraction?.extractionDate" [disabled]="true"></datepicker>
+											</div>
+
+
 										</div>
 									</div>
 								</div>

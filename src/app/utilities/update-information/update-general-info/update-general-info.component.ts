@@ -46,10 +46,37 @@ export class UpdateGeneralInfoComponent implements OnInit {
       pageStatus: true,
       pagination: true,
       filters: [
-      /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
-      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
-      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
-      {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
+            {
+                key: 'policyNo',
+                title: 'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'cessionDesc',
+                title: 'Type of Cession',
+                dataType: 'text'
+            },
+            {
+                key: 'cedingName',
+                title: 'Ceding Company',
+                dataType: 'text'
+            },
+            {
+                key: 'insuredDesc',
+                title: 'Insured',
+                dataType: 'text'
+            },
+            {
+                key: 'riskName',
+                title: 'Risk',
+                dataType: 'text'
+            },
+            {
+                key: 'statusDesc',
+                title: 'Status',
+                dataType: 'text'
+            },
+      ],
       pageID: 'lov1'
     }
 
@@ -163,45 +190,64 @@ export class UpdateGeneralInfoComponent implements OnInit {
 
   getPolListing(obj) {
       this.quListTable.loadingFlag = true;
-        this.us.getParListing(obj).subscribe(data => {
+      obj.push({key: 'statusArr' , search : ['2']})
+      obj.push({key: 'altNo' , search : 0})
+      this.us.getParListing(obj).subscribe(data => {
         var records = data['policyList'];
         this.fetchedData = records;
-          for(let rec of records){
-              if(rec.altNo === 0){
-                if (rec.statusDesc === 'In Force' || rec.statusDesc === 'Distributed') {
-                             this.passDataLOV.tableData.push(
-                                                        {
-                                                            policyId: rec.policyId,
-                                                            policyNo: rec.policyNo,
-                                                            cessionDesc: rec.cessionDesc,
-                                                            quotationNo: rec.quotationNo,
-                                                            lineClassDesc: rec.lineClassDesc,
-                                                            status: rec.statusDesc,
-                                                            cedingName: rec.cedingName, 
-                                                            coRefNo: rec.coRefNo,
-                                                            intmName: rec.intmName,
-                                                            principalName: rec.principalName,
-                                                            contractorName: rec.contractorName,
-                                                            insuredDesc: rec.insuredDesc,
-                                                            riskName: (rec.project == null) ? '' : rec.project.riskName,
-                                                            object: (rec.project == null) ? '' : rec.project.objectDesc,
-                                                            site: (rec.project == null) ? '' : rec.project.site,
-                                                            regionDesc: (rec.project == null) ? '' : rec.project.regionDesc,
-                                                            provinceDesc: (rec.project == null) ? '' : rec.project.provinceDesc,
-                                                            cityDesc: (rec.project == null) ? '' : rec.project.cityDesc,
-                                                            districtDesc: (rec.project == null) ? '' : rec.project.districtDesc,
-                                                            blockDesc: (rec.project == null) ? '' : rec.project.blockDesc,
-                                                            latitude: (rec.project == null) ? '' : rec.project.latitude,
-                                                            longitude: (rec.project == null) ? '' : rec.project.longitude
-                                                        }
-                                                    );  
-                }
-              }
-          }
-          setTimeout(()=>{
-            this.quListTable.refreshTable();
-            this.quListTable.loadingFlag = false;
-        }, 0)
+        this.passDataLOV.tableData = records.map(rec=>{
+          rec.riskName = (rec.project == null) ? '' : rec.project.riskName;
+          rec.object = (rec.project == null) ? '' : rec.project.objectDesc;
+          rec.site = (rec.project == null) ? '' : rec.project.site;
+          rec.regionDesc = (rec.project == null) ? '' : rec.project.regionDesc;
+          rec.provinceDesc = (rec.project == null) ? '' : rec.project.provinceDesc;
+          rec.cityDesc = (rec.project == null) ? '' : rec.project.cityDesc;
+          rec.districtDesc = (rec.project == null) ? '' : rec.project.districtDesc;
+          rec.blockDesc = (rec.project == null) ? '' : rec.project.blockDesc;
+          rec.latitude = (rec.project == null) ? '' : rec.project.latitude;
+          rec.longitude = (rec.project == null) ? '' : rec.project.longitude;
+          rec.status = rec.statusDesc;
+          return rec;
+        })
+        this.quListTable.refreshTable();
+        this.quListTable.loadingFlag = false;
+
+          // for(let rec of records){
+          //     if(rec.altNo === 0){
+          //       if (rec.statusDesc === 'In Force' || rec.statusDesc === 'Distributed') {
+          //                    this.passDataLOV.tableData.push(
+          //                                               {
+          //                                                   policyId: rec.policyId,
+          //                                                   policyNo: rec.policyNo,
+          //                                                   cessionDesc: rec.cessionDesc,
+          //                                                   quotationNo: rec.quotationNo,
+          //                                                   lineClassDesc: rec.lineClassDesc,
+          //                                                   status: rec.statusDesc,
+          //                                                   cedingName: rec.cedingName, 
+          //                                                   coRefNo: rec.coRefNo,
+          //                                                   intmName: rec.intmName,
+          //                                                   principalName: rec.principalName,
+          //                                                   contractorName: rec.contractorName,
+          //                                                   insuredDesc: rec.insuredDesc,
+          //                                                   riskName: (rec.project == null) ? '' : rec.project.riskName,
+          //                                                   object: (rec.project == null) ? '' : rec.project.objectDesc,
+          //                                                   site: (rec.project == null) ? '' : rec.project.site,
+          //                                                   regionDesc: (rec.project == null) ? '' : rec.project.regionDesc,
+          //                                                   provinceDesc: (rec.project == null) ? '' : rec.project.provinceDesc,
+          //                                                   cityDesc: (rec.project == null) ? '' : rec.project.cityDesc,
+          //                                                   districtDesc: (rec.project == null) ? '' : rec.project.districtDesc,
+          //                                                   blockDesc: (rec.project == null) ? '' : rec.project.blockDesc,
+          //                                                   latitude: (rec.project == null) ? '' : rec.project.latitude,
+          //                                                   longitude: (rec.project == null) ? '' : rec.project.longitude
+          //                                               }
+          //                                           );  
+          //       }
+          //     }
+          // }
+        //   setTimeout(()=>{
+        //     this.quListTable.refreshTable();
+        //     this.quListTable.loadingFlag = false;
+        // }, 0)
 
       });
 
@@ -354,6 +400,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
           this.policyInfo.coRefNo = records.coRefNo;
           this.policyInfo.intmId = this.pad(records.intmId,6);
           this.policyInfo.intmName =records.intmName;
+          this.policyInfo.reinsurerId = records.reinsurerId;
           this.policyInfo.reinsurerName = records.reinsurerName;
           this.policyInfo.riBinderNo = records.riBinderNo;
           this.policyInfo.principalId = this.pad(records.principalId,6);
@@ -611,5 +658,10 @@ export class UpdateGeneralInfoComponent implements OnInit {
     if(field === 'intermediary') {
         this.intermediaryLov.checkCode(this.policyInfo.intmId, ev);
       } 
+  }
+
+  searchQuery(data){
+    this.getPolListing(data);
+
   }
 }

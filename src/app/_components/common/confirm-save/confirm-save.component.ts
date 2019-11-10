@@ -16,7 +16,7 @@ export class ConfirmSaveComponent implements OnInit {
   // @ViewChild('saveModal') saveModal: ModalComponent;
   @Output() onYes: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Output() onNo: EventEmitter<any[]> = new EventEmitter<any[]>();
-
+  @Input() question: string = 'Are you sure you want to save changes?';
   @Input() form: NgForm;
 
 

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ExpiryParameters, ExpiryListing, RenewedPolicy } from '../../../_models';
-import { UnderwritingService, NotesService, WorkFlowManagerService } from '../../../_services';
+import { UnderwritingService, NotesService, WorkFlowManagerService, PrintService } from '../../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -408,7 +408,8 @@ export class ExpiryListingComponent implements OnInit {
               private ns: NotesService,  
               private decimal : DecimalPipe, 
               private router : Router,
-              private workFlowManagerService : WorkFlowManagerService) { }
+              private workFlowManagerService : WorkFlowManagerService,
+              private ps : PrintService) { }
 
   mode:string = 'reminder';
 
@@ -1818,4 +1819,35 @@ export class ExpiryListingComponent implements OnInit {
     
   }
   //End Neco
+
+  printDestination:string = 'screen';
+  print(){
+    let reportName = '';
+    let params:any = {
+      userId : this.ns.getCurrentUser()
+    }
+    if(this.currentTab == 'renew'){
+      for(let data of this.passDataRenewalPolicies.tableData.filter(a=>a.printTag == 'Y')){
+        
+        if(data['renAsIsTag'] == 'Y'){
+          reportName = 'POLR027C'
+        }else
+        if(data['renWithChange'] == 'Y'){
+          reportName = 'POLR027D'
+        }else
+        if(data['nonRenTag'] == 'Y'){
+          reportName = 'POLR027B'
+        }else{
+          reportName = 'POLR027A'
+        }
+
+        params.reportId = reportName;
+        params.cedingId = data.cedingId;
+        params.policyId = data.policyId;
+        this.ps.print(this.printDestination,reportName,params);
+
+      }
+    }
+
+  }
 }

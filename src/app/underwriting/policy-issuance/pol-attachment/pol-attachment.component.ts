@@ -136,6 +136,7 @@ export class PolAttachmentComponent implements OnInit {
             }else{
                 this.dialogMessage="";
                 this.dialogIcon = "";
+                this.table.markAsPristine();
                 if(data.uploadDate != null){
                   this.uploadMethod(data.uploadDate);
                 }
@@ -247,7 +248,7 @@ export class PolAttachmentComponent implements OnInit {
         this.dialogIcon = "error-message";
         $('#polAttachment > #successModalBtn').trigger('click');
       }else if(this.checkFileNameLength()){
-        this.dialogMessage= "File name exceeded the maximum 50 characters";
+        this.dialogMessage= "File name exceeded the maximum 250 characters";
         this.dialogIcon = "error-message";
         $('#polAttachment > #successModalBtn').trigger('click');
       }else{
@@ -266,7 +267,7 @@ export class PolAttachmentComponent implements OnInit {
           this.dialogIcon = "error-message";
           $('#polAttachment > #successModalBtn').trigger('click');
         }else if(this.checkFileNameLength()){
-          this.dialogMessage= "File name exceeded the maximum 50 characters";
+          this.dialogMessage= "File name exceeded the maximum 250 characters";
           this.dialogIcon = "error-message";
           $('#polAttachment > #successModalBtn').trigger('click');
         }else{
@@ -301,7 +302,7 @@ export class PolAttachmentComponent implements OnInit {
 
     checkFileNameLength(){
       for(var i of this.attachmentData.tableData){
-        if(i.fileName.length > 50){
+        if(i.fileName.length > 250){
           return true;
         }
       }

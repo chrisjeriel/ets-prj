@@ -342,8 +342,8 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     var pNo = this.policyNo.split('-');
     pNo[pNo.length-1] = '%';
 
-    var sub$ = forkJoin(this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
-                             .pipe(tap(data => data['policyList'] = data['policyList'].filter(a => a.statusDesc == 'In Force')
+    var sub$ = forkJoin(this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }, {key: 'statusArr' , search : ['3','2']}])
+                             .pipe(tap(data => data['policyList'] = data['policyList']//.filter(a => a.statusDesc == 'In Force')
                                                                                       .sort((a, b) => b.altNo - a.altNo)),
                                    mergeMap(data => this.us.getPolGenInfo(data['policyList'][0].policyId, data['policyList'][0].policyNo))),
                       this.us.getPolGenInfo(this.policyId, this.policyNo)).pipe(map(([alt, base]) => { return { alt, base }; }));
@@ -853,10 +853,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     // var dCheck = this.claimData.polTermTag == 'Y' && effD <= lossD ? lossD : lossD >= inceptD && lossD <= effD ? effD : this.claimData.createDate == null || this.claimData.createDate == '' ? new Date() : new Date(this.claimData.createDate);
     var dCheck = lossD;
 
-    var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') }])
+    var sub$ = this.us.getParListing([ { key: 'policyNo', search: pNo.join('-') } , {key: 'statusArr' , search : ['3','2']}])
                       .pipe(tap(data => { 
                                           data['policyList'].sort((a, b) => a.altNo - b.altNo);
-                                          data['filtPolicy'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck && a.statusDesc == 'In Force')
+                                          data['filtPolicy'] = data['policyList'].filter(a => new Date(a.effDate).setSeconds(0) <= dCheck)
                                                                                  .sort((a, b) => b.altNo - a.altNo);
                                           this.beforePolTerm = data['filtPolicy'].length == 0;
                                           return data;

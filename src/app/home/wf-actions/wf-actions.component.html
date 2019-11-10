@@ -305,12 +305,12 @@
 <app-modal class="d-none" (modalOpened)="retrieveUserGrp();" #userGrpListingModal>
 	<div header>List of Values</div>
 	<div body>
-		<!-- <app-cust-non-datatable #userGrpTable [passData]="userGrpListing"></app-cust-non-datatable> -->
-		<div layout="row" layout-wrap layout-align="center center">
+		<app-cust-non-datatable #userGrpTable [passData]="userGrpListing"></app-cust-non-datatable>
+		<!-- <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;margin: 0 0 0 0px" style="width: 1000px; padding: 1em;">
                 <app-wf-calendar></app-wf-calendar>
             </div>
-        </div>
+        </div> -->
 	</div>
 	<div footer>
         <div class="d-flex justify-content-center">

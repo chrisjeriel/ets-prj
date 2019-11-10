@@ -2,9 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { CustNonDatatableComponent, ModalComponent, CancelButtonComponent } from '@app/_components/common';
 import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '../../../_services';
-import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { FormsModule }   from '@angular/forms';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
@@ -14,7 +13,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
     styleUrls: ['./pol-create-open-cover.component.css']
 })
 export class PolCreateOpenCoverComponent implements OnInit {
-
+    @ViewChild('polLovMdl') polLovMdl:ModalComponent;
     quoteLine: any;
 
     passDataLOV: any = {
@@ -271,10 +270,11 @@ export class PolCreateOpenCoverComponent implements OnInit {
             this.optListTable.refreshTable();
             //this.tempPolNoContainer = ['','','','','',''];
           }
-          setTimeout(()=>{
-            this.loading = false;
-            this.showLOV();
-          }, 100);
+          if(this.polLovMdl.modalRef == undefined || this.polLovMdl.modalRef == null)
+            setTimeout(()=>{
+              this.loading = false;
+              this.showLOV();
+            }, 100);
         }
       },
       (error)=>{
