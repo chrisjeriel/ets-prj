@@ -1844,6 +1844,7 @@ export class ExpiryListingComponent implements OnInit {
         params.reportId = reportName;
         params.cedingId = data.cedingId;
         params.policyId = data.policyId;
+        params.fileName = data.policyNo;
         this.ps.print(this.printDestination,reportName,params);
 
       }

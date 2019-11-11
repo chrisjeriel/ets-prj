@@ -13,6 +13,29 @@ export class PrintService {
   constructor(private http: HttpClient, private ns: NotesService) {
 
   }
+    /*
+      PARAMETERS or refer to GenerateReportRequest.java
+        String reportName
+        String reportId
+        POLR044 polr044Params
+        Integer quoteId
+        Integer adviceNo
+        Integer holdCovId
+        String userId
+        Integer tranId
+        Integer reqId
+        String cedingId
+        String policyId
+        fileName
+
+      DESTINATION
+        screen
+        dlPdf
+        printPdf
+
+
+    */
+
 
   	print(destination:string,reportName:string,param:any){
   		let params= {...{reportName:reportName},...param};
@@ -35,8 +58,7 @@ export class PrintService {
 
   	printToScreen(params:any){
   		let url = environment.prodApiUrl + '/util-service/generateReport?'
-  				+ Object.keys(params).map(a=>a+'='+params[a]).join('&')
-  				+'_blank';
+  				+ Object.keys(params).map(a=>a+'='+params[a]).join('&');
   		window.open(url);
   	}
 
