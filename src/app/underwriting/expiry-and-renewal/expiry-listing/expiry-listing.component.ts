@@ -602,7 +602,6 @@ export class ExpiryListingComponent implements OnInit {
           var counter = 0;
           this.passDataRenewalPolicies.tableData = [];
           for(var i = 0; i < records.length;i++){
-            console.log(records[i]);
             this.passDataRenewalPolicies.tableData.push(records[i]);
             //this.passDataRenewalPolicies.tableData[this.passDataRenewalPolicies.tableData.length - 1].renAsIsTag = 'Y';
             this.passDataRenewalPolicies.tableData[this.passDataRenewalPolicies.tableData.length - 1].processed =  records[i].processTag == 'Y'
@@ -623,7 +622,7 @@ export class ExpiryListingComponent implements OnInit {
             }
             
             if(this.passDataRenewalPolicies.tableData[this.passDataRenewalPolicies.tableData.length - 1].processed){
-              this.passDataRenewalPolicies.tableData[this.passDataRenewalPolicies.tableData.length - 1].uneditable = ['printTag', 'processTag', 'renAsIsTag', 'renWithChange', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'renTsiAmount', 'renPremAmount', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'];
+              this.passDataRenewalPolicies.tableData[this.passDataRenewalPolicies.tableData.length - 1].uneditable = ['processTag', 'renAsIsTag', 'renWithChange', 'nonRenTag', 'policyNo', 'cessionDesc','cedingName', 'coRefNo', 'renTsiAmount', 'renPremAmount', 'totalSi', 'totalPrem', 'summaryTag', 'balanceTag', 'claimTag', 'reminderTag', 'specialPolicyTag'];
         
             }
           }
