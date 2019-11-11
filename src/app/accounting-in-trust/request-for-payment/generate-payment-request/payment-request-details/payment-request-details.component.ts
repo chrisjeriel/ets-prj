@@ -223,17 +223,17 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   serviceFeeMainData: any = {
     tableData     : [],
-    tHeader       : ['Main Company Distribution','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
-    dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['groupName','groupShrPct','currCd','currRt','groupShrAmt','localAmt'],
+    tHeader       : ['Main Company Distribution','Percent Share (%)','Service Fee', 'VAT', 'WhTax', 'Net Due'],
+    dataTypes     : ['text','percent','currency','currency','currency','currency'],
+    keys          : ['groupName','groupShrPct','groupShrAmt','totalVat','totalWhtax','totalDue'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true],
-    total         : [null,null,null,'Total','groupShrAmt','localAmt'],
-    widths        : ['400','100','1','100','auto','auto'],
+    total         : [null,'Total','groupShrAmt','totalVat','totalWhtax','totalDue'],
+    widths        : ['400','100','auto','auto','auto','auto'],
     pageID        : 'serviceFeeMainData',
     pageLength    : 3,
   };
