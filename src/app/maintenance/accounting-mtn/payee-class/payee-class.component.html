@@ -12,7 +12,7 @@
                     <div class="w-100 text-center my-2">
                         <button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
                         <button class="cust-btn" (click)="onClickSave()">Save</button>
-                        <button class="cust-btn" (click)="onClickPayeeMain()">Payee Maintenance</button>
+                        <button class="cust-btn" (click)="onClickPayeeMain()" [disabled]="boolPayeeMain">Payee Maintenance</button>
                         <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
                     </div>
                 </fieldset>
