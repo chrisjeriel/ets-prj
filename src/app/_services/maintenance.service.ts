@@ -1557,12 +1557,13 @@ export class MaintenanceService{
 		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTax', JSON.stringify(params), header);
       }
 
-    getAcseOrSeries(orType,orFrom,orTo, usedTag?){
+    getAcseOrSeries(orType,orFrom,orTo, usedTag?,rowNum?){
     	const params = new HttpParams()
     		.set('orType', (orType === null || orType === undefined ? '' : orType))
 			.set('orFrom', (orFrom === null || orFrom === undefined ? '' : orFrom))
 			.set('orTo', (orTo === null || orTo === undefined ? '' : orTo))
-			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag))
+			.set('rowNum', (rowNum === null || rowNum === undefined ? '' : rowNum));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseOrSeries", {params});
     }
 
