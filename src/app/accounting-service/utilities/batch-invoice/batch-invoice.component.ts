@@ -27,7 +27,7 @@ export class BatchInvoiceComponent implements OnInit {
     keys: ['checkbox','checkbox', 'date', 'text', 'text','date','text', 'currency'],
   }
 
-  constructor(private accountingService: AccountingService, private modalService: NgbModal) { }
+  constructor(private accountingService: AccountingService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }
