@@ -23,10 +23,11 @@ export class BatchInvoiceComponent implements OnInit {
     infoFlag: true,
     paginateFlag: true,
   	widths: [1,1,1,200,200,1,'auto',150],
-    uneditable: [true,true,true,true,true,true,true]
+    uneditable: [true,true,true,true,true,true,true],
+    keys: ['checkbox','checkbox', 'date', 'text', 'text','date','text', 'currency'],
   }
 
-  constructor(private accountingService: AccountingService, private modalService: NgbModal) { }
+  constructor(private accountingService: AccountingService, public modalService: NgbModal) { }
 
   ngOnInit() {
   }

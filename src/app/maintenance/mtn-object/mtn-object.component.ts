@@ -25,18 +25,18 @@ export class MtnObjectComponent implements OnInit {
         fixedCol: false,
         pageID: 'object',
         keys:['objectId','description'],
-        filters:[
-          {
-            key: 'objectId',
-            title: 'Object',
-            dataType: 'text'
-          },
-          {
-            key: 'description',
-            title: 'Object Desc',
-            dataType: 'text'
-          },
-        ]
+        // filters:[
+        //   {
+        //     key: 'objectId',
+        //     title: 'Object',
+        //     dataType: 'text'
+        //   },
+        //   {
+        //     key: 'description',
+        //     title: 'Object Desc',
+        //     dataType: 'text'
+        //   },
+        // ]
     }
 
   selected: any = null;

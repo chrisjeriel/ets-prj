@@ -8,6 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-jv-entry-service',
@@ -24,9 +26,11 @@ export class JvEntryServiceComponent implements OnInit {
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild(LovComponent)lov: LovComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
+  @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('myForm') form:any;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
+  @ViewChild('PrintEntries') printEntries: ModalComponent;
 
   entryData:any = {
     jvYear:'',
@@ -88,6 +92,7 @@ export class JvEntryServiceComponent implements OnInit {
   UploadBut: boolean = false;
   allocBut: boolean = false;
   dcBut: boolean = false;
+  //variance = 0;
 
   constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute) { }
 
@@ -97,13 +102,14 @@ export class JvEntryServiceComponent implements OnInit {
       if(params.from === 'add'){
         if(this.jvData.jvNo === ''){
           this.newJV();
+          this.from = 'add';
         }else{
           this.tranId = this.jvData.tranId;
+          this.from = 'jv';
         }
-        this.from = 'add';
       }else{
         this.tranId = params.tranId;
-        this.from = 'jvList';
+        this.from = 'jv';
       }
     });
     this.cancelJVBut = true;
@@ -178,6 +184,7 @@ export class JvEntryServiceComponent implements OnInit {
         }
         this.check(this.entryData)
         this.disableTab.emit(false);
+        //this.getAcctEnt();
       }
     });
   }
@@ -196,7 +203,8 @@ export class JvEntryServiceComponent implements OnInit {
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
                          localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
                          jvType: ev.tranTypeName,
-                         tranType: ev.tranTypeCd
+                         tranType: ev.tranTypeCd,
+                         from: this.from
                        });
   }
 
@@ -285,6 +293,10 @@ export class JvEntryServiceComponent implements OnInit {
     this.entryData.tranTypeName = data.tranTypeName;
     this.entryData.tranTypeCd = data.tranTypeCd;
     this.entryData.particulars = data.defaultParticulars;
+    this.form.control.markAsDirty();
+    setTimeout(()=>{
+      $('.tranTypeName').focus().blur();
+    }, 0);
   }
 
   setCurrency(data){
@@ -340,7 +352,7 @@ export class JvEntryServiceComponent implements OnInit {
 
   checkEntryFields(){
     if(this.entryData.tranTypeName.length === 0 || 
-       this.entryData.particulars.length === 0 ||
+       this.entryData.particulars === '' ||
        this.entryData.currCd.length === 0 || 
        this.entryData.jvAmt.length === 0 || 
        this.entryData.currRate.length === 0 || 
@@ -394,8 +406,9 @@ export class JvEntryServiceComponent implements OnInit {
         this.dialogIcon = "success";
         this.successDiag.open();
         this.tranId = data.tranIdOut;
-        this.from = 'jvList';
+        this.from = 'jv';
         this.retrieveJVEntry();
+        this.form.control.markAsPristine();
       }
     });
   }
@@ -405,6 +418,18 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   onClickApprove(){
+    /*if(this.variance != 0){
+      this.dialogMessage = 'Accounting Entries does not tally';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.accountingService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
+        this.entryData.approver = data.employee.employeeName;
+        this.entryData.approvedBy = data.employee.userName;
+        this.entryData.approverDate = this.ns.toDateTimeString(0);
+      });
+      this.approveJV.openNoClose();
+    }*/
     this.accountingService.getAcctDefName(this.ns.getCurrentUser()).subscribe((data:any) => {
       this.entryData.approver = data.employee.employeeName;
       this.entryData.approvedBy = data.employee.userName;
@@ -460,7 +485,58 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   onClickApproval(){
-    
+    this.approverName.modal.openNoClose();
   }
+
+  setApproval(data){
+    this.entryData.approvedBy = data.userId;
+    this.entryData.approver   = data.printableName;
+  }
+
+  onClickPrint(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_JV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.tranId, '_blank');
+    this.printEntries.openNoClose();
+  }
+
+  printJV(){
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = this.entryData.jvNo;
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+    
+    this.accountingService.printAcseJv(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
+  }
+
+  /*getAcctEnt(){
+    var acc = [], credit = 0, debit = 0;
+
+    this.variance = 0;
+
+    this.accountingService.getAcseAcctEntries(this.tranId).subscribe((data):any =>{
+      console.log(data)
+      acc = data.acctEntries;
+      credit
+      for (var i = 0; i < acc.length; ++i) {
+        credit += acc[i].foreignCreditAmt;
+        debit  += acc[i].foreignDebitAmt; 
+      }
+
+      this.variance = credit - debit;
+      this.variance = Math.round(this.variance * 100)/100;
+    });
+  }*/
 }
 

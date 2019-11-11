@@ -81,6 +81,7 @@ export class BatchOrPrintingComponent implements OnInit {
   changeStatData: any = {
         printOrList: []
     };
+  lastOrNo: any;
 
   constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
 
@@ -194,7 +195,7 @@ export class BatchOrPrintingComponent implements OnInit {
        this.batchData.reportRequest = [];
 
       for(let i=0;i<tranIdArray.length ;i++){ 
-        selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACITR_AR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
         this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
 
@@ -273,11 +274,8 @@ viewOR(){
 }
 
 failedOrPrint(){
-   this.printConfirmModal.open();
+  console.log(this.lastOrNo);
 }
-
-
-
 
 
 

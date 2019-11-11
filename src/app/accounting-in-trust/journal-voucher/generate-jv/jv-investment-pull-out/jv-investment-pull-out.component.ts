@@ -72,7 +72,8 @@ export class JvInvestmentPullOutComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
+    widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120],
+    disableAdd: true
   };
 
   passLov: any = {
@@ -105,7 +106,9 @@ export class JvInvestmentPullOutComponent implements OnInit {
     //this.getInvPullout();
     if(this.jvDetail.statusType == 'N'){
       this.disable = false;
+      console.log('here 1');
     }else {
+      console.log('here 2');
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag =  false;
@@ -114,7 +117,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
       this.disable = true;
     }
     this.getBank();
-    setTimeout(() => {this.getInvPullout()},0);
+    // setTimeout(() => {this.getInvPullout()},0);
   }
 
  getBank(){
@@ -130,14 +133,16 @@ export class JvInvestmentPullOutComponent implements OnInit {
     var join = forkJoin(this.ms.getMtnBank(null,null,null,'Y'),
                         this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
 
-    this.forkSub = join.subscribe((data: any) =>{
+    this.forkSub = join.subscribe((data: any) => {
+      console.log(data);
       this.banks = data.bank.bankList;
       this.bankAccts = data.bankAcct.bankAcctList;
       this.getInvPullout();
     });
   }
 
-  changeBank(data){
+  changeBank(data) {
+    this.passData.disableAdd = true;
     this.passData.tableData = [];
     this.table.refreshTable();
     //this.selectedBank = data;
@@ -145,7 +150,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
     this.getBankAcct();
   }
 
-  getBankAcct(){
+  getBankAcct() {
     this.bankAccts = [];
     this.ms.getMtnBankAcct(this.selectedBankCd).subscribe((data:any)=>{
       if(data.bankAcctList.length !== 0){
@@ -166,7 +171,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
       var bank;
       var bankAcct;
       this.passData.tableData = [];
-      if(data.pullOut.length !== 0){
+      if(data.pullOut.length !== 0) {
         bank     = this.banks.filter(a => { return a.bankCd === data.pullOut[0].bank});
         bankAcct = this.bankAccts.filter(a => { return a.bankCd === data.pullOut[0].bank && a.bankAcctCd === data.pullOut[0].bankAcct});
         this.bankAccts = this.bankAccts.filter(a => { return a.bankCd === data.pullOut[0].bank});
@@ -181,6 +186,9 @@ export class JvInvestmentPullOutComponent implements OnInit {
           }
         }
       }
+
+      this.passData.disableAdd = this.selectedBankCd == null || this.selectedBankCd == undefined || this.accountNo == null || this.accountNo == undefined;
+
       this.table.refreshTable();
     });
   }

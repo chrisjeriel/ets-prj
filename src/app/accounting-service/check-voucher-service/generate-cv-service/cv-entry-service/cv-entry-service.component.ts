@@ -533,7 +533,7 @@ export class CvEntryServiceComponent implements OnInit {
   }
 
   print(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACseR_CV' + '&userId=' + 
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_CV' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.saveAcseCv.tranId, '_blank');
   }
 

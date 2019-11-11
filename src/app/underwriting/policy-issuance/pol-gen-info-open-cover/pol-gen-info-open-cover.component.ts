@@ -255,6 +255,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.loading = false;
           setTimeout(a=>{
             this.form.control.markAsPristine();
+            this.ns.formGroup.markAsPristine();
             if(this.policyInfo.fromInq=='true'){
               $('input').attr('readonly','readonly');
               $('input[type="checkbox"]').attr('disabled','disabled');
@@ -395,6 +396,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.dialogMessage = '';
           $('#successDialog #modalBtn').trigger('click'); 
           this.form.control.markAsPristine();
+          this.ns.formGroup.markAsPristine();
         }
       });
   }

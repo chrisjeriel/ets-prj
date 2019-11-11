@@ -8,6 +8,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-payee-class',
@@ -27,6 +29,7 @@ export class PayeeClassComponent implements OnInit {
   dialogMessage: string = '';
   info:any ;
   cancelFlag: boolean; 
+  boolPayeeMain : boolean = true;
 
   passTable:any={
   	tableData:[],
@@ -65,7 +68,7 @@ export class PayeeClassComponent implements OnInit {
    	keys:['payeeClassCd','payeeClassName','remarks','masterPayeeClass','slTag','slTypeCd','autoTag','activeTag'],
    } 
 
-  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService, private router: Router) { }
 
   ngOnInit() {
   	this.titleService.setTitle('Mtn | Payee Class');
@@ -92,9 +95,19 @@ export class PayeeClassComponent implements OnInit {
     console.log(data);
     this.info = data;
     this.passTable.disableGeneric = data == null;
+    this.boolPayeeMain = data == null;
 
-    if (data.autoTag === 'Y'){
-    	this.passTable.disableGeneric = true;
+    if (data === null) {
+      this.boolPayeeMain = true;
+    } else {
+      if (data.autoTag === 'Y'){
+        this.passTable.disableGeneric = true;
+      } 
+      if (data.add === true){
+        this.boolPayeeMain = true;
+      } else {
+        this.boolPayeeMain = false;
+      }
     }
   }
 
@@ -257,6 +270,7 @@ export class PayeeClassComponent implements OnInit {
                 this.table.overlayLoader = true;
 	            this.getPayeeClass();
 	            $('.ng-dirty').removeClass('ng-dirty');
+              this.boolPayeeMain = true;
 	        }else{
 	            this.dialogIcon = "error";
 	            this.successDialog.open();
@@ -325,6 +339,12 @@ export class PayeeClassComponent implements OnInit {
       };
 
     alasql('SELECT payeeClassCd AS [Payee Class Cd], payeeClassName AS [Payee Class Name], remarks AS Remarks , masterPayeeClass AS [Master Payee Class],slTag AS [SL Tag],slTypeName AS [SL Type Name],autoTag AS [Auto Tag],activeTag AS Active INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
+  }
+
+  onClickPayeeMain(){
+    setTimeout(() => {
+       this.router.navigate(['/mtn-payee', { payeeClassCd: this.info.payeeClassCd, payeeClassName: this.info.payeeClassName, from: 'mtn-payee-class'}], { skipLocationChange: true });
+    },100); 
   }
 
 

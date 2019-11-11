@@ -199,7 +199,7 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,ev?) {
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,payeeClassCd?, ev?) {
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -402,8 +402,55 @@ export class LovComponent implements OnInit {
               this.modal.openNoClose();
             }
         });
+      } 
+    } else if (selector == 'payeeClass') {
+      if (payeeClassCd === '') {
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.mtnService.getMtnPayeeClass(payeeClassCd,'Y').subscribe((data: any) => {
+            if(data.payeeClassList.length > 0) {
+              data.payeeClassList[0]['ev'] = ev;
+              data.payeeClassList[0]['selector'] = selector;
+              this.selectedData.emit({data: data['payeeClassList'][0], ev : ev});
+            } else {
+              this.selectedData.emit({
+                data: null,
+                ev: ev
+              });
+
+              this.passData.selector = 'payeeClass';
+              this.modal.openNoClose();
+            }
+        });
+      } 
+    } else if(selector == 'reportId'){
+      if(this.passData.code === ''){
+        this.selectedData.emit({
+          data: null,
+          ev: ev
+        });
+      }else{
+         this.mtnService.getMtnReports(this.passData.code).subscribe(data => {
+           if(data.reports.length > 0){
+             data.reports[0]['ev'] = ev;
+             data.reports[0]['selector'] = selector;
+             this.selectedData.emit({data: data['reports'][0], ev : ev});
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev
+             });
+
+             this.passData.selector = 'reportId';
+             this.modal.openNoClose();
+           }
+         });
       }
-    }
+     
+    } 
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -804,6 +851,15 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'payeeClass'){
+      this.passTable.tHeader = ['Payee Class','Payee Class Name'];
+      this.passTable.widths =[500,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'payeeClassCd','payeeClassName'];
+      this.mtnService.getMtnPayeeClass(this.passData.payeeClassCd, 'Y').subscribe(a=>{
+        this.passTable.tableData = a["payeeClassList"];
+        this.table.refreshTable();
+      })
     }else if(this.passData.selector == 'acitChartAcct'){
       this.passTable.tHeader = ['Account Code','Account Name'];
       this.passTable.widths =[250,500]
@@ -1168,17 +1224,17 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null);
         this.table.refreshTable();
       });
-    }else if(this.passData.selector == 'mtnBussType'){
+   /* }else if(this.passData.selector == 'mtnBussType'){
       this.passTable.tHeader = ['Business Type'];
       this.passTable.widths = ['auto']
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = [ 'bussTypeName'];
-      this.passTable.checkFlag = false;
-      this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
+      this.passTable.checkFlag = false;*/
+     /* this.mtnService.getMtnBussType(this.passData.bussTypeCd, this.passData.bussTypeName, this.passData.activeTag).subscribe((a:any)=>{
         this.passTable.tableData = a["bussTypeList"];
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
-      });
+      });*/
     }else if(this.passData.selector == 'mtnTransactions'){
       this.passTable.tHeader = ['Tran Code', 'Description'];
       this.passTable.widths = [77,'auto']
@@ -1287,6 +1343,15 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnAcseChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'mtnReport'){
+      this.passTable.tHeader = ['Report ID','Report Title']
+      //this.passTable.widths = [250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = ['reportId', 'reportTitle'];
+      this.mtnService.getMtnReports(this.passData.reportId).subscribe((data:any) => {
+        this.passTable.tableData = data.reports;
         this.table.refreshTable();
       })
     }

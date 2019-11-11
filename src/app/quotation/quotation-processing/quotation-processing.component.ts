@@ -233,6 +233,7 @@ export class QuotationProcessingComponent implements OnInit {
     cessionDescList: any[] = [];
     first = false;
     accessibleModules: string[] = [];
+    disableModBtn: boolean = false;
 
     constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
@@ -385,6 +386,7 @@ export class QuotationProcessingComponent implements OnInit {
                 this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
+                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status == 'Requested' || a['quotationList'][0].status == 'In Progress');
             }
 
             if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
@@ -708,6 +710,9 @@ showCedingCompanyIntCompLOV() {
             var sq = this.selectedQuotation;
             this.quotationService.getIntCompAdvInfo({quoteId:this.selectedQuotation.quoteId, quotationNo: this.selectedQuotation.quotationNo}).subscribe(a=>{
                 this.exclude = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+                if(this.exclude.length == 0 ){
+                    this.exclude = [this.selectedQuotation.cedingId];
+                }
             })
 
             // for(let i of this.validationList) {
@@ -851,7 +856,7 @@ export(){
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);
-            return date.toLocaleString();
+            return date.toLocaleString().split(',')[0];
       };
 
        alasql.fn.currency = function(currency) {

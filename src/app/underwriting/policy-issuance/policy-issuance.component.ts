@@ -3,7 +3,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, PrintService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-policy-issuance',
@@ -47,7 +47,8 @@ export class PolicyIssuanceComponent implements OnInit {
   title: string = "Policy / Policy Issuance / Create Policy";
   exitLink:string;
   
-  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, private underwritingService: UnderwritingService) { }
+  constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, 
+              private underwritingService: UnderwritingService, private ps: PrintService, private ns: NotesService) { }
 
 
   ngOnInit() {
@@ -185,6 +186,21 @@ export class PolicyIssuanceComponent implements OnInit {
     this.underwritingService.getPolCoInsurance(this.policyInfo.policyId, '') .subscribe((data: any) => {
              this.policyInfo.coInsuranceFlag = (data.policy.length > 0)? true : false;
     });
+  }
+
+
+  printDestination:string;
+  printReport:string;
+
+  print(){
+    let params:any = {
+                        policyId:this.policyInfo.policyId,
+                        updateUser:this.ns.getCurrentUser(),
+
+                      };
+    params.reportId=this.printReport;
+    params.user
+    this.ps.print(this.printDestination,this.printReport,params)
   }
   
 }

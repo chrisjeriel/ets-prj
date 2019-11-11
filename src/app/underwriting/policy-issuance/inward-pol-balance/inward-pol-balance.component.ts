@@ -39,9 +39,9 @@ export class InwardPolBalanceComponent implements OnInit {
       "premAmt": 0,
       "otherChargesInw": 0,
       "amtDue": 0,
-      "createUser": JSON.parse(window.localStorage.currentUser).username,
+      "createUser": this.ns.getCurrentUser(),
       "createDate": this.ns.toDateTimeString(0),
-      "updateUser": JSON.parse(window.localStorage.currentUser).username,
+      "updateUser": this.ns.getCurrentUser(),
       "updateDate": this.ns.toDateTimeString(0),
       otherCharges:[]
     },
@@ -70,9 +70,9 @@ export class InwardPolBalanceComponent implements OnInit {
       instNo: 0,
       chargeCd: null,
       amount: 0,
-      createUser: JSON.parse(window.localStorage.currentUser).username,
+      createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
-      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       showMG :1
     },
@@ -86,7 +86,7 @@ export class InwardPolBalanceComponent implements OnInit {
   }
   dialogIcon:string;
 
-  totalPrem: string = "";
+  totalPrem: any;
   currency: string = "";
   dialogMsg: string = "";
   cancelFlag : boolean = false;
@@ -97,6 +97,7 @@ export class InwardPolBalanceComponent implements OnInit {
  ngOnInit() {
 
     this.titleService.setTitle("Pol | Inward Pol Balance");
+
     this.fetchData();
     if(this.policyInfo.fromInq && this.policyInfo.status == "Distributed"){
       this.passData.tHeader.push("Amount Due");
@@ -138,17 +139,34 @@ export class InwardPolBalanceComponent implements OnInit {
       if(data.policyList.length != 0){
         this.currency = data.policyList[0].project.coverage.currencyCd;
         if(data.policyList[0].inwPolBalance.length !=0){
-          this.passData.tableData = data.policyList[0].inwPolBalance.filter(a=>{
+          this.passData.nData.dueDate = new Date(data.policyList[0].inwPolBalance[0].dueDate).setMonth(new Date(data.policyList[0].inwPolBalance[0].dueDate).getMonth()+1);
+          //this.passData.nData.bookingDate
+
+          this.passData.tableData = data.policyList[0].inwPolBalance.filter((a,i)=>{
             a.dueDate     = this.ns.toDateTimeString(a.dueDate);
             a.bookingDate = this.ns.toDateTimeString(a.bookingDate);
+            if(i==0){
+              this.passData.nData.dueDate = new Date(a.dueDate);
+              this.passData.nData.dueDate.setMonth(new Date(a.dueDate).getMonth()+1);
+              this.passData.nData.bookingDate = new Date(a.dueDate);
+              this.passData.nData.bookingDate.setMonth(new Date(a.dueDate).getMonth()+2,0);
+            }
+
             a.otherCharges = a.otherCharges.filter(a=>a.chargeCd!=null)
             return true;
           });
         }
-
       }
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
+
+      var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;
+
+      function pad(num) {
+        return (num < 10) ? '0' + num : num;
+      }
+      this.passData.nData.dueDate = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)+1) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
+      
     });
 
     this.underwritingservice.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
@@ -182,14 +200,19 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   setSelected(data){
+    console.log(data.data)
     this.passData2.tableData = this.passData2.tableData.filter(a=>a.showMG != 1)
     for(let rec of data.data){
       this.passData2.tableData.push(JSON.parse(JSON.stringify(this.passData2.nData)));
       this.passData2.tableData[this.passData2.tableData.length - 1].showMG = 0;
       this.passData2.tableData[this.passData2.tableData.length - 1].chargeCd = rec.chargeCd;
       this.passData2.tableData[this.passData2.tableData.length - 1].chargeDesc =  rec.chargeDesc;
-      this.passData2.tableData[this.passData2.tableData.length - 1].amount = rec.defaultAmt
       this.passData2.tableData[this.passData2.tableData.length - 1].edited = true;
+      if(rec.chargeType === 'P'){
+        this.passData2.tableData[this.passData2.tableData.length - 1].amount = (rec.premRt/100) * this.totalPrem;
+      }else{
+        this.passData2.tableData[this.passData2.tableData.length - 1].amount = rec.defaultAmt
+      }
     }
     this.instllmentTable.indvSelect.otherCharges = this.passData2.tableData
     this.compute();
@@ -197,6 +220,16 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   compute(){
+    /*var test = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
+    var dateNew = this.ns.toDate(test).getFullYear()*/
+
+    var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;
+    function pad(num) {
+      return (num < 10) ? '0' + num : num;
+    }
+
+    this.passData.nData.dueDate = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
+
     for(let rec of this.passData.tableData){
       if(rec.otherCharges.length != 0)
         rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr,0);
@@ -214,7 +247,7 @@ export class InwardPolBalanceComponent implements OnInit {
       saveOtherCharges : [],
       delOtherCharges : [],
       newSavePolInward: [],
-      user: JSON.parse(window.localStorage.currentUser).username
+      user: this.ns.getCurrentUser()
     }
     for(let inst of this.passData.tableData){
         inst.commAmt = '';
@@ -224,7 +257,7 @@ export class InwardPolBalanceComponent implements OnInit {
         inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
         inst.createDate     = this.ns.toDateTimeString(inst.createDate);
         inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
-        inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+        inst.updateUser = this.ns.getCurrentUser();
         params.savePolInward.push(inst);
       }else if(inst.deleted){
         params.delPolInward.push(inst);
@@ -235,7 +268,7 @@ export class InwardPolBalanceComponent implements OnInit {
           if(chrg.edited && !chrg.deleted ){
             chrg.createDate     = this.ns.toDateTimeString(chrg.createDate);
             chrg.updateDate = this.ns.toDateTimeString(chrg.updateDate);
-            chrg.updateUser = JSON.parse(window.localStorage.currentUser).username;
+            chrg.updateUser = this.ns.getCurrentUser();
             params.saveOtherCharges.push(chrg);
             instFlag = true;
           }else if(chrg.deleted){
@@ -248,7 +281,7 @@ export class InwardPolBalanceComponent implements OnInit {
           inst.bookingDate = this.ns.toDateTimeString(inst.bookingDate);
           inst.createDate     = this.ns.toDateTimeString(inst.createDate);
           inst.updateDate = this.ns.toDateTimeString(inst.updateDate);
-          inst.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          inst.updateUser = this.ns.getCurrentUser();
           params.savePolInward.push(inst);
         }
       }

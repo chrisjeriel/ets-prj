@@ -35,7 +35,7 @@ export class PolOpenCovListComponent implements OnInit {
 	  filters: [
 	          {
 	              key: 'policyNo',
-	              title: 'Policy No.',
+	              title: 'Open Cover Policy No',
 	              dataType: 'text'
 	          },
 	          {
@@ -115,7 +115,7 @@ export class PolOpenCovListComponent implements OnInit {
 	              dataType: 'datespan'
 	          },
 	          {
-	              key: 'status',
+	              key: 'statusDesc',
 	              title: 'Status',
 	              dataType: 'text'
 	          },

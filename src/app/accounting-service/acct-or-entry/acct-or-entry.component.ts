@@ -715,7 +715,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.dialogIcon = 'error';
       this.successDiag.open();
       $('.required').focus().blur();
-      $('table input').focus().blur();
+      $('table input:not(.tbl-dp)').focus().blur();
       $('table select').focus().blur();
     }
     /*else if(this.bankVsArCurr()){  //dcb bank account is not equal to selected ar currency?
@@ -1145,7 +1145,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   orAmtEqualsOrDtlPayt(): boolean{
-    if(this.orInfo.orDtlSum != this.orInfo.orAmt * this.orInfo.currRate){
+    if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
       return true;
     }
     return false;
@@ -1191,6 +1191,7 @@ export class AcctOrEntryComponent implements OnInit {
     }
 
     if(data == 1 || data == 2){
+      this.disablePayor = false;
       this.selectedCurrency = 'PHP';
       this.passData.nData.currCd = 'PHP';
       this.orInfo.currCd = 'PHP';
@@ -1204,11 +1205,30 @@ export class AcctOrEntryComponent implements OnInit {
           break;
         }
       }
+      this.orInfo.payeeNo = '';
+      this.orInfo.payor = '';
+      this.orInfo.mailAddress = '';
+      this.orInfo.bussTypeCd = '';
+      this.orInfo.bussTypeName = '';
+      this.orInfo.tin = '';
       
     }else if(data == 3){
       this.selectedCurrency = 'USD';
       this.passData.nData.currCd = 'USD';
       this.orInfo.currCd = 'USD';
+      this.disablePayor = true;
+      this.ms.getMtnPayee('061', 1).subscribe(
+        (data:any)=>{
+          //data.payeeList = data.payeeList.filter(a=>{return a.payeeName == 'Philippine Machinery Management Services Corporation'});
+          this.orInfo.payeeClassCd = data.payeeList[0].payeeClassCd;
+          this.orInfo.payeeNo = data.payeeList[0].payeeNo;
+          this.orInfo.payor = data.payeeList[0].payeeName;
+          this.orInfo.mailAddress = data.payeeList[0].mailAddress;
+          this.orInfo.bussTypeCd = data.payeeList[0].bussTypeCd;
+          this.orInfo.bussTypeName = data.payeeList[0].bussTypeName;
+          this.orInfo.tin = data.payeeList[0].tin;
+        }
+      );
       for(var i of this.currencies){
         if(i.currencyCd == 'USD'){
           this.orInfo.currRate = i.currencyRt;
