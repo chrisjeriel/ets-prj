@@ -703,6 +703,8 @@ export class AcctOrEntryComponent implements OnInit {
         }
         this.form.control.markAsPristine();
         this.loading = false;
+
+        this.disablePayor          = data.orEntry.tranTypeCd == 3;
       },
       (error: any)=>{
         console.log('error');
@@ -739,7 +741,7 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  save(cancelFlag?){
+  save(cancelFlag?, isPrint?){
     this.cancelFlag = cancelFlag !== undefined;
     this.savedData = [];
     this.deletedData = [];
@@ -795,7 +797,29 @@ export class AcctOrEntryComponent implements OnInit {
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
+          if(isPrint !== undefined){
+            this.reprintMethod();
+            let params: any = {
+              tranId: this.orInfo.tranId,
+              orNo: this.orInfo.orNo,
+              updateUser: this.ns.getCurrentUser(),
+              updateDate: this.ns.toDateTimeString(0)
+            }
+            setTimeout(()=>{
+               this.as.printOr(params).subscribe(
+                 (data:any)=>{
+                   if(data.returnCode == 0){
+                     this.dialogIcon = 'error-message';
+                     this.dialogIcon = 'An error has occured when updating OR status';
+                   }else{
+                     this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
+                   }
+                 }
+               );
+            },1000);
+          }
         }
+        this.loading = false;
       }
     );
   }
@@ -884,6 +908,7 @@ export class AcctOrEntryComponent implements OnInit {
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
+      this.loading = false;
     }else if(this.printMethod == '2'){
       this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
         (data:any)=>{
@@ -894,6 +919,7 @@ export class AcctOrEntryComponent implements OnInit {
                        iframe.src = downloadURL;
                        document.body.appendChild(iframe);
                        iframe.contentWindow.print();
+                       this.loading = false;
         });
     }
   }
@@ -904,26 +930,8 @@ export class AcctOrEntryComponent implements OnInit {
       if(this.orInfo.orNo === null || (this.orInfo.orNo !== null && this.orInfo.orNo.length === 0)){
         this.orInfo.orNo = parseInt(this.generatedOrNo);
       }
-      this.save();
-      this.reprintMethod();
-      let params: any = {
-        tranId: this.orInfo.tranId,
-        orNo: this.orInfo.orNo,
-        updateUser: this.ns.getCurrentUser(),
-        updateDate: this.ns.toDateTimeString(0)
-      }
-      setTimeout(()=>{
-         this.as.printOr(params).subscribe(
-           (data:any)=>{
-             if(data.returnCode == 0){
-               this.dialogIcon = 'error-message';
-               this.dialogIcon = 'An error has occured when updating OR status';
-             }else{
-               this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
-             }
-           }
-         );
-      },1000);
+      this.save(undefined, true);
+      
     }
   }
 
@@ -1198,7 +1206,6 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeTranType(data){
-    console.log(data);
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.orInfo.tranTypeCd = data;
     //this.orInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)

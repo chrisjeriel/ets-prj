@@ -725,7 +725,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
-  save(cancelFlag?){
+  save(cancelFlag?, isPrint?){
     this.cancelFlag = cancelFlag !== undefined;
     this.savedData = [];
     this.deletedData = [];
@@ -781,7 +781,32 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
+          if(isPrint !== undefined){
+            this.reprintMethod();
+            //Update Transactions to Closed and AR Status to Printed
+            let params: any = {
+              tranId: this.arInfo.tranId,
+              arNo: this.arInfo.arNo,
+              updateUser: this.ns.getCurrentUser(),
+              updateDate: this.ns.toDateTimeString(0)
+            }
+            setTimeout(()=>{
+              this.as.printAr(params).subscribe(
+                (data:any)=>{
+                  if(data.returnCode == 0){
+                    this.dialogIcon = 'error-message';
+                    this.dialogIcon = 'An error has occured when updating AR status';
+                  }else{
+                    console.log(data);
+                    console.log('printed');
+                    this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+                  }
+                }
+              );
+            },1000);
+          }
         }
+        this.loading = false;
       }
     );
   }
@@ -883,31 +908,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
         this.arInfo.arNo = parseInt(this.generatedArNo);
       }
-      this.save();
+      this.save(undefined, true);
       /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
-      this.reprintMethod();
-      //Update Transactions to Closed and AR Status to Printed
-      let params: any = {
-        tranId: this.arInfo.tranId,
-        arNo: this.arInfo.arNo,
-        updateUser: this.ns.getCurrentUser(),
-        updateDate: this.ns.toDateTimeString(0)
-      }
-      setTimeout(()=>{
-        this.as.printAr(params).subscribe(
-          (data:any)=>{
-            if(data.returnCode == 0){
-              this.dialogIcon = 'error-message';
-              this.dialogIcon = 'An error has occured when updating AR status';
-            }else{
-              console.log(data);
-              console.log('printed');
-              this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
-            }
-          }
-        );
-      },1000);
+      
     }
   }
 
