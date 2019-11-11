@@ -14,7 +14,7 @@
 								<div class="col-sm">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-3">JV Type</label>
-											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="jvTypeCd" name="jvType">
+											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="jvTypeCd" name="jvTypeCd">
 												<option *ngFor="let jv of jvTypes" [value]="jv.jvTypeCd">{{jv.jvTypeName}}</option>
 											</select>
 									</div>
@@ -22,7 +22,7 @@
 								<div class="col-sm">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-3">JV No</label>
-											<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "invoiceNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "jvNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 											<!-- option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option> -->		
 									</div>
 								</div>
@@ -49,7 +49,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 5px !important;margin-bottom: 5px !important"> 
 								<div class="form-row custom-row-inline-inset">
 									<div class="col-sm-12">
-											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice()" (newClick)="onTableClick($event)">
+											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice()" (newClick)="onTableClick($event)" (add)="add()">
 												<ng-container controls-l>
 														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
 														<label class="form-control-sm">Untag All</label> 

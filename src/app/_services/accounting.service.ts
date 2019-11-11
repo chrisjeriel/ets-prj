@@ -2951,4 +2951,21 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitEditedAcctEntries',{params});
 	}
 
+	 getAcseBatchInvoice(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('jvDateFrom','')
+				.set('jvDateTo','')
+				.set('jvNo','')
+				.set('jvTypeCd','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchInvoice', {params});
+	}
+
 }
