@@ -1344,6 +1344,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     var d = new Date();    
 
     setTimeout(() => {
+      $('input[appCurrency]').focus().blur();
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
       this.servFeeMainTbl.overlayLoader = true;
@@ -1356,20 +1357,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
         if(this.serviceFeeMainData.tableData.length == 0 && this.serviceFeeSubData.tableData.length == 0) {
-          
           this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
           this.yearParam = d.getFullYear();
         } else {
           this.qtrParam = this.serviceFeeSubData.tableData[0].quarter;
           this.yearParam = this.serviceFeeSubData.tableData[0].sfeeYear;
-          
         }
 
         this.servFeeMainTbl.refreshTable();
         this.servFeeSubTbl.refreshTable();
-
-        this.servFeeMainTbl.markAsDirty();
-        this.servFeeSubTbl.markAsDirty();
       });
     } else {
       this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
