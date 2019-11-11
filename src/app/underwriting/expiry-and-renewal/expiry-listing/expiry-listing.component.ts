@@ -809,9 +809,9 @@ export class ExpiryListingComponent implements OnInit {
 
   gotoInfo() {
       if (this.activeTable == "R") {
-          this.router.navigate(['/policy-information', {policyId:this.table.indvSelect.policyId, policyNo:this.table.indvSelect.policyNo}], { skipLocationChange: true });
+          this.router.navigate(['/policy-information', {policyId:this.table.indvSelect.policyId, policyNo:this.table.indvSelect.policyNo,exitLink:'/expiry-listing'}], { skipLocationChange: true });
       } else {
-          this.router.navigate(['/policy-information', {policyId:this.nrTable.indvSelect.policyId, policyNo:this.nrTable.indvSelect.policyNo}], { skipLocationChange: true });
+          this.router.navigate(['/policy-information', {policyId:this.nrTable.indvSelect.policyId, policyNo:this.nrTable.indvSelect.policyNo,exitLink:'/expiry-listing'}], { skipLocationChange: true });
       }
   }
 

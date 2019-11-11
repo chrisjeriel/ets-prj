@@ -59,6 +59,7 @@ export class PolicyInformationComponent implements OnInit {
   fromClm: boolean = false;
   clmInfo: any = null;
   clmInq: boolean = false;
+  exitLink: string = '';
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
@@ -66,6 +67,7 @@ export class PolicyInformationComponent implements OnInit {
       this.fetchInfo(data.policyId, data.policyNo);
       this.policyId = data.policyId;
       this.policyNo = data.policyNo;
+      this.exitLink = data.exitLink !== undefined ? data.exitLink:'/policy-inquiry';
 
       if(data['clmInfo']) {
         this.fromClm = true;
@@ -141,7 +143,7 @@ export class PolicyInformationComponent implements OnInit {
         $event.preventDefault();
 
         if(!this.fromClm) {
-          this.router.navigateByUrl('/policy-inquiry');  
+          this.router.navigate([this.exitLink],{ skipLocationChange: true });
         } else {
 
           this.router.navigate(
