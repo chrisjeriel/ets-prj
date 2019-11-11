@@ -108,7 +108,7 @@ export class AcctOrEntryComponent implements OnInit {
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
-  generatedArNo: string = '';
+  generatedOrNo: string = '';
   printMethod: string = '2';
   approvalCd: string = '';
 
@@ -858,7 +858,9 @@ export class AcctOrEntryComponent implements OnInit {
           (data:any)=>{
             if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
               //User has the authority to print AR
-              this.printMdl.openNoClose();
+              this.loading = true;
+              this.retrieveMtnAcseOrSeries();
+              //this.printMdl.openNoClose();
             }else{
               //User has no authority. Open Override Login
               this.overrideLogin.getApprovalFn();
@@ -872,13 +874,14 @@ export class AcctOrEntryComponent implements OnInit {
 
   toPrintOr(auth){
     if(auth){
-      this.printMdl.openNoClose();
+      this.loading = true;
+      this.retrieveMtnAcseOrSeries();
     }
   }
 
   reprintMethod(){
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR ' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
     }else if(this.printMethod == '2'){
@@ -896,7 +899,11 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   updateOrStatus(){
+    this.loading = true;
     if(!this.isPrinted){
+      if(this.orInfo.orNo === null || (this.orInfo.orNo !== null && this.orInfo.orNo.length === 0)){
+        this.orInfo.orNo = parseInt(this.generatedOrNo);
+      }
       this.save();
       this.reprintMethod();
       let params: any = {
@@ -921,6 +928,18 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
+  retrieveMtnAcseOrSeries(){
+    this.ms.getAcseOrSeries(this.orInfo.orType, '', '', 'N').subscribe(
+      (data:any)=>{
+        if(data.orSeries.length !== 0){
+          this.generatedOrNo = data.orSeries[0].orNo;
+          this.printMdl.openNoClose();
+        }
+        this.loading = false;
+      }
+    );
+  }
+
   retrievePaymentType(){
     this.paymentTypes = [];
     this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
@@ -1084,7 +1103,7 @@ export class AcctOrEntryComponent implements OnInit {
 
   //VALIDATION STARTS HERE
   checkOrInfoFields(): boolean{
-    if(this.orInfo.orNo.length === 0 ||
+    if(
        this.orDate.date.length === 0 || this.orDate.time.length === 0 ||
        this.orInfo.dcbYear.length === 0 || this.orInfo.dcbUserCd.length === 0 ||
        this.orInfo.dcbNo.length === 0 || this.orInfo.tranTypeCd.length === 0 ||

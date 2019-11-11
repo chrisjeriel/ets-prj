@@ -433,7 +433,7 @@ export class LovComponent implements OnInit {
           ev: ev
         });
       }else{
-         this.mtnService.getMtnReports(this.passData.code).subscribe(data => {
+         this.mtnService.getMtnReports(this.passData.code).subscribe((data:any) => {
            if(data.reports.length > 0){
              data.reports[0]['ev'] = ev;
              data.reports[0]['selector'] = selector;
