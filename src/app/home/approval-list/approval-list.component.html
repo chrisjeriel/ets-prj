@@ -92,7 +92,7 @@
 					    <td>{{ mod.module }}</td>
 					    <td>{{ mod.details }}</td>
 					    <td>{{ mod.assignedBy }}</td>
-					    <td>{{ mod.assignedDate }}</td>
+					    <td>{{ mod.assignedDate | date: 'MM/dd/yyyy hh:mm:ss a' }}</td>
 					</tr>
 					<tr *ngIf="approvalList.length == 0">
 					    <td colspan="4" style="text-align: center;">No records for approval.</td>

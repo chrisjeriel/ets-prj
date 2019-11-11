@@ -66,6 +66,8 @@ export class WfRemindersComponent implements OnInit {
        .subscribe((data)=>{
            var records = data['reminderList'];
                for(let rec of records){
+                 rec.createDate = this.ns.toDateTimeString(rec.createDate);
+                 rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
                  if(rec.assignedTo === this.currentUser){
                    this.reminderList.push(rec);
                  }
@@ -132,6 +134,7 @@ export class WfRemindersComponent implements OnInit {
     this.wfReminder.reminder = reminder;
     this.wfReminder.isReadOnly = isReadOnly;
     $('#reminderModal #modalBtn').trigger('click');
+    console.log('jejejejejejejeje');
   }
 
   updateReminderModal(reminder, status){
@@ -211,7 +214,6 @@ export class WfRemindersComponent implements OnInit {
      this.workFlowManagerService.saveWfmReminders(obj).pipe(finalize(() => this.saveFinalProcess())).
      subscribe(data => {
              console.log(data);
-
             if(data['returnCode'] === 0) {
                  this.dialogIcon = 'error-message';
                  this.dialogMessage = "Error saving reminder";
