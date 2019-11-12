@@ -66,22 +66,58 @@
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
                         <div class="col-sm-2" style="margin-right: -30px !important;"></div>
-                        <div class="col-sm-8 input-group">
+                        <!-- <div class="col-sm-8 input-group">
                           <label class="form-control-sm col-sm-2">Service Fee</label>
-                          <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [(ngModel)]="requestData.reqAmt" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
                           <label class="form-control-sm col-sm-2">Period As Of</label>
-                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="qtrParam">
+                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="qtrParam" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
                             <option value="1">First Quarter</option>
                             <option value="2">Second Quarter</option>
                             <option value="3">Third Quarter</option>
                             <option value="4">Fourth Quarter</option>
                           </select>
-                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="yearParam" style="margin-left: 2px !important;">
+                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="yearParam" style="margin-left: 2px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
                             <ng-container *ngFor="let y of yearParamOpts">
                               <option [value]="y">{{ y }}</option>
                             </ng-container>
                           </select>
-                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="qtrParam == null || yearParam == null" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                        </div> -->
+
+                        <div class="col-sm-4">
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-6">Period As Of</label>
+                            <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="qtrParam" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                              <option value="1">First Quarter</option>
+                              <option value="2">Second Quarter</option>
+                              <option value="3">Third Quarter</option>
+                              <option value="4">Fourth Quarter</option>
+                            </select>
+                            <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="yearParam" style="margin-left: 2px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                              <ng-container *ngFor="let y of yearParamOpts">
+                                <option [value]="y">{{ y }}</option>
+                              </ng-container>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-4">
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total Service Fee</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="totalSfeeAmts.totalSfee" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
+                            <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total VAT</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalVat | number: '1.2-2'" readonly appCurrency>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total WhTax</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalWhtax | number: '1.2-2'" readonly appCurrency>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4"></label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalDue | number: '1.2-2'" readonly appCurrency style="font-weight: bold;">
+                          </div>
                         </div>
                         <div class="col-sm-2"></div>
                     </div>
@@ -92,7 +128,7 @@
                       </div>
                       <div class="col-sm-1"></div>
                     </div>
-                    <div class="input-group" style="margin-top: 8px;">
+                    <div class="input-group" style="margin-top: 8px; margin-bottom: 0 !important;">
                       <div class="col-sm-12">
                         <app-cust-editable-non-datatable #servFeeSubTbl [passData]="serviceFeeSubData"></app-cust-editable-non-datatable>
                       </div>
@@ -115,7 +151,7 @@
                     <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr('oth');"></app-cust-editable-non-datatable>
                 </ng-container>
               </ng-container>
-              <div class="form-row" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+              <div class="input-group" style="margin-bottom: 0 !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
                 <div class="form-group col-sm">
                   <div class="text-center">
                     <div class="cust-btn-container">
@@ -178,7 +214,7 @@
   </div>
 
   <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;padding-right: 0px !important;">
-    <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+    <fieldset class="scheduler-border" style="margin-top: 10px !important; padding-bottom: 8px !important;">
       <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
         <label class="form-control-sm col-sm-1">Created By</label>
         <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedTblData?.createUser" readonly>
