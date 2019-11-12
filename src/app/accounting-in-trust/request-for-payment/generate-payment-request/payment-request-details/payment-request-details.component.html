@@ -103,20 +103,20 @@
                         <div class="col-sm-4">
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total Service Fee</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="requestData.reqAmt" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="totalSfeeAmts.totalSfee" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
                             <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total VAT</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="requestData.reqAmt" readonly appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalVat | number: '1.2-2'" readonly appCurrency>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total WhTax</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="requestData.reqAmt" readonly appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalWhtax | number: '1.2-2'" readonly appCurrency>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4"></label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="requestData.reqAmt" readonly appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalDue | number: '1.2-2'" readonly appCurrency style="font-weight: bold;">
                           </div>
                         </div>
                         <div class="col-sm-2"></div>
