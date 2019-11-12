@@ -15,8 +15,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 })
 export class InwardPolBalanceComponent implements OnInit {
 
-  @ViewChild('instllmentTable')instllmentTable:CustEditableNonDatatableComponent;
-  @ViewChild('otherTable')otherTable:CustEditableNonDatatableComponent;
+  @ViewChild('instllmentTable') instllmentTable :CustEditableNonDatatableComponent;
+  @ViewChild('otherTable') otherTable : CustEditableNonDatatableComponent;
   @ViewChild(LovComponent)lov:LovComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
@@ -33,16 +33,17 @@ export class InwardPolBalanceComponent implements OnInit {
     dataTypes: ["number","date","date","currency","currency","currency",],
     keys:['instNo','dueDate','bookingDate','premAmt','otherChargesInw'],
     nData: {
-      "instNo": null,
-      "bookingDate": this.ns.toDateTimeString(0),
-      "dueDate": this.ns.toDateTimeString(0),
-      "premAmt": 0,
-      "otherChargesInw": 0,
-      "amtDue": 0,
-      "createUser": this.ns.getCurrentUser(),
-      "createDate": this.ns.toDateTimeString(0),
-      "updateUser": this.ns.getCurrentUser(),
-      "updateDate": this.ns.toDateTimeString(0),
+      instNo: null,
+      bookingDate: null,
+      dueDate: null,
+      premAmt: 0,
+      otherChargesInw: 0,
+      amtDue: 0,
+      createUser: null,
+      createDate: null,
+      updateUser: null,
+      updateDate: null,
+      newRec : 1,
       otherCharges:[]
     },
     addFlag: true,
@@ -156,16 +157,20 @@ export class InwardPolBalanceComponent implements OnInit {
             return true;
           });
         }
+      }else{
+        this.passData.tableData = [];
+        this.passData2.tableData = [];
       }
+
       this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
 
-      var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;
+      // var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;
 
-      function pad(num) {
-        return (num < 10) ? '0' + num : num;
-      }
-      this.passData.nData.dueDate = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)+1) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
+      // function pad(num) {
+      //   return (num < 10) ? '0' + num : num;
+      // }
+      // this.passData.nData.dueDate = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)+1) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
       
     });
 
@@ -191,7 +196,7 @@ export class InwardPolBalanceComponent implements OnInit {
       this.passData2.disableGeneric = true;
       this.passData2.tableData = data.otherCharges;
     }
-    this.otherTable.refreshTable();
+   // this.otherTable.refreshTable();
   }
 
   clickLOV(data){
@@ -222,7 +227,7 @@ export class InwardPolBalanceComponent implements OnInit {
   compute(){
     /*var test = this.ns.toDate(x).getFullYear() + '-' + pad((this.ns.toDate(x).getMonth()+1)) + '-' + pad(this.ns.toDate(x).getDate()) + 'T' + pad( this.ns.toDate(x).getHours()) + ':' + pad( this.ns.toDate(x).getMinutes()) + ':' + pad( this.ns.toDate(x).getSeconds());
     var dateNew = this.ns.toDate(test).getFullYear()*/
-
+    console.log('compute function');
     var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;
     function pad(num) {
       return (num < 10) ? '0' + num : num;
