@@ -156,6 +156,14 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' || this.minDate == undefined ? null : new Date(this.minDate);
   	}
+
+    if(this.maximumDate != null && this.ns.toDateTimeString(this.maximumDate).split('T')[0] != this.maxDate) {
+      this.maximumDate = this.maxDate == '' || this.maxDate == undefined ? null : new Date(this.maxDate);
+    }
+
+    if(this.defaultDate != null && this.ns.toDateTimeString(this.defaultDate).split('T')[0] != this.defDateOnNull) {
+      this.defaultDate = this.defDateOnNull == '' || this.defDateOnNull == undefined ? null : new Date(this.defDateOnNull);
+    }
   }
 
   valueUpdated() {
