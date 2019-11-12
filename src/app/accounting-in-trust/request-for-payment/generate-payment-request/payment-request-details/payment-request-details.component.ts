@@ -1364,11 +1364,20 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
         if(data['mainDistList'].length > 0) {
+          this.totalSfeeAmts.totalSfee = this.recPrqTrans[0].serviceFee;
+          this.totalSfeeAmts.totalVat = 0;
+          this.totalSfeeAmts.totalWhtax = 0;
+          this.totalSfeeAmts.totalDue = 0;
+
           this.serviceFeeMainData.tableData.forEach(a => {
             this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
             this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
             this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
           });
+
+          setTimeout(() => {
+            $('input[appCurrency]').focus().blur();
+          }, 0);
         }
 
         if(this.serviceFeeMainData.tableData.length == 0 && this.serviceFeeSubData.tableData.length == 0) {
@@ -1386,6 +1395,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.totalSfeeAmts.totalSfee, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        this.totalSfeeAmts.totalVat = 0;
+        this.totalSfeeAmts.totalWhtax = 0;
+        this.totalSfeeAmts.totalDue = 0;
 
         this.serviceFeeMainData.tableData.forEach(a => {
           this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
@@ -1407,7 +1420,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       reqId: this.requestData.reqId,
       quarter: this.qtrParam,
       year: this.yearParam,
-      servFeeAmt: this.requestData.reqAmt,
+      servFeeAmt: this.totalSfeeAmts.totalSfee,
+      netServFee: this.totalSfeeAmts.totalDue,
       currCd: this.requestData.currCd,
       currRt: this.requestData.currRate,
       createUser: this.ns.getCurrentUser(),
