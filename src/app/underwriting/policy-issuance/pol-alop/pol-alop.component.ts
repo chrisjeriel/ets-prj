@@ -171,8 +171,6 @@ export class PolAlopComponent implements OnInit {
 
   getPolAlop() {
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      console.log(data.policy.policyId)
-      console.log(this.policyInfo.policyId)
       if (data.policy != null && data.policy.policyId == this.policyInfo.policyId) {
 
         this.policyId = data.policy.policyId;
@@ -190,7 +188,6 @@ export class PolAlopComponent implements OnInit {
         this.getSumInsured();
 
       } else {
-        console.log('ENTRANCE')
 
         var params = this.line+'_ALOP';
         var sub$ = forkJoin(this.mtnService.getMtnInsured(this.policyInfo.principalId),
@@ -227,7 +224,6 @@ export class PolAlopComponent implements OnInit {
   getSumInsured(){
    if(!this.alterFlag){
      this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
-       console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i < sectionCovers.length;i++){
@@ -241,15 +237,11 @@ export class PolAlopComponent implements OnInit {
    }else{
      var parameters = this.policyInfo.policyNo.split(/[-]/g);
      this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
-       console.log(data)
-       console.log(this.coverCd)
        if(data !== null){
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
-           console.log(sectionCovers[i])
            if(sectionCovers[i].coverCd == this.coverCd){
              this.polAlopData.annSi = sectionCovers[i].cumSi;
-             console.log(this.polAlopData.annSi)
            }
          }
          this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
@@ -447,7 +439,6 @@ export class PolAlopComponent implements OnInit {
   }
 
   indemDateChange(data){
-    console.log(data== '')
     if(data !== ''){
       this.polAlopData.indemFromDate=data+'T'+(this.polAlopData.indemFromDate == null ? this.ns.toDateTimeString(0).split('T')[1]:this.polAlopData.indemFromDate.split('T')[1]); 
     }else{
