@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild} from '@angular/core';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -339,8 +339,11 @@ export class PolCoverageComponent implements OnInit {
   negativeFlag: number = 0;
   holdCoverPrem: boolean = false;
 
+  showCatPerilBtn:boolean = false;
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
-                private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
+                private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe,
+                private ms: MaintenanceService) { }
 
 
   ngOnInit() {
@@ -355,7 +358,12 @@ export class PolCoverageComponent implements OnInit {
               this.parameters = this.policyInfo.policyNo.split(/[-]/g);
             }
 
+            this.ms.getLineLOV(this.line).subscribe(a=>{
+              this.showCatPerilBtn = a['line'][0].catTag == 'Y';
+            });
+
     });
+
 
     if (!this.alteration) {
       this.getPolCoverage();

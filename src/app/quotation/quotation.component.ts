@@ -357,6 +357,12 @@ export class QuotationComponent implements OnInit {
               this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
               this.successDiag.open();
+            } else if(data['returnCode'] == 20000){
+              for(let msg of data['errorList']){
+                this.dialogMessage = msg.errorMessage;
+              }
+              this.dialogIcon = "error-message";
+              this.successDiag.open();
             } else {
               this.dialogMessage = "Status Updated";
               this.dialogIcon = "success-message";
@@ -374,6 +380,12 @@ export class QuotationComponent implements OnInit {
               $('#quote-option #successModalBtn').trigger('click');*/
               this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
+              this.successDiag.open();
+            } else if(data['returnCode'] == 20000){
+              for(let msg of data['errorList']){
+                this.dialogMessage = msg.errorMessage;
+              }
+              this.dialogIcon = "error-message";
               this.successDiag.open();
             } else {
               this.dialogMessage = "Pending for Approval";
