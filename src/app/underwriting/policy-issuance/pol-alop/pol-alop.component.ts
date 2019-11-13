@@ -10,6 +10,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { highlight,unHighlight } from '@app/_directives/highlight';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pol-alop',
@@ -105,6 +107,8 @@ export class PolAlopComponent implements OnInit {
   prevPolNo: string;
   promptClickItem:boolean = false;
   savedData: any = {};
+  coverCd:any;
+  subscription: Subscription = new Subscription();
 
   @Input() policyInfo:any = {};
   @Input() alterFlag: boolean;
@@ -163,13 +167,11 @@ export class PolAlopComponent implements OnInit {
       this.passDataCar.deleteFlag = false;
       this.passDataEar.deleteFlag = false;
     }
-    console.log(this.policyInfo)
   }
 
   getPolAlop() {
     this.underwritingService.getPolAlop(this.policyInfo.policyId, this.policyInfo.policyNo).subscribe((data: any) => {
-      
-      if (data.policy != null) {
+      if (data.policy != null && data.policy.policyId == this.policyInfo.policyId) {
 
         this.policyId = data.policy.policyId;
         this.polAlopData = data.policy.alop;
@@ -186,29 +188,35 @@ export class PolAlopComponent implements OnInit {
         this.getSumInsured();
 
       } else {
-        this.mtnService.getMtnInsured(this.policyInfo.principalId).subscribe((data: any) => {
-          this.polAlopData.insId = data.insured[0].insuredId;
-          this.polAlopData.insuredName = data.insured[0].insuredAbbr;
-          this.polAlopData.insuredDesc = data.insured[0].insuredName;
-          this.polAlopData.address = data.insured[0].address;
+
+        var params = this.line+'_ALOP';
+        var sub$ = forkJoin(this.mtnService.getMtnInsured(this.policyInfo.principalId),
+                            this.underwritingService.getPolGenInfo(this.policyInfo.policyId, null),
+                            this.mtnService.getMtnParameters(null,params)).pipe(map(([mtnInsured, genInfo,params]) => { return { mtnInsured, genInfo, params}}));
+
+        this.subscription.add(sub$.subscribe((data:any) => {
+          console.log(data);
+
+          this.polAlopData.insId = data.mtnInsured.insured[0].insuredId;
+          this.polAlopData.insuredName = data.mtnInsured.insured[0].insuredAbbr;
+          this.polAlopData.insuredDesc = data.mtnInsured.insured[0].insuredName;
+          this.polAlopData.address = data.mtnInsured.insured[0].address;
 
           this.polAlopData.createUser = this.ns.getCurrentUser()
-          this.polAlopData.createDate = this.ns.toDateTimeString(new Date());
-          this.polAlopData.updateDate = this.ns.toDateTimeString(new Date());
-          this.polAlopData.updateUser = this.ns.getCurrentUser()
-          this.getSumInsured();
-        });
+          this.polAlopData.createDate = this.ns.toDateTimeString(0);
+          this.polAlopData.updateDate = this.ns.toDateTimeString(0);
+          this.polAlopData.updateUser = this.ns.getCurrentUser();
 
-        this.underwritingService.getPolGenInfo(this.policyInfo.policyId, null).subscribe((data:any) => {
-          if (data.policy != null) {
-            this.policyId = data.policy.policyId;
-            this.polAlopData.issueDate = data.policy.inceptDate == null? null:this.ns.toDateTimeString(data.policy.inceptDate);
-            this.polAlopData.expiryDate = data.policy.expiryDate == null? null:this.ns.toDateTimeString(data.policy.expiryDate);
-            this.polAlopData.indemFromDate = data.policy.alop.indemFromDate == null? null:this.ns.toDateTimeString(data.policy.alop.indemFromDate);
-            this.polAlopData.createDate = this.ns.toDateTimeString(data.policy.alop.createDate);
-            this.polAlopData.updateDate = this.ns.toDateTimeString(data.policy.alop.updateDate);
-          }
-        });
+          this.policyId = data.genInfo.policy.policyId;
+          this.polAlopData.issueDate = data.genInfo.policy.inceptDate == null? null:this.ns.toDateTimeString(data.genInfo.policy.inceptDate);
+          this.polAlopData.expiryDate = data.genInfo.policy.expiryDate == null? null:this.ns.toDateTimeString(data.genInfo.policy.expiryDate);
+          this.polAlopData.indemFromDate = data.genInfo.policy.alop.indemFromDate == null? null:this.ns.toDateTimeString(data.genInfo.policy.alop.indemFromDate);
+          this.polAlopData.createDate = this.ns.toDateTimeString(data.genInfo.policy.alop.createDate);
+          this.polAlopData.updateDate = this.ns.toDateTimeString(data.genInfo.policy.alop.updateDate);
+
+          this.coverCd = data.params.parameters[0].paramValueN;
+          this.getSumInsured();
+        }));
       }
     });
   }
@@ -219,7 +227,7 @@ export class PolAlopComponent implements OnInit {
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i < sectionCovers.length;i++){
-           if(sectionCovers[i].coverCd == 16){
+           if(sectionCovers[i].coverCd == this.coverCd){
              this.polAlopData.annSi = sectionCovers[i].sumInsured;
            }
          }
@@ -227,19 +235,31 @@ export class PolAlopComponent implements OnInit {
        }
      });
    }else{
-     this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
+     var parameters = this.policyInfo.policyNo.split(/[-]/g);
+     this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
+       if(data !== null){
+         var sectionCovers = data.policy.project.coverage.sectionCovers;
+         for( var i = 0; i <sectionCovers.length;i++){
+           if(sectionCovers[i].coverCd == this.coverCd){
+             this.polAlopData.annSi = sectionCovers[i].cumSi;
+           }
+         }
+         this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
+       }
+     });
+     /*this.underwritingService.getUWCoverageInfos(null,this.policyInfo.policyId).subscribe((data:any) => {
        console.log(data)
        if (data.policy != null) {
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
-           if(sectionCovers[i].coverCd == 16){
+           if(sectionCovers[i].coverCd == this.coverCd){
              this.polAlopData.annSi = sectionCovers[i].cumSi;
            }
          }
          console.log(this.polAlopData.annSi)
          this.polAlopData.maxIndemPdSi = isNaN(this.polAlopData.maxIndemPd) ? 0: ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi);
        } 
-     });
+     });*/
    }
  }
 
@@ -418,9 +438,16 @@ export class PolAlopComponent implements OnInit {
     $('#polAlopItem #confirm-save #modalBtn2').trigger('click');
   }
 
+  indemDateChange(data){
+    if(data !== ''){
+      this.polAlopData.indemFromDate=data+'T'+(this.polAlopData.indemFromDate == null ? this.ns.toDateTimeString(0).split('T')[1]:this.polAlopData.indemFromDate.split('T')[1]); 
+    }else{
+      this.polAlopData.indemFromDate = null;
+    }
+  }
+
   checkDates(){
     if((this.ns.toDate(this.polAlopData.issueDate) >= this.ns.toDate(this.polAlopData.expiryDate))){
-      console.log('pasok')
      // highlight(this.to);
      // highlight(this.from);
      this.dateErFlag = true;
@@ -430,7 +457,7 @@ export class PolAlopComponent implements OnInit {
      this.dateErFlag = false;
     }
 
-    if(!this.dateErFlag){
+    if(!this.dateErFlag && this.polAlopData.indemFromDate !== null){
       if((this.ns.toDate(this.polAlopData.indemFromDate) < this.ns.toDate(this.polAlopData.expiryDate))){
         // highlight(this.to);
         // highlight(this.indemFrom);

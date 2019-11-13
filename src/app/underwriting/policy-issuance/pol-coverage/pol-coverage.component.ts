@@ -632,12 +632,12 @@ export class PolCoverageComponent implements OnInit {
                   this.comtotalSi   += this.passData.tableData[j].cumSi;
                   this.alttotalSi   += this.passData.tableData[j].sumInsured;
               }
-              this.prevsectionISi      += this.passData.tableData[j].prevSumInsured;
-              this.prevtotalSi  += this.passData.tableData[j].prevSumInsured
-              this.prevsectionIIPrem   += this.passData.tableData[j].prevPremAmt;
-              this.altsectionIIPrem    += this.passData.tableData[j].premAmt;
-              this.exsectionIIPrem     += this.passData.tableData[j].exPremAmt;
-              this.comsectionIIPrem    += this.passData.tableData[j].cumPrem;
+              this.prevsectionIISi      += this.passData.tableData[j].prevSumInsured;
+              this.prevtotalSi          += this.passData.tableData[j].prevSumInsured
+              this.prevsectionIIPrem    += this.passData.tableData[j].prevPremAmt;
+              this.altsectionIIPrem     += this.passData.tableData[j].premAmt;
+              this.exsectionIIPrem      += this.passData.tableData[j].exPremAmt;
+              this.comsectionIIPrem     += this.passData.tableData[j].cumPrem;
 
               this.prevtotalPrem     += this.passData.tableData[j].prevPremAmt;
               this.alttotalPrem      += this.passData.tableData[j].premAmt;

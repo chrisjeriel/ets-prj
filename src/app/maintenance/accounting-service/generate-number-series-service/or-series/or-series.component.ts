@@ -37,6 +37,8 @@ export class OrSeriesComponent implements OnInit {
     orType: 'VAT',
     orFrom: '',
     orTo:'',
+    usedTag: '',
+    rowNum: '',
     createUser: this.ns.getCurrentUser(),
     createDate: this.ns.toDateTimeString(0),
     updateUser: this.ns.getCurrentUser(),
@@ -55,7 +57,7 @@ export class OrSeriesComponent implements OnInit {
 
   retrieveOrSeries(){
     this.table.loadingFlag = true;
-    this.maintenanceService.getAcseOrSeries(this.params.orType,this.params.orFrom,this.params.orTo).subscribe((data:any) => {
+    this.maintenanceService.getAcseOrSeries(this.params.orType,this.params.orFrom,this.params.orTo,this.params.usedTag,this.params.rowNum).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
       for (var i = 0; i < data.orSeries.length; i++) {
