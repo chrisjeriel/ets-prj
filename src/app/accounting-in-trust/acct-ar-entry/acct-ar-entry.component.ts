@@ -633,7 +633,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             arStatus: this.arInfo.arStatus,
             arStatDesc: this.arInfo.arStatDesc,
             arDate: this.arInfo.arDate,
-            dcbNo: this.arInfo.dcbYear+'-'+this.arInfo.dcbUserCd+'-'+this.pad(this.arInfo.dcbNo, 'dcbSeqNo'),
+            dcbNo: this.arInfo.dcbYear+/*'-'+this.arInfo.dcbUserCd+*/'-'+this.pad(this.arInfo.dcbNo, 'dcbSeqNo'),
             tranTypeCd: this.arInfo.tranTypeCd,
             tranTypeName: this.arInfo.tranTypeName,
             currCd: this.arInfo.currCd,
@@ -759,6 +759,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     params.updateDate = this.ns.toDateTimeString(0);
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
+    params.isPrint = isPrint !== undefined ? '1' : null;
 
     //save
     this.as.saveAcitArTrans(params).subscribe(
@@ -1083,6 +1084,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data.arSeriesList.length !== 0){
           this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
           this.printMdl.openNoClose();
+        }else{
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'No A.R. number is available for use.';
+          this.successDiag.open();
         }
         this.loading = false;
       }

@@ -66,7 +66,7 @@
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Business</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-6 business" [(ngModel)]="orInfo.bussTypeName" name="business" [readonly]="isCancelled || isPrinted">
-				<div class="text-search-ico" (click)="openLOV('business')" *ngIf="!isCancelled && !isPrinted && !inquiryFlag"><a><i class="fa fa-search"></i></a></div>
+				<div class="text-search-ico" *ngIf="!isCancelled && !isPrinted && !inquiryFlag"><a><i (click)="openLOV('business')" class="fa fa-search"></i></a></div>
 				<label class="form-control-sm col-sm-2">Tax Identification No.</label>
 				<input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="orInfo.tin" name="tin" [readonly]="isCancelled || isPrinted || inquiryFlag">
 			</div>

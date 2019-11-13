@@ -647,7 +647,7 @@ export class AcctOrEntryComponent implements OnInit {
             orStatus: this.orInfo.orStatus,
             orStatDesc: this.orInfo.orStatDesc,
             orDate: this.orInfo.orDate,
-            dcbNo: this.orInfo.dcbYear+'-'+this.orInfo.dcbUserCd+'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
+            dcbNo: this.orInfo.dcbYear+/*'-'+this.orInfo.dcbUserCd+*/'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
             tranTypeCd: this.orInfo.tranTypeCd,
             tranTypeName: this.orInfo.tranTypeName,
             currCd: this.orInfo.currCd,
@@ -775,6 +775,7 @@ export class AcctOrEntryComponent implements OnInit {
     params.updateDate = this.ns.toDateTimeString(0);
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
+    params.isPrint = isPrint !== undefined ? '1' : null;
 
     //save
     this.as.saveAcseOrEntry(params).subscribe(
@@ -942,6 +943,10 @@ export class AcctOrEntryComponent implements OnInit {
         if(data.orSeries.length !== 0){
           this.generatedOrNo = data.orSeries[0].orNo;
           this.printMdl.openNoClose();
+        }else{
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'No O.R. number is available for use.';
+          this.successDiag.open();
         }
         this.loading = false;
       }
@@ -1214,6 +1219,13 @@ export class AcctOrEntryComponent implements OnInit {
         this.orInfo.particulars = i.defaultParticulars == null ? '' : i.defaultParticulars;
         break;
       }
+    }
+
+    //Change default OR Type
+    if(data == 1){
+      this.orInfo.orType = 'NON-VAT';
+    }else if(data == 2 || data == 3){
+      this.orInfo.orType = 'VAT';
     }
 
     if(data == 1 || data == 2){
