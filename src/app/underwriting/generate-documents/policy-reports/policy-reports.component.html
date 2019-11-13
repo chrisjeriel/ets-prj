@@ -29,23 +29,23 @@
 					<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
-								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="issueDate" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
+								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="Issue Date" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio">Issue Date</label>
 							</div>
 							<div class="input-group">
-								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="effDate" style="margin: 0 0 0 45px" [(ngModel)]="params.effDate">
+								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="Effective Date" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio6">Effective Date</label>
 							</div>
 							<div class="input-group">
-								<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="acctDate" style="margin: 0 0 0 45px" [(ngModel)]="params.effDate">
+								<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="Accounting Date" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio7">Accounting Date</label>
 							</div>
 							<div class="input-group">
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="lossDate" style="margin: 0 0 0 45px" [(ngModel)]="params.effDate">
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="Loss Date" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
 							</div>
 							<div class="input-group">
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="createDate" style="margin: 0 0 0 45px" [(ngModel)]="params.effDate">
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="Create Date" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio9">Create Date</label>
 							</div>
 						</div>
@@ -157,15 +157,24 @@
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
-								<div class="input-group">
-									<div class="col-sm-2"></div>
+								<div class="input-group align-rad">
+									<!-- <div class="col-sm-2"></div>
 									<input name="input197" type="checkbox" class="col-sm-1" style="margin-top: 5px;" [checked]="params.alteration == 'Y'" (change)="params.alteration = (params.alteration == 'Y' ? 'N':'Y')">
-									<label class="form-control-sm col-sm" style="margin-bottom: 0px !important;text-align: left !important;">Include Alteration</label>
+									<label class="form-control-sm col-sm" >Include Alteration</label> -->
+									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag">
+									<label class="form-control-sm" for="radirt1">Policy</label>
+									<input id="radirt2" class="form-control-sm" type="radio" name="incRecTag" value="A" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag">
+									<label class="form-control-sm" for="radirt2">Alteration</label>
+									<input id="radirt3" class="form-control-sm" type="radio" name="incRecTag" value="B" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag">
+									<label class="form-control-sm" for="radirt3">Policy & Alteration</label>
+									<input id="radirt4" class="form-control-sm" type="radio" name="incRecTag" value="D" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag">
+									<label class="form-control-sm" for="radirt4">Distributed</label>
+									<input id="radirt5" class="form-control-sm" type="radio" name="incRecTag" value="U" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag">
+									<label class="form-control-sm" for="radirt5">Undistributed</label>
 								</div>
 							</div>
 							<div class="col-sm-1">
 							</div>
-							<div class="col-sm-1"></div>
 						</div>
 					</fieldset>
 					<div class="col-sm-2"></div>
@@ -179,7 +188,9 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-3" style="margin-bottom: -6px !important;">Destination</label>
 									<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
-										<option> 1 </option>
+										<option value="screen">Screen</option>
+				    					<option value="dlPdf">PDF</option>
+				    					<option value="printPdf">Printer</option>
 									</select>
 									<div class="col-sm-2"></div>
 								</div>
@@ -192,9 +203,9 @@
 				</div>
 				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
 					<div class="cust-btn-container">
-						<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
-						<button type="button" class="cust-btn" (click)="extract()" ><a>Extract</a></button>
-						<button type="button" class="cust-btn"><a>Print</a></button>
+						<button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="extract();" [disabled]="extractDisabled"><a>Extract</a></button>
+						<button type="button" class="cust-btn" (click)="print();"><a>Print</a></button>
 					</div>
 				</div>
 			</ng-template>
@@ -202,22 +213,24 @@
 	</ngb-tabset>
 </div>
 
-<app-modal class="d-none" id="extract" #extractParams>
-    <div header>Confirmartion</div>  
-    <div body>
-        <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-1"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Extracted recordds on the specified parameters already exists. Do you want to extract the record again?</label>
-        </div>
+<app-modal class="d-none" id="extract" #polReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
     </div>
-    <div footer class="text-center">
-        <button type="button" class="cust-btn" (click)="extractParams.closeModal();extract()"><a>Yes</a></button>
-        <button type="button" class="cust-btn" (click)="extractParams.closeModal();"><a>No</a></button>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();forceExtract();extract();"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>Ok</a></button>
     </div>
 </app-modal>
+
 
 
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-cancel-button (onYes)="extract(true)"></app-cancel-button>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { NotesReminders } from '@app/_models';
@@ -13,6 +13,15 @@ export class PrintService {
   constructor(private http: HttpClient, private ns: NotesService) {
 
   }
+
+    extractReport(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/util-service/extractReport',params,header);
+    }
 
   	print(destination:string,reportName:string,param:any){
   		let params= {...{reportName:reportName},...param};
@@ -35,8 +44,7 @@ export class PrintService {
 
   	printToScreen(params:any){
   		let url = environment.prodApiUrl + '/util-service/generateReport?'
-  				+ Object.keys(params).map(a=>a+'='+params[a]).join('&')
-  				+'_blank';
+  				+ Object.keys(params).map(a=>a+'='+params[a]).join('&');
   		window.open(url);
   	}
 
