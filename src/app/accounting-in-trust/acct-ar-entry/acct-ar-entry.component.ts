@@ -759,6 +759,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     params.updateDate = this.ns.toDateTimeString(0);
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
+    params.isPrint = isPrint !== undefined ? '1' : null;
 
     //save
     this.as.saveAcitArTrans(params).subscribe(
