@@ -133,7 +133,7 @@ export class PolicyIssuanceComponent implements OnInit {
         setTimeout(a=>{
           $('input:not([type="search"])').attr('readonly','readonly');
           $('textarea').attr('readonly','readonly');
-          $('select').attr('readonly','readonly');
+          $('select:not(.print)').attr('readonly','readonly');
         },0)
       }
   
@@ -189,8 +189,8 @@ export class PolicyIssuanceComponent implements OnInit {
   }
 
 
-  printDestination:string;
-  printReport:string;
+  printDestination:string = 'screen';
+  printReport:string = 'POLR010';
 
   print(){
     let params:any = {

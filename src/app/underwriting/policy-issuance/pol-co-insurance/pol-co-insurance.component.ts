@@ -32,7 +32,7 @@ export class PolCoInsuranceComponent implements OnInit {
     
     coInsuranceData: any = {
         tableData: [/*new PolicyCoInsurance("CAR-2018-000001-099-0001-000", "EN-CAR-2018-0000001-00", "Malayan", 12.2, 10000, 500000)*/],
-        tHeader: ['Policy No', 'Ref Policy No', 'Ceding Company', 'Share Percentage', 'Share Sum Insured', 'Share Premium'],
+        tHeader: ['Policy No', 'Ref Policy No', 'Ceding Company', 'Treaty Share Percentage (%)', 'Share Sum Insured', 'Share Premium'],
         addFlag:false,
         editFlag:false,
         deleteFlag:false,

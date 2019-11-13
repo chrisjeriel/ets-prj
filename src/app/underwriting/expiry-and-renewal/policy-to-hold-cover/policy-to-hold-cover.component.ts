@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
-import { NotesService, UnderwritingService } from '@app/_services';
+import { NotesService, UnderwritingService, PrintService } from '@app/_services';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
@@ -27,7 +27,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, public modalService: NgbModal, private router: Router,
-			    private activatedRoute: ActivatedRoute) { }
+			    private activatedRoute: ActivatedRoute, private ps:PrintService) { }
 
 	policyListingData: any = {
 		tableData: [],
@@ -592,6 +592,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		});
   	}
 
+
   	release(){
   		//do something
   		/*if(this.authorization === 'UNAUTHORIZED'){
@@ -600,6 +601,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
   			this.statusDesc = 'Approved';
   			this.polHoldCoverParams.approvedBy = this.userName;
   		}*/
+  		
+
   		if(this.statusDesc.toUpperCase() === 'APPROVED'){
   			//DO OFFICIAL PRINTING
   			let params = {
@@ -615,11 +618,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			//this.onClickSave();
 	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 	  			this.isForViewing = true;
+	  			this.ps.print(this.destination,'POLR010',{policyId:this.policyInfo.policyId});
 	  			//this.isReleasing = false;
 	  		});
   		}else{
 	  		//DO DRAFT PRINTING
-	  		console.log('draft print');
+	  		console.log(this.destination);
+	  		this.ps.print(this.destination,'POLR029',{policyId:this.policyInfo.policyId});
   		}
   	}
 

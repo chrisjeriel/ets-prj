@@ -13,6 +13,29 @@ export class PrintService {
   constructor(private http: HttpClient, private ns: NotesService) {
 
   }
+    /*
+      PARAMETERS or refer to GenerateReportRequest.java
+        String reportName
+        String reportId
+        POLR044 polr044Params
+        Integer quoteId
+        Integer adviceNo
+        Integer holdCovId
+        String userId
+        Integer tranId
+        Integer reqId
+        String cedingId
+        String policyId
+        fileName
+
+      DESTINATION
+        screen
+        dlPdf
+        printPdf
+
+
+    */
+
 
     extractReport(params) {
         let header: any = {

@@ -169,8 +169,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
      this.router.navigate(['/alt-policy-listing'],{ skipLocationChange: true }); 
    }
    
-  printDestination:string;
-  printReport:string
+  printDestination:string = 'screen';
+  printReport:string = 'POLR010';
 
    print(){
     let params:any = {
