@@ -46,6 +46,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('myForms') forms:any;
   @ViewChild('printModal') printModal: ModalComponent;
   @ViewChild("remindersTable") remindersTable: CustEditableNonDatatableComponent;
+  @ViewChild('warnMdl') warnModal: ModalComponent;
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
@@ -83,6 +84,7 @@ export class ExpiryListingComponent implements OnInit {
   purgeFlag: boolean = true;
   purgeFlagNR: boolean = true;
   returnCode: any;
+  warnMsg : string = '';
 
   nrReasonCd:string = "";
   nrReasonDescription:string = "";
@@ -1879,5 +1881,17 @@ export class ExpiryListingComponent implements OnInit {
       }
     }
 
+  }
+
+  onClickOkFilter(){
+    var dFrom = new Date(Number(this.dateParams.byYearFrom),Number(this.dateParams.byMonthFrom));
+    var dTo   = new Date(Number(this.dateParams.byYearTo),Number(this.dateParams.byMonthTo));
+    if(dFrom.getTime() > dTo.getTime() && this.radioVal == 'byMonthYear'){
+      this.warnMsg = 'Entered values for Month/Year are invalid';
+      this.warnModal.openNoClose();
+    }else{
+      this.modalService.dismissAll();
+      this.filterMainTable();
+    }
   }
 }

@@ -426,7 +426,7 @@
 							    	<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 50px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" [(ngModel)]="radioVal" [value]="'byPolNo'" (click)="clearData()" />
+											<input class="form-control-sm " type="radio" name="optradio" id="byPolNo" [ngModel]="radioVal" (ngModelChange)="radioVal=$event;clearData();" [value]="'byPolNo'" />
 											<label class="form-control-sm col-sm-2" for="byPolNo" style="margin-left: 2px;">By Policy No</label>
 										</div>
 									</div>
@@ -439,7 +439,8 @@
 								                <input type="text" class="form-control text-right form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Company No" [(ngModel)]="PolicyNo.companyNo" (blur)="PolicyNo.companyNo=pad($event,3)" [readonly]="radioVal != 'byPolNo'" mask="999">
 								                <input type="text" class="form-control text-right form-control-sm col-sm-2	 cap-input" style="margin-left: 3px;" ngbTooltip="Co Series No" [(ngModel)]="PolicyNo.coSeriesNo" [readonly]="radioVal != 'byPolNo'" mask="9999" (blur)="PolicyNo.coSeriesNo=pad($event,4)">
 								                <input type="text" class="form-control text-right form-control-sm col-sm-1 cap-input" style="margin-left: 3px;" ngbTooltip="Alt No" [(ngModel)]="PolicyNo.altNo" (blur)="PolicyNo.altNo=pad($event,3)" [readonly]="radioVal != 'byPolNo'" mask="999">  
-								                <div style="padding-left: 5px;"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
+								                <div style="padding-left: 5px;" *ngIf="radioVal == 'byPolNo'"><a><i class="fa fa-search" (click)="showPolicyLov()"></i></a></div> 
+								                <!-- <div class="text-search-ico" *ngIf="radioVal != 'byPolNo'"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div> -->
 
 										</div>	
 									</div>
@@ -447,7 +448,7 @@
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [(ngModel)]="radioVal" [value]="'byDate'" />
+											<input class="form-control-sm " type="radio" name="optradio" id="byDate" [ngModel]="radioVal" (ngModelChange)="radioVal=$event;clearData();" [value]="'byDate'" />
 											<label class="form-control-sm col-sm-2" for="byDate" style="text-align: left !important;">&nbsp;By Date</label>
 										</div>
 									</div>
@@ -461,7 +462,7 @@
 											</div>
 											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
 											<div class="col-sm-3 dp-cont">
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateTo" [disabled]="radioVal != 'byDate'"></datepicker>
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [minDate]="dateParams.byDateFrom" [(value)]="dateParams.byDateTo" [disabled]="radioVal != 'byDate'"></datepicker>
 											</div>	
 										</div>
 									</div>
@@ -469,7 +470,7 @@
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-top: -10px;margin-left: 100px;">
 											<div class="col-sm-1"></div>
-											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="'byMonthYear'" [(ngModel)]="radioVal">
+											<input class="form-control-sm " type="radio" name="optradio" id="byMonthYear" [value]="'byMonthYear'" [ngModel]="radioVal" (ngModelChange)="radioVal=$event;clearData();">
 											<label class="form-control-sm col-sm-3" for="byMonthYear" style="text-align: left !important;">&nbsp;By Month/Year</label>
 										</div>
 									</div>
@@ -491,7 +492,7 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="fromYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;" [ngModel]="dateParams.byYearFrom" (ngModelChange)="dateParams.byYearFrom = $event" maxlength="4" numbers-only>
 												<label class="form-control-sm col-sm-1 cust-sm toMonth" style="margin-left: -10px !important;">To</label>
 												<select class="form-control form-control-sm cust-sm col-sm-2" name="toMonth" [disabled]="radioVal != 'byMonthYear'" style="margin-left: 0px !important; margin-top: 0px !important;" [ngModel]="dateParams.byMonthTo"(ngModelChange)="dateParams.byMonthTo=$event">
 													<option value="01">January</option>
@@ -507,7 +508,7 @@
 													<option value="11">November</option>
 													<option value="12">December</option>
 												</select>
-												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event">
+												<input class="form-control form-control-sm cust-sm col-sm-1" type="text" name="toYear" [readonly]="radioVal != 'byMonthYear'" style="margin-left: 3px !important;"  [ngModel]="dateParams.byYearTo" (ngModelChange)="dateParams.byYearTo = $event" maxlength="4" numbers-only>
 											</div>
 										</div>
 										<br>
@@ -543,7 +544,7 @@
 							        <div class="cust-btn-container text-center" style="margin-right: 215px;">
 							            <button type="button" class="cust-btn" (click)="clearData();"><a>Clear</a></button>
 							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-							            <button type="button" class="cust-btn" (click)="modalService.dismissAll();  filterMainTable();"><a>Ok</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickOkFilter();"><a>Ok</a></button>
 									</div>
 								</div>
                 </app-modal>
@@ -617,6 +618,18 @@
     			</div>
     		</div>
     	</div>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #warnMdl >
+    <div header>Warning</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+            <p class="col-sm-12">{{ warnMsg }}</p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnMdl.closeModal()">Ok</button>
     </div>
 </app-modal>
 
