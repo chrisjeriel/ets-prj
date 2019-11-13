@@ -40,135 +40,136 @@
     <ngb-tabset (tabChange)="onTabChange($event)">
         <ngb-tab title="Policy to Hold Cover">
             <ng-template ngbTabContent>
-                <div class="row" style="margin-top: 10px;">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
-                            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-                            <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
-                          <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Policy Info</legend>
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm">
-                                <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
-                                    <div class="input-group" style="margin-top: -12px !important;">
-                                    &nbsp; 
+                <form #myForm="ngForm">
+                    <div class="row" style="margin-top: 10px;">
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-8">
+                                                    <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                                                    <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+                                                  <fieldset class="scheduler-border">
+                                                    <legend class="scheduler-border">Policy Info</legend>
+                                                    <div class="col-sm-1"></div>
+                                                    <div class="col-sm">
+                                                        <div class="row" style="margin-right: 0px; margin-bottom: 11px;">
+                                                            <div class="input-group" style="margin-top: -12px !important;">
+                                                            &nbsp; 
+                                                            </div>
+                                                            <div class="input-group">
+                                                                <div class="input-group ig-row">
+                                                                    <label class="form-control-sm col-sm-2">Policy No</label>
+                                                                    <div class="input-group col-sm-8">
+                                                                        <input name="input1" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="3" mask="SSS">
+                                                                        <input name="input2" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4" numbers-only>
+                                                                        <input name="input3" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5" numbers-only>
+                                                                        <input name="input4" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3" numbers-only>
+                                                                        <input name="input5" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4" numbers-only>
+                                                                        <input name="input6" type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3" numbers-only>
+                                                                    </div>
+                                                                    <span>&nbsp;</span>
+                                                                    <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
+                                                                </div>
+                                                                <div class="input-group ig-row" style="margin-top: -3px !important;">
+                                                                    <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                                                    <input name="input7" type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.cedingName" tabindex="-1">
+                                                                </div>
+                                                                <div class="input-group ig-row">
+                                                                    <label class="form-control-sm col-sm-2">Insured</label>
+                                                                    <input name="input8" type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.insuredDesc" tabindex="-1">
+                                                                </div>
+                                                                <div class="input-group ig-row">
+                                                                    <label class="form-control-sm col-sm-2">Risk</label>
+                                                                    <input name="input9" type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.riskName" tabindex="-1">
+                                                                </div>
+                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-sm-2"></div>
+                                        </div>
+                    <div class="row">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <fieldset class="scheduler-border">
+                                <legend class="scheduler-border">Hold Cover Details</legend>
+                                <div class="col-sm" style="margin-top: 15px;">
+                                    <div class="custom-row-inline-inset">
+                                        <!-- <div class="input-group"> -->
+                                            <div class="input-group ig-row" style="margin-bottom: -14px !important;">
+                                                <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                   <div class="input-group" style="margin-bottom: 0px !important">
+                                                       <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Hold Cover No</label>
+                                                       <input type="text" class="form-control form-control-sm col-sm-8 warn" name="holdCovNo" readonly [ngModel]="holdCoverNo" tabindex="-1">
+                                                   </div>
+                                                </div>
+                                                <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important"></div>
+                                            </div>
+                                            <div class="input-group ig-row" style="margin-bottom: -14px !important;">
+                                                <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                    <div class="input-group" style="margin-bottom: -0px !important;">
+                                                        <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period From</label>
+                                                        <!-- <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" name="pfdate" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
+                                                        <input type="time" name="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                        <div class="col-sm dp-cont">
+                                                            <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.cedingName === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.date" (valueChange)="periodFromDate.date=$event;autoPeriodTo($event);" name="periodFromDate.date"></datepicker>
+                                                        </div>
+                                                        <div class="col-sm-3 dp-cont">
+                                                            <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.cedingName === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.time" (valueChange)="periodFromDate.time=$event;" name="periodFromDate.time"></datepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                    <div class="input-group" style="margin-bottom: -0px !important;">
+                                                        <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
+                                                         <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="50">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-group ig-row" style="margin-bottom: -14px !important;">
+                                               <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                    <div class="input-group" style="margin-bottom: -0px !important;">
+                                                        <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period To</label>
+                                                        <!-- <input type="date" name="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                        <div class="col-sm dp-cont">
+                                                            <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.cedingName === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.date" (valueChange)="periodToDate.date=$event;" name="periodToDate.date"
+                                                            [minDate]="periodFromDate?.date"></datepicker>
+                                                        </div>
+                                                        <!-- <input type="time" name="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                        <div class="col-sm-3 dp-cont">
+                                                            <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.cedingName === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.time" (valueChange)="periodToDate.time=$event;" name="periodToDate.time"></datepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
+                                                    <div class="input-group" style="margin-bottom: -0px !important;">
+                                                        <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
+                                                        <!-- <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
+                                                        <div class="col-sm dp-cont">
+                                                            <datepicker [type]="'date'" [disabled]="this.policyInfo.cedingName === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="polHoldCoverParams.reqDate?.split('T')[0]" (valueChange)="polHoldCoverParams.reqDate=$event;" name="periodToDate.date"></datepicker>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="input-group ig-row" style="margin-bottom: -14px !important;">
+                                                <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
+                                                <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="25">
+                                                <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
+                                                <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
+                                            </div>
+                                            <div class="input-group ig-row" style="margin-bottom: -9px !important;">
+                                                <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Status</label>
+                                                <input type="text" name="status" class="form-control form-control-sm warn" [ngModel]="statusDesc" readonly tabindex="-1">
+                                                <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Approved By</label>
+                                                <input type="text" name="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
+                                            </div>
+                                        <!-- </div> -->
                                     </div>
-                                    <div class="input-group">
-                                        <div class="input-group ig-row">
-                                            <label class="form-control-sm col-sm-2">Policy No</label>
-                                            <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Line" appRequired [(ngModel)]="tempPolNo[0]" (change)="policyNoChecker($event, 'line')" maxlength="3" mask="SSS">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Year" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[1]" (change)="policyNoChecker($event, 'year')" maxlength="4" numbers-only>
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[2]" (change)="policyNoChecker($event, 'seqNo')" maxlength="5" numbers-only>
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[3]" (change)="policyNoChecker($event, 'cedingId')" maxlength="3" numbers-only>
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[4]" (change)="policyNoChecker($event, 'coSeriesNo')" maxlength="4" numbers-only>
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2 temp-pol-no" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [(ngModel)]="tempPolNo[5]" (change)="policyNoChecker($event, 'altNo')" maxlength="3" numbers-only>
-                                            </div>
-                                            <span>&nbsp;</span>
-                                            <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
-                                        </div>
-                                        <div class="input-group ig-row" style="margin-top: -3px !important;">
-                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
-                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.cedingName" tabindex="-1">
-                                        </div>
-                                        <div class="input-group ig-row">
-                                            <label class="form-control-sm col-sm-2">Insured</label>
-                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.insuredDesc" tabindex="-1">
-                                        </div>
-                                        <div class="input-group ig-row">
-                                            <label class="form-control-sm col-sm-2">Risk</label>
-                                            <input type="text" class="form-control form-control-sm" readonly [ngModel]="policyInfo.riskName" tabindex="-1">
-                                        </div>
-                                     </div>
                                 </div>
-                            </div>
-                        </fieldset>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-2"></div>
                     </div>
-                    <div class="col-sm-2"></div>
-                </div>
-                 <div class="row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8">
-                        <fieldset class="scheduler-border">
-                            <legend class="scheduler-border">Hold Cover Details</legend>
-                            <form #myForm="ngForm">
-                            <div class="col-sm" style="margin-top: 15px;">
-                                <div class="custom-row-inline-inset">
-                                    <!-- <div class="input-group"> -->
-                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
-                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
-                                               <div class="input-group" style="margin-bottom: 0px !important">
-                                                   <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Hold Cover No</label>
-                                                   <input type="text" class="form-control form-control-sm col-sm-8 warn" name="holdCovNo" readonly [ngModel]="holdCoverNo" tabindex="-1">
-                                               </div>
-                                            </div>
-                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important"></div>
-                                        </div>
-                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
-                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
-                                                <div class="input-group" style="margin-bottom: -0px !important;">
-                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period From</label>
-                                                    <!-- <input type="date" class="form-control form-control-sm cust-sm warn col-sm" [ngModel]="periodFromDate.date" (ngModelChange)="periodFromDate.date = $event" name="pfdate" appRequired [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'">
-                                                    <input type="time" name="pftime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodFromDate.time" (ngModelChange)="periodFromDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
-                                                    <div class="col-sm dp-cont">
-                                                        <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.date" (valueChange)="periodFromDate.date=$event;autoPeriodTo($event);" name="periodFromDate.date"></datepicker>
-                                                    </div>
-                                                    <div class="col-sm-3 dp-cont">
-                                                        <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodFromDate.time" (valueChange)="periodFromDate.time=$event;" name="periodFromDate.time"></datepicker>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
-                                                <div class="input-group" style="margin-bottom: -0px !important;">
-                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Requested By</label>
-                                                     <input type="text" name="reqBy" class="form-control form-control-sm col-sm warn" [ngModel]="polHoldCoverParams.reqBy" (ngModelChange)="polHoldCoverParams.reqBy = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="50">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
-                                           <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
-                                                <div class="input-group" style="margin-bottom: -0px !important;">
-                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Period To</label>
-                                                    <!-- <input type="date" name="ptdate" class="form-control form-control-sm cust-sm warn col-sm" appRequired [ngModel]="periodToDate.date" (ngModelChange)="periodToDate.date = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
-                                                    <div class="col-sm dp-cont">
-                                                        <datepicker [type]="'date'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.date" (valueChange)="periodToDate.date=$event;" name="periodToDate.date"></datepicker>
-                                                    </div>
-                                                    <!-- <input type="time" name="pttime" style="margin-left: 3px !important" appRequired class="form-control form-control-sm cust-sm warn col-sm-3" [ngModel]="periodToDate.time" (ngModelChange)="periodToDate.time = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
-                                                    <div class="col-sm-3 dp-cont">
-                                                        <datepicker [type]="'time'" [required]="true" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="periodToDate.time" (valueChange)="periodToDate.time=$event;" name="periodToDate.time"></datepicker>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-6" style="padding: 0px !important;margin: 0px !important">
-                                                <div class="input-group" style="margin-bottom: -0px !important;">
-                                                    <label class="form-control-sm col-sm-4 labels" style="margin-bottom: 8px !important;">Request Date</label>
-                                                    <!-- <input type="date" name="reqDate" class="form-control form-control-sm cust-sm col-sm warn" [ngModel]="polHoldCoverParams.reqDate?.split('T')[0]" (ngModelChange)="polHoldCoverParams.reqDate = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'"> -->
-                                                    <div class="col-sm dp-cont">
-                                                        <datepicker [type]="'date'" [disabled]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [value]="polHoldCoverParams.reqDate?.split('T')[0]" (valueChange)="polHoldCoverParams.reqDate=$event;" name="periodToDate.date"></datepicker>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group ig-row" style="margin-bottom: -14px !important;">
-                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;" style="padding-left: 0px !important;" >Co. Ref. Hold Cover No</label>
-                                            <input name="crhcno" type="text" class="form-control form-control-sm warn" [ngModel]="polHoldCoverParams.compRefHoldCovNo" (ngModelChange)="polHoldCoverParams.compRefHoldCovNo = $event" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" [attr.tabindex]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing ? '-1' : '1'" maxlength="25">
-                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Prepared By</label>
-                                            <input type="text" name="preparedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.preparedBy" readonly tabindex="-1">
-                                        </div>
-                                        <div class="input-group ig-row" style="margin-bottom: -9px !important;">
-                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Status</label>
-                                            <input type="text" name="status" class="form-control form-control-sm warn" [ngModel]="statusDesc" readonly tabindex="-1">
-                                            <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Approved By</label>
-                                            <input type="text" name="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
-                                        </div>
-                                    <!-- </div> -->
-                                </div>
-                            </div>
-                        </form>
-                        </fieldset>
-                    </div>
-                    <div class="col-sm-2"></div>
-                </div>
+                </form>
                 <div class="form-row">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center" style="margin-top:10px">

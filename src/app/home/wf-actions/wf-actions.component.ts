@@ -10,8 +10,8 @@ import { WfRemindersComponent } from '@app/home/wf-reminders/wf-reminders.compon
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { WfCalendarComponent } from '@app/home/wf-calendar/wf-calendar.component';
-
-
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-wf-actions',
@@ -31,7 +31,8 @@ export class WfActionsComponent implements OnInit {
   @ViewChild("warningModal") warningModal : ModalComponent;
   @ViewChild("calendarModal") calendarModal : ModalComponent;
   @ViewChild(WfCalendarComponent) wfCalendar : WfCalendarComponent;
-
+  @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 
   content: any ;
   disablebtnBool: boolean;
@@ -136,8 +137,8 @@ export class WfActionsComponent implements OnInit {
   };
 
   relatedRecordTxt:string  = "";
-
   events: any;
+  cancelFlag: boolean = false;
 
   constructor(config: NgbModalConfig,
      public modalService: NgbModal,
@@ -151,13 +152,8 @@ export class WfActionsComponent implements OnInit {
 
   open(content, mode) {
       this.radioBtnChange(this.reminderValue);
-      this.createInfo.createdBy = JSON.parse(window.localStorage.currentUser).username;
-      this.createInfo.dateCreated = this.ns.toDateTimeString(0);
-      this.updateInfo.updatedBy = JSON.parse(window.localStorage.currentUser).username;
-      this.updateInfo.lastUpdate = this.ns.toDateTimeString(0);
       this.content = content;
       this.mode = mode;
-
       this.modalService.open(this.content, { centered: true , windowClass : 'modal-size'} );
   }
 
@@ -448,7 +444,7 @@ export class WfActionsComponent implements OnInit {
   }
 
   setEventsForCalendar() {
-    var currentUser = JSON.parse(window.localStorage.currentUser).username;
+    var currentUser = this.ns.getCurrentUser();
     this.events = [];
 
     this.workFlowService.retrieveWfmReminders('',currentUser,'','','', 'A').subscribe((data)=>{
@@ -547,7 +543,7 @@ export class WfActionsComponent implements OnInit {
   }
 
   onClickSave() {
-    this.warningModal.openNoClose();
+    this.confirmSave.confirmModal();  
   }
 
   setSec(d) {
@@ -555,8 +551,8 @@ export class WfActionsComponent implements OnInit {
     return d.setSeconds(0);
   }
 
-  saveNotesAndReminders() {
-
+  saveNotesAndReminders(cancel?) {
+    this.cancelFlag = cancel !== undefined;
     this.prepareParams();
 
     console.log("saveNotesAndReminders");
@@ -573,6 +569,11 @@ export class WfActionsComponent implements OnInit {
           } else {
             this.dialogIcon = "success";
             this.successDiag.open();
+            this.createInfo.createdBy = this.ns.getCurrentUser();
+            this.createInfo.dateCreated = this.ns.toDateTimeString(0);
+            this.updateInfo.updatedBy = this.ns.getCurrentUser();
+            this.updateInfo.lastUpdate = this.ns.toDateTimeString(0);
+            $('.ng-dirty').removeClass('ng-dirty');
           }
       });
 
@@ -585,6 +586,11 @@ export class WfActionsComponent implements OnInit {
           } else {
             this.dialogIcon = "success";
             this.successDiag.open();
+            this.createInfo.createdBy = this.ns.getCurrentUser();
+            this.createInfo.dateCreated = this.ns.toDateTimeString(0);
+            this.updateInfo.updatedBy = this.ns.getCurrentUser();
+            this.updateInfo.lastUpdate = this.ns.toDateTimeString(0);
+            $('.ng-dirty').removeClass('ng-dirty');
           }
       });
 
@@ -622,11 +628,11 @@ export class WfActionsComponent implements OnInit {
             "module"       : '',
             "referenceId"  : '',
             "details"      : '',
-            "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
+            "assignedTo"   : this.ns.getCurrentUser(),
             "status"       : "A",
-            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createUser"   : this.ns.getCurrentUser(),
             "createDate"   : this.ns.toDateTimeString(0),
-            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateUser"   : this.ns.getCurrentUser(),
             "updateDate"   : this.ns.toDateTimeString(0),
         };
 
@@ -648,9 +654,9 @@ export class WfActionsComponent implements OnInit {
             "details"      : '',
             "assignedTo"   : this.userInfo.userId,
             "status"       : "A",
-            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createUser"   : this.ns.getCurrentUser(),
             "createDate"   : this.ns.toDateTimeString(0),
-            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateUser"   : this.ns.getCurrentUser(),
             "updateDate"   : this.ns.toDateTimeString(0),
         };
 
@@ -673,9 +679,9 @@ export class WfActionsComponent implements OnInit {
               "details"      : '',
               "assignedTo"   : this.selects[i].userId,
               "status"       : "A",
-              "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "createUser"   : this.ns.getCurrentUser(),
               "createDate"   : this.ns.toDateTimeString(0),
-              "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "updateUser"   : this.ns.getCurrentUser(),
               "updateDate"   : this.ns.toDateTimeString(0),
           };
 
@@ -699,9 +705,9 @@ export class WfActionsComponent implements OnInit {
               "details"      : '',
               "assignedToGroup"   : this.selectsUserGrp[i].userGrp,
               "status"       : "A",
-              "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "createUser"   : this.ns.getCurrentUser(),
               "createDate"   : this.ns.toDateTimeString(0),
-              "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+              "updateUser"   : this.ns.getCurrentUser(),
               "updateDate"   : this.ns.toDateTimeString(0),
           };
 
@@ -729,15 +735,15 @@ export class WfActionsComponent implements OnInit {
           "module"       : '',
           "referenceId"  : '',
           "details"      : '',
-          "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+          "alarmTime"    : (this.alarmTime.split('T')[1] == '')?'':this.alarmTime,
           "impTag"       : this.impTag ? 'Y' : 'N',
           "urgTag"       : this.urgTag ? 'Y' : 'N',
-          "assignedTo"   : JSON.parse(window.localStorage.currentUser).username,
+          "assignedTo"   : this.ns.getCurrentUser(),
           "createDate"   : null,
-          "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "createUser"   : this.ns.getCurrentUser(),
           "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
           "status"       : "A",
-          "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "updateUser"   : this.ns.getCurrentUser(),
           "updateDate"   : null,
         }
 
@@ -754,15 +760,15 @@ export class WfActionsComponent implements OnInit {
           "module"       : '',
           "referenceId"  : '',
           "details"      : '',
-          "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+          "alarmTime"    : (this.alarmTime.split('T')[1] == '')?'':this.alarmTime,
           "impTag"       : this.impTag ? 'Y' : 'N',
           "urgTag"       : this.urgTag ? 'Y' : 'N',
           "assignedTo"   : this.userInfo.userId,
           "createDate"   : null,
-          "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "createUser"   : this.ns.getCurrentUser(),
           "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
           "status"       : "A",
-          "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+          "updateUser"   : this.ns.getCurrentUser(),
           "updateDate"   : null,
         }
 
@@ -780,15 +786,15 @@ export class WfActionsComponent implements OnInit {
             "module"       : '',
             "referenceId"  : '',
             "details"      : '',
-            "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+            "alarmTime"    : (this.alarmTime.split('T')[1] == '')?'':this.alarmTime,
             "impTag"       : this.impTag ? 'Y' : 'N',
             "urgTag"       : this.urgTag ? 'Y' : 'N',
             "assignedTo"   : this.selects[i].userId,
             "createDate"   : null,
-            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createUser"   : this.ns.getCurrentUser(),
             "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
             "status"       : "A",
-            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateUser"   : this.ns.getCurrentUser(),
             "updateDate"   : null,
           }
 
@@ -808,15 +814,15 @@ export class WfActionsComponent implements OnInit {
             "module"       : '',
             "referenceId"  : '',
             "details"      : '',
-            "alarmTime"    : this.ns.toDateTimeString(this.alarmTime),
+            "alarmTime"    : (this.alarmTime.split('T')[1] == '')?'':this.alarmTime,
             "impTag"       : this.impTag ? 'Y' : 'N',
             "urgTag"       : this.urgTag ? 'Y' : 'N',
             "assignedToGroup"   : this.selectsUserGrp[i].userGrp,
             "createDate"   : null,
-            "createUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "createUser"   : this.ns.getCurrentUser(),
             "reminderDate" : this.ns.toDateTimeString(this.setSec(this.reminderDate)),
             "status"       : "A",
-            "updateUser"   : JSON.parse(window.localStorage.currentUser).username,
+            "updateUser"   : this.ns.getCurrentUser(),
             "updateDate"   : null,
           }
 
@@ -838,6 +844,26 @@ export class WfActionsComponent implements OnInit {
       reminderList : reminderList,
       delReminderList : delReminderList
     };
+  }
 
+  clearValues(){
+    this.modalService.dismissAll()
+    this.titleNote = '';
+    this.notes = '';
+    this.userInfo.userId = '';
+    this.userInfo.userName = '';
+    this.userInfoToMany = '';
+    this.userInfoToGroup = '';
+    this.boolValue = '';
+    this.impTag = false;
+    this.urgTag = false;
+    this.createInfo.createdBy = '';
+    this.createInfo.dateCreated = '';
+    this.updateInfo.updatedBy = '';
+    this.updateInfo.lastUpdate = '';
+    this.reminderDate = this.ns.toDateTimeString(0);
+    this.alarmTime = this.ns.toDateTimeString(0);
+    this.titleReminder = '';
+    this.reminder = '';
   }
 }

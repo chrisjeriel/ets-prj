@@ -117,7 +117,7 @@ Modal -->
           </div>
     </div>
     <div footer class="text-center w-100" style="justify-content: center;margin: 0px 0 0 6px ! important">
-      <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: 0px ! important">
+      <fieldset class="scheduler-border col-sm" style="width: 600px! important;padding: 0 ! important; margin-top: 0px ! important">
         <div class="row col-sm" style="margin: 0px 0 0px 0 ! important">
             <div class="input-group">
         <label class="form-control-sm " style="margin: 0 0 0 -7px" >Created By</label>
@@ -127,9 +127,15 @@ Modal -->
       </div>
        <div class="input-group" style="margin: 0px 0 12px 0 ! important">
         <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.createUser" disabled >
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.createDate" style="margin: 0 0 0 5px" disabled>
+        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.createDate" style="margin: 0 0 0 5px" disabled> -->
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="reminder.createDate"></datepicker>
+        </div>
         <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.updateUser" style="margin: 0 0 0 5px" disabled>
-        <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.updateDate" style="margin: 0 0 0 5px" disabled >
+        <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="reminder.updateDate" style="margin: 0 0 0 5px" disabled > -->
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="reminder.updateDate"></datepicker>
+        </div>
       </div>
         </div>
       </fieldset>

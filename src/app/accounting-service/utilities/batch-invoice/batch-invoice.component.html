@@ -15,7 +15,7 @@
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-3">JV Type</label>
 											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="jvTypeCd" name="jvTypeCd">
-												<option *ngFor="let jv of jvTypes" [value]="jv.jvTypeCd">{{jv.jvTypeName}}</option>
+												<option *ngFor="let jv of jvTypes" [value]="jv.tranTypeCd">{{jv.tranTypeName}}</option>
 											</select>
 									</div>
 								</div>
@@ -49,8 +49,9 @@
 						<fieldset class="scheduler-border" style="margin-top: 5px !important;margin-bottom: 5px !important"> 
 								<div class="form-row custom-row-inline-inset">
 									<div class="col-sm-12">
-											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice()" (newClick)="onTableClick($event)" (add)="add()">
+											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice($event)" (newClick)="onTableClick($event)">
 												<ng-container controls-l>
+														<button class="cust-btn" style="margin-right: 0px !important;" (click)="addInvoice()">Add</button>
 														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
 														<label class="form-control-sm">Untag All</label> 
 														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="tag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()"> 
@@ -105,7 +106,7 @@
 									</fieldset>
 							</div>
 							<div class="col-sm-2"></div>
-							</div>
+						</div>
 				</ng-template>
 			</ngb-tab>
 			<ngb-tab id="Exit">
@@ -117,7 +118,7 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="dialogIcon != 'error' ? this.modalService.dismissAll():this.viewinvoiceModal.openNoClose()"></app-sucess-dialog>
 
 <app-modal class="d-none" #printModal>
 	<div header>Confirmation</div>
@@ -154,165 +155,181 @@
   	</div>
 </app-modal>
 
-<app-modal class="d-none">
-	 <div header>View Invoice Details</div>
-		<div body>
-			<div class="max-size" style="width: 1000px">
-				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Invoice Info</legend>
-											                                <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
-											                                    <div class="input-group" style="margin-top: 20px">
-											                                    	<div class="col-sm-7" style="padding: 0px">
-											                                    		<div class="input-group">
-											                                    			  <label class="form-control-sm col-sm-2">Invoice No</label>
-											                                    			  <input type="text" class="form-control form-control-sm col-sm-4" placeholder="INV-0003245"readonly>
-											                                    			  <label class="form-control-sm col-sm-2">Issue Date</label>
-											                                    			  <input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="12/01/2018" style="margin-right: 3px !important;" value="12-01-2018" readonly>
-											                                    			  <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10:45 AM" readonly>
-											                                    		</div>
-											                                    	</div>
-											                                    	<div class="col-sm-5" style="padding: 0px">
-											                                    		<div class="input-group">
-												                                    		  <label class="form-control-sm col-sm-7">Status</label>
-												                                    		  <input type="text" class="form-control form-control-sm col-sm" placeholder="New" readonly>
-											                                    		</div>
-											                                    	</div>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: 0px">
-											                                    	<div class="col-sm-7" style="padding: 0px">
-											                                    		<div class="input-group">
-											                                    			<label class="form-control-sm col-sm-2">Tran type</label>
-											                                    			<input type="text" class="form-control form-control-sm col-sm" placeholder="Payment of Service Fee by in-Trust to Service Accounting" readonly>
-											                                    		</div>
-											                                    	</div>
-											                                    	<div class="col-sm-5" style="padding: 0px">
-											                                    		<div class="input-group">
-												                                    		  <label class="form-control-sm col-sm-2">JV No</label>
-												                                    		  <input type="text" class="form-control form-control-sm col-sm-3" placeholder="2018-0002353" readonly>
-												                                    		  <label class="form-control-sm col-sm-2">JV Date</label>
-												                                    		  <input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" readonly>
-											                                    		</div>
-											                                    	</div>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: 0px">
-											                                    	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
-											                                    	<input type="text" class="form-control form-control-sm col-sm" placeholder="UCPBGEN" readonly>
-											                                    </div>
-											                                     <div class="input-group" style="margin-top: -6px">
-											                                     	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
-											                                    	<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm" placeholder="Requesting payment of Service Fee by in-Trust to Service Accounting" readonly></textarea>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: -15px">
-											                                    	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-1" placeholder="PHP" readonly>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="27,513.20" style="margin-left: 3px" readonly>
-											                                    	 <label class="form-control-sm col-sm-2">Curreny</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="1.000000" readonly>
-											                                    	 <label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-1" placeholder="PHP" readonly>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="27,513.20" style="margin-left: 3px" readonly>
-											                                    </div>
-											                                </div>
+
+<app-modal class="d-none" #viewInvoiceModal>
+	<div header>View Invoice Details</div>
+	<div body>
+		<div class="max-size" style="width: 1000px">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Invoice Info</legend>
+				<div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+					<div class="input-group" style="margin-top: 20px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Invoice No</label>
+								<input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selectedrecord?.invoiceNo"  [disabled]="inquiryFlag">
+								<label class="form-control-sm col-sm-2">Issue Date</label>
+								<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+									<datepicker [type]="'date'" [required]="true" name="date" [value]="invoiceDate.date" [disabled]="inquiryFlag" (valueChange)="invoiceDate.date = $event;"></datepicker>
+								</div>
+								<div class="col-sm-2 dp-cont">
+									<datepicker [type]="'time'" [required]="true" name="time" [value]="invoiceDate.time" [disabled]="inquiryFlag" (valueChange)="invoiceDate.time = $event;"></datepicker>
+								</div>
+
+								<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="12/01/2018" style="margin-right: 3px !important;" value="12-01-2018" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10:45 AM" readonly> -->
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Status</label>
+								<input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selectedrecord?.invoiceStatDesc" readonly name="invoiceStat">
+								<label class="form-control-sm col-sm">Auto</label> 
+                            	<input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="selectedrecord?.autoTag === 'Y'" (change)="selectedrecord.autoTag = (selectedrecord.autoTag === 'Y') ? 'N' : 'Y'" disabled name="autoTag">
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Tran type</label>
+								<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="selectedrecord?.tranTypeCd" name="tranTypeCd" [disabled]="inquiryFlag" appRequired (ngModelChange)="selectedrecord.tranTypeCd=$event;" >
+									<option *ngFor="let jv of jvTypes" [value]="jv.tranTypeCd">{{jv.tranTypeName}}</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">JV No</label>
+				
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.jvNo" (ngModelChange)="selectedrecord.jvNo=$event;" disabled>
+	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickJVModal()"></i></a></div>
+								<label class="form-control-sm col-sm-2">JV Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.jvDate" (ngModelChange)="selectedrecord.jvDate=$event;" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
+						<!-- <input type="text" class="form-control form-control-sm col-sm" placeholder="UCPBGEN" readonly> -->
+						<input type="text" class="form-control form-control-sm cust-sm col-sm required preparedName" style="margin-right: 2px !important" appRequired name="jvPayee" [ngModel]="selectedrecord?.payee" (ngModelChange)="selectedrecord.payee=$event;" [disabled]="inquiryFlag">
+	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPayeeModal()"></i></a></div>
+					</div>
+					<div class="input-group" style="margin-top: -6px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
+						<textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"  appRequired name="particulars" [ngModel]="selectedrecord?.particulars" (ngModelChange)="selectedrecord.particulars=$event;"></textarea>
+					</div> 
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-1 required currCd" style="margin-right: -1px !important;" [ngModel]="selectedrecord?.currCd" appRequired name="currCd" (ngModelChange)="selectedrecord.currCd=$event;" disabled>
+                        <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 required text-right" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired (change)="validateCurr($event,'invoiceAmt')" appCurrency name="invoiceAmt" [ngModel]="selectedrecord?.invoiceAmt | number: '1.2-2'" [readonly]="inquiryFlag">
+
+						<label class="form-control-sm col-sm-2">Curreny Rate</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 required" style="margin-right: 2px !important; text-align: right;" appCurrencyRate appRequired name="currRate" (change)="validateCurr($event,'currecyRt')" [readonly]="inquiryFlag" [ngModel]="selectedrecord?.currRate | number: '1.6-6'" [disabled]="true">
+						<label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 2px !important;" value="PHP" readonly tabindex="-1" name="localCurr">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="text-align: right;" tabindex="-1" readonly appCurrency name="localAmt" [ngModel]="selectedrecord?.localAmt | number: '1.2-2'">
+					</div>
+				</div>
 			</fieldset>
 			<fieldset class="scheduler-border" style="margin-top: 8px !important; margin-bottom: 10px !important;">
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-bottom: -10px;">
-						<div class="input-group">
-							<label class="form-control-sm col-sm" style="margin-left: -105px" >Created By</label>
-							<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-							<label class="form-control-sm col-sm" style="margin-left: -100px">Date Created</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45" readonly>
-							<label class="form-control-sm col-sm"  style="margin-left: -90px" >Last Update By</label>
-							<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma" readonly>
-							<label class="form-control-sm col-sm"  style="margin-left: -105px">Last Update</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00" readonly>
-						</div>
+	                        <label class="form-control-sm col-sm-1">Created By</label>
+	                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.createUser" readonly>
+	                        <label class="form-control-sm col-sm-1">Created Date</label>
+	                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+	                        <label class="form-control-sm col-sm-1">Last Update By</label>
+	                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.updateUser" readonly>
+	                        <label class="form-control-sm col-sm-1">Last Update</label>
+	                        <input  name="updateDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
 					</div>
-				</div>
+			    </div>
 			</fieldset>
 		</div>
 	</div>
 	<div footer style="width: 100%; text-align: center;">
-		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
-		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelInvoice();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();saveInvoice();"><a>Save</a></button>
 	</div>                
 </app-modal>
 
 <app-modal class="d-none" id="add">
-	 <div header>Add Invoice Details</div>
-		<div body>
-			<div class="max-size" style="width: 1000px">
-				<fieldset class="scheduler-border">
-					<legend class="scheduler-border">Invoice Info</legend>
-											                                <div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
-											                                    <div class="input-group" style="margin-top: 20px">
-											                                    	<div class="col-sm-7" style="padding: 0px">
-											                                    		<div class="input-group">
-											                                    			  <label class="form-control-sm col-sm-2">Invoice No</label>
-											                                    			  <input type="text" class="form-control form-control-sm col-sm-4" placeholder="">
-											                                    			  <label class="form-control-sm col-sm-2">Issue Date</label>
-											                                    			  <input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 3px !important;" value="" >
-											                                    			  <input type="text" class="form-control form-control-sm col-sm-2" placeholder="" >
-											                                    		</div>
-											                                    	</div>
-											                                    	<div class="col-sm-5" style="padding: 0px">
-											                                    		<div class="input-group">
-												                                    		  <label class="form-control-sm col-sm-7">Status</label>
-												                                    		  <input type="text" class="form-control form-control-sm col-sm" placeholder="" >
-											                                    		</div>
-											                                    	</div>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: 0px">
-											                                    	<div class="col-sm-7" style="padding: 0px">
-											                                    		<div class="input-group">
-											                                    			<label class="form-control-sm col-sm-2">Tran type</label>
-											                                    			<input type="text" class="form-control form-control-sm col-sm" placeholder="">
-											                                    			 <div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
-											                                    		</div>
-											                                    	</div>
-											                                    	<div class="col-sm-5" style="padding: 0px">
-											                                    		<div class="input-group">
-												                                    		  <label class="form-control-sm col-sm-2">JV No</label>
-												                                    		  <input type="text" class="form-control form-control-sm col-sm-3" placeholder="" >
-												                                    		  <div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
-												                                    		  <label class="form-control-sm col-sm-2">JV Date</label>
-												                                    		  <input type="datetime-local" class="form-control form-control-sm col-sm" value="" >
-											                                    		</div>
-											                                    	</div>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: 0px">
-											                                    	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
-											                                    	<input type="text" class="form-control form-control-sm col-sm" placeholder="">
-											                                    </div>
-											                                     <div class="input-group" style="margin-top: -6px">
-											                                     	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
-											                                    	<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm" placeholder=""></textarea>
-											                                    </div>
-											                                    <div class="input-group" style="margin-top: -15px">
-											                                    	<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-1" placeholder="">
-											                                    	  <div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 8px">
-											                                    	 <label class="form-control-sm col-sm-2">Curreny</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="">
-											                                    	 <label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-1" placeholder="" >
-											                                    	 <input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 3px" >
-											                                    </div>
-											                                </div>
+	<div header>Add Invoice Details</div>
+	<div body>
+		<div class="max-size" style="width: 1000px">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Invoice Info</legend>
+				<div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+					<div class="input-group" style="margin-top: 20px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Invoice No</label>
+								<input type="text" class="form-control form-control-sm col-sm-4" placeholder="">
+								<label class="form-control-sm col-sm-2">Issue Date</label>
+								<input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 3px !important;" value="" >
+								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="" >
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-7">Status</label>
+								<input type="text" class="form-control form-control-sm col-sm" placeholder="" >
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Tran type</label>
+								<input type="text" class="form-control form-control-sm col-sm" placeholder="">
+								<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">JV No</label>
+								<input type="text" class="form-control form-control-sm col-sm-3" placeholder="" >
+								<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+								<label class="form-control-sm col-sm-2">JV Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" value="" >
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
+						<input type="text" class="form-control form-control-sm col-sm" placeholder="">
+					</div>
+					<div class="input-group" style="margin-top: -6px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
+						<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm" placeholder=""></textarea>
+					</div>
+					<div class="input-group" style="margin-top: -15px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
+						<input type="text" class="form-control form-control-sm col-sm-1" placeholder="">
+						<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 8px">
+						<label class="form-control-sm col-sm-2">Curreny</label>
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="">
+						<label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
+						<input type="text" class="form-control form-control-sm col-sm-1" placeholder="" >
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 3px" >
+					</div>
+				</div>
 			</fieldset>
 			<fieldset class="scheduler-border" style="margin-top: 8px !important; margin-bottom: 10px !important;">
 				<div class="custom-row-inline-inset">
 					<div class="form-row" style="margin-bottom: -10px;">
 						<div class="input-group">
 							<label class="form-control-sm col-sm" style="margin-left: -105px" >Created By</label>
-							<input type="text" class="form-control form-control-sm col-sm" placeholder="" >
+							<input type="text" class="form-control form-control-sm col-sm" />
 							<label class="form-control-sm col-sm" style="margin-left: -100px">Date Created</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="" >
+							<input type="datetime-local" class="form-control form-control-sm col-sm" />
 							<label class="form-control-sm col-sm"  style="margin-left: -90px" >Last Update By</label>
-							<input type="text" class="form-control form-control-sm col-sm" placeholder="" >
+							<input type="text" class="form-control form-control-sm col-sm" />
 							<label class="form-control-sm col-sm"  style="margin-left: -105px">Last Update</label>
-							<input type="datetime-local" class="form-control form-control-sm col-sm" value="" >
+							<input type="datetime-local" class="form-control form-control-sm col-sm" />
 						</div>
 					</div>
 				</div>
@@ -324,7 +341,6 @@
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 	</div>                
 </app-modal>
-
-
-
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="selectedrecord?.jvDate"></app-mtn-currency>
+<app-lov #passLOV [passData]="passLov" (selectedData)="setSelectedData($event)">
 

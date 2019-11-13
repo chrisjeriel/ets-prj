@@ -233,6 +233,7 @@ export class QuotationProcessingComponent implements OnInit {
     cessionDescList: any[] = [];
     first = false;
     accessibleModules: string[] = [];
+    disableModBtn: boolean = false;
 
     constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
@@ -385,6 +386,7 @@ export class QuotationProcessingComponent implements OnInit {
                 this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
+                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status == 'Requested' || a['quotationList'][0].status == 'In Progress');
             }
 
             if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){

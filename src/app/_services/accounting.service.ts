@@ -2968,4 +2968,25 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchInvoice', {params});
 	}
 
+	printAcseJv(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/printAcseJv',params,header);
+    }
+
+    saveAcseInvoice(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoice',params,header);
+    }
+
+
 }

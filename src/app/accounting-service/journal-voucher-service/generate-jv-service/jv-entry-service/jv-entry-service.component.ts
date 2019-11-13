@@ -500,7 +500,24 @@ export class JvEntryServiceComponent implements OnInit {
   }
 
   printJV(){
-
+    this.sendData.tranId = this.tranId;
+    this.sendData.jvNo = this.entryData.jvNo;
+    this.sendData.jvYear = this.entryData.jvYear;
+    this.sendData.updateUser = this.ns.getCurrentUser();
+    this.sendData.updateDate = this.ns.toDateTimeString(0);
+    
+    this.accountingService.printAcseJv(this.sendData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveJVEntry();
+      }
+    });
   }
 
   /*getAcctEnt(){

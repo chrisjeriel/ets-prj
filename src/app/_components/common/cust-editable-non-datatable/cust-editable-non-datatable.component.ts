@@ -148,6 +148,7 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
     //for science
     pinKeysLeft:any[] = [];
     pinKeysRight:any[] = [];
+    defaultUnliLength: number = 10;
 
     refreshTable(initLoad?, selectAll?){
         // for(let a of this.passData.tableData){
@@ -228,6 +229,7 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
         this.passData.btnDisabled = false;
         this.passData.magnifyingGlass = typeof this.passData.magnifyingGlass == 'undefined'? [] : this.passData.magnifyingGlass;
         this.unliFlag = typeof this.passData.pageLength == "string" && this.passData.pageLength.split("-")[0] == 'unli';
+        this.defaultUnliLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength===undefined || this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
         this.passData.pageLength = typeof this.passData.pageLength == 'number' ? this.passData.pageLength : (this.passData.pageLength===undefined || this.passData.pageLength.split("-")[1]===undefined? 10 : parseInt(this.passData.pageLength.split("-")[1]));
         this.unliTableLength();
         this.passData.dataTypes = typeof this.passData.dataTypes == 'undefined' ? [] : this.passData.dataTypes;
@@ -478,7 +480,7 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
 
     unliTableLength(){
         if(this.unliFlag && this.passData.tableData.length < 11) {
-            this.passData.pageLength = 10;
+            this.passData.pageLength = this.defaultUnliLength;
         } else if(this.unliFlag) {
             this.passData.pageLength = this.passData.tableData.length <= this.passData.pageLength ? this.passData.pageLength :this.passData.tableData.length;
         }

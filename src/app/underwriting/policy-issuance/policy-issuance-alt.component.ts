@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 
@@ -46,7 +46,8 @@ export class PolicyIssuanceAltComponent implements OnInit {
 
     disableCov:boolean = false;
 
-    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService) {}
+    constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService,
+        private ps:PrintService, private ns: NotesService) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
@@ -167,5 +168,19 @@ export class PolicyIssuanceAltComponent implements OnInit {
    returnOnModal(){
      this.router.navigate(['/alt-policy-listing'],{ skipLocationChange: true }); 
    }
+   
+  printDestination:string;
+  printReport:string
+
+   print(){
+    let params:any = {
+                        policyId:this.policyInfo.policyId,
+                        updateUser:this.ns.getCurrentUser(),
+
+                      };
+    params.reportId=this.printReport;
+    params.user
+    this.ps.print(this.printDestination,this.printReport,params)
+  }
   
 }

@@ -161,7 +161,7 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); clearAddFields();"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');"><a>Modification</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toGeneralInfo('modification');" [disabled]="disableModBtn"><a>Modification</a></button>
         <button class="cust-btn cust-btn-extend" type="button" (click)="modalService.dismissAll(); onClickIntCompCopy();"><a>Internal Competition</a></button>
     </div>
 </app-modal>

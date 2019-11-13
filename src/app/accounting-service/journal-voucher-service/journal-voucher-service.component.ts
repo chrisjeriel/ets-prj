@@ -21,11 +21,48 @@ export class JournalVoucherServiceComponent implements OnInit {
       dataTypes: ['text','date','text','text','text','text','currency',],
       addFlag:true,
       editFlag:true,
-      //totalFlag:true,
       pageLength: 10,
       pageStatus: true,
       pagination: true,
-      keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvAmt']
+      exportFlag   : true,
+      keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvAmt'],
+        filters: [
+        {
+          key: 'jvNo',
+          title: 'J.V. No.',
+          dataType: 'text'
+        },
+        {
+          key: 'jvDate',
+          title: 'JV Date',
+          dataType: 'date'
+        },
+        {
+          key: 'particulars',
+          title: 'Particulars',
+          dataType: 'text'
+        },
+        {
+          key: 'jvType',
+          title: 'J.V Type',
+          dataType: 'text'
+        },
+        {
+          key: 'jvRefNo',
+          title: 'J.V Ref No',
+          dataType: 'text'
+        },
+        {
+          key: 'preparedBy',
+          title: 'Prepared By',
+          dataType: 'text'
+        },
+        {
+          key: 'amount',
+          title: 'Amount',
+          dataType: 'text'
+        }
+      ],
   };
 
   dataInfo : any = {
@@ -63,7 +100,7 @@ export class JournalVoucherServiceComponent implements OnInit {
   }
 
   retrieveJVlist(){
-    //this.table.overlayLoader = true;
+    this.table.overlayLoader = true;
     this.accountingService.getACSEJvList(null).subscribe((data:any) => {
       this.passDataJVListing.tableData = [];
 
@@ -81,6 +118,8 @@ export class JournalVoucherServiceComponent implements OnInit {
 
       this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.statusName).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
+
+      this.table.filterDisplay(this.table.filterObj, this.table.searchString);
     });
   }
 
@@ -127,5 +166,37 @@ export class JournalVoucherServiceComponent implements OnInit {
                                                    exitLink   : '/journal-voucher-service'}], 
                                                   { skipLocationChange: true });
   }
+
+  export(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'JournalVoucherList_'+currDate+'.xlsx'
+
+    var mystyle = {
+      headers:true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
+  }
+
+  /*searchQuery(data){
+    this.searchParams = searchParams;
+    this.passData.tableData = [];
+    console.log(this.searchParams);
+    this.retrieveJVlist();
+  }*/
 
 }

@@ -372,7 +372,7 @@ const appRoutes: Routes = [
     },
     { path: 'total-val-pol-print', component: HundredValPolPrintComponent, canDeactivate: [UnsavedChangesGuard],
     		canActivate: [AuthGuard, ModuleAccessGuard],
-    		data: { moduleId : 'POL042', verifyWithData: true }
+    		data: { moduleId : 'POL042' }
 	},
     { path: 'pol-value-coverage', component: PolValueCoverageComponent , canDeactivate: [UnsavedChangesGuard],
     		canActivate: [AuthGuard, ModuleAccessGuard],

@@ -8,6 +8,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ActivatedRoute } from '@angular/router';
+import { LovComponent } from '@app/_components/common';
 
 @Component({
     selector: 'app-pol-endorsement',
@@ -16,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PolEndorsementComponent implements OnInit {
 
+    @ViewChild(LovComponent) lov : LovComponent;
     @ViewChild('dedTable') dedTable : CustEditableNonDatatableComponent;
     @ViewChild('endtTable') endtTable : CustEditableNonDatatableComponent;
     @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
@@ -283,7 +285,7 @@ export class PolEndorsementComponent implements OnInit {
           coverCd: '0',
           activeTag:'Y'
         };
-        $('#lov #modalBtn2').trigger('click');
+        this.lov.openLOV();
     }
 
     //set endorsement

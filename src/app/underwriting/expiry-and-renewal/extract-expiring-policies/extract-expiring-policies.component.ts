@@ -9,6 +9,9 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { highlight,unHighlight } from '@app/_directives/highlight';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-extract-expiring-policies',
@@ -24,9 +27,14 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   @ViewChild('ceding') cedingLov: CedingCompanyComponent;
   @ViewChild('extPolLov') lovTable: CustNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+
+  @ViewChild('fromMonthEl') fromMonthEl :any;
+  @ViewChild('fromYearEl') fromYearEl :any;
+  @ViewChild('toMonthEl') toMonthEl :any;
+  @ViewChild('toYearEl') toYearEl :any;
   
   expiryParameters: ExpiryParameters = new ExpiryParameters();
-  lastExtraction: LastExtraction = new LastExtraction();
+  lastExtraction: any;
   
   byDate: any = '';
 
@@ -93,9 +101,15 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
   dialogIcon:string = '';
   dialogMessage:string;
 
+  lastExtractInfo:any;
+
+  errorYear:boolean = false;
+  errorMonth:boolean = false;
+
   ngOnInit() {
     this.titleService.setTitle("Pol | Extract Expiring Policy");
     this.getPolListing();
+    this.getLastExtractInfo();
   }
 
   extract() {
@@ -115,6 +129,7 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
           this.extractedPolicies = data['recordCount'];
           $('#extractMsgModal > #modalBtn').trigger('click');
           this.getPolListing();
+          this.getLastExtractInfo();
         }
     });
 
@@ -122,12 +137,20 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
   getPolListing(param?) {
     this.lovTable.loadingFlag = true;
-    this.underWritingService.getParListing(param === undefined ? [] : param).subscribe(data => {
-      console.log(data)
-      var polList = data['policyList'];
+    if(param != undefined){
+      param.push({key: 'statusArr' , search : ['2']});
+    }
 
-      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE')
-                       .map(p => { p.riskName = p.project.riskName; return p; });
+    var sub$ = forkJoin(this.underWritingService.getParListing(param === undefined ? [{key: 'statusArr' , search : ['2']}] : param),
+                        this.underWritingService.getExpPolList(null)
+                        ).pipe(map(([parListing, expList]) => { return { parListing, expList}}));
+
+    sub$.subscribe(a => {
+      var polList = a['parListing']['policyList'];
+      var expList = a['expList']['expPolicyList'].map(a=>a.policyId);
+      console.log(expList);
+      console.log(polList.map(a=>a.policyId))
+      polList = polList.filter(p => { p.riskName = p.project.riskName; return !expList.includes(p.policyId.toString()); });
       this.passDataLOV.tableData = polList;
       this.lovTable.refreshTable();
 
@@ -262,7 +285,20 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
     this.fromYear = null;
     this.toMonth = null;
     this.toYear = null;
+    unHighlight(this.fromMonthEl); 
+    unHighlight(this.fromYearEl); 
+    unHighlight(this.toMonthEl); 
+    unHighlight(this.toYearEl); 
+
+    this.lineCd = "";
+    this.lineDescription = "";
+    this.typeOfCessionId = "";
+    this.typeOfCession = "";
+    this.cedingId = "";
+    this.cedingName = "";
     this.clearPolicyNo();
+    this.errorYear = false;
+    this.errorMonth = false;
   }
 
   clearOptionals() {
@@ -380,8 +416,12 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
         }
     }
 
-    if (proceedExtract) {
+    if (proceedExtract && !this.errorMonth && !this.errorYear) {
       $('#extractModal > #modalBtn').trigger('click');
+    }else if (this.errorYear || this.errorMonth){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Entered Month/Year range is invalid.';
+      this.successDiag.open();
     } else {
       this.dialogIcon = "error";
       this.successDiag.open();
@@ -404,6 +444,41 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
       return this.ns.toDateTimeString(new Date(Number(this.fromYear), Number(this.fromMonth)-1, 1)).split('T')[0];
     } else if(str == 'to') {
       return this.ns.toDateTimeString(new Date(Number(this.toYear), Number(this.toMonth), 0)).split('T')[0];
+    }
+  }
+
+
+  getLastExtractInfo(){
+    this.underWritingService.getLastExtractInfo().subscribe(a=>{
+      this.lastExtraction = a['info'];
+      this.lastExtraction.extractionDate = this.ns.toDateTimeString(this.lastExtraction.extractionDate);
+    })
+  }
+
+  checkYear(){
+    if(parseInt(this.fromYear) > parseInt(this.toYear) && this.fromYear != '' && this.toYear != ''){
+      highlight(this.fromYearEl);
+      highlight(this.toYearEl);
+      this.errorYear = true;
+    }else{
+      unHighlight(this.fromYearEl);
+      unHighlight(this.toYearEl);
+      this.errorYear = false;
+    }
+    this.checkMonth();
+  }
+
+  checkMonth(){
+    if(this.fromYear == this.toYear && this.fromYear != '' && this.toYear != ''){
+      if(parseInt(this.fromMonth) > parseInt(this.toMonth) && this.fromMonth != '' && this.toMonth != ''){
+        highlight(this.fromMonthEl);
+        highlight(this.toMonthEl);
+        this.errorMonth = true;
+      }else{
+        unHighlight(this.fromMonthEl);
+        unHighlight(this.toMonthEl);
+        this.errorMonth = false;
+      }
     }
   }
 }

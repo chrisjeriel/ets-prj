@@ -180,7 +180,7 @@ export class PolAlopComponent implements OnInit {
         this.polAlopData.updateDate = this.ns.toDateTimeString(this.polAlopData.updateDate);
         
         if(data.policy.policyId != this.policyInfo.policyId && this.policyInfo.fromInq!='true'){
-          this.form.control.markAsDirty()
+          //this.form.control.markAsDirty()
           this.polAlopData.annSi = '';
         }
         this.getSumInsured();
@@ -192,10 +192,10 @@ export class PolAlopComponent implements OnInit {
           this.polAlopData.insuredDesc = data.insured[0].insuredName;
           this.polAlopData.address = data.insured[0].address;
 
-          this.polAlopData.createUser = JSON.parse(window.localStorage.currentUser).username
+          this.polAlopData.createUser = this.ns.getCurrentUser()
           this.polAlopData.createDate = this.ns.toDateTimeString(new Date());
           this.polAlopData.updateDate = this.ns.toDateTimeString(new Date());
-          this.polAlopData.updateUser = JSON.parse(window.localStorage.currentUser).username
+          this.polAlopData.updateUser = this.ns.getCurrentUser()
           this.getSumInsured();
         });
 
@@ -283,7 +283,8 @@ export class PolAlopComponent implements OnInit {
             this.underwritingService.fromCreateAlt = false;
           }
 
-          this.form.control.markAsPristine()
+          this.form.control.markAsPristine();
+          $('.ng-dirty').removeClass('ng-dirty');
           this.getPolAlop();
         }
       });
@@ -338,16 +339,16 @@ export class PolAlopComponent implements OnInit {
     for( var i =0; i< this.passDataCar.tableData.length;i++){
         if (this.passDataCar.tableData[i].edited && !this.passDataCar.tableData[i].deleted) {
            this.savedData.savePolAlopItemList.push(this.passDataCar.tableData[i]);
-           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createUser = this.ns.getCurrentUser(),
            this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].createDate);
-           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateUser = this.ns.getCurrentUser(),
            this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.savePolAlopItemList[this.savedData.savePolAlopItemList.length-1].updateDate);
         } else if (this.passDataCar.tableData[i].deleted) {
            this.savedData.deletePolAlopItemList.push(this.passDataCar.tableData[i]);
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].policyId = this.policyInfo.policyId;
-           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createUser = this.ns.getCurrentUser(),
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].createDate);
-           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username,
+           this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateUser = this.ns.getCurrentUser(),
            this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate = this.ns.toDateTimeString(this.savedData.deletePolAlopItemList[this.savedData.deletePolAlopItemList.length-1].updateDate);
         }
     }
@@ -430,7 +431,7 @@ export class PolAlopComponent implements OnInit {
     }
 
     if(!this.dateErFlag){
-      if((this.ns.toDate(this.polAlopData.indemFromDate) <= this.ns.toDate(this.polAlopData.expiryDate))){
+      if((this.ns.toDate(this.polAlopData.indemFromDate) < this.ns.toDate(this.polAlopData.expiryDate))){
         // highlight(this.to);
         // highlight(this.indemFrom);
         this.dateErFlag = true;
