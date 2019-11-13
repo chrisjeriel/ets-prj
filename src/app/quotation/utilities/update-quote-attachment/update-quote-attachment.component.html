@@ -1,0 +1,27 @@
+<div class="input-group" style="margin-bottom: -14px !important;">
+	<label class="form-control-sm col-sm-2">Quotation No</label>
+	<input name="input1" type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="3" appRequired ngbTooltip="Line" (change)="search('lineCd',$event)" [(ngModel)]="quoteInfo.quotationNo[0]" mask="SSS">
+	<input name="input2" type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNo[1]" numbers-only>
+	<input name="input3" type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNo[2]" numbers-only>
+	<input name="input4" type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNo[3]" numbers-only>
+	<input name="input5" type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNo[4]" numbers-only>
+	<span>&nbsp;</span>
+	<div (click)="showQuoteLov()"><a><i class="fa fa-search"></i></a></div>
+	<div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
+		<div class="cust-btn-container" style="margin-left: 15px;">
+			<button type="button" class="cust-btn" style="z-index: 3 !important" (click)="clearAll()">Clear</button>
+		</div>
+	</div>
+</div>
+
+
+<app-modal class="d-none" #quoteMdl>
+    <div header>List Of Values</div>
+    <div body class="container-flex">
+       <app-loading-table [passData]="passDataQuoteLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-loading-table>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button type="button" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
+    </div>
+</app-modal>

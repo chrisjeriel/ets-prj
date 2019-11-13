@@ -252,7 +252,7 @@ export class QuotationComponent implements OnInit {
 
         if(selectedReport == "QUOTER009C" || selectedReport == "QUOTER009E"){
           this.quotationService.saveReptext(saveRepTextParam).subscribe(a=>{
-            this.reportName = (selectedReport == 'QUOTER009C' ? 'QUOTER009B' : selectedReport);
+            this.reportName = selectedReport;
             if (obj.toUpperCase() == 'SCREEN'){
               window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.reportName
                 + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId 
