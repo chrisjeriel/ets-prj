@@ -284,7 +284,6 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
             this.getAttachment();
             this.table.markAsPristine();
           }
-          this.loading = false;
         });
     } 
 
@@ -321,7 +320,7 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
     }
 
     deleteFileMethod(){
-     let deleteFile = this.deletedData;
+     let deleteFile = [];
      for(var i of deleteFile){
        console.log(i.fileNameServer);
        this.upload.deleteFile(i.fileNameServer, 'quotation', this.quoteInfo.quoteId).subscribe(
