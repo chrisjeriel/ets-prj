@@ -312,10 +312,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
   private sub     : any;
   warn            : any[] = [];
 
-  totalSfeeAmts: any = {
-    totalSfee: 0,
-    totalVat: 0,
-    totalWhtax: 0,
+  sfeeAmts: any = {
+    totalSfeeAmt: 0,
+    mreSfeeAmt: 0,
+    totalVatAmt: 0,
+    totalWhTaxAmt: 0,
     totalDue: 0
   }
 
@@ -1363,17 +1364,20 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
-        if(data['mainDistList'].length > 0) {
-          this.totalSfeeAmts.totalSfee = this.recPrqTrans[0].serviceFee;
+        if(data['subDistList'].length > 0) {
+          /*this.totalSfeeAmts.totalSfee = this.recPrqTrans[0].serviceFee;
           this.totalSfeeAmts.totalVat = 0;
           this.totalSfeeAmts.totalWhtax = 0;
           this.totalSfeeAmts.totalDue = 0;
+
 
           this.serviceFeeMainData.tableData.forEach(a => {
             this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
             this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
             this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
-          });
+          });*/
+
+          this.sfeeAmts = data['subDistList'][0].servFeeTotals;
 
           setTimeout(() => {
             $('input[appCurrency]').focus().blur();
@@ -1392,19 +1396,27 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.servFeeSubTbl.refreshTable();
       });
     } else {
-      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.totalSfeeAmts.totalSfee, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.sfeeAmts.totalSfeeAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
-        this.totalSfeeAmts.totalVat = 0;
-        this.totalSfeeAmts.totalWhtax = 0;
-        this.totalSfeeAmts.totalDue = 0;
+        function numParser(x) {
+          return +parseFloat(x).toFixed(2);
+        }
+
+        this.sfeeAmts.mreSfeeAmt = data['mainDistList'][0].servFeeTotals.mreSfeeAmt;
+        this.sfeeAmts.totalVatAmt = 0;
+        this.sfeeAmts.totalWhTaxAmt = 0;
+        this.sfeeAmts.totalDue = 0;
 
         this.serviceFeeMainData.tableData.forEach(a => {
-          this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
-          this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
-          this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
+          // this.sfeeAmts.totalVatAmt = (+parseFloat(this.sfeeAmts.totalVatAmt).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
+          this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
+          // this.sfeeAmts.totalWhTaxAmt = (+parseFloat(this.sfeeAmts.totalWhTaxAmt).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
+          this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
         });
+
+        this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
 
         this.servFeeMainTbl.refreshTable();
         this.servFeeSubTbl.refreshTable();
@@ -1420,8 +1432,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       reqId: this.requestData.reqId,
       quarter: this.qtrParam,
       year: this.yearParam,
-      servFeeAmt: this.totalSfeeAmts.totalSfee,
-      netServFee: this.totalSfeeAmts.totalDue,
+      servFeeAmt: this.sfeeAmts.totalSfeeAmt,
+      netServFee: this.sfeeAmts.totalDue,
       currCd: this.requestData.currCd,
       currRt: this.requestData.currRate,
       createUser: this.ns.getCurrentUser(),
