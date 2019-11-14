@@ -358,10 +358,19 @@ export class CvEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
-      this.saveAcitCv.tranId = data['tranIdOut'];
-      this.saveAcitCv.mainTranId = data['mainTranIdOut'];
-      this.getAcitCv();
-      this.form.control.markAsPristine();
+      if(data['returnCode'] == -1){
+        this.saveAcitCv.tranId = data['tranIdOut'];
+        this.saveAcitCv.mainTranId = data['mainTranIdOut'];
+        this.getAcitCv();
+        this.form.control.markAsPristine();
+      }else if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+        this.success.open();
+      }else if(data['returnCode'] == 2){
+        this.warnMsg = 'Unable to proceed. Check No. is already been used.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMdl.openNoClose();
+      }
+      
     });
   }
 

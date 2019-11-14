@@ -95,7 +95,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" appRequired>
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -191,7 +191,7 @@
     <div header>Warning</div>
     <div body class="container-flex text-center">
         <div class="input-group">
-            <p class="col-sm-12">{{ warnMsg }}</p>
+            <pre style="font-family: inherit !important;width: inherit !important; margin-bottom: 0px !important;"><p style="margin-bottom: 0px !important;">{{ warnMsg }}</p></pre>
         </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
