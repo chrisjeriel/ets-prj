@@ -506,9 +506,10 @@ export class UpdateGeneralInfoComponent implements OnInit {
          var tempPolNum =  this.tempPolNo.join('-');
          this.searchParams2.push(
                                {
-                                 key: 'policyNo' , search: tempPolNum 
+                                 key: 'policyNo' , search: tempPolNum, 
                                }
                                );
+         this.searchParams2.push({key: 'statusArr' , search : ['2']});
          var records : any;
 
          console.log(this.searchParams2);

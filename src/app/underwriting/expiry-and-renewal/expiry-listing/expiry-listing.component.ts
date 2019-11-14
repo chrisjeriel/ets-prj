@@ -1813,6 +1813,7 @@ export class ExpiryListingComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
     this.clearData();
+    this.printFlag = false;
     this.changes = '';
     this.nrReasonCd = '';
     this.nrReasonDescription = '';
@@ -1880,8 +1881,8 @@ export class ExpiryListingComponent implements OnInit {
       params.policyId = forPrint.filter(a=>a.renAsIsTag != 'Y' &&
         a.renWithChange != 'Y' &&
         a.nonRenTag != 'Y' ).map(a=>a.policyId).join(',');
-      params.fileName = cedingAbbr +'_' + 'POLR027B';
-      params.reportName = 'POLR027B';
+      params.fileName = cedingAbbr +'_' + 'POLR027A';
+      params.reportName = 'POLR027A';
       this.ps.print(this.printDestination,reportName,params);
     }
   }
