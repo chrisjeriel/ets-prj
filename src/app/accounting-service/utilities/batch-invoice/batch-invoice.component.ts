@@ -12,6 +12,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { finalize } from 'rxjs/operators';
 
 
 @Component({
@@ -41,9 +42,12 @@ export class BatchInvoiceComponent implements OnInit {
   radioTagVal: any = '';
   searchParams: any[] = [];
   inquiryFlag: boolean = false;
+  viewFlag: boolean = false;
   oldRecord : any ={
       tableData:[]
   };
+  invNoDigits: any;
+
 
   
   PassData: any = {
@@ -57,11 +61,37 @@ export class BatchInvoiceComponent implements OnInit {
     infoFlag: true,
     paginateFlag: true,
   	widths: [1,1,1,1,1,1,200,350,150],
-    uneditable: [true,false,true,true,true,true,true,true,true],
+    uneditable: [false,false,true,true,true,true,true,true,true],
     pageID: 'invoiceBatchPrint',
     disableGeneric: true,
     keys: ['invoiceNocheck', 'printCheck', 'invoiceDate','invoiceNo','jvNo','jvDate','payee','particulars','localAmt'],
   }
+
+  nData: any = {
+      invoiceId : null,
+      invoiceNo : null,
+      invoiceDate : this.ns.toDateTimeString(0),
+      invoiceStat   : 'N',
+      invoiceStatDesc : "New",
+      autoTag   : 'N',
+      currCd : 'PHP',
+      currRate : 1,
+      invoiceAmt : null,
+      jvDate : null,
+      jvNo : null,
+      jvYear : null,
+      localAmt: null,
+      particulars : null,
+      payee : null,
+      payeeNo : null,
+      refNoDate : null,
+      refNoTranId : null,
+      tranTypeCd : null,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0),
+  };
 
   selectedrecord: any = {};
 
@@ -71,7 +101,8 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   indexRow:any;
-  lovType: any;
+  mdlType: any;
+  errorInvBool: boolean = true;
 
   passLov: any = {
     selector: '',
@@ -83,6 +114,14 @@ export class BatchInvoiceComponent implements OnInit {
 
   ngOnInit() {
     this.getMtnAcseTranType();
+    this.getInvNoDigits();
+  }
+
+  getInvNoDigits(){
+    this.ms.getMtnParameters('N', 'AR_NO_DIGITS').subscribe(data => { 
+     this.invNoDigits = parseInt(data['parameters'][0].paramValueN);
+     console.log(this.invNoDigits);
+    });
   }
 
   getMtnAcseTranType(){
@@ -99,6 +138,10 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   viewInvoice() {
+    this.mdlType = "edit";
+    this.viewFlag = true;
+    this.invoiceDate.date = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[0];
+    this.invoiceDate.time = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[1];
     this.viewinvoiceModal.openNoClose();
     if( this.selectedrecord.autoTag === 'Y'){
       this.inquiryFlag = true;
@@ -108,7 +151,14 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   addInvoice(){
+    this.mdlType = "add";
+    this.viewFlag = false;
     this.inquiryFlag = false;
+    this.selectedrecord = [];
+    this.selectedrecord = this.nData;
+    this.invoiceDate.date = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[0];
+    this.invoiceDate.time = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[1];
+    console.log(this.selectedrecord);
     this.viewinvoiceModal.openNoClose();
   }
 
@@ -151,32 +201,43 @@ export class BatchInvoiceComponent implements OnInit {
 
   cancelInvoice(){
      console.log(this.oldRecord);
-     this.invoiceDate.date = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[0];
-     this.invoiceDate.time = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[1];
-     this.PassData.tableData[this.indexRow].tranTypeCd = this.oldRecord.tranTypeCd;
-     this.PassData.tableData[this.indexRow].jvNo = this.oldRecord.jvNo;
-     this.PassData.tableData[this.indexRow].jvDate = this.oldRecord.jvDate;
-     this.PassData.tableData[this.indexRow].payee = this.oldRecord.payee;
-     this.PassData.tableData[this.indexRow].payeeNo = this.oldRecord.payeeNo;
-     this.PassData.tableData[this.indexRow].particulars = this.oldRecord.particulars;
-     this.PassData.tableData[this.indexRow].currCd = this.oldRecord.currCd;
-     this.PassData.tableData[this.indexRow].invoiceAmt = this.oldRecord.invoiceAmt;
-     this.PassData.tableData[this.indexRow].currRate = this.oldRecord.currRate;
-     this.PassData.tableData[this.indexRow].localAmt = this.oldRecord.localAmt;
-     //this.selectedrecord = this.oldRecord;
-     this.PassData.disableGeneric = true;
+     if (this.mdlType === 'edit'){
+       this.invoiceDate.date = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[0];
+       this.invoiceDate.time = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[1];
+       this.PassData.tableData[this.indexRow].tranTypeCd = this.oldRecord.tranTypeCd;
+       this.PassData.tableData[this.indexRow].jvNo = this.oldRecord.jvNo;
+       this.PassData.tableData[this.indexRow].jvDate = this.oldRecord.jvDate;
+       this.PassData.tableData[this.indexRow].payee = this.oldRecord.payee;
+       this.PassData.tableData[this.indexRow].payeeNo = this.oldRecord.payeeNo;
+       this.PassData.tableData[this.indexRow].particulars = this.oldRecord.particulars;
+       this.PassData.tableData[this.indexRow].currCd = this.oldRecord.currCd;
+       this.PassData.tableData[this.indexRow].invoiceAmt = this.oldRecord.invoiceAmt;
+       this.PassData.tableData[this.indexRow].currRate = this.oldRecord.currRate;
+       this.PassData.tableData[this.indexRow].localAmt = this.oldRecord.localAmt;
+       //this.selectedrecord = this.oldRecord;
+       this.PassData.disableGeneric = true;
+     } else if (this.mdlType === 'add') {
+       this.PassData.disableGeneric = true;
+     }
+     
   }
 
   saveInvoice(){
-    this.PassData.tableData[this.indexRow].refNoDate    = this.ns.toDateTimeString(this.PassData.tableData[this.indexRow].refNoDate);
-    this.PassData.tableData[this.indexRow].invoiceDate  = this.invoiceDate.date + 'T' + this.invoiceDate.time;
-    this.PassData.tableData[this.indexRow].updateUser   = this.ns.getCurrentUser();
-    this.PassData.tableData[this.indexRow].updateDate   = this.ns.toDateTimeString(0);
-    this.PassData.tableData[this.indexRow].localAmt     = parseFloat(this.PassData.tableData[this.indexRow].localAmt.toString().split(',').join(''));
-     this.PassData.tableData[this.indexRow].currRate    = parseFloat(this.PassData.tableData[this.indexRow].currRate.toString().split(',').join(''));
-    console.log(this.PassData.tableData[this.indexRow].invoiceNo);
-    this.PassData.disableGeneric = true;
-    this.save(this.PassData.tableData[this.indexRow]);
+    console.log(this.mdlType);
+    if (this.mdlType === 'edit'){
+      this.PassData.tableData[this.indexRow].refNoDate    = this.ns.toDateTimeString(this.PassData.tableData[this.indexRow].refNoDate);
+      this.PassData.tableData[this.indexRow].invoiceDate  = this.invoiceDate.date + 'T' + this.invoiceDate.time;
+      this.PassData.tableData[this.indexRow].updateUser   = this.ns.getCurrentUser();
+      this.PassData.tableData[this.indexRow].updateDate   = this.ns.toDateTimeString(0);
+      this.PassData.tableData[this.indexRow].localAmt     = parseFloat(this.PassData.tableData[this.indexRow].localAmt.toString().split(',').join(''));
+      this.PassData.tableData[this.indexRow].currRate    = parseFloat(this.PassData.tableData[this.indexRow].currRate.toString().split(',').join(''));
+      console.log(this.PassData.tableData[this.indexRow].invoiceNo);
+      this.PassData.disableGeneric = true;
+      this.save(this.PassData.tableData[this.indexRow]);
+    } else if (this.mdlType === 'add'){
+      console.log(this.selectedrecord);
+      this.save(this.selectedrecord);
+    }
   }
 
   save(params){
@@ -187,7 +248,9 @@ export class BatchInvoiceComponent implements OnInit {
               this.successDiag.open();
               this.table.overlayLoader = true;
               this.retrieveBatchInvoiceList(this.searchParams);
+              this.selectedrecord = [];
           }else{
+              this.viewinvoiceModal.openNoClose();
               this.dialogIcon = "error";
               this.successDiag.open();
           }
@@ -206,9 +269,6 @@ export class BatchInvoiceComponent implements OnInit {
                           a.invoiceNocheck = 'Y';
                           a.uneditable = ['invoiceNocheck'];
                         }
-
-                        this.invoiceDate.date = this.ns.toDateTimeString(a.invoiceDate).split('T')[0];
-                        this.invoiceDate.time = this.ns.toDateTimeString(a.invoiceDate).split('T')[1];
                         a.jvDate = this.ns.toDateTimeString(a.jvDate);
                         a.createDate = this.ns.toDateTimeString(a.createDate);
                         a.updateDate = this.ns.toDateTimeString(a.updateDate);
@@ -311,14 +371,109 @@ export class BatchInvoiceComponent implements OnInit {
     this.payeeLov.openLOV();
   }
 
+  onClickJVModal(){
+    this.passLov.selector = 'acseJvList';
+    this.passLov.params = {};
+    this.payeeLov.openLOV();
+  }
+
   setSelectedData(data){
     console.log(data.data);
     if(data.data !== null){
         let selected = data.data;
-        this.selectedrecord.payee = selected.payeeName;
-        this.selectedrecord.payeeNo = selected.payeeNo;
+        if( this.passLov.selector === 'payee'){
+          this.selectedrecord.payee = selected.payeeName;
+          this.selectedrecord.payeeNo = selected.payeeNo;
+        } else if(this.passLov.selector === 'acseJvList'){
+          console.log(selected);
+          this.selectedrecord.refNoTranId = selected.tranId;
+          this.selectedrecord.refNoDate = this.ns.toDateTimeString(selected.jvDate);
+          this.selectedrecord.jvNo = selected.jvNo;
+          this.selectedrecord.jvDate = this.ns.toDateTimeString(selected.jvDate);
+          this.selectedrecord.particulars = selected.particulars;
+          this.selectedrecord.currCd = selected.currCd;
+          this.selectedrecord.currRate = selected.currRate;
+          this.selectedrecord.invoiceAmt = selected.jvAmt;
+          this.selectedrecord.localAmt = selected.localAmt;
+          this.selectedrecord.tranTypeCd = selected.tranTypeCd;
+        }
+        
+    }
+  }
+
+  validateInvoiceNo(data){
+    let invoiceNo = this.pad(data.target.value);
+    this.invoiceNo = invoiceNo;
+
+    if (this.isEmptyObject(invoiceNo)){
+      this.genInvoiceBool = true;
+    } else {
+      this.genInvoiceBool = false;
+      this.retrieveInvSeriesNo(invoiceNo,invoiceNo);
     }
   }
   
+  retrieveInvSeriesNo(invoiceNoFrm,invoiceNoTo){
+    this.ms.getMtnAcseInvSeries(invoiceNoFrm,invoiceNoTo,null,null).subscribe( data => {
+     if (data['invSeries'].length === 0){
+       this.errorInvBool = true;
+       this.genInvoiceBool = true;
+       this.invoiceNo = null;
+       this.dialogMessage = 'Cannot use Invoice No. It may not yet generated.';
+       this.dialogIcon = 'error-message';
+       this.successDiag.open();
+     } else{
+       this.errorInvBool = false;
+     }
+    });
+  }
+
+   pad(str) {
+    if(str === '' || str == null){
+      return '';
+    }else{
+        return String(str).padStart(this.invNoDigits, '0');
+    }
+  }
+
+  isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+  }
+
+  onClickSuccess(){
+    this.modalService.dismissAll();
+   /* if (this.dialogIcon === 'error-message') {
+       if(this.errorInvBool){
+         this.modalService.dismissAll();
+         //this.viewinvoiceModal.openNoClose();
+       }
+    }else if(this.dialogIcon !== 'error'){
+      this.modalService.dismissAll();
+    }*/
+  }
+
+  generateInvoice(){
+    let invoiceIdArray=[];
+
+    for(var i=0; i < this.PassData.tableData.length;i++){
+      if (this.PassData.tableData[i].invoiceNo === null && this.PassData.tableData[i].invoiceNocheck === 'Y'){
+        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId });
+      }
+    }
+    console.log(invoiceIdArray);
+    if(invoiceIdArray.length === 0){
+      this.dialogMessage = 'Please choose records.';
+      this.dialogIcon = 'error-message';
+      this.successDiag.open();
+    }else {
+      console.log(invoiceIdArray);
+    }
+  }
+
 
 }

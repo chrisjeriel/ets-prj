@@ -1865,4 +1865,13 @@ export class MaintenanceService{
     	     		
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitTranTypeLov", {params});
     }
+
+    getMtnAcseInvSeries(invFrom?,invTo?,usedTag?,rowNum?){
+    	const params = new HttpParams()
+    				.set('invFrom', (invFrom === null || invFrom === undefined ? '' : invFrom))
+    				.set('invTo', (invTo === null || invTo === undefined ? '' : invTo))
+    	     		.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag))
+    	     		.set('rowNum', (rowNum === null || rowNum === undefined ? '' : rowNum));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseInvSeries", {params});
+    }
 }

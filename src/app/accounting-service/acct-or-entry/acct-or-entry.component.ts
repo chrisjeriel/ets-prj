@@ -860,6 +860,7 @@ export class AcctOrEntryComponent implements OnInit {
               //User has the authority to print AR
               this.printMdl.openNoClose();
             }else{
+              
               //User has no authority. Open Override Login
               this.overrideLogin.getApprovalFn();
               this.overrideLogin.overrideMdl.openNoClose();

@@ -1354,7 +1354,31 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = data.reports;
         this.table.refreshTable();
       })
-    }
+    }else if(this.passData.selector == 'acseJvList'){
+      this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type","Status","Amount"];
+      this.passTable.widths = [120,98,171,335,110,115];
+      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','statusName','jvAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getACSEJvList(null).subscribe((data:any)=>{
+        
+        for(var i=0; i< data.jvList.length;i++){
+                this.passTable.tableData.push(data.jvList[i]);
+                this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.jvList[i].jvYear) + '-' +  String(data.jvList[i].jvNo);
+                
+        }  
+
+        this.passTable.tableData.forEach(a => {
+            if(a.tranStat != 'O' && a.tranStat != 'C') {
+              a.jvStatus = a.jvStatus;
+              a.statusName = a.statusName;
+            }
+        });
+
+      this.table.refreshTable();
+       this.table.filterDisplay(this.table.filterObj, this.table.searchString);
+      });
+     }
 
 
     this.modalOpen = true;
