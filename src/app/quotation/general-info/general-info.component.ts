@@ -25,7 +25,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@ViewChild('myForm') form : NgForm;
 	ngAfterViewInit(){
 		
-		if(this.form.dirty && this.form.untouched){
+		if(this.form.dirty && this.savingType != 'modification'){
 			console.log('huli ka boi')
 			this.form.control.markAsPristine();
 		}
