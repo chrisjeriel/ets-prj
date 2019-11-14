@@ -1,3 +1,28 @@
+<style type="text/css">
+    .float-sm-center {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .txt-content-rght {
+        text-align: right
+    }
+
+    .mrgn-fieldset {
+        margin-top: 17px;
+    }
+
+    .fieldset-height {
+        height: 104%;
+    }
+
+    .input-group {
+        margin-bottom: -14px !important;
+    }
+</style>
+
+
 <div>
     <fieldset class="scheduler-border">
     	<div class="form-row custom-row-inline-inset">
@@ -26,7 +51,7 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2">Ceding Company</label>
-                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quoteInfo.quotationNo"
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quoteInfo.cedingName"
                     disabled="disabled">
                 <label class="form-control-sm col-sm-1">Insured</label>
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-6"
@@ -58,7 +83,7 @@
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top: 10px">
                 <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                <button type="button" [disabled]="quoteInfo.riskName == '' || quoteInfo.riskName == undefined" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
     </div>
@@ -67,7 +92,7 @@
 
 <app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
 <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickCancelSave()" [url]="'/quotation-processing'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickCancelSave()" [url]="'/'" ></app-cancel-button>
 
 
 
@@ -78,6 +103,6 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button type="button" class="cust-btn" (click)="quoteMdl.closeModal();"><a>Cancel</a></button>
-		<button type="button" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
+		<button type="button" [disabled]="quoteTable.indvSelect == ''" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
     </div>
 </app-modal>

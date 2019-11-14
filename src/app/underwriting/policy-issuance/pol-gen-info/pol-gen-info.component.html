@@ -1099,6 +1099,19 @@
 								</div>
 							</div>
 						</div>
+						<div class="col-sm-6" *ngIf="line=='CAR'">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text white-bg">
+										<input name="input999" type="checkbox" [ngModel]="policyInfo.coTermTag === 'Y'" (change)="policyInfo.coTermTag = (policyInfo.coTermTag === 'Y') ? 'N' : 'Y';" >
+									</div>
+								</div>
+								<input name="input998" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Co-Terminus" disabled class="form-control form-control-sm white-bg">
+							</div>
+							<div class="input-group" style="margin-top: 16px !important;">
+								<input name="input997" [disabled]="policyInfo.coTermTag != 'Y'" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;">
+							</div>
+						</div>
 					</div>							
 				</div>
 			</fieldset>

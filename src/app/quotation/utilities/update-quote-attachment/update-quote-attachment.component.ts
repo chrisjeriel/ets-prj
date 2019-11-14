@@ -86,6 +86,26 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
   ngOnInit() {
   }
 
+  clearAll(){
+  	this.completeSearch = false;
+  	this.quoteInfo  = {
+  		quotationNo 	: '',
+  		quotationNoArr  : [],
+  		cedingName		: '',
+  		insuredDesc		: '',
+  		riskName		: '',
+  		totalSi			: '',
+  		status			: ''
+  	};
+  	this.passData.tableData = [];
+  	this.passData.disableAdd = true;
+  	this.table.indvSelect = '';
+  	this.table.refreshTable();
+  	this.searchParams.quotationNo = this.quoteInfo.quotationNoArr.map(a=>a.toUpperCase()).join('%-%');
+	this.passDataQuoteLOV.filters[0].search = this.searchParams.quotationNo;
+	this.passDataQuoteLOV.filters[0].enabled =true;
+  }
+
   search(key,ev) {
   		this.quoteInfo.quotationNoArr[0] =  (this.quoteInfo.quotationNoArr[0] == undefined || this.quoteInfo.quotationNoArr[0] == '')?'':this.quoteInfo.quotationNoArr[0];
   		this.quoteInfo.quotationNoArr[1] =  (this.quoteInfo.quotationNoArr[1] == undefined || this.quoteInfo.quotationNoArr[1] == '')?'':this.quoteInfo.quotationNoArr[1];
@@ -109,6 +129,10 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
 				totalSi			: '',
 				status			: ''
 			};
+			this.passData.tableData = [];
+			this.passData.disableAdd = true;
+			this.table.indvSelect = '';
+			this.table.refreshTable();
 		}else{
 			this.completeSearch = true;
 			
@@ -172,6 +196,7 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
   getAttachment(){
     this.passData.tableData = [];
     this.passData.disableAdd = false;
+    this.table.overlayLoader = true;
     this.qs.getAttachment(this.quoteInfo.quoteId, null)
       .subscribe(data => {
         this.passData.tableData = data['quotation'][0].attachmentsList.map(i=>{
@@ -235,13 +260,13 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
      }
      return false;
    }
-
+   deletedData:any[];
     onSaveAttachment(cancelFlag?){
       this.dialogIcon = '';
       this.dialogMessage = '';
       this.cancelFlag = cancelFlag !== undefined;
       let savedData = [];
-      let deletedData = [];
+      this.deletedData = [];
       for (var i = 0 ; this.passData.tableData.length > i; i++) {
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
             savedData.push(this.passData.tableData[i]);
@@ -251,15 +276,15 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
             savedData[savedData.length-1].updateUser = JSON.parse(window.localStorage.currentUser).username;
         }
         else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
-           deletedData.push(this.passData.tableData[i]);
-           deletedData[deletedData.length-1].createDate = this.ns.toDateTimeString(0);
-           deletedData[deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
+           this.deletedData.push(this.passData.tableData[i]);
+           this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
+           this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
         }
 
       }
 
       let params: any = {
-        deleteAttachmentsList: deletedData,
+        deleteAttachmentsList: this.deletedData,
         saveAttachmentsList: savedData,
         quoteId: this.quoteInfo.quoteId
       }
@@ -278,13 +303,12 @@ export class UpdateQuoteAttachmentComponent implements OnInit {
             if(data.uploadDate != null){
               this.uploadMethod(data.uploadDate);
             }
-            if(deletedData.length !== 0){
+            if(this.deletedData.length !== 0){
               this.deleteFileMethod();
             }
             this.getAttachment();
             this.table.markAsPristine();
           }
-          this.loading = false;
         });
     } 
 
