@@ -436,7 +436,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
   checkFileNameLength(){
     for(var i of this.repData.tableData){
-      if(i.fileName.length > 50){
+      if(i.fileName !=null && i.fileName.length > 50){
         return true;
       }
     }
