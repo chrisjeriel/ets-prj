@@ -65,10 +65,10 @@
 							</div>
 
 							<div class="float-right" style="margin-top: -5px; margin-right: 5px;" *ngIf="!reminderBool">
-								<button class="btn-action" (click)="updateReminderModal(reminder, 'C')"><a href="#"><fa name="check"></fa></a></button>
-								<button class="btn-action" (click)="showReminderModal(reminder, true)"><a href="#"><fa name="eye"></fa></a></button>
-  							    <button class="btn-action" (click)="showReminderModal(reminder, false)"><a href="#"><fa name="pencil"></fa></a></button>
-								<button class="btn-action" (click)="updateReminderModal(reminder, 'D')"><a href="#"><fa name="trash"></fa></a></button> 
+								<button title="Complete" class="btn-action" (click)="updateReminderModal(reminder, 'C')"><a href="#"><fa name="check"></fa></a></button>
+								<button title="View" class="btn-action" (click)="showReminderModal(reminder, true)"><a href="#"><fa name="eye"></fa></a></button>
+  							    <button title="Edit" class="btn-action" (click)="showReminderModal(reminder, false)"><a href="#"><fa name="pencil"></fa></a></button>
+								<button title="Delete" class="btn-action" (click)="updateReminderModal(reminder, 'D')"><a href="#"><fa name="trash"></fa></a></button> 
 							</div>
 						</div>
 <!-- 
