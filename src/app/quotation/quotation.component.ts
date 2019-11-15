@@ -254,7 +254,7 @@ export class QuotationComponent implements OnInit {
 
         if(selectedReport == "QUOTER009C" || selectedReport == "QUOTER009E"){
           this.quotationService.saveReptext(saveRepTextParam).subscribe(a=>{
-            this.reportName = (selectedReport == 'QUOTER009C' ? 'QUOTER009B' : selectedReport);
+            this.reportName = selectedReport;
             if (obj.toUpperCase() == 'SCREEN'){
               window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.reportName
                 + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId 
@@ -359,6 +359,12 @@ export class QuotationComponent implements OnInit {
               this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
               this.successDiag.open();
+            } else if(data['returnCode'] == 20000){
+              for(let msg of data['errorList']){
+                this.dialogMessage = msg.errorMessage;
+              }
+              this.dialogIcon = "error-message";
+              this.successDiag.open();
             } else {
               this.dialogMessage = "Status Updated";
               this.dialogIcon = "success-message";
@@ -376,6 +382,12 @@ export class QuotationComponent implements OnInit {
               $('#quote-option #successModalBtn').trigger('click');*/
               this.dialogIcon = "error-message";
               this.dialogMessage = "Status failed for Approval";
+              this.successDiag.open();
+            } else if(data['returnCode'] == 20000){
+              for(let msg of data['errorList']){
+                this.dialogMessage = msg.errorMessage;
+              }
+              this.dialogIcon = "error-message";
               this.successDiag.open();
             } else {
               this.dialogMessage = "Pending for Approval";

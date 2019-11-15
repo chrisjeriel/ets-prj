@@ -98,20 +98,18 @@
                   &nbsp;
                 </div>
                 <div class="input-group" style="margin-bottom: -13px !important">
-                 <label class="form-control-sm col-sm-3">Share(%)</label>
-                 <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctShare" (ngModelChange)="pctShare($event)" (blur)="checkPctShare()" style="text-align: right !important" appRequired appOtherRates name="coverageData.pctShare">
+                 <label class="form-control-sm col-sm-5">Share(%) of 100% Value</label>
+                 <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageData.pctShare" (ngModelChange)="pctShare($event)" (blur)="checkPctShare()" style="text-align: right !important" appRequired appOtherRates name="coverageData.pctShare">
+               </div>
+               <div class="input-group" style="margin-bottom: -6px !important">
+                 <label class="form-control-sm  col-sm-5" style="margin-bottom: 1px;">100% Value</label>
+                 <input type="text" class="form-control form-control-sm calc col-sm" [(ngModel)]="coverageData.totalValue"  style="text-align: right !important" (ngModelChange)="totalValue($event)" (blur)="checktotalValue()" appRequired appCurrency name="coverageData.totalValue">
                  
-                 <span class="col-sm-1"></span>
                </div>
                <div class="input-group" style="margin-bottom: -6px !important">
-                 <label class="form-control-sm col-sm-3" style="margin-bottom: 1px;">100% Value</label>
-                 <input type="text" class="form-control form-control-sm calc" [(ngModel)]="coverageData.totalValue"  style="text-align: right !important" (ngModelChange)="totalValue($event)" (blur)="checktotalValue()" appRequired appCurrency name="coverageData.totalValue">
-                 <span class="col-sm-1"></span>
-               </div>
-               <div class="input-group" style="margin-bottom: -6px !important">
-                 <label class="form-control-sm col-sm-3">PML(%)</label>
-                 <input type="text" class="form-control form-control-sm req" [(ngModel)]="coverageData.pctPml" (ngModelChange)="coverageData.pctPml = $event" appOtherRates name="coverageData.pctPml">
-                 <span class="col-sm-1"></span>
+                 <label class="form-control-sm  col-sm-5">PML(%)</label>
+                 <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageData.pctPml" (ngModelChange)="coverageData.pctPml = $event" appOtherRates name="coverageData.pctPml">
+                 
                </div>
              </div>
            </fieldset>
@@ -146,7 +144,7 @@
     <div class="form-group col-sm">
       <div class="col-md-13 text-center" style="margin-top: 10px;">
         <div class="cust-btn-container">
-          <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+          <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="showCatPerilBtn"><a>CAT Perils</a></button>
           <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
           <button type="button" class="cust-btn" (click)="onClickSave()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
         </div>
@@ -167,7 +165,7 @@
     <div header>Confirmation Message</div>
     <div body style="text-align: center">
        <p class="no-margin">{{promptMessage}}</p>
-       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%): {{coverageData.pctShare}}</strong></p>
+       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%) of 100% Value: {{coverageData.pctShare}}</strong></p>
        <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
           <div class="row">
             <div class="col-sm-6" style="text-align: right; padding-right: 0px">
@@ -324,7 +322,7 @@
               &nbsp;
             </div>
             <div class="input-group" style="margin-bottom: -13px !important">
-             <label class="form-control-sm col-sm-3">Share(%)</label>
+             <label class="form-control-sm col-sm-3">Share(%) of 100% Value</label>
              <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)" name="altCoverageData.pctShare">
              <label class="form-control-sm col-sm-2">PML(%)</label>
              <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event" name="altCoverageData.pctPml">
@@ -370,7 +368,7 @@
           <div class="col-sm text-center">
             <div class="cust-btn-container" style="margin-top: 10px;">
               <!-- <button type="button" class="cust-btn" (click)="showDeductiblesModal(deductibles)" [disabled]="disabledFlag" [class.cust-btn-disabled]="disabledFlag"><a>Deductibles</a></button> -->
-              <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="line == 'CAR' || line =='EAR' || line =='EEI' || line =='CEC'"><a>CAT Perils</a></button>
+              <button type="button" class="cust-btn" (click)="onClickCat()" *ngIf="showCatPerilBtn"><a>CAT Perils</a></button>
               <button type="button" class="cust-btn" (click)="cancel()" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
               <button type="button" class="cust-btn" (click)="onClickSaveAlt()" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
             </div>
@@ -436,7 +434,7 @@
     <div header>Confirmation Message</div>
     <div body style="text-align: center">
        <p class="no-margin">{{promptMessage}}</p>
-       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%): {{altCoverageData.pctShare}}</strong></p>
+       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%) of 100% Value: {{altCoverageData.pctShare}}</strong></p>
        <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
           <div class="row">
             <div class="col-sm-6" style="text-align: right; padding-right: 0px">

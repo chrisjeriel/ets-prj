@@ -54,14 +54,14 @@
 						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Report</label>
-								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
 									<option value="POLR010">Policy Schedule</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Destination</label>
-								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8 print">
 									<option value="screen">Screen</option>
 									<option value="dlPdf">PDF</option>
 									<option value="printPdf">Printer</option>
@@ -73,8 +73,8 @@
 								<div class="col-sm-8">
 									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
 									&nbsp;&nbsp;&nbsp;&nbsp; -->
-									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
-									<div class="col-sm-1"></div>
+									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div> -->
 								</div>
 							</div>
 						</div>
@@ -98,7 +98,7 @@
 
 		</ngb-tab>
 
-		<ngb-tab title="Post" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
+		<ngb-tab title="Post Policy" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				
 			</ng-template>

@@ -746,7 +746,7 @@
 									</div>
 									<div class="input-group">
 										<label  class="form-control-sm col-sm-2">No Claim Period</label>
-										<input name="input120" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd" numbers-only appRequired ngbTooltip="Hour/s">
+										<input name="input120" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd"  appRequired >
 									</div>
 								</div>
 							</div>
@@ -817,8 +817,8 @@
 							</div>
 						</div>
 						<div class="form-row" style="margin-bottom: -16px; margin-top: -10px;">
-							<div class="form-group col-sm-4">
-								<label  class="form-control-sm top-label">% Share</label>
+							<div class="form-group col-sm-5">
+								<label  class="form-control-sm top-label">Share(%) of 100% Value</label>
 								<input name="input122"  type="text" class="form-control form-control-sm cust-sm text-right" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [(ngModel)]="project.pctShare" (change)="compute($event,'pctShare')" mask="999.0000000000" [dropSpecialCharacters]="false" (blur)="checkDecimal('pctShare')">
 							</div>
 							<div class="form-group col-sm" style="margin-left: -6px !important;">

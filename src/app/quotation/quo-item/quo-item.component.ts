@@ -23,7 +23,7 @@ export class QuoItemComponent implements OnInit {
     eeiPassData:any={
         tableData:[],
         tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['wholenumber', 'reqText', 'string', 'string', 'currency'],
+        dataTypes:['wholenumber', 'text-editor', 'string', 'string', 'currency'],
         nData: {
             "quantity": null,
             "itemDesc": null,
@@ -54,7 +54,7 @@ export class QuoItemComponent implements OnInit {
     bpvPassData: any = {
         tableData:[],
         tHeader: ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'],
-        dataTypes:['string', 'string', 'reqText', 'string', 'currency'],
+        dataTypes:['string', 'string', 'text-editor', 'string', 'currency'],
         nData: {
              "serialNo":null,
              "location": null,
@@ -81,7 +81,7 @@ export class QuoItemComponent implements OnInit {
     mlpPassData: any = {
         tableData: [],
         tHeader:  ['Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
-        dataTypes:  [ 'wholenumber', 'reqText', 'wholenumber', 'percent', 'number'],
+        dataTypes:  [ 'wholenumber', 'text-editor', 'wholenumber', 'percent', 'number'],
         nData:  {
             "itemNo":null,
             "quantity": null,
@@ -111,7 +111,7 @@ export class QuoItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "reqText", "wholenumber", "currency"],
+        dataTypes: [ "text", "reqText", "text", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -142,7 +142,7 @@ export class QuoItemComponent implements OnInit {
     dosMachineryPassData: any = {
         tableData: [],
         tHeader: ["Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
-        dataTypes: [ "wholenumber", "reqText", "text", "currency"],
+        dataTypes: [ "wholenumber", "text-editor", "text", "currency"],
         nData: {
             "itemNo":null,
             "standbyUnit": null,

@@ -142,7 +142,7 @@ export class PolPostComponent implements OnInit {
           this.loadMsg = '100% Value must be greater than or equal to the Total Sum Insured. Please check Coverage tab.';
         }else{
           if(secCvrs.filter(a=>a.coverCd == coverCd).length > 0){
-            this.alopSi = secCvrs.filter(a=>(a.lineCd == 'CAR' && a.coverCd == '16')|| (a.lineCd == 'EAR' && a.coverCd == '31'))[0].cumSi;
+            this.alopSi = secCvrs.filter(a=>a.coverCd==coverCd)[0].cumSi;
             this.checkAlop();
           }
           else{
@@ -203,7 +203,7 @@ export class PolPostComponent implements OnInit {
         if(inwBals.reduce((a,b)=>a+b.premAmt,0) != a['policyList'][0].project.coverage.totalPrem){
           this.loadMsg = 'Total Premium is not equal to the sum of premium per installment. Please check Inward Pol balance tab.';
         }else{
-          this.loadMsg = 'Saving Successful.'
+          this.loadMsg = 'Saving.'
           this.progress +=25;
           if(this.cummSi == 0){
             this.confirmCancel.openNoClose();

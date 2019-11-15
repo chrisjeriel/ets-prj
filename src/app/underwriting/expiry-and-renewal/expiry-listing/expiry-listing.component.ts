@@ -46,6 +46,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('myForms') forms:any;
   @ViewChild('printModal') printModal: ModalComponent;
   @ViewChild("remindersTable") remindersTable: CustEditableNonDatatableComponent;
+  @ViewChild('warnMdl') warnModal: ModalComponent;
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
@@ -83,6 +84,7 @@ export class ExpiryListingComponent implements OnInit {
   purgeFlag: boolean = true;
   purgeFlagNR: boolean = true;
   returnCode: any;
+  warnMsg : string = '';
 
   nrReasonCd:string = "";
   nrReasonDescription:string = "";
@@ -439,7 +441,24 @@ export class ExpiryListingComponent implements OnInit {
   }
 
   onClickPrint() {
-      $('#printPolicyModal > #modalBtn').trigger('click');
+      if(this.currentTab == 'renew'){
+        if(this.passDataRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
+          $('#printPolicyModal > #modalBtn').trigger('click');
+        }else{
+          this.dialogMessage = "Ceding Company of the selected policies must be the same to print a report.";
+          this.dialogIcon = "error-message";
+          this.successDiagRN.open();
+        }
+      }else{
+        if(this.passDataNonRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
+          $('#printPolicyModal > #modalBtn').trigger('click');
+        }else{
+          this.dialogMessage = "Ceding Company of the selected policies must be the same to print a report.";
+          this.dialogIcon = "error-message";
+          this.successDiagRN.open();
+        }
+      }
+      
   }
 
   parameter() {
@@ -1825,6 +1844,7 @@ export class ExpiryListingComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
     this.clearData();
+    this.printFlag = false;
     this.changes = '';
     this.nrReasonCd = '';
     this.nrReasonDescription = '';
@@ -1852,31 +1872,61 @@ export class ExpiryListingComponent implements OnInit {
   printDestination:string = 'screen';
   print(){
     let reportName = '';
+    
+    let forPrint: any[] = this.currentTab == 'renew' ? this.passDataRenewalPolicies.tableData.filter(a=>a.printTag == 'Y') : this.passDataNonRenewalPolicies.tableData.filter(a=>a.printTag == 'Y');
+
+    let cedingAbbr: string = forPrint[0].cedingAbbr;
     let params:any = {
-      userId : this.ns.getCurrentUser()
+      userId : this.ns.getCurrentUser(),
+      cedingId : forPrint[0].cedingId
     }
-    if(this.currentTab == 'renew'){
-      for(let data of this.passDataRenewalPolicies.tableData.filter(a=>a.printTag == 'Y')){
-        
-        if(data['renAsIsTag'] == 'Y'){
-          reportName = 'POLR027C'
-        }else
-        if(data['renWithChange'] == 'Y'){
-          reportName = 'POLR027D'
-        }else
-        if(data['nonRenTag'] == 'Y'){
-          reportName = 'POLR027B'
-        }else{
-          reportName = 'POLR027A'
-        }
+    //print renewal notice for all selected
 
-        params.reportId = reportName;
-        params.cedingId = data.cedingId;
-        params.policyId = data.policyId;
-        this.ps.print(this.printDestination,reportName,params);
 
-      }
+    if(forPrint.filter(a=>a.renAsIsTag=='Y').length != 0){
+      params.policyId = forPrint.filter(a=>a.renAsIsTag=='Y').map(a=>a.policyId).join(',');
+      params.fileName = cedingAbbr +'_' + 'POLR027C';
+      params.reportName = 'POLR027C';
+      this.ps.print(this.printDestination,reportName,params);
+    }  
+
+    if(forPrint.filter(a=>a.renWithChange=='Y').length != 0){
+      params.policyId = forPrint.filter(a=>a.renWithChange=='Y').map(a=>a.policyId).join(',');
+      params.fileName = cedingAbbr +'_' + 'POLR027D';
+      params.reportName = 'POLR027D';
+      this.ps.print(this.printDestination,reportName,params);
     }
 
+    if(forPrint.filter(a=>a.nonRenTag=='Y').length != 0){
+      params.policyId = forPrint.filter(a=>a.nonRenTag=='Y').map(a=>a.policyId).join(',');
+      params.fileName = cedingAbbr +'_' + 'POLR027B';
+      params.reportName = 'POLR027B';
+      this.ps.print(this.printDestination,reportName,params);
+    }
+
+    if(forPrint.filter(a=>
+        a.renAsIsTag != 'Y' &&
+        a.renWithChange != 'Y' &&
+        a.nonRenTag != 'Y' 
+      ).length != 0){
+      params.policyId = forPrint.filter(a=>a.renAsIsTag != 'Y' &&
+        a.renWithChange != 'Y' &&
+        a.nonRenTag != 'Y' ).map(a=>a.policyId).join(',');
+      params.fileName = cedingAbbr +'_' + 'POLR027A';
+      params.reportName = 'POLR027A';
+      this.ps.print(this.printDestination,reportName,params);
+    }
+  }
+
+  onClickOkFilter(){
+    var dFrom = new Date(Number(this.dateParams.byYearFrom),Number(this.dateParams.byMonthFrom));
+    var dTo   = new Date(Number(this.dateParams.byYearTo),Number(this.dateParams.byMonthTo));
+    if(dFrom.getTime() > dTo.getTime() && this.radioVal == 'byMonthYear'){
+      this.warnMsg = 'Entered values for Month/Year are invalid';
+      this.warnModal.openNoClose();
+    }else{
+      this.modalService.dismissAll();
+      this.filterMainTable();
+    }
   }
 }
