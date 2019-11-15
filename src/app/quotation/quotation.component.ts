@@ -406,7 +406,7 @@ export class QuotationComponent implements OnInit {
     }
 
     rejectQuotation(){
-      this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'R', '').subscribe((data)=>{
+      this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'R', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
               this.dialogIcon = "error";
