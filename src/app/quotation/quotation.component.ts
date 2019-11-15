@@ -39,6 +39,7 @@ export class QuotationComponent implements OnInit {
 					     ]
 
 	quoteInfo = {
+    autoIntTag: '',
 		quoteId: '',
 		quotationNo: '',
 		riskName: '',
@@ -167,6 +168,7 @@ export class QuotationComponent implements OnInit {
 
   checkQuoteInfo(event){ 	
   		this.quoteInfo = event;
+      this.inquiryFlag = this.quoteInfo.autoIntTag == 'Y' || this.quoteInfo.autoIntTag == 'N';
       this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
       this.passData.status = this.quoteInfo.status;
       this.passData.quoteId = this.quoteInfo.quoteId;

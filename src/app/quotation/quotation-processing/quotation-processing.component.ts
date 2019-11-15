@@ -234,6 +234,7 @@ export class QuotationProcessingComponent implements OnInit {
     first = false;
     accessibleModules: string[] = [];
     disableModBtn: boolean = false;
+    autoIntComp: any = '';
 
     constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
@@ -649,6 +650,7 @@ showCedingCompanyIntCompLOV() {
 
         //change copyStatus to 1 if successful
         var params = {
+            "autoIntComp": this.autoIntComp,
             "cedingId": this.copyCedingId,
             "copyingType": 'normal',
             "createDate": currentDate,
@@ -705,6 +707,7 @@ showCedingCompanyIntCompLOV() {
         
 
         if(fromScreen !== undefined) {
+            this.autoIntComp = 'N';
             //this.exclude = [];
 
             var sq = this.selectedQuotation;
@@ -721,6 +724,7 @@ showCedingCompanyIntCompLOV() {
             //     }
             // }    
         } else {
+            this.autoIntComp = 'Y';
             this.copyQuoteId = this.riskIdList[0].quoteId;
             this.copyFromQuotationNo = this.riskIdList[0].quotationNo;
             this.copyQuoteLineCd = this.riskIdList[0].quotationNo.split('-')[0];
@@ -729,7 +733,7 @@ showCedingCompanyIntCompLOV() {
             this.copyIntCompRiskId = this.riskIdList[0].project.riskId;
             this.copyIntCompRiskName = this.riskIdList[0].project.riskName;
         }
-
+        console.log(this.autoIntComp)
         $('#copyIntCompModal > #modalBtn').trigger('click');
     }
 
@@ -746,6 +750,7 @@ showCedingCompanyIntCompLOV() {
 
         //change copyStatus to 1 if successful
         var params = {
+            "autoIntComp": this.autoIntComp,
             "cedingId": this.copyCedingId,
             "copyingType": 'internalComp',
             "createDate": currentDate,
