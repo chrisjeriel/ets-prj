@@ -150,6 +150,7 @@ export class PolicyIssuanceComponent implements OnInit {
       console.log(event)
       this.policyInfo.policyId = event.policyId != undefined ? event.policyId : this.policyInfo.policyId;
       this.policyInfo.insuredDesc =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
+      this.policyInfo.insured =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
       this.policyInfo.riskId =  event.riskId != undefined ? event.riskId : this.policyInfo.riskId;
       this.policyInfo.showPolAlop = event.showPolAlop != undefined ? event.showPolAlop : this.policyInfo.showPolAlop;
       this.policyInfo.principalId = event.principalId != undefined ? event.principalId : this.policyInfo.principalId;

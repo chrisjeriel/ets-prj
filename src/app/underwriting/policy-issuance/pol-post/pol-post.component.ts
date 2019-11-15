@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { Router } from '@angular/router'
 import { ModalComponent } from '@app/_components/common/modal/modal.component'
 import { forkJoin, Subscription } from 'rxjs';
@@ -39,7 +39,8 @@ export class PolPostComponent implements OnInit {
   cummSi:any;
 
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, public modalService: NgbModal,
-   private uwService: UnderwritingService, private ns: NotesService, private router: Router, private mtnService: MaintenanceService) {
+   private uwService: UnderwritingService, private ns: NotesService, private router: Router, private mtnService: MaintenanceService,
+   private ps: PrintService) {
   	config.backdrop = 'static';
     config.keyboard = false;
     configprogress.max = 100;
@@ -275,5 +276,15 @@ export class PolPostComponent implements OnInit {
                                                  riskName: this.policyInfo.riskName,
                                                  exitLink: '/pol-dist-list'
                                                  }], { skipLocationChange: true });
+    }
+
+    print(){
+      let params:any = {
+                        policyId:this.policyInfo.policyId,
+                        updateUser:this.ns.getCurrentUser(),
+
+                      };
+      params.reportId= 'POLR010';
+      this.ps.print('screen','POLR010',params);
     }
 }

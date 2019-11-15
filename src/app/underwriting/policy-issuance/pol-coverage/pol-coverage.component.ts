@@ -510,7 +510,7 @@ export class PolCoverageComponent implements OnInit {
           if(this.policyInfo.extensionTag == 'Y'){
             this.passData.tableData.forEach(a=>{   
             a.edited = true;
-            this.sectionTable.markAsDirty();
+            // this.sectionTable.markAsDirty();
               a.sumInsured = 0;
               a.premAmt = 0;
               a.discountTag = 'N';
@@ -519,7 +519,7 @@ export class PolCoverageComponent implements OnInit {
           }else{
             this.passData.tableData.forEach(a=>{   
             a.edited = true;
-            this.sectionTable.markAsDirty();
+            // this.sectionTable.markAsDirty();
               a.sumInsured = 0;
               a.premAmt = 0;
               a.discountTag = 'N';

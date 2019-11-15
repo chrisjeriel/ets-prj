@@ -111,7 +111,7 @@ export class QuoItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "reqText", "text", "currency"],
+        dataTypes: [ "text", 'text-editor',, "text", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -169,7 +169,7 @@ export class QuoItemComponent implements OnInit {
     cecPassData: any = {
         tableData:[],
         tHeader: [ 'Insured Item and Location', 'Deductible', 'Sum Insured'],
-        dataTypes:['reqText', 'string', 'currency'],
+        dataTypes:['text-editor','text-editor', 'currency'],
         nData: {
             "itemNo":null,
             "quantity": null,

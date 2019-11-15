@@ -849,6 +849,9 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
     }
 
     focus(data){
+        if(this.indvSelect != data){
+            this.newClick.emit(data);
+        }
         this.indvSelect=data;
     }
 
