@@ -13,7 +13,17 @@
 							<div class="form-row custom-row-inline-inset">
 								<div class="col-sm">
 									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-3">JV Type</label>
+										<label class="form-control-sm col-sm-5">Tran Class</label>
+											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="tranTypeClass" name="tranTypeClass" (change)="onChangeTranClass()">
+												<option>OR</option>
+												<option>CV</option>
+												<option>JV</option>
+											</select>
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-3">Tran Type</label>
 											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="jvTypeCd" name="jvTypeCd">
 												<option *ngFor="let jv of jvTypes" [value]="jv.tranTypeCd">{{jv.tranTypeName}}</option>
 											</select>
@@ -21,14 +31,14 @@
 								</div>
 								<div class="col-sm">
 									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-3">JV No</label>
+										<label class="form-control-sm col-sm-5">Tran No</label>
 											<input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "jvNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
 											<!-- option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option> -->		
 									</div>
 								</div>
-								<div class="col-sm-6">
+								<div class="col-sm-4">
 									<div class="input-group cust-ig">
-										<label class="form-control-sm col-sm-2">JV Date: </label>
+										<label class="form-control-sm col-sm-3">Tran Date: </label>
 										<label class="form-control-sm col-sm-1">From </label>
 										<div class="col-sm dp-cont">
 											<datepicker [type]="'date'" [showIcon]="true" [value]="fromDate.split('T')[0]" (valueChange)="fromDate=$event"></datepicker>
@@ -200,12 +210,12 @@
 						</div>
 						<div class="col-sm-5" style="padding: 0px">
 							<div class="input-group">
-								<label class="form-control-sm col-sm-2">JV No</label>
+								<label class="form-control-sm col-sm-2">Tran No</label>
 				
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.jvNo" (ngModelChange)="selectedrecord.jvNo=$event;" disabled>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.tranNo" (ngModelChange)="selectedrecord.tranNo=$event;" disabled>
 	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickJVModal()"></i></a></div>
-								<label class="form-control-sm col-sm-2">JV Date</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.jvDate" (ngModelChange)="selectedrecord.jvDate=$event;" readonly>
+								<label class="form-control-sm col-sm-2">Tran Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
 							</div>
 						</div>
 					</div>
@@ -341,6 +351,6 @@
 		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
 	</div>                
 </app-modal> -->
-<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="selectedrecord?.jvDate"></app-mtn-currency>
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="selectedrecord?.tranDate"></app-mtn-currency>
 <app-lov #passLOV [passData]="passLov" (selectedData)="setSelectedData($event)">
 

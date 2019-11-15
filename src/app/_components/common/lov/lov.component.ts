@@ -1378,6 +1378,19 @@ export class LovComponent implements OnInit {
       this.table.refreshTable();
        this.table.filterDisplay(this.table.filterObj, this.table.searchString);
       });
+     }else if(this.passData.selector == 'acseOrList'){
+        this.passTable.tHeader = ['O.R. No.','OR Type','OR Date','Payment Type','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
+        this.passTable.keys = ['orNo', 'orType', 'orDate', 'tranTypeName', 'orStatDesc', 'particulars', 'orAmt'];
+        this.passTable.checkFlag = false;
+
+        this.accountingService.getAcseOrList(null).subscribe((a:any)=>{
+          this.passTable.tableData = a.orList.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
+          this.table.refreshTable();
+        });
+
+     
      }
 
 

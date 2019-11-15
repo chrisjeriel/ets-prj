@@ -2955,10 +2955,11 @@ export class AccountingService {
 		var params;
 			if(searchParams.length < 1){
             	params = new HttpParams()
-            	.set('jvDateFrom','')
-				.set('jvDateTo','')
-				.set('jvNo','')
-				.set('jvTypeCd','');
+            	.set('tranDateFrom','')
+				.set('tranDateTo','')
+				.set('tranNo','')
+				.set('tranTypeCd','')
+				.set('tranClass','');
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
@@ -2986,6 +2987,16 @@ export class AccountingService {
          };
 
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoice',params,header);
+    }
+
+    genBatchInvoice(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchInvoiceNo',params,header);
     }
 
 

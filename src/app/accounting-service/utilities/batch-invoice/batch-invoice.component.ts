@@ -52,7 +52,7 @@ export class BatchInvoiceComponent implements OnInit {
   
   PassData: any = {
   	tableData: [],
-  	tHeader: ['G', 'P', 'Invoice Date', 'Invoice No', 'Jv No.', 'JV Date','Billed To', 'Particulars','Amount'],
+  	tHeader: ['G', 'P', 'Invoice Date', 'Invoice No', 'Tran No.', 'Tran Date','Billed To', 'Particulars','Amount'],
   	dataTypes: ['checkbox','checkbox', 'date', 'text', 'text','date','text','text','currency'],
     addFlag: false,
     genericBtn: 'View Invoice Details',
@@ -64,7 +64,7 @@ export class BatchInvoiceComponent implements OnInit {
     uneditable: [false,false,true,true,true,true,true,true,true],
     pageID: 'invoiceBatchPrint',
     disableGeneric: true,
-    keys: ['invoiceNocheck', 'printCheck', 'invoiceDate','invoiceNo','jvNo','jvDate','payee','particulars','localAmt'],
+    keys: ['invoiceNocheck', 'printCheck', 'invoiceDate','invoiceNo','tranNo','tranDate','payee','particulars','localAmt'],
   }
 
   nData: any = {
@@ -77,9 +77,9 @@ export class BatchInvoiceComponent implements OnInit {
       currCd : 'PHP',
       currRate : 1,
       invoiceAmt : null,
-      jvDate : null,
-      jvNo : null,
-      jvYear : null,
+      tranDate : null,
+      tranNo : null,
+      tranYear : null,
       localAmt: null,
       particulars : null,
       payee : null,
@@ -103,6 +103,9 @@ export class BatchInvoiceComponent implements OnInit {
   indexRow:any;
   mdlType: any;
   errorInvBool: boolean = true;
+  invoiceNo: any;
+  invoiceNoArray=[];
+  invoiceIdArray=[];
 
   passLov: any = {
     selector: '',
@@ -110,11 +113,21 @@ export class BatchInvoiceComponent implements OnInit {
     hide: []
   }
 
+  genInvoiceData: any = {
+        invoiceNoList: []
+  };
+  tranTypeClass: any;
+
   constructor(private accountingService: AccountingService, private modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
 
   ngOnInit() {
-    this.getMtnAcseTranType();
     this.getInvNoDigits();
+  }
+
+  onChangeTranClass(){
+    this.PassData.tableData = [];
+    this.table.refreshTable();
+    this.getMtnAcseTranType(this.tranTypeClass);
   }
 
   getInvNoDigits(){
@@ -124,9 +137,9 @@ export class BatchInvoiceComponent implements OnInit {
     });
   }
 
-  getMtnAcseTranType(){
+  getMtnAcseTranType(tranclass){
     this.jvTypes = [];
-    this.ms.getMtnAcseTranType('JV',null,null,null,null,'Y').subscribe(
+    this.ms.getMtnAcseTranType(tranclass,null,null,null,null,'Y').subscribe(
       (data:any)=>{
         console.log(data);
         if(data.tranTypeList.length !== 0){
@@ -154,12 +167,29 @@ export class BatchInvoiceComponent implements OnInit {
     this.mdlType = "add";
     this.viewFlag = false;
     this.inquiryFlag = false;
-    this.selectedrecord = [];
-    this.selectedrecord = this.nData;
+    this.selectedrecord.tranNo = null;
+    this.selectedrecord.tranDate = null;
+    this.selectedrecord.localAmt = null;
+    this.selectedrecord.particulars = null;
+    this.selectedrecord.payee = null;
+    this.selectedrecord.payeeNo = null;
+    this.selectedrecord.refNoDate = null;
+    this.selectedrecord.refNoTranId = null;
+    this.selectedrecord.tranTypeCd = null;
+    this.selectedrecord.invoiceAmt = null;
+    this.selectedrecord.invoiceDate = this.ns.toDateTimeString(0);
+    this.selectedrecord.invoiceId = null;
+    this.selectedrecord.invoiceNo = null;
+    this.selectedrecord.currCd = 'PHP';
+    this.selectedrecord.currRate = 1;
     this.invoiceDate.date = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[0];
     this.invoiceDate.time = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[1];
-    console.log(this.selectedrecord);
+    this.selectedrecord.createUser = this.ns.getCurrentUser();
+    this.selectedrecord.createDate = this.ns.toDateTimeString(0);
+    this.selectedrecord.updateUser = this.ns.getCurrentUser();
+    this.selectedrecord.updateDate = this.ns.toDateTimeString(0);
     this.viewinvoiceModal.openNoClose();
+    console.log(this.selectedrecord);
   }
 
   setCurrency(data){
@@ -205,8 +235,8 @@ export class BatchInvoiceComponent implements OnInit {
        this.invoiceDate.date = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[0];
        this.invoiceDate.time = this.ns.toDateTimeString(this.oldRecord.invoiceDate).split('T')[1];
        this.PassData.tableData[this.indexRow].tranTypeCd = this.oldRecord.tranTypeCd;
-       this.PassData.tableData[this.indexRow].jvNo = this.oldRecord.jvNo;
-       this.PassData.tableData[this.indexRow].jvDate = this.oldRecord.jvDate;
+       this.PassData.tableData[this.indexRow].tranNo = this.oldRecord.tranNo;
+       this.PassData.tableData[this.indexRow].tranDate = this.oldRecord.tranDate;
        this.PassData.tableData[this.indexRow].payee = this.oldRecord.payee;
        this.PassData.tableData[this.indexRow].payeeNo = this.oldRecord.payeeNo;
        this.PassData.tableData[this.indexRow].particulars = this.oldRecord.particulars;
@@ -231,10 +261,10 @@ export class BatchInvoiceComponent implements OnInit {
       this.PassData.tableData[this.indexRow].updateDate   = this.ns.toDateTimeString(0);
       this.PassData.tableData[this.indexRow].localAmt     = parseFloat(this.PassData.tableData[this.indexRow].localAmt.toString().split(',').join(''));
       this.PassData.tableData[this.indexRow].currRate    = parseFloat(this.PassData.tableData[this.indexRow].currRate.toString().split(',').join(''));
-      console.log(this.PassData.tableData[this.indexRow].invoiceNo);
       this.PassData.disableGeneric = true;
       this.save(this.PassData.tableData[this.indexRow]);
     } else if (this.mdlType === 'add'){
+      this.selectedrecord.invoiceDate  = this.invoiceDate.date + 'T' + this.invoiceDate.time;
       console.log(this.selectedrecord);
       this.save(this.selectedrecord);
     }
@@ -248,7 +278,6 @@ export class BatchInvoiceComponent implements OnInit {
               this.successDiag.open();
               this.table.overlayLoader = true;
               this.retrieveBatchInvoiceList(this.searchParams);
-              this.selectedrecord = [];
           }else{
               this.viewinvoiceModal.openNoClose();
               this.dialogIcon = "error";
@@ -261,15 +290,18 @@ export class BatchInvoiceComponent implements OnInit {
     this.accountingService.getAcseBatchInvoice(search).subscribe( data => {
       console.log(data['batchInvoiceList']);
         var td = data['batchInvoiceList'].map(a => { 
-                        var jvNoString = String(a.jvNo);
-                        a.jvNo = a.jvYear + '-' + jvNoString.padStart(6,'0');
+                        if (a.tranNo != null){
+                          var jvNoString = String(a.tranNo);
+                          a.tranNo = a.tranYear + '-' + jvNoString.padStart(6,'0');
+                        }
+                        
                         if(a.invoiceNo !== null){
                           var totn_string = String(a.invoiceNo);
                           a.invoiceNo = totn_string.padStart(6, '0');
                           a.invoiceNocheck = 'Y';
                           a.uneditable = ['invoiceNocheck'];
                         }
-                        a.jvDate = this.ns.toDateTimeString(a.jvDate);
+                        a.tranDate = this.ns.toDateTimeString(a.tranDate);
                         a.createDate = this.ns.toDateTimeString(a.createDate);
                         a.updateDate = this.ns.toDateTimeString(a.updateDate);
                         return a; });
@@ -288,13 +320,15 @@ export class BatchInvoiceComponent implements OnInit {
      this.toDate === null || this.toDate === undefined?'':this.toDate;
      this.jvNo === null || this.jvNo === undefined ?'':this.jvNo;
      this.jvTypeCd === null || this.jvTypeCd === undefined ?'':this.jvTypeCd;
+     this.tranTypeClass === null || this.tranTypeClass === undefined ?'':this.tranTypeClass;
      this.PassData.tableData = [];
      this.PassData.disableGeneric = true;
      this.table.overlayLoader = true;
-     this.searchParams = [    {key: "jvDateFrom", search: this.fromDate },
-                               {key: "jvDateTo", search: this.toDate },
-                               {key: "jvNo", search: this.jvNo},
-                               {key: "jvTypeCd", search: this.jvTypeCd},
+     this.searchParams = [    {key: "tranDateFrom", search: this.fromDate },
+                               {key: "tranDateTo", search: this.toDate },
+                               {key: "tranNo", search: this.jvNo},
+                               {key: "tranTypeCd", search: this.jvTypeCd},
+                               {key: "tranClass", search: this.tranTypeClass},
                                ]; 
      console.log(this.searchParams);
      this.retrieveBatchInvoiceList(this.searchParams);
@@ -341,12 +375,13 @@ export class BatchInvoiceComponent implements OnInit {
     let invoiceIdArray=[];
 
     for(var i=0; i < this.PassData.tableData.length;i++){
-      if (this.PassData.tableData[i].jvNo !== null && this.PassData.tableData[i].printCheck === 'Y'){
-        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId, orNo: this.PassData.tableData[i].jvNo });
+      if (this.PassData.tableData[i].tranNo !== null && this.PassData.tableData[i].printCheck === 'Y'){
+        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId, tranNo: this.PassData.tableData[i].tranNo });
       }
     }
 
     if(invoiceIdArray.length === 0){
+      this.errorInvBool = false;
       this.dialogMessage = 'Please choose records to be printed.';
       this.dialogIcon = 'error-message';
       this.successDiag.open();
@@ -372,9 +407,18 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   onClickJVModal(){
-    this.passLov.selector = 'acseJvList';
-    this.passLov.params = {};
-    this.payeeLov.openLOV();
+    console.log(this.tranTypeClass);
+    if (this.tranTypeClass = 'JV'){
+      this.passLov.selector = 'acseJvList';
+      this.passLov.params = {};
+      this.payeeLov.openLOV();
+    } else if (this.tranTypeClass = 'OR'){
+      console.log('pasok OR');
+      /*this.passLov.selector = 'acseOrList';
+      this.passLov.params = {};
+      this.payeeLov.openLOV();*/
+    }
+   
   }
 
   setSelectedData(data){
@@ -409,22 +453,54 @@ export class BatchInvoiceComponent implements OnInit {
       this.genInvoiceBool = true;
     } else {
       this.genInvoiceBool = false;
-      this.retrieveInvSeriesNo(invoiceNo,invoiceNo);
+      this.retrieveInvSeriesNo(invoiceNo,invoiceNo,null,null,'validate');
     }
   }
   
-  retrieveInvSeriesNo(invoiceNoFrm,invoiceNoTo){
-    this.ms.getMtnAcseInvSeries(invoiceNoFrm,invoiceNoTo,null,null).subscribe( data => {
-     if (data['invSeries'].length === 0){
-       this.errorInvBool = true;
-       this.genInvoiceBool = true;
-       this.invoiceNo = null;
-       this.dialogMessage = 'Cannot use Invoice No. It may not yet generated.';
-       this.dialogIcon = 'error-message';
-       this.successDiag.open();
-     } else{
-       this.errorInvBool = false;
-     }
+  retrieveInvSeriesNo(invoiceNoFrm,invoiceNoTo,usedTag,length,action){
+    this.ms.getMtnAcseInvSeries(invoiceNoFrm,invoiceNoTo,usedTag,length).subscribe( data => {
+         if (action === 'validate'){
+           if (data['invSeries'].length === 0){
+             this.genInvoiceBool = true;
+             this.invoiceNo = null;
+             this.dialogMessage = 'Cannot use Invoice No. It may not yet generated.';
+             this.dialogIcon = 'error-message';
+             this.errorInvBool = false;
+             this.successDiag.open();
+           }
+         }else if (action === 'generate'){
+           this.invoiceNoArray = [];
+           if (data['invSeries'].length === 0){
+             this.invoiceNoArray = [];
+           }else {
+             let genInvoiceNoData=[];
+
+              data['invSeries'].map(a => { 
+                this.invoiceNoArray.push({ invoiceNo : parseInt(a.invoiceNo) });       
+              });
+
+              for(let i=0;i<this.invoiceNoArray.length ;i++){ 
+                genInvoiceNoData.push({ invoiceId : this.invoiceIdArray[i].invoiceId, invoiceNo :  this.invoiceNoArray[i].invoiceNo, 
+                                        updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+              }
+             this.genInvoiceData.invoiceNoList = genInvoiceNoData;
+             console.log(JSON.stringify(this.genInvoiceData));
+
+             this.accountingService.genBatchInvoice(this.genInvoiceData).subscribe(data => {
+                 if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.table.overlayLoader = true;
+                    this.retrieveBatchInvoiceList(this.searchParams);
+                }else{
+                    this.errorInvBool = false;
+                    this.dialogMessage = "Cannot generate Invoice No."
+                    this.dialogIcon = "error-message";
+                    this.successDiag.open();
+                }
+             });
+           }
+         }
     });
   }
 
@@ -446,32 +522,31 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   onClickSuccess(){
-    this.modalService.dismissAll();
-   /* if (this.dialogIcon === 'error-message') {
+    if (this.dialogIcon === 'error-message') {
+      this.modalService.dismissAll();
        if(this.errorInvBool){
-         this.modalService.dismissAll();
-         //this.viewinvoiceModal.openNoClose();
+         this.viewinvoiceModal.openNoClose();
        }
     }else if(this.dialogIcon !== 'error'){
       this.modalService.dismissAll();
-    }*/
+    }
   }
 
   generateInvoice(){
-    let invoiceIdArray=[];
+    this.invoiceIdArray=[];
 
     for(var i=0; i < this.PassData.tableData.length;i++){
       if (this.PassData.tableData[i].invoiceNo === null && this.PassData.tableData[i].invoiceNocheck === 'Y'){
-        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId });
+        this.invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId });
       }
     }
-    console.log(invoiceIdArray);
-    if(invoiceIdArray.length === 0){
+    if(this.invoiceIdArray.length === 0){
       this.dialogMessage = 'Please choose records.';
       this.dialogIcon = 'error-message';
       this.successDiag.open();
     }else {
-      console.log(invoiceIdArray);
+      console.log(this.invoiceIdArray);
+      this.retrieveInvSeriesNo(this.invoiceNo,null,'N',this.invoiceIdArray.length,'generate');
     }
   }
 
