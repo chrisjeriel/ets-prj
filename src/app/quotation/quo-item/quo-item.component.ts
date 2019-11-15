@@ -111,7 +111,7 @@ export class QuoItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", 'text-editor',, "text", "currency"],
+        dataTypes: [ "text", 'text-editor', "text", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,

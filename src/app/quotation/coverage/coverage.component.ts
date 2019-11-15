@@ -18,7 +18,7 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./coverage.component.css']
 })
 export class CoverageComponent implements OnInit {
-
+  @Output() showAlop = new EventEmitter<any>();
   private quotationCoverageInfo: QuotationCoverageInfo;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   //tableDataChange: EventEmitter<any[]> = new EventEmitter<any[]>();
@@ -116,12 +116,13 @@ export class CoverageComponent implements OnInit {
   promptMessage: string = "";
   promptType: string = "";
 
+  alopCoverCd:any;
+
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) {}
 
   ngOnInit() {
     this.titleService.setTitle("Quo | Coverage");
     this.userService.emitModuleId("QUOTE003");
-
     //neco
     if(this.inquiryFlag){
       this.passData.opts = [];
@@ -143,6 +144,10 @@ export class CoverageComponent implements OnInit {
 
     this.riskId = this.quotationInfo.riskId;
     this.lineCd = this.quoteNo.split('-')[0];
+
+    this.maintenanceService.getMtnParameters('N',this.lineCd+'_ALOP').subscribe(a=>{
+      this.alopCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
+    })
 
     this.initialData = [];
     this.getCoverageInfo();
@@ -353,6 +358,9 @@ export class CoverageComponent implements OnInit {
             this.editedData = [];
             this.deletedData =[];
             this.enblEndtTab.emit(true);
+            if(this.lineCd == 'CAR' || this.lineCd == 'EAR' ){
+              this.getQuoteOptions();
+            }
             this.remarksForm.control.markAsPristine();
             //this.getCoverageInfo();
            }
@@ -489,5 +497,22 @@ export class CoverageComponent implements OnInit {
           $('#confirm-save #modalBtn2').trigger('click');
       }
   }
+
+  getQuoteOptions(){
+      this.quotationService.getQuoteOptions(this.coverageData.quoteId ,'').subscribe(data => {
+         let alopFlag = false;
+         if(data['quotation'] !== null)
+         first:for(let option of data['quotation'].optionsList){
+           for(let otherRate of option.otherRatesList){
+             if(otherRate.section == 'III' && otherRate.coverCd == this.alopCoverCd){
+               alopFlag = true;
+               break first;
+             }
+           }
+         }
+         this.showAlop.emit(alopFlag);
+      });
+
+  } 
 
 }
