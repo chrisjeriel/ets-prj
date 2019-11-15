@@ -143,7 +143,7 @@ export class PolPostComponent implements OnInit {
           this.loadMsg = '100% Value must be greater than or equal to the Total Sum Insured. Please check Coverage tab.';
         }else{
           if(secCvrs.filter(a=>a.coverCd == coverCd).length > 0){
-            this.alopSi = secCvrs.filter(a=>(a.lineCd == 'CAR' && a.coverCd == '16')|| (a.lineCd == 'EAR' && a.coverCd == '31'))[0].cumSi;
+            this.alopSi = secCvrs.filter(a=>a.coverCd==coverCd)[0].cumSi;
             this.checkAlop();
           }
           else{

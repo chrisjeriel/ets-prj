@@ -152,15 +152,15 @@
 						<br/>
 						<a class="note-date-time" href="#">{{ notes.createDate | date:'MMM dd, yyyy hh:mm a' }}</a>
 						<div class="float-right" style="margin-top: -23px; margin-right: 5px;" *ngIf="noteBool">
-								<button class="btn-action"(click)="updateNoteModal(notes, 'C')"><a href="#"><fa name="check"></fa></a></button>
-								<button class="btn-action" (click)="showNoteModal(notes,true)"><a href="#"><fa name="eye"></fa></a></button>
+								<button title="Complete" class="btn-action"(click)="updateNoteModal(notes, 'C')"><a href="#"><fa name="check"></fa></a></button>
+								<button title="View" class="btn-action" (click)="showNoteModal(notes,true)"><a href="#"><fa name="eye"></fa></a></button>
 						</div>
 
 						<div class="float-right" style="margin-top: -23px; margin-right: 5px;" *ngIf="!noteBool">
-								<button class="btn-action" (click)="updateNoteModal(notes, 'C')"><a href="#"><fa name="check"></fa></a></button>
-								<button class="btn-action" (click)="showNoteModal(notes,true)"><a href="#"><fa name="eye"></fa></a></button>
-  							    <button class="btn-action" (click)="showNoteModal(notes,false)"><a href="#"><fa name="pencil"></fa></a></button>
-								<button class="btn-action" (click)="updateNoteModal(notes, 'D')"><a href="#"><fa name="trash"></fa></a></button> 
+								<button title="Complete" class="btn-action" (click)="updateNoteModal(notes, 'C')"><a href="#"><fa name="check"></fa></a></button>
+								<button title="View" class="btn-action" (click)="showNoteModal(notes,true)"><a href="#"><fa name="eye"></fa></a></button>
+  							    <button title="Edit" class="btn-action" (click)="showNoteModal(notes,false)"><a href="#"><fa name="pencil"></fa></a></button>
+								<button title="Delete" class="btn-action" (click)="updateNoteModal(notes, 'D')"><a href="#"><fa name="trash"></fa></a></button> 
 						</div>
 
 						<p style="margin: 0 0 0px 0 ! important">{{ notes.note }}</p>

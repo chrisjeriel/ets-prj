@@ -106,7 +106,8 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" (ngModelChange)= "polAlopData.maxIndemPd = $event" (blur)="polAlopData.maxIndemPdSi = ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi)" name="maxIndemPd" appRequired>
+
+				<input class="form-control form-control-sm  col-sm-1" type="text" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" (ngModelChange)= "polAlopData.maxIndemPd = $event" (blur)="polAlopData.maxIndemPdSi = ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi)" name="maxIndemPd" appRequired  numbers-only>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 			<div class="input-group">
@@ -114,7 +115,7 @@
 				<!-- <input #indemFrom class="form-control form-control-sm  col-sm-2" type="date" id="fromIndem" [ngModel]="polAlopData.indemFromDate?.split('T')[0]" (ngModelChange)="polAlopData.indemFromDate=$event" (change)="checkDates()" name="indemFromDate"> -->
 				<div class="col-sm-2 dp-cont">
 					<datepicker #indemFrom [type]="'date'" [showIcon]="true" [value]="polAlopData.indemFromDate?.split('T')[0]" [minDate]="polAlopData.expiryDate?.split('T')[0]"
-						(valueChange)="polAlopData.indemFromDate=$event+'T'+polAlopData.indemFromDate.split('T')[1]; checkDates();" [disabled]="policyInfo.fromInq"></datepicker>
+						(valueChange)="indemDateChange($event);checkDates();" [disabled]="policyInfo.fromInq" [defDateOnNull]="polAlopData.expiryDate?.split('T')[0]"></datepicker>
 				</div>
 				<label class="form-control-sm col-sm text-left">(scheduled date of commencement of insured business, but not earlier than the scheduled date of completion)</label>
 			</div>
@@ -125,7 +126,7 @@
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
-				<input class="form-control form-control-sm  col-sm-1" type="number" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval" appRequired>
+				<input class="form-control form-control-sm  col-sm-1" type="text" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval"  numbers-only appRequired>
 				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
 			</div>
 		</div>

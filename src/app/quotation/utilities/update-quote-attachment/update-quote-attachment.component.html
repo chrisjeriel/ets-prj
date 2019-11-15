@@ -37,7 +37,7 @@
 				<div (click)="showQuoteLov()"><a><i class="fa fa-search"></i></a></div>
 				<div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
 					<div class="cust-btn-container" style="margin-left: 15px;">
-						<button type="button" class="cust-btn" style="z-index: 3 !important" (click)="clearAll()">Clear</button>
+						<button type="button" class="cust-btn" style="z-index: 3 !important">Clear</button>
 					</div>
 				</div>
 			</div>
@@ -82,7 +82,7 @@
     <div class="form-group col-sm">
         <div class="col-md-13 text-center">
             <div class="cust-btn-container" style="margin-top: 10px">
-                <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                <button type="button" class="cust-btn"><a>Cancel</a></button>
                 <button type="button" [disabled]="quoteInfo.riskName == '' || quoteInfo.riskName == undefined" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
             </div>
         </div>
@@ -91,8 +91,12 @@
 
 
 <app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
-<app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickCancelSave()" [url]="'/'" ></app-cancel-button>
+<app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button [url]="'/quotation-processing'" ></app-cancel-button>
+
+<!-- <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickCancelSave()" [url]="'/'" ></app-cancel-button> -->
+
 
 
 

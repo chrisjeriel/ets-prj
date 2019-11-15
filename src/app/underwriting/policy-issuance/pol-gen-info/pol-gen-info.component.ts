@@ -296,6 +296,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   ]
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
+  @Output() openTabs = new EventEmitter<any>();
   forkSub: any;
 
   minBookingDate:any = '1970-01-01';
@@ -383,6 +384,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       $('.globalLoading').css('display','none');
+      this.openTabs.emit(true);
       if(data.policy != null) {
         this.checkNewExpiry = true;
         this.policyInfo = data.policy;

@@ -223,34 +223,34 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   serviceFeeMainData: any = {
     tableData     : [],
-    tHeader       : ['Main Company Distribution','Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
-    dataTypes     : ['text','percent','text','percent','currency','currency'],
-    keys          : ['groupName','groupShrPct','currCd','currRt','groupShrAmt','localAmt'],
+    tHeader       : ['Main Company Distribution','Percent Share (%)','Service Fee', 'VAT', 'WhTax', 'Net Due'],
+    dataTypes     : ['text','percent','currency','currency','currency','currency'],
+    keys          : ['groupName','groupShrPct','totalSfee','totalVat','totalWhtax','totalDue'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true],
-    total         : [null,null,null,'Total','groupShrAmt','localAmt'],
-    widths        : ['400','100','1','100','auto','auto'],
+    total         : [null,'Total','totalSfee','totalVat','totalWhtax','totalDue'],
+    widths        : ['400','100','auto','auto','auto','auto'],
     pageID        : 'serviceFeeMainData',
     pageLength    : 3,
   };
 
   serviceFeeSubData: any = {
     tableData     : [],
-    tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded', 'Total Net Prem', 'Percent Share (%)','Curr','Curr Rate','Amount', 'Amount (PHP)'],
-    dataTypes     : ['text','currency','currency','percent','text','percent','currency','currency'],
-    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','currCd','currRt','actualShrAmt','localAmt'],
+    tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded','Total Net Prem','Percent Share (%)','Service Fee','VAT','WhTax','Net Due'],
+    dataTypes     : ['text','currency','currency','percent','currency','currency','currency','currency'],
+    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','sfeeAmt','vatAmt','whtaxAmt','netDue'],
     paginateFlag  : false,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true,true,true],
-    total         : [null,null,null,null,null,'Total','actualShrAmt','localAmt'],
-    widths        : ['400','auto','auto','100','1','100','auto','auto'],
+    total         : [null,null,null,'Total','sfeeAmt','vatAmt','whtaxAmt','netDue'],
+    widths        : ['400','auto','auto','100','auto','auto','auto','auto'],
     pageID        : 'serviceFeeSubData',
     pageLength    : 'unli'
   };
@@ -311,6 +311,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
   qtrParam        : number = null;
   private sub     : any;
   warn            : any[] = [];
+
+  totalSfeeAmts: any = {
+    totalSfee: 0,
+    totalVat: 0,
+    totalWhtax: 0,
+    totalDue: 0
+  }
 
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -1344,6 +1351,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     var d = new Date();    
 
     setTimeout(() => {
+      $('input[appCurrency]').focus().blur();
       this.servFeeMainTbl.refreshTable();
       this.servFeeSubTbl.refreshTable();
       this.servFeeMainTbl.overlayLoader = true;
@@ -1355,26 +1363,35 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
+        if(data['mainDistList'].length > 0) {
+          this.serviceFeeMainData.tableData.forEach(a => {
+            this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
+            this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
+            this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
+          });
+        }
+
         if(this.serviceFeeMainData.tableData.length == 0 && this.serviceFeeSubData.tableData.length == 0) {
-          
           this.qtrParam = Math.floor((d.getMonth() / 3) + 1);
           this.yearParam = d.getFullYear();
         } else {
           this.qtrParam = this.serviceFeeSubData.tableData[0].quarter;
           this.yearParam = this.serviceFeeSubData.tableData[0].sfeeYear;
-          
         }
 
         this.servFeeMainTbl.refreshTable();
         this.servFeeSubTbl.refreshTable();
-
-        this.servFeeMainTbl.markAsDirty();
-        this.servFeeSubTbl.markAsDirty();
       });
     } else {
-      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.requestData.reqAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.totalSfeeAmts.totalSfee, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+        this.serviceFeeMainData.tableData.forEach(a => {
+          this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
+          this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
+          this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
+        });
 
         this.servFeeMainTbl.refreshTable();
         this.servFeeSubTbl.refreshTable();

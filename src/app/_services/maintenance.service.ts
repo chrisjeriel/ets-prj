@@ -1182,12 +1182,13 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBank", {params});
     }
 
-    getBankLov(bankCd?, officialName?, activeTag?, dcbTag?){
+    getBankLov(bankCd?, officialName?, activeTag?, dcbTag?,glDepFor?){
     	const params = new HttpParams()
     				.set('bankCd', (bankCd === null || bankCd === undefined ? '' : bankCd))
     				.set('officialName', (officialName === null || officialName === undefined ? '' : officialName))
     	     		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
-    	     		.set('dcbTag', (dcbTag === null || dcbTag === undefined ? '' : dcbTag));
+    	     		.set('dcbTag', (dcbTag === null || dcbTag === undefined ? '' : dcbTag))
+    	     		.set('glDepFor', (glDepFor === null || glDepFor === undefined ? '' : glDepFor));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveBankLov", {params});
     }
 
@@ -1557,12 +1558,13 @@ export class MaintenanceService{
 		return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnGenTax', JSON.stringify(params), header);
       }
 
-    getAcseOrSeries(orType,orFrom,orTo, usedTag?){
+    getAcseOrSeries(orType,orFrom,orTo, usedTag?,rowNum?){
     	const params = new HttpParams()
     		.set('orType', (orType === null || orType === undefined ? '' : orType))
 			.set('orFrom', (orFrom === null || orFrom === undefined ? '' : orFrom))
 			.set('orTo', (orTo === null || orTo === undefined ? '' : orTo))
-			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag));
+			.set('usedTag', (usedTag === null || usedTag === undefined ? '' : usedTag))
+			.set('rowNum', (rowNum === null || rowNum === undefined ? '' : rowNum));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveAcseOrSeries", {params});
     }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { environment } from '@environments/environment';
 import { NotesReminders } from '@app/_models';
@@ -36,6 +36,15 @@ export class PrintService {
 
     */
 
+
+    extractReport(params) {
+        let header: any = {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        };
+        return this.http.post(environment.prodApiUrl + '/util-service/extractReport',params,header);
+    }
 
   	print(destination:string,reportName:string,param:any){
   		let params= {...{reportName:reportName},...param};

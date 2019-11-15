@@ -35,9 +35,11 @@ export class PolicyIssuanceComponent implements OnInit {
         lastAffectingPolId:undefined,
         quoteId:'',
         quotationNo: '',
+        retDone: false
   }
   @Input() fromSummary = false;
 
+  openTabs: boolean = false;
   alterFlag: boolean = false;
   fromInq:any = false;
   approveText: string = "For Approval";
