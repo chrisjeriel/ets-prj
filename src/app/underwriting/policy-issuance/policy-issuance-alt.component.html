@@ -14,7 +14,7 @@
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt" title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
-				<app-pol-item></app-pol-item>
+				<app-pol-item [policyInfo]="policyInfo"></app-pol-item>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="ALOP" *ngIf="policyInfo.showPolAlop">
