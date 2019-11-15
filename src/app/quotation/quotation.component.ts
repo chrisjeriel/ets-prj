@@ -79,6 +79,7 @@ export class QuotationComponent implements OnInit {
   approver:string = '';
   exitLink:string;
   accessibleModules:any [] = [];
+  intCompTag:boolean = false;
 
   @ViewChild('active')activeComp:any;
 
@@ -168,7 +169,7 @@ export class QuotationComponent implements OnInit {
 
   checkQuoteInfo(event){ 	
   		this.quoteInfo = event;
-      this.inquiryFlag = this.quoteInfo.autoIntTag == 'Y' || this.quoteInfo.autoIntTag == 'N';
+      this.intCompTag = this.quoteInfo.autoIntTag == 'Y' || this.quoteInfo.autoIntTag == 'N';
       this.passData.cessionDesc = this.quoteInfo.typeOfCession.toUpperCase()
       this.passData.status = this.quoteInfo.status;
       this.passData.quoteId = this.quoteInfo.quoteId;
