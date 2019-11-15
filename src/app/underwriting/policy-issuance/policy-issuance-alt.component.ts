@@ -150,7 +150,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
 
       this.policyInfo.policyId = event.policyId;
       this.policyInfo.policyNo = event.policyNo;
-      this.policyInfo.insuredDesc = event.insuredDesc;
+      this.policyInfo.insuredDesc =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
       this.policyInfo.riskId =  event.riskId;
       this.policyInfo.riskName =  event.riskName;
       this.policyInfo.showPolAlop = event.showPolAlop;
@@ -158,6 +158,7 @@ export class PolicyIssuanceAltComponent implements OnInit {
       this.policyInfo.cedingName = event.cedingName;
       this.policyInfo.extensionTag = event.extensionTag;
       this.policyInfo.principalId = event.principalId;
+      this.policyInfo.insured =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
 
       console.log(this.us.fromCreateAlt);
       if(this.us.fromCreateAlt) {

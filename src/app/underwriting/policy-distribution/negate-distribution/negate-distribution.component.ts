@@ -120,8 +120,9 @@ export class NegateDistributionComponent implements OnInit {
     this.table.loadingFlag = true;
     this.policyListingData.tableData = [];
     setTimeout(()=>{
-      this.us.getParListing([{key: 'statusDesc', search: 'IN FORCE'}, 
-                           {key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')}]).subscribe((data: any) =>{
+      this.us.getParListing([{key: 'statusArr', search: [2]}, 
+                           {key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')},
+                           {key:'totalPremGrt', search: '0.1'}]).subscribe((data: any) =>{
         //data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
         if(data.policyList.length !== 0){
           this.noDataFound = false;
