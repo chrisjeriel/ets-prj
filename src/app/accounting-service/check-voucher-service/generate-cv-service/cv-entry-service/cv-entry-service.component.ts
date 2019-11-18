@@ -212,10 +212,10 @@ export class CvEntryServiceComponent implements OnInit {
         });
       }else{
         var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
-        // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
-        // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
-        var totalCredit = 0;
-        var totalDebit = 0;
+        var totalCredit = arrSum(data['sub2']['ae']['acctEntries'].map(e => e.foreignCreditAmt));
+        var totalDebit = arrSum(data['sub2']['ae']['acctEntries'].map(e => e.foreignDebitAmt));
+        // var totalCredit = 0;
+        // var totalDebit = 0;
         var recCv = data['sub1']['cv']['acseCvList'].map(e => {
           e.createDate = this.ns.toDateTimeString(e.createDate);
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
@@ -391,8 +391,8 @@ export class CvEntryServiceComponent implements OnInit {
       // }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
-      this.passDataLov.selector = 'mtnBank';
-      this.passDataLov.for = 'acse';
+      this.passDataLov.selector = 'bankLov';
+      this.passDataLov.glDepFor = 'acse';
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';

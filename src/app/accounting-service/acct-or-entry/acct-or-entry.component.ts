@@ -108,7 +108,7 @@ export class AcctOrEntryComponent implements OnInit {
   dialogIcon: string = '';
   dialogMessage: string = '';
   dcbStatus: string = '';
-  generatedArNo: string = '';
+  generatedOrNo: string = '';
   printMethod: string = '2';
   approvalCd: string = '';
 
@@ -647,7 +647,7 @@ export class AcctOrEntryComponent implements OnInit {
             orStatus: this.orInfo.orStatus,
             orStatDesc: this.orInfo.orStatDesc,
             orDate: this.orInfo.orDate,
-            dcbNo: this.orInfo.dcbYear+'-'+this.orInfo.dcbUserCd+'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
+            dcbNo: this.orInfo.dcbYear+/*'-'+this.orInfo.dcbUserCd+*/'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
             tranTypeCd: this.orInfo.tranTypeCd,
             tranTypeName: this.orInfo.tranTypeName,
             currCd: this.orInfo.currCd,
@@ -703,6 +703,8 @@ export class AcctOrEntryComponent implements OnInit {
         }
         this.form.control.markAsPristine();
         this.loading = false;
+
+        this.disablePayor          = data.orEntry.tranTypeCd == 3;
       },
       (error: any)=>{
         console.log('error');
@@ -739,7 +741,7 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  save(cancelFlag?){
+  save(cancelFlag?, isPrint?){
     this.cancelFlag = cancelFlag !== undefined;
     this.savedData = [];
     this.deletedData = [];
@@ -773,6 +775,7 @@ export class AcctOrEntryComponent implements OnInit {
     params.updateDate = this.ns.toDateTimeString(0);
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
+    params.isPrint = isPrint !== undefined ? '1' : null;
 
     //save
     this.as.saveAcseOrEntry(params).subscribe(
@@ -795,7 +798,29 @@ export class AcctOrEntryComponent implements OnInit {
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
+          if(isPrint !== undefined){
+            this.reprintMethod();
+            let params: any = {
+              tranId: this.orInfo.tranId,
+              orNo: this.orInfo.orNo,
+              updateUser: this.ns.getCurrentUser(),
+              updateDate: this.ns.toDateTimeString(0)
+            }
+            setTimeout(()=>{
+               this.as.printOr(params).subscribe(
+                 (data:any)=>{
+                   if(data.returnCode == 0){
+                     this.dialogIcon = 'error-message';
+                     this.dialogIcon = 'An error has occured when updating OR status';
+                   }else{
+                     this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
+                   }
+                 }
+               );
+            },1000);
+          }
         }
+        this.loading = false;
       }
     );
   }
@@ -858,7 +883,9 @@ export class AcctOrEntryComponent implements OnInit {
           (data:any)=>{
             if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
               //User has the authority to print AR
-              this.printMdl.openNoClose();
+              this.loading = true;
+              this.retrieveMtnAcseOrSeries();
+              //this.printMdl.openNoClose();
             }else{
               
               //User has no authority. Open Override Login
@@ -873,15 +900,17 @@ export class AcctOrEntryComponent implements OnInit {
 
   toPrintOr(auth){
     if(auth){
-      this.printMdl.openNoClose();
+      this.loading = true;
+      this.retrieveMtnAcseOrSeries();
     }
   }
 
   reprintMethod(){
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR ' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
+      this.loading = false;
     }else if(this.printMethod == '2'){
       this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
         (data:any)=>{
@@ -892,36 +921,39 @@ export class AcctOrEntryComponent implements OnInit {
                        iframe.src = downloadURL;
                        document.body.appendChild(iframe);
                        iframe.contentWindow.print();
+                       this.loading = false;
         });
     }
   }
 
   updateOrStatus(){
+    this.loading = true;
     if(!this.isPrinted){
-      this.save();
-      this.reprintMethod();
-      let params: any = {
-        tranId: this.orInfo.tranId,
-        orNo: this.orInfo.orNo,
-        updateUser: this.ns.getCurrentUser(),
-        updateDate: this.ns.toDateTimeString(0)
+      if(this.orInfo.orNo === null || (this.orInfo.orNo !== null && this.orInfo.orNo.length === 0)){
+        this.orInfo.orNo = parseInt(this.generatedOrNo);
       }
-      setTimeout(()=>{
-         this.as.printOr(params).subscribe(
-           (data:any)=>{
-             if(data.returnCode == 0){
-               this.dialogIcon = 'error-message';
-               this.dialogIcon = 'An error has occured when updating OR status';
-             }else{
-               this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
-             }
-           }
-         );
-      },1000);
+      this.save(undefined, true);
+      
     }
   }
 
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
+  retrieveMtnAcseOrSeries(){
+    this.ms.getAcseOrSeries(this.orInfo.orType, '', '', 'N').subscribe(
+      (data:any)=>{
+        if(data.orSeries.length !== 0){
+          this.generatedOrNo = data.orSeries[0].orNo;
+          this.printMdl.openNoClose();
+        }else{
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'No O.R. number is available for use.';
+          this.successDiag.open();
+        }
+        this.loading = false;
+      }
+    );
+  }
+
   retrievePaymentType(){
     this.paymentTypes = [];
     this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
@@ -1085,7 +1117,7 @@ export class AcctOrEntryComponent implements OnInit {
 
   //VALIDATION STARTS HERE
   checkOrInfoFields(): boolean{
-    if(this.orInfo.orNo.length === 0 ||
+    if(
        this.orDate.date.length === 0 || this.orDate.time.length === 0 ||
        this.orInfo.dcbYear.length === 0 || this.orInfo.dcbUserCd.length === 0 ||
        this.orInfo.dcbNo.length === 0 || this.orInfo.tranTypeCd.length === 0 ||
@@ -1180,7 +1212,6 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeTranType(data){
-    console.log(data);
     //console.log(this.paymentTypes.map(a=>{return a.defaultParticulars}));
     this.orInfo.tranTypeCd = data;
     //this.orInfo.particulars = this.paymentTypes.map(a=>{return a.defaultParticulars}).indexOf(data)
@@ -1189,6 +1220,13 @@ export class AcctOrEntryComponent implements OnInit {
         this.orInfo.particulars = i.defaultParticulars == null ? '' : i.defaultParticulars;
         break;
       }
+    }
+
+    //Change default OR Type
+    if(data == 1){
+      this.orInfo.orType = 'NON-VAT';
+    }else if(data == 2 || data == 3){
+      this.orInfo.orType = 'VAT';
     }
 
     if(data == 1 || data == 2){

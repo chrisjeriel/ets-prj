@@ -371,7 +371,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.exclude = [];
 
         let params:any = {
-            statusArr: [1,2,3,4,5,6,7],
+            statusArr: [1,2,3,4,5,'P','A','R'],
             riskName: this.riskName,
             cessionDesc: this.typeOfCession,
             quotationNo: this.line + '%'

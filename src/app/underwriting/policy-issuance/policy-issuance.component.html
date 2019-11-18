@@ -4,47 +4,47 @@
 
 		<ngb-tab class="ngb-tab" title="General Info">
 			<ng-template ngbTabContent>
-				<app-pol-gen-info (emitPolicyInfoId)="getPolInfo($event)" [alteration]="false"></app-pol-gen-info>
+				<app-pol-gen-info (emitPolicyInfoId)="getPolInfo($event)" [alteration]="false" (openTabs)="openTabs=$event"></app-pol-gen-info>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-item [policyInfo]="policyInfo"></app-pol-item>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Coverage">
+		<ngb-tab title="Coverage" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop">
+		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="false"></app-pol-alop>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Inward Pol Balance" *ngIf="!fromSummary">
+		<ngb-tab title="Inward Pol Balance" *ngIf="!fromSummary" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-inward-pol-balance [policyInfo]="policyInfo" [fromInq]="fromInq"></app-inward-pol-balance>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Endorsement">
+		<ngb-tab title="Endorsement" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-endorsement [policyInfo]="policyInfo"></app-pol-endorsement>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="CoInsurance" *ngIf="policyInfo.coInsuranceFlag">
+		<ngb-tab title="CoInsurance" *ngIf="policyInfo.coInsuranceFlag" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-co-insurance [policyInfo]="policyInfo"></app-pol-co-insurance>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Attachment">
+		<ngb-tab title="Attachment" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-attachment [policyInfo]="policyInfo" [alterationFlag]="true"></app-pol-attachment>
 			</ng-template>
 		</ngb-tab>
 
 
-		<ngb-tab id="print-tab" *ngIf="!fromSummary">
+		<ngb-tab id="print-tab" *ngIf="!fromSummary" [disabled]="!openTabs">
 			<ng-template #content>
 				<div class="modal-header">
 					<span class="modal-title" id="modal-basic-title">Print</span>
@@ -54,14 +54,14 @@
 						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Report</label>
-								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
 									<option value="POLR010">Policy Schedule</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Destination</label>
-								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8 print">
 									<option value="screen">Screen</option>
 									<option value="dlPdf">PDF</option>
 									<option value="printPdf">Printer</option>
@@ -73,8 +73,8 @@
 								<div class="col-sm-8">
 									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
 									&nbsp;&nbsp;&nbsp;&nbsp; -->
-									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
-									<div class="col-sm-1"></div>
+									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div> -->
 								</div>
 							</div>
 						</div>
@@ -98,12 +98,12 @@
 
 		</ngb-tab>
 
-		<ngb-tab title="Post" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'">
+		<ngb-tab title="Post Policy" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab id="NotesReminders" *ngIf="!fromSummary && policyInfo.fromInq != 'true'">
+		<ngb-tab id="NotesReminders" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
 				<ng-template ngbTabTitle>
 					<div>Notes & Reminders</div>
 				</ng-template>
@@ -111,18 +111,18 @@
     				<app-wf-form-common [moduleSource]="'Policy'" [policyInfo]="policyInfo"></app-wf-form-common>
     			</ng-template>
   		</ngb-tab>
-		<ngb-tab id="Exit" *ngIf="!fromSummary">
+		<ngb-tab id="Exit" *ngIf="!fromSummary" [disabled]="!openTabs">
 				<ng-template ngbTabTitle>
 					<div>Exit</div>
 				</ng-template>
     			<ng-template ngbTabContent></ng-template>
   		</ngb-tab>
-  		<ngb-tab title="Premium Coll" *ngIf="fromSummary">
+  		<ngb-tab title="Premium Coll" *ngIf="fromSummary" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-premium-coll [policyInfo]="policyInfo"></app-premium-coll>
 			</ng-template>
 		</ngb-tab>
-		<ngb-tab title="Claims" *ngIf="fromSummary">
+		<ngb-tab title="Claims" *ngIf="fromSummary" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
 				<app-pol-inq-claims></app-pol-inq-claims>
 			</ng-template>

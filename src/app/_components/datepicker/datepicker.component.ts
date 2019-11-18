@@ -15,6 +15,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   private datepickerVal: any = null;
   private minimumDate: any = null;
   private maximumDate: any = null;
+  private defaultDate: any = null;
   private ev: any = null;
   private inputStyleClass: string = 'form-control form-control-sm';
   private icon: string = 'fa fa-calendar';
@@ -50,6 +51,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   @Input() tabindex: any = null;
   @Input() formName: string = 'dp' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
   @Input() table: boolean = false;
+  @Input() defDateOnNull: string = '';
 
   @ViewChild(Calendar) cal: Calendar;
 
@@ -60,6 +62,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   ngOnInit() {
     this.minimumDate = new Date(this.minDate);
     this.maximumDate = new Date(this.maxDate);
+    this.defaultDate = this.defDateOnNull == '' ? null : new Date(this.defDateOnNull);
   	this.inputStyle['textAlign'] = this.textAlign;
 
   	if(this.required) {
@@ -118,6 +121,10 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
     if(changes.maxDate && changes.maxDate.currentValue) {
       this.maximumDate = changes.maxDate.currentValue == '' || changes.maxDate.currentValue == undefined || changes.maxDate.currentValue == null ? null : new Date(changes.maxDate.currentValue);
     }
+
+    if(changes.defDateOnNull && changes.defDateOnNull.currentValue) {
+      this.defaultDate = changes.defDateOnNull.currentValue == '' || changes.defDateOnNull.currentValue == undefined || changes.defDateOnNull.currentValue == null ? null : new Date(changes.defDateOnNull.currentValue);
+    }
   }
 
   ngDoCheck() {
@@ -149,6 +156,14 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
   		this.minimumDate = this.minDate == '' || this.minDate == undefined ? null : new Date(this.minDate);
   	}
+
+    if(this.maximumDate != null && this.ns.toDateTimeString(this.maximumDate).split('T')[0] != this.maxDate) {
+      this.maximumDate = this.maxDate == '' || this.maxDate == undefined ? null : new Date(this.maxDate);
+    }
+
+    if(this.defaultDate != null && this.ns.toDateTimeString(this.defaultDate).split('T')[0] != this.defDateOnNull) {
+      this.defaultDate = this.defDateOnNull == '' || this.defDateOnNull == undefined ? null : new Date(this.defDateOnNull);
+    }
   }
 
   valueUpdated() {

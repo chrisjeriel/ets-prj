@@ -114,7 +114,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     p:number = 1;
     checked:boolean;
     selected: any[] = [];
-    indvSelect: any;
+    indvSelect: any = '';
     fillData:any;
     nullKey: any;
     keyCounter: number = 0;

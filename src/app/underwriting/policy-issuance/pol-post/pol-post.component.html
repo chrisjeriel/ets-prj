@@ -9,7 +9,7 @@
     	<p style="width: auto"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
         <div class="w-100 text-center mt-3">
            <button class="cust-btn" (click)="close()">Cancel</button>
-           <button [disabled]="postBtn" class="cust-btn" (click)="checkAcctDate()">Post</button> 
+           <button [disabled]="postBtn" class="cust-btn" (click)="checkAcctDate()">Post Policy</button> 
         </div>
 	</div>
 </ng-template>
@@ -54,7 +54,7 @@
     <div class="modal-footer" style="justify-content: center; padding-top: 10px;">
         <div class="row">
             <button type="button" class="cust-btn" (click)="goToDist()" *ngIf="affectingTag"><a>View Distribution</a></button>
-            <button type="button" class="cust-btn" (click)="close()"><a>Print</a></button>
+            <button type="button" class="cust-btn" (click)="close();print()"><a>Print</a></button>
             <button type="button" class="cust-btn" (click)="goToListing()"><a>Ok</a></button>
         </div>
     </div>

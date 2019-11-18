@@ -70,8 +70,8 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
       this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
 
-    printDestination:string;
-    printReport:string;
+    printDestination:string = 'screen';
+    printReport:string = 'POLR010';
 
     changeOpenCovStatus(){
       let params:any = {
@@ -81,7 +81,6 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
                         };
       this.uw.updateOCStatus(params).subscribe(a=>console.log(a));
       params.reportId=this.printReport;
-      params.user
       this.ps.print(this.printDestination,this.printReport,params)
     }
 

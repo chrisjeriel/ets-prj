@@ -5,6 +5,7 @@ import { NotesService, UnderwritingService } from '@app/_services';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hundred-val-pol-print',
@@ -84,9 +85,11 @@ export class HundredValPolPrintComponent implements OnInit {
 
   tempPolNo: string[] = ['','','','','',''];
 
-  constructor(private route: ActivatedRoute,private router: Router, public modalService: NgbModal, private us: UnderwritingService, private ns: NotesService) { }
+  constructor(private route: ActivatedRoute,private router: Router, public modalService: NgbModal, private us: UnderwritingService, private ns: NotesService,
+  		private titleService: Title) { }
 
   ngOnInit() {
+  	this.titleService.setTitle("Pol | 100% Value Policy Printing");
   	//this.retrievePolListing();
   }
 

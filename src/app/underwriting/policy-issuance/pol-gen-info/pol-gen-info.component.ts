@@ -296,6 +296,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   ]
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
+  @Output() openTabs = new EventEmitter<any>();
   forkSub: any;
 
   minBookingDate:any = '1970-01-01';
@@ -383,6 +384,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
     this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
       $('.globalLoading').css('display','none');
+      this.openTabs.emit(true);
       if(data.policy != null) {
         this.checkNewExpiry = true;
         this.policyInfo = data.policy;
@@ -902,7 +904,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "districtCd"      : this.policyInfo.project.districtCd,
       "blockCd"         : this.policyInfo.project.blockCd,
       "latitude"        : this.policyInfo.project.latitude,
-      "longitude"       : this.policyInfo.project.longitude
+      "longitude"       : this.policyInfo.project.longitude,
+      "coTermTag"       : this.policyInfo.coTermTag,
+      "coTermText"       : this.policyInfo.coTermText,
+      "mbiPolicyId"       : this.policyInfo.mbiPolicyId,
     }
 
     var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');
@@ -1009,7 +1014,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          this.form.control.markAsPristine();
          this.ns.formGroup.markAsPristine();
          this.forceExt = 0;
-
+         this.emitPolicyInfoId.emit({policyId:this.policyId,
+                                     insuredDesc: this.policyInfo.insuredDesc,
+                                     policyNo: this.policyNo,
+                                     riskName: this.policyInfo.project.riskName})
 
          // this.checkAlopInfo();
          this.getPolGenInfo('noLoading');

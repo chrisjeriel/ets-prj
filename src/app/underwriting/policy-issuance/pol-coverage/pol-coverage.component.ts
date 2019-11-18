@@ -1,5 +1,5 @@
 import { Component, OnInit, Input,  ViewChild} from '@angular/core';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -339,8 +339,11 @@ export class PolCoverageComponent implements OnInit {
   negativeFlag: number = 0;
   holdCoverPrem: boolean = false;
 
+  showCatPerilBtn:boolean = false;
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
-                private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe) { }
+                private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe,
+                private ms: MaintenanceService) { }
 
 
   ngOnInit() {
@@ -355,7 +358,12 @@ export class PolCoverageComponent implements OnInit {
               this.parameters = this.policyInfo.policyNo.split(/[-]/g);
             }
 
+            this.ms.getLineLOV(this.line).subscribe(a=>{
+              this.showCatPerilBtn = a['line'][0].catTag == 'Y';
+            });
+
     });
+
 
     if (!this.alteration) {
       this.getPolCoverage();
@@ -502,7 +510,7 @@ export class PolCoverageComponent implements OnInit {
           if(this.policyInfo.extensionTag == 'Y'){
             this.passData.tableData.forEach(a=>{   
             a.edited = true;
-            this.sectionTable.markAsDirty();
+            // this.sectionTable.markAsDirty();
               a.sumInsured = 0;
               a.premAmt = 0;
               a.discountTag = 'N';
@@ -511,7 +519,7 @@ export class PolCoverageComponent implements OnInit {
           }else{
             this.passData.tableData.forEach(a=>{   
             a.edited = true;
-            this.sectionTable.markAsDirty();
+            // this.sectionTable.markAsDirty();
               a.sumInsured = 0;
               a.premAmt = 0;
               a.discountTag = 'N';
@@ -624,12 +632,12 @@ export class PolCoverageComponent implements OnInit {
                   this.comtotalSi   += this.passData.tableData[j].cumSi;
                   this.alttotalSi   += this.passData.tableData[j].sumInsured;
               }
-              this.prevsectionISi      += this.passData.tableData[j].prevSumInsured;
-              this.prevtotalSi  += this.passData.tableData[j].prevSumInsured
-              this.prevsectionIIPrem   += this.passData.tableData[j].prevPremAmt;
-              this.altsectionIIPrem    += this.passData.tableData[j].premAmt;
-              this.exsectionIIPrem     += this.passData.tableData[j].exPremAmt;
-              this.comsectionIIPrem    += this.passData.tableData[j].cumPrem;
+              this.prevsectionIISi      += this.passData.tableData[j].prevSumInsured;
+              this.prevtotalSi          += this.passData.tableData[j].prevSumInsured
+              this.prevsectionIIPrem    += this.passData.tableData[j].prevPremAmt;
+              this.altsectionIIPrem     += this.passData.tableData[j].premAmt;
+              this.exsectionIIPrem      += this.passData.tableData[j].exPremAmt;
+              this.comsectionIIPrem     += this.passData.tableData[j].cumPrem;
 
               this.prevtotalPrem     += this.passData.tableData[j].prevPremAmt;
               this.alttotalPrem      += this.passData.tableData[j].premAmt;

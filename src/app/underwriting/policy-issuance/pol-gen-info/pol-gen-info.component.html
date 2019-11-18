@@ -945,7 +945,7 @@
 									</div> -->
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2">No Claim Period</label>
-										<input name="input193" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+										<input name="input193" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" appRequired>
 									</div>
 								</div>
 							</div>
@@ -1097,6 +1097,19 @@
 								<div class="input-group">
 									<input type="radio" name="option" [disabled]="policyInfo.declarationTag !== 'Y'" value="N" [(ngModel)]="policyInfo.minDepTag"><label class="form-control-sm" style="margin-bottom: -5px !important; font-weight: normal !important;">Without Min Dep</label>
 								</div>
+							</div>
+						</div>
+						<div class="col-sm-6" *ngIf="line=='CAR'">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<div class="input-group-text white-bg">
+										<input name="input999" type="checkbox" [ngModel]="policyInfo.coTermTag === 'Y'" (change)="policyInfo.coTermTag = (policyInfo.coTermTag === 'Y') ? 'N' : 'Y';" >
+									</div>
+								</div>
+								<input name="input998" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Co-Terminus" disabled class="form-control form-control-sm white-bg">
+							</div>
+							<div class="input-group" style="margin-top: 16px !important;">
+								<input name="input997" [disabled]="policyInfo.coTermTag != 'Y'" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;">
 							</div>
 						</div>
 					</div>							
@@ -2220,7 +2233,7 @@
 													</div> -->
 													<div class="input-group">
 														<label class="form-control-sm col-sm-2">No Claim Period</label>
-														<input name="input424" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+														<input name="input424" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.noClaimPd" ngbTooltip="Hour/s" appRequired oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
 													</div>
 												</div>
 											</div>

@@ -118,6 +118,7 @@ export class InternalCompetitionComponent implements OnInit {
       this.intCompData.tableData = [];
       this.quoteIds = [];
       this.cedingIds = [];
+      this.custEditableNonDatatableComponent.selected = [];
       if(this.params.quoteId != ''){
           this.quotationService.getIntCompAdvInfo(this.params).subscribe((data: any) => {
             console.log(data);
@@ -169,16 +170,24 @@ export class InternalCompetitionComponent implements OnInit {
      /* if (this.custEditableNonDatatableComponent.selected.length !== 0) {
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=QUOTER007' + '&quoteId=' + this.selectedPrintData.quoteId + '&adviceNo=' + this.selectedPrintData.adviceNo, '_blank');
       }*/
-      let validate: boolean = true;
+      let validateFields: boolean = true;
+      let isEdited: boolean = false;
       for(var i of this.custEditableNonDatatableComponent.selected){
         if(i.wordings === null || (i.wordings !== null && i.wordings.trim().length === 0)){
           this.messageIcon = "error";
           $('#incomp #successModalBtn').trigger('click');
-          validate = false;
+          validateFields = false;
+          break;
+        }else if(i.edited){
+          isEdited = i.edited;
           break;
         }
       }
-      if(validate){
+      if(isEdited){
+        this.messageIcon = 'info';
+        this.resultMessage = 'Changes made must be saved first before printing advice wordings.';
+        $('#incomp #successModalBtn').trigger('click');
+      }else if(validateFields){
         $('#showPrintMenu2 > #modalBtn').trigger('click');
       }
     }
@@ -314,7 +323,7 @@ export class InternalCompetitionComponent implements OnInit {
                    this.messageIcon = "";
                     $('#incomp #successModalBtn').trigger('click');
                     this.retrieveInternalCompetition();
-                    $('.ng-dirty').removeClass('ng-dirty');
+                    this.custEditableNonDatatableComponent.markAsPristine();
                  }
              });
            }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter} from '@angular/core';
 import { NgbModalConfig, NgbModal, NgbProgressbarConfig, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
+import { UnderwritingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { Router } from '@angular/router'
 import { ModalComponent } from '@app/_components/common/modal/modal.component'
 import { forkJoin, Subscription } from 'rxjs';
@@ -39,7 +39,8 @@ export class PolPostComponent implements OnInit {
   cummSi:any;
 
   constructor(config: NgbModalConfig, configprogress: NgbProgressbarConfig, public modalService: NgbModal,
-   private uwService: UnderwritingService, private ns: NotesService, private router: Router, private mtnService: MaintenanceService) {
+   private uwService: UnderwritingService, private ns: NotesService, private router: Router, private mtnService: MaintenanceService,
+   private ps: PrintService) {
   	config.backdrop = 'static';
     config.keyboard = false;
     configprogress.max = 100;
@@ -142,7 +143,7 @@ export class PolPostComponent implements OnInit {
           this.loadMsg = '100% Value must be greater than or equal to the Total Sum Insured. Please check Coverage tab.';
         }else{
           if(secCvrs.filter(a=>a.coverCd == coverCd).length > 0){
-            this.alopSi = secCvrs.filter(a=>(a.lineCd == 'CAR' && a.coverCd == '16')|| (a.lineCd == 'EAR' && a.coverCd == '31'))[0].cumSi;
+            this.alopSi = secCvrs.filter(a=>a.coverCd==coverCd)[0].cumSi;
             this.checkAlop();
           }
           else{
@@ -203,7 +204,7 @@ export class PolPostComponent implements OnInit {
         if(inwBals.reduce((a,b)=>a+b.premAmt,0) != a['policyList'][0].project.coverage.totalPrem){
           this.loadMsg = 'Total Premium is not equal to the sum of premium per installment. Please check Inward Pol balance tab.';
         }else{
-          this.loadMsg = 'Saving Successful.'
+          this.loadMsg = 'Saving.'
           this.progress +=25;
           if(this.cummSi == 0){
             this.confirmCancel.openNoClose();
@@ -275,5 +276,15 @@ export class PolPostComponent implements OnInit {
                                                  riskName: this.policyInfo.riskName,
                                                  exitLink: '/pol-dist-list'
                                                  }], { skipLocationChange: true });
+    }
+
+    print(){
+      let params:any = {
+                        policyId:this.policyInfo.policyId,
+                        updateUser:this.ns.getCurrentUser(),
+
+                      };
+      params.reportId= 'POLR010';
+      this.ps.print('screen','POLR010',params);
     }
 }

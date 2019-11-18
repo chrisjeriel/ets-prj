@@ -35,9 +35,11 @@ export class PolicyIssuanceComponent implements OnInit {
         lastAffectingPolId:undefined,
         quoteId:'',
         quotationNo: '',
+        retDone: false
   }
   @Input() fromSummary = false;
 
+  openTabs: boolean = false;
   alterFlag: boolean = false;
   fromInq:any = false;
   approveText: string = "For Approval";
@@ -133,7 +135,7 @@ export class PolicyIssuanceComponent implements OnInit {
         setTimeout(a=>{
           $('input:not([type="search"])').attr('readonly','readonly');
           $('textarea').attr('readonly','readonly');
-          $('select').attr('readonly','readonly');
+          $('select:not(.print)').attr('readonly','readonly');
         },0)
       }
   
@@ -145,15 +147,17 @@ export class PolicyIssuanceComponent implements OnInit {
       //   if(this.policyInfo[i] == undefined || this.policyInfo[i]==null)
       //     this.policyInfo[i] = event[i]
       // }
-      this.policyInfo.policyId = event.policyId;
-      this.policyInfo.insuredDesc =  event.insuredDesc;
-      this.policyInfo.riskId =  event.riskId;
-      this.policyInfo.showPolAlop = event.showPolAlop;
-      this.policyInfo.principalId = event.principalId;
-      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
-      this.policyInfo.insuredDesc = event.insuredDesc;
-      this.policyInfo.riskName = event.riskName;
-      this.policyInfo.cedingName = event.cedingName;
+      console.log(event)
+      this.policyInfo.policyId = event.policyId != undefined ? event.policyId : this.policyInfo.policyId;
+      this.policyInfo.insuredDesc =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
+      this.policyInfo.insured =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
+      this.policyInfo.riskId =  event.riskId != undefined ? event.riskId : this.policyInfo.riskId;
+      this.policyInfo.showPolAlop = event.showPolAlop != undefined ? event.showPolAlop : this.policyInfo.showPolAlop;
+      this.policyInfo.principalId = event.principalId != undefined ? event.principalId : this.policyInfo.principalId;
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag != undefined ? event.coInsuranceFlag : this.policyInfo.coInsuranceFlag;
+      this.policyInfo.insuredDesc = event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
+      this.policyInfo.riskName = event.riskName != undefined ? event.riskName : this.policyInfo.riskName;
+      this.policyInfo.cedingName = event.cedingName != undefined ? event.cedingName : this.policyInfo.cedingName;
   }
 
   returnOnModal(){
@@ -189,8 +193,8 @@ export class PolicyIssuanceComponent implements OnInit {
   }
 
 
-  printDestination:string;
-  printReport:string;
+  printDestination:string = 'screen';
+  printReport:string = 'POLR010';
 
   print(){
     let params:any = {

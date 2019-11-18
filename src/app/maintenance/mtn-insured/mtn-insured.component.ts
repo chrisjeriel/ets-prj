@@ -275,7 +275,7 @@ export class MtnInsuredComponent implements OnInit {
     }
 
     updatePage(p?){
-        this.request.position = p==undefined ? this.p : p;
+        this.request['paginationRequest.position'] = p==undefined ? this.p : p;
         if(this.passData.tableData[(this.p - 1) * this.passData.pageLength] == this.fillData){
             this.loadingTableFlag = true;
           if(p == undefined)

@@ -16,36 +16,7 @@ export class PolItemComponent implements OnInit {
     @ViewChildren(CustEditableNonDatatableComponent) table: QueryList<CustEditableNonDatatableComponent>;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
-    dtOptions: DataTables.Settings = {};
-    tableData_EEI_MBI_CEC: any[] = [
-        new PolItem_EEI_MBI_CEC('10001', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10002', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10003', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10004', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10005', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10006', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10007', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10008', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10009', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10010', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10011', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10012', 45, 'Item Description 1', '2018', 5, 20000),
-        new PolItem_EEI_MBI_CEC('10013', 45, 'Item Description 1', '2018', 5, 20000),
-    ];
-
-    tableData_BPV: any[] = [
-        new PolItem_BPV('S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', "2018", 90000),
-        //['S10001', 'Region IV, Laguna, Calamba', '100001 Juan de la Cruz', '2018', 90000],
-    ];
-
-    tHeader_EEI_MBI_CEC: any[] = ['Item No.', 'Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'];
-    tHeader_BPV: any[] = ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'];
-
-    dataTypes_EEI_MBI_CEC: any[] = ['string', 'number', 'string', 'string', 'number', 'currency'];
-    dataTypes_BPV: any[] = ['string', 'string', 'string', 'string', 'currency'];
-
-    nData_EEI_MBI_CEC: PolItem_EEI_MBI_CEC = new PolItem_EEI_MBI_CEC(null, null, null, null, null, null);
-    nData_BPV: PolItem_BPV = new PolItem_BPV(null, null, null, null, null);
+    
 
     @Input() policyInfo: any;
 
@@ -53,7 +24,7 @@ export class PolItemComponent implements OnInit {
     eeiPassData:any={
         tableData:[],
         tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['number', 'reqText', 'string', 'string', 'currency'],
+        dataTypes:['number', 'text-editor', 'string', 'string', 'currency'],
         nData: {
             "quantity": null,
             "itemDesc": null,
@@ -84,7 +55,7 @@ export class PolItemComponent implements OnInit {
     bpvPassData: any = {
         tableData:[],
         tHeader: ['Serial No', 'Location', 'Description Maker\'s No. and Maker\'s Name', 'Year of Make', 'Sum Insured'],
-        dataTypes:['string', 'string', 'reqText', 'string', 'currency'],
+        dataTypes:['string', 'string', 'text-editor', 'string', 'currency'],
         nData: {
              "serialNo":null,
              "location": null,
@@ -111,7 +82,7 @@ export class PolItemComponent implements OnInit {
     mlpPassData: any = {
         tableData: [],
         tHeader:  ['Quantity', 'Description of Machinery', 'Indemnity Period(months)', 'Relative Importance(%)', 'Spare Parts in stock standby Units'],
-        dataTypes:  [ 'number', 'reqText', 'number', 'percent', 'number'],
+        dataTypes:  [ 'number', 'text-editor', 'number', 'percent', 'number'],
         nData:  {
             "itemNo":null,
             "quantity": null,
@@ -141,7 +112,7 @@ export class PolItemComponent implements OnInit {
     dosGoodsPassData: any = {
         tableData: [],
         tHeader: ["Refrigerating Chamber No", "Type of Goods", "No-Claims Period", "Sum Insured"],
-        dataTypes: [ "text", "reqText", "number", "currency"],
+        dataTypes: [ "text", "text-editor", "text", "currency"],
         nData: {
             "itemNo":null,
             "chamberNo": null,
@@ -172,7 +143,7 @@ export class PolItemComponent implements OnInit {
     dosMachineryPassData: any = {
         tableData: [],
         tHeader: ["Number of Units", "Description of Items (Technical Data including Capacity)", "Year of Make", "Sum Insured"],
-        dataTypes: [ "number", "reqText", "text", "currency"],
+        dataTypes: [ "number", "text-editor", "text", "currency"],
         nData: {
             "itemNo":null,
             "standbyUnit": null,
@@ -199,7 +170,7 @@ export class PolItemComponent implements OnInit {
     cecPassData: any = {
         tableData:[],
         tHeader: [ 'Insured Item and Location', 'Deductible', 'Sum Insured'],
-        dataTypes:['reqText', 'string', 'currency'],
+        dataTypes:['text-editor', 'text-editor', 'currency'],
         nData: {
             "itemNo":null,
             "quantity": null,

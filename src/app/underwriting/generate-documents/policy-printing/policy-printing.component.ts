@@ -1,14 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { UnderwritingService } from '@app/_services';
 import { PolicyPrinting } from '@app/_models';
 import { Title } from '@angular/platform-browser';
+import { CustEditableNonDatatableComponent } from '@app/_components/common'
 
 @Component({
 	selector: 'app-policy-printing',
 	templateUrl: './policy-printing.component.html',
 	styleUrls: ['./policy-printing.component.css']
 })
-export class PolicyPrintingComponent implements OnInit {
+export class PolicyPrintingComponent implements OnInit, AfterViewInit {
 
 	tableData: any[] = [];
 	tHeader: any[] = [];
@@ -20,16 +21,18 @@ export class PolicyPrintingComponent implements OnInit {
 
 	passData: any = {
 		tableData: [],
-		tHeader: [],
-		dataTypes: [],
+		tHeader: ["Document Type", "Destination"],
+		dataTypes: ["select", "select"],
+		keys:['docType','destination'],
 		opts: [],
 		nData: {},
 		addFlag: true,
 		deleteFlag: true,
-		widths: []
 	};
 
-	// tHeader: any[] = ["Document Type", "Destination", "Printer Name", "No. of Copies"];
+	@ViewChild(CustEditableNonDatatableComponent) table:CustEditableNonDatatableComponent;
+
+	// tHeader: any[] = ["Document Type", "Destination"];
 	// dataTypes: any[] = ["select", "select", "select", "select"];
 
 	nData: PolicyPrinting = new PolicyPrinting(null, null, null, null);
@@ -37,19 +40,20 @@ export class PolicyPrintingComponent implements OnInit {
 
 	ngOnInit() {
 		this.titleService.setTitle("Pol | Policy Printing");
-
-		this.passData.tHeader.push("Document Type", "Destination", "Printer Name", "No. of Copies");
-		this.passData.dataTypes.push("select", "select", "select", "select");
 		this.passData.tableData = this.underwritingService.printingPolicy();
 
-		var getPrinter = this.underwritingService.getPrinterName();
-
-		this.passData.opts.push({ selector: "docType", vals: ["Policy Schedule"] });
-		this.passData.opts.push({ selector: "destination", vals: ["Screen", "Printer", "Local Printer"] });
-		for (var i in getPrinter) {
-			this.passData.opts.push({ selector: "printerName", vals: [getPrinter[i].printerName.toString()] });
-		}
-		this.passData.opts.push({ selector: "noOfCopy", vals: ["1", "2", "3", "4", "5"] });
+		this.passData.opts.push({ selector: "docType", 
+									  vals: ["Policy Schedule"],
+									  prev: ["POL012"]});
+		this.passData.opts.push({ selector: "destination",
+									  prev: ["Screen", "PDF", "Printer"],
+								  	  vals: ["screen", "dlPdf", "printPdf"] });
 	}
+
+	ngAfterViewInit(){
+		this.table.loadingFlag = false;
+	}
+
+
 
 } 

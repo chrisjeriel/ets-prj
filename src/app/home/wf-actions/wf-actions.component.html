@@ -339,7 +339,7 @@
 <app-mtn-users class="d-none" #usersLOV (selectedData)="setPreparedBy($event)"></app-mtn-users>
 
 <app-confirm-save (onYes)="saveNotesAndReminders()"></app-confirm-save>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? clearValues(): null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? clearValues(): null"></app-sucess-dialog>
 <app-cancel-button (onYes)="saveNotesAndReminders(true)" (no)="clearValues()"></app-cancel-button>
 
 
