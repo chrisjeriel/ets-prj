@@ -1385,12 +1385,26 @@ export class LovComponent implements OnInit {
         this.passTable.keys = ['orNo', 'orType', 'orDate', 'tranTypeName', 'orStatDesc', 'particulars', 'orAmt'];
         this.passTable.checkFlag = false;
 
-        this.accountingService.getAcseOrList(null).subscribe((a:any)=>{
+        this.accountingService.getAcseOrList(this.passData.searchParams).subscribe((a:any)=>{
           this.passTable.tableData = a.orList.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
           this.table.refreshTable();
         });
+     } else if(this.passData.selector == 'acseCvList'){
+        this.passTable.tHeader = ['CV No','Payee','CV Date','Payment Request No','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['text','text','date','text','text','text','currency'];
+        this.passTable.keys = ['cvGenNo', 'payee', 'cvDate', 'refNo', 'cvStatusDesc', 'particulars', 'cvAmt'];
+        this.passTable.checkFlag = false;
 
-     
+        this.accountingService.getAcseCvList(this.passData.searchParams).subscribe((a:any)=>{
+          this.passTable.tableData = a.acseCvList.filter(i=>{
+                if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+                    i.cvStatus = i.mainTranStat;
+                    i.cvStatusDesc = i.mainTranStatDesc;
+                  }
+                  return i; });
+          this.table.refreshTable();
+        });
      }
 
 
