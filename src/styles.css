@@ -713,6 +713,14 @@ body .ui-datepicker .ui-datepicker-month, body .ui-datepicker .ui-datepicker-yea
     font-size: 12px !important;
 }
 
+body .ui-button.ui-button-icon-only .ui-button-text {
+    height: inherit;
+}
+
+body .ui-button-icon-only .ui-button-icon-left {
+    left: 63% !important;
+}
+
 .dp-cont {
     padding: 0 !important;
     margin-left: 2px !important;

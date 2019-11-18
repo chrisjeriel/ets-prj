@@ -337,7 +337,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPaytReqPrqTrans();
   }
 
-  getPaytReqPrqTrans(){    
+  getPaytReqPrqTrans(){
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
@@ -1396,7 +1396,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.servFeeSubTbl.refreshTable();
       });
     } else {
-      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.sfeeAmts.totalSfeeAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2), this.requestData.currCd, this.requestData.currRate).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
@@ -1430,7 +1430,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       reqId: this.requestData.reqId,
       quarter: this.qtrParam,
       year: this.yearParam,
-      servFeeAmt: this.sfeeAmts.totalSfeeAmt,
+      servFeeAmt: +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2),
       netServFee: this.sfeeAmts.totalDue,
       currCd: this.requestData.currCd,
       currRt: this.requestData.currRate,
