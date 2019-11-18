@@ -240,7 +240,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 				console.log(data)
 				if(data['quotationGeneralInfo'] != null) {
 					this.genInfoData = data['quotationGeneralInfo'];
-					this.inquiryFlag = data.quotationGeneralInfo.autoIntComp === 'Y' || data.quotationGeneralInfo.autoIntComp === 'N';
+					//this.inquiryFlag = data.quotationGeneralInfo.autoIntComp === 'Y' || data.quotationGeneralInfo.autoIntComp === 'N';
 					this.genInfoData.principalId = String(this.genInfoData.principalId).padStart(6,'0')
         			this.genInfoData.contractorId = this.genInfoData.contractorId != null ? String(this.genInfoData.contractorId).padStart(6,'0'):null;
         			this.genInfoData.intmId = this.genInfoData.intmId != null ? String(this.genInfoData.intmId).padStart(6, '0') : '';			

@@ -199,7 +199,8 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,payeeClassCd?, ev?) {
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?, slTypeCd?,payeeClassCd?) {
+    console.log(ev)
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({

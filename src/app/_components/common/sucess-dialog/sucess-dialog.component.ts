@@ -15,6 +15,7 @@ export class SucessDialogComponent implements OnInit {
   @Input() icon: string = "success";
   @Output() onOk: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() btnTitle: string;
+  @ViewChild('okButton') okbtn: HTMLElement;
 
   constructor(private modalService: NgbModal) { }
 
@@ -36,6 +37,7 @@ export class SucessDialogComponent implements OnInit {
     //     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : 'success-modal-size' });
      // $('#successMdl > #modalBtn').trigger('click');
      this.modal.openNoClose();
-    }
+     setTimeout(a=>{this.okbtn.focus();},0)
+    }  
 
 }
