@@ -20,7 +20,6 @@ import { DatepickerComponent } from '@app/_components/datepicker/datepicker.comp
 })
 export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(){
-        console.log(this.componentRef);
     }
 
     @ViewChild('overallCont') componentRef: ElementRef;

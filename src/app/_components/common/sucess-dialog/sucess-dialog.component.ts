@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, Output, EventEmitter, ElementRef } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { dialogOpts } from 'src/environments/dialog';
@@ -15,7 +15,7 @@ export class SucessDialogComponent implements OnInit {
   @Input() icon: string = "success";
   @Output() onOk: EventEmitter<any[]> = new EventEmitter<any[]>();
   @Input() btnTitle: string;
-  @ViewChild('okButton') okbtn: HTMLElement;
+  @ViewChild('okButton') okbtn: ElementRef;
 
   constructor(private modalService: NgbModal) { }
 
@@ -37,7 +37,7 @@ export class SucessDialogComponent implements OnInit {
     //     this.modalService.open(content, { centered: true, backdrop: 'static', windowClass : 'success-modal-size' });
      // $('#successMdl > #modalBtn').trigger('click');
      this.modal.openNoClose();
-     setTimeout(a=>{this.okbtn.focus();},0)
+     setTimeout(a=>{this.okbtn.nativeElement.focus();},0)
     }  
 
 }
