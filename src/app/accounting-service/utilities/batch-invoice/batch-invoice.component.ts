@@ -50,6 +50,7 @@ export class BatchInvoiceComponent implements OnInit {
       tableData:[]
   };
   invNoDigits: any;
+  loading:boolean = false; /*Added by totz, needed in html, please check your code.*/
 
   PassData: any = {
   	tableData: [],
@@ -157,7 +158,7 @@ export class BatchInvoiceComponent implements OnInit {
   deletedData:any[] =[];
   selecteditemrecord: any = {};
 
-  constructor(private accountingService: AccountingService, private modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
+  constructor(private accountingService: AccountingService, public modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
 
   ngOnInit() {
     this.getInvNoDigits();
