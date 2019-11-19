@@ -171,6 +171,7 @@ export class CoverageComponent implements OnInit {
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
+                   data.sectionCovers[i].remarks = '';
                    this.passData.tableData.push(data.sectionCovers[i]);
                 }
               }
