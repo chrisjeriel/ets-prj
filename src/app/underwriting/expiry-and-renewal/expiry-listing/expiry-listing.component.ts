@@ -15,6 +15,7 @@ import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 
 @Component({
   selector: 'app-expiry-listing',
@@ -47,6 +48,7 @@ export class ExpiryListingComponent implements OnInit {
   @ViewChild('printModal') printModal: ModalComponent;
   @ViewChild("remindersTable") remindersTable: CustEditableNonDatatableComponent;
   @ViewChild('warnMdl') warnModal: ModalComponent;
+  @ViewChild('cancelCov') cancelCov: CancelButtonComponent;
 
   expiryParameters: ExpiryParameters = new ExpiryParameters();
   tableData: ExpiryListing[] = [];
@@ -369,6 +371,7 @@ export class ExpiryListingComponent implements OnInit {
   renAsIsTag: boolean;
   pctShareVal: any;
   totalVal:any;
+  covFlag:boolean = false;
   
 
   params:any = {
@@ -1192,6 +1195,8 @@ export class ExpiryListingComponent implements OnInit {
     this.totalPerSection.refreshTable();
     this.getEditableCov();
     this.focusBlur();
+    $('.ng-dirty').removeClass('ng-dirty');
+    this.form.control.markAsPristine();
     /*this.editModal.pctShare = this.decimal.transform(this.editModal.pctShare,'1.10-10');
     this.editModal.totalValue = this.decimal.transform(this.editModal.totalValue, '1.2-2');
     this.editModal.pctPml = this.decimal.transform(this.editModal.pctPml,'1.10-10');*/
@@ -1300,6 +1305,7 @@ export class ExpiryListingComponent implements OnInit {
         }
       }
       this.sectionTable.refreshTable();
+      this.form.control.markAsDirty();
 
       this.passDataTotalPerSection.tableData[0].section = 'SECTION I';
       this.passDataTotalPerSection.tableData[0].sumInsured = this.secISi;
@@ -1421,7 +1427,8 @@ export class ExpiryListingComponent implements OnInit {
       this.sectionCoverLOVRow = data.index;
   } 
 
-  savePolicyChanges() {
+  savePolicyChanges(cancel?) {
+    this.covFlag = cancel !== undefined;
     this.prepareCoverage();
     this.underWritingService.saveExpEdit(this.ExpcoverageData).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
@@ -1433,7 +1440,7 @@ export class ExpiryListingComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
-        console.log('success')
+        $('.ng-dirty').removeClass('ng-dirty');
         //this.modalService.dismissAll();
         this.retrieveExpPolList();
       }
@@ -1928,5 +1935,9 @@ export class ExpiryListingComponent implements OnInit {
       this.modalService.dismissAll();
       this.filterMainTable();
     }
+  }
+
+  onClickCovCancel(){
+    this.cancelCov.clickCancel();
   }
 }
