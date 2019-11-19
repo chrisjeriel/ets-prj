@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div id="cust-table-container" [style.display]="!loadingFlag && !failed ? 'block':'none'" style="position: relative;">
+<div id="cust-table-container" [style.display]="!loadingFlag && !failed ? 'block':'none'" style="position: relative;height: inherit;">
     <ng-container *ngIf="overlayLoader">
         <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
         <div class="globalLoading" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);">
@@ -161,7 +161,7 @@
 
 
     </div>
-    <div class="d-flex w-100" [class.small]="passData.small !== undefined && passData.small" style="overflow-y: scroll;">
+    <div class="d-flex w-100" [class.small]="passData.small !== undefined && passData.small" style="height: inherit;">
         <form #myForm="ngForm">
             <table #table [id]="passData.tHeaderWithColspan !== undefined ? 'override-header-color' : 'non-datatable'" [class]="'left non-datatable' + passData.pageID" style="width:auto" *ngIf="pinKeysLeft != undefined && pinKeysLeft.length != 0">
                 <colgroup *ngIf="passData.tHeaderWithColspan != null">

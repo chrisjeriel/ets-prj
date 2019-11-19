@@ -479,7 +479,7 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
     }
 
     unliTableLength(){
-        if(this.unliFlag && this.passData.tableData.length < 11) {
+        if(this.unliFlag && this.passData.tableData.length < this.defaultUnliLength) {
             this.passData.pageLength = this.defaultUnliLength;
         } else if(this.unliFlag) {
             this.passData.pageLength = this.passData.tableData.length <= this.passData.pageLength ? this.passData.pageLength :this.passData.tableData.length;
