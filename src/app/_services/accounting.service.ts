@@ -2999,5 +2999,12 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchInvoiceNo',params,header);
     }
 
+    getAcseInvItems(invoiceId){
+		const params = new HttpParams()
+			.set('invoiceId', (invoiceId == null || invoiceId == undefined ? '' : invoiceId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInvoiceItems',{params});
+	}
+
 
 }

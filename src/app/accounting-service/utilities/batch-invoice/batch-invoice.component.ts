@@ -12,7 +12,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
-import { finalize } from 'rxjs/operators';
+
 
 
 @Component({
@@ -22,10 +22,12 @@ import { finalize } from 'rxjs/operators';
 })
 export class BatchInvoiceComponent implements OnInit {
    @ViewChild('batchInvoice') table: CustEditableNonDatatableComponent;
+   @ViewChild('invoiceItems') invtable: CustEditableNonDatatableComponent;
    @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
    @ViewChild('viewInvoiceModal') viewinvoiceModal: ModalComponent;
    @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
-     @ViewChild('passLOV') payeeLov: LovComponent;
+   @ViewChild('passLOV') payeeLov: LovComponent;
+   @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -49,8 +51,6 @@ export class BatchInvoiceComponent implements OnInit {
   };
   invNoDigits: any;
 
-
-  
   PassData: any = {
   	tableData: [],
   	tHeader: ['G', 'P', 'Invoice Date', 'Invoice No', 'Tran No.', 'Tran Date','Billed To', 'Particulars','Amount'],
@@ -66,6 +66,37 @@ export class BatchInvoiceComponent implements OnInit {
     pageID: 'invoiceBatchPrint',
     disableGeneric: true,
     keys: ['invoiceNocheck', 'printCheck', 'invoiceDate','invoiceNo','tranNo','tranDate','payor','particulars','localAmt'],
+  }
+
+  passDataInvoiceItems: any = {
+    tableData: [],
+    tHeader: ['Item No', 'Item Desc','Curr Cd','Curr Rate','Item Amount', 'Local Amt'],
+    dataTypes: ['text','text','select', 'percent','currency','currency'],
+    addFlag: true,
+    nData:{
+      invoiceId : null,
+      itemNo : null,
+      itemDesc   : null,
+      currCd : 'PHP',
+      currRate : 1,
+      itemAmt : null,
+      localAmt: null,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    },
+    genericBtn: 'Delete',
+    disableGeneric: true,
+    pageLength: 5,
+    infoFlag: true,
+    paginateFlag: true,
+    widths: [1,1,1,1,1,1],
+    uneditable: [true,false,false,false,false,true],
+    pageID: 'invoiceItems',
+    keys: ['itemNo', 'itemDesc', 'currCd','currRate','itemAmt','localAmt'],
+    total:[null,null,null,null,'Total','localAmt'],
+    opts: [ {selector: 'currCd', prev: [], vals: []} ],
   }
 
   nData: any = {
@@ -119,11 +150,58 @@ export class BatchInvoiceComponent implements OnInit {
   };
   searchtranTypeClass: any;
   tranTypeClass: any;
+  currencyData: any[] = [];
+  acitInvItems  : any = { 
+                "invoiceItemList"  : [],
+                "invoiceDelItemList"  : []}
+  deletedData:any[] =[];
+  selecteditemrecord: any = {};
 
   constructor(private accountingService: AccountingService, private modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
 
   ngOnInit() {
     this.getInvNoDigits();
+    this.getCurr();
+  }
+
+  getCurr(){
+    this.ms.getMtnCurrency('','Y').subscribe(
+      (data:any)=>{ 
+        console.log(data);
+        this.currencyData = data.currency;
+        this.passDataInvoiceItems.opts[0].vals = data.currency.map(a => a.currencyCd);
+        this.passDataInvoiceItems.opts[0].prev = data.currency.map(a => a.currencyCd);
+      });
+  }
+
+  onTableItemInvoiceClick(data){
+    this.passDataInvoiceItems.disableGeneric = data == null;
+    this.selecteditemrecord = data;
+  }
+
+  deleteItemInvoice(){
+    if(this.invtable.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'Deleting this record is not allowed. This was already used in some accounting records.';
+      this.successDiag.open();
+    }else{
+      this.invtable.selected  = [this.invtable.indvSelect]
+      this.invtable.confirmDelete();
+      $('#cust-table-container').addClass('ng-dirty');
+    }
+  }
+
+  getInvItem(invoiceId?){
+    this.accountingService.getAcseInvItems(invoiceId).subscribe(
+      (data:any)=>{ 
+        console.log(data);
+        var td = data['invoiceItemList'].map(a => { 
+                        a.createDate = this.ns.toDateTimeString(a.createDate);
+                        a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                        return a; });
+        this.passDataInvoiceItems.tableData = td;
+        this.invtable.refreshTable();
+      });
   }
 
   onChangeSearchTranClass(){
@@ -171,6 +249,9 @@ export class BatchInvoiceComponent implements OnInit {
     this.invoiceDate.date = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[0];
     this.invoiceDate.time = this.ns.toDateTimeString(this.selectedrecord.invoiceDate).split('T')[1];
     this.getMtnAcseTranType(this.selectedrecord.tranClass,'modal');
+    this.getInvItem(this.selectedrecord.invoiceId);
+   
+
     this.viewinvoiceModal.openNoClose();
     if( this.selectedrecord.autoTag === 'Y'){
       this.inquiryFlag = true;
@@ -208,6 +289,8 @@ export class BatchInvoiceComponent implements OnInit {
     this.selectedrecord.createDate = this.ns.toDateTimeString(0);
     this.selectedrecord.updateUser = this.ns.getCurrentUser();
     this.selectedrecord.updateDate = this.ns.toDateTimeString(0);
+    this.passDataInvoiceItems.tableData = [];
+    this.invtable.refreshTable();
     this.getMtnAcseTranType(this.selectedrecord.tranClass,'modal');
     this.viewinvoiceModal.openNoClose();
     console.log(this.selectedrecord);
@@ -274,6 +357,13 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   saveInvoice(){
+    this.acitInvItems.invoiceDelItemList = [];
+    this.acitInvItems.invoiceItemList = [];
+    this.acitInvItems.invoiceItemList = this.passDataInvoiceItems.tableData.filter(a=>a.edited && !a.deleted);
+    this.acitInvItems.invoiceItemList.forEach(a=> { a.updateUser = this.ns.getCurrentUser(),
+                                                    a.updateDate = this.ns.toDateTimeString(0); });
+    this.acitInvItems.invoiceDelItemList = this.deletedData; 
+
     console.log(this.mdlType);
     if (this.mdlType === 'edit'){
       if (this.PassData.tableData[this.indexRow].refNoDate !== null){
@@ -285,17 +375,33 @@ export class BatchInvoiceComponent implements OnInit {
       this.PassData.tableData[this.indexRow].localAmt     = parseFloat(this.PassData.tableData[this.indexRow].localAmt.toString().split(',').join(''));
       this.PassData.tableData[this.indexRow].currRate    = parseFloat(this.PassData.tableData[this.indexRow].currRate.toString().split(',').join(''));
       this.PassData.disableGeneric = true;
-      this.save(this.PassData.tableData[this.indexRow]);
+
+       if(this.checkFields(this.PassData.tableData[this.indexRow])){
+
+       }
+
+      //this.save(this.PassData.tableData[this.indexRow]);
     } else if (this.mdlType === 'add'){
       this.selectedrecord.invoiceDate  = this.invoiceDate.date + 'T' + this.invoiceDate.time;
-      console.log(this.selectedrecord);
-      this.save(this.selectedrecord);
+      //this.save(this.selectedrecord);
+
+       if(this.checkFields(this.selectedrecord)){       
+          this.save(this.selectedrecord);
+       }else{
+          this.viewinvoiceModal.openNoClose();
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          this.successDiag.open();
+       }
     }
   }
 
+
   save(params){
+    this.deletedData = [];
     console.log(JSON.stringify(params));
-     this.accountingService.saveAcseInvoice(params).subscribe(a=>{
+    console.log(JSON.stringify(this.acitInvItems));
+     /*this.accountingService.saveAcseInvoice(params).subscribe(a=>{
         if(a['returnCode'] == -1){
               this.dialogIcon = "success";
               this.successDiag.open();
@@ -306,7 +412,7 @@ export class BatchInvoiceComponent implements OnInit {
               this.dialogIcon = "error";
               this.successDiag.open();
           }
-      });
+      });*/
   }
 
   retrieveBatchInvoiceList(search?){
@@ -601,6 +707,71 @@ export class BatchInvoiceComponent implements OnInit {
       this.retrieveInvSeriesNo(this.invoiceNo,null,'N',this.invoiceIdArray.length,'generate');
     }
   }
+
+  update(data){
+     for(var i= 0; i< this.passDataInvoiceItems.tableData.length; i++){
+         if(this.passDataInvoiceItems.tableData[i].edited || this.passDataInvoiceItems.tableData[i].add){
+             if (data.key === 'currCd' || data.key === 'itemAmt' || data.key === 'currRate'){
+               if (this.passDataInvoiceItems.tableData[i].currCd === 'PHP'){
+                  var currRt = this.getCurrencyRt('PHP');
+                  this.passDataInvoiceItems.tableData[i].currRate = currRt;
+               }else if (this.passDataInvoiceItems.tableData[i].currCd === 'USD'){
+                  var currRt = this.getCurrencyRt('USD');
+                  this.passDataInvoiceItems.tableData[i].currRate = currRt;
+               } else if (this.passDataInvoiceItems.tableData[i].currCd === 'UKP'){
+                  var currRt = this.getCurrencyRt('UKP');
+                  this.passDataInvoiceItems.tableData[i].currRate = currRt;
+               }
+
+               if(this.passDataInvoiceItems.tableData[i].itemAmt !== '' && this.passDataInvoiceItems.tableData[i].currRate !== ''){
+                  this.passDataInvoiceItems.tableData[i].localAmt = isNaN(this.passDataInvoiceItems.tableData[i].itemAmt) ? 0:this.passDataInvoiceItems.tableData[i].itemAmt * this.passDataInvoiceItems.tableData[i].currRate;
+               }else{
+                  this.passDataInvoiceItems.tableData[i].localAmt = null;
+               }
+
+             }
+         }
+     }
+  }
+
+  getCurrencyRt(currUnit){
+    var currRt;
+    for (var i = 0; i < this.currencyData.length; i++) {
+        if( this.currencyData[i].currencyCd === currUnit){
+              currRt = this.currencyData[i].currencyRt;
+         } 
+    }
+    return currRt;
+  }
+
+  checkFields(field){
+        if( field.tranTypeCd === null || field.tranTypeCd === '' ||
+            field.payor === null || field.payor === '' ||
+            field.particulars === null || field.particulars === '' ||
+            field.invoiceDate === null || field.invoiceDate === '' ||
+            field.invoiceAmt === null || field.invoiceAmt === '' ||
+            field.localAmt === null || field.localAmt === '' ||
+            field.currCd === null || field.currCd === '' ||
+            field.currRate === null || field.currRate === '' 
+          ) {   
+            return false;
+          }else {
+            return true;
+          }
+ }
+
+ onClickDelInvt(){
+    this.acitInvItems.invoiceItemList = [];
+    this.acitInvItems.invoiceDelItemList  = [];
+
+     this.deletedData.push({
+                    "invoiceId": this.selecteditemrecord.invoiceId,
+                    "itemNo" : this.selecteditemrecord.itemNo
+                     });
+
+    this.acitInvItems.invoiceDelItemList = this.deletedData;     
+ }
+     
 
 
 }

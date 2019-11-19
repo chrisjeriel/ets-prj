@@ -154,7 +154,7 @@ export class PayeeComponent implements OnInit {
       this.ns.lovLoader(ev, 0);
       this.clear();
     }else{
-       this.payeeLov.checkCode('payeeClass','','','','','','',this.payeeClassCd,ev);
+       this.payeeLov.checkCode('payeeClass','','','','','',ev,'',this.payeeClassCd);
     }
  
     /*this.bankLov.checkCode(this.bank.bankCd,ev);*/

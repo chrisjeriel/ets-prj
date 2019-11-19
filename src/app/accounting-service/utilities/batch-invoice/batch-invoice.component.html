@@ -16,7 +16,7 @@
 										<label class="form-control-sm col-sm-5">Tran Class</label>
 											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="searchtranTypeClass" name="searchtranTypeClass" (change)="onChangeSearchTranClass()" (ngModelChange)="searchtranTypeClass=$event;">
 												<option>OR</option>
-												<option>CV</option>
+												<option value="PRQ">CV</option>
 												<option>JV</option>
 											</select>
 									</div>
@@ -39,7 +39,7 @@
 								<div class="col-sm-4">
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-3">Tran Date: </label>
-										<label class="form-control-sm col-sm-1">From </label>
+										<label class="form-control-sm col-sm-2">From </label>
 										<div class="col-sm dp-cont">
 											<datepicker [type]="'date'" [showIcon]="true" [value]="fromDate.split('T')[0]" (valueChange)="fromDate=$event"></datepicker>
 										</div>
@@ -237,6 +237,12 @@
 						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
 						<textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"  appRequired name="particulars" [ngModel]="selectedrecord?.particulars" (ngModelChange)="selectedrecord.particulars=$event;"></textarea>
 					</div> 
+					<div class="input-group" style="margin-top: 5px; margin-left: 80px">
+						<div class="col-sm-12" style="padding-right: 0">
+							<app-cust-editable-non-datatable #invoiceItems [passData]="passDataInvoiceItems" (genericBtn)="deleteItemInvoice($event)"
+							(newClick)="onTableItemInvoiceClick($event)"  (onDelete)="invtable.onClickDelete('force');onClickDelInvt();"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+						</div>
+					</div>
 					<div class="input-group" style="margin-top: 0px">
 						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-1 required currCd" style="margin-right: -1px !important;" [ngModel]="selectedrecord?.currCd" appRequired name="currCd" (ngModelChange)="selectedrecord.currCd=$event;" disabled>
@@ -361,4 +367,4 @@
 </app-modal> -->
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="selectedrecord?.tranDate"></app-mtn-currency>
 <app-lov #passLOV [passData]="passLov" (selectedData)="setSelectedData($event)">
-
+<app-confirm-save #confirmSave (onYes)="saveInvoiceData()"></app-confirm-save>
