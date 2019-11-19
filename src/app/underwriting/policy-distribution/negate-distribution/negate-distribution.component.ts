@@ -120,26 +120,13 @@ export class NegateDistributionComponent implements OnInit {
     this.table.loadingFlag = true;
     this.policyListingData.tableData = [];
     setTimeout(()=>{
-      this.us.getParListing([{key: 'statusArr', search: [2]}, 
-                           {key: 'policyNo', search: this.noDataFound ? '' : this.tempPolNo.join('%-%')},
-                           {key:'totalPremGrt', search: '0.1'}]).subscribe((data: any) =>{
+      this.us.getNegateList().subscribe((data: any) =>{
         //data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
-        if(data.policyList.length !== 0){
+        if(data.polDistList.length !== 0){
           this.noDataFound = false;
-          for(var rec of data.policyList){
-            this.policyListingData.tableData.push({
-              policyId: rec.policyId,
-              policyNo: rec.policyNo,
-              cedingName: rec.cedingName,
-              insuredDesc: rec.insuredDesc,
-              riskName: rec.project.riskName,
-              statusDesc: rec.statusDesc,
-              totalSi: rec.project.coverage.totalSi,
-              distStatDesc: rec.distStatDesc
-            });
-          }
 
-          this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'});
+          this.policyListingData.tableData = data.polDistList;
+
           if(this.isType && !this.isIncomplete){
             this.isIncomplete = false;
             this.policyInfo           = this.policyListingData.tableData[0];
