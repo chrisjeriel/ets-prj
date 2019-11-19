@@ -16,7 +16,8 @@ export class QuarterEndingLovComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @Input() tranClass;
   @Input() cedingId;
-  @Input() quarterDates: string[];
+  @Input() quarterDates: string[]; //array of already added quarter dates
+  @Input() overrideModal: boolean = false; //override the close modal of this component
 
   constructor(private maintenanceService: MaintenanceService, private accService: AccountingService) { }
 
@@ -130,10 +131,11 @@ export class QuarterEndingLovComponent implements OnInit {
       }else{
         this.selectedData.emit(this.quarterval);
       }
-
-      this.quarterYear = '';
-      this.quarter = '';
-      this.modal.closeModal();
+      if(this.overrideModal == undefined || (this.overrideModal !== undefined && !this.overrideModal)){
+        this.quarterYear = '';
+        this.quarter = '';
+        this.modal.closeModal();
+      }
     }else{
       this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
       this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
@@ -152,9 +154,11 @@ export class QuarterEndingLovComponent implements OnInit {
           this.selectedData.emit(this.quarterval);
         }
 
-        this.quarterYear = '';
-        this.quarter = '';
-        this.modal.closeModal();
+        if(this.overrideModal == undefined || (this.overrideModal !== undefined && !this.overrideModal)){
+          this.quarterYear = '';
+          this.quarter = '';
+          this.modal.closeModal();
+        }
       }
     }
   }

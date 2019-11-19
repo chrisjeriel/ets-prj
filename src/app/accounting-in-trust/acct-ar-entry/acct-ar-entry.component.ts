@@ -924,6 +924,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
           this.paymentTypes = data.tranTypeList;
+          this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
         }
       }
     );

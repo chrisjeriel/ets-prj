@@ -637,7 +637,6 @@ export class AcctOrEntryComponent implements OnInit {
           this.selectedBankAcct.bankAcctCd = data.orEntry.dcbBankAcct;
           this.paytDtlTbl.refreshTable();
           this.onChange.emit({ type: this.orInfo.tranTypeCd });
-          this.disableTab.emit(false);
           let orDetailParams = {
             tranId: this.orInfo.tranId,
             formattedOrNo: this.orInfo.formattedOrNo,
@@ -705,6 +704,7 @@ export class AcctOrEntryComponent implements OnInit {
         this.loading = false;
 
         this.disablePayor          = data.orEntry.tranTypeCd == 3;
+        this.disableTab.emit(false);
       },
       (error: any)=>{
         console.log('error');
@@ -960,6 +960,7 @@ export class AcctOrEntryComponent implements OnInit {
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
           this.paymentTypes = data.tranTypeList;
+          this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
         }
       }
     );

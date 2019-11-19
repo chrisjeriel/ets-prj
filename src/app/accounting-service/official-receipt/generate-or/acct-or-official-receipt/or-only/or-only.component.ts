@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -8,13 +8,15 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { forkJoin, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-or-only',
   templateUrl: './or-only.component.html',
   styleUrls: ['./or-only.component.css']
 })
-export class OrOnlyComponent implements OnInit {
+export class OrOnlyComponent implements OnInit, OnDestroy {
 
 	@Input() record: any;
 	@ViewChild('taxAlloc') taxAllocMdl : ModalComponent;
@@ -77,6 +79,7 @@ export class OrOnlyComponent implements OnInit {
 	        tranId: '',
 	        billId: '',
 	        itemNo: '',
+          genType: 'M',
 	        taxType: 'G', //for General Tax, Tax Type
 	        taxCd: '',
 	        taxName: '',
@@ -94,6 +97,8 @@ export class OrOnlyComponent implements OnInit {
 	    pageID: 'genTaxTbl'
 	  }
 
+    sub: Subscription;
+
 	  passDataWhTax : any = {
 	  	tableData: [],
 	    tHeader : ["Tax Code","Description","Rate","Amount"],
@@ -108,6 +113,7 @@ export class OrOnlyComponent implements OnInit {
 	        tranId: '',
 	        billId: '',
 	        itemNo: '',
+          genType: 'M',
 	        taxType: 'W', //for Witholding Tax, Tax Type
 	        taxCd: '',
 	        taxName: '',
@@ -150,6 +156,7 @@ export class OrOnlyComponent implements OnInit {
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
     this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
+    this.addDefaultTaxes();
   	if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
   		this.passData.addFlag = false;
   		this.passData.deleteFlag = false;
@@ -167,6 +174,75 @@ export class OrOnlyComponent implements OnInit {
   	this.retrieveOrTransDtl();
   }
 
+  ngOnDestroy(){
+    if(this.sub !== undefined){
+      this.sub.unsubscribe();
+    }
+  }
+
+  addDefaultTaxes(){
+     var sub$ = forkJoin(this.ms.getAcseDefTax('OR',this.record.tranTypeCd),
+                        this.ms.getAcseDefWhTax('OR',this.record.tranTypeCd)).pipe(map(([defTax, defWhTax]) => { return { defTax, defWhTax }; }));
+     this.sub = sub$.subscribe(
+       (forkData:any)=>{
+         let defTax = forkData.defTax;
+         let defWhTax = forkData.defWhTax;
+         console.log(defTax);
+         console.log(defWhTax);
+         for(var i of defTax.defTax){
+           console.log(i.taxCd);
+           console.log(this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd));
+           if(!this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd)){
+             this.passData.nData.taxAllocation.push({
+               tranId: this.record.tranId,
+               billId: 1, // 1 for Official Receipt
+               itemNo: '',
+               genType: 'A',
+               taxType: 'G', //for General Tax, Tax Type
+               taxCd: i.taxCd,
+               taxName: i.taxDesc,
+               taxRate: i.taxRate,
+               taxAmt: 0,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: '',
+               showMG: 0,
+               edited: true
+             });
+           }
+         }
+         for(var j of defWhTax.defWhTax){
+           this.passData.nData.taxAllocation.push({
+             tranId: this.record.tranId,
+             billId: 1, // 1 for Official Receipt
+             itemNo: '',
+             genType: 'A',
+             taxType: 'W', //for Withholding Tax, Tax Type
+             taxCd: j.taxCd,
+             taxName: j.taxDesc,
+             taxRate: j.taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0,
+             edited: true
+           });
+         }
+         this.passData.nData.taxAllocation = this.passData.nData.taxAllocation.filter(a=>{
+                                                 if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
+                                                    return a;
+                                                 }else{
+                                                   return a.taxCd !== 'VAT';
+                                                 }
+                                             });
+       }
+     );
+
+  }
+
   checkPayeeVsVat(){
     if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
       console.log('pasok boi');
@@ -176,6 +252,7 @@ export class OrOnlyComponent implements OnInit {
              tranId: this.record.tranId,
              billId: 1, // 1 for Official Receipt
              itemNo: '',
+             genType: 'A',
              taxType: 'G', //for General Tax, Tax Type
              taxCd: data.genTaxList[0].taxCd,
              taxName: data.genTaxList[0].taxName,
@@ -185,7 +262,8 @@ export class OrOnlyComponent implements OnInit {
              createDate: '',
              updateUser: '',
              updateDate: '',
-             showMG: 0
+             showMG: 0,
+             edited: true
            }
            this.passData.nData.taxAllocation.push(vatDetails);
            console.log(this.passData.nData);
