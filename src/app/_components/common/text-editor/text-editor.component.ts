@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
@@ -15,7 +15,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('edtrMdl') edtrMdl: ModalComponent;
   @ViewChild('edtrMdlForm') edtrMdlForm:  NgForm;
   @ViewChild('edtrPrevForm') edtrPrevForm:  NgForm;
-  @ViewChild('frontEditor')frontEditor:QuillEditorComponent;
+  @ViewChild('frontEditor') frontEditor: QuillEditorComponent;
+  @ViewChild('modalEditor') modalEditor: QuillEditorComponent;
 
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;
@@ -39,7 +40,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   oldValue: any = '';
   modalRef: NgbModalRef;
 
-  constructor(private modalService: NgbModal, private ns: NotesService) { }
+  constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
   ngOnInit() {
     if(this.table){
@@ -54,12 +55,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.readonly && changes.required) {
-      if(this.readonly && !this.required) {
-        this.style['background'] = '#f5f5f5';
-      } else if(this.required && !this.readonly) {
-        this.style['background'] = '#fffacd85';
-      }
+    if(changes.readonly) {
+      this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }
   }
 

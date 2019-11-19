@@ -242,14 +242,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
     tableData     : [],
     tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded','Total Net Prem','Percent Share (%)','Service Fee','VAT','WhTax','Net Due'],
     dataTypes     : ['text','currency','currency','percent','currency','currency','currency','currency'],
-    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','sfeeAmt','vatAmt','whtaxAmt','netDue'],
+    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','actualShrAmt','vatAmt','whtaxAmt','netDue'],
     paginateFlag  : false,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true,true,true],
-    total         : [null,null,null,'Total','sfeeAmt','vatAmt','whtaxAmt','netDue'],
+    total         : [null,null,null,'Total','actualShrAmt','vatAmt','whtaxAmt','netDue'],
     widths        : ['400','auto','auto','100','auto','auto','auto','auto'],
     pageID        : 'serviceFeeSubData',
     pageLength    : 'unli'
@@ -337,7 +337,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPaytReqPrqTrans();
   }
 
-  getPaytReqPrqTrans(){    
+  getPaytReqPrqTrans(){
     var subRes = forkJoin(this.acctService.getPaytReq(this.rowData.reqId),this.acctService.getAcitPrqTrans(this.rowData.reqId,''))
                  .pipe(map(([pr,prq]) => { return { pr, prq }; }));
     subRes.subscribe(data => {
@@ -1396,7 +1396,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.servFeeSubTbl.refreshTable();
       });
     } else {
-      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, this.sfeeAmts.totalSfeeAmt, this.requestData.currCd, this.requestData.currRate).subscribe(data => {
+      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2), this.requestData.currCd, this.requestData.currRate).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
@@ -1410,9 +1410,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.sfeeAmts.totalDue = 0;
 
         this.serviceFeeMainData.tableData.forEach(a => {
-          // this.sfeeAmts.totalVatAmt = (+parseFloat(this.sfeeAmts.totalVatAmt).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
           this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
-          // this.sfeeAmts.totalWhTaxAmt = (+parseFloat(this.sfeeAmts.totalWhTaxAmt).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
           this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
         });
 
@@ -1432,7 +1430,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       reqId: this.requestData.reqId,
       quarter: this.qtrParam,
       year: this.yearParam,
-      servFeeAmt: this.sfeeAmts.totalSfeeAmt,
+      servFeeAmt: +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2),
       netServFee: this.sfeeAmts.totalDue,
       currCd: this.requestData.currCd,
       currRt: this.requestData.currRate,
