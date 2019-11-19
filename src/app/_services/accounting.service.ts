@@ -2951,6 +2951,24 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitEditedAcctEntries',{params});
 	}
 
+	 getAcseBatchInvoice(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranDateFrom','')
+				.set('tranDateTo','')
+				.set('tranNo','')
+				.set('tranTypeCd','')
+				.set('tranClass','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchInvoice', {params});
+	}
+
 	printAcseJv(params) {
     	let header : any = {
             headers: new HttpHeaders({
@@ -2960,4 +2978,33 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/printAcseJv',params,header);
     }
+
+    saveAcseInvoice(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoice',params,header);
+    }
+
+    genBatchInvoice(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchInvoiceNo',params,header);
+    }
+
+    getAcseInvItems(invoiceId){
+		const params = new HttpParams()
+			.set('invoiceId', (invoiceId == null || invoiceId == undefined ? '' : invoiceId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInvoiceItems',{params});
+	}
+
+
 }

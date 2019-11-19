@@ -887,6 +887,7 @@ export class AcctOrEntryComponent implements OnInit {
               this.retrieveMtnAcseOrSeries();
               //this.printMdl.openNoClose();
             }else{
+              
               //User has no authority. Open Override Login
               this.overrideLogin.getApprovalFn();
               this.overrideLogin.overrideMdl.openNoClose();

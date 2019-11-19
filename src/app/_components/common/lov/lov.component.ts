@@ -199,7 +199,7 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,slTypeCd?,payeeClassCd?, ev?) {
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,ev?,slTypeCd?,payeeClassCd?) {
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -1338,7 +1338,58 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = data.reports;
         this.table.refreshTable();
       })
-    }
+    }else if(this.passData.selector == 'acseJvList'){
+      this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type","Status","Amount"];
+      this.passTable.widths = [120,98,171,335,110,115];
+      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','statusName','jvAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getACSEJvList(null).subscribe((data:any)=>{
+        
+        for(var i=0; i< data.jvList.length;i++){
+                this.passTable.tableData.push(data.jvList[i]);
+                this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.jvList[i].jvYear) + '-' +  String(data.jvList[i].jvNo);
+                
+        }  
+
+        this.passTable.tableData.forEach(a => {
+            if(a.tranStat != 'O' && a.tranStat != 'C') {
+              a.jvStatus = a.jvStatus;
+              a.statusName = a.statusName;
+            }
+        });
+
+      this.table.refreshTable();
+       this.table.filterDisplay(this.table.filterObj, this.table.searchString);
+      });
+     }else if(this.passData.selector == 'acseOrList'){
+        this.passTable.tHeader = ['O.R. No.','OR Type','OR Date','Payment Type','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
+        this.passTable.keys = ['orNo', 'orType', 'orDate', 'tranTypeName', 'orStatDesc', 'particulars', 'orAmt'];
+        this.passTable.checkFlag = false;
+
+        this.accountingService.getAcseOrList(this.passData.searchParams).subscribe((a:any)=>{
+          this.passTable.tableData = a.orList.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
+          this.table.refreshTable();
+        });
+     } else if(this.passData.selector == 'acseCvList'){
+        this.passTable.tHeader = ['CV No','Payee','CV Date','Payment Request No','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['text','text','date','text','text','text','currency'];
+        this.passTable.keys = ['cvGenNo', 'payee', 'cvDate', 'refNo', 'cvStatusDesc', 'particulars', 'cvAmt'];
+        this.passTable.checkFlag = false;
+
+        this.accountingService.getAcseCvList(this.passData.searchParams).subscribe((a:any)=>{
+          this.passTable.tableData = a.acseCvList.filter(i=>{
+                if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+                    i.cvStatus = i.mainTranStat;
+                    i.cvStatusDesc = i.mainTranStatDesc;
+                  }
+                  return i; });
+          this.table.refreshTable();
+        });
+     }
 
 
     this.modalOpen = true;
