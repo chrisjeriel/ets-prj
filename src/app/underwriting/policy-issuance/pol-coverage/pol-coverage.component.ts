@@ -73,11 +73,11 @@ export class PolCoverageComponent implements OnInit {
   };
 
    passDataSectionCover: any = {
-    tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add SI"],
+    tHeader: [ "Section","Bullet No","Cover Name",  "Sum Insured", "Rate", "Premium", "D/S","Add SI","Remarks"],
     tableData:[],
-    dataTypes: ['text','text','lovInput','currency',"percent", "currency", "checkbox",'checkbox'],
+    dataTypes: ['text','text','lovInput','currency',"percent", "currency", "checkbox",'checkbox','text-editor'],
     tabIndexes: [false,false,false,true,true,true,true,true],
-    tooltip:[null,null,null,null,null,null,'Discount / Surcharge',null],
+    tooltip:[null,null,null,null,null,null,'Discount / Surcharge',null,null],
     nData: {
       showMG: 1,
       addSi:'N',
@@ -94,7 +94,8 @@ export class PolCoverageComponent implements OnInit {
       section:null,
       sumInsured:null,
       updateDateSec: '',
-      updateUserSec: JSON.parse(window.localStorage.currentUser).username
+      updateUserSec: JSON.parse(window.localStorage.currentUser).username,
+      remarks: ''
     },
     pageID: 'sectionCovers',
     checkFlag: true,
@@ -103,10 +104,10 @@ export class PolCoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths:[0,0,210,125,100,125,0,0],
+    widths:[0,0,210,125,100,125,0,0,210],
     magnifyingGlass: ['coverName'],
     uneditable:[true,false,false,false,false,false,false,false],
-    keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi'],
+    keys:['section','bulletNo','coverName','cumSi','premRt','cumPrem','discountTag','addSi','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -218,11 +219,11 @@ export class PolCoverageComponent implements OnInit {
   promptClickCat:boolean = false;
 
 
-  passData: any = {
-    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','D/S','Add SI','Sum Insured','Rate','Premium'],
+  passData: any = {  
+    tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','D/S','Add SI','Sum Insured','Rate','Premium', 'Remarks'],
     tableData:[],
     tHeaderWithColspan:[],
-    dataTypes:['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox','currency','percent','currency'],
+    dataTypes:['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox','currency','percent','currency','text-editor'],
     tabIndexes: [false,false,false,false,false,false,true,true,true,true,true,false,false,false],
     tooltip:[null,null,null,null,null,null,null,null,null,'Discount / Surcharge',null,null,null],
     nData: {
@@ -244,7 +245,8 @@ export class PolCoverageComponent implements OnInit {
       createUserSec: JSON.parse(window.localStorage.currentUser).username,
       updateDateSec: this.ns.toDateTimeString(0),
       updateUserSec:JSON.parse(window.localStorage.currentUser).username,
-      showMG:1
+      showMG:1,
+      remarks:''
     },
     pageID: 'altCoverage',
     checkFlag: true,
@@ -253,10 +255,10 @@ export class PolCoverageComponent implements OnInit {
     searchFlag: true,
     checkboxFlag: true,
     pageLength: 'unli',
-    widths:[55,65,140,90,90,90,90,90,90,80,50,90,90,90],
+    widths:[55,65,140,90,90,90,90,90,90,80,50,90,90,90,140],
     magnifyingGlass: ['coverName'],
     uneditable:[true,false,false,true,true,true,false,false,false,false,false,true,true,true],
-    keys:['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','cumSi','cumPremRt','cumPrem'],
+    keys:['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','cumSi','cumPremRt','cumPrem','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -341,6 +343,8 @@ export class PolCoverageComponent implements OnInit {
 
   showCatPerilBtn:boolean = false;
 
+  othersCoverCd:number = 999;
+
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe,
                 private ms: MaintenanceService) { }
@@ -361,6 +365,10 @@ export class PolCoverageComponent implements OnInit {
             this.ms.getLineLOV(this.line).subscribe(a=>{
               this.showCatPerilBtn = a['line'][0].catTag == 'Y';
             });
+
+            // this.ms.getMtnParameters('N',this.line+'_OTHERS').subscribe(a=>{
+            //   this.othersCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
+            // })
 
     });
 
@@ -401,20 +409,20 @@ export class PolCoverageComponent implements OnInit {
              }
            ];
       if(this.policyInfo.extensionTag == 'Y'){
-          this.passData.tHeader = ['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','D/S','Add SI','Rate','Premium','D/S','Sum Insured','Rate','Premium'];
+          this.passData.tHeader = ['Section','Bullet No','Cover Name','Sum Insured','Rate','Premium','Sum Insured','Rate','Premium','D/S','Add SI','Rate','Premium','D/S','Sum Insured','Rate','Premium','Remarks'];
           this.passData2.tHeader = ['Section','Sum Insured','Premium','Sum Insured','Premium','Premium','Sum Insured','Premium'],
-          
+          this.passData.widths.push(140);
           this.passData.tHeaderWithColspan = [];
           this.passData2.tHeaderWithColspan = [];
-          this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },{ header: "Previous", span: 3 }, { header: "This Alteration", span: 5 },{ header: "Extension Premium", span: 3 },{ header: "Cumulative", span: 3 });
+          this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },{ header: "Previous", span: 3 }, { header: "This Alteration", span: 5 },{ header: "Extension Premium", span: 3 },{ header: "Cumulative", span: 3 },{ header: "", span: 1 });
           this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, { header: "This Alteration", span: 2 }, { header: "Extension Premium", span: 1 },{ header: "Cumulative", span: 2 });
           
         
-          this.passData.keys = ['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','exPremRt','exPremAmt','exDiscTag','cumSi','cumPremRt','cumPrem'];
+          this.passData.keys = ['section','bulletNo','coverName','prevSumInsured','prevPremRt','prevPremAmt','sumInsured','premRt','premAmt','discountTag','addSi','exPremRt','exPremAmt','exDiscTag','cumSi','cumPremRt','cumPrem','remarks'];
           this.passData2.keys = ['section','prevSi','prevAmt','altSi','altAmt','exAmt','comSi','comAmt'];
           
           
-          this.passData.dataTypes = ['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox','percent','currency','checkbox','currency','percent','currency'],
+          this.passData.dataTypes = ['text','text','lovInput','currency','percent','currency','currency','percent','currency','checkbox','checkbox','percent','currency','checkbox','currency','percent','currency','text-editor'],
           this.passData2.dataTypes = ['text','currency','currency','currency','currency','currency','currency','currency'];
         
           this.passData.uneditable = [true,true,false,true,true,true,false,false,false,false,false,false,false,false,true,true,true];
@@ -422,7 +430,8 @@ export class PolCoverageComponent implements OnInit {
       }else{
           this.passData.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "", span: 3 },
           { header: "Previous", span: 3 }, { header: "This Alteration", span: 5 },
-          { header: "Cumulative", span: 3 });
+          { header: "Cumulative", span: 3 },
+          { header: "", span: 1 });
 
           
           this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, 
@@ -722,7 +731,9 @@ export class PolCoverageComponent implements OnInit {
             }
           }
         }
-
+        this.passData.tableData.forEach(a=>{
+              a.others = a.coverCd == this.othersCoverCd;
+            })
         this.sectionTable.refreshTable();
 
         this.altCoverageData.prevtotalSi     = this.prevtotalSi;
@@ -886,6 +897,9 @@ export class PolCoverageComponent implements OnInit {
                 }
               }
             }
+            this.passDataSectionCover.tableData.forEach(a=>{
+              a.others = a.coverCd == this.othersCoverCd;
+            })
             this.sectionTable.refreshTable();
              this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
@@ -2069,10 +2083,11 @@ export class PolCoverageComponent implements OnInit {
            this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].bulletNo = data[i].bulletNo;
            this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].edited = true;
            this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].showMG = 0;
-           if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()){
-                this.passDataSectionCover.tableData[this.passDataSectionCover.tableData.length - 1].others = true;
-           }
          }
+
+         this.passDataSectionCover.tableData.forEach(a=>{
+           a.others = a.coverCd == this.othersCoverCd;
+         })
          this.sectionTable.refreshTable();
      }else {
          if(data[0].hasOwnProperty('singleSearchLov') && data[0].singleSearchLov) {
@@ -2104,10 +2119,14 @@ export class PolCoverageComponent implements OnInit {
            this.passData.tableData[this.passData.tableData.length - 1].edited = true;
            this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
 
-           if(data[i].coverName !== undefined && data[i].coverName.substring(0,6).toUpperCase()){
-                this.passData.tableData[this.passData.tableData.length - 1].others = true;
-           }
+           this.passData.tableData[this.passData.tableData.length - 1].prevSumInsured = 0;
+           this.passData.tableData[this.passData.tableData.length - 1].prevPremRt = 0;
+           this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt = 0;
+
          }
+         this.passDataSectionCover.tableData.forEach(a=>{
+           a.others = a.coverCd == this.othersCoverCd;
+         })
          this.sectionTable.refreshTable();
      }
       

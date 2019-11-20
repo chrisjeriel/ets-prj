@@ -136,8 +136,9 @@ export class QuoteEndorsementComponent implements OnInit {
         searchFlag: true,
         uneditable: [true, true, false],
         keys: ['endtCd','endtTitle','remarks'],
-        paginateFlag: true,
-        infoFlag: true
+        pageLength: 'unli-10'
+        // paginateFlag: true,
+        // infoFlag: true
     }
 
     endorsementOCData: any = {

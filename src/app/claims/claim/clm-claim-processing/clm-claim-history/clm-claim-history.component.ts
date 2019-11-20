@@ -46,7 +46,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Date','Booking Mth-Yr','Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Amount', 'Ref. No','Ref. Date', 'Payment Amount', 'Remarks'],
-    dataTypes     : ['sequence-3','date','select', 'req-select', 'req-select', 'checkbox', 'text', 'percent', 'currency', 'text', 'text', 'currency', 'text-editor'],
+    dataTypes     : ['sequence-3','date','select', 'req-select', 'req-select', 'checkbox', 'text', 'currencyRate', 'currency', 'text', 'text', 'currency', 'text-editor'],
     nData: {
       newRec       : 1,
       claimId      : '',
@@ -691,20 +691,11 @@ export class ClmClaimHistoryComponent implements OnInit {
     var totOthExpPd = this.arrSum(this.passDataHistory.tableData.filter(e => e.newRec != 1 && e.histCategory == 'O').map(e => e.paytAmt));
     var totAdjExpPd = this.arrSum(this.passDataHistory.tableData.filter(e => e.newRec != 1 && e.histCategory == 'A').map(e => e.paytAmt));
 
+
+    
+
     this.passDataHistory.tableData.forEach((e,i) => {
       if(e.newRec == 1){
-        // if(catArr.some(a =>  e.histCategory.toUpperCase() == a.toUpperCase())){
-        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code != 1).map(e => e.code);
-        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code != 1).map(e => e.description);
-        //   this.passDataHistory.opts[1].vals.unshift(' ');
-        //   this.passDataHistory.opts[1].prev.unshift(' ');
-        // }else{
-        //   this.passDataHistory.opts[1].vals = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5 || e.code == 9).map(e => e.code);
-        //   this.passDataHistory.opts[1].prev = this.histTypeData.filter(e => e.code == 1 || e.code == 4 || e.code == 5 || e.code == 9).map(e => e.description);
-        //   this.passDataHistory.opts[1].vals.unshift(' ');
-        //   this.passDataHistory.opts[1].prev.unshift(' ');
-        // }
-
         //edit by paul 9/5/2019
         let validHistTypes:any[] = this.histTypeData;
 
@@ -740,14 +731,27 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.passDataHistory.opts[1].prev = validHistTypes.map(e => e.description);
         this.passDataHistory.opts[1].vals.unshift(' ');
         this.passDataHistory.opts[1].prev.unshift(' ');
+      }
+    })
 
+    let paymentstAmt: number = 0;
+    console.log(this.passDataHistory.tableData)
+    this.passDataHistory.tableData.slice().sort((a,b)=>a.histNo-b.histNo).reverse().forEach((e,i) => {
+        
         // end
         if(e.histType == 4 || e.histType == 5){
+          paymentstAmt += isNaN(e.reserveAmt) || e.reserveAmt == null ? 0 : e.reserveAmt;
+          console.log(paymentstAmt);
           if(this.passDataApprovedAmt.tableData.length == 0){
             this.warnMsg = 'Please add Approved Amount before proceeding.';
             this.showWarnMsg();
             e.histType = '';
             e.histTypeDesc = ''; 
+          }else if(paymentstAmt> this.clmHistoryData.approvedAmt){
+            this.warnMsg = 'Please add Approved Amount before proceeding.';
+            this.showWarnMsg();
+            e.reserveAmt = 0;
+            return;
           }else{
             if((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
                (e.histCategory == 'A' && (e.reserveAmt > totAdjExpRes)) || 
@@ -777,7 +781,7 @@ export class ClmClaimHistoryComponent implements OnInit {
           e.reserveAmt = adjAmt;
           this.clmHistoryData.expResAmt = adjAmt;
         }
-      }
+      //}
 
     });
 

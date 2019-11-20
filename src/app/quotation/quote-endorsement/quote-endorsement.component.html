@@ -54,7 +54,7 @@
             <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
                 <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
                     <legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-                        <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2">
+                        <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2" style="height: 293px">
                             <ng-container controls-l>
                                 <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED' || quoteOptionsData.tableData.length < 2" class="cust-btn" [class.cust-btn-disabled]="opId===null || quoteOptionsData.tableData.length < 2" [disabled]="opId===null || quoteOptionsData.tableData.length < 2" (click)="clickModal($event)">Copy Endt</button>
                                 <!-- <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->

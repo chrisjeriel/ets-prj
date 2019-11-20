@@ -57,9 +57,9 @@ export class CoverageComponent implements OnInit {
   }
 
   passData: any = {
-    tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
+    tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl', 'Remarks'],
     tableData:[],
-    dataTypes: ['text','text','lovInput','currency','checkbox'],
+    dataTypes: ['text','text','lovInput','currency','checkbox','text-editor'],
     tabIndexes: [false,false,false,true,false],
     nData: {
       showMG: 1,
@@ -71,7 +71,8 @@ export class CoverageComponent implements OnInit {
       sumInsured:null,
       addSi:"N",
       updateDate: '',
-      updateUser: JSON.parse(window.localStorage.currentUser).username
+      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      remarks:''
     },
     checkFlag: true,
     addFlag: true,
@@ -82,7 +83,7 @@ export class CoverageComponent implements OnInit {
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverName'],
     uneditable: [true,false,false,false,false],
-    keys:['section','bulletNo','coverName','sumInsured','addSi'],
+    keys:['section','bulletNo','coverName','sumInsured','addSi','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -118,6 +119,8 @@ export class CoverageComponent implements OnInit {
 
   alopCoverCd:any;
 
+  othersCoverCd:number = 999;
+
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) {}
 
   ngOnInit() {
@@ -149,6 +152,10 @@ export class CoverageComponent implements OnInit {
       this.alopCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
     })
 
+    // this.maintenanceService.getMtnParameters('N',this.lineCd+'_OTHERS').subscribe(a=>{
+    //   this.othersCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
+    // })
+
     this.initialData = [];
     this.getCoverageInfo();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
@@ -164,9 +171,13 @@ export class CoverageComponent implements OnInit {
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
+                   data.sectionCovers[i].remarks = '';
                    this.passData.tableData.push(data.sectionCovers[i]);
                 }
               }
+              this.passData.tableData.forEach(a=>{
+                a.others = a.coverCd == this.othersCoverCd;
+              })
               this.table.refreshTable();
               this.initialData = this.passData.tableData;
           });
@@ -215,6 +226,9 @@ export class CoverageComponent implements OnInit {
             this.focusBlur();
           }, 0)
 
+      this.passData.tableData.forEach(a=>{
+        a.others = a.coverCd == this.othersCoverCd;
+      })
       this.table.refreshTable();
       
     });
@@ -232,8 +246,9 @@ export class CoverageComponent implements OnInit {
         }
 
         if(data.quotation.project !== null ){
-          for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
-            this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+          for (let row of  data.quotation.project.coverage.sectionCovers) {
+            row.others = row.coverCd == this.othersCoverCd;
+            this.passData.tableData.push(row);
           }
           this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         }
@@ -412,7 +427,7 @@ export class CoverageComponent implements OnInit {
       if(data[i].coverCd!== ""){
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       }
-      if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()) {
+      if(this.othersCoverCd === data[i].coverCd) {
          this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }
     }

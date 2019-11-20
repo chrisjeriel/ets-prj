@@ -117,19 +117,18 @@
 										</div>
 										<div class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-4">Request Mode</label>
-											<select name="select3" *ngIf="!inquiryFlag" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.reqMode">
+											<select name="select3" [disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" class="form-control form-control-sm cust-sm" [(ngModel)]="genInfoData.reqMode" >
 												<option value="E">Email</option>
 												<option value="F">Fax</option>
 												<option value="P">Phone</option>
 											</select>
 
-											<ng-container *ngIf="inquiryFlag">
-												<ng-container [ngSwitch]="genInfoData.reqMode">
-													<input name="input18" *ngSwitchCase="'E'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Email'" readonly>
-													<input name="input19" *ngSwitchCase="'F'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Fax'" readonly>
-													<input name="input20" *ngSwitchCase="'P'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Phone'" readonly>
-												</ng-container>
-											</ng-container>
+											
+											<!-- <div *ngIf="inquiryFlag" [ngSwitch]="genInfoData.reqMode">
+												<input name="input18" *ngSwitchCase="'E'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Email'" readonly>
+												<input name="input19" *ngSwitchCase="'F'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Fax'" readonly>
+												<input name="input20" *ngSwitchCase="'P'" type="text" class="form-control form-control-sm cust-sm" [ngModel]="'Phone'" readonly>
+											</div> -->
 											
 										</div>
 										<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group ig-cust">
@@ -857,7 +856,7 @@
 				</fieldset>
 				<fieldset class="scheduler-border">
 					<ng-container *ngIf="savingType == 'modification' || genInfoData?.quoteRevNo != 0">
-						<legend class="scheduler-border">Alteration Wordings</legend>
+						<legend class="scheduler-border">Modification Wordings</legend>
 						<div class="input-group" style="margin-top: 26px !important;">
 							<div class="form-control-sm col-sm edtr-cont" style="height: 60px;">
 								<text-editor [editorContent]="genInfoData.altWordings" (fetchContent)="genInfoData.altWordings = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'">

@@ -59,6 +59,7 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
   }
 
   diagIcon:String;
+  diagmessage: String;
 
   constructor(private titleService: Title, private router: Router, private cs: ClaimsService, private ns: NotesService, private us: UnderwritingService,
               private as:AccountingService) { }
@@ -150,7 +151,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       // this.success.open();
       if(data['returnCode']==-1){
           this.table.markAsPristine();
-          this.diagIcon = 'success';
+          this.diagIcon = 'success-message';
+          this.diagmessage = "Generation Success."
           this.diag.open();
       }else{
           this.diagIcon = 'error';
@@ -223,6 +225,9 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
       };
       this.as.updateAcitPaytReqStat(JSON.stringify(updatePaytReqStats))
       .subscribe(data => {
+        this.diagIcon = 'success-message';
+        this.diagmessage = "Cancellation Success."
+        this.diag.open();
         this.getClmPaytReq();
       });
       this.selected.paytReqStat = 'X';
@@ -235,7 +240,8 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
     console.log(this.table.indvSelect.particulars)
     console.log(this.table.indvSelect.particulars.length)
     if(this.table.indvSelect.particulars == null || this.table.indvSelect.particulars.trim().length == 0){
-      this.diagIcon = 'error';
+      this.diagIcon = 'error-message';
+      this.diagmessage = "Please fill up particulars."
       this.table.loadingFlag = false;
       this.diag.open();
     }else{
