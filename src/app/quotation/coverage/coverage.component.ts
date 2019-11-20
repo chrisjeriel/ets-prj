@@ -427,7 +427,7 @@ export class CoverageComponent implements OnInit {
       if(data[i].coverCd!== ""){
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       }
-      if(this.othersCoverCd === data[i].coverCd) {
+      if(this.othersCoverCd == data[i].coverCd) {
          this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }
     }
