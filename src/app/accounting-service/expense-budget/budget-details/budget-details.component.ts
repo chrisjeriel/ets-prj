@@ -282,6 +282,7 @@ export class BudgetDetailsComponent implements OnInit {
       }else{
         this.dialogMessage = 'Expense Budget for '+this.params.desYear+' was successfully copied from '+this.params.originYear;
         this.dialogIcon = 'success-message';
+        this.getAcseBudgetExpense();
       }
       this.suc.open();
     });
