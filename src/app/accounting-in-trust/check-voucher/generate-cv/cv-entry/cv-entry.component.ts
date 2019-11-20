@@ -548,8 +548,9 @@ export class CvEntryComponent implements OnInit {
     this.confirmMdl.closeModal();
     var updateAcitCvStat = {
       tranId       : this.saveAcitCv.tranId,
+      checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
-      updateUser  : this.ns.getCurrentUser()
+      updateUser   : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
     this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
