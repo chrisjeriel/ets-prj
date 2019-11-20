@@ -200,7 +200,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
                taxCd: i.taxCd,
                taxName: i.taxDesc,
                taxRate: i.taxRate,
-               taxAmt: 0,
+               taxAmt: i.fixedAmount !== null ? i.fixedAmount : 0,
                createUser: '',
                createDate: '',
                updateUser: '',
@@ -406,7 +406,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
         for(var j of i.taxAllocation){
           if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
             i.taxAmt = 0;
-          }else{
+          }else if(j.taxRate !== null && j.taxRate !== 0){
             j.taxAmt = i.localAmt * (j.taxRate / 100);
           }
           j.edited = true;

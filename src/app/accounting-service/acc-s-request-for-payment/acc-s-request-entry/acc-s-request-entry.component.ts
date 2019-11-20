@@ -227,7 +227,7 @@ export class AccSRequestEntryComponent implements OnInit {
         console.log(this.saveAcsePaytReq);
       }
 
-      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId, tranTypeCd:this.saveAcsePaytReq.tranTypeCd});
+      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId, tranTypeCd:this.saveAcsePaytReq.tranTypeCd, payeeCd: this.saveAcsePaytReq.payeeCd});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
@@ -325,7 +325,7 @@ export class AccSRequestEntryComponent implements OnInit {
       console.log(data);
       this.fromSave = true;
       this.saveAcsePaytReq.reqId =  data['reqIdOut'];
-      this.paytData.emit({reqId: data['reqIdOut'], tranTypeCd: this.saveAcsePaytReq.tranTypeCd});
+      this.paytData.emit({reqId: data['reqIdOut'], tranTypeCd: this.saveAcsePaytReq.tranTypeCd, payeeCd: this.saveAcsePaytReq.payeeCd});
       this.saveAcsePaytReq.paytReqNo = data['paytReqNo'];
       this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
       this.initDisabled = false;

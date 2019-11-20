@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { AccountingService, MaintenanceService, NotesService, ClaimsService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -10,7 +10,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
@@ -22,7 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./acc-s-request-details.component.css'],
   providers: [DatePipe]
 })
-export class AccSRequestDetailsComponent implements OnInit {
+export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   @ViewChild('cvTbl') cvTbl         : CustEditableNonDatatableComponent;
   @ViewChild('pcvTbl') pcvTbl       : CustEditableNonDatatableComponent;
   @ViewChild('can') can             : CancelButtonComponent;
@@ -165,6 +165,7 @@ export class AccSRequestDetailsComponent implements OnInit {
     genTaxIndex: number;
     whTaxIndex: number;
     deletedTaxData: any = [];
+    subTax: Subscription;
   //END 11/19/2019
 
   tranTypeList       : any;
@@ -195,8 +196,125 @@ export class AccSRequestDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    //Added by Neco 11/20/2019
+    this.mtnService.getCedingCompany(this.rowData.payeeCd).subscribe((data:any)=>{ //Check if current payee is vatable
+      if(data.cedingCompany.length == 0){
+        this.rowData.vatTag = 3;
+      }else{
+        this.rowData.vatTag = data.cedingCompany[0].vatTag;
+      }
+      this.addDefaultTaxes();
+    });
+    //END 11/20/2019
     this.getPaytReqPrqTrans();
   }
+
+  ngOnDestroy(){
+    if(this.subTax !== undefined){
+      this.subTax.unsubscribe();
+    }
+  }
+
+  //Added by Neco 11/20/2019
+  addDefaultTaxes(){
+     var sub$ = forkJoin(this.mtnService.getAcseDefTax('PRQ',this.rowData.tranTypeCd),
+                        this.mtnService.getAcseDefWhTax('PRQ',this.rowData.tranTypeCd)).pipe(map(([defTax, defWhTax]) => { return { defTax, defWhTax }; }));
+     this.subTax = sub$.subscribe(
+       (forkData:any)=>{
+         let defTax = forkData.defTax;
+         let defWhTax = forkData.defWhTax;
+         for(var i of defTax.defTax){
+           console.log(i.fixedAmount);
+           if(!this.cvData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd)){
+             this.cvData.nData.taxAllocation.push({
+               reqId: this.rowData.reqId,
+               itemNo: '',
+               taxSeqNo: '',
+               genType: 'A',
+               taxType: 'G', //for General Tax, Tax Type
+               taxCd: i.taxCd,
+               taxName: i.taxDesc,
+               taxRate: i.taxRate,
+               taxAmt: i.fixedAmount !== null ? i.fixedAmount : 1,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: '',
+               showMG: 0
+             });
+             this.pcvData.nData.taxAllocation.push({
+               reqId: this.rowData.reqId,
+               itemNo: '',
+               taxSeqNo: '',
+               genType: 'A',
+               taxType: 'G', //for General Tax, Tax Type
+               taxCd: i.taxCd,
+               taxName: i.taxDesc,
+               taxRate: i.taxRate,
+               taxAmt: i.fixedAmount !== null ? i.fixedAmount : 1,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: '',
+               showMG: 0
+             });
+           }
+         }
+         for(var j of defWhTax.defWhTax){
+           this.cvData.nData.taxAllocation.push({
+             reqId: this.rowData.reqId,
+             itemNo: '',
+             taxSeqNo: '',
+             genType: 'A',
+             taxType: 'W', //for Withholding Tax, Tax Type
+             taxCd: j.taxCd,
+             taxName: j.taxDesc,
+             taxRate: j.taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0
+           });
+           this.pcvData.nData.taxAllocation.push({
+             reqId: this.rowData.reqId,
+             itemNo: '',
+             taxSeqNo: '',
+             genType: 'A',
+             taxType: 'W', //for Withholding Tax, Tax Type
+             taxCd: j.taxCd,
+             taxName: j.taxDesc,
+             taxRate: j.taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0
+           });
+         }
+         console.log(this.pcvData.nData.taxAllocation);
+         this.cvData.nData.taxAllocation = this.cvData.nData.taxAllocation.filter(a=>{
+                                                 if(this.rowData.vatTag == 3 || this.rowData.vatTag == 2){
+                                                    return a;
+                                                 }else{
+                                                   return a.taxCd !== 'VAT';
+                                                 }
+                                             });
+         this.pcvData.nData.taxAllocation = this.pcvData.nData.taxAllocation.filter(a=>{
+                                                 if(this.rowData.vatTag == 3 || this.rowData.vatTag == 2){
+                                                    return a;
+                                                 }else{
+                                                   return a.taxCd !== 'VAT';
+                                                 }
+                                             });
+         console.log(this.pcvData.nData.taxAllocation);
+       }
+     );
+
+  }
+  //END 11/20/2019
 
   getPaytReqPrqTrans(){
     var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''))
@@ -347,9 +465,9 @@ export class AccSRequestDetailsComponent implements OnInit {
         this.passData.activeTag = 'Y';
         this.passData.selector = 'mtnGenTax';
         this.passData.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-        //if((this.record.vatTag == 1 && !this.passData.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
+        if((this.rowData.vatTag == 1 && !this.passData.hide.includes('VAT'))){ //if Payee is VAT EXEMPT, hide VAT in LOV
           this.passData.hide.push('VAT')
-        //}
+        }
         console.log(this.passData.hide);
         this.genTaxIndex = event.index;
         this.lov.openLOV();
@@ -431,7 +549,7 @@ export class AccSRequestDetailsComponent implements OnInit {
           if(e.newRec == 1){
             e.acctCd = e.shortCode; 
             e.itemName = e.shortDesc;
-            e.taxAllocation = [];
+            e.taxAllocation = this.pcvData.nData.taxAllocation;
             e.createDate = '';
             e.createUser = ''; 
             e.updateUser = ''; 
@@ -482,7 +600,11 @@ export class AccSRequestDetailsComponent implements OnInit {
       e.currRate = this.requestData.currRate;
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
       for(var j of e.taxAllocation){
-        j.taxAmt = e.localAmt * (j.taxRate / 100);
+        if(j.taxCd == 'VAT' && this.rowData.vatTag == 2){ //if Payee is ZERO VAT
+            j.taxAmt = 0;
+          }else if(j.taxRate !== null && j.taxRate !== 0){
+            j.taxAmt = e.localAmt * (j.taxRate / 100);
+          }
         j.edited = true;
       }
       return e;
@@ -501,11 +623,9 @@ export class AccSRequestDetailsComponent implements OnInit {
       this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);  
       //Added by Neco 11/20/2019
       this.disableTaxBtn = false;
-      this.passDataGenTax.nData.tranId = event.tranId;
-      this.passDataGenTax.nData.billId = event.billId;
+      this.passDataGenTax.nData.reqId = event.reqId;
       this.passDataGenTax.nData.itemNo = event.itemNo;
-      this.passDataWhTax.nData.tranId = event.tranId;
-      this.passDataWhTax.nData.billId = event.billId;
+      this.passDataWhTax.nData.reqId = event.reqId;
       this.passDataWhTax.nData.itemNo = event.itemNo;
       this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
       this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
