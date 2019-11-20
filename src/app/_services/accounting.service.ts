@@ -1834,15 +1834,17 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(force, retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?, updateUser?){
 		const params = new HttpParams()
+			.set('force', (force == null || force == undefined ? '' : force))
 			.set('retType', (retType == null || retType == undefined ? '' : retType))
 			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
 			.set('quarter', (quarter == null || quarter == undefined ? '' : quarter))
 			.set('year', (year == null || year == undefined ? '' : year))
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
-			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
+			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt))
+			.set('updateUser', (updateUser == null || updateUser == undefined ? '' : updateUser));
 			
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctPrqServFee',{params});
 	}

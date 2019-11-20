@@ -285,3 +285,22 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-modal #servfeeMdl class="d-none">
+    <div header>{{ sfeeReturnCode == 4 ? 'Confirmation' : 'Message' }}</div>
+    <div body style="text-align: center">
+      <p class="cust-p" *ngIf="sfeeReturnCode == 1">Batch Production for month end ____ were not yet closed.</p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 2">A Check Voucher was already made for Payment of Service Fee<br />
+        for this quarter with Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 3">Payment of Service Fee for this quarter was already finalized.<br />
+        Check Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 4">A request was already made for this quarter amounting<br />
+        to {{ sfeeMdlAmount | number:'1.2-2' }} with Ref. no. <b>{{ sfeeMdlRefNo }}</b>.<br /><br />
+        Generating a new request will cancel the previous one.<br/>
+        Would you like to continue?</p>
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="sfeeReturnCode !== 4">
+        <button *ngIf="sfeeReturnCode == 4" class="cust-btn" type="button" (click)="getAcctPrqServFee(true, true); servfeeMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="servfeeMdl.closeModal();"><a>{{ sfeeReturnCode == 4 ? 'No' : 'Ok' }}</a></button>
+    </div>
+</app-modal>
