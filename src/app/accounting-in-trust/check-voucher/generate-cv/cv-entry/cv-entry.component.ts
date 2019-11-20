@@ -96,6 +96,8 @@ export class CvEntryComponent implements OnInit {
   existsInCvDtl        : boolean = false;
   fromSave             : boolean = false;
   destination          : string = '';
+  spoiled              : any;
+
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -247,7 +249,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv['from'] = 'cv';
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
-      ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+      (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
     });
   }
@@ -360,10 +362,12 @@ export class CvEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
+      this.spoiled = true;
       if(data['returnCode'] == -1){
         this.saveAcitCv.tranId = data['tranIdOut'];
         this.saveAcitCv.mainTranId = data['mainTranIdOut'];
         this.getAcitCv();
+        this.spoiled = false;
         this.form.control.markAsPristine();
       }else if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
@@ -524,7 +528,7 @@ export class CvEntryComponent implements OnInit {
   onClickOkPrint(){
     console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
     if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
-      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
       this.warnMdl.openNoClose();
     }else if(this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
       this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
@@ -557,25 +561,26 @@ export class CvEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
-      // this.saveAcitCv.cvStatus = stat;
-      // this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
-      // this.dialogIcon = '';
-      // this.dialogMessage = '';
-      // this.success.open();
       this.fromSave = true;
       this.getAcitCv();
-      this.disableFlds(true);
+      (!this.spoiled)?this.disableFlds(true):'';
     });
   }
 
   onYesConfirmed(){
     console.log(this.fromBtn);
+    this.spoiled = false;
     if(this.fromBtn.toLowerCase() == 'print'){
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'spoil'){
+      this.saveAcitCv.checkId = '';
+      this.onClickYesConfirmed('S');
+      $('.cl-spoil').prop('readonly',false);
+      this.spoiled = true;
     }
   }
 
