@@ -174,7 +174,7 @@ export class AccSRequestDetailsComponent implements OnInit {
   warnMsg            : string = '';
   recPrqTrans        : any;
   requestData        : any;
-  selectedTblData    : any;
+  selectedTblData    : any = {};
   private sub        : any;
 
   passData : any = {
@@ -216,22 +216,24 @@ export class AccSRequestDetailsComponent implements OnInit {
         this.cvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.cvTbl.refreshTable();
+          if(this.cvData.checkFlag){
+            this.cvTbl.onRowClick(null, this.cvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
+                              this.cvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
+          }
         },0);
-        if(this.cvData.checkFlag){
-          this.cvTbl.onRowClick(null, this.cvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
-                            this.cvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
-        }
+        
       }else if(this.requestData.tranTypeCd == 2){
         this.pcvData.tableData = [];
         (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.pcvData):'';
         this.pcvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.pcvTbl.refreshTable();
+          if(this.pcvData.checkFlag){
+            this.pcvTbl.onRowClick(null, this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
+                              this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
+          }
         },0);
-        if(this.pcvData.checkFlag){
-          this.pcvTbl.onRowClick(null, this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
-                            this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
-        }
+        
       }
     });
   }
@@ -272,13 +274,19 @@ export class AccSRequestDetailsComponent implements OnInit {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
-          this.params.savePrqTrans.push(e);
           this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+          e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+          this.params.savePrqTrans.push(e);
         }else if(e.edited && e.deleted){ 
           this.params.deletePrqTrans.push(e);
           this.params.delCvItemTaxes.push(e.taxAllocation);
         }
+
       }
+      this.params.reqId = this.rowData.reqId;
+      this.params.createUser = this.ns.getCurrentUser();
+      this.params.updateUser = this.ns.getCurrentUser();
+      this.params.tranTypeCd = this.requestData.tranTypeCd;
     });
 
     if(isEmpty == 1){
@@ -325,7 +333,7 @@ export class AccSRequestDetailsComponent implements OnInit {
       this.suc.open();
       this.params.savePrqTrans  = [];
       this.params.deletePrqTrans  = [];
-      (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
+      //(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
     });
   }
 
@@ -423,6 +431,7 @@ export class AccSRequestDetailsComponent implements OnInit {
           if(e.newRec == 1){
             e.acctCd = e.shortCode; 
             e.itemName = e.shortDesc;
+            e.taxAllocation = [];
             e.createDate = '';
             e.createUser = ''; 
             e.updateUser = ''; 
@@ -432,6 +441,8 @@ export class AccSRequestDetailsComponent implements OnInit {
         });
         console.log(this.pcvData.tableData);
         this.pcvTbl.refreshTable();
+        this.pcvTbl.onRowClick(null, this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
+                          this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
         this.pcvTbl.markAsDirty();
         this.onDataChange('pcv');
       }
@@ -483,6 +494,7 @@ export class AccSRequestDetailsComponent implements OnInit {
   }
 
   onRowClick(event){
+    console.log(event);
     this.selectedTblData = event;
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);

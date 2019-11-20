@@ -118,15 +118,15 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     },
     keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'genBirRlf', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
     pageID: 'genTax',
-    addFlag: true,
-    deleteFlag: true,
+    addFlag: false,
+    deleteFlag: false,
     total: [null,null,null,null, null, null, null, 'Total', 'taxAmt'],
     pageLength:5,
     widths: [1,1,50,150,'auto',100,200,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,true,false,false,true],
+    uneditable: [true,true,true,true,true,true,true,true,true],
     magnifyingGlass: ['taxCd']
   }
 
@@ -160,15 +160,15 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     },
     keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
     pageID: 'whTax',
-    addFlag: true,
-    deleteFlag: true,
+    addFlag: false,
+    deleteFlag: false,
     pageLength:5,
     total: [null,null,null,null, null, null, 'Total', 'taxAmt'],
     widths: [1,1,50,200,100,200,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,false,false,true],
+    uneditable: [true,true,true,true,true,true,true,true],
     magnifyingGlass: ['taxCd']
   }
 
