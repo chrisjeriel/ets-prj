@@ -51,6 +51,7 @@ export class CvEntryComponent implements OnInit {
     certifiedDate : '',
     checkClass    : '',
     checkDate     : '',
+    checkId       : '',
     checkNo       : '',
     closeDate     : '',
     createDate    : '',
@@ -325,6 +326,7 @@ export class CvEntryComponent implements OnInit {
       certifiedDate    : (this.saveAcitCv.certifiedDate == '' || this.saveAcitCv.certifiedDate == null)?'':this.ns.toDateTimeString(this.saveAcitCv.certifiedDate),
       checkClass       : this.saveAcitCv.checkClass,
       checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
+      checkId          : this.saveAcitCv.checkId,
       checkNo          : this.saveAcitCv.checkNo,
       closeDate        : this.ns.toDateTimeString(this.saveAcitCv.mainCloseDate),
       createDate       : (this.saveAcitCv.createDate == '' || this.saveAcitCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.createDate,
@@ -358,10 +360,19 @@ export class CvEntryComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
-      this.saveAcitCv.tranId = data['tranIdOut'];
-      this.saveAcitCv.mainTranId = data['mainTranIdOut'];
-      this.getAcitCv();
-      this.form.control.markAsPristine();
+      if(data['returnCode'] == -1){
+        this.saveAcitCv.tranId = data['tranIdOut'];
+        this.saveAcitCv.mainTranId = data['mainTranIdOut'];
+        this.getAcitCv();
+        this.form.control.markAsPristine();
+      }else if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+        this.success.open();
+      }else if(data['returnCode'] == 2){
+        this.warnMsg = 'Unable to proceed. Check No. is already been used.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMdl.openNoClose();
+      }
+      
     });
   }
 
@@ -537,8 +548,9 @@ export class CvEntryComponent implements OnInit {
     this.confirmMdl.closeModal();
     var updateAcitCvStat = {
       tranId       : this.saveAcitCv.tranId,
+      checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
-      updateUser  : this.ns.getCurrentUser()
+      updateUser   : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
     this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))

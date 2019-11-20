@@ -95,7 +95,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" appRequired>
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -135,8 +135,7 @@
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '' " (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
-                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcitCv.cvStatus != 'F'">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'P'">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A'" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
                         </div>
@@ -191,7 +190,7 @@
     <div header>Warning</div>
     <div body class="container-flex text-center">
         <div class="input-group">
-            <p class="col-sm-12">{{ warnMsg }}</p>
+            <pre style="font-family: inherit !important;width: inherit !important; margin-bottom: 0px !important;"><p style="margin-bottom: 0px !important;">{{ warnMsg }}</p></pre>
         </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
