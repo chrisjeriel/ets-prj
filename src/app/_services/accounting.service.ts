@@ -3006,5 +3006,15 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInvoiceItems',{params});
 	}
 
+	saveAcseInvItems(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoiceItem',params,header);
+    }
+
 
 }

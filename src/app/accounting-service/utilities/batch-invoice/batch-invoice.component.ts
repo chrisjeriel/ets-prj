@@ -12,6 +12,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { finalize } from 'rxjs/operators';
 
 
 
@@ -361,7 +362,8 @@ export class BatchInvoiceComponent implements OnInit {
     this.acitInvItems.invoiceItemList = [];
     this.acitInvItems.invoiceItemList = this.passDataInvoiceItems.tableData.filter(a=>a.edited && !a.deleted);
     this.acitInvItems.invoiceItemList.forEach(a=> { a.updateUser = this.ns.getCurrentUser(),
-                                                    a.updateDate = this.ns.toDateTimeString(0); });
+                                                    a.updateDate = this.ns.toDateTimeString(0);
+                                                    a.invoiceId = this.selectedrecord.invoiceId});
     this.acitInvItems.invoiceDelItemList = this.deletedData; 
 
     console.log(this.mdlType);
@@ -377,7 +379,14 @@ export class BatchInvoiceComponent implements OnInit {
       this.PassData.disableGeneric = true;
 
        if(this.checkFields(this.PassData.tableData[this.indexRow])){
-
+          if(this.checkFields(this.selectedrecord)){       
+          this.save(this.PassData.tableData[this.indexRow]);
+         }else{
+            this.viewinvoiceModal.openNoClose();
+            this.dialogMessage="Please check field values.";
+            this.dialogIcon = "error";
+            this.successDiag.open();
+         }
        }
 
       //this.save(this.PassData.tableData[this.indexRow]);
@@ -398,21 +407,49 @@ export class BatchInvoiceComponent implements OnInit {
 
 
   save(params){
+    let successBool: boolean;
     this.deletedData = [];
     console.log(JSON.stringify(params));
     console.log(JSON.stringify(this.acitInvItems));
-     /*this.accountingService.saveAcseInvoice(params).subscribe(a=>{
+     this.accountingService.saveAcseInvoice(params).pipe(
+           finalize( () => this.finalizedSave(successBool) )
+           ).subscribe(a=>{
         if(a['returnCode'] == -1){
-              this.dialogIcon = "success";
-              this.successDiag.open();
+              successBool = true;
               this.table.overlayLoader = true;
               this.retrieveBatchInvoiceList(this.searchParams);
+
+              if(this.acitInvItems.invoiceItemList.length === 0 && this.acitInvItems.invoiceDelItemList.length === 0  ){     
+              } else {
+                this.saveInvItems(this.acitInvItems);     
+              }  
+
           }else{
-              this.viewinvoiceModal.openNoClose();
-              this.dialogIcon = "error";
-              this.successDiag.open();
+              successBool = false;
           }
-      });*/
+      });
+  }
+
+  saveInvItems(params){
+     this.accountingService.saveAcseInvItems(params).subscribe(a=> {
+               console.log(a);
+                if (a ['returnCode'] == -1){
+                  return true;
+                }else{
+                  return false;
+                }
+              });
+  }
+
+  finalizedSave(obj: boolean){
+    if(obj){
+      this.dialogIcon = "success";
+      this.successDiag.open();
+    }else{
+      this.viewinvoiceModal.openNoClose();
+      this.dialogIcon = "error";
+      this.successDiag.open();
+    }
   }
 
   retrieveBatchInvoiceList(search?){
