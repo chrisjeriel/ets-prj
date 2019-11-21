@@ -1,0 +1,87 @@
+.float-sm-center {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.txt-content-rght {
+    text-align: right
+}
+
+.mrgn-fieldset {
+    margin-top: 17px;
+}
+
+.fieldset-height {
+    height: 104%;
+}
+
+.input-group { 
+	margin-bottom: -14px !important; 
+} 
+
+.input-ig-row {
+    margin-left: 2px !important;
+}
+
+
+[body] p{
+    margin: 0px;
+}
+[body] .text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}
+
+[body] .scheduler-border {
+	width: 520px !important;
+	padding: 0.5em !important;
+}
+
+[body] .input-group label {
+    max-width: 18%;
+}
+[body] .hidden{
+    display: none;
+}
+
+[body] .cust-btn-disabled {
+    background: gray !important;
+    cursor: context-menu;
+}
+
+[body] .cust-btn {
+	cursor: pointer;
+}
+[body] .cust-btn-extend{
+    max-width: 23%;
+}
+[body] #close{
+	font-size: 27px;
+}
+
+[body] .close{
+	color: #fff;
+	float: right;
+	opacity: 1;
+	line-height: .9;
+	padding-left: 5px !important;
+}
+
+[body] #closes:hover {
+	color: #fff;
+	opacity: 1;
+}
+
+[body] .modal-footer {
+	padding: 10px;
+}
+
+[body] h6#modal-basic-title.modal-title {
+	margin: 5px 0px 5px 5px;
+}
+
+[body] h4 {
+	font-size: 14px !important;
+}

@@ -133,7 +133,7 @@ export class CoverageComponent implements OnInit {
       this.passData.magnifyingGlass = [];
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
-      this.passData.uneditable =  [true,true,true,true,true];
+      this.passData.uneditable =  [true,true,true,true,true,true,true,true];
       this.passData.checkFlag = false;
     }
     //neco end

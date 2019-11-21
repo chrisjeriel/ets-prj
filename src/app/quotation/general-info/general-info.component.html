@@ -105,7 +105,7 @@
 										</div>
 										<div class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-4">Requested By</label>
-											<input name="input16"  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm" [ngModel]="genInfoData.reqBy" (ngModelChange)="genInfoData.reqBy=$event;" (focus)="testFoc()" (blur)="testBlur()">
+											<input name="input16"  [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm" [ngModel]="genInfoData.reqBy" (ngModelChange)="genInfoData.reqBy=$event;" >
 										</div>
 										<div class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-4">Request Date</label>

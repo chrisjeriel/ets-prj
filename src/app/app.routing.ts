@@ -196,6 +196,7 @@ import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.compone
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component'
+import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
 
 const appRoutes: Routes = [
 
@@ -551,6 +552,8 @@ const appRoutes: Routes = [
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
+    { path: 'create-int-comp', component: CreateInternalCompComponent},
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

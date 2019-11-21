@@ -623,8 +623,22 @@
 							</div>
 						</div>
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea name="textarea11" class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<div class="col-sm-6">
+								<div class="row">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Site</label>
+										<textarea name="textarea11" class="form-control form-control-sm col-sm-10 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+									</div>
+								</div>
+								<div class="row" *ngIf="line === 'EEI'">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">IPL</label>
+										<input name="input169" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s"  oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+										<label class="form-control-sm col-sm-2">Time Excess</label>
+										<input name="input170" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s"  oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+									</div>
+								</div>
+							</div>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -1110,7 +1124,7 @@
 							</div>
 							<div class="input-group" style="margin-top: 16px !important;">
 								<!-- <input name="input997" [disabled]="policyInfo.coTermTag != 'Y' || fromInq" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;"> -->
-								<text-editor class="col-sm px-0" [editorContent]="policyInfo?.coTermText" (fetchContent)="policyInfo.coTermText = $event" [edtrOpnrPos]="2"  [readonly]="policyInfo.coTermTag != 'Y' || fromInq">
+								<text-editor class="col-sm px-0" [editorContent]="policyInfo?.coTermText" (fetchContent)="policyInfo.coTermText = $event" [edtrOpnrPos]="2"  [readonly]="policyInfo.coTermTag != 'Y' || fromInq" style="height: 27px">
 								</text-editor>
 							</div>
 						</div>
