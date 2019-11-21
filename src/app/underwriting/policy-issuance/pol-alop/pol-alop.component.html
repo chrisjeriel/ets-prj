@@ -27,21 +27,21 @@
 				<div class="form-row custom-row-inline-inset">
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
-						<input [readonly]="!alterFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insId" [(ngModel)]="polAlopData.insId">
-						<div *ngIf="alterFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i *ngIf="alterFlag"  class="fa fa-search"></i></a></div>&nbsp;
-						<input [readonly]="!alterFlag" class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name="insuredName"
+						<input readonly class="form-control form-control-sm  col-sm-2" type="text" name="insId" [(ngModel)]="polAlopData.insId">
+						<!-- <div *ngIf="alterFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i *ngIf="alterFlag"  class="fa fa-search"></i></a></div> -->&nbsp;
+						<input readonly class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name="insuredName"
 						 [(ngModel)]="polAlopData.insuredName">
 					</div>
 
 					<div class="input-group textarea">
 						<label class="form-control-sm col-sm-2"></label>
-						<textarea class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc" name="insuredDesc" appRequired></textarea>
+						<textarea readonly class="form-control form-control-sm col-sm" rows="2" [(ngModel)]="polAlopData.insuredDesc" name="insuredDesc" appRequired></textarea>
 						<br>
 					</div>
 
 					<div class="input-group" style="margin-top:6px !important;">
 						<label class="form-control-sm col-sm-2 text-right" style="padding-top: 4px !important;" for="xx">Address</label>
-						<input [readonly]="!alterFlag" class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="polAlopData.address">
+						<input readonly class="form-control form-control-sm  col-sm" type="text" name="address" [(ngModel)]="polAlopData.address">
 					</div>
 
 				</div>
