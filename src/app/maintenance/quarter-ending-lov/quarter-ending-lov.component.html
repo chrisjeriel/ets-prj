@@ -13,12 +13,15 @@
                 <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarterYear">
                     <option *ngFor="let year of yearOptions" [value]="year">{{year}}</option>
                 </select>
-                <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="onClickOk()">OK
-                </button>
+
             </div>
         </div>
 	</div>
-	<div footer class="text-center">
+	<div footer class="text-center w-100">
+        <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="modal.closeModal()">Close
+                </button>
+        <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="onClickOk()">OK
+                </button>
 	</div>
 </app-modal>
 

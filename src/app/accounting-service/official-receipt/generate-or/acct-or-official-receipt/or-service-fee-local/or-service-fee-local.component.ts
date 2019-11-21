@@ -58,7 +58,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 			showMG: 1
 		},
 		total:[null,null,'Total','servFeeAmt','localAmt'],
-		dataTypes: ['reqDate','text','percent','reqCurrency','currency'],
+		dataTypes: ['reqDate','text','percent','currency','currency'],
 		addFlag:true,
 		deleteFlag: true,
 		checkFlag: true,
@@ -66,7 +66,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 		paginateFlag: true,
 		magnifyingGlass:['quarterEnding'],
 		keys: ['quarterEnding', 'currCd', 'currRate', 'servFeeAmt', 'localAmt'],
-		uneditable: [true,true,true,false,true]
+		uneditable: [true,true,true,true,true]
 	}
 
   passDataGenTax : any = {
@@ -309,7 +309,9 @@ export class OrServiceFeeLocalComponent implements OnInit {
             this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
                               this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
           }
-  			}
+  			}else{
+          this.quarterEndingDates = [];
+        }
   		}
   	)
   }

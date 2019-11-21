@@ -2959,7 +2959,8 @@ export class AccountingService {
 				.set('tranDateTo','')
 				.set('tranNo','')
 				.set('tranTypeCd','')
-				.set('tranClass','');
+				.set('tranClass','')
+				.set('invoiceId', '');
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
