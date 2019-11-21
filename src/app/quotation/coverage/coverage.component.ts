@@ -28,7 +28,9 @@ export class CoverageComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild('infoCov') modal : ModalComponent;
   @Output() enblQuoteOpTab = new EventEmitter<any>();
+  @Output() enblAlopTab = new EventEmitter<any>();
   @ViewChild(NgForm) remarksForm:NgForm;
+  @ViewChild('alop') alopMdl       : ModalComponent;
   editedData: any[] = [];
   deletedData: any[] = [];
   //deletedEditedData: any[] = [];
@@ -115,6 +117,9 @@ export class CoverageComponent implements OnInit {
   totalValue: number = 0;
   promptMessage: string = "";
   promptType: string = "";
+  alopFlag: boolean = false;
+  alopCoverCd: any;
+  showAlop: any;
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) {}
 
@@ -146,6 +151,7 @@ export class CoverageComponent implements OnInit {
 
     this.initialData = [];
     this.getCoverageInfo();
+    this.getAlopCd();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
     this.coverageData.currencyRt = this.quotationInfo.currencyRt;
   }
@@ -170,6 +176,7 @@ export class CoverageComponent implements OnInit {
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
+          this.alopFlag = data.quotation.project.coverage.alopFlag == 'Y'; 
           this.totalValue = data.quotation.project.coverage.totalValue == null ? 0:data.quotation.project.coverage.totalValue;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -217,8 +224,23 @@ export class CoverageComponent implements OnInit {
   }
 
   getCoverage(){
+    var showAlop = false;
+      this.quotationService.getQuoteOptions(this.quotationInfo.quoteId).subscribe(data => {
+        console.log(data)
+        if(data['quotation'] !== null){
+             first:for(let option of data['quotation'].optionsList){
+               for(let otherRate of option.otherRatesList){
+                 if(otherRate.section == 'III'){
+                   showAlop = true;
+                   break first;
+                 }
+               }
+             }
+
+             this.enblAlopTab.emit(showAlop);
+        }
+      });
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
-      this.table.refreshTable();
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
@@ -238,6 +260,12 @@ export class CoverageComponent implements OnInit {
 
           this.table.refreshTable();
         });
+  }
+
+  plainQuotationNo(data: string){
+    var arr = data.split('-');
+
+    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
   }
 
   validateSectionCover(){
@@ -359,11 +387,6 @@ export class CoverageComponent implements OnInit {
       });
   }
 
-  testing(){
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-
-    });
-  }
   cancel(){
       this.cancelBtn.clickCancel();
   }
@@ -474,10 +497,23 @@ export class CoverageComponent implements OnInit {
     this.focusBlur();
   }
 
+  getAlopCd(){
+    var params = this.lineCd+'_ALOP';
+    this.maintenanceService.getMtnParameters(null,params).subscribe((data:any)=>{
+        this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+    });
+  }
+
   onClickSave(){
+    var alopData = '';
+    var alopDeletion = false;
       for (var i =0; i < this.passData.tableData.length;i++){
          if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
            this.errorFlag = true;
+         }
+
+         if(this.passData.tableData[i].coverCd == this.alopCoverCd && this.passData.tableData[i].deleted && this.alopFlag){
+           alopDeletion = true;
          }
        }
        if(this.errorFlag){
@@ -485,6 +521,8 @@ export class CoverageComponent implements OnInit {
          this.dialogMessage = 'Please check Sum Insured.';
          this.successDiag.open();
          this.errorFlag = false;
+       }else if(alopDeletion){
+         this.alopMdl.openNoClose();
        }else {
           $('#confirm-save #modalBtn2').trigger('click');
       }

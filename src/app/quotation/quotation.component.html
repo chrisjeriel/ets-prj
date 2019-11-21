@@ -14,7 +14,7 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event"></app-coverage>
+				<app-coverage #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event" (enblAlopTab)="quoteInfo.showAlop=$event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Item" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE016') == -1"  *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
