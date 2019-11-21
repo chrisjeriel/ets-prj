@@ -357,6 +357,7 @@ export class CvEntryComponent implements OnInit {
       updateUser       : this.ns.getCurrentUser()
     };
 
+    (this.spoiled)?this.saveAcitCv.checkId='':'';
     console.log(saveCv);
     this.accountingService.saveAcitCv(JSON.stringify(saveCv))
     .subscribe(data => {
@@ -577,10 +578,10 @@ export class CvEntryComponent implements OnInit {
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
     }else if(this.fromBtn.toLowerCase() == 'spoil'){
-      this.saveAcitCv.checkId = '';
       this.onClickYesConfirmed('S');
       $('.cl-spoil').prop('readonly',false);
       this.spoiled = true;
+      this.saveAcitCv.checkId = '';
     }
   }
 
