@@ -250,7 +250,11 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
       (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+      
       this.setLocalAmt();
+      if(this.saveAcitCv.checkStatus == 'S'){
+          this.spoiledFunc();
+      }
     });
   }
 
@@ -579,14 +583,21 @@ export class CvEntryComponent implements OnInit {
       this.onClickYesConfirmed('A');
     }else if(this.fromBtn.toLowerCase() == 'spoil'){
       this.onClickYesConfirmed('S');
-      $('.cl-spoil').prop('readonly',false);
-      this.spoiled = true;
-      this.saveAcitCv.checkId = '';
+      this.spoiledFunc();
+      // $('.cl-spoil').prop('readonly',false);
+      // this.spoiled = true;
+      // this.saveAcitCv.checkId = '';
     }
   }
 
   loadingFunc(bool){
     var str = bool?'block':'none';
     $('.globalLoading').css('display',str);
+  }
+
+  spoiledFunc(){
+    $('.cl-spoil').prop('readonly',false);
+    this.spoiled = true;
+    this.saveAcitCv.checkId = '';
   }
 }

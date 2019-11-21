@@ -135,9 +135,9 @@
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '' " (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'P' || spoiled" (click)="fromBtn='spoil';confirmMdl.openNoClose()">Spoil Check</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == ''" (click)="fromBtn='spoil';confirmMdl.openNoClose()">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A'" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
+                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
                         </div>
                     </div>
                 </div>
