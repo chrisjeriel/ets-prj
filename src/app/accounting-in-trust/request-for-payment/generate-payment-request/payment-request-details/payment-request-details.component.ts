@@ -325,6 +325,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   sfeeMdlMsg: string = '';
   sfeeMdlRefNo: string = '';
   sfeeMdlAmount: any = null;
+  sfeeMdlMonthNum: number = 0;
 
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -1424,7 +1425,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.servFeeSubTbl.markAsDirty();
         } else {
           if(this.sfeeReturnCode == 1) {
-            //show unposted months
+            var monthList = data['unpostedMonthsList'].map(a => a.qtrMonth);
+            this.sfeeMdlMonthNum = monthList.length;
+            var last = monthList.pop();
+            this.sfeeMdlRefNo = monthList.length == 0 ? last : monthList.join(', ') + ' & ' + last;
           } else if(this.sfeeReturnCode == 2) {
             this.sfeeMdlRefNo = data['refNo'];
           } else if(this.sfeeReturnCode == 3) {

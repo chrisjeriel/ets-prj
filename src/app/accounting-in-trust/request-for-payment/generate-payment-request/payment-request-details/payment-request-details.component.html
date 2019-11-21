@@ -289,7 +289,8 @@
 <app-modal #servfeeMdl class="d-none">
     <div header>{{ sfeeReturnCode == 4 ? 'Confirmation' : 'Message' }}</div>
     <div body style="text-align: center">
-      <p class="cust-p" *ngIf="sfeeReturnCode == 1">Batch Production for month end ____ were not yet closed.</p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 1">Batch Production for month end <b>{{ sfeeMdlRefNo }}</b><br />
+        {{ sfeeMdlMonthNum == 1 ? 'was' : 'were' }} not yet closed.</p>
       <p class="cust-p" *ngIf="sfeeReturnCode == 2">A Check Voucher was already made for Payment of Service Fee<br />
         for this quarter with Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
       <p class="cust-p" *ngIf="sfeeReturnCode == 3">Payment of Service Fee for this quarter was already finalized.<br />
