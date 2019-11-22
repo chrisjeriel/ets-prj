@@ -106,31 +106,32 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   treatyBalanceData: any = {
     tableData     : [],
-    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes     : ['text', 'text', 'percent', 'currency', 'currency'],
+    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)'],
+    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency'],
     magnifyingGlass : ['quarterEnding'],
     nData: {
+      qsoaId         : '',
       quarterEnding  : '',
       currCd         : '',
       currRate       : '',
+      netQsoaAmt     : 0,
+      cumPayt        : 0,
+      remainingBal   : 0,
       currAmt        : 0,
       localAmt       : 0,
       newRec         : 1,
       showMG         : 1
     },
-    // opts: [
-    //   {selector   : 'currCd',  prev : [], vals: []},
-    // ],
     paginateFlag  : true,
     infoFlag      : true,
     pageID        : 'treatyBalanceData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,false,true],
-    total         : [null, null, 'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto','auto','auto','auto','auto'],
-    keys          : ['quarterEnding','currCd','currRate','currAmt','localAmt']
+    uneditable    : [true,true,true,true,true,true,false,true],
+    total         : [null, null, 'Total','netQsoaAmt','cumPayt','remainingBal','currAmt', 'localAmt'],
+    widths        : ['1','1','100','150','150','150','150','150'],
+    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','cumPayt','remainingBal','currAmt','localAmt']
   };
 
   investmentData: any = {
@@ -523,11 +524,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }else if(from.toUpperCase() == 'LOVOSQSOATBL'){
       this.trtyIndx = event.index;
       this.passData.selector = 'osQsoa';
+      this.passData.hide = this.treatyBalanceData.tableData.map(a => a.qsoaId);
       this.passData.params = {
         qsoaId: '',
         currCd: this.requestData.currCd,
         cedingId: this.requestData.payeeCd
       }
+
       this.osQsoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
@@ -645,7 +648,27 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
     } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
-      this.treatyBalanceData.tableData[this.trtyIndx].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+      console.log(this.requestData);
+      console.log(data['data']);
+
+      data['data'].forEach(a => {
+        if(this.treatyBalanceData.tableData.some(b => b.qsoaId != a.qsoaId)) {
+          a.currCd = this.requestData.currCd;
+          a.currRate = this.requestData.currRate;
+          a.currAmt = a.remainingBal;
+          a.quarterEnding = this.dp.transform(this.ns.toDateTimeString(a.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          a.edited = true;
+          a.checked = false;
+          a.createDate = '';
+          a.createUser = '';
+          a.localAmt = +(parseFloat(a.remainingBal) * parseFloat(this.requestData.currRate)).toFixed(2);
+          this.treatyBalanceData.tableData.push(a);
+        }
+      });
+
+      this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.filter(a => a.qsoaId != '');
+
+      this.treatyTbl.refreshTable();
       this.treatyTbl.markAsDirty();
     }
   }
