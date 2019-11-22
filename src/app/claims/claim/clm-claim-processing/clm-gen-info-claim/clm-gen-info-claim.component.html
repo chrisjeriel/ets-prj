@@ -88,7 +88,7 @@
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-4">Loss Date</label>
                                 <div class="col-sm-5 dp-cont">
-                                    <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2"></datepicker>
+                                    <datepicker [type]="'date'" [required]="true" [value]="claimData.lossDate?.split('T')[0]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'d'); validateLossDate();" [disabled]="isInquiry" [tabindex]="2" [maxDate]="maxDate"></datepicker>
                                 </div>
                                 <div class="col-sm dp-cont">
                                     <datepicker [type]="'time'" [required]="false" [value]="claimData.lossDate?.split('T')[1]" (valueChange)="claimData.lossDate=dc($event,claimData.lossDate,'t'); validateLossDate();" [textAlign]="'center'" [disabled]="isInquiry" [tabindex]="3"></datepicker>
