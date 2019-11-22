@@ -5,7 +5,7 @@
 		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info" [disabled]="accessibleModules.indexOf('QUOTE002') == -1">
 			<ng-template ngbTabContent>
-				<app-general-info #active (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"
+				<app-general-info #active (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"
 					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
@@ -14,12 +14,12 @@
 				<div>Coverage</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-coverage #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (enblEndtTab)="enblOptTab=$event"></app-coverage>
+				<app-coverage #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" (enblEndtTab)="enblOptTab=$event" (showAlop)="quoteInfo.showAlop = $event"></app-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab class="ngb-tab" title="Item" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE016') == -1"  *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
 			<ng-template ngbTabContent>
-				<app-quo-item #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" ></app-quo-item>
+				<app-quo-item #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" ></app-quo-item>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab || accessibleModules.indexOf('QUOTE004') == -1">
@@ -27,7 +27,7 @@
 				<div>Quote Option</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-option #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" (showAlop)="quoteInfo.showAlop = $event" (enblEndtTab)="enblEndtTab=$event"></app-quote-option>
+				<app-quote-option #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" (showAlop)="quoteInfo.showAlop = $event" (enblEndtTab)="enblEndtTab=$event"></app-quote-option>
 			</ng-template>
 		</ngb-tab>
 
@@ -36,7 +36,7 @@
 				<div>Endorsement</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quote-endorsement #active [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag"></app-quote-endorsement>
+				<app-quote-endorsement #active [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag || intCompTag"></app-quote-endorsement>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE006') == -1"> <!--  -->
@@ -44,7 +44,7 @@
 				<div>ALOP</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-quo-alop #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-quo-alop>
+				<app-quo-alop #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"></app-quo-alop>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE007') == -1">
@@ -60,7 +60,7 @@
 				<div>Attachment</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-attachment #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
+				<app-attachment #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="inquiryFlag" id="Print" [disabled]="quoteInfo.quoteId == ''">
