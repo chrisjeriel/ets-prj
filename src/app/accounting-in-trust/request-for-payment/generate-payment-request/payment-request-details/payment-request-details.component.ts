@@ -34,8 +34,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('unappliedTbl') unColTbl         : CustEditableNonDatatableComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('quarEndLov') quarEndLov         : ModalComponent;
+  @ViewChild('servfeeMdl') servfeeMdl         : ModalComponent;
   @ViewChild('aginSoaLov') aginSoaLov         : LovComponent; 
   @ViewChild('invtLov') invtLov               : LovComponent;
+  @ViewChild('osQsoaLov') osQsoaLov           : LovComponent;
   @ViewChild('trtyLov') trtyLov               : QuarterEndingLovComponent;
 
   @ViewChild('canClm') canClm             : CancelButtonComponent;
@@ -320,6 +322,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
     totalDue: 0
   }
 
+  sfeeReturnCode: number = null;
+  sfeeMdlMsg: string = '';
+  sfeeMdlRefNo: string = '';
+  sfeeMdlAmount: any = null;
+  sfeeMdlMonthNum: number = 0;
+
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
@@ -512,9 +520,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.passData.payeeNo = this.requestData.payeeCd;
       this.passData.hide = this.inwardPolBalData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
       this.aginSoaLov.openLOV();
-    }else if(from.toUpperCase() == 'LOVTRTYTBL'){
+    }else if(from.toUpperCase() == 'LOVOSQSOATBL'){
       this.trtyIndx = event.index;
-      this.trtyLov.modal.openNoClose();
+      this.passData.selector = 'osQsoa';
+      this.passData.params = {
+        qsoaId: '',
+        currCd: this.requestData.currCd,
+        cedingId: this.requestData.payeeCd
+      }
+      this.osQsoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
       this.passData.currCd = this.requestData.currCd;
@@ -630,6 +644,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                           }); 
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
+    } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
+      this.treatyBalanceData.tableData[this.trtyIndx].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+      this.treatyTbl.markAsDirty();
     }
   }
 
@@ -1348,8 +1365,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.getPaytReqPrqTrans();
   }
 
-  getAcctPrqServFee(gnrt?) {
-    var d = new Date();    
+  getAcctPrqServFee(gnrt?, force?) {
+    var d = new Date();
 
     setTimeout(() => {
       $('input[appCurrency]').focus().blur();
@@ -1359,23 +1376,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.servFeeSubTbl.overlayLoader = true;
     }, 0);
 
+    function numParser(x) {
+      return +parseFloat(x).toFixed(2);
+    }
+
     if(gnrt == undefined) {
-      this.acctService.getAcctPrqServFee('normal', this.requestData.reqId).subscribe(data => {
+      this.acctService.getAcctPrqServFee('N','normal', this.requestData.reqId).subscribe(data => {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
         if(data['subDistList'].length > 0) {
-          /*this.totalSfeeAmts.totalSfee = this.recPrqTrans[0].serviceFee;
-          this.totalSfeeAmts.totalVat = 0;
-          this.totalSfeeAmts.totalWhtax = 0;
-          this.totalSfeeAmts.totalDue = 0;
-
-
-          this.serviceFeeMainData.tableData.forEach(a => {
-            this.totalSfeeAmts.totalVat = (+parseFloat(this.totalSfeeAmts.totalVat).toFixed(2)) + (+parseFloat(a.totalVat).toFixed(2));
-            this.totalSfeeAmts.totalWhtax = (+parseFloat(this.totalSfeeAmts.totalWhtax).toFixed(2)) + (+parseFloat(a.totalWhtax).toFixed(2));
-            this.totalSfeeAmts.totalDue = (+parseFloat(this.totalSfeeAmts.totalDue).toFixed(2)) + (+parseFloat(a.totalDue).toFixed(2));
-          });*/
 
           this.sfeeAmts = data['subDistList'][0].servFeeTotals;
 
@@ -1396,31 +1406,50 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.servFeeSubTbl.refreshTable();
       });
     } else {
-      this.acctService.getAcctPrqServFee('generate', this.requestData.reqId, this.qtrParam, this.yearParam, +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2), this.requestData.currCd, this.requestData.currRate).subscribe(data => {
-        this.serviceFeeMainData.tableData = data['mainDistList'];
-        this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+      var x = force === undefined ? 'N' : 'Y';
+      this.acctService.getAcctPrqServFee(x, 'generate', this.requestData.reqId, this.qtrParam, this.yearParam,
+                                         +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2), this.requestData.currCd,
+                                         this.requestData.currRate, this.ns.getCurrentUser()).subscribe(data => {
+        this.sfeeReturnCode = data['returnCode'];
 
-        function numParser(x) {
-          return +parseFloat(x).toFixed(2);
+        if(this.sfeeReturnCode == 0) {
+          this.serviceFeeMainData.tableData = data['mainDistList'];
+          this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
+
+          this.sfeeAmts.mreSfeeAmt = data['mainDistList'][0].servFeeTotals.mreSfeeAmt;
+          this.sfeeAmts.totalVatAmt = 0;
+          this.sfeeAmts.totalWhTaxAmt = 0;
+          this.sfeeAmts.totalDue = 0;
+
+          this.serviceFeeMainData.tableData.forEach(a => {
+            this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
+            this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
+          });
+
+          this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
+
+          this.servFeeMainTbl.refreshTable();
+          this.servFeeSubTbl.refreshTable();
+
+          this.servFeeMainTbl.markAsDirty();
+          this.servFeeSubTbl.markAsDirty();
+        } else {
+          if(this.sfeeReturnCode == 1) {
+            var monthList = data['unpostedMonthsList'].map(a => a.qtrMonth);
+            this.sfeeMdlMonthNum = monthList.length;
+            var last = monthList.pop();
+            this.sfeeMdlRefNo = monthList.length == 0 ? last : monthList.join(', ') + ' & ' + last;
+          } else if(this.sfeeReturnCode == 2) {
+            this.sfeeMdlRefNo = data['refNo'];
+          } else if(this.sfeeReturnCode == 3) {
+            this.sfeeMdlRefNo = data['refNo'];
+          } else if(this.sfeeReturnCode == 4) {
+            this.sfeeMdlRefNo = data['refNo'];
+            this.sfeeMdlAmount = data['amount'];
+          }
+
+          this.servfeeMdl.openNoClose();
         }
-
-        this.sfeeAmts.mreSfeeAmt = data['mainDistList'][0].servFeeTotals.mreSfeeAmt;
-        this.sfeeAmts.totalVatAmt = 0;
-        this.sfeeAmts.totalWhTaxAmt = 0;
-        this.sfeeAmts.totalDue = 0;
-
-        this.serviceFeeMainData.tableData.forEach(a => {
-          this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
-          this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
-        });
-
-        this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
-
-        this.servFeeMainTbl.refreshTable();
-        this.servFeeSubTbl.refreshTable();
-
-        this.servFeeMainTbl.markAsDirty();
-        this.servFeeSubTbl.markAsDirty();
       });
     }
   }
@@ -1441,14 +1470,29 @@ export class PaymentRequestDetailsComponent implements OnInit {
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
-      if(data['returnCode'] == 0){
-        this.dialogIcon = 'error';
-        this.sucServFee.open();
-      }else{
+      this.sfeeReturnCode = data['returnCode'];
+
+      if(this.sfeeReturnCode == -1) {
         this.dialogIcon = "success";
         this.sucServFee.open();
         this.getAcctPrqServFee();
         this.getPaytReqPrqTrans();
+      } else if(this.sfeeReturnCode == 0) {
+        this.dialogIcon = 'error';
+        this.sucServFee.open();
+      } else {
+        // if(this.sfeeReturnCode == 1) {
+        //   //show unposted months
+        // } else if(this.sfeeReturnCode == 2) {
+        //   this.sfeeMdlRefNo = data['refNo'];
+        // } else if(this.sfeeReturnCode == 3) {
+        //   this.sfeeMdlRefNo = data['refNo'];
+        // } else if(this.sfeeReturnCode == 4) {
+        //   this.sfeeMdlRefNo = data['refNo'];
+        //   this.sfeeMdlAmount = data['amount'];
+        // }
+
+        // this.servfeeMdl.openNoClose();
       }
     });
   }
