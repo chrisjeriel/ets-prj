@@ -3008,5 +3008,12 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInvoiceItems',{params});
 	}
 
-
+	getAcitOsQsoa(param){
+		const params = new HttpParams()
+			.set('qsoaId', (param.qsoaId === null || param.qsoaId === undefined ? '' : param.qsoaId))
+			.set('currCd', (param.currCd === null || param.currCd === undefined ? '' : param.currCd))
+			.set('cedingId', (param.cedingId === null || param.cedingId === undefined ? '' : param.cedingId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitOsQsoa', {params});
+	}
 }

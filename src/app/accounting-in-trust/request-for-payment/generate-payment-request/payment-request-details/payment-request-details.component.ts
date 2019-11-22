@@ -37,6 +37,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('servfeeMdl') servfeeMdl         : ModalComponent;
   @ViewChild('aginSoaLov') aginSoaLov         : LovComponent; 
   @ViewChild('invtLov') invtLov               : LovComponent;
+  @ViewChild('osQsoaLov') osQsoaLov           : LovComponent;
   @ViewChild('trtyLov') trtyLov               : QuarterEndingLovComponent;
 
   @ViewChild('canClm') canClm             : CancelButtonComponent;
@@ -519,9 +520,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.passData.payeeNo = this.requestData.payeeCd;
       this.passData.hide = this.inwardPolBalData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
       this.aginSoaLov.openLOV();
-    }else if(from.toUpperCase() == 'LOVTRTYTBL'){
+    }else if(from.toUpperCase() == 'LOVOSQSOATBL'){
       this.trtyIndx = event.index;
-      this.trtyLov.modal.openNoClose();
+      this.passData.selector = 'osQsoa';
+      this.passData.params = {
+        qsoaId: '',
+        currCd: this.requestData.currCd,
+        cedingId: this.requestData.payeeCd
+      }
+      this.osQsoaLov.openLOV();
     }else if(from.toUpperCase() == 'LOVINVTTBL'){
       this.passData.selector = 'acitInvt';
       this.passData.currCd = this.requestData.currCd;
@@ -637,6 +644,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
                                           }); 
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
+    } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
+      this.treatyBalanceData.tableData[this.trtyIndx].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+      this.treatyTbl.markAsDirty();
     }
   }
 

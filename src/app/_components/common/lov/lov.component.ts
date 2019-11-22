@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -55,7 +55,7 @@ export class LovComponent implements OnInit {
   preventDefault: boolean = false;
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService, private ns: NotesService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
@@ -1389,7 +1389,31 @@ export class LovComponent implements OnInit {
                   return i; });
           this.table.refreshTable();
         });
-     }
+     } else if(this.passData.selector == 'osQsoa') {
+      this.passTable.tHeader    = ['Quarter Ending', 'QSOA Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.widths     = ['auto','auto','auto','auto'];
+      this.passTable.dataTypes  = ['date','currency','currency','currency'];
+      this.passTable.keys       = ['quarterEnding','netQsoaAmt','cumPayt','remainingBal'];
+      this.passTable.checkFlag  = true;
+
+      /*this.accountingService.getAccInvestments([])
+      .subscribe((data:any)=>{
+        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd && e.bank == this.passData.payeeNo);
+        this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        this.table.refreshTable();
+      });*/
+
+      this.accountingService.getAcitOsQsoa(this.passData.params).subscribe(data => {
+        this.passTable.tableData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
+
+        this.table.refreshTable();
+      });
+    }
 
 
     this.modalOpen = true;
