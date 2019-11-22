@@ -30,7 +30,7 @@
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
-                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired></textarea>
+                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn particulars" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired></textarea>
                     </div>
                 </div>
 
@@ -134,10 +134,10 @@
                         <div class="cust-btn-container">
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '' " (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == ''" (click)="fromBtn='spoil';confirmMdl.openNoClose()">Spoil Check</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '' " (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
+                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';printmMdl.openNoClose();">Print</button>
+                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
                         </div>
                     </div>
                 </div>
@@ -201,7 +201,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" #printmMdl>
+<app-modal class="d-none" #printMdl>
     <div header>Print Check/DV</div>
     <div body>
         <div class="container-fluid">
@@ -238,8 +238,8 @@
         </div>
     </div>
     <div footer class="text-center w-100">
-        <button class="cust-btn" type="button" (click)="printmMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="printmMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
     </div>
 </app-modal>
 
@@ -255,3 +255,5 @@
 <app-confirm-save (onYes)="onSaveAcitCv()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/generate-cv'" ></app-cancel-button>
+
+<app-override-login [approvalCd]="approvalCd" (isSuccess)="onOkOverride($event)" #override></app-override-login>

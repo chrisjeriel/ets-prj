@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
+
 
 @Component({
   selector: 'app-cv-entry',
@@ -35,9 +37,11 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
   @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
-  @ViewChild('printmMdl') printmMdl           : ModalComponent;
+  @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('myForm') form                   : NgForm;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
+
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -97,6 +101,7 @@ export class CvEntryComponent implements OnInit {
   fromSave             : boolean = false;
   destination          : string = '';
   spoiled              : any;
+  approvalCd           : any;
 
   passDataLov  : any = {
     selector     : '',
@@ -378,7 +383,10 @@ export class CvEntryComponent implements OnInit {
         this.dialogIcon = 'error';
         this.success.open();
       }else if(data['returnCode'] == 2){
-        this.warnMsg = 'Unable to proceed. Check No. is already been used.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMdl.openNoClose();
+      }else if(data['returnCode'] == -100){
+        this.warnMsg = 'There is no Check No. available for this Account No.';
         this.warnMdl.openNoClose();
       }
       
@@ -446,7 +454,7 @@ export class CvEntryComponent implements OnInit {
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
@@ -543,7 +551,9 @@ export class CvEntryComponent implements OnInit {
       this.warnMdl.openNoClose();
     }else{
       this.fromBtn = 'approve-req';
-      this.confirmMdl.openNoClose();
+      //this.confirmMdl.openNoClose();
+      this.approvalCd = 'AC003';
+      this.overrideFunc('AC003');
     }
   }
 
@@ -584,9 +594,6 @@ export class CvEntryComponent implements OnInit {
     }else if(this.fromBtn.toLowerCase() == 'spoil'){
       this.onClickYesConfirmed('S');
       this.spoiledFunc();
-      // $('.cl-spoil').prop('readonly',false);
-      // this.spoiled = true;
-      // this.saveAcitCv.checkId = '';
     }
   }
 
@@ -599,5 +606,32 @@ export class CvEntryComponent implements OnInit {
     $('.cl-spoil').prop('readonly',false);
     this.spoiled = true;
     this.saveAcitCv.checkId = '';
+  }
+
+  overrideFunc(approvalCd){
+    this.mtnService.getMtnApprovalFunction(approvalCd)
+    .subscribe(data => {
+      var approverList = data['approverFn'].map(e => e.userId);
+      if(approverList.includes(this.ns.getCurrentUser())){
+        if(this.fromBtn == 'print'){
+          this.printMdl.openNoClose();
+        }else{
+          this.confirmMdl.openNoClose();
+        }
+      }else{
+        this.overrideLogin.getApprovalFn();
+        this.overrideLogin.overrideMdl.openNoClose();
+      }
+    });
+  }
+
+  onOkOverride(result){
+    if(result){
+      if(this.fromBtn == 'print'){
+        this.printMdl.openNoClose();
+      }else{
+        this.confirmMdl.openNoClose();
+      }
+    }
   }
 }
