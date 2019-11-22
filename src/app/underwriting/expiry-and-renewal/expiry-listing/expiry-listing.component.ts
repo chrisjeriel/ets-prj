@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { ExpiryParameters, ExpiryListing, RenewedPolicy } from '../../../_models';
-import { UnderwritingService, NotesService, WorkFlowManagerService, PrintService } from '../../../_services';
+import { UnderwritingService, NotesService, WorkFlowManagerService, PrintService, MaintenanceService } from '../../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -372,6 +372,7 @@ export class ExpiryListingComponent implements OnInit {
   pctShareVal: any;
   totalVal:any;
   covFlag:boolean = false;
+  showCatPerilBtn: boolean = false;
   
 
   params:any = {
@@ -417,7 +418,8 @@ export class ExpiryListingComponent implements OnInit {
               private decimal : DecimalPipe, 
               private router : Router,
               private workFlowManagerService : WorkFlowManagerService,
-              private ps : PrintService) { }
+              private ps : PrintService,
+              private ms: MaintenanceService) { }
 
   mode:string = 'reminder';
 
@@ -916,7 +918,18 @@ export class ExpiryListingComponent implements OnInit {
     }else{
       this.prepareSectionCoverData([]);
     }
-    $('#editModal #modalBtn').trigger('click');
+    this.catPerilAvailable();
+  }
+
+  catPerilAvailable(){
+    this.showCatPerilBtn = false;
+    this.ms.getLineLOV(this.lineCd).subscribe(a=>{
+      if(a['line'] !== null){
+        this.showCatPerilBtn = a['line'][0].catTag == 'Y';
+      }
+
+      $('#editModal #modalBtn').trigger('click');
+    });
   }
 
   onRowClick(data) {
