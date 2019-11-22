@@ -57,9 +57,9 @@ export class InvestmentsComponent implements OnInit {
    passData: any = {
    	 tableData: [],
      tHeaderWithColspan : [],
-   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Amortize Unit","Eff%","Price (Cost)"],
-   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','select','percent','currency'],
+   	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Partial Pull-Out","Pull-out Date","Pulled-out Amount","Amortize Unit","Eff%","Price (Cost)"],
+   	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','checkbox','date','currency','select','percent','currency'],
    	 nData: {
           invtId   : null,
           invtCd   : null,
@@ -88,12 +88,12 @@ export class InvestmentsComponent implements OnInit {
           slCd      :'',
           amortized: null,
           priceCost: null,
-          uneditable : ['invtStatus','currRate','priceCost','invtCd'],
+          uneditable : ['invtStatus','currRate','priceCost','invtCd','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt'],
           preTerminatedTag: null,
           termDate: null,
           amortEff: null
         },
-   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal',null,null,null,null,'priceCost'],
+   	 total:[null,null,null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','matVal',null,null,null,null,null,null,null,'priceCost'],
      opts: [ {selector: 'invtType', prev: [], vals: []},
              {selector: 'invtSecCd', prev: [], vals: []},
              {selector: 'invtStatus', prev: [], vals: []},
@@ -159,11 +159,11 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,120,90,110],
+     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']
+            'whtaxAmt','matVal','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt','amortized','amortEff','priceCost']
     };
 
    searchParams: any[] = [];
@@ -215,7 +215,9 @@ export class InvestmentsComponent implements OnInit {
     this.getWTaxRate();
     this.oldData = this.passData.tableData;
 
-    this.passData.tHeaderWithColspan.push({ header: "", span: 20 },
+    this.passData.tHeaderWithColspan.push({ header: "", span: 18 },
+         { header: "Pre-Termination", span: 2 },
+         { header: "Partial Pull-Out", span: 3 },
          { header: "Amortization", span: 3 });
     }
 
@@ -251,13 +253,34 @@ export class InvestmentsComponent implements OnInit {
                                          
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost'];
-                                      } else if(a.invtStatus === 'M' || a.invtStatus === 'O'){
-                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
+
+                                          if (a.preTerminatedTag === 'Y' && a.partialPullOutTag === 'N'){
+                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
+                                          }else if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'Y'){
+                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','preTerminatedTag','termDate'];
+                                          }else {
+                                           a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost'];
+                                          }
+
+                                      } else if(a.invtStatus === 'M') { 
+                                        a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate'];
+                                      } else if(a.invtStatus === 'O'){
+
+                                          if (a.preTerminatedTag === 'Y' && a.partialPullOutTag === 'N'){
+                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
+                                          }else if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'Y'){
+                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate'];
+                                          }else {
+                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
+                                          }
+                                       
                                       } else {
                                         a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-                                                        'whtaxAmt','matVal','preTerminatedTag','termDate','amortEff','priceCost'];
+                                                        'whtaxAmt','matVal','preTerminatedTag','termDate',
+                                                        'partialPullOutTag','partialPullOutDate','partialPullOutAmt',
+                                                        'amortEff','priceCost'];
                                       }
 
                                       if (a.amortized === null || a.amortized === "") {
@@ -490,6 +513,29 @@ export class InvestmentsComponent implements OnInit {
     if (index !== -1) array.splice(index,1);
   }
 
+uneditableItems(array, item, mode){
+  if (mode === 'delete'){
+    for(var i in array){
+        if(array[i]==item){
+            array.splice(i,1);
+            break;
+        }
+    }
+  }else if (mode === 'add'){
+    for(var i in array){
+        if(array[i]==item){
+            array.splice(i,1);
+            break;
+        } else {
+           array.push(item);
+            break;
+        }  
+    }
+  }
+    
+}
+
+
   update(data){
     /*keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
@@ -514,6 +560,46 @@ export class InvestmentsComponent implements OnInit {
            }else if(data.key === 'preTerminatedTag'){
              if (this.passData.tableData[i].preTerminatedTag === 'N'){
                 this.passData.tableData[i].termDate = null;
+             }
+             if(this.passData.tableData[i].invtStatus === 'F'){
+               if (this.passData.tableData[i].preTerminatedTag === 'Y'){
+                 var n = this.passData.tableData[i].uneditable.includes('partialPullOutTag') &&
+                         this.passData.tableData[i].uneditable.includes('partialPullOutDate') &&
+                         this.passData.tableData[i].uneditable.includes('partialPullOutAmt');
+                 if(n){
+                   this.removeUneditable('partialPullOutTag',this.passData.tableData[i].uneditable);
+                   this.removeUneditable('partialPullOutDate',this.passData.tableData[i].uneditable);
+                   this.removeUneditable('partialPullOutAmt',this.passData.tableData[i].uneditable);
+                 }
+                 this.passData.tableData[i].partialPullOutDate = null;
+                 this.passData.tableData[i].partialPullOutAmt = null;
+                 this.passData.tableData[i].uneditable.push('partialPullOutTag','partialPullOutDate','partialPullOutAmt');
+               }else if (this.passData.tableData[i].preTerminatedTag === 'N'){
+                 this.removeUneditable('partialPullOutTag',this.passData.tableData[i].uneditable);
+                 this.removeUneditable('partialPullOutDate',this.passData.tableData[i].uneditable);
+                 this.removeUneditable('partialPullOutAmt',this.passData.tableData[i].uneditable);
+               }
+             }
+           }else if(data.key === 'partialPullOutTag'){
+             if (this.passData.tableData[i].partialPullOutTag === 'N'){
+                this.passData.tableData[i].partialPullOutDate = null;
+                this.passData.tableData[i].partialPullOutAmt = null;
+             }
+
+             if(this.passData.tableData[i].invtStatus === 'F'){
+               if (this.passData.tableData[i].partialPullOutTag === 'Y'){
+                 var n = this.passData.tableData[i].uneditable.includes('preTerminatedTag') &&
+                         this.passData.tableData[i].uneditable.includes('termDate');
+                 if(n){
+                   this.removeUneditable('preTerminatedTag',this.passData.tableData[i].uneditable);
+                   this.removeUneditable('termDate',this.passData.tableData[i].uneditable);
+                 }
+                 this.passData.tableData[i].termDate = null;
+                 this.passData.tableData[i].uneditable.push('preTerminatedTag','termDate');
+               }else if (this.passData.tableData[i].partialPullOutTag === 'N'){
+                 this.removeUneditable('preTerminatedTag',this.passData.tableData[i].uneditable);
+                 this.removeUneditable('termDate',this.passData.tableData[i].uneditable);
+               }
              }
            }
 
