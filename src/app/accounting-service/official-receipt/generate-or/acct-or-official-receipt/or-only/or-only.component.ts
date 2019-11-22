@@ -208,7 +208,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
                updateUser: '',
                updateDate: '',
                showMG: 0,
-               edited: true
+               //edited: true
              });
            }
          }
@@ -228,7 +228,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
              updateUser: '',
              updateDate: '',
              showMG: 0,
-             edited: true
+             //edited: true
            });
          }
          this.passData.nData.taxAllocation = this.passData.nData.taxAllocation.filter(a=>{

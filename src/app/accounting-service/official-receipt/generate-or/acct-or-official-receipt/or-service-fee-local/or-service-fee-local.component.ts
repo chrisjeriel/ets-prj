@@ -304,10 +304,10 @@ export class OrServiceFeeLocalComponent implements OnInit {
   			if(data.servFeeList.length !== 0){
   				this.passData.tableData = data.servFeeList.map(a=>{a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a;});
           this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
-  				this.table.refreshTable();
+          this.table.refreshTable();
           if(this.passData.checkFlag){
-            this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
-                              this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
+            this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding}).length == 0 ? null :
+                              this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding})[0] );
           }
   			}else{
           this.quarterEndingDates = [];

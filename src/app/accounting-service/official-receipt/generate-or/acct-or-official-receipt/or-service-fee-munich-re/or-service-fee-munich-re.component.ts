@@ -307,8 +307,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
           this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
   				this.table.refreshTable();
           if(this.passData.checkFlag){
-            this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName}).length == 0 ? null :
-                              this.passData.tableData.filter(a=>{return a.itemName == this.selectedItem.itemName})[0] );
+            this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding}).length == 0 ? null :
+                              this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding})[0] );
           }
           console.log(this.quarterEndingDates);
   			}else{
