@@ -1404,6 +1404,15 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'mtnGlDepSubNo'){
+      this.passTable.tHeader = ['Directors\' Fee Type'];
+      this.passTable.widths = ['auto']
+      this.passTable.dataTypes = [ 'text'];
+      this.passTable.keys = [ 'description'];
+      this.mtnService.getMtnGlSubDepNo('DF').subscribe((data:any)=>{
+        this.passTable.tableData = data.glSubDepNoList;
+        this.table.refreshTable();
+      });
     }
 
 

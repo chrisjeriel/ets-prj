@@ -218,8 +218,6 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.saveAcitPaytReq.currCd  = 'PHP';
         this.saveAcitPaytReq.currRate = 1;
         recPn.forEach(e => {
-          console.log(e.userId);
-          console.log(this.ns.getCurrentUser());
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitPaytReq.preparedName  = e.printableName;
             this.saveAcitPaytReq.preparedBy   = e.userId;

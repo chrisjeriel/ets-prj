@@ -98,6 +98,36 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     keys          : ['acctCd','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
   };
 
+  diemInsData: any = {
+    tableData       : [],
+    tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+    dataTypes       : ['text','req-select','text','percent','currency','currency'],
+    magnifyingGlass : ['directorName'],
+    nData: {
+      directorName  : '',
+      feeType       : '',
+      currCd        : '',
+      currRate      : '',
+      feeAmt        : 0,
+      localAmt      : 0,
+      newRec        : 1,
+      showMG        : 1
+    },
+    opts: [
+      {selector   : 'directorName',  prev : [], vals: []},
+    ],
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'diemInsData',
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    uneditable    : [true,true,true,true,false,true],
+    total         : [null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto','auto',1,'auto','auto','auto'],
+    keys          : ['directorName','feeType','currCd','currRate','feeAmt','localAmt']
+  };
+
   //Added by NECO 11/19/2019
   passDataGenTax : any = {
         tableData: [],
@@ -458,6 +488,15 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   showLOV(event, from){
     if(from.toUpperCase() == 'PCVDATA'){
       this.passData.selector = 'acseChartAcct';
+      this.lov.openLOV();
+    }else if(from.toUpperCase() == 'GLSUBDEPNO'){
+      this.passData.selector = 'mtnGlDepSubNo';
+      this.lov.openLOV();
+    }else if(from.toUpperCase() == 'MTNSL'){
+      this.passData.selector = 'sl';
+      // this.passData.params = {
+      //   slTypeCd: event.data.slTypeCd
+      // };
       this.lov.openLOV();
     }
     //Added by Neco 11/20/2019
