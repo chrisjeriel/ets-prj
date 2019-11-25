@@ -36,10 +36,11 @@
 					</div>
 				</div>
 				<label class="form-control-sm col-sm-2">Payment Type</label>
-				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="orInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="tranType">
+				<!-- <select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="orInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="tranType"> -->
+				<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="orInfo.tranTypeCd" (ngModelChange)="changeTranType($event);" appRequired *ngIf="!isCancelled && !isPrinted && orInfo.rstrctTranUp !== 1 && !inquiryFlag" name="tranType">
 					<option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option>
 				</select>
-				<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled || isPrinted" [ngModel]="orInfo.tranTypeName"> -->
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly *ngIf="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || inquiryFlag" name="tranType" [ngModel]="orInfo.tranTypeName" readonly>
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">P.R. No.</label>

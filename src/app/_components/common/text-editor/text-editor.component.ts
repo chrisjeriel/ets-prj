@@ -15,7 +15,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('edtrMdl') edtrMdl: ModalComponent;
   @ViewChild('edtrMdlForm') edtrMdlForm:  NgForm;
   @ViewChild('edtrPrevForm') edtrPrevForm:  NgForm;
-  @ViewChild('frontEditor')frontEditor:QuillEditorComponent;
+  @ViewChild('frontEditor') frontEditor: QuillEditorComponent;
+  @ViewChild('modalEditor') modalEditor: QuillEditorComponent;
 
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;

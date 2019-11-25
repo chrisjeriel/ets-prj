@@ -272,7 +272,7 @@
 		</div>
 		<div footer class="text-center">
 			<div class="row" style="margin-right: 400px">
-				<button class="cust-btn" type="button" (click)="catPeril();"><a>CAT Perils</a></button>
+				<button class="cust-btn" type="button" *ngIf="showCatPerilBtn" (click)="catPeril();"><a>CAT Perils</a></button>
 				<button class="cust-btn" type="button" (click)="onClickCovCancel()"><a>Cancel</a></button>
 				<button class="cust-btn" type="button" (click)="onClickSave();"><a>Save</a></button>
 			</div>

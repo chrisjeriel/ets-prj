@@ -84,7 +84,7 @@
                           <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
                         </div> -->
 
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" style="padding: 0;">
                           <div class="input-group">
                             <label class="form-control-sm col-sm-6">Period As Of</label>
                             <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="qtrParam" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
@@ -100,23 +100,27 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" style="padding: 0;">
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total Service Fee</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="totalSfeeAmts.totalSfee" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="sfeeAmts.totalSfeeAmt" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
                             <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
                           </div>
                           <div class="input-group">
+                            <label class="form-control-sm col-sm-4">MRe Service Fee</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.mreSfeeAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
+                          </div>
+                          <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total VAT</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalVat | number: '1.2-2'" readonly appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalVatAmt | number: '1.2-2'" readonly appCurrency>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total WhTax</label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalWhtax | number: '1.2-2'" readonly appCurrency>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalWhTaxAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
                           </div>
                           <div class="input-group">
-                            <label class="form-control-sm col-sm-4"></label>
-                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="totalSfeeAmts.totalDue | number: '1.2-2'" readonly appCurrency style="font-weight: bold;">
+                            <label class="form-control-sm col-sm-4">NET CV AMOUNT</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalDue | number: '1.2-2'" readonly appCurrency style="font-weight: bold;">
                           </div>
                         </div>
                         <div class="col-sm-2"></div>
@@ -135,14 +139,11 @@
                     </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6">
-                    <div class="d-flex p-0">
-                      <div class="col-sm-2"></div>
-                      <div class="col-sm">
-                        <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr('tbd');"
-                        (clickLOV)="showLOV($event,'lovTrtyTbl')"></app-cust-editable-non-datatable>
-                      </div>
-                      <div class="col-sm-2"></div>
+                  <div class="input-group">
+                    <div class="col-sm">
+                      <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr('tbd');" (clickLOV)="showLOV($event,'lovOsQsoaTbl')"></app-cust-editable-non-datatable>
                     </div>
+                  </div>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 7">
                     <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (newClick)="onRowClick($event)" (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" ></app-cust-editable-non-datatable>
@@ -239,6 +240,7 @@
 
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
+<app-lov #osQsoaLov  [passData]="passData" (selectedData)="setData($event,'lovOsQsoaTbl')"></app-lov>
 
 
 <app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
@@ -279,5 +281,25 @@
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal #servfeeMdl class="d-none">
+    <div header>{{ sfeeReturnCode == 4 ? 'Confirmation' : 'Message' }}</div>
+    <div body style="text-align: center">
+      <p class="cust-p" *ngIf="sfeeReturnCode == 1">Batch Production for month end <b>{{ sfeeMdlRefNo }}</b><br />
+        {{ sfeeMdlMonthNum == 1 ? 'was' : 'were' }} not yet closed.</p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 2">A Check Voucher was already made for Payment of Service Fee<br />
+        for this quarter with Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 3">Payment of Service Fee for this quarter was already finalized.<br />
+        Check Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 4">A request was already made for this quarter amounting<br />
+        to {{ sfeeMdlAmount | number:'1.2-2' }} with Ref. no. <b>{{ sfeeMdlRefNo }}</b>.<br /><br />
+        Generating a new request will cancel the previous one.<br/>
+        Would you like to continue?</p>
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="sfeeReturnCode !== 4">
+        <button *ngIf="sfeeReturnCode == 4" class="cust-btn" type="button" (click)="getAcctPrqServFee(true, true); servfeeMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="servfeeMdl.closeModal();"><a>{{ sfeeReturnCode == 4 ? 'No' : 'Ok' }}</a></button>
     </div>
 </app-modal>

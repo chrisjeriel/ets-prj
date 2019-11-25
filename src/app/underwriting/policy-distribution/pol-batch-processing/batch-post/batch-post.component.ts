@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnderwritingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent, ModalComponent, CustEditableNonDatatableComponent } from '@app/_components/common';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-batch-post',
@@ -164,4 +165,44 @@ export class BatchPostComponent implements OnInit {
    	this.confirmTable.refreshTable();
    }
 
+  getRecords(printParams?){
+    this.underwritingService.getPolDistList(this.searchParams).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+      this.passData.tableData = data.polDistList;
+    });
+  }
+
+  finalGetRecords(selection?){
+    this.export(this.passData.tableData);
+  };
+
+  export(record?){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'BatchDistribution'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.nvl = function(text) {
+        if (text === null){
+          return '';
+        } else {
+          return text;
+        }
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+             var date = new Date(dateStr);
+             return date.toLocaleString().split(',')[0];
+       };
+    alasql('SELECT  distId AS [Dist No], riskDistId AS [Risk Dist No.], status AS [STATUS], lineCd AS [Line], policyNo AS [Policy No.], cedingName AS [Ceding Company], insuredDesc AS [Insured], riskName AS [Risk], currencyCd AS [Currency], totalSi AS [Sum Insured], datetime(distDate) AS [Distribution Date], datetime(acctDate) AS [Accounting Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+  }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -55,7 +55,7 @@ export class LovComponent implements OnInit {
   preventDefault: boolean = false;
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService, private ns: NotesService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
@@ -198,6 +198,7 @@ export class LovComponent implements OnInit {
 
     this.passData.data = null;
   }
+
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?, slTypeCd?,payeeClassCd?) {
     console.log(ev)
@@ -1339,6 +1340,70 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = data.reports;
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acseJvList'){
+      this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type","Status","Amount"];
+      this.passTable.widths = [120,98,171,335,110,115];
+      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','statusName','jvAmt'];
+      this.passTable.checkFlag = false;
+      this.accountingService.getACSEJvList(null).subscribe((data:any)=>{
+        
+        for(var i=0; i< data.jvList.length;i++){
+                this.passTable.tableData.push(data.jvList[i]);
+                this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.jvList[i].jvYear) + '-' +  String(data.jvList[i].jvNo);
+                
+        }  
+
+        this.passTable.tableData.forEach(a => {
+            if(a.tranStat != 'O' && a.tranStat != 'C') {
+              a.jvStatus = a.jvStatus;
+              a.statusName = a.statusName;
+            }
+        });
+
+      this.table.refreshTable();
+       this.table.filterDisplay(this.table.filterObj, this.table.searchString);
+      });
+     }else if(this.passData.selector == 'acseOrList'){
+        this.passTable.tHeader = ['O.R. No.','OR Type','OR Date','Payment Type','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
+        this.passTable.keys = ['orNo', 'orType', 'orDate', 'tranTypeName', 'orStatDesc', 'particulars', 'orAmt'];
+        this.passTable.checkFlag = false;
+
+        this.accountingService.getAcseOrList(this.passData.searchParams).subscribe((a:any)=>{
+          this.passTable.tableData = a.orList.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
+          this.table.refreshTable();
+        });
+     } else if(this.passData.selector == 'acseCvList'){
+        this.passTable.tHeader = ['CV No','Payee','CV Date','Payment Request No','Status','Particulars','Amount'];
+        this.passTable.widths = [25, 80, 40, 100,80, 200, 125];
+        this.passTable.dataTypes = ['text','text','date','text','text','text','currency'];
+        this.passTable.keys = ['cvGenNo', 'payee', 'cvDate', 'refNo', 'cvStatusDesc', 'particulars', 'cvAmt'];
+        this.passTable.checkFlag = false;
+
+        this.accountingService.getAcseCvList(this.passData.searchParams).subscribe((a:any)=>{
+          this.passTable.tableData = a.acseCvList.filter(i=>{
+                if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+                    i.cvStatus = i.mainTranStat;
+                    i.cvStatusDesc = i.mainTranStatDesc;
+                  }
+                  return i; });
+          this.table.refreshTable();
+        });
+     } else if(this.passData.selector == 'osQsoa') {
+      this.passTable.tHeader    = ['Quarter Ending', 'QSOA Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.minColSize = ['1px', '120px', '120px', '120px'];
+      this.passTable.dataTypes  = ['date','currency','currency','currency'];
+      this.passTable.keys       = ['quarterEnding','netQsoaAmt','cumPayt','remainingBal'];
+      this.passTable.checkFlag  = true;
+
+      this.accountingService.getAcitOsQsoa(this.passData.params).subscribe(data => {
+        var tblData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
+        this.passTable.tableData = tblData.filter(a => this.passData.hide.indexOf(a.qsoaId) == -1);
+
+        this.table.refreshTable();
+      });
     }
 
 

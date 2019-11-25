@@ -26,6 +26,7 @@ export class BudgetDetailsComponent implements OnInit {
   @ViewChild('con') con                 : ConfirmSaveComponent;
   @ViewChild('suc') suc                 : SucessDialogComponent;
   @ViewChild('myForm') form             : NgForm;
+  @ViewChild('copyYear') copyYear       : ModalComponent;
 
   budgetYrData: any = {
     tableData        : [],
@@ -74,7 +75,9 @@ export class BudgetDetailsComponent implements OnInit {
 
   params : any =  {
     saveBudgetExpense     : [],
-    deleteBudgetExpense   : []
+    deleteBudgetExpense   : [],
+    desYear:'',
+    originYear:''
   };
 
   passDataLov  : any = {
@@ -257,13 +260,32 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   yearsRange(){
-    var d = new Date().getFullYear();
+    var d = new Date().getFullYear()+10;
     for(var i=2000;i<=d;i++){
       this.budgetYearArr.push(i);
     }
     this.budgetYearArr.sort((a,b) => b-a);
     this.budgetYear = this.budgetYearArr[0];
     this.getAcseBudgetExpense();
+  }
+
+  onClickCopy(){
+    this.copyYear.openNoClose();
+  }
+
+  copyExpenseBudget(){
+    this.params.desYear = this.budgetYear;
+    console.log(this.params);
+    this.acctService.copyExpenseBudget(this.params).subscribe((data:any) => {
+      if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+      }else{
+        this.dialogMessage = 'Expense Budget for '+this.params.desYear+' was successfully copied from '+this.params.originYear;
+        this.dialogIcon = 'success-message';
+        this.getAcseBudgetExpense();
+      }
+      this.suc.open();
+    });
   }
 }
 
