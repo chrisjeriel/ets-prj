@@ -79,6 +79,10 @@ export class CopyQuoteDetailsComponent implements OnInit {
 	copyRiskId: any = "";
 	copyRiskName: any = "";
 
+	mdlConfig = {
+        mdlBtnAlign: 'center',
+    };
+
   constructor(private qs : QuotationService, private ns: NotesService, public modalService: NgbModal, private router: Router) { }
 
   ngOnInit() {
@@ -190,7 +194,7 @@ export class CopyQuoteDetailsComponent implements OnInit {
 	    if(field === 'cedingCoIntComp') {
 	        this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);
 	    } else if(field === 'cedingCo') {
-            this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);            
+            this.cedingLov.checkCode(String(this.trueCopyCedingId).padStart(3, '0'), ev);            
         } else if(field === 'copyRisk') {
             this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
         }
@@ -300,6 +304,52 @@ export class CopyQuoteDetailsComponent implements OnInit {
             this.copyRiskId = data.riskId;
             this.copyRiskName = data.riskName;
             this.ns.lovLoader(data.ev, 0);
+        }
+
+        clearAddFields(){
+            this.trueCopyCedingName = '';
+            this.trueCopyCedingId = '';
+            this.copyRiskName = '';
+            this.copyRiskId= '';
+        }
+
+        copyOkBtn() {        
+            this.loading = true;
+            var currentDate = this.ns.toDateTimeString(0);
+
+            //change copyStatus to 1 if successful
+            var params = {
+                // "autoIntComp": this.autoIntComp,
+                "cedingId": this.trueCopyCedingId,
+                "copyingType": 'normal',
+                "createDate": currentDate,
+                "createUser": this.ns.getCurrentUser(), //JSON.parse(window.localStorage.currentUser).username,
+                "lineCd": this.quoteInfo.quotationNoArr[0],
+                "quoteId": this.quoteInfo.quoteId,
+                "quoteYear": new Date().getFullYear().toString(),
+                "riskId": this.copyRiskId,
+                "updateDate": currentDate,
+                "updateUser": this.ns.getCurrentUser(), //JSON.parse(window.localStorage.currentUser).username,
+            }
+
+            this.qs.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
+                this.loading = false;
+                
+                if(data['returnCode'] == -1) {
+                    this.copyToQuotationNo = data['quotationNo'];
+                    this.routeNewQuoteId = data['quoteId'];
+
+                    this.trueCopyStatus = 1;
+                    this.copyCedingId = "";
+                    this.copyCedingName = "";
+                    this.copyRiskId = "";
+                    this.copyRiskName = "";                
+                } else if (data['returnCode'] == 0) {
+                    this.dialogMessage = data['errorList'][0].errorMessage;
+                    this.dialogIcon = "error";
+                    this.successMdl.open();
+                }
+            });
         }
 
 }

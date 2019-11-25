@@ -102,7 +102,7 @@
                 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
-                <app-modal class="hidden" #copyModal [mdlConfig]="mdlConfig">
+                <app-modal class="d-none" #copyModal [mdlConfig]="mdlConfig">
                     <div header>Copy Quote Details</div>
                     <div *ngIf="trueCopyStatus == 0" body>
                         <fieldset class="scheduler-border" style="padding-bottom: 4px !important;">
@@ -138,7 +138,7 @@
                         <button *ngIf="trueCopyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
                         <button *ngIf="trueCopyStatus == 0 && trueCopyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
                         <button *ngIf="trueCopyStatus == 0 && (trueCopyCedingName == '' || copyRiskName == '')" class="cust-btn" type="button" [disabled]="trueCopyCedingName == '' || copyRiskName == ''"><a>Ok</a></button>
-                        <button *ngIf="trueCopyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); trueCopyStatus = 0; copyModalToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
+                        <button *ngIf="trueCopyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); trueCopyStatus = 0; intCompToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
                     </div>
                 </app-modal>
 
