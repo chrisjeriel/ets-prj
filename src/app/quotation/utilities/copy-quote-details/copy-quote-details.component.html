@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
-    <h4>Quotation / Utilities / Create Internal Competition</h4>
+    <h4>Quotation / Utilities / Copy Quote Details</h4>
     <ngb-tabset>
-        <ngb-tab id="quoteListing" class="ngb-tab" title="Create Internal Competition">
+        <ngb-tab id="quoteListing" class="ngb-tab" title="Copy Quote Details">
             <ng-template ngbTabContent style="padding-top: 10px !important;">
                 
                 <div class="row" style="margin-top: 25px !important;">
@@ -43,8 +43,8 @@
                         <div class="col-md-12 text-center">
                             <div class="cust-btn-container" style="margin-top:10px">
                                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                                <button type="button" class="cust-btn" (click)="copyIntCompModal.openNoClose()" 
-                                    [disabled]="quoteInfo?.cedingName == null || quoteInfo?.cedingName == undefined || quoteInfo?.cedingName == ''"><a>Create</a></button>                
+                                <button type="button" class="cust-btn" (click)="copyModal.openNoClose()" 
+                                    [disabled]="quoteInfo?.cedingName == null || quoteInfo?.cedingName == undefined || quoteInfo?.cedingName == ''"><a>Copy</a></button>                
                             </div>
                         </div>
                     </div>
@@ -100,7 +100,51 @@
                 </div>
 
                 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<!-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------- -->
 
+                <app-modal class="hidden" #copyModal [mdlConfig]="mdlConfig">
+                    <div header>Copy Quote Details</div>
+                    <div *ngIf="trueCopyStatus == 0" body>
+                        <fieldset class="scheduler-border" style="padding-bottom: 4px !important;">
+                                <div class="custom-row-inline-inset" style="text-align: center">
+                                    <div class="input-group" style="margin-bottom: -14px !important;">
+                                        <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
+                                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="trueCopyCedingId" (change)="checkCode($event, 'cedingCo')" appRequired>
+                                        <div class="text-search-ico" (click)="cedingLov.modal.openNoClose()"><a><i class="fa fa-search"></i></a></div>
+                                        &nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="trueCopyCedingName" readonly>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom: -14px !important;">
+                                        <label class="form-control-sm col-sm-3">Risk</label>
+                                        <input type="text"class="form-control form-control-sm col-sm-2 cap-input" style="margin-right: -1px !important" [(ngModel)]="copyRiskId" (change)="checkCode($event, 'copyRisk')" appRequired>
+                                        <div class="text-search-ico" (click)="copyRiskLOV.modal.openNoClose();"><a><i class="fa fa-search"></i></a></div>
+                                        &nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="copyRiskName" readonly>
+                                    </div>
+                                </div>
+                        </fieldset>
+                    </div>
+                    <div *ngIf="trueCopyStatus == 1" body>
+                        <fieldset class="scheduler-border">
+                            <div class="custom-row-inline-inset" style="text-align: center">
+                                <p>This Quotation No.</p>
+                                <p style="color:#557a95"><strong>{{ quoteInfo.quotationNo }}</strong></p>
+                                <p>has been copied to Quotation No.</p>
+                                <p style="color:red"><strong>{{ copyToQuotationNo }}</strong></p>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div footer class="text-center w-100">
+                        <button *ngIf="trueCopyStatus == 0" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearCopyFields(); clearAddFields();"><a>Cancel</a></button>
+                        <button *ngIf="trueCopyStatus == 0 && trueCopyCedingName != '' && copyRiskName != ''" class="cust-btn" type="button" (click)="copyOkBtn();"><a>Ok</a></button>
+                        <button *ngIf="trueCopyStatus == 0 && (trueCopyCedingName == '' || copyRiskName == '')" class="cust-btn" type="button" [disabled]="trueCopyCedingName == '' || copyRiskName == ''"><a>Ok</a></button>
+                        <button *ngIf="trueCopyStatus == 1" class="cust-btn" type="button" (click)="modalService.dismissAll(); trueCopyStatus = 0; copyModalToGenInfo(copyToQuotationNo)"><a>Ok</a></button>
+                    </div>
+                </app-modal>
+
+
+                <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+                <app-mtn-risk id="copyRiskLOV" #copyRiskLOV (selectedData)="setCopyRisks($event)"></app-mtn-risk>
 
             </ng-template>
         </ngb-tab>

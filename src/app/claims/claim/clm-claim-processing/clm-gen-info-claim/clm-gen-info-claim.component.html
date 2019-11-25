@@ -139,7 +139,7 @@
                             </div>
                             <div class="input-group">
                                 <label class="form-control-sm col-sm-4" style="margin-left: -20px !important;">Processed By</label>
-                                <input name="input21"  type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.processedBy" (ngModelChange)="claimData.processedBy=$event.toUpperCase()" (change)="checkCode($event, 'processedBy')" appRequired tabindex="7" [readonly]="isInquiry">
+                                <input name="input21"  type="text" class="form-control form-control-sm col-sm" [ngModel]="claimData.processedBy" (ngModelChange)="claimData.processedBy=$event" (change)="checkCode($event, 'processedBy')" appRequired tabindex="7" [readonly]="isInquiry">
                                 <div class="text-search-ico" style="margin-right: 5px !important;" *ngIf="!isInquiry">
                                     <a><i class="fa fa-search" (click)="showUsersLOV()"></i></a>
                                 </div>

@@ -491,6 +491,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { PolicyReportsComponent } from './underwriting/generate-documents/policy-reports/policy-reports.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
+import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 
 @NgModule({
     imports: [
@@ -986,6 +987,7 @@ import { CreateInternalCompComponent } from './quotation/utilities/create-intern
         PolicyReportsComponent,
         UpdateQuoteAttachmentComponent,
         CreateInternalCompComponent,
+        CopyQuoteDetailsComponent,
     ],
 
   	providers: [

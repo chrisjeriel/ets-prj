@@ -197,6 +197,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component'
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
+import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 
 const appRoutes: Routes = [
 
@@ -553,6 +554,7 @@ const appRoutes: Routes = [
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
     { path: 'create-int-comp', component: CreateInternalCompComponent},
+    { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
