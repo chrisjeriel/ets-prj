@@ -20,7 +20,6 @@ import { DatepickerComponent } from '@app/_components/datepicker/datepicker.comp
 })
 export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(){
-        console.log(this.componentRef);
     }
 
     @ViewChild('overallCont') componentRef: ElementRef;
@@ -479,7 +478,7 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
     }
 
     unliTableLength(){
-        if(this.unliFlag && this.passData.tableData.length < 11) {
+        if(this.unliFlag && this.passData.tableData.length < this.defaultUnliLength) {
             this.passData.pageLength = this.defaultUnliLength;
         } else if(this.unliFlag) {
             this.passData.pageLength = this.passData.tableData.length <= this.passData.pageLength ? this.passData.pageLength :this.passData.tableData.length;
@@ -828,20 +827,19 @@ export class CustEditableNonDatatableComponent implements OnInit, AfterViewInit 
              this.p2+=1;
              ti = -1;
         }
-
         if((event.key=="ArrowDown" || event.key=="Enter")){
             if(event.target.type!='checkbox')
-                setTimeout(a=>$('[ng-reflect-name="'+key+(ti+1)+'"]').click(),0)
+                setTimeout(a=>$('#'+this.passData.pageID+key+(ti+1)+'').click(),0)
             else
-                setTimeout(a=>$('[ng-reflect-name="'+key+(ti+1)+'"]').focus(),0)
+                setTimeout(a=>$('#'+this.passData.pageID+key+(ti+1)+'').focus(),0)
             event.preventDefault();
             if(this.displayData[this.displayData.indexOf(data)+1] != this.fillData && this.displayData[this.displayData.indexOf(data)+1]!==undefined)
                 setTimeout(a=>this.indvSelect = this.displayData[this.displayData.indexOf(data)+1],0)
         }else if(event.key=="ArrowUp"){
             if(event.target.type!='checkbox')
-                setTimeout(a=>$('[ng-reflect-name="'+key+(ti-1)+'"]').click(),0)
+                setTimeout(a=>$('#'+this.passData.pageID+key+(ti-1)+'').click(),0)
             else
-                setTimeout(a=>$('[ng-reflect-name="'+key+(ti-1)+'"]').focus(),0)
+                setTimeout(a=>$('#'+this.passData.pageID+key+(ti-1)+'').focus(),0)
             event.preventDefault();
             if(this.displayData[this.displayData.indexOf(data)-1] != this.fillData && this.displayData[this.displayData.indexOf(data)-1] !== undefined)
                 setTimeout(a=>this.indvSelect = this.displayData[this.displayData.indexOf(data)-1],0)

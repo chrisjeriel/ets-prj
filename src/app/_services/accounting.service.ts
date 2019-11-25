@@ -2992,6 +2992,16 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoice',params,header);
     }
 
+    copyExpenseBudget(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+        };
+ 
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/copyAcseExpenseBudget',params,header);
+    }
+
     genBatchInvoice(params){
     	let header : any = {
             headers: new HttpHeaders({
@@ -3017,4 +3027,15 @@ export class AccountingService {
         	
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitOsQsoa', {params});
 	}
+
+	saveAcseInvItems(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoiceItem',params,header);
+    }
+
 }

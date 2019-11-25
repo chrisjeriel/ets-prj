@@ -199,7 +199,9 @@ export class LovComponent implements OnInit {
     this.passData.data = null;
   }
 
-  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?,ev?,slTypeCd?,payeeClassCd?) {
+
+  checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?, slTypeCd?,payeeClassCd?) {
+    console.log(ev)
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -1391,25 +1393,14 @@ export class LovComponent implements OnInit {
         });
      } else if(this.passData.selector == 'osQsoa') {
       this.passTable.tHeader    = ['Quarter Ending', 'QSOA Due', 'Cumulative Payments', 'Remaining Balance'];
-      this.passTable.widths     = ['auto','auto','auto','auto'];
+      this.passTable.minColSize = ['1px', '120px', '120px', '120px'];
       this.passTable.dataTypes  = ['date','currency','currency','currency'];
       this.passTable.keys       = ['quarterEnding','netQsoaAmt','cumPayt','remainingBal'];
       this.passTable.checkFlag  = true;
 
-      /*this.accountingService.getAccInvestments([])
-      .subscribe((data:any)=>{
-        var rec = data["invtList"].filter(e => e.invtStatus == 'F' && e.currCd == this.passData.currCd && e.bank == this.passData.payeeNo);
-        this.passTable.tableData = rec.filter((a)=> { return  this.passData.hide.indexOf(a.invtId)==-1 });
-        for(var i of this.passTable.tableData){
-          if(i.processing !== null && i.processing !== undefined){
-            i.preventDefault = true;
-          }
-        }
-        this.table.refreshTable();
-      });*/
-
       this.accountingService.getAcitOsQsoa(this.passData.params).subscribe(data => {
-        this.passTable.tableData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
+        var tblData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
+        this.passTable.tableData = tblData.filter(a => this.passData.hide.indexOf(a.qsoaId) == -1);
 
         this.table.refreshTable();
       });

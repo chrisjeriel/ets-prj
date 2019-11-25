@@ -53,6 +53,11 @@ export class AppComponent  {
         config.keyboard = false;
     }
 
+    onClickHome(){
+        this.router.navigateByUrl('/dummy', {skipLocationChange: true}).then(()=>
+        this.router.navigate(['/']));
+    }
+
     logout() {
         //this.authenticationService.logout();
         this.router.navigate(['/logout']);

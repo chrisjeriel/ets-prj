@@ -145,11 +145,13 @@ export class ExtractFromLastYearComponent implements OnInit {
   generateYears(){
     //need to talk about this method. It basically generates years starting from 2000 up to current year.
     var startYear: number = 2000;
-    var currYear: number = new Date().getFullYear();
+    var currYear: number = new Date().getFullYear()+10;
     while(startYear <= currYear){
       this.yearArray.push(currYear);
       currYear -= 1;
     }
+    this.yearArray.sort((a,b) => b-a);
+    this.selectedYear = this.yearArray[0];
   }
 
   retrieveAcseActExpMonthly(year: number, fromNgModelChange?: boolean){

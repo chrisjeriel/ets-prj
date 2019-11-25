@@ -21,7 +21,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() editorContent: any = '';
   @Input() editorPlaceholder: any = null;
   @Input() edtrOpnrPos: number = 1;
-  @Input() readonly: boolean = false;
+  @Input() readonly:  boolean = false;
   @Input() required: boolean = false;
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
@@ -55,6 +55,13 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    // if(changes.readonly && changes.required) {
+    //   if(changes.readonly.currentValue && !changes.required.currentValue) {
+    //     this.style['background'] = '#f5f5f5';
+    //   } else if(changes.required.currentValue && !changes.readonly.currentValue) {
+    //     this.style['background'] = '#fffacd85';
+    //   }
+    // }
     if(changes.readonly) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }

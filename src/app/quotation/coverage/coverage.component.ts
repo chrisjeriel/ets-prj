@@ -28,7 +28,9 @@ export class CoverageComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild('infoCov') modal : ModalComponent;
   @Output() enblQuoteOpTab = new EventEmitter<any>();
+  @Output() enblAlopTab = new EventEmitter<any>();
   @ViewChild(NgForm) remarksForm:NgForm;
+  @ViewChild('alop') alopMdl       : ModalComponent;
   editedData: any[] = [];
   deletedData: any[] = [];
   //deletedEditedData: any[] = [];
@@ -57,9 +59,9 @@ export class CoverageComponent implements OnInit {
   }
 
   passData: any = {
-    tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl'],
+    tHeader: ['Section','Bullet No','Cover Name','Sum Insured','Add Sl', 'Remarks'],
     tableData:[],
-    dataTypes: ['text','text','lovInput','currency','checkbox'],
+    dataTypes: ['text','text','lovInput','currency','checkbox','text-editor'],
     tabIndexes: [false,false,false,true,false],
     nData: {
       showMG: 1,
@@ -71,7 +73,8 @@ export class CoverageComponent implements OnInit {
       sumInsured:null,
       addSi:"N",
       updateDate: '',
-      updateUser: JSON.parse(window.localStorage.currentUser).username
+      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      remarks:''
     },
     checkFlag: true,
     addFlag: true,
@@ -82,7 +85,7 @@ export class CoverageComponent implements OnInit {
     widths:[60,90,225,110,1],
     magnifyingGlass: ['coverName'],
     uneditable: [true,false,false,false,false],
-    keys:['section','bulletNo','coverName','sumInsured','addSi'],
+    keys:['section','bulletNo','coverName','sumInsured','addSi','remarks'],
     //keys:['section','bulletNo','coverCdAbbr','sumInsured','addSi']
   };
 
@@ -115,8 +118,10 @@ export class CoverageComponent implements OnInit {
   totalValue: number = 0;
   promptMessage: string = "";
   promptType: string = "";
+  alopFlag: boolean = false;
+  alopCoverCd: any;
 
-  alopCoverCd:any;
+  othersCoverCd:number = 999;
 
   constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,public modalService: NgbModal, private maintenanceService: MaintenanceService, private ns: NotesService, private userService: UserService) {}
 
@@ -149,8 +154,13 @@ export class CoverageComponent implements OnInit {
       this.alopCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
     })
 
+    // this.maintenanceService.getMtnParameters('N',this.lineCd+'_OTHERS').subscribe(a=>{
+    //   this.othersCoverCd = a['parameters'][0] == undefined ? null : a['parameters'][0].paramValueN;
+    // })
+
     this.initialData = [];
     this.getCoverageInfo();
+    this.getAlopCd();
     this.coverageData.currencyCd = this.quotationInfo.currencyCd;
     this.coverageData.currencyRt = this.quotationInfo.currencyRt;
   }
@@ -164,9 +174,13 @@ export class CoverageComponent implements OnInit {
               for(var i=0; i< data.sectionCovers.length;i++){
                 if(data.sectionCovers[i].defaultTag == 'Y' ){
                    data.sectionCovers[i].sumInsured = 0;
+                   data.sectionCovers[i].remarks = '';
                    this.passData.tableData.push(data.sectionCovers[i]);
                 }
               }
+              this.passData.tableData.forEach(a=>{
+                a.others = a.coverCd == this.othersCoverCd;
+              })
               this.table.refreshTable();
               this.initialData = this.passData.tableData;
           });
@@ -175,6 +189,7 @@ export class CoverageComponent implements OnInit {
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
+          this.alopFlag = data.quotation.project.coverage.alopFlag == 'Y'; 
           this.totalValue = data.quotation.project.coverage.totalValue == null ? 0:data.quotation.project.coverage.totalValue;
           this.coverageData.remarks = this.coverageData.remarks == null ? '':this.coverageData.remarks;
           for(var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++){
@@ -215,6 +230,9 @@ export class CoverageComponent implements OnInit {
             this.focusBlur();
           }, 0)
 
+      this.passData.tableData.forEach(a=>{
+        a.others = a.coverCd == this.othersCoverCd;
+      })
       this.table.refreshTable();
       
     });
@@ -222,8 +240,23 @@ export class CoverageComponent implements OnInit {
   }
 
   getCoverage(){
+    var showAlop = false;
+      this.quotationService.getQuoteOptions(this.quotationInfo.quoteId).subscribe(data => {
+        console.log(data)
+        if(data['quotation'] !== null){
+             first:for(let option of data['quotation'].optionsList){
+               for(let otherRate of option.otherRatesList){
+                 if(otherRate.section == 'III'){
+                   showAlop = true;
+                   break first;
+                 }
+               }
+             }
+
+             this.enblAlopTab.emit(showAlop);
+        }
+      });
       this.quotationService.getCoverageInfo(null,this.quotationInfo.quoteId).subscribe((data: any) => {
-      this.table.refreshTable();
 
         if(data.quotation.project !== null){
           this.coverageData = data.quotation.project.coverage;
@@ -232,8 +265,9 @@ export class CoverageComponent implements OnInit {
         }
 
         if(data.quotation.project !== null ){
-          for (var i = 0; i < data.quotation.project.coverage.sectionCovers.length; i++) {
-            this.passData.tableData.push(data.quotation.project.coverage.sectionCovers[i]);
+          for (let row of  data.quotation.project.coverage.sectionCovers) {
+            row.others = row.coverCd == this.othersCoverCd;
+            this.passData.tableData.push(row);
           }
           this.passData.tableData = data.quotation.project.coverage.sectionCovers;
         }
@@ -243,6 +277,12 @@ export class CoverageComponent implements OnInit {
 
           this.table.refreshTable();
         });
+  }
+
+  plainQuotationNo(data: string){
+    var arr = data.split('-');
+
+    return arr[0] + '-' + arr[1] + '-' + parseInt(arr[2]) + '-' + parseInt(arr[3]) + '-' + arr[4];
   }
 
   validateSectionCover(){
@@ -367,11 +407,6 @@ export class CoverageComponent implements OnInit {
       });
   }
 
-  testing(){
-    this.quotationService.getCoverageInfo(this.quoteNo,null).subscribe((data: any) => {
-
-    });
-  }
   cancel(){
       this.cancelBtn.clickCancel();
   }
@@ -412,7 +447,7 @@ export class CoverageComponent implements OnInit {
       if(data[i].coverCd!== ""){
         this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       }
-      if(data[i].coverName !== undefined && 'OTHERS' === data[i].coverName.substring(0,6).toUpperCase()) {
+      if(this.othersCoverCd == data[i].coverCd) {
          this.passData.tableData[this.passData.tableData.length - 1].others = true;
       }
     }
@@ -482,10 +517,23 @@ export class CoverageComponent implements OnInit {
     this.focusBlur();
   }
 
+  getAlopCd(){
+    var params = this.lineCd+'_ALOP';
+    this.maintenanceService.getMtnParameters(null,params).subscribe((data:any)=>{
+        this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+    });
+  }
+
   onClickSave(){
+    var alopData = '';
+    var alopDeletion = false;
       for (var i =0; i < this.passData.tableData.length;i++){
          if(this.passData.tableData[i].sumInsured == 0  && this.passData.tableData[i].addSi == 'Y' && !this.passData.tableData[i].deleted){
            this.errorFlag = true;
+         }
+
+         if(this.passData.tableData[i].coverCd == this.alopCoverCd && this.passData.tableData[i].deleted && this.alopFlag){
+           alopDeletion = true;
          }
        }
        if(this.errorFlag){
@@ -493,6 +541,8 @@ export class CoverageComponent implements OnInit {
          this.dialogMessage = 'Please check Sum Insured.';
          this.successDiag.open();
          this.errorFlag = false;
+       }else if(alopDeletion){
+         this.alopMdl.openNoClose();
        }else {
           $('#confirm-save #modalBtn2').trigger('click');
       }

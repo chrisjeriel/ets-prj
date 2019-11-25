@@ -52,7 +52,7 @@
 				<div>Internal Competition</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-internal-competition #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"></app-internal-competition>
+				<app-internal-competition #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-internal-competition>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE008') == -1">

@@ -272,6 +272,9 @@ export class PolItemComponent implements OnInit {
         
         this.underwritingService.getItemInfoData(null,this.policyInfo.policyId).subscribe((data:any) => {
             console.log(data)
+            data.policy.project.items.forEach(a=>{
+                a.edited = true;
+            })
             if(this.line == 'EEI' || this.line == 'MBI'){
                 this.eeiPassData.tableData = [];
                 this.itemDetails.policyId = data.policy.policyId;
