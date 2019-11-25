@@ -559,16 +559,19 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
     }else if(data.selector == 'acitChartAcct'){
       let firstRow = data.data.pop();
       this.lovRow.glAcctId = firstRow.glAcctId;
       this.lovRow.glShortCd = firstRow.shortCode;
       this.lovRow.glShortDesc = firstRow.shortDesc;
+      this.lovRow.edited = true;
 
       this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
       for(let row of data.data){
@@ -578,7 +581,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
       }
     }  
-
+    this.table.markAsDirty();
     this.table.refreshTable();
   }
 

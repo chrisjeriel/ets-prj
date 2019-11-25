@@ -146,11 +146,13 @@ export class ByMonthComponent implements OnInit {
   generateYears(){
     //need to talk about this method. It basically generates years starting from 2000 up to current year.
     var startYear: number = 2000;
-    var currYear: number = new Date().getFullYear();
+    var currYear: number = new Date().getFullYear()+10;
     while(startYear <= currYear){
       this.yearArray.push(currYear);
       currYear -= 1;
     }
+    this.yearArray.sort((a,b) => b-a);
+    this.selectedYear = this.yearArray[0];
   }
 
   retrieveAcseBudExpMonthly(year: number, fromNgModelChange?: boolean){
@@ -659,7 +661,7 @@ export class ByMonthComponent implements OnInit {
   onClickSave(){
     if(this.exceedTotalBudget()){
       this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Cannot save. The total of Monthly Budgets exceeds the Yearly Budget.';
+      this.dialogMessage = 'Cannot save. The total of Monthly Budgets is not equal to its Yearly Budget.';
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
@@ -769,7 +771,7 @@ export class ByMonthComponent implements OnInit {
     for(var i of this.passData.tableData){
       console.log(i.totalBudget);
       console.log(i.jan+i.feb+i.mar+i.apr+i.may+i.jun+i.jul+i.aug+i.sep+i.oct+i.nov+i.dec);
-      if(i.totalBudget < i.jan+i.feb+i.mar+i.apr+i.may+i.jun+i.jul+i.aug+i.sep+i.oct+i.nov+i.dec){
+      if(i.totalBudget != i.jan+i.feb+i.mar+i.apr+i.may+i.jun+i.jul+i.aug+i.sep+i.oct+i.nov+i.dec){
         return true;
       }
     }
