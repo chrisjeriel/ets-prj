@@ -497,6 +497,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       // this.passData.params = {
       //   slTypeCd: event.data.slTypeCd
       // };
+      
       this.lov.openLOV();
     }
     //Added by Neco 11/20/2019
