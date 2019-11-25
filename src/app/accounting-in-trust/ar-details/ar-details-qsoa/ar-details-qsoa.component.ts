@@ -7,6 +7,7 @@ import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/q
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-ar-details-qsoa',
@@ -19,7 +20,8 @@ export class ArDetailsQsoaComponent implements OnInit {
   @Input() record: any = {};
 
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
-  @ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
+  //@ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -41,6 +43,7 @@ export class ArDetailsQsoaComponent implements OnInit {
       tranId: '',
       billId: 1,
       itemNo: '',
+      qsoaId: '',
       quarterEnding: '',
       currCd: '',
       currRate: '',
@@ -77,6 +80,12 @@ export class ArDetailsQsoaComponent implements OnInit {
   currencyArray: any[] = [];
 
   quarterEndingDates: string [] = [];
+
+  passLov: any = {
+    selector: 'osQsoa',
+    params: {},
+    hide: []
+  }
 
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
@@ -116,15 +125,29 @@ export class ArDetailsQsoaComponent implements OnInit {
   openLOV(event){
     console.log(event);
     this.quarterEndingIndex = event.index;
+    this.passLov.params.cedingId = this.record.payeeNo;
+    this.passLov.params.currCd = this.record.currCd;
     this.lovMdl.modal.openNoClose();
   }
 
   setSelectedData(data){
-    console.log(data);
-    this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
-    this.passData.tableData[this.quarterEndingIndex].showMG = 0;
-    this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
-    console.log(this.quarterEndingDates);
+    console.log(this.record.payeeNo);
+    let selected = data.data;
+    console.log(selected);
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+    for(var i = 0; i < selected.length; i++){
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].qsoaId = selected[i].qsoaId; 
+      this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].remainingBal; 
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = selected[i].remainingBal * this.record.currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = selected[i].quarterEnding;
+      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+    }
+    this.table.refreshTable();
+    //this.passData.tableData[this.quarterEndingIndex].quarterEnding = data.data.quart;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+    //this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+    //this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 
