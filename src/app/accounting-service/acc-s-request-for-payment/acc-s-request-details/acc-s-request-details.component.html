@@ -44,10 +44,18 @@
                     <div class="col-sm-12">
                         <ng-container [ngSwitch]="true">
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 5">
-                                <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl></app-cust-editable-non-datatable>
+                                <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl>
+                                    <!-- Added by Neco 11/19/2019 -->
+                                    <button controls-r class="cust-btn" [disabled]="cvTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                    <!-- END 11/19/2019 -->
+                                </app-cust-editable-non-datatable>
                             </ng-container>
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 2">
-                                <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl></app-cust-editable-non-datatable>
+                                <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl>
+                                    <!-- Added by Neco 11/19/2019 -->
+                                    <button controls-r class="cust-btn" [disabled]="pcvTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                    <!-- END 11/19/2019 -->
+                                </app-cust-editable-non-datatable>
                             </ng-container>
                         </ng-container>
                         <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="(requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
@@ -85,8 +93,33 @@
         </div>
     </fieldset>
 </div>
+<!-- Added by Neco 11/19/2019 -->
+<app-modal id="taxAlloc" class="d-none" #taxAlloc>
+  <div header>Tax Allocation</div>
+  <div body>
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">General Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'genTax')" [passData]="passDataGenTax" (tableDataChange)="selectedTblData.edited = true;" #genTaxTbl ></app-cust-editable-non-datatable>
+    </fieldset>
+
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">Withholding Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'whTax')" [passData]="passDataWhTax" (tableDataChange)="selectedTblData.edited = true;" #whTaxTbl></app-cust-editable-non-datatable>
+    </fieldset>
+  </div>
+  <div footer class="w-100">
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container" >
+            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="cvData.checkFlag && pcvData.checkFlag"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
+        </div>
+    </div>
+  </div>
+</app-modal>
+<!-- END 11/19/2019 -->
 
 <app-lov #lov [passData]="passData" (selectedData)="setData($event,'pcvdata')" [lovCheckBox]="true"></app-lov>
 <app-confirm-save  #con (onYes)="onSave()"></app-confirm-save>
 <app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
 <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/acc-s-request-for-payment'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="null" (no)="taxAllocMdl.closeModal()" #taxAllocCancel></app-cancel-button>

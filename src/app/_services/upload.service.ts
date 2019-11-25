@@ -30,6 +30,25 @@ export class UploadService {
      return this.http.request(req);
    }
 
+   uploadFileToDB(file: File, date?: any, module?: string, refId?: string, tableName?: string): Observable<HttpEvent<any>> {
+
+     let url = environment.prodApiUrl + "/file-upload-service/uploadFileToDB";
+
+     let formData = new FormData();
+     //formData.append('file', file, date+file.name);
+     formData.append('file', file, file.name);
+
+     let params = new HttpParams();
+
+     const options = {
+       params: params,
+       reportProgress: true,
+     };
+
+     const req = new HttpRequest('POST', url+'?module='+module+'&refId='+refId+'&tableName='+tableName, formData, options);
+     return this.http.request(req);
+   }
+
    downloadFile(fileName: string, module?: string, refId?: string){
      const url = environment.prodApiUrl +'/file-upload-service/files/'+ fileName+'?module='+module+'&refId='+refId;
      console.log(url);

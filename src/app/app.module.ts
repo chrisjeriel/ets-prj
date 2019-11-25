@@ -492,6 +492,7 @@ import { PolicyReportsComponent } from './underwriting/generate-documents/policy
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
 import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
+import { UploaderComponent } from './_components/common/uploader/uploader.component';
 
 @NgModule({
     imports: [
@@ -988,6 +989,7 @@ import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-deta
         UpdateQuoteAttachmentComponent,
         CreateInternalCompComponent,
         CopyQuoteDetailsComponent,
+        UploaderComponent,
     ],
 
   	providers: [

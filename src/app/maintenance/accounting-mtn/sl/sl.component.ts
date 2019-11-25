@@ -159,7 +159,7 @@ export class SlComponent implements OnInit {
     this.table.refreshTable();
     this.ns.lovLoader(ev, 1);
     this.table.overlayLoader = true;
-    this.slLov.checkCode('slType','','','','','',this.slTypeCd,ev);
+    this.slLov.checkCode('slType','','','','','',ev,this.slTypeCd);
 }
 
 clickLov(){

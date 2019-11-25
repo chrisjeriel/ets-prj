@@ -1,7 +1,10 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div class="form-row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
-		<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openLOV($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+		<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openLOV($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)">
+    <button controls-r class="cust-btn" [disabled]="table.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>  
+    </app-cust-editable-non-datatable>
 	</div>
 	<div class="col-sm-2"></div>
 </div>
@@ -18,8 +21,32 @@
     </div>
 </div>
 
-<app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates"></app-quarter-ending-lov>
+<app-modal id="taxAlloc" class="d-none" #taxAlloc>
+  <div header>Tax Allocation</div>
+  <div body>
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">General Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="openGenTaxLOV($event)" [passData]="passDataGenTax" (tableDataChange)="selectedItem.edited = true;" #genTaxTbl ></app-cust-editable-non-datatable>
+    </fieldset>
+
+    <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
+      <legend class="scheduler-border">Withholding Taxes</legend>
+      <app-cust-editable-non-datatable (clickLOV)="openWhTaxLOV($event)" [passData]="passDataWhTax" (tableDataChange)="selectedItem.edited = true;" #whTaxTbl></app-cust-editable-non-datatable>
+    </fieldset>
+  </div>
+  <div footer class="w-100">
+    <div class="col-md-13 text-center">
+        <div class="cust-btn-container" >
+            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="passData.checkFlag"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
+        </div>
+    </div>
+  </div>
+</app-modal>
+
+<app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates" [overrideModal]="true"></app-quarter-ending-lov>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" ></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-or-listings'" #mainCancel></app-cancel-button>
+<app-cancel-button (onYes)="save('cancel')" [url]="null" (no)="taxAllocMdl.closeModal()" #taxAllocCancel></app-cancel-button>

@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
+
 
 @Component({
   selector: 'app-cv-entry',
@@ -35,9 +37,11 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
   @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
-  @ViewChild('printmMdl') printmMdl           : ModalComponent;
+  @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('myForm') form                   : NgForm;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
+
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -51,6 +55,7 @@ export class CvEntryComponent implements OnInit {
     certifiedDate : '',
     checkClass    : '',
     checkDate     : '',
+    checkId       : '',
     checkNo       : '',
     closeDate     : '',
     createDate    : '',
@@ -95,6 +100,9 @@ export class CvEntryComponent implements OnInit {
   existsInCvDtl        : boolean = false;
   fromSave             : boolean = false;
   destination          : string = '';
+  spoiled              : any;
+  approvalCd           : any;
+
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -246,8 +254,12 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv['from'] = 'cv';
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
-      ((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+      (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+      
       this.setLocalAmt();
+      if(this.saveAcitCv.checkStatus == 'S'){
+          this.spoiledFunc();
+      }
     });
   }
 
@@ -325,6 +337,7 @@ export class CvEntryComponent implements OnInit {
       certifiedDate    : (this.saveAcitCv.certifiedDate == '' || this.saveAcitCv.certifiedDate == null)?'':this.ns.toDateTimeString(this.saveAcitCv.certifiedDate),
       checkClass       : this.saveAcitCv.checkClass,
       checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
+      checkId          : this.saveAcitCv.checkId,
       checkNo          : this.saveAcitCv.checkNo,
       closeDate        : this.ns.toDateTimeString(this.saveAcitCv.mainCloseDate),
       createDate       : (this.saveAcitCv.createDate == '' || this.saveAcitCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.createDate,
@@ -353,15 +366,30 @@ export class CvEntryComponent implements OnInit {
       updateUser       : this.ns.getCurrentUser()
     };
 
+    (this.spoiled)?this.saveAcitCv.checkId='':'';
     console.log(saveCv);
     this.accountingService.saveAcitCv(JSON.stringify(saveCv))
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
-      this.saveAcitCv.tranId = data['tranIdOut'];
-      this.saveAcitCv.mainTranId = data['mainTranIdOut'];
-      this.getAcitCv();
-      this.form.control.markAsPristine();
+      this.spoiled = true;
+      if(data['returnCode'] == -1){
+        this.saveAcitCv.tranId = data['tranIdOut'];
+        this.saveAcitCv.mainTranId = data['mainTranIdOut'];
+        this.getAcitCv();
+        this.spoiled = false;
+        this.form.control.markAsPristine();
+      }else if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+        this.success.open();
+      }else if(data['returnCode'] == 2){
+        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMdl.openNoClose();
+      }else if(data['returnCode'] == -100){
+        this.warnMsg = 'There is no Check No. available for this Account No.';
+        this.warnMdl.openNoClose();
+      }
+      
     });
   }
 
@@ -426,7 +454,7 @@ export class CvEntryComponent implements OnInit {
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
@@ -513,7 +541,7 @@ export class CvEntryComponent implements OnInit {
   onClickOkPrint(){
     console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
     if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
-      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
       this.warnMdl.openNoClose();
     }else if(this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
       this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
@@ -523,7 +551,9 @@ export class CvEntryComponent implements OnInit {
       this.warnMdl.openNoClose();
     }else{
       this.fromBtn = 'approve-req';
-      this.confirmMdl.openNoClose();
+      //this.confirmMdl.openNoClose();
+      this.approvalCd = 'AC003';
+      this.overrideFunc('AC003');
     }
   }
 
@@ -537,38 +567,71 @@ export class CvEntryComponent implements OnInit {
     this.confirmMdl.closeModal();
     var updateAcitCvStat = {
       tranId       : this.saveAcitCv.tranId,
+      checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
-      updateUser  : this.ns.getCurrentUser()
+      updateUser   : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
     this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
     .subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
-      // this.saveAcitCv.cvStatus = stat;
-      // this.saveAcitCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
-      // this.dialogIcon = '';
-      // this.dialogMessage = '';
-      // this.success.open();
       this.fromSave = true;
       this.getAcitCv();
-      this.disableFlds(true);
+      (!this.spoiled)?this.disableFlds(true):'';
     });
   }
 
   onYesConfirmed(){
     console.log(this.fromBtn);
+    this.spoiled = false;
     if(this.fromBtn.toLowerCase() == 'print'){
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'spoil'){
+      this.onClickYesConfirmed('S');
+      this.spoiledFunc();
     }
   }
 
   loadingFunc(bool){
     var str = bool?'block':'none';
     $('.globalLoading').css('display',str);
+  }
+
+  spoiledFunc(){
+    $('.cl-spoil').prop('readonly',false);
+    this.spoiled = true;
+    this.saveAcitCv.checkId = '';
+  }
+
+  overrideFunc(approvalCd){
+    this.mtnService.getMtnApprovalFunction(approvalCd)
+    .subscribe(data => {
+      var approverList = data['approverFn'].map(e => e.userId);
+      if(approverList.includes(this.ns.getCurrentUser())){
+        if(this.fromBtn == 'print'){
+          this.printMdl.openNoClose();
+        }else{
+          this.confirmMdl.openNoClose();
+        }
+      }else{
+        this.overrideLogin.getApprovalFn();
+        this.overrideLogin.overrideMdl.openNoClose();
+      }
+    });
+  }
+
+  onOkOverride(result){
+    if(result){
+      if(this.fromBtn == 'print'){
+        this.printMdl.openNoClose();
+      }else{
+        this.confirmMdl.openNoClose();
+      }
+    }
   }
 }

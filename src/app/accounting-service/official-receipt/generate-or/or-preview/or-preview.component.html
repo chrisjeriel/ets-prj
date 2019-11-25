@@ -96,7 +96,7 @@
                    style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="record.jvNo" readonly>
                   <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
                   <div class="col-sm-2 dp-cont">
-                      <datepicker [type]="'date'" [value]="record.jvDate?.split('T')[0]" [required]="true" disabled></datepicker>
+                      <datepicker [type]="'date'" [value]="record.jvDate?.split('T')[0]" [required]="true" disabled="true"></datepicker>
                   </div>
                   <label class="form-control-sm col-sm-1">Status</label>
                   <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.jvStatus" readonly>
@@ -166,7 +166,7 @@
                         </fieldset>
                     </div>
                 </div>
-                <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N'">
+                <!-- <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N'">
                     <div class="form-group col-sm">
                       <div class="col-md-13 text-center">
                         <br>
@@ -176,7 +176,7 @@
                         </div>
                       </div>
                     </div>
-                </div>
+                </div> -->
             </ng-template>
         </ngb-tab>
         <ngb-tab class="ngb-tab" title="Accounting Entries" id="acctEntries">

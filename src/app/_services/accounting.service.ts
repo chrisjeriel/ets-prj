@@ -1834,15 +1834,17 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?){
+    getAcctPrqServFee(force, retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?, updateUser?){
 		const params = new HttpParams()
+			.set('force', (force == null || force == undefined ? '' : force))
 			.set('retType', (retType == null || retType == undefined ? '' : retType))
 			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
 			.set('quarter', (quarter == null || quarter == undefined ? '' : quarter))
 			.set('year', (year == null || year == undefined ? '' : year))
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
-			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt));
+			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt))
+			.set('updateUser', (updateUser == null || updateUser == undefined ? '' : updateUser));
 			
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctPrqServFee',{params});
 	}
@@ -2951,6 +2953,25 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitEditedAcctEntries',{params});
 	}
 
+	 getAcseBatchInvoice(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranDateFrom','')
+				.set('tranDateTo','')
+				.set('tranNo','')
+				.set('tranTypeCd','')
+				.set('tranClass','')
+				.set('invoiceId', '');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBatchInvoice', {params});
+	}
+
 	printAcseJv(params) {
     	let header : any = {
             headers: new HttpHeaders({
@@ -2960,4 +2981,61 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/printAcseJv',params,header);
     }
+
+    saveAcseInvoice(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoice',params,header);
+    }
+
+    copyExpenseBudget(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+        };
+ 
+        return this.http.post(environment.prodApiUrl + '/acct-serv-service/copyAcseExpenseBudget',params,header);
+    }
+
+    genBatchInvoice(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchInvoiceNo',params,header);
+    }
+
+    getAcseInvItems(invoiceId){
+		const params = new HttpParams()
+			.set('invoiceId', (invoiceId == null || invoiceId == undefined ? '' : invoiceId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInvoiceItems',{params});
+	}
+
+	getAcitOsQsoa(param){
+		const params = new HttpParams()
+			.set('qsoaId', (param.qsoaId === null || param.qsoaId === undefined ? '' : param.qsoaId))
+			.set('currCd', (param.currCd === null || param.currCd === undefined ? '' : param.currCd))
+			.set('cedingId', (param.cedingId === null || param.cedingId === undefined ? '' : param.cedingId));
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitOsQsoa', {params});
+	}
+
+	saveAcseInvItems(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoiceItem',params,header);
+    }
+
 }

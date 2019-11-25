@@ -143,6 +143,25 @@
 <app-confirm-save (onYes)="saveData()"></app-confirm-save>
 <app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
 
+<app-modal class="d-none" id="copyYear" #alop>
+    <div header>&nbsp;</div> 
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+            <ng-container>
+                <span class="fa fa-exclamation-triangle fa-2x" style="vertical-align: middle;"></span>
+            </ng-container>
+            <ng-container>
+                <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">ALOP has existing Details. Are you sure you want to delete ALOP?</span>
+            </ng-container>
+            <span class="col-sm-2"></span>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="saveData();alopMdl.closeModal();"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="alopMdl.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
 <app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
     <div header>Confirmation Message</div>
     <div body style="text-align: center">
