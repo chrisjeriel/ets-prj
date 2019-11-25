@@ -499,6 +499,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
+
+      if(from === 'tbd') {
+        e.newPaytAmt = +(parseFloat(e.prevPaytAmt) + parseFloat(e.currAmt)).toFixed(2);
+        e.newBalance = +(parseFloat(e.prevBalance) - parseFloat(e.newPaytAmt)).toFixed(2);
+      }
     });
 
   }
@@ -654,8 +659,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
     } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
-      ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
-
       data['data'].forEach(a => {
         if(this.treatyBalanceData.tableData.some(b => b.qsoaId != a.qsoaId)) {
           a.currCd = this.requestData.currCd;
@@ -665,7 +668,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           a.currAmt = a.remainingBal;
           a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.currAmt)).toFixed(2);
           a.newBalance = 0;
-          a.quarterEnding = this.dp.transform(this.ns.toDateTimeString(a.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
           a.edited = true;
           a.checked = false;
           a.createDate = '';
@@ -908,7 +911,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.quarterEnding != e.quarterEnding);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
-          e.quarterEnding = e.quarterEnding;
+          // e.quarterEnding = e.quarterEnding;
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
@@ -926,7 +929,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         saveTrty.forEach(function(stData){
           if(ts.ns.toDateTimeString(tblData.quarterEnding) == ts.ns.toDateTimeString(stData.quarterEnding)){
             if(stData.newRec == 1){
-              isNotUnique = true;  
+              isNotUnique = true;
             }
           }
         });
@@ -966,8 +969,6 @@ export class PaymentRequestDetailsComponent implements OnInit {
             }
           }
       }
-
-      console.log(this.params);
 
       this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.map(e => {
           e.quartEndingSave = e.quarterEnding;

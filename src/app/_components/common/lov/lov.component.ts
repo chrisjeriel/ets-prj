@@ -98,6 +98,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'acitArInvPullout'){
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'osQsoa'){
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
           }
@@ -1401,6 +1404,12 @@ export class LovComponent implements OnInit {
       this.accountingService.getAcitOsQsoa(this.passData.params).subscribe(data => {
         var tblData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
         this.passTable.tableData = tblData.filter(a => this.passData.hide.indexOf(a.qsoaId) == -1);
+
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
 
         this.table.refreshTable();
       });
