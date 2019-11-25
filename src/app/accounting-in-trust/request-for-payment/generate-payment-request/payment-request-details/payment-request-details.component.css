@@ -19,3 +19,8 @@
 	border-left: 1px solid rgb(224,227,231);
 	border-right: 1px solid rgb(224,227,231);
 }
+
+.cust-p {
+	margin-bottom: 0;
+	line-height: 1.4;
+}
