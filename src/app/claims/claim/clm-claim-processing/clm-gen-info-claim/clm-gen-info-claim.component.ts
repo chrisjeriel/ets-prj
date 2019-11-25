@@ -591,6 +591,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
 
   clmAdjClickDelete(ev) {
     if(ev != undefined) {
+      this.adjTable.selected = [this.adjTable.indvSelect];
       this.adjTable.confirmDelete();
     } else {
       this.adjData.disableGeneric = true;
@@ -861,13 +862,34 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
                                           this.beforePolTerm = data['filtPolicy'].length == 0;
                                           return data;
                                         }),
-                            mergeMap(data => this.us.getPolGenInfo(this.beforePolTerm ? data['policyList'][0].policyId : data['filtPolicy'][0].policyId, this.beforePolTerm ? data['policyList'][0].policyNo : data['filtPolicy'][0].policyNo)));
+                            mergeMap(data => 
+                                {
+                                  let chckPolNo =  this.beforePolTerm ? data['policyList'][0].policyNo : data['filtPolicy'][0].policyNo;
+
+
+                                  return forkJoin(
+                                          this.us.getPolGenInfo(this.beforePolTerm ? data['policyList'][0].policyId : data['filtPolicy'][0].policyId, chckPolNo),
+                                           this.us.getUWCoverageAlt(
+                                                                        chckPolNo.split('-')[0],
+                                                                        chckPolNo.split('-')[1],
+                                                                        chckPolNo.split('-')[2],
+                                                                        chckPolNo.split('-')[3],
+                                                                        chckPolNo.split('-')[4],
+                                                                        chckPolNo.split('-')[5]
+                                                                   )
+
+                                           ).pipe(map(([genInfo,cov]) => { return { genInfo,cov }; }))
+                                }
+                                ));
+                              
 
     this.subscription.add(sub$.subscribe(data => {
       this.showCustLoader = false;
 
-      var pol = data['policy'];
+      console.log(data);
+      var pol = data['genInfo']['policy'];
       var prj = pol['project'];
+      var cov = data['cov']['policy'].project.coverage;
 
       this.claimData.inceptDate = this.ns.toDateTimeString(pol['inceptDate']);
       this.claimData.expiryDate = this.ns.toDateTimeString(pol['expiryDate']);
@@ -887,9 +909,9 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.contractorId = this.pad(pol['contractorId'], 6);
       this.claimData.contractorName = pol['contractorName'];
       this.claimData.insuredDesc = pol['insuredDesc'];
-      this.claimData.pctShare = prj['coverage']['pctShare'];
-      this.claimData.totalSi = prj['coverage']['totalSi'];
-      this.claimData.totalValue = prj['coverage']['totalValue'];
+      this.claimData.pctShare = cov.pctShare;
+      this.claimData.totalSi = cov.cumTSi;
+      this.claimData.totalValue = cov.totalValue;
       this.claimData.project.projDesc = prj['projDesc'];
       this.claimData.project.riskId = prj['riskId'];
       this.claimData.project.riskName = prj['riskName'];

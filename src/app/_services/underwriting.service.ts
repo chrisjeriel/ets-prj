@@ -1213,6 +1213,10 @@ export class UnderwritingService {
     getLastExtractInfo(){
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveLastExtractInfo');
     }
+
+    getNegateList(params?){
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveNegateDistList',{params:params});
+    }
 }            
 
             

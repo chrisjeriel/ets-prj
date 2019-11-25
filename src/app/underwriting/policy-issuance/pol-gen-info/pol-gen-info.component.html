@@ -1109,7 +1109,9 @@
 								<input name="input998" type="text" style="font-size: 11px !important; margin-left: 0 !important;" value="Co-Terminus" disabled class="form-control form-control-sm white-bg">
 							</div>
 							<div class="input-group" style="margin-top: 16px !important;">
-								<input name="input997" [disabled]="policyInfo.coTermTag != 'Y'" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;">
+								<!-- <input name="input997" [disabled]="policyInfo.coTermTag != 'Y' || fromInq" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;"> -->
+								<text-editor class="col-sm px-0" [editorContent]="policyInfo?.coTermText" (fetchContent)="policyInfo.coTermText = $event" [edtrOpnrPos]="2"  [readonly]="policyInfo.coTermTag != 'Y' || fromInq">
+								</text-editor>
 							</div>
 						</div>
 					</div>							
