@@ -28,7 +28,7 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
-  passData: any = {
+ /* passData: any = {
     tableData:[],
     tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
     dataTypes:['date','text','percent','currency','currency'],
@@ -59,14 +59,16 @@ export class ArDetailsQsoaComponent implements OnInit {
     checkFlag: true,
     pageID: 'negtrty',
     widths:[150, 100, 150, 'auto', 'auto'],
-    /*opts: [
+    opts: [
       {
         selector: 'currCd',
         vals: [],
         prev: []
       }
-    ]*/
-  }
+    ]
+  }*/
+
+  passData: any = {};
 
   cancelFlag: boolean;
   totalLocalAmt: number = 0;
@@ -90,12 +92,14 @@ export class ArDetailsQsoaComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
   ngOnInit() {
+    this.passData = this.accountingService.getTreatyKeys('AR');
     this.passData.nData.tranId = this.record.tranId;
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
     //this.getMtnCurrency();
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
-      this.passData.uneditable = [true, true, true, true, true ];
+      this.passData.uneditable = [true, true, true, true, true, true, true, true, true, true ];
+      this.passData.tHeaderWithColspan = [{header:'QSOA Details', span: 6},{header: 'Payment Details', span: 2}, {header: 'Summary of Payments', span: 2}];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
@@ -111,7 +115,7 @@ export class ArDetailsQsoaComponent implements OnInit {
         for(var i of data.negTrtyBalList){
           i.showMG = 0;
           i.uneditable = ['quarterEnding'];
-          //i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          i.quarterEnding = this.dp.transform(i.quarterEnding, 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
         this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
@@ -138,9 +142,14 @@ export class ArDetailsQsoaComponent implements OnInit {
     for(var i = 0; i < selected.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
       this.passData.tableData[this.passData.tableData.length - 1].qsoaId = selected[i].qsoaId; 
+      this.passData.tableData[this.passData.tableData.length - 1].netQsoaAmt = selected[i].netQsoaAmt; 
+      this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt = selected[i].cumPayt;
+      this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].remainingBal; 
       this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].remainingBal; 
       this.passData.tableData[this.passData.tableData.length - 1].localAmt = selected[i].remainingBal * this.record.currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = selected[i].quarterEnding;
+      this.passData.tableData[this.passData.tableData.length - 1].newPaytAmt = (parseFloat(selected[i].remainingBal) + parseFloat(selected[i].cumPayt)).toFixed(2);
+      this.passData.tableData[this.passData.tableData.length - 1].newBalance = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.dp.transform(selected[i].quarterEnding, 'MM/dd/yyyy');
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
     }
@@ -210,6 +219,7 @@ export class ArDetailsQsoaComponent implements OnInit {
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveNegTrtyBal();
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();
@@ -260,6 +270,9 @@ export class ArDetailsQsoaComponent implements OnInit {
     if(data.key === 'balPaytAmt' || data.key === 'currCd' || data.key === 'currRate'){
       for(var i = 0; i < this.passData.tableData.length; i++){
         data[i].localAmt = data[i].balPaytAmt * data[i].currRate;
+        //(parseFloat(selected[i].remainingBal) + parseFloat(selected[i].cumPayt)).toFixed(2);
+        data[i].newPaytAmt = +(parseFloat(data[i].prevPaytAmt) + parseFloat(data[i].balPaytAmt)).toFixed(2);
+        data[i].newBalance = +(parseFloat(data[i].prevBalance) - parseFloat(data[i].balPaytAmt)).toFixed(2);
       }
     }else if(data.key === 'quarterEnding'){
       //validation about non duplicate quarter ending here
