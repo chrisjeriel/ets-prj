@@ -9,6 +9,7 @@ import { DecimalPipe } from '@angular/common';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-pol-value-coverage',
@@ -657,5 +658,10 @@ export class PolValueCoverageComponent implements OnInit {
 
   onclickSave(){
     $('#confirm-save #modalBtn2').trigger('click');
+  }
+
+  print(){
+    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=POLR010' + '&userId=' + this.ns.getCurrentUser() + '&tranId=' + this.policyId, '_blank');
+    this.modalService.dismissAll();
   }
 }
