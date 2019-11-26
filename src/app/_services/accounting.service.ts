@@ -3038,4 +3038,20 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInvoiceItem',params,header);
     }
 
+	getAcsePerDiem(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcsePerDiem',{params});	
+	}
+
+	saveAcsePerDiem(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePerDiem',params,header);
+    }
 }

@@ -880,8 +880,8 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.slTypeCd - b.slTypeCd);
-        this.table.refreshTable();
       })
+        this.table.refreshTable();
     }else if(this.passData.selector == 'sl'){
       this.passTable.tHeader = ['SL Name'];
       this.passTable.widths =['auto']
@@ -890,7 +890,7 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       console.log(this.passData.params);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
+       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName)).map(e => {e.newRec = 1; return e;});
        this.table.refreshTable();
        })
 
@@ -1404,17 +1404,7 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
-    }else if(this.passData.selector == 'mtnGlDepSubNo'){
-      this.passTable.tHeader = ['Directors\' Fee Type'];
-      this.passTable.widths = ['auto']
-      this.passTable.dataTypes = [ 'text'];
-      this.passTable.keys = [ 'description'];
-      this.mtnService.getMtnGlSubDepNo('DF').subscribe((data:any)=>{
-        this.passTable.tableData = data.glSubDepNoList;
-        this.table.refreshTable();
-      });
     }
-
 
     this.modalOpen = true;
 	}
