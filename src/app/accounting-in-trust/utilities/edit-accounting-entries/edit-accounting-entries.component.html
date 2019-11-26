@@ -101,7 +101,7 @@
 										<div class="form-group col-sm" style="margin-bottom: 0px">
 											<div class="col-md-13 text-center" style="margin-top: 8px;">
 												<div class="cust-btn-container">
-													<button type="button" class="cust-btn"><a>Save</a></button>
+													<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 													<button type="button" class="cust-btn"><a>Cancel</a></button>
 													<button type="button" class="cust-btn"><a>Restore</a></button>
 													<button type="button" class="cust-btn"><a>Print</a></button>
@@ -147,6 +147,8 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-lov [passData]="passLovAe" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox" #aeLov></app-lov>

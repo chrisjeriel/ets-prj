@@ -165,6 +165,10 @@ export class ArDetailsQsoaComponent implements OnInit {
       this.dialogIcon = 'info';
       this.dialogMessage = 'Total Amount must be negative.';
       this.successDiag.open();
+    }else if(this.remainingBalvsPaytAmt()){
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Payment amount must not be greater than the Balance.';
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
@@ -309,6 +313,15 @@ export class ArDetailsQsoaComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  remainingBalvsPaytAmt(): boolean{
+    for(var i of this.passData.tableData){
+      if(Math.abs(i.prevBalance) < Math.abs(i.balPaytAmt)){
+        return true;
+      }
+    }
+    return false;
   }
 
 }

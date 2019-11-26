@@ -68,6 +68,8 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   lovRow: any;
   lovCheckBox:boolean = true;
+  dialogIcon: string = '';
+  dialogMessage: string = '';
 
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
@@ -75,6 +77,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
+    this.passData.disableAdd = true;
   }
 
   ngOnDestroy(){
@@ -107,6 +110,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   setSelectedData(data){
     this.table.overlayLoader = true;
+    this.passData.disableAdd = false;
     switch(this.tranClass){
       case 'AR':
         this.tranNo = data.data.formattedArNo;
@@ -156,15 +160,14 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.passData.tableData = acctEntries.list.map(a=>{a.showMG = 1; return a;});
         this.table.refreshTable();
         this.table.overlayLoader = false;
+        for(var i of this.passData.tableData){
+          this.originalCrDr.foreignCreditAmt += i.foreignCreditAmt;
+          this.originalCrDr.foreignDebitAmt  += i.foreignDebitAmt;
+          this.originalCrDr.creditAmt        += i.creditAmt;
+          this.originalCrDr.debitAmt         += i.debitAmt;
+        }
       }
     );
-
-    for(var i of this.passData.tableData){
-      this.originalCrDr.foreignCreditAmt += i.foreignCreditAmt;
-      this.originalCrDr.foreignDebitAmt  += i.foreignDebitAmt;
-      this.originalCrDr.creditAmt        += i.creditAmt;
-      this.originalCrDr.debitAmt         += i.debitAmt;
-    }
   }
 
   onTableDataChange(data){
@@ -189,6 +192,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     this.tranDetails.backupDate = '';
     this.tranDetails.tranTypeName = '';
     this.tranDetails.particulars = '';
+    this.passData.disableAdd = true;
   }
 
   clickLov(data){
@@ -239,5 +243,39 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       }
       this.table.refreshTable();
     }
+  }
+
+  onClickSave(){
+    if(this.editAmtEqualsOrigAmt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Unable to save the changes. The Total Debit and Credit Amounts must still be the same as the original and must still be balanced.';
+      this.successDiag.open();
+    }
+  }
+
+  //VALIDATIONS STARTS HERE
+  editAmtEqualsOrigAmt(): boolean{
+    let foreignCrAmt: number = 0;
+    let foreignDbAmt: number = 0;
+    let creditAmt: number = 0;
+    let debitAmt: number = 0;
+
+    for(var i of this.passData.tableData){
+      foreignCrAmt += Math.round(i.foreignCreditAmt * 100) / 100;
+      foreignDbAmt += Math.round(i.foreignDebitAmt * 100) / 100;
+      creditAmt    += Math.round(i.creditAmt * 100) / 100;
+      debitAmt     += Math.round(i.debitAmt * 100) / 100;
+    }
+    console.log(this.originalCrDr.foreignCreditAmt + '/' + foreignCrAmt);
+    console.log(this.originalCrDr.foreignDebitAmt + '/' + foreignDbAmt);
+    console.log(this.originalCrDr.creditAmt + '/' + creditAmt);
+    console.log(this.originalCrDr.debitAmt + '/' + debitAmt);
+    if(this.originalCrDr.foreignCreditAmt !== foreignCrAmt ||
+       this.originalCrDr.foreignDebitAmt  !== foreignDbAmt ||
+       this.originalCrDr.creditAmt        !== creditAmt    ||
+       this.originalCrDr.debitAmt         !== debitAmt){
+      return true;
+    }
+    return false;
   }
 }
