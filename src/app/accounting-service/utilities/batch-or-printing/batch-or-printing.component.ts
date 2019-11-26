@@ -214,14 +214,13 @@ export class BatchOrPrintingComponent implements OnInit {
           .subscribe(data => {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
+           console.log(newBlob);
            //window.open(downloadURL, '_blank');
            const iframe = document.createElement('iframe');
            iframe.style.display = 'none';
            iframe.src = downloadURL;
            document.body.appendChild(iframe);
            iframe.contentWindow.print();
-
-
            result= false;
     },
      error => {
