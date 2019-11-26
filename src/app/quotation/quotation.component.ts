@@ -6,9 +6,9 @@ import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.c
 import { environment } from '@environments/environment';
 import { QuotationService, UserService, NotesService } from '@app/_services';
 import { first } from 'rxjs/operators';
-import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { ConfirmLeaveComponent, ModalComponent, SucessDialogComponent } from '@app/_components/common/';
 import { Subject } from 'rxjs';
+
 
 
 
@@ -25,6 +25,7 @@ export class QuotationComponent implements OnInit {
   @ViewChild('tabset') tabset: any;
   @ViewChild(GeneralInfoComponent) genInfoComponent: GeneralInfoComponent;
   @ViewChild('content') content:any;
+  @ViewChild('confirmReleaseMdl') confirmReleaseMdl: ModalComponent;
   docTitle: string = "";
 	sub: any;
 	line: string;
@@ -80,6 +81,8 @@ export class QuotationComponent implements OnInit {
   exitLink:string;
   accessibleModules:any [] = [];
   intCompTag:boolean = false;
+
+  printMdlEvent:any;
 
   @ViewChild('active')activeComp:any;
 
@@ -193,6 +196,24 @@ export class QuotationComponent implements OnInit {
       this.selectedReport = this.reportsList[0].val;
   	}
 
+    onClickPrint(event?){
+
+      if(event == undefined){
+        if(this.quoteInfo.status == 'A'){
+          this.confirmReleaseMdl.openNoClose();
+        }else{
+          this.showPrintPreview(this.content);
+        }
+      }else{
+        if(this.quoteInfo.status == 'A'){
+          this.printMdlEvent = event;
+          this.confirmReleaseMdl.openNoClose();
+        }else{
+          this.showPrintDialog(event);
+        }
+      }
+    }
+
   	showPrintPreview(content) {
         if (this.printType.toUpperCase() == 'SCREEN'){
   			window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + this.selectedReport + '&quoteId=' + this.quoteInfo.quoteId + '&userId=' + this.currentUserId, '_blank');
@@ -231,9 +252,20 @@ export class QuotationComponent implements OnInit {
           }
 
           //NECO 05/23/2019 --Update Status to Released when printing a quotation with an 'Approved' status.
+          // if(this.quoteInfo.status == 'A'){
+          //   this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3').subscribe((data: any)=>{
+          //     console.log(data);
+          //   });
+          // }
+
           if(this.quoteInfo.status == 'A'){
-            this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3').subscribe((data: any)=>{
-              console.log(data);
+            this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, '3', this.currentUserId).subscribe((data)=>{
+              if(data['returnCode'] == 0) {
+                console.log("Status Failed to Update.");
+              } else {
+                console.log("Status Released");
+                this.updateGenInfo();
+              }
             });
           }
           //END NECO 05/23/2019

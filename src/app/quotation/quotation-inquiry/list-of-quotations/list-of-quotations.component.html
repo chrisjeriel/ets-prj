@@ -91,7 +91,8 @@
                     <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
                         <div class="col-sm-1"></div>
                         <label class="form-control-sm col-sm-2 text-right">Risk</label>
-                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.riskName === undefined ? '' : quoteList.riskName" readonly>
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly [value]="quoteList.riskId === undefined ? '' : quoteList.riskId">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.riskName === undefined ? '' : quoteList.riskName" readonly style="margin-left: 2px !important;">
                         <div class="col-sm-1"></div>
                     </div>
                 </div>

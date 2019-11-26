@@ -908,6 +908,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "coTermTag"       : this.policyInfo.coTermTag,
       "coTermText"       : this.policyInfo.coTermText,
       "mbiPolicyId"       : this.policyInfo.mbiPolicyId,
+      "coAltRefNo"    :this.policyInfo.coAltRefNo
     }
 
     var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');

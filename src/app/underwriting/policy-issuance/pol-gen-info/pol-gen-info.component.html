@@ -2386,24 +2386,26 @@
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Alteration</legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group" style="margin-bottom: -10px !important;">
-						<label class="form-control-sm col-sm-2">Policy</label>
+						<!-- <label class="form-control-sm col-sm-2">Policy</label> -->
 						<!-- <textarea name="textarea42" class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
-						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
+						<!-- <div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
 							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [readonly]="fromInq">
 								<ng-container icon-1>
 									<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
-						</div>
-
+						</div> -->
+						
+						 <label class="form-control-sm col-sm-2" style="padding-left: 20px">Company Alteration Ref No.</label>
+						 <input name="coAltRefNo" type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="policyInfo.coAltRefNo" [readonly]="fromInq">
 						<div class="col-sm-1"></div>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Alteration</label>
 						<!-- <textarea name="textarea43" class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
-						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
+						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; margin-left: 2px !important; min-height: 60px;">
 							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true" [readonly]="fromInq">
 								<ng-container icon-1>
 									<a (click)="clickDeductiblesLOV('polWordingsAlt')"  *ngIf="!fromInq"><i class="fa fa-search"></i></a>

@@ -280,6 +280,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="151" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input43"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -373,6 +374,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="152" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input59"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -463,6 +465,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="153" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input74"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -543,6 +546,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="154" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input87"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -617,6 +621,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="155" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input98"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -697,6 +702,7 @@
 							<div class="form-row" style="margin-right: 0px;">
 								<div class="input-group ig-cust col-sm-12">
 									<label  class="form-control-sm col-sm-1" style="margin-right: -1px;">Risk</label>
+									<input name="156" class="text-right form-control form-control-sm col-sm-1" style="margin-right: -1px;" [ngModel]="project?.riskId" readonly="">
 									<input name="input111"  type="text" class="form-control form-control-sm" [(ngModel)]="project.riskName" readonly>
 								</div>
 							</div>
@@ -975,7 +981,7 @@
 <app-mtn-insured id="contractorLOV" (selectedData)="setContractor($event)"></app-mtn-insured> 
 <app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
 <app-ceding-company id="cedingCompany" (selectedData)="setCedingcompany($event)" [exclude]="excludeCedingCo"></app-ceding-company>
-<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [exclude]="excludeCedingCo"></app-mtn-ceding-company>
+<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [exclude]="excludeCedingCo" [membershipTag]="''"></app-mtn-ceding-company>
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
 <app-mtn-line-class id="lineClassLOV" (selectedData)="setLineClass($event)" [line]="line"></app-mtn-line-class>
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>

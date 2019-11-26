@@ -204,6 +204,7 @@ export class ListOfQuotationsComponent implements OnInit {
                             contractorId: rec.contractorId,
                             contractorName: rec.contractorName,
                             insuredDesc: rec.insuredDesc,
+                            riskId: (rec.project == null) ? '' : rec.project.riskId,
                             riskName: (rec.project == null) ? '' : rec.project.riskName,
                             objectDesc: (rec.project == null) ? '' : rec.project.objectDesc,
                             site: (rec.project == null) ? '' : rec.project.site,
