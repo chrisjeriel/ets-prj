@@ -38,6 +38,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     tranDate: '',
     backupBy: '',
     currCd: '',
+    currRate: '',
     tranAmount: '',
     localCurrCd: 'PHP',
     localAmt: '',
@@ -56,6 +57,13 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   passLovAe:any = {
     selector:'',
     params:{}
+  }
+
+  originalCrDr: any = {
+    creditAmt: 0,
+    debitAmt: 0,
+    foreignCreditAmt: 0,
+    foreignDebitAmt: 0
   }
 
   lovRow: any;
@@ -119,6 +127,13 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       }
     );*/
 
+    this.originalCrDr = {
+      creditAmt: 0,
+      debitAmt: 0,
+      foreignCreditAmt: 0,
+      foreignDebitAmt: 0
+    };
+
     var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(data.data.tranId),
                         this.accountingService.getAcitEditedAcctEntries(data.data.tranId))
                        .pipe(map(([acctEntries, acctEntriesDetails]) => { return { acctEntries, acctEntriesDetails}; }));
@@ -130,6 +145,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.tranDetails.tranDate = this.ns.toDateTimeString(acctEntriesDetails.editedAcctEntries.tranDate).split('T')[0];
         this.tranDetails.backupBy = acctEntriesDetails.editedAcctEntries.editedBy;
         this.tranDetails.currCd = acctEntriesDetails.editedAcctEntries.currCd;
+        this.tranDetails.currRate = acctEntriesDetails.editedAcctEntries.currRate;
         this.tranDetails.tranAmount = acctEntriesDetails.editedAcctEntries.amount;
         this.tranDetails.localAmt = acctEntriesDetails.editedAcctEntries.localAmt;
         this.tranDetails.payeeName = acctEntriesDetails.editedAcctEntries.payee;
@@ -142,12 +158,29 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.table.overlayLoader = false;
       }
     );
+
+    for(var i of this.passData.tableData){
+      this.originalCrDr.foreignCreditAmt += i.foreignCreditAmt;
+      this.originalCrDr.foreignDebitAmt  += i.foreignDebitAmt;
+      this.originalCrDr.creditAmt        += i.creditAmt;
+      this.originalCrDr.debitAmt         += i.debitAmt;
+    }
+  }
+
+  onTableDataChange(data){
+    if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        this.passData.tableData[i].debitAmt = this.tranDetails.currRate * this.passData.tableData[i].foreignDebitAmt;
+        this.passData.tableData[i].creditAmt = this.tranDetails.currRate * this.passData.tableData[i].foreignCreditAmt;
+      }
+    }
   }
 
   clearTranDetails(){
     this.tranDetails.tranDate = '';
     this.tranDetails.backupBy = '';
     this.tranDetails.currCd = '';
+    this.tranDetails.currRate = '';
     this.tranDetails.tranAmount = '';
     this.tranDetails.localCurrCd = 'PHP';
     this.tranDetails.localAmt = '';
