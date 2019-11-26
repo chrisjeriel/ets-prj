@@ -119,9 +119,10 @@ export class AccountingService {
 	    checkFlag     : true,
 	    addFlag       : true,
 	    deleteFlag    : true,
+	    pageLength    : 10,
 	    uneditable    : [true,true,true,true,true,true,false,true,true,true],
 	    total         : [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'],
-	    widths        : ['1','1','1','120','120','120','120','120','120','120'],
+	    widths        : ['1','1','1','118','120','120','120','120','120','120'],
 	    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
 	}
 
@@ -254,17 +255,22 @@ export class AccountingService {
 	}
 
 	getTreatyKeys(tranClass){
-		if('AR' == tranClass){
+		if('AR' == tranClass) {
 			this.treatyData.nData['tranId'] = '';
 			this.treatyData.nData['billId'] = 1;
 			this.treatyData.nData['itemNo'] = '';
 
 			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
 			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
-		}else if('JV' == tranClass){ // todo
-			// this.passDataInwPolBal.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
-			// this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-   //  		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+		} else if('JV' == tranClass) {
+			this.treatyData.nData['itemNo'] = '';
+			this.treatyData.nData['balanceAmt'] = 0;
+
+			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','balanceAmt','localAmt','newPaytAmt','newBalance'];
+			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','balanceAmt','localAmt','newPaytAmt','newBalance'];
+		} else if('PRQ' == tranClass) {
+			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'];
+			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'];
 		}
 		
 		return Object.create(this.treatyData);

@@ -384,6 +384,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.treatyBalanceData = this.acctService.getTreatyKeys('PRQ');
           this.treatyBalanceData.tableData = [];
           (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.treatyBalanceData):'';
+          if(!['F','N'].includes(this.requestData.reqStatus)) {
+            this.treatyBalanceData.tHeaderWithColspan = this.treatyBalanceData.tHeaderWithColspan.slice(1, 4);
+          }
           this.getTreaty();
         }else if(this.requestData.tranTypeCd == 7){
           this.investmentData.tableData = [];
