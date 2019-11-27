@@ -326,9 +326,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
 
-      // e.newPaytAmt = +(parseFloat(e.prevPaytAmt) + parseFloat(e.currAmt)).toFixed(2);
-      // e.newBalance = +(parseFloat(e.prevBalance) - parseFloat(e.newPaytAmt)).toFixed(2);
-
       this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
       this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].prevBalance) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
 

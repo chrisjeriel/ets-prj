@@ -466,7 +466,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   getClmHist(){
     this.clmService.getClaimHistory()
     .subscribe(data => {
-      var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 3)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
+      var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 1)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
       this.cedingCompanyData.tableData = [];
       this.recPrqTrans.forEach(e => {
         this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
