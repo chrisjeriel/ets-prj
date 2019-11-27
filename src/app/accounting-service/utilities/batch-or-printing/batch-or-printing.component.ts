@@ -82,11 +82,22 @@ export class BatchOrPrintingComponent implements OnInit {
         printOrList: []
     };
   lastOrNo: any;
+  orNoDigits: any;
+  orNo: any;
+  orNoArray=[];
+  orNonVatIdArray=[];
+  orVatIdArray=[];
+
+
+  genOrData: any = {
+        orNoList: []
+  };
 
   constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
 
   ngOnInit() {
     this.retrievePaymentType();
+    this.getInvNoDigits();
   }
 
   retrievePaymentType(){
@@ -105,10 +116,10 @@ export class BatchOrPrintingComponent implements OnInit {
     this.accountingService.getAcseBatchOr(search).subscribe( data => {
       console.log(data['batchOrList']);
         var td = data['batchOrList'].map(a => { 
-                        var totn_string = String(a.orNo);
-                        a.orNo = totn_string.padStart(6, '0');
-
                         if(a.orNo !== null){
+                          var totn_string = String(a.orNo);
+                          a.orNo = totn_string.padStart(6, '0');
+
                           a.orNocheck = 'Y';
                           a.uneditable = ['orNocheck'];
                         }
@@ -178,11 +189,12 @@ export class BatchOrPrintingComponent implements OnInit {
   }
 
   printOR(){
+    this.lastOrNo = null;
     let tranIdArray=[];
     this.changeStatData.printOrList = [];
     for(var i=0; i < this.passData.tableData.length;i++){
       if (this.passData.tableData[i].orNo !== null && this.passData.tableData[i].printCheck === 'Y'){
-        tranIdArray.push({ tranId: this.passData.tableData[i].tranId, orNo: this.passData.tableData[i].orNo });
+        tranIdArray.push({ tranId: this.passData.tableData[i].tranId, orNo: this.passData.tableData[i].orNo, orType: this.passData.tableData[i].orType });
       }
     }
 
@@ -195,7 +207,13 @@ export class BatchOrPrintingComponent implements OnInit {
        this.batchData.reportRequest = [];
 
       for(let i=0;i<tranIdArray.length ;i++){ 
-        selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+
+        console.log(tranIdArray[i]);
+        if (tranIdArray[i].orType === 'VAT'){
+          selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_VAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        }else if (tranIdArray[i].orType === 'NON-VAT'){
+           selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_NVAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        }
         this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
 
@@ -215,7 +233,6 @@ export class BatchOrPrintingComponent implements OnInit {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
            var downloadURL = window.URL.createObjectURL(data);
            console.log(newBlob);
-           //window.open(downloadURL, '_blank');
            const iframe = document.createElement('iframe');
            iframe.style.display = 'none';
            iframe.src = downloadURL;
@@ -273,8 +290,179 @@ viewOR(){
 }
 
 failedOrPrint(){
-  console.log(this.lastOrNo);
+  let changeStatData: any = {
+        printOrList: []
+    };
+  for(let i=0;i<this.changeStatData.printOrList.length ;i++){ 
+      if (parseInt(this.changeStatData.printOrList[i].orNo) <= parseInt(this.lastOrNo)){
+        changeStatData.printOrList.push({tranId :  this.changeStatData.printOrList[i].tranId, orNo: this.changeStatData.printOrList[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+      }
+  }
+
+  if (changeStatData.printOrList.length === 0){
+  }else {
+    setTimeout(()=>{
+         this.accountingService.printOrBatch(changeStatData).subscribe(
+           (data:any)=>{
+             if(data.returnCode == 0){
+               this.dialogIcon = 'error-message';
+               this.dialogIcon = 'An error has occured when updating OR status';
+               this.successDiag.open();
+             }else{
+               this.retrieveBatchORList(this.searchParams);
+             }
+           }
+         );
+     },1000);
+  }
+
+
 }
+
+validateORLastPrinted(data){
+  this.lastOrNo = this.pad(data.target.value);
+}
+
+validateORNonVat(data){
+    let orNo = this.pad(data.target.value);
+    this.nonVatOrNO = orNo;
+
+    if (this.isEmptyObject(orNo)){
+      this.genORBool = true;
+    } else {
+      this.genORBool = false;
+      this.retrieveInvSeriesNo('NON-VAT',orNo,orNo,null,null,'validate');
+    }
+}
+
+validateORVat(data){
+    let orNo = this.pad(data.target.value);
+    this.vatOrNO = orNo;
+
+    if (this.isEmptyObject(orNo)){
+      this.genORBool = true;
+    } else {
+      this.genORBool = false;
+      this.retrieveInvSeriesNo('VAT',orNo,orNo,null,null,'validate');
+    }
+}
+
+pad(str) {
+    if(str === '' || str == null){
+      return '';
+    }else{
+        return String(str).padStart(this.orNoDigits, '0');
+    }
+}
+
+retrieveInvSeriesNo(orType,orFrom,orTo,usedTag,length,action){
+    this.ms.getAcseOrSeries(orType,orFrom,orTo,usedTag,length).subscribe( data => {
+         if (action === 'validate'){
+           console.log(data['orSeries']);
+           if (data['orSeries'].length === 0){
+             if (orType === 'NON-VAT'){
+               this.nonVatOrNO = null;
+             }else if (orType === 'VAT'){
+               this.vatOrNO = null;
+             }
+             this.genORBool = true;
+             this.dialogMessage = 'Cannot use OR No. It may not yet generated.';
+             this.dialogIcon = 'error-message';
+             this.successDiag.open();
+           }
+         }else if (action === 'generate'){
+           this.orNoArray = [];
+           if (data['orSeries'].length === 0){
+             this.orNoArray = [];
+           }else {
+             let genOrNoData=[];
+
+              data['orSeries'].map(a => { 
+                this.orNoArray.push({ orNo : parseInt(a.orNo) });       
+              });
+
+              for(let i=0;i<this.orNoArray.length ;i++){ 
+
+                if (orType === 'NON-VAT'){
+                   genOrNoData.push({ tranId : this.orNonVatIdArray[i].tranId, orNo :  this.orNoArray[i].orNo, orType:  orType,
+                                        updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+                }else if (orType === 'VAT'){
+                   genOrNoData.push({ tranId : this.orVatIdArray[i].tranId, orNo :  this.orNoArray[i].orNo, orType:  orType, 
+                                        updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+                }
+
+               
+              }
+             this.genOrData.orNoList = genOrNoData;
+             console.log(JSON.stringify(this.genOrData));
+
+             this.accountingService.genBatchOr(this.genOrData).subscribe(data => {
+               console.log(data);
+                 if(data['returnCode'] == -1){
+                    this.dialogIcon = "success";
+                    this.successDiag.open();
+                    this.table.overlayLoader = true;
+                    this.retrieveBatchORList(this.searchParams);
+                }else{
+                    this.dialogMessage = "Cannot generate Invoice No."
+                    this.dialogIcon = "error-message";
+                    this.successDiag.open();
+                }
+             });
+           }
+         }
+    });
+  }
+
+  isEmptyObject(obj) {
+      for(var prop in obj) {
+         if (obj.hasOwnProperty(prop)) {
+            return false;
+         }
+      }
+      return true;
+  }
+
+  getInvNoDigits(){
+    this.ms.getMtnParameters('N', 'OR_NO_DIGITS').subscribe(data => { 
+     this.orNoDigits = parseInt(data['parameters'][0].paramValueN);
+    });
+  }
+
+  generateOR(){
+    this.orNonVatIdArray=[];
+    this.orVatIdArray=[];
+
+    for(var i=0; i < this.passData.tableData.length;i++){
+      if (this.passData.tableData[i].orNo === null && this.passData.tableData[i].orNocheck === 'Y'){
+        if (this.passData.tableData[i].orType === 'NON-VAT'){
+          this.orNonVatIdArray.push({ tranId: this.passData.tableData[i].tranId });
+        }else if (this.passData.tableData[i].orType === 'VAT'){
+          this.orVatIdArray.push({ tranId: this.passData.tableData[i].tranId });
+        }
+      }
+    }
+    if(this.radioVal === 'byvat'){
+      if(this.orVatIdArray.length === 0){
+        this.dialogMessage = 'Please choose records.';
+        this.dialogIcon = 'error-message';
+        this.successDiag.open();
+      }else {
+        console.log(this.orVatIdArray);
+        this.retrieveInvSeriesNo('VAT',this.vatOrNO,null,'N',this.orVatIdArray.length,'generate');
+      }
+    }else if (this.radioVal === 'bynonvat'){
+      if(this.orNonVatIdArray.length === 0){
+        this.dialogMessage = 'Please choose records.';
+        this.dialogIcon = 'error-message';
+        this.successDiag.open();
+      }else {
+        console.log(this.orNonVatIdArray);
+        this.retrieveInvSeriesNo('NON-VAT',this.nonVatOrNO,null,'N',this.orNonVatIdArray.length,'generate');
+      }
+    }   
+  }
+
 
 
 

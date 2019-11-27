@@ -1293,7 +1293,7 @@ uneditableItems(array, item, mode){
                                         termDate : null,
                                         invtType : a.invtType,
                                         invtSecCd : a.invtSecCd,
-                                        invtStatus : a.invtStatus,
+                                        invtStatus : 'F',
                                         durUnit : a.durUnit,
                                         currCd : a.currCd,
                                         currRate : a.currRate,

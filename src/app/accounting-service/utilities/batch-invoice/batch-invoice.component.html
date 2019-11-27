@@ -223,7 +223,7 @@
 								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.tranNo" (ngModelChange)="selectedrecord.tranNo=$event;" disabled>
 	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickJVModal()"></i></a></div>
 								<label class="form-control-sm col-sm-2">Tran Date</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
+								<input class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate | date:'MM/dd/yyyy hh:mm a'" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
 							</div>
 						</div>
 					</div>
