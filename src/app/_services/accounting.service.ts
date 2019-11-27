@@ -3104,4 +3104,15 @@ export class AccountingService {
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePerDiem',params,header);
     }
+
+    genBatchOr(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
+    }
+
 }

@@ -76,7 +76,7 @@
 												<div class="row">
 													<input class="form-control-sm " type="radio" name="optradio" id="byVat" value="byvat" [(ngModel)]="radioVal" (change)="this.genORBool = false;">
 													<label class="form-control-sm col-sm-4 text">VAT OR</label>
-													<input type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="radioVal != 'byvat'"  [(ngModel)] = "vatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [disabled]="radioVal != 'byvat'"  [(ngModel)] = "vatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' (change)="validateORVat($event)">
 												</div>
 											</div>
 										</div>
@@ -86,7 +86,7 @@
 												<div class="row">
 													<input class="form-control-sm " type="radio" name="optradio" id="byNonVat" value="bynonvat" [(ngModel)]="radioVal" (change)="this.genORBool = false;">
 													<label class="form-control-sm col-sm-4 text">Non VAT OR</label>
-													<input type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="radioVal != 'bynonvat'" [(ngModel)] = "nonVatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+													<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [disabled]="radioVal != 'bynonvat'" [(ngModel)] = "nonVatOrNO"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' (change)="validateORNonVat($event)">
 												</div>
 											</div>
 										</div>
@@ -162,7 +162,7 @@
 	  	<p style="margin: 0px">Indicate the last successfully printed OR Number:</p>
 	  </div>
 	  <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "lastOrNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'> PROD#ERROR -->
-	  <input type="text" class="form-control form-control-sm cust-sm col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+	  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "lastOrNo" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'  (change)="validateORLastPrinted($event)">
 	</div>
 	<div footer class="text-center w-100">
       <div class="d-flex justify-content-center text-center">

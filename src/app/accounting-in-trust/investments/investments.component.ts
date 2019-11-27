@@ -159,7 +159,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
+     widths: [130,130,150,150,150,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -206,6 +206,8 @@ export class InvestmentsComponent implements OnInit {
     maxphp: any = 0;
     maxusd: any = 0;
     maxukp: any = 0;
+    errorAmort: any;
+
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
@@ -261,6 +263,7 @@ export class InvestmentsComponent implements OnInit {
                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt','preTerminatedTag','termDate'];
                                           }*/
                                       } else if(a.invtStatus === 'M') { 
+
                                         if(a.preTerminatedTag == 'Y'){
                                           a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
@@ -268,21 +271,27 @@ export class InvestmentsComponent implements OnInit {
                                                         'whtaxAmt','matVal','preTerminatedTag','termDate',
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt',
                                                         'amortEff','priceCost'];
+                                        }else if (a.partialPullOutTag == 'Y') {
+                                          a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
+                                                        'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                         }else {
-                                          a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate'];
+                                          a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                         }
 
                                         
                                       } else if(a.invtStatus === 'O'){
 
                                           if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'N'){
-                                              if (a.amortized === null || a.amortized === ""){
+                                             if (a.amortized === null || a.amortized === ""){
                                                a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
                                              }else {
-                                               a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
+                                               a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                              }
                                           }else {
+
                                                a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -646,7 +655,15 @@ uneditableItems(array, item, mode){
                  this.successDialog.open();
                  this.passData.tableData[i].partialPullOutDate = null;
              }
+           }else if(data.key === 'partialPullOutAmt'){
+             if (this.passData.tableData[i].partialPullOutAmt > this.passData.tableData[i].invtAmt){
+                 this.dialogMessage="Partial Pull-Out Amount must not be greater than Investment Amount.";
+                 this.dialogIcon = "error-message";
+                 this.successDialog.open();
+                 this.passData.tableData[i].partialPullOutAmt = null;
+             }
            }
+
 
            //LOGIC-COMPUTATION
                if (this.passData.tableData[i].durUnit !== null || this.passData.tableData[i].durUnit !== ''   && 
@@ -1047,6 +1064,7 @@ uneditableItems(array, item, mode){
     }
 
   onClickSave(){
+      this.errorAmort = '';
       if(this.checkFields()){
          //this.confirmSave.confirmModal();
         let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
@@ -1056,16 +1074,19 @@ uneditableItems(array, item, mode){
             this.successDialog.open();
             return;
           } else {
-
-
-
-
              this.confirmSave.confirmModal();
           }
       }else{
-        this.dialogMessage="Please check field values.";
-        this.dialogIcon = "error";
-        this.successDialog.open();
+        if (this.errorAmort === 'Error Amort'){
+          this.dialogMessage='Maturity period must be at least a year';
+          this.dialogIcon = "error-message";
+          this.successDialog.open();
+        }else {
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          this.successDialog.open();
+        }
+        
       }
   }
 
@@ -1084,7 +1105,7 @@ uneditableItems(array, item, mode){
             check.bankCharge === null || check.bankCharge === '' ||
             check.whtaxAmt === null || check.whtaxAmt === '' ||
             check.matVal === null || check.matVal === '' 
-          ) {   
+          ) {
             return false;
           } 
 
@@ -1113,11 +1134,20 @@ uneditableItems(array, item, mode){
            } else {
              if (check.durUnit === 'Months' ){
                console.log((check.matPeriod % 12));
-               if ( (check.matPeriod % 12) !== 0) return false;
+               if ( (check.matPeriod % 12) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+               }
              } else if (check.durUnit === 'Years'){
-               if ( (check.matPeriod % 1) !== 0) return false;
+               if ( (check.matPeriod % 1) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+                }
              } else if (check.durUnit === 'Days'){
-               if ( (check.matPeriod % 365) !== 0) return false;
+               if ( (check.matPeriod % 365) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+               }
              }
            }
         }
@@ -1179,16 +1209,30 @@ uneditableItems(array, item, mode){
 
     tempSaveAcitInvestments.map(a => { 
 
-                                 var principal = parseFloat(a.invtAmt),
-                                     rate = parseFloat(a.intRt)/100,
+                                 var rate = parseFloat(a.intRt)/100,
                                      time,
                                      matPer,
                                      bankCharges,
-                                     matVal
+                                     matVal,
+                                     principal;
 
-                                     matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
+                                 if (a.preTerminatedTag === 'Y'){
+                                   principal = parseFloat(a.invtAmt);
+                                   matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
+                                   time = parseFloat(matPer)/360;
+                                 }else if (a.partialPullOutTag === 'Y') {
+                                   principal = a.invtAmt - a.partialPullOutAmt;
+                                   matPer = a.matPeriod;                    
+                                   if(a.durUnit === 'Days'){
                                      time = parseFloat(matPer)/360;
+                                   } else if (a.durUnit === 'Months'){
+                                     time = parseFloat(matPer)/12;
+                                   } else if (a.durUnit === 'Years'){
+                                     time = parseFloat(matPer);
+                                   }
 
+                                 }
+                                
                                      var invtIncome = principal * rate * time; 
                                      var taxRate = parseFloat(this.wtaxRate) / 100;
                                      var withHTaxAmt = invtIncome * taxRate;
@@ -1244,13 +1288,13 @@ uneditableItems(array, item, mode){
                                         bank : a.bank,
                                         certNo : a.certNo,
                                         purDate : a.purDate,
-                                        matDate : a.termDate,
-                                        preTerminatedTag : 'Y',
-                                        termDate : a.termDate,
+                                        matDate : a.matDate,
+                                        preTerminatedTag : 'N',
+                                        termDate : null,
                                         invtType : a.invtType,
                                         invtSecCd : a.invtSecCd,
-                                        invtStatus : 'M',
-                                        durUnit : 'Days',
+                                        invtStatus : 'F',
+                                        durUnit : a.durUnit,
                                         currCd : a.currCd,
                                         currRate : a.currRate,
                                         currSeq : null,
@@ -1263,8 +1307,11 @@ uneditableItems(array, item, mode){
                                         amortized : null,
                                         priceCost : null,
                                         amortEff : null,
+                                        partialPullOutTag : 'N',
+                                        partialPullOutDate : null,
+                                        partialPullOutAmt : null,
                                         matPeriod : matPer,
-                                        invtAmt : a.invtAmt,
+                                        invtAmt : principal,
                                         bankCharge : a.bankCharge,
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
@@ -1313,6 +1360,11 @@ uneditableItems(array, item, mode){
                                                         }else {
                                                             a.preTerminatedTag = 'N';
                                                             a.termDate = null;
+                                                        }
+
+
+                                                        if (a.partialPullOutTag === 'Y' && a.invtStatus === 'O'){
+                                                            a.invtStatus = 'M'; 
                                                         }
 
                                                         if (a.amortized === null || a.amortized === ""){
@@ -1402,7 +1454,6 @@ uneditableItems(array, item, mode){
      this.cancelFlag = false;
    }else if (obj === true){
      this.passData.tableData = [];
-     this.searchParams = [];
      this.table.overlayLoader = true;
      this.retrieveInvestmentsList(this.searchParams);
    }
