@@ -101,33 +101,12 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   diemInsData: any = {
     tableData       : [],
-    tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
     dataTypes       : ['text','req-select','text','percent','currency','currency'],
-    magnifyingGlass : ['directorName'],
-    nData: {
-      directorName  : '',
-      feeType       : '',
-      feeTypeDesc   : '',
-      currCd        : '',
-      currRate      : '',
-      feeAmt        : 0,
-      localAmt      : 0,
-      newRec        : 1,
-      showMG        : 1
-    },
-    opts: [
-      {selector   : 'feeTypeDesc',  prev : [], vals: []},
-    ],
     paginateFlag  : true,
     infoFlag      : true,
-    pageID        : 'diemInsData',
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,false,true,true,false,true],
-    total         : [null, null, null,'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto','auto',1,'auto','auto','auto'],
-    keys          : ['directorName','feeTypeDesc','currCd','currRate','feeAmt','localAmt']
   };
 
   //Added by NECO 11/19/2019
@@ -207,7 +186,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   warnMsg            : string = '';
   recPrqTrans        : any;
   requestData        : any;
-  recPerDiem         : any;
+  recDiemIns         : any;
   dfType             : any;
   lovRow             : any;
   selectedTblData    : any = {};
@@ -221,11 +200,13 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   };
 
   params : any =  {
-    savePrqTrans     : [],
-    deletePrqTrans   : [],
-    delCvItemTaxes   : [],
-    savePerDiem      : [],
-    deletePerDiem    : []
+    savePrqTrans       : [],
+    deletePrqTrans     : [],
+    delCvItemTaxes     : [],
+    savePerDiem        : [],
+    deletePerDiem      : [],
+    saveInsuranceExp   : [],
+    deleteInsuranceExp : []
   };
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -355,19 +336,20 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   getPaytReqPrqTrans(){
     var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''),
-                         this.acctService.getAcsePerDiem(this.rowData.reqId),this.mtnService.getMtnGlSubDepNo('DF'))
-                 .pipe(map(([pr,prq,pd,df]) => { return { pr, prq, pd, df }; }));
+                         this.acctService.getAcsePerDiem(this.rowData.reqId),this.mtnService.getMtnGlSubDepNo(),this.acctService.getAcseInsuranceExp(this.rowData.reqId))
+                 .pipe(map(([pr,prq,pd,df,ie]) => { return { pr, prq, pd, df, ie }; }));
     subRes.subscribe(data => {
       this.requestData = data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; })[0];
-      this.recPrqTrans = data['prq']['acsePrqTrans'];
-      this.recPerDiem  = data['pd']['acsePerDiem'];
-      this.dfType       = data['df']['glSubDepNoList']; 
+      this.recPrqTrans     = data['prq']['acsePrqTrans'];
+      this.recDiemIns      = (this.requestData.tranTypeCd == 6)?data['pd']['acsePerDiem']:data['ie']['acseInsuranceExp'];
+      this.dfType          = (this.requestData.tranTypeCd == 6)?data['df']['glSubDepNoList'].filter(e => e.depCd == 'DF'):data['df']['glSubDepNoList'].filter(e => e.depCd == 'IE'); 
+
 
       console.log(this.requestData);
       console.log(this.recPrqTrans);
-      console.log(this.recPerDiem);
+      console.log(this.recDiemIns);
 
       if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
         this.cvData.tableData = [];
@@ -394,16 +376,77 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         },0);
         
       }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+        ////
+        if(this.requestData.tranTypeCd == 6){
+          var otherDataDiemIns: any = {
+            tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+            magnifyingGlass : ['directorName'],
+            nData: {
+              directorName  : '',
+              feeType       : '',
+              feeTypeDesc   : '',
+              currCd        : '',
+              currRate      : '',
+              feeAmt        : 0,
+              localAmt      : 0,
+              newRec        : 1,
+              showMG        : 1
+            },
+            opts: [
+              {selector   : 'feeTypeDesc',  prev : [], vals: []},
+            ],
+            pageID        : 'diemInsData',
+            uneditable    : [true,false,true,true,false,true],
+            total         : [null, null, null,'Total', 'feeAmt', 'localAmt'],
+            widths        : ['auto','auto',1,'auto','auto','auto'],
+            keys          : ['directorName','feeTypeDesc','currCd','currRate','feeAmt','localAmt']
+          };
+
+          $.extend(this.diemInsData,otherDataDiemIns);
+        }else{
+          var otherDataDiemIns: any = {
+            tHeader         : ['Insured','Insurance Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+            magnifyingGlass : ['insuredName'],
+            nData: {
+              insuredName        : '',
+              insuranceType      : '',
+              insuranceTypeDesc  : '',
+              currCd             : '',
+              currRate           : '',
+              insuredAmt         : 0,
+              localAmt           : 0,
+              newRec             : 1,
+              showMG             : 1
+            },
+            opts: [
+              {selector   : 'insuranceTypeDesc',  prev : [], vals: []},
+            ],
+            pageID        : 'diemInsData',
+            uneditable    : [true,false,true,true,false,true],
+            total         : [null, null, null,'Total', 'insuredAmt', 'localAmt'],
+            widths        : ['auto','auto',1,'auto','auto','auto'],
+            keys          : ['insuredName','insuranceTypeDesc','currCd','currRate','insuredAmt','localAmt']
+          };
+
+          $.extend(this.diemInsData,otherDataDiemIns);
+        }
+
+        ////
         this.diemInsData.tableData = [];
-        this.diemInsData.tableData = this.recPerDiem.map(e => { e.showMG = 1; return e;});
+        this.diemInsData.tableData = this.recDiemIns.map(e => { e.newRec = 0; return e; });
         this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
         this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
 
         setTimeout(() => {
           this.dieminsTbl.refreshTable();
           if(this.diemInsData.checkFlag){
-            this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+            if(this.requestData.tranTypeCd == 6){
+              this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
                               this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+            }else{
+              this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName}).length == 0 ? null :
+                              this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName})[0] );
+            }
           }
         },0);
       }
@@ -417,7 +460,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     }else if(tranTypeCd == 6){
       x.push((e.directorName == '' || e.directorName == null || e.feeTypeDesc == '' || e.feeTypeDesc == null || e.feeAmt == '' || e.feeAmt == null || isNaN(e.feeAmt) || e.feeAmt == 0)?true:'');
     }else if(tranTypeCd == 7){
-
+      x.push((e.insuredName == '' || e.insuredName == null || e.insuranceTypeDesc  == '' || e.insuranceTypeDesc == null || 
+        e.insuredAmt == '' || e.insuredAmt == null || isNaN(e.insuredAmt) || e.insuredAmt == 0)?true:'');
     }
     if(tranTypeCd != 6 && tranTypeCd != 7){
       x.push((e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0)?true:'');
@@ -434,6 +478,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     this.params.savePrqTrans = [];
     this.params.delCvItemTaxes = [];
     this.params.savePerDiem = [];
+    this.params.saveInsuranceExp = [];
 
     var isEmpty = 0;
     var tbl = [];
@@ -454,8 +499,14 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           isEmpty = 1;
           e.fromCancel = false;
         }else{
-          this.params.deletePrqTrans.push(e);
-          this.params.delCvItemTaxes.push(e.taxAllocation);
+          if(this.requestData.tranTypeCd == 6){
+            this.params.deletePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            this.params.deleteInsuranceExp.push(e);
+          }else{
+            this.params.deletePrqTrans.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
+          }
         }
       }else{
         e.fromCancel = true;
@@ -465,17 +516,28 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
-          e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
           if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
             this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
             e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
           }
-          this.params.savePerDiem.push(e);
-          this.params.savePrqTrans.push(e);
+          if(this.requestData.tranTypeCd == 6){
+            e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
+            this.params.savePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
+            this.params.saveInsuranceExp.push(e);
+          }else{
+            this.params.savePrqTrans.push(e);
+          }
         }else if(e.edited && e.deleted){ 
-          this.params.deletePrqTrans.push(e);
-          this.params.deletePerDiem.push(e);
-          this.params.delCvItemTaxes.push(e.taxAllocation);
+          if(this.requestData.tranTypeCd == 6){
+            this.params.deletePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            this.params.deleteInsuranceExp.push(e);
+          }else{
+            this.params.deletePrqTrans.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
+          }
         }
 
       }
@@ -484,7 +546,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.params.updateUser = this.ns.getCurrentUser();
       this.params.tranTypeCd = this.requestData.tranTypeCd;
     });
-
+    console.log(this.params.saveInsuranceExp);
     console.log(this.params.savePerDiem);
     console.log(this.params.savePrqTrans);
 
@@ -495,8 +557,15 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.params.savePerDiem  = [];
     }else{
       var emp = false;
-      if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+      if(this.requestData.tranTypeCd == 6){
         if(this.params.savePerDiem.length == 0 && this.params.deletePerDiem.length == 0){
+          this.dieminsTbl.markAsPristine();
+          emp = true;
+        }else{
+          emp = false;
+        }
+      }else if(this.requestData.tranTypeCd == 7){
+        if(this.params.saveInsuranceExp.length == 0 && this.params.deleteInsuranceExp.length == 0){
           this.dieminsTbl.markAsPristine();
           emp = true;
         }else{
@@ -562,6 +631,20 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         this.params.savePerDiem = [];
         this.params.deletePerDiem = [];
       });
+    }else if(this.requestData.tranTypeCd == 7){
+      this.acctService.saveAcseInsuranceExp(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.dieminsTbl.markAsPristine();
+        }else{
+          this.dialogIcon = 'error';
+        }
+        this.suc.open();
+        this.params.saveInsuranceExp = [];
+        this.params.deleteInsuranceExp = [];
+      });
     }else{
       this.acctService.saveAcsePrqTrans(JSON.stringify(this.params))
       .subscribe(data => {
@@ -594,7 +677,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.lov.openLOV();
     }else if(from.toUpperCase() == 'DIEMINSDATA'){
       this.passData.selector = 'sl';
-      this.passData.params.slTypeCd = 8;
+      this.passData.params.slTypeCd = (this.requestData.tranTypeCd == 6)?8:'';
+      this.passData.from = (this.requestData.tranTypeCd == 7)?'prq-ins':'';
       this.lov.openLOV();
     }
     //Added by Neco 11/20/2019
@@ -635,41 +719,60 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   setData(data){
     console.log(data);
     console.log(data['data']);
-    console.log(this.lovRow.index);
+    console.log(this.lovRow);
     console.log( this.diemInsData.tableData[this.lovRow.index]);
       if(data.selector.toUpperCase() == 'SL'){
         var rec = data['data'];
-
-        let firstRow = data.data.pop();
-        this.lovRow.directorName = firstRow.slName;
-        this.lovRow.directorId = firstRow.slCd;
-
-        this.diemInsData.tableData = this.diemInsData.tableData.filter(a=>a.directorId != '');
-        for(let row of data.data) {
-          this.diemInsData.tableData.push(JSON.parse(JSON.stringify(this.diemInsData.nData)));
-          this.diemInsData.tableData[this.diemInsData.tableData.length - 1].directorName = row.slName;
-          this.diemInsData.tableData[this.diemInsData.tableData.length - 1].directorId = row.slCd;
-        }
-        // rec.forEach(e => {
-        //   this.diemInsData.tableData.push(e);
-        // });
-        // console.log(this.diemInsData.tableData);
-        // this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map((e,i) => {
-        //   //if(e.newRec == 1){
-        //     e.directorName = e.slName;
-        //     e.directorId   = e.slCd;
-        //     e.createDate = '';
-        //     e.createUser = ''; 
-        //     e.updateUser = ''; 
-        //     e.showMG     = 1;
-        //  // }
-        //   e.checked = false;
-        //   return e;
-        // });
-        this.dieminsTbl.refreshTable();
+        rec.forEach(e => {
+            e.newRec = 1;
+          this.diemInsData.tableData.push(e);
+        });
         console.log(this.diemInsData.tableData);
-        // this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
-        //                   this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+        if(this.requestData.tranTypeCd == 6){
+          this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map((e,i) => {
+            if(e.newRec == 1){
+              e.directorName = e.slName;
+              e.directorId   = e.slCd;
+              e.createDate = '';
+              e.createUser = ''; 
+              e.updateUser = ''; 
+            }
+            e.checked = false;
+            return e;
+          });
+          this.dieminsTbl.refreshTable();
+          this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+                            this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+        }else{
+          var insType = this.dfType;
+          this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.insuredName != '').map((e,i) => {
+            if(e.newRec == 1){
+              e.insuredName = e.slName;
+              e.insuredCd   = e.slCd;
+              e.insuredTypeCd = e.slTypeCd;
+              e.createDate = '';
+              e.createUser = ''; 
+              e.updateUser = ''; 
+            }
+            e.checked = false;
+            // console.log(this.dfType);
+            // console.log(e.slTypeCd);
+            // if(e.slTypeCd == 9){
+            //   this.diemInsData.opts[0].vals = insType.filter(d => d.depNo == 2).map(d => d.depNo);
+            //   this.diemInsData.opts[0].prev = insType.filter(d => d.depNo == 2).map(d => d.description);  
+            // }else if(e.slTypeCd == 8){
+            //   this.diemInsData.opts[0].vals = insType.filter(d => d.depNo != 2).map(d => d.depNo);
+            //   this.diemInsData.opts[0].prev = insType.filter(d => d.depNo != 2).map(d => d.description);  
+            // }else if(e.slTypeCd == 4){
+            //   this.diemInsData.opts[0].vals = insType.filter(d => d.depNo == 1 || d.depNo == 3 || d.depNo == 4).map(d => d.depNo);
+            //   this.diemInsData.opts[0].prev = insType.filter(d => d.depNo == 1 || d.depNo == 3 || d.depNo == 4).map(d => d.description);  
+            // }
+            return e;
+          });
+          this.dieminsTbl.refreshTable();
+          this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName}).length == 0 ? null :
+                              this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName})[0] );
+        }
         this.dieminsTbl.markAsDirty();
         this.onDataChange('diemins');
       }else{
@@ -777,7 +880,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     tbl.map(e => {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
-      (this.requestData.tranTypeCd == 6)?e.currAmt=e.feeAmt:'';
+      (this.requestData.tranTypeCd == 6)?e.currAmt=e.feeAmt:(this.requestData.tranTypeCd == 7)?e.currAmt=e.insuredAmt:'';
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
       if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
         for(var j of e.taxAllocation){
@@ -791,10 +894,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       }
       return e;
     });
-    // tbl.forEach(e => {
-      
-    // });
+  }
 
+  limitInsType(){
+   
   }
 
   onRowClick(event){
@@ -814,7 +917,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
         this.genTaxTbl.refreshTable();
         this.whTaxTbl.refreshTable();
-      }  
+      }
     }else{
       this.disableTaxBtn = true;
     }

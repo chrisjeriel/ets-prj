@@ -3115,4 +3115,21 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
     }
 
+    getAcseInsuranceExp(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseInsuranceExp',{params});	
+	}
+
+	saveAcseInsuranceExp(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+         return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInsuranceExp',params,header);
+    }
+
 }
