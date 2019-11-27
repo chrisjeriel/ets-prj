@@ -612,7 +612,7 @@ export class ExpiryListingComponent implements OnInit {
   retrieveExpPolList(filter?){
        this.searchParams.renewalFlag = '';
        //this.searchParams.processTag = 'N';
-       this.searchParams.processTag = '';
+       this.searchParams.processTag = 'N';
        this.searchParams.renewable = 'Y';
        if(filter !== undefined){
          this.table.overlayLoader = true;
@@ -710,7 +710,7 @@ export class ExpiryListingComponent implements OnInit {
        this.searchParams.renewalFlag = '';
        //this.searchParams.processTag = 'N';
        this.searchParams.renewable = 'N';
-       this.searchParams.processTag = '';
+       this.searchParams.processTag = 'N';
        if(filter !== undefined){
          this.nrTable.overlayLoader = true;
        }
