@@ -890,7 +890,7 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       console.log(this.passData.params);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName)).map(e => {e.newRec = 1; return e;});
+       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
        this.table.refreshTable();
        })
 

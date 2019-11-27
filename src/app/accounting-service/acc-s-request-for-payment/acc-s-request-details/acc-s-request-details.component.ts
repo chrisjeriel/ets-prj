@@ -209,6 +209,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   requestData        : any;
   recPerDiem         : any;
   dfType             : any;
+  lovRow             : any;
   selectedTblData    : any = {};
   private sub        : any;
 
@@ -394,7 +395,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         
       }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
         this.diemInsData.tableData = [];
-        this.diemInsData.tableData = this.recPerDiem;
+        this.diemInsData.tableData = this.recPerDiem.map(e => { e.showMG = 1; return e;});
         this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
         this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
 
@@ -447,10 +448,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
     tbl.forEach(e => {
       e.reqId    = this.rowData.reqId;
-
-      // if((this.requestData.tranTypeCd == 2?((e.glAcctId == '')?true:false):false) || e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
-      //    e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
-        console.log(this.validateData(this.requestData.tranTypeCd,e));
+      console.log(this.validateData(this.requestData.tranTypeCd,e));
       if(this.validateData(this.requestData.tranTypeCd,e)){
         if(!e.deleted){
           isEmpty = 1;
@@ -589,6 +587,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   }
 
   showLOV(event, from){
+    console.log(event);
+    this.lovRow = event;
     if(from.toUpperCase() == 'PCVDATA'){
       this.passData.selector = 'acseChartAcct';
       this.lov.openLOV();
@@ -634,24 +634,38 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   setData(data){
     console.log(data);
-    //if(from.toUpperCase() == 'PCVDATA'){
+    console.log(data['data']);
+    console.log(this.lovRow.index);
+    console.log( this.diemInsData.tableData[this.lovRow.index]);
       if(data.selector.toUpperCase() == 'SL'){
         var rec = data['data'];
-        rec.forEach(e => {
-          this.diemInsData.tableData.push(e);
-        });
-        console.log(this.diemInsData.tableData);
-        this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map(e => {
-          if(e.newRec == 1){
-            e.directorName = e.slName;
-            e.directorId   = e.slCd;
-            e.createDate = '';
-            e.createUser = ''; 
-            e.updateUser = ''; 
-          }
-          e.checked = false;
-          return e;
-        });
+
+        let firstRow = data.data.pop();
+        this.lovRow.directorName = firstRow.slName;
+        this.lovRow.directorId = firstRow.slCd;
+
+        this.diemInsData.tableData = this.diemInsData.tableData.filter(a=>a.directorId != '');
+        for(let row of data.data) {
+          this.diemInsData.tableData.push(JSON.parse(JSON.stringify(this.diemInsData.nData)));
+          this.diemInsData.tableData[this.diemInsData.tableData.length - 1].directorName = row.slName;
+          this.diemInsData.tableData[this.diemInsData.tableData.length - 1].directorId = row.slCd;
+        }
+        // rec.forEach(e => {
+        //   this.diemInsData.tableData.push(e);
+        // });
+        // console.log(this.diemInsData.tableData);
+        // this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map((e,i) => {
+        //   //if(e.newRec == 1){
+        //     e.directorName = e.slName;
+        //     e.directorId   = e.slCd;
+        //     e.createDate = '';
+        //     e.createUser = ''; 
+        //     e.updateUser = ''; 
+        //     e.showMG     = 1;
+        //  // }
+        //   e.checked = false;
+        //   return e;
+        // });
         this.dieminsTbl.refreshTable();
         console.log(this.diemInsData.tableData);
         // this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
