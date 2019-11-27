@@ -23,12 +23,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [DatePipe]
 })
 export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('cvTbl') cvTbl         : CustEditableNonDatatableComponent;
-  @ViewChild('pcvTbl') pcvTbl       : CustEditableNonDatatableComponent;
-  @ViewChild('can') can             : CancelButtonComponent;
-  @ViewChild('con') con             : ConfirmSaveComponent;
-  @ViewChild('suc') suc             : SucessDialogComponent;
-  @ViewChild('lov') lov             : LovComponent;
+  @ViewChild('cvTbl') cvTbl             : CustEditableNonDatatableComponent;
+  @ViewChild('pcvTbl') pcvTbl           : CustEditableNonDatatableComponent;
+  @ViewChild('dieminsTbl') dieminsTbl   : CustEditableNonDatatableComponent;
+  @ViewChild('can') can                 : CancelButtonComponent;
+  @ViewChild('con') con                 : ConfirmSaveComponent;
+  @ViewChild('suc') suc                 : SucessDialogComponent;
+  @ViewChild('lov') lov                 : LovComponent;
   //Added by Neco 11/20/2019
   @ViewChild('taxAlloc') taxAllocMdl : ModalComponent;
   @ViewChild('genTaxTbl') genTaxTbl: CustEditableNonDatatableComponent;
@@ -96,6 +97,37 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     total         : [null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
     widths        : ['auto',300,'auto','auto',1,'auto','auto','auto'],
     keys          : ['acctCd','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+  };
+
+  diemInsData: any = {
+    tableData       : [],
+    tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+    dataTypes       : ['text','req-select','text','percent','currency','currency'],
+    magnifyingGlass : ['directorName'],
+    nData: {
+      directorName  : '',
+      feeType       : '',
+      feeTypeDesc   : '',
+      currCd        : '',
+      currRate      : '',
+      feeAmt        : 0,
+      localAmt      : 0,
+      newRec        : 1,
+      showMG        : 1
+    },
+    opts: [
+      {selector   : 'feeTypeDesc',  prev : [], vals: []},
+    ],
+    paginateFlag  : true,
+    infoFlag      : true,
+    pageID        : 'diemInsData',
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
+    uneditable    : [true,false,true,true,false,true],
+    total         : [null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto','auto',1,'auto','auto','auto'],
+    keys          : ['directorName','feeTypeDesc','currCd','currRate','feeAmt','localAmt']
   };
 
   //Added by NECO 11/19/2019
@@ -175,6 +207,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   warnMsg            : string = '';
   recPrqTrans        : any;
   requestData        : any;
+  recPerDiem         : any;
+  dfType             : any;
   selectedTblData    : any = {};
   private sub        : any;
 
@@ -188,7 +222,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   params : any =  {
     savePrqTrans     : [],
     deletePrqTrans   : [],
-    delCvItemTaxes   : []
+    delCvItemTaxes   : [],
+    savePerDiem      : [],
+    deletePerDiem    : []
   };
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -317,16 +353,20 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   //END 11/20/2019
 
   getPaytReqPrqTrans(){
-    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''))
-                 .pipe(map(([pr,prq]) => { return { pr, prq }; }));
+    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''),
+                         this.acctService.getAcsePerDiem(this.rowData.reqId),this.mtnService.getMtnGlSubDepNo('DF'))
+                 .pipe(map(([pr,prq,pd,df]) => { return { pr, prq, pd, df }; }));
     subRes.subscribe(data => {
       this.requestData = data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; })[0];
       this.recPrqTrans = data['prq']['acsePrqTrans'];
+      this.recPerDiem  = data['pd']['acsePerDiem'];
+      this.dfType       = data['df']['glSubDepNoList']; 
 
       console.log(this.requestData);
       console.log(this.recPrqTrans);
+      console.log(this.recPerDiem);
 
       if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
         this.cvData.tableData = [];
@@ -352,8 +392,38 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           }
         },0);
         
+      }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+        this.diemInsData.tableData = [];
+        this.diemInsData.tableData = this.recPerDiem;
+        this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
+        this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
+
+        setTimeout(() => {
+          this.dieminsTbl.refreshTable();
+          if(this.diemInsData.checkFlag){
+            this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+                              this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+          }
+        },0);
       }
     });
+  }
+
+  validateData(tranTypeCd,e){
+    var x = [];
+    if(tranTypeCd == 2){
+      x.push((e.glAcctId == '')?true:false);
+    }else if(tranTypeCd == 6){
+      x.push((e.directorName == '' || e.directorName == null || e.feeTypeDesc == '' || e.feeTypeDesc == null || e.feeAmt == '' || e.feeAmt == null || isNaN(e.feeAmt) || e.feeAmt == 0)?true:'');
+    }else if(tranTypeCd == 7){
+
+    }
+    if(tranTypeCd != 6 && tranTypeCd != 7){
+      x.push((e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0)?true:'');
+    }
+
+    x.push((e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null)?true:false);
+    return x.some(e => e == true)?true:false;
   }
 
   onClickSave(cancelFlag?){ 
@@ -362,21 +432,26 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     this.dialogMessage = '';
     this.params.savePrqTrans = [];
     this.params.delCvItemTaxes = [];
+    this.params.savePerDiem = [];
 
     var isEmpty = 0;
-    var tbl;
+    var tbl = [];
 
     if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
       tbl = this.cvData.tableData;
     }else if(this.requestData.tranTypeCd == 2){
       tbl = this.pcvData.tableData;
+    }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+      tbl = this.diemInsData.tableData;
     }
 
     tbl.forEach(e => {
       e.reqId    = this.rowData.reqId;
-      e.reqId    = this.rowData.reqId;
-      if((this.requestData.tranTypeCd == 2?((e.glAcctId == '')?true:false):false) || e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
-         e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
+
+      // if((this.requestData.tranTypeCd == 2?((e.glAcctId == '')?true:false):false) || e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
+      //    e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
+        console.log(this.validateData(this.requestData.tranTypeCd,e));
+      if(this.validateData(this.requestData.tranTypeCd,e)){
         if(!e.deleted){
           isEmpty = 1;
           e.fromCancel = false;
@@ -392,11 +467,16 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
-          this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
-          e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+          e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
+          if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+          }
+          this.params.savePerDiem.push(e);
           this.params.savePrqTrans.push(e);
         }else if(e.edited && e.deleted){ 
           this.params.deletePrqTrans.push(e);
+          this.params.deletePerDiem.push(e);
           this.params.delCvItemTaxes.push(e.taxAllocation);
         }
 
@@ -407,57 +487,114 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.params.tranTypeCd = this.requestData.tranTypeCd;
     });
 
+    console.log(this.params.savePerDiem);
+    console.log(this.params.savePrqTrans);
+
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.suc.open();
-      this.params.savePrqTrans   = [];
+      this.params.savePrqTrans = [];
+      this.params.savePerDiem  = [];
     }else{
+      var emp = false;
+      if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+        if(this.params.savePerDiem.length == 0 && this.params.deletePerDiem.length == 0){
+          this.dieminsTbl.markAsPristine();
+          emp = true;
+        }else{
+          emp = false;
+        }
+      }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
-          this.con.confirmModal();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
           this.cvData.tableData = this.cvData.tableData.filter(e => e.itemName != '');
+          emp = true;
         }else{
-          this.params.delCvItemTaxes = this.params.delCvItemTaxes.flat();
-          console.log(this.cancelFlag);
-          if(this.cancelFlag == true){
-            this.con.showLoading(true);
-            setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
-          }else{
-            this.con.confirmModal();
-          }
+          emp = false;
         }
+      }
+
+      if(emp){
+        this.con.confirmModal();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+        this.params.savePerDiem   = [];
+        this.params.deletePerDiem = [];
+      }else{
+        this.params.delCvItemTaxes = this.params.delCvItemTaxes.flat();
+        if(this.cancelFlag == true){
+          this.con.showLoading(true);
+          setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
+        }else{
+          this.con.confirmModal();
+        }
+      }
+
+        // if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
+        //   (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
+        //   this.con.confirmModal();
+        //   this.params.savePrqTrans   = [];
+        //   this.params.deletePrqTrans = [];
+        //   this.cvData.tableData = this.cvData.tableData.filter(e => e.itemName != '');
+        // }else{
+        //   this.params.delCvItemTaxes = this.params.delCvItemTaxes.flat();
+        //   if(this.cancelFlag == true){
+        //     this.con.showLoading(true);
+        //     setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
+        //   }else{
+        //     this.con.confirmModal();
+        //   }
+        // }
     }
   }
 
   onSave(){
     console.log(this.params);
-    this.acctService.saveAcsePrqTrans(JSON.stringify(this.params))
-    .subscribe(data => {
-      console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();
-        this.genTaxTbl.markAsPristine();
-        this.whTaxTbl.markAsPristine();
-        if(this.cvTbl !== undefined){
-          this.cvTbl.markAsPristine();
+    if(this.requestData.tranTypeCd == 6){
+      this.acctService.saveAcsePerDiem(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.dieminsTbl.markAsPristine();
         }else{
-          this.pcvTbl.markAsPristine();
+          this.dialogIcon = 'error';
         }
-      }else{
-        this.dialogIcon = 'error';
-      }
-      this.suc.open();
-      this.params.savePrqTrans  = [];
-      this.params.deletePrqTrans  = [];
-      //(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
-    });
+        this.suc.open();
+        this.params.savePerDiem = [];
+        this.params.deletePerDiem = [];
+      });
+    }else{
+      this.acctService.saveAcsePrqTrans(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.genTaxTbl.markAsPristine();
+          this.whTaxTbl.markAsPristine();
+          if(this.cvTbl !== undefined){
+            this.cvTbl.markAsPristine();
+          }else{
+            this.pcvTbl.markAsPristine();
+          }
+        }else{
+          this.dialogIcon = 'error';
+        }
+        this.suc.open();
+        this.params.savePrqTrans  = [];
+        this.params.deletePrqTrans  = [];
+        //(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
+      });
+    }
   }
 
   showLOV(event, from){
     if(from.toUpperCase() == 'PCVDATA'){
       this.passData.selector = 'acseChartAcct';
+      this.lov.openLOV();
+    }else if(from.toUpperCase() == 'DIEMINSDATA'){
+      this.passData.selector = 'sl';
+      this.passData.params.slTypeCd = 8;
       this.lov.openLOV();
     }
     //Added by Neco 11/20/2019
@@ -495,76 +632,102 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   }
   //END 11/20/2019
 
-  setData(data, from){
+  setData(data){
     console.log(data);
-    if(from.toUpperCase() == 'PCVDATA'){
-      //Added by NECO 11/20/2019
-      if(data.selector.toUpperCase() != 'ACSECHARTACCT'){
-          let selected = data.data;
-          if(selected[0].taxId !== undefined){ //set values to general taxes table
-            console.log(selected);
-            this.passDataGenTax.tableData = this.passDataGenTax.tableData.filter(a=>a.showMG!=1);
-            for(var i = 0; i < selected.length; i++){
-              this.passDataGenTax.tableData.push(JSON.parse(JSON.stringify(this.passDataGenTax.nData)));
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxCd = selected[i].taxCd; 
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxName = selected[i].taxName; 
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxRate = selected[i].taxRate;
-              //this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
-              if(selected[i].taxRate == null || (selected[i].taxRate !== null && selected[i].taxRate == 0)){ //if fixed tax
-                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
-              }else{ //else if rated tax
-                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt;
-              }
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].reqId = this.rowData.reqId;
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].showMG = 0;
-              this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].uneditable = ['taxCd'];
-            }
-            this.genTaxTbl.refreshTable();
-          }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
-            console.log(selected);
-            this.passDataWhTax.tableData = this.passDataWhTax.tableData.filter(a=>a.showMG!=1);
-            for(var i = 0; i < selected.length; i++){
-              this.passDataWhTax.tableData.push(JSON.parse(JSON.stringify(this.passDataWhTax.nData)));
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxCd = selected[i].taxCd; 
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxName = selected[i].taxName; 
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxRate = selected[i].taxRate;
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt; //placeholder
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].reqId = this.rowData.reqId;
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].edited = true;
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].showMG = 0;
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].uneditable = ['taxCd'];
-            }
-            this.whTaxTbl.refreshTable();
-          }
-          this.selectedTblData.edited = true;
-          this.selectedTblData.taxAllocation = this.passDataGenTax.tableData.concat(this.passDataWhTax.tableData);
-      }else if(data.selector.toUpperCase() == 'ACSECHARTACCT'){
-      //END 11/20/2019
+    //if(from.toUpperCase() == 'PCVDATA'){
+      if(data.selector.toUpperCase() == 'SL'){
         var rec = data['data'];
         rec.forEach(e => {
-          (this.pcvData.tableData.some(e2 => e2.glAcctId != e.glAcctId))?this.pcvData.tableData.push(e):'';
+          this.diemInsData.tableData.push(e);
         });
-        this.pcvData.tableData = this.pcvData.tableData.filter(e => e.glAcctId != '').map(e => {
+        console.log(this.diemInsData.tableData);
+        this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map(e => {
           if(e.newRec == 1){
-            e.acctCd = e.shortCode; 
-            e.itemName = e.shortDesc;
-            e.taxAllocation = this.pcvData.nData.taxAllocation;
+            e.directorName = e.slName;
+            e.directorId   = e.slCd;
             e.createDate = '';
             e.createUser = ''; 
             e.updateUser = ''; 
           }
-          e.checked=false;
+          e.checked = false;
           return e;
         });
-        console.log(this.pcvData.tableData);
-        this.pcvTbl.refreshTable();
-        this.pcvTbl.onRowClick(null, this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
-                          this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
-        this.pcvTbl.markAsDirty();
-        this.onDataChange('pcv');
+        this.dieminsTbl.refreshTable();
+        console.log(this.diemInsData.tableData);
+        // this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+        //                   this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+        this.dieminsTbl.markAsDirty();
+        this.onDataChange('diemins');
+      }else{
+        //Added by NECO 11/20/2019
+        if(data.selector.toUpperCase() != 'ACSECHARTACCT'){
+            let selected = data.data;
+            if(selected[0].taxId !== undefined){ //set values to general taxes table
+              console.log(selected);
+              this.passDataGenTax.tableData = this.passDataGenTax.tableData.filter(a=>a.showMG!=1);
+              for(var i = 0; i < selected.length; i++){
+                this.passDataGenTax.tableData.push(JSON.parse(JSON.stringify(this.passDataGenTax.nData)));
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxCd = selected[i].taxCd; 
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxName = selected[i].taxName; 
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxRate = selected[i].taxRate;
+                //this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+                if(selected[i].taxRate == null || (selected[i].taxRate !== null && selected[i].taxRate == 0)){ //if fixed tax
+                  this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
+                }else{ //else if rated tax
+                  this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt;
+                }
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].reqId = this.rowData.reqId;
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].showMG = 0;
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].uneditable = ['taxCd'];
+              }
+              this.genTaxTbl.refreshTable();
+            }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
+              console.log(selected);
+              this.passDataWhTax.tableData = this.passDataWhTax.tableData.filter(a=>a.showMG!=1);
+              for(var i = 0; i < selected.length; i++){
+                this.passDataWhTax.tableData.push(JSON.parse(JSON.stringify(this.passDataWhTax.nData)));
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxCd = selected[i].taxCd; 
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxName = selected[i].taxName; 
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxRate = selected[i].taxRate;
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt; //placeholder
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].reqId = this.rowData.reqId;
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].edited = true;
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].showMG = 0;
+                this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].uneditable = ['taxCd'];
+              }
+              this.whTaxTbl.refreshTable();
+            }
+            this.selectedTblData.edited = true;
+            this.selectedTblData.taxAllocation = this.passDataGenTax.tableData.concat(this.passDataWhTax.tableData);
+        }else if(data.selector.toUpperCase() == 'ACSECHARTACCT'){
+        //END 11/20/2019
+          var rec = data['data'];
+          rec.forEach(e => {
+            (this.pcvData.tableData.some(e2 => e2.glAcctId != e.glAcctId))?this.pcvData.tableData.push(e):'';
+          });
+          this.pcvData.tableData = this.pcvData.tableData.filter(e => e.glAcctId != '').map(e => {
+            if(e.newRec == 1){  
+              e.acctCd = e.shortCode; 
+              e.itemName = e.shortDesc;
+              e.taxAllocation = this.pcvData.nData.taxAllocation;
+              e.createDate = '';
+              e.createUser = ''; 
+              e.updateUser = ''; 
+            }
+            e.checked=false;
+            return e;
+          });
+          console.log(this.pcvData.tableData);
+          this.pcvTbl.refreshTable();
+          this.pcvTbl.onRowClick(null, this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName}).length == 0 ? null :
+                            this.pcvData.tableData.filter(a=>{return a.itemName == this.selectedTblData.itemName})[0] );
+          this.pcvTbl.markAsDirty();
+          this.onDataChange('pcv');
+        }
       }
-    }
+      
+    //}
   }
 
   removeAddDelBtn(tbl){
@@ -593,19 +756,24 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       tbl = this.cvData.tableData;
     }else if(from.toLowerCase() == 'pcv'){
       tbl = this.pcvData.tableData;
+    }else if(from.toLowerCase() == 'diemins'){
+      tbl = this.diemInsData.tableData;
     }
-    
+    console.log(tbl);
     tbl.map(e => {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
+      (this.requestData.tranTypeCd == 6)?e.currAmt=e.feeAmt:'';
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
-      for(var j of e.taxAllocation){
-        if(j.taxCd == 'VAT' && this.rowData.vatTag == 2){ //if Payee is ZERO VAT
-            j.taxAmt = 0;
-          }else if(j.taxRate !== null && j.taxRate !== 0){
-            j.taxAmt = e.localAmt * (j.taxRate / 100);
-          }
-        j.edited = true;
+      if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+        for(var j of e.taxAllocation){
+          if(j.taxCd == 'VAT' && this.rowData.vatTag == 2){ //if Payee is ZERO VAT
+              j.taxAmt = 0;
+            }else if(j.taxRate !== null && j.taxRate !== 0){
+              j.taxAmt = e.localAmt * (j.taxRate / 100);
+            }
+          j.edited = true;
+        }
       }
       return e;
     });
@@ -620,17 +788,19 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     this.selectedTblData = event;
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);
-      this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);  
-      //Added by Neco 11/20/2019
-      this.disableTaxBtn = false;
-      this.passDataGenTax.nData.reqId = event.reqId;
-      this.passDataGenTax.nData.itemNo = event.itemNo;
-      this.passDataWhTax.nData.reqId = event.reqId;
-      this.passDataWhTax.nData.itemNo = event.itemNo;
-      this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
-      this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
-      this.genTaxTbl.refreshTable();
-      this.whTaxTbl.refreshTable();
+      this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);
+      if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+        //Added by Neco 11/20/2019
+        this.disableTaxBtn = false;
+        this.passDataGenTax.nData.reqId = event.reqId;
+        this.passDataGenTax.nData.itemNo = event.itemNo;
+        this.passDataWhTax.nData.reqId = event.reqId;
+        this.passDataWhTax.nData.itemNo = event.itemNo;
+        this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
+        this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
+        this.genTaxTbl.refreshTable();
+        this.whTaxTbl.refreshTable();
+      }  
     }else{
       this.disableTaxBtn = true;
     }

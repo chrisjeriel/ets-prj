@@ -221,6 +221,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
           this.retrieveIncomePullout();
           this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
           this.investment.emit(this.passLov.hide);
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();

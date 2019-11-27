@@ -124,7 +124,7 @@
 							</div>
 							<div class="input-group" style="margin-bottom: -6px !important;">
 								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Maturity</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.matVal  | number: '1.2-2'" readonly style="border: none;height: 15px ! important">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.selectedData.matDate | date: 'dd-MMM-yyyy' " readonly style="border: none;height: 15px ! important">
 							</div>
 							<div class="input-group" style="margin-bottom: -6px !important;">
 								<label class="form-control-sm col-sm-5" style="padding-top:0px !important;text-align: left !important;height: 15px ! important">Eff%</label>

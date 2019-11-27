@@ -166,6 +166,11 @@ export class BatchInvoiceComponent implements OnInit {
     this.getCurr();
   }
 
+  checkCode(ev){
+    this.ns.lovLoader(ev, 1);
+    this.currLov.checkCode(this.selectedrecord.currCd,ev);
+  }
+
   getCurr(){
     this.ms.getMtnCurrency('','Y').subscribe(
       (data:any)=>{ 
@@ -177,6 +182,7 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   onTableItemInvoiceClick(data){
+    console.log(data);
     this.passDataInvoiceItems.disableGeneric = data == null;
     this.selecteditemrecord = data;
   }
@@ -314,9 +320,9 @@ export class BatchInvoiceComponent implements OnInit {
       //this.selectedrecord.currRate = this.decimal.transform(this.selectedrecord.currRate,'1.6-6');
       this.ns.lovLoader(data.ev, 0);
       this.validateCurr(null,null);
-      this.viewinvoiceModal.openNoClose();
+      //this.viewinvoiceModal.openNoClose();
     }else{
-      this.viewinvoiceModal.openNoClose();
+      //this.viewinvoiceModal.openNoClose();
     }
   }
 
@@ -426,13 +432,9 @@ export class BatchInvoiceComponent implements OnInit {
                    this.passDataInvoiceItems.tableData[i].updateUser = this.ns.getCurrentUser();
                    this.passDataInvoiceItems.tableData[i].updateDate = this.ns.toDateTimeString(0);
                    this.passDataInvoiceItems.tableData[i].invoiceId =  a['invoiceIdOut'];
+                   this.passDataInvoiceItems.tableData[i].localAmt  = this.passDataInvoiceItems.tableData[i].itemAmt * this.passDataInvoiceItems.tableData[i].currRate;
                }
 
-            /*  this.passDataInvoiceItems.tableData.map(a => { 
-                                                      a.updateUser = this.ns.getCurrentUser();
-                                                      a.updateDate = this.ns.toDateTimeString(0);
-                                                      a.invoiceId = a['invoiceIdOut'];                                 
-                                                      return a; });  */
               this.acitInvItems.invoiceItemList = this.passDataInvoiceItems.tableData.filter(a=>a.edited && !a.deleted);
               this.acitInvItems.invoiceDelItemList = this.deletedData; 
               this.deletedData = [];
@@ -835,8 +837,19 @@ export class BatchInvoiceComponent implements OnInit {
           ) {   
             return false;
           }else {
-            return true;
-          }
+            console.log(this.passDataInvoiceItems.tableData.length);
+            if (this.passDataInvoiceItems.tableData.length === 0){
+              return true;
+            }
+              for(let check of this.passDataInvoiceItems.tableData){
+                  if( check.itemDesc === null || check.itemDesc === '' ||
+                     check.itemAmt === null || check.itemAmt === '' 
+                  ) {   
+                    return false;
+                  }
+                return true;
+              }
+            }
  }
 
  onClickDelInvt(){

@@ -38,6 +38,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     tranDate: '',
     backupBy: '',
     currCd: '',
+    currRate: '',
     tranAmount: '',
     localCurrCd: 'PHP',
     localAmt: '',
@@ -58,8 +59,17 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     params:{}
   }
 
+  originalCrDr: any = {
+    creditAmt: 0,
+    debitAmt: 0,
+    foreignCreditAmt: 0,
+    foreignDebitAmt: 0
+  }
+
   lovRow: any;
   lovCheckBox:boolean = true;
+  dialogIcon: string = '';
+  dialogMessage: string = '';
 
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
@@ -67,6 +77,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
+    this.passData.disableAdd = true;
   }
 
   ngOnDestroy(){
@@ -99,6 +110,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
 
   setSelectedData(data){
     this.table.overlayLoader = true;
+    this.passData.disableAdd = false;
     switch(this.tranClass){
       case 'AR':
         this.tranNo = data.data.formattedArNo;
@@ -119,6 +131,13 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       }
     );*/
 
+    this.originalCrDr = {
+      creditAmt: 0,
+      debitAmt: 0,
+      foreignCreditAmt: 0,
+      foreignDebitAmt: 0
+    };
+
     var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(data.data.tranId),
                         this.accountingService.getAcitEditedAcctEntries(data.data.tranId))
                        .pipe(map(([acctEntries, acctEntriesDetails]) => { return { acctEntries, acctEntriesDetails}; }));
@@ -130,6 +149,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.tranDetails.tranDate = this.ns.toDateTimeString(acctEntriesDetails.editedAcctEntries.tranDate).split('T')[0];
         this.tranDetails.backupBy = acctEntriesDetails.editedAcctEntries.editedBy;
         this.tranDetails.currCd = acctEntriesDetails.editedAcctEntries.currCd;
+        this.tranDetails.currRate = acctEntriesDetails.editedAcctEntries.currRate;
         this.tranDetails.tranAmount = acctEntriesDetails.editedAcctEntries.amount;
         this.tranDetails.localAmt = acctEntriesDetails.editedAcctEntries.localAmt;
         this.tranDetails.payeeName = acctEntriesDetails.editedAcctEntries.payee;
@@ -140,14 +160,30 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.passData.tableData = acctEntries.list.map(a=>{a.showMG = 1; return a;});
         this.table.refreshTable();
         this.table.overlayLoader = false;
+        for(var i of this.passData.tableData){
+          this.originalCrDr.foreignCreditAmt += i.foreignCreditAmt;
+          this.originalCrDr.foreignDebitAmt  += i.foreignDebitAmt;
+          this.originalCrDr.creditAmt        += i.creditAmt;
+          this.originalCrDr.debitAmt         += i.debitAmt;
+        }
       }
     );
+  }
+
+  onTableDataChange(data){
+    if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
+      for(var i = 0; i < this.passData.tableData.length; i++){
+        this.passData.tableData[i].debitAmt = this.tranDetails.currRate * this.passData.tableData[i].foreignDebitAmt;
+        this.passData.tableData[i].creditAmt = this.tranDetails.currRate * this.passData.tableData[i].foreignCreditAmt;
+      }
+    }
   }
 
   clearTranDetails(){
     this.tranDetails.tranDate = '';
     this.tranDetails.backupBy = '';
     this.tranDetails.currCd = '';
+    this.tranDetails.currRate = '';
     this.tranDetails.tranAmount = '';
     this.tranDetails.localCurrCd = 'PHP';
     this.tranDetails.localAmt = '';
@@ -156,6 +192,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     this.tranDetails.backupDate = '';
     this.tranDetails.tranTypeName = '';
     this.tranDetails.particulars = '';
+    this.passData.disableAdd = true;
   }
 
   clickLov(data){
@@ -206,5 +243,39 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       }
       this.table.refreshTable();
     }
+  }
+
+  onClickSave(){
+    if(this.editAmtEqualsOrigAmt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Unable to save the changes. The Total Debit and Credit Amounts must still be the same as the original and must still be balanced.';
+      this.successDiag.open();
+    }
+  }
+
+  //VALIDATIONS STARTS HERE
+  editAmtEqualsOrigAmt(): boolean{
+    let foreignCrAmt: number = 0;
+    let foreignDbAmt: number = 0;
+    let creditAmt: number = 0;
+    let debitAmt: number = 0;
+
+    for(var i of this.passData.tableData){
+      foreignCrAmt += Math.round(i.foreignCreditAmt * 100) / 100;
+      foreignDbAmt += Math.round(i.foreignDebitAmt * 100) / 100;
+      creditAmt    += Math.round(i.creditAmt * 100) / 100;
+      debitAmt     += Math.round(i.debitAmt * 100) / 100;
+    }
+    console.log(this.originalCrDr.foreignCreditAmt + '/' + foreignCrAmt);
+    console.log(this.originalCrDr.foreignDebitAmt + '/' + foreignDbAmt);
+    console.log(this.originalCrDr.creditAmt + '/' + creditAmt);
+    console.log(this.originalCrDr.debitAmt + '/' + debitAmt);
+    if(this.originalCrDr.foreignCreditAmt !== foreignCrAmt ||
+       this.originalCrDr.foreignDebitAmt  !== foreignDbAmt ||
+       this.originalCrDr.creditAmt        !== creditAmt    ||
+       this.originalCrDr.debitAmt         !== debitAmt){
+      return true;
+    }
+    return false;
   }
 }
