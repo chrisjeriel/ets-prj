@@ -59,8 +59,13 @@ export class BatchPostComponent implements OnInit {
               dataType: 'text'
           },
           {
-              key: 'Sstatus',
+              key: 'status',
               title:'Status',
+              dataType: 'text'
+          },
+          {
+              key: 'lineCd',
+              title:'Line',
               dataType: 'text'
           },
           {
@@ -81,6 +86,16 @@ export class BatchPostComponent implements OnInit {
           {
               key: 'riskName',
               title:'Risk',
+              dataType: 'text'
+          },
+          {
+              key: 'currencyCd',
+              title:'Currency',
+              dataType: 'text'
+          },
+          {
+              key: 'totalSi',
+              title:'Sum Insured',
               dataType: 'text'
           },
           {
