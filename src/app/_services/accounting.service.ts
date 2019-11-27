@@ -92,6 +92,39 @@ export class AccountingService {
 	    total: [null,null,null,'TOTAL DEBIT AND CREDIT','debitAmt', 'creditAmt','foreignDebitAmt','foreignCreditAmt']
   	};
 
+  	treatyData: any ={
+	    tableData     : [],
+	    tHeaderWithColspan: [{header:'', span: 1},{header:'QSOA Details', span: 6},{header: 'Payment Details', span: 2}, {header: 'Summary of Payments', span: 2}],
+	    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)', 'Total Payments', 'Remaining Balance'],
+	    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency', 'currency', 'currency'],
+	    magnifyingGlass : ['quarterEnding'],
+	    nData: {
+	      qsoaId         : '',
+	      quarterEnding  : '',
+	      currCd         : '',
+	      currRate       : '',
+	      netQsoaAmt     : 0,
+	      prevPaytAmt    : 0,
+	      prevBalance    : 0,
+	      currAmt        : 0,
+	      localAmt       : 0,
+	      newPaytAmt     : 0,
+	      newBalance     : 0,
+	      newRec         : 1,
+	      showMG         : 1
+	    },
+	    paginateFlag  : true,
+	    infoFlag      : true,
+	    pageID        : 'treatyBalanceData'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
+	    checkFlag     : true,
+	    addFlag       : true,
+	    deleteFlag    : true,
+	    uneditable    : [true,true,true,true,true,true,false,true,true,true],
+	    total         : [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'],
+	    widths        : ['1','1','1','120','120','120','120','120','120','120'],
+	    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
+	}
+
 	arDetails: ARDetails[] = [];
 	accountingEntries: AccountingEntries[] = [];
 	cvListing: CVListing[] = [];
@@ -218,6 +251,23 @@ export class AccountingService {
 
 	getAccEntriesPassData() {
 		return Object.create(this.passDataAccEntries);
+	}
+
+	getTreatyKeys(tranClass){
+		if('AR' == tranClass){
+			this.treatyData.nData['tranId'] = '';
+			this.treatyData.nData['billId'] = 1;
+			this.treatyData.nData['itemNo'] = '';
+
+			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
+			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
+		}else if('JV' == tranClass){ // todo
+			// this.passDataInwPolBal.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
+			// this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
+   //  		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+		}
+		
+		return Object.create(this.treatyData);
 	}
 
 	getAmountDetails() {
@@ -3054,4 +3104,15 @@ export class AccountingService {
          };
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcsePerDiem',params,header);
     }
+
+    genBatchOr(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
+    }
+
 }

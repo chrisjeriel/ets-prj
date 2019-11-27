@@ -638,6 +638,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					        });
 						}
 						//end internal comp
+					this.ngOnInit();
 				}
 			});
 		} else {
@@ -956,17 +957,17 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		this.genInfoData.expiryDate = this.ns.toDateTimeString(d);
 	}
 
-	testFoc() {
-		this.a = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy; 
-	}
+	// testFoc() {
+	// 	this.a = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy; 
+	// }
 
-	testBlur() {
-		this.b = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy;
+	// testBlur() {
+	// 	this.b = this.genInfoData.reqBy == '' || this.genInfoData.reqBy == null ? '<Quotation_Header.Requested_By>' : this.genInfoData.reqBy;
 
-		var reg = new RegExp(this.a, 'gi');
+	// 	var reg = new RegExp(this.a, 'gi');
 
-		this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
-	}
+	// 	this.genInfoData.openingParag = this.genInfoData.openingParag.replace(reg, this.b);
+	// }
 
 	//paul
 	checkQuoteOption(){

@@ -824,7 +824,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     //edit by paul
     //check if expiry changed and prompt to change maintenance date if not null
 
-    this.cancelFlag = cancelFlag !== undefined;
+    this.cancelFlag = typeof cancelFlag == 'boolean' ? cancelFlag :  cancelFlag !== undefined;
     this.saveBtnClicked = true;
     this.checkAlopFlag = true;
 

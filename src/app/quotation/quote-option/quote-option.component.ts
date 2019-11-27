@@ -620,6 +620,9 @@ saveQuoteOptionAll(cancelFlag?){
           data.uneditable.push('rate');
       }else if(data.amount == 0){
         data.rate = 0;
+        if(data.changeTag == 'N'){
+          data.uneditable = ['rate'];
+        }
       }
     }
     if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.filter(a=>!a.deleted).length==1)

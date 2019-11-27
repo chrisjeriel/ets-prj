@@ -490,6 +490,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { PolicyReportsComponent } from './underwriting/generate-documents/policy-reports/policy-reports.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
+import { UploaderComponent } from './_components/common/uploader/uploader.component';
+import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 
 @NgModule({
     imports: [
@@ -984,6 +986,8 @@ import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quo
         WfCalendarComponent,
         PolicyReportsComponent,
         UpdateQuoteAttachmentComponent,
+        UploaderComponent,
+        RenewExpPolicyComponent,
     ],
 
   	providers: [

@@ -165,6 +165,11 @@
                                     </ngb-panel>
                                     <ngb-panel title="Expiry & Renewal">
                                         <ng-template ngbPanelContent>
+                                            <ng-container>
+                                                <button [routerLink]="['/renew-exp-pol']" class="button btn btn-link">Renew
+                                                    Expiring Policy</button>
+                                                <br />
+                                            </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL025') > -1">
                                                 <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
                                                     Expiring Policies</button>

@@ -104,10 +104,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   inwardPolBalData: any = {};
 
-  treatyBalanceData: any = {
+  /*treatyBalanceData: any = {
     tableData     : [],
-    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)'],
-    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency'],
+    tHeaderWithColspan: [{header:'', span: 1},{header:'QSOA Details', span: 6},{header: 'Payment Details', span: 2}, {header: 'Summary of Payments', span: 2}],
+    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)', 'Total Payments', 'Remaining Balance'],
+    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency', 'currency', 'currency'],
     magnifyingGlass : ['quarterEnding'],
     nData: {
       qsoaId         : '',
@@ -115,10 +116,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       currCd         : '',
       currRate       : '',
       netQsoaAmt     : 0,
-      cumPayt        : 0,
-      remainingBal   : 0,
+      prevPaytAmt    : 0,
+      prevBalance    : 0,
       currAmt        : 0,
       localAmt       : 0,
+      newPaytAmt     : 0,
+      newBalance     : 0,
       newRec         : 1,
       showMG         : 1
     },
@@ -128,11 +131,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true,false,true],
-    total         : [null, null, 'Total','netQsoaAmt','cumPayt','remainingBal','currAmt', 'localAmt'],
-    widths        : ['1','1','100','150','150','150','150','150'],
-    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','cumPayt','remainingBal','currAmt','localAmt']
-  };
+    uneditable    : [true,true,true,true,true,true,false,true,true,true],
+    total         : [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'],
+    widths        : ['1','1','1','120','120','120','120','120','120','120'],
+    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
+  };*/
+
+  treatyBalanceData: any = {};
 
   investmentData: any = {
     tableData     : [],
@@ -376,6 +381,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }else if(this.requestData.tranTypeCd == 5){
           this.getAcctPrqServFee();
         }else if(this.requestData.tranTypeCd == 6){
+          this.treatyBalanceData = this.acctService.getTreatyKeys('PRQ');
           this.treatyBalanceData.tableData = [];
           (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.treatyBalanceData):'';
           this.getTreaty();
@@ -648,14 +654,17 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
     } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
-      console.log(this.requestData);
-      console.log(data['data']);
+      ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
 
       data['data'].forEach(a => {
         if(this.treatyBalanceData.tableData.some(b => b.qsoaId != a.qsoaId)) {
           a.currCd = this.requestData.currCd;
           a.currRate = this.requestData.currRate;
+          a.prevPaytAmt = a.cumPayt;
+          a.prevBalance = a.remainingBal;
           a.currAmt = a.remainingBal;
+          a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.currAmt)).toFixed(2);
+          a.newBalance = 0;
           a.quarterEnding = this.dp.transform(this.ns.toDateTimeString(a.quarterEnding).split('T')[0], 'MM/dd/yyyy');
           a.edited = true;
           a.checked = false;
@@ -937,6 +946,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMsg = 'Please enter amount greater than 0.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
+      }else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
+        this.warnMsg = 'Payment amount must not exceed the Balance amount.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans = [];
       }else{
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
             this.treatyTbl.markAsPristine();
@@ -953,6 +966,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
             }
           }
       }
+
+      console.log(this.params);
 
       this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.map(e => {
           e.quartEndingSave = e.quarterEnding;
@@ -1266,6 +1281,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onRowClick(event){
+    console.log(event);
     this.selectedTblData = event;
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);

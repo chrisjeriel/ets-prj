@@ -317,6 +317,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           this.passData.tableData = [];
           this.retrieveInwPolBal();
           this.table.refreshTable();
+          this.table.markAsPristine();
         }
       },
       (error: any)=>{

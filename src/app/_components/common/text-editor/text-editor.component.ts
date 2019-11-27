@@ -62,7 +62,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     //     this.style['background'] = '#fffacd85';
     //   }
     // }
-    if(changes.readonly) {
+    if(changes.readonly && this.renderer != undefined) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }
   }

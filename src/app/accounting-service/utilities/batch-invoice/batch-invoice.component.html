@@ -223,7 +223,7 @@
 								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.tranNo" (ngModelChange)="selectedrecord.tranNo=$event;" disabled>
 	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickJVModal()"></i></a></div>
 								<label class="form-control-sm col-sm-2">Tran Date</label>
-								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
+								<input class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate | date:'MM/dd/yyyy hh:mm a'" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
 							</div>
 						</div>
 					</div>
@@ -245,7 +245,7 @@
 					</div>
 					<div class="input-group" style="margin-top: 0px">
 						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
-						<input type="text" class="form-control form-control-sm cust-sm col-sm-1 required currCd" style="margin-right: -1px !important;" [ngModel]="selectedrecord?.currCd" appRequired name="currCd" (ngModelChange)="selectedrecord.currCd=$event;" disabled>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-1 required currCd" style="margin-right: -1px !important;" [ngModel]="selectedrecord?.currCd" appRequired name="currCd" (ngModelChange)="selectedrecord.currCd=$event;" (change)="checkCode($event)">
                         <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
 						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 required text-right" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired (change)="validateCurr($event,'invoiceAmt')" appCurrency name="invoiceAmt" [ngModel]="selectedrecord?.invoiceAmt | number: '1.2-2'" [readonly]="inquiryFlag">
 
