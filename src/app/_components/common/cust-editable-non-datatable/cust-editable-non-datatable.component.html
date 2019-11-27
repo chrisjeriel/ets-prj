@@ -998,6 +998,7 @@
                                         <div *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
                                             <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                         </div>
+                                        <span *ngSwitchCase="'text'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
                                         <ng-container *ngSwitchCase="'text-editor'">
                                             <div style="max-height: 21px; max-width: 91%">
                                                 <text-editor [table]="true" name="" [editorContent]="data[key]" [readonly]="true" [editablePrev]="false">

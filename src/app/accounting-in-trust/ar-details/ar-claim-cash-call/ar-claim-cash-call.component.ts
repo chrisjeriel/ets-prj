@@ -239,6 +239,7 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveClmRecover();
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();
