@@ -1356,8 +1356,25 @@ export class AcctOrEntryComponent implements OnInit {
     console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
+        data[i].bank = '';
+        data[i].bankAcct = '';
+        data[i].checkNo = '';
+        data[i].checkDate = '';
+        data[i].checkClass = '';
         data[i].uneditable = [];
-        if(data[i].paytMode !== 'BT' && data[i].paytMode !== 'CK' && data[i].paytMode !== 'CR'){
+        switch(data[i].paytMode){
+          case 'BT':
+            data[i].uneditable = ['checkNo', 'checkDate', 'checkClass'];
+            break;
+          case 'CK':
+            data[i].uneditable = [];
+            data[i].checkClass = 'LC';
+            break;
+          case 'CA':
+            data[i].uneditable = ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'];
+            break;
+        }
+        /*if(data[i].paytMode !== 'BT' && data[i].paytMode !== 'CK' && data[i].paytMode !== 'CR'){
           data[i].uneditable.push('bank');
           data[i].uneditable.push('bankAcct');
           data[i].bank = '';
@@ -1374,7 +1391,7 @@ export class AcctOrEntryComponent implements OnInit {
           data[i].checkDate = '';
           data[i].checkClass = '';
           console.log('condition2');
-        }
+        }*/
         console.log(data[i].uneditable);
         console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
