@@ -1876,4 +1876,11 @@ export class MaintenanceService{
     	     		.set('rowNum', (rowNum === null || rowNum === undefined ? '' : rowNum));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseInvSeries", {params});
     }
+
+    getMtnGlSubDepNo(depCd?,depNo?){
+    	const params = new HttpParams()
+    				.set('depCd', (depCd === null || depCd === undefined ? '' : depCd))
+    	     		.set('depNo', (depNo === null || depNo === undefined ? '' : depNo));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGlSubDepNo", {params});
+    }
 }

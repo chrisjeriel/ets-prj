@@ -271,6 +271,7 @@ export class CvEntryComponent implements OnInit {
       certifiedDate : '',
       checkClass    : '',
       checkDate     : '',
+      checkId       : '',
       checkNo       : '',
       closeDate     : '',
       createDate    : '',
