@@ -29,6 +29,7 @@ import { PolicyDistributionComponent } from './underwriting/policy-distribution/
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
 import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
 import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
+import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
@@ -383,6 +384,8 @@ const appRoutes: Routes = [
     { path: 'pol-reports', component: PolicyReportsComponent
     },
 
+    { path: 'renew-exp-pol', component: RenewExpPolicyComponent
+    },
 
     
     
