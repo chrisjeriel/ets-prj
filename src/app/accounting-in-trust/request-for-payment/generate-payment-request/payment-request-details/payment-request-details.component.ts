@@ -505,7 +505,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
       if(from === 'tbd') {
         e.newPaytAmt = +(parseFloat(e.prevPaytAmt) + parseFloat(e.currAmt)).toFixed(2);
-        e.newBalance = +(parseFloat(e.prevBalance) - parseFloat(e.newPaytAmt)).toFixed(2);
+        e.newBalance = +(parseFloat(e.netQsoaAmt) - parseFloat(e.newPaytAmt)).toFixed(2);
       }
     });
 

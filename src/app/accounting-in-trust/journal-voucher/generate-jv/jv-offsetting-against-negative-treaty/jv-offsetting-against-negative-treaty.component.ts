@@ -220,7 +220,6 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         for (var i = 0; i < data.negativeTrty.length; i++) {
            data.negativeTrty[i].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding), 'MM/dd/yyyy');
            this.passData.tableData.push(data.negativeTrty[i]);
-           // this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding);
            this.totalTrtyBal += this.passData.tableData[this.passData.tableData.length - 1].balanceAmt;
         }
         this.quarterTable.refreshTable();
@@ -327,7 +326,7 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
 
       this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
-      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].prevBalance) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
+      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].netQsoaAmt) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
 
       if(this.passData.tableData[i].deleted){
         deletedFlag = true;

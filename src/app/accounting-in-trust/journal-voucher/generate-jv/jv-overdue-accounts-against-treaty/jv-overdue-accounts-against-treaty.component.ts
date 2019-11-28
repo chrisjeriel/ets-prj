@@ -72,7 +72,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }*/
 ////////////// END OLD
 
-  passData: any = {}
+  passData: any = {};
 
   /*passDataOffsetting: any = {
     tHeaderWithColspan : [],
@@ -327,7 +327,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
 
       this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
-      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].prevBalance) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
+      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].netQsoaAmt) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
 
       if(this.passData.tableData[i].deleted){
         deletedFlag = true;
