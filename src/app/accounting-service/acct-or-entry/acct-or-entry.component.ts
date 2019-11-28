@@ -156,7 +156,8 @@ export class AcctOrEntryComponent implements OnInit {
     orDtlSum: '',
     acctEntriesSum: '',
     allocTag: 'N',
-    vatTag: ''
+    vatTag: '',
+    acctEntDate: ''
   }
 
   orDate: any = {
@@ -339,7 +340,8 @@ export class AcctOrEntryComponent implements OnInit {
       orDtlSum: '',
       acctEntriesSum: '',
       allocTag: '',
-      vatTag: ''
+      vatTag: '',
+      acctEntDate: ''
     }
     this.prDate = {
       date: '',
@@ -517,6 +519,7 @@ export class AcctOrEntryComponent implements OnInit {
         console.log(data);
         //ar
         if(data.or !== null){
+          this.orInfo.acctEntDate    = data.orEntry.acctEntDate;
           this.orInfo.tranId         = data.orEntry.tranId;
           this.orInfo.orType         = data.orEntry.orType;
           this.orInfo.orNo           = this.pad(data.orEntry.orNo, 'orNo');

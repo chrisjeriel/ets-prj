@@ -154,6 +154,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     rstrctTranUp: '',
     arDtlSum: '',
     acctEntriesSum: '',
+    acctEntDate: '',
     allocTag: 'N'
   }
 
@@ -325,6 +326,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       rstrctTranUp: '',
       arDtlSum: '',
       acctEntriesSum: '',
+      acctEntDate: '',
       allocTag: ''
     }
     this.prDate = {
@@ -506,6 +508,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         console.log(data);
         //ar
         if(data.ar !== null){
+          this.arInfo.acctEntDate    = data.ar.acctEntDate;
           this.arInfo.tranId         = data.ar.tranId;
           this.arInfo.arNo           = this.pad(data.ar.arNo, 'arNo');
           this.arInfo.formattedArNo  = parseInt(data.ar.formattedArNo.split('-')[1]) == 0 ? '' : data.ar.formattedArNo;
