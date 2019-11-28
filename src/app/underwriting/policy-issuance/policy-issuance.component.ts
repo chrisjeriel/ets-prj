@@ -1,17 +1,24 @@
-import { Component, OnInit, ViewChild,AfterViewInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild,AfterViewInit, Input } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 import { UnderwritingService, PrintService, NotesService } from '@app/_services';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from '@environments/environment';
+
+
 
 @Component({
   selector: 'app-policy-issuance',
   templateUrl: './policy-issuance.component.html',
   styleUrls: ['./policy-issuance.component.css']
 })
-export class PolicyIssuanceComponent implements OnInit {
+export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   @ViewChild('contentEditPol') contentEditPol;
+  @ViewChild('recordLock') recordLock;
+
   @ViewChild('tabset') tabset: any;
   line: string;
   sub: any;
@@ -48,10 +55,22 @@ export class PolicyIssuanceComponent implements OnInit {
   status: string = "";
   title: string = "Policy / Policy Issuance / Create Policy";
   exitLink:string;
+
+  webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
+  topic: string = "/pol-issuance";
+  stompClient: any;
+  extLog: string = '';
+  initLoad: boolean = true;
+  lockModalShown: boolean = false;
+  lockUser: string = "";
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, 
               private underwritingService: UnderwritingService, private ps: PrintService, private ns: NotesService) { }
 
+
+  ngOnDestroy() {
+    this.wsDisconnect();
+  }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -79,7 +98,62 @@ export class PolicyIssuanceComponent implements OnInit {
             this.checkAlop();
             this.checkCoins();
         });   
+    this.wsConnect();
+  }
 
+  wsConnect() {
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          if (_this.initLoad) {
+            _this.sendMessage();
+            _this.initLoad = false;
+          }
+
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              var obj = JSON.parse(sdkEvent.body);
+              if (obj.message == "") {
+                if (_this.policyInfo.policyId == obj.refId) {
+                  if (_this.ns.getCurrentUser() == obj.user) {
+                    //Proceed because same user.
+                    console.log("Same user with same record, proceed.");
+                  } else {
+                    _this.stompClient.send("/pol-issuance", {}, JSON.stringify({ user: _this.ns.getCurrentUser(), userFullName: _this.ns.getCurrentUserFullName(), refId: _this.policyInfo.policyId, message: "This record is being edited by " }));
+                  }
+                }
+              } else {
+                if (_this.policyInfo.policyId == obj.refId) {
+                  if (_this.ns.getCurrentUser() != obj.user) {
+                    setTimeout(() => {
+                        if (_this.lockModalShown == false) {
+                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                         _this.lockModalShown = true;
+                         _this.lockUser = obj.user;
+                        }
+                     });
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+  }; 
+
+  wsDisconnect() {
+    if (this.stompClient !== null) {
+        this.stompClient.disconnect();
+    }
+  }
+
+  sendMessage() {
+    this.stompClient.send("/pol-issuance", {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.policyInfo.policyId, message: "" }));
+  }
+
+  errorCallBack(error) {
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          this.wsConnect();
+      }, 5000);
   }
 
   ngAfterViewInit(){
