@@ -29,6 +29,8 @@ export class BatchInvoiceComponent implements OnInit {
    @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
    @ViewChild('passLOV') payeeLov: LovComponent;
    @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
+   @ViewChild('printModal') printMdl: ModalComponent;
+   @ViewChild('printConfirmModal') printConfirmModal: ModalComponent;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -158,6 +160,13 @@ export class BatchInvoiceComponent implements OnInit {
                 "invoiceDelItemList"  : []}
   deletedData:any[] =[];
   selecteditemrecord: any = {};
+  batchData   : any = { 
+                    "reportRequest": []
+                    };
+  lastInvNo: any;
+  changeStatData: any = {
+        printInvoiceList: []
+    };
 
   constructor(private accountingService: AccountingService, public modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
 
@@ -367,8 +376,6 @@ export class BatchInvoiceComponent implements OnInit {
        this.PassData.disableGeneric = true;
      } else if (this.mdlType === 'add') {
        this.PassData.disableGeneric = true;
-       this.PassData.tableData = [];
-       this.table.refreshTable();
        this.retrieveBatchInvoiceList(this.searchParams);
      }
      
@@ -571,11 +578,13 @@ export class BatchInvoiceComponent implements OnInit {
   }
 
   printInvoice(){
+    this.lastInvNo = null;
     let invoiceIdArray=[];
-
+    this.changeStatData.printInvoiceList = [];
+    
     for(var i=0; i < this.PassData.tableData.length;i++){
-      if (this.PassData.tableData[i].tranNo !== null && this.PassData.tableData[i].printCheck === 'Y'){
-        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId, tranNo: this.PassData.tableData[i].tranNo });
+      if (this.PassData.tableData[i].invoiceNo !== null && this.PassData.tableData[i].printCheck === 'Y'){
+        invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId, invoiceNo: this.PassData.tableData[i].invoiceNo });
       }
     }
 
@@ -585,19 +594,110 @@ export class BatchInvoiceComponent implements OnInit {
       this.dialogIcon = 'error-message';
       this.successDiag.open();
     } else {
-     /* let selectedBatchData = [];
+      let selectedBatchData = [];
        this.batchData.reportRequest = [];
 
-      for(let i=0;i<tranIdArray.length ;i++){ 
-        selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR' , userId : JSON.parse(window.localStorage.currentUser).username }); 
-        this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+      for(let i=0;i<invoiceIdArray.length ;i++){ 
+        selectedBatchData.push({ invoiceId :  invoiceIdArray[i].invoiceId , reportName : 'ACSER_INVOICE' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+        this.changeStatData.printInvoiceList.push({invoiceId :  invoiceIdArray[i].invoiceId, invoiceNo:invoiceIdArray[i].invoiceNo,updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
-
       this.batchData.reportRequest = selectedBatchData;
+
       this.printPDF(this.batchData);
-      this.loading = true;*/
+      this.loading = true;
     }  
   }
+
+  printPDF(batchData: any){  
+   let result: boolean;    
+   this.accountingService.batchPrint(JSON.stringify(batchData))
+     .pipe(
+           finalize(() => this.finalPrint(result) )
+      )
+          .subscribe(data => {
+           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+           var downloadURL = window.URL.createObjectURL(data);
+           console.log(newBlob);
+           const iframe = document.createElement('iframe');
+           iframe.style.display = 'none';
+           iframe.src = downloadURL;
+           document.body.appendChild(iframe);
+           iframe.contentWindow.print();
+           result= false;
+    },
+     error => {
+           result =true;
+           this.dialogIcon= "error-message";
+           this.dialogMessage = "Error generating batch OR PDF file(s)";
+           this.successDiag.open();
+   });     
+
+}
+
+finalPrint(error?){
+  this.loading = false;
+  if(!error){
+    this.printMdl.open();
+  }
+  
+}
+
+updateOrStatus(){
+  this.table.overlayLoader = true;
+  console.log(JSON.stringify(this.changeStatData));
+   setTimeout(()=>{
+         this.accountingService.printInvoiceBatch(this.changeStatData).subscribe(
+           (data:any)=>{
+             if(data.returnCode == 0){ 
+               this.dialogIcon = 'error-message';
+               this.dialogIcon = 'An error has occured when updating Invoice status';
+               this.successDiag.open();
+             }else{
+                this.dialogIcon = "success";
+                this.successDiag.open();
+               this.retrieveBatchInvoiceList(this.searchParams);
+             }
+           }
+         );
+      },1000);
+}
+
+failedOrPrint(){
+  let changeStatData: any = {
+        printInvoiceList: []
+    };
+    console.log(this.changeStatData);
+  for(let i=0;i<this.changeStatData.printInvoiceList.length ;i++){ 
+      if (parseInt(this.changeStatData.printInvoiceList[i].invoiceNo) <= parseInt(this.lastInvNo)){
+        changeStatData.printInvoiceList.push({invoiceId :  this.changeStatData.printInvoiceList[i].invoiceId, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+      }
+  }
+
+  if (changeStatData.printInvoiceList.length === 0){
+  }else {
+    setTimeout(()=>{
+         this.accountingService.printInvoiceBatch(changeStatData).subscribe(
+           (data:any)=>{
+             if(data.returnCode == 0){
+               this.dialogIcon = 'error-message';
+               this.dialogIcon = 'An error has occured when updating Invoice status';
+               this.successDiag.open();
+             }else{
+               this.dialogIcon = "success";
+               this.successDiag.open();
+               this.retrieveBatchInvoiceList(this.searchParams);
+             }
+           }
+         );
+     },1000);
+  }
+
+
+}
+
+validateInvLastPrinted(data){
+  this.lastInvNo = this.pad(data.target.value);
+}
 
   onClickPayeeModal(){
     this.passLov.selector = 'payee';
@@ -841,14 +941,21 @@ export class BatchInvoiceComponent implements OnInit {
             if (this.passDataInvoiceItems.tableData.length === 0){
               return true;
             }
+             let sum = 0;
               for(let check of this.passDataInvoiceItems.tableData){
                   if( check.itemDesc === null || check.itemDesc === '' ||
-                     check.itemAmt === null || check.itemAmt === '' 
+                     check.itemAmt === null || check.itemAmt === '' ||
+                     check.currCd !==  field.currCd
                   ) {   
                     return false;
                   }
-                return true;
+                sum = sum + check.itemAmt;
               }
+                if(sum === field.invoiceAmt){
+                  return true;
+                }else {
+                  return false;
+                }
             }
  }
 
