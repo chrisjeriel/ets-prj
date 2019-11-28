@@ -146,9 +146,11 @@ export class AccSRequestEntryComponent implements OnInit {
     if(this.saveAcsePaytReq.reqId != '' && this.saveAcsePaytReq.reqId != null && this.saveAcsePaytReq.reqId != undefined){
       $.extend(arrSubRes,{
         'pr'  : this.acctService.getAcsePaytReq(this.saveAcsePaytReq.reqId),
-        'prq' : this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId)
+        'prq' : this.acctService.getAcsePrqTrans(this.saveAcsePaytReq.reqId),
+        'pd'  : this.acctService.getAcsePerDiem(this.saveAcsePaytReq.reqId),
+        'ie'  : this.acctService.getAcseInsuranceExp(this.saveAcsePaytReq.reqId),
       });
-      subResKey.push('pr','prq');
+      subResKey.push('pr','prq','pd','ie');
     }
 
     var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
@@ -166,7 +168,7 @@ export class AccSRequestEntryComponent implements OnInit {
       this.loadingFunc(false);
       if(!this.initDisabled){
         var recPrq = data['prq']['acsePrqTrans'];
-        var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
+        // var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
 
         var recPr =  data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
@@ -195,6 +197,17 @@ export class AccSRequestEntryComponent implements OnInit {
                                                return e; 
                                              });
         this.saveAcsePaytReq = recPr[0];
+
+        if(this.saveAcsePaytReq.tranTypeCd == 6){
+          var recDiemIns = data['pd']['acsePerDiem'];
+          totalReqAmts = Math.round((recDiemIns.length == 0)?0:recDiemIns.map(e => e.feeAmt).reduce((a,b) => a+b,0) * 100)/100;
+        }else if(this.saveAcsePaytReq.tranTypeCd == 7){
+          var recDiemIns = data['ie']['acseInsuranceExp'];
+          var totalReqAmts = Math.round((recDiemIns.length == 0)?0:recDiemIns.map(e => e.insuredAmt).reduce((a,b) => a+b,0) * 100)/100;
+        }else{
+          var totalReqAmts = Math.round((recPrq.length == 0)?0:recPrq.map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100;
+        }
+        
         this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
         this.reqDateDate = this.saveAcsePaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcsePaytReq.reqDate.split('T')[1];
@@ -538,8 +551,8 @@ export class AccSRequestEntryComponent implements OnInit {
         this.confirmMdl.openNoClose();
         this.fromBtn = from;
       }else{
-        this.warnMsg = 'This Payment Request is being processed in another transaction. Please delete or cancel the \ntransaction with Check Voucher No. ' 
-                        + this.saveAcsePaytReq.processing + ' before cancelling this payment request.';
+        this.warnMsg = 'This Payment Request is being processed in another transaction.\nPlease delete or cancel the transaction with Check Voucher No. ' 
+                        + this.saveAcsePaytReq.processing + ' \nbefore cancelling this payment request.';
         this.warnMdl.openNoClose();
       }
       

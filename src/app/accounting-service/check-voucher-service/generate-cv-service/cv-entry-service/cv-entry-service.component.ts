@@ -427,6 +427,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
+      this.passDataLov.from   = 'acse';
       this.passDataLov.currCd = this.saveAcseCv.currCd;
       this.passDataLov.bankCd = this.saveAcseCv.bank;
       this.bankAcctLov.openLOV();
@@ -462,14 +463,14 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.bank = data.data.bankCd;
       this.saveAcseCv.bankAcctDesc = '';
       this.saveAcseCv.bankAcct = '';
-      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcseCv.currCd && e.acseGlDepNo != null);
+      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcseCv.currCd && e.acSeGlDepNo != null);
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
           this.saveAcseCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcseCv.bankAcctDesc   = data.data.accountNo;
@@ -488,11 +489,15 @@ export class CvEntryServiceComponent implements OnInit {
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcseCv.currCd = data.currencyCd;
       this.saveAcseCv.currRate =  data.currencyRt;
-      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcseCv.bank && e.currCd == data.currencyCd && e.acseGlDepNo != null);
+      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcseCv.bank && e.currCd == data.currencyCd && e.acSeGlDepNo != null);
       console.log(ba);
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcseCv.bankAcct = ba[0].bankAcctCd; 
+        this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
+        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
+          this.saveAcseCv.checkNo = chkNo[0].checkNo;
+        } 
       }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){

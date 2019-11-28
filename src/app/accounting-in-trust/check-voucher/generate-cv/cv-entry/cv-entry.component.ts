@@ -478,7 +478,11 @@ export class CvEntryComponent implements OnInit {
       console.log(ba);
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcitCv.bankAcct = ba[0].bankAcctCd; 
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+          this.saveAcitCv.checkNo = chkNo[0].checkNo;
+        } 
       }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
