@@ -117,7 +117,12 @@ export class AcctArListingsComponent implements OnInit {
       (data: any)=>{
         if(data.ar.length !== 0) {
           // this.passData.tableData = data.ar;
-          this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
+          if(this.tranStat.toUpperCase() == 'CLOSEDWITHACCTENT'){
+            console.log(this.passData.tableData);
+            this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == 'CLOSED' && a.acctEntDate !== null);
+          }else{
+            this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
+          }
         }
         this.table.refreshTable();
 
