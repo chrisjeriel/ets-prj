@@ -152,3 +152,4 @@
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-lov [passData]="passLovAe" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox" #aeLov></app-lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>

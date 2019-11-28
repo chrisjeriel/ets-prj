@@ -250,7 +250,13 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Unable to save the changes. The Total Debit and Credit Amounts must still be the same as the original and must still be balanced.';
       this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
     }
+  }
+
+  save(){
+
   }
 
   //VALIDATIONS STARTS HERE
