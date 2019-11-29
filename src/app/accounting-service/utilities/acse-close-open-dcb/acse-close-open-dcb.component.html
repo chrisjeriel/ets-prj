@@ -11,7 +11,7 @@
 									<div class="input-group">
 										<div class="col-sm-2"></div>
 										<label class="form-control-sm col-sm-3 text-right labels">DCB Status</label>
-										<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.status" (ngModelChange)="params.status=$event;retrieveDCB()">
+										<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.status" (ngModelChange)="params.status=$event;retrieveDcb()">
 											<option value="O">Open</option>
 											<option value="T">Temporarily Closed</option>
 											<option value="C">Closed</option>
