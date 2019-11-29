@@ -59,8 +59,8 @@ export class InvestmentsComponent implements OnInit {
      tHeaderWithColspan : [],
    	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Partial Pull-Out","Pull-out Date","Pulled-out Amount","Amortize Unit","Eff%","Price (Cost)"],
    	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','checkbox','date','currency','select','percent','currency'],
-   	 nData: {
+   	 dataTypes: ['text','select','text','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','checkbox','date','currency','select','percent','currency'],
+      nData: {
           invtId   : null,
           invtCd   : null,
           bank     : null,
@@ -1082,10 +1082,10 @@ update(data){
           this.dialogIcon = "error";
           this.successDialog.open();
         }
-        
       }
   }
 
+ 
   checkFields(){
     for(let check of this.passData.tableData){
        console.log(check);
@@ -1150,6 +1150,7 @@ update(data){
                }
              }
            }
+
         }
                                                                                                                                                                                                                                          
     }
@@ -1544,6 +1545,9 @@ update(data){
     }
     return result;
   }
+
+ 
+
 }
 
 
