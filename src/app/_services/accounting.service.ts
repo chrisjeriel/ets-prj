@@ -3115,4 +3115,24 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
     }
 
+    editAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/editAcctEnt',params,header);
+    }
+
+    restoreAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/restoreAcctEnt',params,header);
+    }
+
 }

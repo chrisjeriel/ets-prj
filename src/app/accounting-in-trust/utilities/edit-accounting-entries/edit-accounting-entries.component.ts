@@ -11,6 +11,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-edit-accounting-entries',
@@ -25,6 +26,8 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('restoreMdl') restoreMdl: ModalComponent;
+  @ViewChild('myForm') form: any;
 
   passData: any = {};
   tranListData: any = {};
@@ -47,6 +50,9 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     backupDate: '',
     tranTypeName: '',
     particulars: '',
+    reason: '',
+    tranId: '',
+    histNo: ''
   }
 
   passLov: any = {
@@ -71,6 +77,23 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   dialogIcon: string = '';
   dialogMessage: string = '';
 
+  savedData: any[] = [];
+  deletedData: any[] = [];
+
+  currentTranData: any;
+
+  canCancel: boolean = false;
+  canRestore: boolean = false;
+  canSave: boolean = false;
+  canPrint: boolean = false;
+
+  createUpdate: any = {
+    createUser: '',
+    createDate: '',
+    updateUser: '',
+    updateDate: ''
+  }
+
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
    }
@@ -78,6 +101,8 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.passData = this.accountingService.getAccEntriesPassData();
     this.passData.disableAdd = true;
+    this.passData.nData.autoTag = 'N';
+    console.log(this.form);
   }
 
   ngOnDestroy(){
@@ -108,9 +133,26 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   
   }
 
+  onRowClick(data){
+    if(data == null){
+      this.createUpdate.createUser = '';
+      this.createUpdate.createDate = '';
+      this.createUpdate.updateUser = '';
+      this.createUpdate.updateDate = '';
+    }else{
+      this.createUpdate.createUser = data.createUser;
+      this.createUpdate.createDate = this.ns.toDateTimeString(data.createDate);
+      this.createUpdate.updateUser = data.updateUser;
+      this.createUpdate.updateDate = this.ns.toDateTimeString(data.updateDate);
+    }
+  }
+
   setSelectedData(data){
+    this.currentTranData = data;
+    console.log(this.currentTranData.data);
     this.table.overlayLoader = true;
     this.passData.disableAdd = false;
+    this.passData.nData.tranId = data.data.tranId;
     switch(this.tranClass){
       case 'AR':
         this.tranNo = data.data.formattedArNo;
@@ -138,8 +180,14 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       foreignDebitAmt: 0
     };
 
-    var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(data.data.tranId),
-                        this.accountingService.getAcitEditedAcctEntries(data.data.tranId))
+    this.tranDetails.tranId = data.data.tranId;
+    this.retrieveData(this.tranDetails.tranId);
+    
+  }
+
+  retrieveData(tranId){
+    var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(tranId),
+                        this.accountingService.getAcitEditedAcctEntries(tranId))
                        .pipe(map(([acctEntries, acctEntriesDetails]) => { return { acctEntries, acctEntriesDetails}; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
@@ -157,6 +205,8 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.tranDetails.backupDate = this.ns.toDateTimeString(acctEntriesDetails.editedAcctEntries.editDate).split('T')[0];
         this.tranDetails.tranTypeName = acctEntriesDetails.editedAcctEntries.tranTypeName;
         this.tranDetails.particulars = acctEntriesDetails.editedAcctEntries.particulars;
+        this.tranDetails.reason = acctEntriesDetails.editedAcctEntries.reason;
+        this.tranDetails.histNo = acctEntriesDetails.editedAcctEntries.histNo;
         this.passData.tableData = acctEntries.list.map(a=>{a.showMG = 1; return a;});
         this.table.refreshTable();
         this.table.overlayLoader = false;
@@ -166,6 +216,11 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
           this.originalCrDr.creditAmt        += i.creditAmt;
           this.originalCrDr.debitAmt         += i.debitAmt;
         }
+
+        this.canRestore = this.tranDetails.histNo != null;
+        this.canCancel = true;
+        this.canPrint = true;
+        this.canSave = true;
       }
     );
   }
@@ -192,7 +247,14 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     this.tranDetails.backupDate = '';
     this.tranDetails.tranTypeName = '';
     this.tranDetails.particulars = '';
+    this.tranDetails.reason = '';
+    this.tranDetails.histNo = '';
+    this.tranDetails.tranId = '';
     this.passData.disableAdd = true;
+    this.canSave = false;
+    this.canRestore = false;
+    this.canCancel = false;
+    this.canPrint = false;
   }
 
   clickLov(data){
@@ -250,13 +312,80 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Unable to save the changes. The Total Debit and Credit Amounts must still be the same as the original and must still be balanced.';
       this.successDiag.open();
+    }else if(this.checkReqFields()){
+      this.dialogIcon = 'error';
+      this.successDiag.open();
+    }else if(this.checkChangesAcctEnt()){
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Nothing to save.';
+      this.successDiag.open();
     }else{
       this.confirm.confirmModal();
     }
   }
 
   save(){
+    this.savedData = this.passData.tableData.filter(a=>a.edited && !a.deleted).map(b=>{b.createUser = this.ns.getCurrentUser();
+                                                                                               b.createDate = this.ns.toDateTimeString(0);
+                                                                                               b.updateUser = this.ns.getCurrentUser();
+                                                                                               b.updateDate = this.ns.toDateTimeString(0);
+                                                                                               return b;});
+      this.deletedData = this.passData.tableData.filter(a=>a.deleted);
+      console.log(this.savedData);
+      console.log(this.deletedData);
 
+      this.savedData.forEach(a=>{
+        if(!a.add){
+          a.updateUser = this.ns.getCurrentUser();
+          a.updateDate = this.ns.toDateTimeString(0);
+        }
+      })
+
+      let params = {
+        tranId: this.tranDetails.tranId,
+        histNo: 0,
+        reason: this.tranDetails.reason,
+        createUser: this.ns.getCurrentUser(),
+        updateUser: this.ns.getCurrentUser(),
+        saveList: this.savedData,
+        delList: this.deletedData
+      }
+
+      this.accountingService.editAcctEnt(params).subscribe(a=>{
+        if(a['returnCode']==0){
+          this.dialogIcon = 'error';
+          this.successDiag.open();
+        }else{
+          this.dialogIcon = 'success';
+          this.successDiag.open();
+          this.table.markAsPristine();
+          this.form.control.markAsPristine();
+          console.log('marked as pristine');
+          this.retrieveData(this.tranDetails.tranId);
+        }
+      });
+  }
+
+  restore(){
+    let params = {
+      tranId: this.tranDetails.tranId,
+      histNo: this.tranDetails.histNo
+    }
+
+    console.log(params);
+
+    this.accountingService.restoreAcctEnt(params).subscribe(a=>{
+        if(a['returnCode']==0){
+          this.dialogIcon = 'error-message';
+          this.restoreMdl.openNoClose();
+        }else{
+          this.dialogIcon = 'success';
+          this.table.markAsPristine();
+          console.log('marked as pristine');
+          this.retrieveData(this.tranDetails.tranId);
+          this.restoreMdl.openNoClose();
+        }
+      });
   }
 
   //VALIDATIONS STARTS HERE
@@ -267,10 +396,12 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     let debitAmt: number = 0;
 
     for(var i of this.passData.tableData){
-      foreignCrAmt += Math.round(i.foreignCreditAmt * 100) / 100;
-      foreignDbAmt += Math.round(i.foreignDebitAmt * 100) / 100;
-      creditAmt    += Math.round(i.creditAmt * 100) / 100;
-      debitAmt     += Math.round(i.debitAmt * 100) / 100;
+      if(!i.deleted){
+        foreignCrAmt += Math.round(i.foreignCreditAmt * 100) / 100;
+        foreignDbAmt += Math.round(i.foreignDebitAmt * 100) / 100;
+        creditAmt    += Math.round(i.creditAmt * 100) / 100;
+        debitAmt     += Math.round(i.debitAmt * 100) / 100;
+      }
     }
     console.log(this.originalCrDr.foreignCreditAmt + '/' + foreignCrAmt);
     console.log(this.originalCrDr.foreignDebitAmt + '/' + foreignDbAmt);
@@ -283,5 +414,21 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  checkReqFields(): boolean{
+    if(this.tranDetails.reason == null || (this.tranDetails.reason != null && this.tranDetails.reason.length ==0)){
+      return true;
+    }
+    return false;
+  }
+
+  checkChangesAcctEnt(): boolean{
+    for(var i of this.passData.tableData){
+      if(i.edited){
+        return false;
+      }
+    }
+    return true;
   }
 }
