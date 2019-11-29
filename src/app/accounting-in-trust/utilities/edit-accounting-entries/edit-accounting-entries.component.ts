@@ -284,11 +284,13 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
     }else if(data.selector == 'sl'){
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
     }else if(data.selector == 'acitChartAcct'){
 
       let firstRow = data.data.pop();
@@ -302,6 +304,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
         this.passData.tableData[this.passData.tableData.length - 1].glAcctId = row.glAcctId;
         this.passData.tableData[this.passData.tableData.length - 1].glShortCd = row.shortCode;
         this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
+        this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       }
       this.table.refreshTable();
     }
