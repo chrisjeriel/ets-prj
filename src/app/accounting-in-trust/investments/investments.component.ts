@@ -425,7 +425,8 @@ export class InvestmentsComponent implements OnInit {
            this.passData.disableGeneric = true;     
        }else{
            this.passData.disableGeneric = false;
-       }   
+       }
+
 
        if(this.selectedData.amortized !== null){
          this.disableBtn = false;
@@ -1277,7 +1278,8 @@ update(data){
                                         bankCharge : a.bankCharge,
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
-                                        matVal : matVal
+                                        matVal : matVal,
+                                        refInvtId : a.invtId
                                       });
                                    }
 
@@ -1316,7 +1318,8 @@ update(data){
                                         bankCharge : a.bankCharge,
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
-                                        matVal : matVal
+                                        matVal : matVal,
+                                        refInvtId : a.invtId
                                       });
                                    }
 
@@ -1490,7 +1493,9 @@ update(data){
       
       if(obj){
             this.deletedData.push({
-                    "invtId": this.selectedData.invtId
+                    "invtId": this.selectedData.invtId,
+                    "refInvtId" : this.selectedData.refInvtId,
+                    "updateUser" : this.ns.getCurrentUser(),
                      });
             this.acitInvtReq.delAcitInvestments = this.deletedData;     
       } 
