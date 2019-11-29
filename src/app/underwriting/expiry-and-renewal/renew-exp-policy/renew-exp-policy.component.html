@@ -109,3 +109,19 @@
         <button *ngIf="warningMsg == 3" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-modal class="d-none" id="convSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p class="mg-b">Expiring Policy : <strong>{{ renewedPolicy.policyNo }}</strong></p>
+                <p>was successfully renewed to Policy No.</p>
+                <p><strong>{{ renewedPolicy.newPolicyNo }}</strong></p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toPolGenInfo();"><a>Ok</a></button>
+    </div>
+</app-modal>

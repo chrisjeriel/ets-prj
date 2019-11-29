@@ -81,6 +81,7 @@ export class RenewExpPolicyComponent implements OnInit {
 
   fromLOV: boolean = false;
   doneCheck: boolean = false;
+  renewedPolicy: any = {};
 
   constructor(private underwritingService: UnderwritingService, private router: Router,
    public modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
@@ -256,8 +257,10 @@ export class RenewExpPolicyComponent implements OnInit {
       if (data.errorList.length > 0) {
         alert("Error during renewal.");
       } else {
-        
+        this.renewedPolicy = data.renewedPolicy;
+        $('#convSuccessModal > #modalBtn').trigger('click');
       }
+      
 
       /*for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
@@ -288,8 +291,17 @@ export class RenewExpPolicyComponent implements OnInit {
         
         });*/
 
-      this.loading = false;
+        this.loading = false;
     });
+  }
+
+  toPolGenInfo() {
+    var line = this.renewedPolicy.newPolicyNo.split('-')[0];
+
+    this.underwritingService.toPolInfo = [];
+    this.underwritingService.toPolInfo.push("edit", line);
+    this.underwritingService.fromCreateAlt = false;
+    this.router.navigate(['/policy-issuance', { line: line, policyNo: this.renewedPolicy.newPolicyNo, policyId: this.renewedPolicy.newPolicyId, editPol: true }], { skipLocationChange: true });
   }
 
   showWarningMdl() {

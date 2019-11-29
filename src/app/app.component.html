@@ -594,9 +594,10 @@
                         <a class="nav-item nav-link" (click)="onClickHome()">
                             <fa name="home" placement="bottom" ngbTooltip="Home"></fa>
                         </a>
-                        <!-- <a class="nav-item nav-link" routerLink="/notes">
-                            <fa name="bell" placement="bottom" ngbTooltip="Notes & Reminders"></fa>
-                        </a> -->
+                        <a class="nav-item nav-link">
+                            <fa name="user" placement="bottom" (click)="open(changePass)" ngbTooltip="User Control">
+                            </fa>
+                        </a>
                         <a class="nav-item nav-link">
                             <fa name="gear" placement="bottom" (click)="open(content)" ngbTooltip="Settings">
                             </fa>
@@ -686,6 +687,57 @@
     <div class="modal-footer" style="justify-content: center; margin-top: -5px">
         <div class="row" style="margin-top: -5px">
             <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click'); applyTheme()"><a>Close</a></button>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #changePass let-modal>
+    <div class="modal-header">
+        <div class="modal-title" id="modal-basic-title">
+            User Information
+        </div>
+    </div>
+    <div class="modal-body">
+        <!-- <div layout="row" layout-wrap layout-align="center center">
+            <p style="font-size: 12px; text-align: center; margin-bottom: 5px"> Select a color from the Theme Color
+                Palettes below: </p>
+        </div> -->
+        <div layout="row" layout-wrap layout-align="center center">
+            <div class="form-row" style="justify-content: center;">
+                <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 500px;">
+                    <div class="custom-row-inline-inset" style="text-align: center">
+                        <div class="input-group" style="margin-bottom: -14px !important;">
+                            <label class="form-control-sm col-sm-3">User Name</label>
+                            <input [value]="'Test'" readonly class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: -14px !important;">
+                            <label class="form-control-sm col-sm-3">Full Name</label>
+                            <input [value]="'Test'" readonly class="form-control form-control-sm">
+                        </div>
+                        <div class="input-group" style="margin-bottom: -14px !important;">
+                            <label class="form-control-sm col-sm-3">Old Password</label>
+                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
+                        </div>
+                        <div class="input-group" style="margin-bottom: -14px !important;">
+                            <label class="form-control-sm col-sm-3">New Password</label>
+                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
+                        </div>
+                        <div class="input-group" style="margin-bottom: -14px !important;">
+                            <label class="form-control-sm col-sm-3">Repeat Password</label>
+                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
+                        </div>
+                        <button type="button" class="cust-btn">Change Password</button>
+                    </div>
+                </fieldset>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer" style="justify-content: center; margin-top: -5px">
+        <div class="row" style="margin-top: -5px">
+            <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click');"><a>Close</a></button>
         </div>
     </div>
 </ng-template>
