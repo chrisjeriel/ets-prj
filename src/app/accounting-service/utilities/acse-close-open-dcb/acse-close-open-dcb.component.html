@@ -1,5 +1,5 @@
 <div class="cust-tabs-container">
-	<h4>Accounting In-Trust / Utilities / Close/Open DCBs</h4>
+	<h4>Accounting Service / Utilities / Close/Open DCBs</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="Close/Close Temporarily/ Re-Opn DCBs">
 			<ng-template ngbTabContent>
@@ -23,7 +23,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 5px !important;">
 							<div class="row" style="margin-top: 10px">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable #dcb [passData]="passData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #dcb [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onChange($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-row">

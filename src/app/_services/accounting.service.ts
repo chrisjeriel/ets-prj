@@ -3150,4 +3150,21 @@ export class AccountingService {
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitBankDetails',{params});	
 	}
+
+	getAcseDcbCollection(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseDcbCollection',{params});	
+	}
+	 
+	getAcseBankDetails(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBankDetails',{params});	
+	}
+	
 }

@@ -493,6 +493,7 @@ import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quo
 import { UploaderComponent } from './_components/common/uploader/uploader.component';
 import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
+import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 
 @NgModule({
     imports: [
@@ -990,6 +991,7 @@ import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-ope
         UploaderComponent,
         RenewExpPolicyComponent,
         CloseOpenDcbComponent,
+        AcseCloseOpenDcbComponent,
     ],
 
   	providers: [
