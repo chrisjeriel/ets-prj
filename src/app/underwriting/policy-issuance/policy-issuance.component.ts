@@ -59,17 +59,19 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
   topic: string = "/pol-issuance";
   stompClient: any;
-  extLog: string = '';
   initLoad: boolean = true;
   lockModalShown: boolean = false;
   lockUser: string = "";
+  lockMessage: string = "";
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, 
               private underwritingService: UnderwritingService, private ps: PrintService, private ns: NotesService) { }
 
 
   ngOnDestroy() {
-    this.wsDisconnect();
+    if (!this.fromInq) {
+      this.wsDisconnect();
+    }
   }
 
   ngOnInit() {
@@ -97,8 +99,10 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
             this.exitLink = params['exitLink'] == undefined? '/policy-listing' : params['exitLink'];
             this.checkAlop();
             this.checkCoins();
-        });   
-    this.wsConnect();
+        });
+    if (!this.fromInq) {
+      this.wsConnect();
+    }
   }
 
   wsConnect() {
@@ -119,7 +123,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
                     //Proceed because same user.
                     console.log("Same user with same record, proceed.");
                   } else {
-                    _this.stompClient.send("/pol-issuance", {}, JSON.stringify({ user: _this.ns.getCurrentUser(), userFullName: _this.ns.getCurrentUserFullName(), refId: _this.policyInfo.policyId, message: "This record is being edited by " }));
+                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.policyInfo.policyId, message: "This record is currently being updated by " }));
                   }
                 }
               } else {
@@ -130,6 +134,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
                          _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
                          _this.lockModalShown = true;
                          _this.lockUser = obj.user;
+                         _this.lockMessage = obj.message;
                         }
                      });
                   }
@@ -146,7 +151,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    this.stompClient.send("/pol-issuance", {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.policyInfo.policyId, message: "" }));
+    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.policyInfo.policyId, message: "" }));
   }
 
   errorCallBack(error) {
