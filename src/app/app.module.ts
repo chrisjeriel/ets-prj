@@ -490,6 +490,8 @@ import { LogoutComponent } from './logout/logout.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { PolicyReportsComponent } from './underwriting/generate-documents/policy-reports/policy-reports.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
+import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
+import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component';
 import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 
@@ -986,6 +988,8 @@ import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew
         WfCalendarComponent,
         PolicyReportsComponent,
         UpdateQuoteAttachmentComponent,
+        CreateInternalCompComponent,
+        CopyQuoteDetailsComponent,
         UploaderComponent,
         RenewExpPolicyComponent,
     ],

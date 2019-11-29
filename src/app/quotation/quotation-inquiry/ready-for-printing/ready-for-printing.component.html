@@ -37,3 +37,12 @@
       </div>
     </div>
 </app-modal>
+
+<app-modal #confirmReleaseMdl class="d-none">
+  <div header>Confirmation</div>
+  <div body>Are you sure you want to update the status of the quotation(s) from "Approved" to "Released"?</div>
+  <div footer>
+    <button class="cust-btn" (click)="printDestination(this.printType);confirmReleaseMdl.closeModal()">Yes</button>
+    <button class="cust-btn" (click)="confirmReleaseMdl.closeModal()">No</button>
+  </div>
+</app-modal>

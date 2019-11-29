@@ -250,8 +250,14 @@ export class RenewExpPolicyComponent implements OnInit {
       policyId : this.selected.policyId,
       procBy : this.ns.getCurrentUser()
     };
-    this.underwritingService.extGenRenExpPolicy(renewParam).subscribe(data => {
+    this.underwritingService.extGenRenExpPolicy(renewParam).subscribe((data :any) => {
       console.log(data);
+
+      if (data.errorList.length > 0) {
+        alert("Error during renewal.");
+      } else {
+        
+      }
 
       /*for (var i = 0; i < event.target.closest("tr").children.length; i++) {
         this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;

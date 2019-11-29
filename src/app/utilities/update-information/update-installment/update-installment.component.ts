@@ -58,7 +58,7 @@ export class UpdateInstallmentComponent implements OnInit {
 
   passDataInstallmentInfo: any = {
     tableData: [],
-    tHeader: ["Inst No", "Due Date", "Booking Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
+    tHeader: ["Inst No", "Booking Date", "Due Date", "Premium Amount", "Comm Rate(%)", "Comm Amount", "Other Charges", "Amount Due"],
     dataTypes: ["number", "date", "date", "currency", "percent", "currency", "currency", "currency"],
     addFlag: true,
     deleteFlag: true,
@@ -80,7 +80,7 @@ export class UpdateInstallmentComponent implements OnInit {
       otherCharges: []
     },
     disableAdd: true,
-    keys: ['instNo', 'dueDate', 'bookingDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
+    keys: ['instNo', 'bookingDate', 'dueDate', 'premAmt', 'commRt', 'commAmt', 'otherChargesInw', 'amtDue'],
     uneditable: [true, false, false, false, false, false, true, true],
     pageLength: 5
   };

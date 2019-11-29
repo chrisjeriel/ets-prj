@@ -85,6 +85,10 @@
                                         <ng-template ngbPanelContent>
                                             <button *ngIf="accessibleModules.indexOf('QUOTE018') > -1" [routerLink]="['/update-qu-attachment']" class="button btn btn-link">Update Quote Attachment</button>
                                             <br/>
+                                            <button *ngIf="accessibleModules.indexOf('QUOTE020') > -1" [routerLink]="['/create-int-comp']" class="button btn btn-link">Create Internal Competition</button>
+                                            <br/>
+                                            <button *ngIf="accessibleModules.indexOf('QUOTE019') > -1" [routerLink]="['/copy-quote-details']" class="button btn btn-link">Copy Quote Details</button>
+                                            <br/>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

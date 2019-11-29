@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChildren, QueryList, Input, ViewChild, Output, EventEmitter} from '@angular/core';
 import { QuotationInfo, QuotationOption, QuotationOtherRates, QuotationDeductibles } from '../../_models';
-import { QuotationService, UnderwritingService, MaintenanceService, UserService } from '../../_services';
+import { QuotationService, UnderwritingService, MaintenanceService, UserService, NotesService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute } from '@angular/router';
@@ -137,7 +137,7 @@ export class QuoteOptionComponent implements OnInit {
             endtCd: 0,
             showMG: 1,
         },
-        pageLength: 10,
+        pageLength: 5,
         checkFlag: true,
         paginateFlag: true,
         infoFlag: true,
@@ -176,7 +176,8 @@ export class QuoteOptionComponent implements OnInit {
     fromCovers: boolean = false;
 
     constructor(private quotationService: QuotationService, private titleService: Title, private route: ActivatedRoute,
-                private modalService: NgbModal, private uwService: UnderwritingService, private mtnService: MaintenanceService, private userService: UserService) { }
+                private modalService: NgbModal, private uwService: UnderwritingService, private mtnService: MaintenanceService, 
+                private userService: UserService, private ns: NotesService) { }
 
     ngOnInit() {
       //neco
@@ -553,6 +554,7 @@ saveQuoteOptionAll(cancelFlag?){
             this.enblEndtTab.emit(true);
             this.getQuoteOptions();
             this.table.forEach(table => { table.markAsPristine() });
+            this.ns.formGroup.markAsPristine();
           }
    })
 

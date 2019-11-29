@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, HostBinding, OnInit } from '@angular/core';
+import { Directive, ElementRef, HostListener, HostBinding, OnInit, AfterViewInit } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
 import { NgModel } from '@angular/forms';
 
@@ -6,12 +6,22 @@ import { NgModel } from '@angular/forms';
   selector: '[appCurrencyRate]'
 })
 
-export class CurrencyRateDirective implements OnInit{
+export class CurrencyRateDirective implements OnInit, AfterViewInit{
 
   constructor(private el: ElementRef,private model: NgModel) { }
 
     ngOnInit(){
       this.el.nativeElement.style.textAlign = "right"
+    }
+
+    ngAfterViewInit(){
+      this.model.valueChanges.subscribe(a=>
+      {
+        if(!this.model.touched){
+          this.onBlur(this.el.nativeElement);
+          this.model.control.markAsPristine();
+        }
+      })
     }
   	
     @HostListener("blur", ["$event.target"]) onBlur(target) {

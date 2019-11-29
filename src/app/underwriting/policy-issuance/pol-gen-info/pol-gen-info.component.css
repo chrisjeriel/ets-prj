@@ -37,3 +37,14 @@ fieldset{
 .white-bg {
 	background: white !important;
 }
+
+.renewal-div span{
+	font-size: 10px;
+	height: fit-content;
+}
+
+.renewal-div{
+	line-height: 8px;
+	flex-wrap: wrap;
+	height: fit-content;
+}

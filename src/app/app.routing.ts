@@ -196,7 +196,9 @@ import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-ch
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
-import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component'
+import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
+import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
+import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
 
 const appRoutes: Routes = [
@@ -555,7 +557,8 @@ const appRoutes: Routes = [
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
-
+    { path: 'create-int-comp', component: CreateInternalCompComponent},
+    { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
     { path: 'uploader', component: UploaderComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

@@ -60,7 +60,7 @@
 				<div>Attachment</div>
 			</ng-template>
 			<ng-template ngbTabContent>
-				<app-attachment #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"></app-attachment>
+				<app-attachment #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab *ngIf="inquiryFlag" id="Print" [disabled]="quoteInfo.quoteId == ''">
@@ -130,7 +130,7 @@
 				<div class="modal-footer" style="justify-content: center;">
 					<div >
 						<button class="cust-btn" type="button" (click)="modalService.dismissAll();cancel();"><a>Cancel</a></button>
-						<button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="showPrintPreview();"><a>Print</a></button>
+						<button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="onClickPrint();"><a>Print</a></button>
 					</div>
 				</div>
 			</ng-template>
@@ -161,7 +161,7 @@
 
 <!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal> TRBT#PROD_GRADE-->
 
-<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+<app-print-modal id="printListQuotation" (selectedData)= "onClickPrint($event)" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
 
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
@@ -170,12 +170,13 @@
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE-->
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<!-- <<<<<<< HEAD
+<!-- 
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
-======= -->
+ -->
+
 
 <ng-template #recordLock>
 				<div class="modal-header">
@@ -198,3 +199,13 @@
 					</div>
 				</div>
 </ng-template>
+
+<app-modal #confirmReleaseMdl class="d-none">
+	<div header>Confirmation</div>
+	<div body>Are you sure you want to update the status of the quotation(s) from "Approved" to "Released"?</div>
+	<div footer>
+		<button class="cust-btn" (click)="inquiryFlag ?showPrintDialog(printMdlEvent) :showPrintPreview(this.content);confirmReleaseMdl.closeModal()">Yes</button>
+		<button class="cust-btn" (click)="confirmReleaseMdl.closeModal()">No</button>
+	</div>
+</app-modal>
+

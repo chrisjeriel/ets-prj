@@ -36,11 +36,17 @@
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="pad(polDistributionData?.distNo, 'distNo')">
 					<label class="form-control-sm col-sm-1">Pol Dist Status</label>
 					<input readonly type="text" class="form-control form-control-sm col-sm-2" [ngModel]="polDistributionData?.status">
-					<label class="form-control-sm col-sm-1"></label>
-					<label class="form-control-sm col-sm-1" style="text-align: left !important;padding-left: 0;" disabled="disabled"><input type="checkbox" [ngModel]="acctDetails?.instTag=='Y'" disabled="disabled" > &nbsp;Installment</label>
-					<label class="form-control-sm col-sm-2" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'">Accounting Entry Date</label>
-					<div class="col-sm dp-cont" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'">
-						<datepicker [disabled]="true" [type]="'date'" [required]="false" [showIcon]="false" [value]="acctDetails.acctDate?.split('T')[0]"></datepicker>
+					<div class="col-sm d-flex px-0">
+						<label class="form-control-sm col-sm-2"></label>
+						<label class="form-control-sm col-sm-2" style="text-align: left !important;padding-left: 0;" disabled="disabled"><input type="checkbox" [ngModel]="acctDetails?.instTag=='Y'" disabled="disabled" > &nbsp;Installment</label>
+						<label class="form-control-sm col-sm-2" [class.d-none]="acctDetails?.instTag=='Y'">Booking Date</label>
+						<div class="col-sm dp-cont" [class.d-none]="acctDetails?.instTag=='Y'">
+							<datepicker [disabled]="true" [type]="'date'" [required]="false" [showIcon]="false" [value]="acctDetails.bookingDate?.split('T')[0]"></datepicker>
+						</div>
+						<label class="form-control-sm col-sm-2" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'" >Acct. Entry Date</label>
+						<div class="col-sm dp-cont" [class.d-none]="!inquiryFlag || acctDetails?.instTag=='Y'">
+							<datepicker [disabled]="true" [type]="'date'" [required]="false" [showIcon]="false" [value]="acctDetails.acctDate?.split('T')[0]"></datepicker>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -22,6 +22,7 @@ export class ReadyForPrintingComponent implements OnInit {
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @ViewChild(PrintModalComponent) printModal: PrintModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
+  @ViewChild('confirmReleaseMdl') confirmReleaseMdl: ModalComponent;
 
 
 
@@ -336,51 +337,50 @@ export class ReadyForPrintingComponent implements OnInit {
 
   showPrintPreview(data){   
      this.printType = data[0].printType;
-     this.printDestination(this.printType);
-     
+     this.confirmReleaseMdl.openNoClose();
   }
 
   printDestination(obj){
-                if (obj === 'SCREEN'){  
-                     for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                         if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
-                           var selectedReport = this.reportsList[0].val
-                           window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
-                         } else {
-                            var selectedReport = this.reportsList[1].val
-                            window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
-                         }
-                     }
-                      this.printMdl.open();
-                     //this.changeQuoteStatus();
-                }else  if (obj === 'PRINTER'){
-                    this.selectedBatchData = [];
-                    this.batchData.reportRequest = [];
-                    for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                      if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
-                        var selectedReport = this.reportsList[0].val
-                        this.selectedBatchData.push({ quoteId : this.saveData.changeQuoteStatus[i].quoteId, reportName : selectedReport , userId : JSON.parse(window.localStorage.currentUser).username });
-                      } else {
-                        var selectedReport = this.reportsList[1].val
-                        this.selectedBatchData.push({ quoteId : this.saveData.changeQuoteStatus[i].quoteId, reportName : selectedReport , userId : JSON.parse(window.localStorage.currentUser).username });
-                      }
-                    }
-                    
-                    this.batchData.reportRequest = this.selectedBatchData;
-                    this.printPDF(this.batchData);
-                    this.loading = true;
-                }else if (obj === 'PDF'){
-                   this.resultPrint = [];
-                   for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
-                     if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
-                        var selectedReport = this.reportsList[0].val
-                        this.downloadPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.quotationData[i].quotationNo,this.saveData.changeQuoteStatus.length);
-                     } else {
-                        var selectedReport = this.reportsList[1].val
-                        this.downloadPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.quotationData[i].quotationNo,this.saveData.changeQuoteStatus.length);
-                     }
-                }
+      if (obj === 'SCREEN'){  
+           for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+               if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
+                 var selectedReport = this.reportsList[0].val
+                 window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
+               } else {
+                  var selectedReport = this.reportsList[1].val
+                  window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=' + selectedReport + '&quoteId=' + this.saveData.changeQuoteStatus[i].quoteId, '_blank');
+               }
+           }
+           //this.changeQuoteStatus();
+      }else  if (obj === 'PRINTER'){
+          this.selectedBatchData = [];
+          this.batchData.reportRequest = [];
+          for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+            if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
+              var selectedReport = this.reportsList[0].val
+              this.selectedBatchData.push({ quoteId : this.saveData.changeQuoteStatus[i].quoteId, reportName : selectedReport , userId : JSON.parse(window.localStorage.currentUser).username });
+            } else {
+              var selectedReport = this.reportsList[1].val
+              this.selectedBatchData.push({ quoteId : this.saveData.changeQuoteStatus[i].quoteId, reportName : selectedReport , userId : JSON.parse(window.localStorage.currentUser).username });
+            }
+          }
+          
+          this.batchData.reportRequest = this.selectedBatchData;
+          this.printPDF(this.batchData);
+          this.loading = true;
+      }else if (obj === 'PDF'){
+         this.resultPrint = [];
+         for(let i=0;i<this.saveData.changeQuoteStatus.length ;i++){ 
+           if(this.quotationData[i].cessionDesc.toUpperCase() === 'DIRECT'){
+              var selectedReport = this.reportsList[0].val
+              this.downloadPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.quotationData[i].quotationNo,this.saveData.changeQuoteStatus.length);
+           } else {
+              var selectedReport = this.reportsList[1].val
+              this.downloadPDF(selectedReport,this.saveData.changeQuoteStatus[i].quoteId,this.quotationData[i].quotationNo,this.saveData.changeQuoteStatus.length);
+           }
+      }
     }
+    this.changeQuoteStatus();
 }
 
 changeQuoteStatus() {
@@ -452,7 +452,6 @@ batchPDF(obj){
              this.changeQuoteStatus();
         } else {
              //this.changeQuoteStatus();
-              this.printMdl.open();
         }
 
      }
@@ -461,7 +460,7 @@ batchPDF(obj){
 printPDF(batchData: any){    
   console.log(JSON.stringify(batchData)) ; 
    this.quotationService.batchPrint(JSON.stringify(batchData)).pipe(
-           finalize(() => this.printMdl.open())
+           finalize(() => null)
            ).
           subscribe(data => {
            var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
