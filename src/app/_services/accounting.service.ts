@@ -3115,4 +3115,39 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
     }
 
+    updateDCBNo(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitDcbCollection',params,header);
+    }
+
+    saveDCBNo(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCloseOpenDcb',params,header);
+    }
+
+   	getDcbCollection(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitDcbCollection',{params});	
+	}
+
+    getBankDetails(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitBankDetails',{params});	
+	}
 }

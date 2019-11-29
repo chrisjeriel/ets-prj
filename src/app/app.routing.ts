@@ -198,6 +198,7 @@ import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component'
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 
 const appRoutes: Routes = [
 
@@ -555,7 +556,7 @@ const appRoutes: Routes = [
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
-
+    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
     { path: 'uploader', component: UploaderComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

@@ -492,6 +492,7 @@ import { PolicyReportsComponent } from './underwriting/generate-documents/policy
 import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component';
 import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 
 @NgModule({
     imports: [
@@ -988,6 +989,7 @@ import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew
         UpdateQuoteAttachmentComponent,
         UploaderComponent,
         RenewExpPolicyComponent,
+        CloseOpenDcbComponent,
     ],
 
   	providers: [
