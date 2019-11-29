@@ -333,6 +333,7 @@ export class ClmClaimHistoryComponent implements OnInit {
           this.passDataHistory.tableData = recClmHist;
           this.histTbl.refreshTable();
           this.histTbl.onRowClick(null, this.passDataHistory.tableData[0]);
+          this.histTbl.markAsPristine();
           this.compResPayt(null);
 
           this.passDataHistory.tableData.forEach((e,i) => {

@@ -286,11 +286,11 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 						});
 					}
 
-					setTimeout(() => {
-						$('input[appCurrencyRate]').focus();
-						$('input[appCurrencyRate]').blur();
-						$(this.start.nativeElement).focus()
-					},0) 
+					// setTimeout(() => {
+					// 	$('input[appCurrencyRate]').focus();
+					// 	$('input[appCurrencyRate]').blur();
+					// 	$(this.start.nativeElement).focus()
+					// },0) 
 				}
 
 				if(data['project'] != null) {
@@ -303,6 +303,13 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 				}
 
 				this.checkQuoteIdF(this.genInfoData.quoteId);
+
+				if(this.savingType == 'modification') {
+					console.log('eyyyy')
+					this.form.control.markAsDirty();
+				}else{
+					this.form.control.markAsPristine();
+				}
 			});
 
 			if(this.line === 'CAR' || this.line === 'EAR'){
@@ -415,11 +422,14 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 		}
 		setTimeout(() => {
+			// $('input[appCurrencyRate]').focus();
+			// $('input[appCurrencyRate]').blur();
 			$("#firstFocus").focus();
 			$(this.start.nativeElement).focus()
 			this.form.control.markAsPristine();
 
 			if(this.savingType == 'modification') {
+				console.log('eyyyy')
 				this.form.control.markAsDirty();
 			}
 		},1000);
@@ -457,7 +467,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 	setPrincipal(data){
 		this.form.control.markAsDirty();
-
+		console.log('proc')
 		this.genInfoData.principalName = data.insuredName;
 		this.genInfoData.principalId = data.insuredId;
 		this.ns.lovLoader(data.ev, 0);
