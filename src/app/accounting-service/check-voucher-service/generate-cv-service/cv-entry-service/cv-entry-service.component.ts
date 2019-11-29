@@ -629,6 +629,7 @@ export class CvEntryServiceComponent implements OnInit {
   }
 
   overrideFunc(approvalCd){
+    this.loadingFunc(true);
     this.mtnService.getMtnApprovalFunction(approvalCd)
     .subscribe(data => {
       var approverList = data['approverFn'].map(e => e.userId);

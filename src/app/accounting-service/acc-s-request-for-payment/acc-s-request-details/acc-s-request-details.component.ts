@@ -356,7 +356,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
       if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
         this.cvData.tableData = [];
-        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.cvData):'';
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.cvData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
         this.cvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.cvTbl.refreshTable();
@@ -368,7 +368,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         
       }else if(this.requestData.tranTypeCd == 2){
         this.pcvData.tableData = [];
-        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.pcvData):'';
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.pcvData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
         this.pcvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.pcvTbl.refreshTable();
@@ -596,7 +596,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.params.savePrqTrans = [];
       this.params.savePerDiem  = [];
     }else if(isUnique.some(s => s == false)){
-      this.warnMsg = (this.requestData.tranTypeCd == 6)?'Fee Type for every Board Member must be unique':'Insurance Type for every Insured must be unique';
+      this.warnMsg = (this.requestData.tranTypeCd == 6)?'Directors\' Fee Type for every Board Member must be unique':'Insurance Type for every Insured must be unique';
       this.warnMdl.openNoClose();
     }else{
       var emp = false;

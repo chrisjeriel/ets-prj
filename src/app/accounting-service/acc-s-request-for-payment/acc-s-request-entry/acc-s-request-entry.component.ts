@@ -16,6 +16,7 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 
 
 @Component({
@@ -36,6 +37,8 @@ export class AccSRequestEntryComponent implements OnInit {
   @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
   @ViewChild('myForm') form                   : NgForm;
+  @ViewChild('override') overrideLogin        : OverrideLoginComponent;
+
   
   saveAcsePaytReq : any = {
     paytReqNo       : '',
@@ -86,6 +89,7 @@ export class AccSRequestEntryComponent implements OnInit {
   existsInReqDtl    : boolean = false;
   removeIcon        : boolean = false;
   fromSave          : boolean = false;
+  approvalCd        : any;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
@@ -211,7 +215,7 @@ export class AccSRequestEntryComponent implements OnInit {
         this.splitPaytReqNo(this.saveAcsePaytReq.paytReqNo);
         this.reqDateDate = this.saveAcsePaytReq.reqDate.split('T')[0];
         this.reqDateTime = this.saveAcsePaytReq.reqDate.split('T')[1];
-        this.existsInReqDtl =(this.saveAcsePaytReq.reqStatus == 'N')?false:true;
+        this.existsInReqDtl = (this.saveAcsePaytReq.reqStatus == 'N')?false:true;
         console.log(this.existsInReqDtl);
         //console.log(recPrq.length);
         ((this.saveAcsePaytReq.reqStatus == 'N' || this.saveAcsePaytReq.reqStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
@@ -323,7 +327,7 @@ export class AccSRequestEntryComponent implements OnInit {
       reqPrefix       : this.tranTypeList.filter(i => i.tranTypeCd == this.saveAcsePaytReq.tranTypeCd).map(i => i.typePrefix).toString(),
       reqSeqNo        : this.saveAcsePaytReq.reqSeqNo,
       reqStatus       : (this.saveAcsePaytReq.tranTypeCd == 3 || this.saveAcsePaytReq.tranTypeCd == 4)
-                          ?(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) > 0)?'F':this.saveAcsePaytReq.reqStatus
+                          ?(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) > 0)?'F':'N'
                           :this.saveAcsePaytReq.reqStatus,
       reqYear         : (this.saveAcsePaytReq.reqYear == '' || this.saveAcsePaytReq.reqYear == null)?this.reqDateDate.split('-')[0]:this.saveAcsePaytReq.reqYear,
       requestedBy     : this.saveAcsePaytReq.requestedBy,
@@ -548,8 +552,9 @@ export class AccSRequestEntryComponent implements OnInit {
       }
     }else{
       if(this.saveAcsePaytReq.processing == null){
-        this.confirmMdl.openNoClose();
+        //this.confirmMdl.openNoClose();
         this.fromBtn = from;
+        this.overrideFunc(this.approvalCd);
       }else{
         this.warnMsg = 'This Payment Request is being processed in another transaction.\nPlease delete or cancel the transaction with Check Voucher No. ' 
                         + this.saveAcsePaytReq.processing + ' \nbefore cancelling this payment request.';
@@ -580,4 +585,24 @@ export class AccSRequestEntryComponent implements OnInit {
                       this.ns.getCurrentUser() + '&reqId=' + this.saveAcsePaytReq.reqId, '_blank');
    }
    //end
+
+  overrideFunc(approvalCd){
+    this.loadingFunc(true);
+    this.mtnService.getMtnApprovalFunction(approvalCd)
+    .subscribe(data => {
+      var approverList = data['approverFn'].map(e => e.userId);
+      if(approverList.includes(this.ns.getCurrentUser())){
+        this.confirmMdl.openNoClose();
+      }else{
+        this.overrideLogin.getApprovalFn();
+        this.overrideLogin.overrideMdl.openNoClose();
+      }
+    });
+  }
+
+  onOkOverride(result){
+    if(result){
+      this.confirmMdl.openNoClose();
+    }
+  }
 }
