@@ -186,6 +186,12 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
   }
 
   retrieveData(tranId){
+    this.originalCrDr = {
+      creditAmt: 0,
+      debitAmt: 0,
+      foreignCreditAmt: 0,
+      foreignDebitAmt: 0
+    };
     var sub$ = forkJoin(this.accountingService.getAcitAcctEntries(tranId),
                         this.accountingService.getAcitEditedAcctEntries(tranId))
                        .pipe(map(([acctEntries, acctEntriesDetails]) => { return { acctEntries, acctEntriesDetails}; }));
@@ -297,6 +303,7 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
       this.lovRow.glAcctId = firstRow.glAcctId;
       this.lovRow.glShortCd = firstRow.shortCode;
       this.lovRow.glShortDesc = firstRow.shortDesc;
+      this.lovRow.edited = true;
 
       this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
       for(let row of data.data){
