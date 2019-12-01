@@ -5,30 +5,30 @@
       <ng-template ngbTabContent>
         <div class="d-flex">
         	<div class="col-sm"></div>
-        	<fieldset class="scheduler-border col-sm-4"  style="padding: 15px !important;">
+        	<fieldset class="scheduler-border col-sm-6"  style="padding: 15px !important;">
         		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         		
         			<div class="input-group mt-1">
 				        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right">Transaction Date</label>
-                <div class="dp-cont col-sm-4">
-                  <datepicker [type]="'date'" [(value)]="tranDate"></datepicker>
+                <div class="dp-cont col-sm-3">
+                  <datepicker [type]="'date'" [value]="tranDate" (valueChange)="tranDate=$event; checkMonth($event);"></datepicker>
                 </div>
 				    </div>
 
         			<div class="input-group cust-ig">
-				        <div class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">
+				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
 				        	<input type="checkbox" [(ngModel)]="inclPrevMon" name="">
 				        </div>
 		            <label class="form-control-sm text-left col-sm">Include Previous Months</label>
 				    </div>
         			<div class="input-group cust-ig">
-				        <div class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">
+				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
 				        	<input type="checkbox" [(ngModel)]="inclPrevYrs" name="">
 				        </div>
 		            <label class="form-control-sm text-left col-sm">Include Previous Years</label>
 				    </div>
         			<div class="input-group">
-				        <div class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">
+				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
 				        	<input type="checkbox" [(ngModel)]="adjEntsOnly" name="">
 				        </div>
 		            <label class="form-control-sm text-left col-sm">Adjusting Entries Only</label>
@@ -38,6 +38,8 @@
     		      <div class="cust-btn-container">
     		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="tranDate == null || tranDate == ''"><a>Generate</a></button>
                 <button type="button" class="cust-btn" (click)="onClickPrint()" [disabled]="monthlyTotals.length == 0"><a>Print</a></button>
+                <button type="button" class="cust-btn" (click)="onClickNewBtn('tc')" [disabled]="!canTempClose"><a>Temporary Close</a></button>
+                <button type="button" class="cust-btn" (click)="onClickNewBtn('ro')" [disabled]="!canReopen"><a>Re-open</a></button>
                 <button type="button" class="cust-btn" (click)="onClickPost()"><a>Post to Fiscal Year</a></button>
     		      </div>
     		    </div>
@@ -59,12 +61,37 @@
     <div body>
         <div class="custom-row-inline-inset" style="text-align: center">
             <p *ngIf="returnCode == 1">Trial Balance was already generated for this month. Would you like to overwrite the existing one?</p>
-            <p *ngIf="returnCode == 2">GL for this month was already Posted. Rerun of Trial Balance is not allowed.</p>
+            <p *ngIf="returnCode == 2">This month was already Posted. Rerun of Trial Balance is not allowed.</p>
+            <p *ngIf="returnCode == 3">This month was Temporarily Closed. Re-open month to rerun Trial Balance.</p>
+            <p *ngIf="returnCode == 4">Underwriting Production was not yet done. Please run UW Batch Production first.</p>
+            <p *ngIf="returnCode == 5">Batch OS was not yet done. Please run Batch OS first.</p>
         </div>
     </div>
-    <div footer class="w-100 text-right" [class.text-center]="returnCode == -1 || returnCode == 2">
+    <div footer class="w-100 text-center" [class.text-right]="returnCode == 1">
         <button *ngIf="returnCode == 1" class="cust-btn" type="button" (click)="onClickGenerate(true); eomTbMdl.closeModal();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="eomTbMdl.closeModal();"><a>{{ returnCode == 1 ? 'No' : 'Ok' }}</a></button>
+    </div>
+</app-modal>
+
+<app-modal #eomTbMdl2 class="d-none">
+    <div header>{{ 'Message' }}</div>
+    <div body>
+        <div class="custom-row-inline-inset" style="text-align: center">
+          <ng-container *ngIf="mdl2Type == 'tc'">
+            <p *ngIf="returnCode2 == 1">This month was already Posted and finalized.</p>
+            <p *ngIf="returnCode2 == 2">This month was already Temporarily Closed.</p>
+            <p *ngIf="returnCode2 == 3">Underwriting Production was not yet done. Please run UW Batch Production first.<br />
+                                        Right after, run the batch OS, then generate the Trial Balance.</p>
+            <p *ngIf="returnCode2 == 4">Batch OS was not yet done. Please run Batch OS first, then generate the Trial Balance.</p>
+          </ng-container>
+          <ng-container *ngIf="mdl2Type == 'ro'">
+            <p *ngIf="returnCode2 == 1">This month was already Posted and finalized.</p>
+            <p *ngIf="returnCode2 == 2">This month is not yet closed. Cannot be re-opened.</p>
+          </ng-container>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="eomTbMdl2.closeModal();"><a>{{ 'Ok' }}</a></button>
     </div>
 </app-modal>
 

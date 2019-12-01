@@ -15,6 +15,7 @@ import * as alasql from 'alasql';
 })
 export class MonEndTrialBalComponent implements OnInit {
   @ViewChild('eomTbMdl') eomTbMdl: ModalComponent;
+  @ViewChild('eomTbMdl2') eomTbMdl2: ModalComponent;
   @ViewChild('printMdl') printMdl: ModalComponent;
   @ViewChild('postMdl') postMdl: ModalComponent;
   @ViewChild('lovMdl') lovMdl: ModalComponent;
@@ -54,6 +55,11 @@ export class MonEndTrialBalComponent implements OnInit {
     keys:['eomMm', 'eomYear', 'eomDate']
   };
 
+  canTempClose: boolean = false;
+  canReopen: boolean = false;
+  returnCode2: number = null;
+  mdl2Type: string = '';
+
   constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title) { }
 
   ngOnInit() {
@@ -70,12 +76,18 @@ export class MonEndTrialBalComponent implements OnInit {
 
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
+        this.canTempClose = true;
+        this.canReopen = true;
 
         if(initial === undefined) {
           this.onClickPrint();
         }
+      } else {
+        this.canTempClose = false;
+        this.canReopen = false;
       }
-    });
+    },
+    err => { $('.globalLoading').css('display', 'none'); });
   }
   
   onTabChange($event: NgbTabChangeEvent) {
@@ -99,7 +111,7 @@ export class MonEndTrialBalComponent implements OnInit {
     this.as.saveAcitMonthEndTrialBal(params).subscribe(data => {
       $('.globalLoading').css('display', 'none');
       this.returnCode = data['returnCode'];
-      if(this.returnCode == 1 || this.returnCode == 2) {
+      if([1,2,3,4,5].includes(this.returnCode)) {
         this.eomTbMdl.openNoClose();
       } else if(this.returnCode == -1) {
         this.dialogIcon = 'success-message';
@@ -161,8 +173,8 @@ export class MonEndTrialBalComponent implements OnInit {
       $('.globalLoading').css('display', 'block');
       var params = {
         eomDate: this.eomDate,
-        eomMm: this.eomMm,
-        eomYear: this.eomYear,
+        eomMm: Number(this.eomMm),
+        eomYear: Number(this.eomYear),
         eomUser: this.ns.getCurrentUser()
       }
 
@@ -241,6 +253,113 @@ export class MonEndTrialBalComponent implements OnInit {
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
                   'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
+  }
+
+  checkMonth(ev) {
+    if(ev !== '') {
+      this.getAcitMonthEndTrialBal(ev);
+    }
+  }
+
+  /*onClickTempClose() {
+    $('.globalLoading').css('display', 'block');
+
+    var params = {
+      eomDate: this.tranDate,
+      eomUser: this.ns.getCurrentUser()
+    }
+
+    this.as.saveAcitMonthEndTBTempClose(params).subscribe(data => {
+      $('.globalLoading').css('display', 'none');
+      this.returnCode2 = data['returnCode'];
+      if([1,2,3,4].includes(this.returnCode2)) {
+        this.mdl2Type = 'tc';
+        this.eomTbMdl2.openNoClose();
+      } else if(this.returnCode2 == -1) {
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = 'Month closed temporarily.'
+        this.eomTbDialog.open();
+      } else if(this.returnCode2 == 0) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Temporary closing failed.'
+        this.eomTbDialog.open();
+      }
+    });
+  }
+
+  onClickReopen() {
+    $('.globalLoading').css('display', 'block');
+
+    var params = {
+      eomDate: this.tranDate,
+      eomUser: this.ns.getCurrentUser()
+    }
+
+    this.as.saveAcitMonthEndTBReopen(params).subscribe(data => {
+      $('.globalLoading').css('display', 'none');
+      this.returnCode2 = data['returnCode'];
+      if([1,2].includes(this.returnCode2)) {
+        this.mdl2Type = 'ro';
+        this.eomTbMdl2.openNoClose();
+      } else if(this.returnCode2 == -1) {
+        this.returnCode = null;
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = 'Month reopened.'
+        this.eomTbDialog.open();
+      } else if(this.returnCode2 == 0) {
+        this.returnCode = null;
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Month reopening failed.'
+        this.eomTbDialog.open();
+      }
+    });
+  }*/
+
+  onClickNewBtn(str) {
+    $('.globalLoading').css('display', 'block');
+
+    var params = {
+      eomDate: this.tranDate,
+      eomUser: this.ns.getCurrentUser()
+    }
+
+    if(str == 'tc') {
+      this.as.saveAcitMonthEndTBTempClose(params).subscribe(data => {
+        $('.globalLoading').css('display', 'none');
+        this.returnCode2 = data['returnCode'];
+        if([1,2,3,4].includes(this.returnCode2)) {
+          this.mdl2Type = 'tc';
+          this.eomTbMdl2.openNoClose();
+        } else if(this.returnCode2 == -1) {
+          this.dialogIcon = 'success-message';
+          this.dialogMessage = 'Month closed temporarily.'
+          this.eomTbDialog.open();
+        } else if(this.returnCode2 == 0) {
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'Temporary closing failed.'
+          this.eomTbDialog.open();
+        }
+      });
+    } else if(str == 'ro') {
+      this.as.saveAcitMonthEndTBReopen(params).subscribe(data => {
+        $('.globalLoading').css('display', 'none');
+        this.returnCode2 = data['returnCode'];
+        if([1,2].includes(this.returnCode2)) {
+          this.mdl2Type = 'ro';
+          this.eomTbMdl2.openNoClose();
+        } else if(this.returnCode2 == -1) {
+          this.returnCode = null;
+          this.dialogIcon = 'success-message';
+          this.dialogMessage = 'Month reopened.'
+          this.eomTbDialog.open();
+        } else if(this.returnCode2 == 0) {
+          this.returnCode = null;
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'Month reopening failed.'
+          this.eomTbDialog.open();
+        }
+      });
+    }
   }
 
 }

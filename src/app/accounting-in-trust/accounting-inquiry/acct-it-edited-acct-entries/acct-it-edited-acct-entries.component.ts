@@ -143,7 +143,7 @@ export class AcctItEditedAcctEntriesComponent implements OnInit, OnDestroy {
     tranTypeName: ''
   }
 
-  constructor(private titleService: Title, private modalService: NgbModal, private accountingService: AccountingService, private ns: NotesService) { }
+  constructor(private titleService: Title, public modalService: NgbModal, private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Edited Accounting Entries");
