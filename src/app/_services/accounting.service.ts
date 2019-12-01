@@ -3115,4 +3115,41 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
     }
 
+    editAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/editAcctEnt',params,header);
+    }
+
+    restoreAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/restoreAcctEnt',params,header);
+    }
+
+    getAcitAcctEntInq(tranClass?, tranDateFrom?, tranDateTo?){
+    	const params = new HttpParams()
+			.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+			.set('tranDateFrom', (tranDateFrom == null || tranDateFrom == undefined ? '' : tranDateFrom))
+			.set('tranDateTo', (tranDateTo == null || tranDateTo == undefined ? '' : tranDateTo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctEntInq',{params});	
+    }
+
+    getAcitAcctEntBackup(tranId?, histNo?){
+    	const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctEntBackup',{params});	
+    }
+
 }

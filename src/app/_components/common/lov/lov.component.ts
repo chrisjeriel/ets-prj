@@ -1278,8 +1278,8 @@ export class LovComponent implements OnInit {
     }else if(this.passData.selector == 'acitJvList'){
       this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Status", "Prepared By","Amount"];
       this.passTable.widths = [120,98,171,335,110,115];
-      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
-      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','jvStatusName','jvAmt'];
+      this.passTable.dataTypes = ['text','date','text','text','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','refNo','jvStatusName','preparedName','jvAmt'];
       this.passTable.checkFlag = false;
       this.accountingService.getJVListing(null).subscribe((data:any)=>{
         data.transactions = data.transactions.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});

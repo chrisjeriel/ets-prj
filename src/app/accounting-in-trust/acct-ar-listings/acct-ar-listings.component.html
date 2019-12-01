@@ -29,10 +29,16 @@
 									<div class="w-100 text-center">
 										<input type="radio" name="tranStat" id="statNw" value="open" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statNw" class="text-left cust-mg">&nbsp;New</label>
+
 										<input type="radio" name="tranStat" id="statPr" value="closed" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statPr" class="text-left cust-mg">&nbsp;Printed</label>
+
+										<input type="radio" name="tranStat" id="statCs" value="closedWithAcctEnt" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
+										<label for="statPr" class="text-left cust-mg">&nbsp;Closed</label>
+
 										<input type="radio" name="tranStat" id="statPs" value="posted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statPs" class="text-left cust-mg">&nbsp;Posted</label>
+
 										<input type="radio" name="tranStat" id="statDl" value="deleted" style="vertical-align: middle;" [(ngModel)]="tranStat" (change)="retrieveArList()">
 										<label for="statDl" class="text-left">&nbsp;Cancelled</label>
 									</div>

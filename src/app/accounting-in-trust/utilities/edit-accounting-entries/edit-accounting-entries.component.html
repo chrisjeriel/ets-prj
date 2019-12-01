@@ -83,28 +83,30 @@
 						    </fieldset>
 						</div>
 					</div>
+
+					<form #myForm="ngForm">	
 					<div class="row">
 						<div class="col-sm-12">
 							<fieldset class="scheduler-border">
 								<legend class="scheduler-border">Accounting Entries</legend>
 								<div style="margin-bottom: 11px;margin-top:11px;">
-									<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)" (tableDataChange)="onTableDataChange($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 									<div class="form-row" style="padding-top: 7px;">
-										<div class="input-group col-sm-2"></div>
-										<div class="input-group div-group col-sm-8">
-											<label class="form-control-sm col-sm-2">Reason for Change</label>
-											<textarea class="form-control form-control-sm cust-sm col-sm-10" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" appRequired></textarea>
-										</div>
-										<div class="input-group col-sm-2"></div>
+											<div class="input-group col-sm-2"></div>
+											<div class="input-group div-group col-sm-8">
+													<label class="form-control-sm col-sm-2">Reason for Change</label>
+													<textarea class="form-control form-control-sm cust-sm col-sm-10" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="tranDetails.reason" appRequired [readonly]="tranDetails.tranId.length == 0" name="reason"></textarea>
+											</div>
+											<div class="input-group col-sm-2"></div>
 									</div>
 									<div class="form-row">
 										<div class="form-group col-sm" style="margin-bottom: 0px">
 											<div class="col-md-13 text-center" style="margin-top: 8px;">
 												<div class="cust-btn-container">
-													<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-													<button type="button" class="cust-btn"><a>Cancel</a></button>
-													<button type="button" class="cust-btn"><a>Restore</a></button>
-													<button type="button" class="cust-btn"><a>Print</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canSave" [class.cust-btn-disabled]="!canSave" (click)="onClickSave()"><a>Save</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canCancel" [class.cust-btn-disabled]="!canCancel"><a>Cancel</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canRestore" [class.cust-btn-disabled]="!canRestore" (click)="restore();"><a>Restore</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canPrint" [class.cust-btn-disabled]="!canPrint"><a>Print</a></button>
 												</div>
 											</div>
 										</div>
@@ -113,22 +115,23 @@
 							</fieldset>
 						</div>
 					</div>
+					</form>
 					<div class="row">
 						<div class="col-sm-12">
 							<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
 								<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
 							        <div class="input-group">
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Created By</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" readonly>
+							            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="createUpdate.createUser" readonly>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Date Created</label>
 							            <div class="col-sm-2" style="padding: 0px">
-							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="''"></datepicker>
+							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate.createDate"></datepicker>
 							            </div>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update By</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" readonly>
+							            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="createUpdate.updateUser" readonly>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update</label>
 							            <div class="col-sm-2" style="padding: 0px">
-							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="''"></datepicker>
+							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate.updateDate"></datepicker>
 							            </div>
 							        </div>
 							    </div>
@@ -152,3 +155,21 @@
 
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-lov [passData]="passLovAe" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox" #aeLov></app-lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+
+<app-modal class="d-none" #restoreMdl>
+	<div header>&nbsp;</div>
+	<div body class="container-flex text-center" >
+	  	<ng-container [ngSwitch]="dialogIcon">
+            <span *ngSwitchCase="'error-message'" class="fa fa-times-circle fa-2x" style="vertical-align: middle;"></span>
+            <span *ngSwitchDefault class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>
+        </ng-container>
+        <ng-container [ngSwitch]="dialogIcon">
+            <span *ngSwitchCase="'error-message'" style="vertical-align: middle; margin-left: 5px;font-size: 1em;">An error has occured when trying to restore.</span>
+            <span *ngSwitchDefault style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Successfully restored.</span>
+        </ng-container>
+	</div>
+	<div footer class="d-flex justify-content-center w-100">
+          <button class="cust-btn" type="button" (click)="restoreMdl.closeModal(); canRestore = false;"><a>Ok</a></button>
+  	</div>
+</app-modal>
