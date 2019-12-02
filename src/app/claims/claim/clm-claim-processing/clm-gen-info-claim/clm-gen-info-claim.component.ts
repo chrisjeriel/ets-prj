@@ -689,6 +689,20 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
           this.claimData.adjName = '';
           this.claimData.adjFileNo = '';
         }
+        if(this.claimData.clmAdjusterList.length == 1){
+          this.claimData.adjId = this.claimData.clmAdjusterList[0].adjId;
+          this.claimData.adjName = this.claimData.clmAdjusterList[0].adjName;
+          this.claimData.adjFileNo = this.claimData.clmAdjusterList[0].adjFileNo;
+        }else if (this.claimData.clmAdjusterList.length == 0){
+          this.claimData.adjId = '';
+          this.claimData.adjName = '';
+          this.claimData.adjFileNo = '';
+        }else{
+          this.claimData.adjId = '';
+          this.claimData.adjName = 'Various Adjusters';
+          this.claimData.adjFileNo = '';
+        }
+
         this.adjTable.markAsPristine();
       } else {
         this.dialogIcon = "error";
