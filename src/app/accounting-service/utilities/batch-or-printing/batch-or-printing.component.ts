@@ -268,6 +268,8 @@ updateOrStatus(){
                this.dialogIcon = 'An error has occured when updating OR status';
                this.successDiag.open();
              }else{
+               this.dialogIcon = "success";
+               this.successDiag.open();
                this.retrieveBatchORList(this.searchParams);
              }
            }
@@ -309,6 +311,8 @@ failedOrPrint(){
                this.dialogIcon = 'An error has occured when updating OR status';
                this.successDiag.open();
              }else{
+               this.dialogIcon = "success";
+               this.successDiag.open();
                this.retrieveBatchORList(this.searchParams);
              }
            }
