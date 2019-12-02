@@ -709,27 +709,33 @@
             <div class="form-row" style="justify-content: center;">
                 <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 500px;">
                     <div class="custom-row-inline-inset" style="text-align: center">
-                        <div class="input-group" style="margin-bottom: -14px !important;">
-                            <label class="form-control-sm col-sm-3">User Name</label>
-                            <input [value]="'Test'" readonly class="form-control form-control-sm">
-                        </div>
-                        <div class="input-group" style="margin-bottom: -14px !important;">
-                            <label class="form-control-sm col-sm-3">Full Name</label>
-                            <input [value]="'Test'" readonly class="form-control form-control-sm">
-                        </div>
-                        <div class="input-group" style="margin-bottom: -14px !important;">
-                            <label class="form-control-sm col-sm-3">Old Password</label>
-                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
-                        </div>
-                        <div class="input-group" style="margin-bottom: -14px !important;">
-                            <label class="form-control-sm col-sm-3">New Password</label>
-                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
-                        </div>
-                        <div class="input-group" style="margin-bottom: -14px !important;">
-                            <label class="form-control-sm col-sm-3">Repeat Password</label>
-                            <input type="password" [value]="'Test'" class="form-control form-control-sm col-sm-4">
-                        </div>
-                        <button type="button" class="cust-btn">Change Password</button>
+                        <form>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">User Name</label>
+                                <input name="input1" [value]="currentUser.username" readonly class="form-control form-control-sm">
+                            </div>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">Full Name</label>
+                                <input name="input2" [value]="currentUser.firstName" readonly class="form-control form-control-sm">
+                            </div>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">Email</label>
+                                <input name="input2" [value]="currentUser.emailAddress" readonly class="form-control form-control-sm">
+                            </div>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">Old Password</label>
+                                <input name="input3" type="password" [(ngModel)]="changePassObj.oldPassword" class="form-control form-control-sm col-sm-4">
+                            </div>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">New Password</label>
+                                <input name="input4" type="password" [(ngModel)]="changePassObj.newPassword" class="form-control form-control-sm col-sm-4">
+                            </div>
+                            <div class="input-group" style="margin-bottom: -14px !important;">
+                                <label class="form-control-sm col-sm-3">Repeat Password</label>
+                                <input name="input5" type="password" [(ngModel)]="changePassObj.confirmPassword" class="form-control form-control-sm col-sm-4">
+                            </div>
+                        </form>
+                        <button type="button" class="cust-btn" (click)="onClickConfirmation()">Change Password</button>
                     </div>
                 </fieldset>
 
@@ -761,3 +767,16 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-modal #warningConfirmation class="d-none">
+  <div header>Confirmation Message</div>
+  <div body>
+     {{ confirmationMessage }}
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="confirmChangePassword();warningConfirmation.closeModal();" ><a>Yes</a></button>
+    <button type="button" class="cust-btn" (click)="warningConfirmation.closeModal();" ><a>No</a></button>
+  </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
