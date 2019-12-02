@@ -59,8 +59,13 @@ export class BatchDistComponent implements OnInit {
               dataType: 'text'
           },
           {
-              key: 'Sstatus',
+              key: 'status',
               title:'Status',
+              dataType: 'text'
+          },
+          {
+              key: 'lineCd',
+              title:'Line',
               dataType: 'text'
           },
           {
@@ -81,6 +86,11 @@ export class BatchDistComponent implements OnInit {
           {
               key: 'riskName',
               title:'Risk',
+              dataType: 'text'
+          },
+          {
+              key: 'totalSi',
+              title:'Sum Insured',
               dataType: 'text'
           },
           {

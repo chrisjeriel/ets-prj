@@ -200,6 +200,8 @@ import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quo
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
 import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
+import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 
 const appRoutes: Routes = [
 
@@ -559,7 +561,9 @@ const appRoutes: Routes = [
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
     { path: 'create-int-comp', component: CreateInternalCompComponent},
     { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
+    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
     { path: 'uploader', component: UploaderComponent},
+    { path: 'acse-close-open-dcb', component: AcseCloseOpenDcbComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
