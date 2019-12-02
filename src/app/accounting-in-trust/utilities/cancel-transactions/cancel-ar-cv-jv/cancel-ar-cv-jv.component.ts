@@ -73,7 +73,7 @@ export class CancelArCvJvComponent implements OnInit {
 			this.acctService.getArList([])
 			.subscribe(data => {
 			  console.log(data);
-			  this.passDataCancelTrans.tableData = data['ar'].filter(e => e.arStatus == 'N').map(e => { 
+			  this.passDataCancelTrans.tableData = data['ar'].filter(e => e.arStatus != 'X').map(e => { 
 			  	e.createDate = this.ns.toDateTimeString(e.createDate);
 			  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 			  	return e;
@@ -84,7 +84,8 @@ export class CancelArCvJvComponent implements OnInit {
 			this.acctService.getAcitCvList([])
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus == 'N' || e.cvStatus == 'F').map(e => { 
+				// this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus == 'N' || e.cvStatus == 'F').map(e => { 
+				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus != 'X').map(e => { 
 				  	e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e;
@@ -95,7 +96,7 @@ export class CancelArCvJvComponent implements OnInit {
 			this.acctService.getJVListing('')
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['transactions'].filter(e => e.jvListings.jvStatus == 'N' || e.jvListings.jvStatus == 'F').map(e => {
+				this.passDataCancelTrans.tableData = data['transactions'].filter(e => e.jvListings.jvStatus != 'X').map(e => {
 					e.jvListings.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.jvListings.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e.jvListings;
