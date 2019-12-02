@@ -591,11 +591,6 @@ export class CvEntryServiceComponent implements OnInit {
     .subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
-      // this.saveAcseCv.cvStatus = stat;
-      // this.saveAcseCv.cvStatusDesc = this.cvStatList.filter(e => e.code == this.saveAcseCv.cvStatus).map(e => e.description);
-      // this.dialogIcon = '';
-      // this.dialogMessage = '';
-      // this.success.open();
       this.fromSave = true;
       this.getAcseCv();
       (!this.spoiled)?this.disableFlds(true):'';
