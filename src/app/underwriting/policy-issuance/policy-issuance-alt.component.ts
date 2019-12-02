@@ -173,13 +173,14 @@ export class PolicyIssuanceAltComponent implements OnInit {
    }
    
   printDestination:string = 'screen';
-  printReport:string = 'POLR010';
+  printReport:string = 'POLR010B';
+  inclEndt:boolean = true;
 
    print(){
     let params:any = {
                         policyId:this.policyInfo.policyId,
                         updateUser:this.ns.getCurrentUser(),
-
+                        inclEndt : this.inclEndt ? 'Y' : 'N'
                       };
     params.reportId=this.printReport;
     params.user
