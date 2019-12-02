@@ -47,7 +47,7 @@ export class PolEndorsementComponent implements OnInit {
         addFlag: true,
         deleteFlag: true,
         // paginateFlag: true,
-        // infoFlag: true,
+        infoFlag: true,
         searchFlag: true,
         pageLength: 'unli-10',
         pageID: 'endt',

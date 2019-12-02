@@ -196,8 +196,12 @@ import { AcseChartAcctComponent } from './maintenance/accounting-service/acse-ch
 import { PayeeComponent } from './maintenance/accounting-mtn/payee/payee.component';
 import { WfCalendarComponent } from './home/wf-calendar/wf-calendar.component';
 import { WfFormCommonComponent } from './home/wf-form-common/wf-form-common.component';
-import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component'
+import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quote-attachment/update-quote-attachment.component';
+import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
+import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
+import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 
 const appRoutes: Routes = [
 
@@ -555,8 +559,11 @@ const appRoutes: Routes = [
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
-
+    { path: 'create-int-comp', component: CreateInternalCompComponent},
+    { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
+    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
     { path: 'uploader', component: UploaderComponent},
+    { path: 'acse-close-open-dcb', component: AcseCloseOpenDcbComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

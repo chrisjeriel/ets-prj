@@ -34,8 +34,7 @@ export class RenewExpPolicyComponent implements OnInit {
   searchParams: any = {
         statusArr:['2'],
         'paginationRequest.count':10,
-        'paginationRequest.position':1,   
-        altNo:0        
+        'paginationRequest.position':1    
     };
 
 
@@ -82,6 +81,7 @@ export class RenewExpPolicyComponent implements OnInit {
 
   fromLOV: boolean = false;
   doneCheck: boolean = false;
+  renewedPolicy: any = {};
 
   constructor(private underwritingService: UnderwritingService, private router: Router,
    public modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
@@ -130,7 +130,7 @@ export class RenewExpPolicyComponent implements OnInit {
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       var polList = data['policyList'];
 
-      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
+      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE') //&& p.altNo == 0
                        .map(p => { p.riskName = p.project.riskName; return p; });
 
       this.passDataLOV.count = data['length'];                 
@@ -242,45 +242,66 @@ export class RenewExpPolicyComponent implements OnInit {
     this.getPolListing();
   }
 
-  checkPolicyAlteration() {
+  renewPolicy() {
     this.loading = true;
-    this.warningMsg = null;    
-    this.underwritingService.getAlterationsPerPolicy(this.selected.policyId, 'alteration').subscribe(data => {
-      var polList = data['policyList'];
-      var coInsAlt = data['coInsAlt'];
-      var coInsStatus = data['coInsStatus'];
-      
-      var inProgAlt = polList.filter(p => p.statusDesc.toUpperCase() === 'IN PROGRESS');// || p.statusDesc.toUpperCase() === 'IN FORCE');
-      var doneAlt = polList.filter(p => p.statusDesc.toUpperCase() != 'IN PROGRESS');// || p.statusDesc.toUpperCase() != 'IN FORCE');
+    this.warningMsg = null;
+    console.log(this.selected)
 
-      if(inProgAlt.length == 0 && coInsAlt != 1 && coInsStatus != 1) {
-        var line = this.polNo[0];
+    var renewParam:any = {
+      policyId : this.selected.policyId,
+      procBy : this.ns.getCurrentUser()
+    };
+    this.underwritingService.extGenRenExpPolicy(renewParam).subscribe((data :any) => {
+      console.log(data);
 
-        this.underwritingService.toPolInfo = [];
-        this.underwritingService.toPolInfo.push("edit", line);
-
-        if(doneAlt.length == 0) {
-          this.underwritingService.fromCreateAlt = true;        
-          this.router.navigate(['/policy-issuance-alt', { exitLink:'create-alteration',line: line, policyNo: this.polNo.join('-'), policyId: this.selected.policyId, editPol: true }], { skipLocationChange: true });
-        } else {
-          doneAlt.sort((a, b) => a.altNo - b.altNo);
-          var x = doneAlt[doneAlt.length-1];
-          this.underwritingService.fromCreateAlt = true;
-          this.router.navigate(['/policy-issuance-alt', { exitLink:'create-alteration',line: line, policyNo: x.policyNo, policyId: x.policyId, editPol: true }], { skipLocationChange: true });
-        }
-      } else if(coInsStatus == 1) {
-        this.warningMsg = 2;
-        this.showWarningMdl();
-      } else if(inProgAlt.length > 0) {
-        this.warningMsg = 0;
-        this.showWarningMdl();
-      } else if(coInsAlt == 1){
-        this.warningMsg = 1;
-        this.showWarningMdl();
+      if (data.errorList.length > 0) {
+        alert("Error during renewal.");
+      } else {
+        this.renewedPolicy = data.renewedPolicy;
+        $('#convSuccessModal > #modalBtn').trigger('click');
       }
+      
 
-      this.loading = false;
+      /*for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+        this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
+        }
+
+        for(let rec of this.fetchedData){
+              if(rec.policyNo === this.uwService.rowData[0]) {
+                this.policyId = rec.policyId;
+                this.statusDesc = rec.statusDesc;
+                this.riskName = rec.project.riskName;
+                this.insuredDesc = rec.insuredDesc;
+                this.quoteId = rec.quoteId;
+                this.quotationNo = rec.quotationNo;
+              }
+        }
+        this.polLine = this.uwService.rowData[0].split("-")[0];
+        this.policyNo = this.uwService.rowData[0];
+
+        this.uwService.getPolAlop(this.policyId, this.policyNo).subscribe((data: any) => {
+            this.uwService.fromCreateAlt = false;
+            if (this.statusDesc === 'In Progress' || this.statusDesc === 'Approved'){
+                this.uwService.toPolInfo = [];
+                this.uwService.toPolInfo.push("edit", this.polLine);
+                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: true, statusDesc: this.statusDesc ,riskName: this.riskName, insured: this.insuredDesc, quoteId: this.quoteId, quotationNo: this.quotationNo }], { skipLocationChange: true });
+            } else if (this.statusDesc === 'In Force' || this.statusDesc === 'Pending Approval' || this.statusDesc === 'Rejected') {
+                this.router.navigate(['/policy-issuance', {exitLink:'/policy-listing', line: this.polLine, policyNo: this.policyNo, policyId: this.policyId, editPol: false, statusDesc: this.statusDesc, riskName: this.riskName, insured: this.insuredDesc, quoteId: this.quoteId, quotationNo: this.quotationNo }], { skipLocationChange: true }); 
+            }
+        
+        });*/
+
+        this.loading = false;
     });
+  }
+
+  toPolGenInfo() {
+    var line = this.renewedPolicy.newPolicyNo.split('-')[0];
+
+    this.underwritingService.toPolInfo = [];
+    this.underwritingService.toPolInfo.push("edit", line);
+    this.underwritingService.fromCreateAlt = false;
+    this.router.navigate(['/policy-issuance', { line: line, policyNo: this.renewedPolicy.newPolicyNo, policyId: this.renewedPolicy.newPolicyId, editPol: true }], { skipLocationChange: true });
   }
 
   showWarningMdl() {

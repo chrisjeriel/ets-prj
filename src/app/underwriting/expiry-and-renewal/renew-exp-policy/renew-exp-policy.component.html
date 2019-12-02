@@ -67,7 +67,7 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                <button type="button" (click)="checkPolicyAlteration()" class="cust-btn" [disabled]="selected == null || cedingName == '' || insuredDesc == '' || riskName == '' || !doneCheck"><a>Renew</a></button>
+                <button type="button" (click)="renewPolicy()" class="cust-btn" [disabled]="selected == null || cedingName == '' || insuredDesc == '' || riskName == '' || !doneCheck"><a>Renew</a></button>
             </div>
         </div>
     </div>
@@ -107,5 +107,21 @@
     <div footer class="w-100 text-center">
         <button *ngIf="warningMsg != 3" class="cust-btn" type="button" (click)="modalService.dismissAll(); clearFields();"><a>Ok</a></button>
         <button *ngIf="warningMsg == 3" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="convSuccessModal">
+    <div header>Success Message</div>
+    <div body style="min-width: 420px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">
+                <p class="mg-b">Expiring Policy : <strong>{{ renewedPolicy.policyNo }}</strong></p>
+                <p>was successfully renewed to Policy No.</p>
+                <p><strong>{{ renewedPolicy.newPolicyNo }}</strong></p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); toPolGenInfo();"><a>Ok</a></button>
     </div>
 </app-modal>

@@ -119,9 +119,10 @@ export class AccountingService {
 	    checkFlag     : true,
 	    addFlag       : true,
 	    deleteFlag    : true,
+	    pageLength    : 10,
 	    uneditable    : [true,true,true,true,true,true,false,true,true,true],
 	    total         : [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'],
-	    widths        : ['1','1','1','120','120','120','120','120','120','120'],
+	    widths        : ['1','1','1','118','120','120','120','120','120','120'],
 	    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
 	}
 
@@ -254,17 +255,22 @@ export class AccountingService {
 	}
 
 	getTreatyKeys(tranClass){
-		if('AR' == tranClass){
+		if('AR' == tranClass) {
 			this.treatyData.nData['tranId'] = '';
 			this.treatyData.nData['billId'] = 1;
 			this.treatyData.nData['itemNo'] = '';
 
 			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
 			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','balPaytAmt','localAmt','newPaytAmt','newBalance'];
-		}else if('JV' == tranClass){ // todo
-			// this.passDataInwPolBal.nData = {policyNo : '',coRefNo : '',instNo : '',dueDate : '',currCd : '',currRate : '',prevPremAmt : '',prevRiComm : '',prevRiCommVat : '',prevCharges : '',prevNetDue : '',cumPayment : '',balance : '',paytAmt : '',premAmt : '',riComm : '',riCommVat : '',charges : '',totalPayt : '',remainingBal : '', showMG:1};
-			// this.passDataInwPolBal.total = [null,null,null,null,null,'Total','prevPremAmt','prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal'],
-   //  		this.passDataInwPolBal.keys = ['policyNo','coRefNo','instNo','dueDate','currCd', 'currRate','prevPremAmt', 'prevRiComm','prevRiCommVat', 'prevCharges','prevNetDue','cumPayment','balance','paytAmt', 'premAmt','riComm','riCommVat','charges','totalPayt','remainingBal']
+		} else if('JV' == tranClass) {
+			this.treatyData.nData['itemNo'] = '';
+			this.treatyData.nData['balanceAmt'] = 0;
+
+			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','balanceAmt','localAmt','newPaytAmt','newBalance'];
+			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','balanceAmt','localAmt','newPaytAmt','newBalance'];
+		} else if('PRQ' == tranClass) {
+			this.treatyData.keys = ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'];
+			this.treatyData.total = [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'];
 		}
 		
 		return Object.create(this.treatyData);
@@ -3115,6 +3121,64 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/generateBatchOrNo',params,header);
     }
 
+
+    editAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/editAcctEnt',params,header);
+    }
+
+    saveAcitMonthEndTBTempClose(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndTBTempClose',params,header);
+    }
+
+    restoreAcctEnt(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+        };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/restoreAcctEnt',params,header);
+    }
+
+    saveAcitMonthEndTBReopen(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitMonthEndTBReopen',params,header);
+    }
+
+    getAcitAcctEntInq(tranClass?, tranDateFrom?, tranDateTo?){
+    	const params = new HttpParams()
+			.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+			.set('tranDateFrom', (tranDateFrom == null || tranDateFrom == undefined ? '' : tranDateFrom))
+			.set('tranDateTo', (tranDateTo == null || tranDateTo == undefined ? '' : tranDateTo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctEntInq',{params});	
+    }
+
+    getAcitAcctEntBackup(tranId?, histNo?){
+    	const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctEntBackup',{params});	
+	}
+
     getAcseInsuranceExp(reqId?,itemNo?){
 		const params = new HttpParams()
 			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
@@ -3132,4 +3196,65 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseInsuranceExp',params,header);
     }
 
+    printInvoiceBatch(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/printInvoiceBatch',JSON.stringify(params),header);
+	}
+
+    updateDCBNo(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitDcbCollection',params,header);
+    }
+
+    saveDCBNo(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitCloseOpenDcb',params,header);
+    }
+
+   	getDcbCollection(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitDcbCollection',{params});	
+	}
+
+    getBankDetails(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitBankDetails',{params});	
+	}
+
+	getAcseDcbCollection(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseDcbCollection',{params});	
+	}
+	 
+	getAcseBankDetails(dcbYear,dcbNo){
+		const params = new HttpParams()
+			.set('dcbYear', (dcbYear == null || dcbYear == undefined ? '' : dcbYear))
+			.set('dcbNo', (dcbNo == null || dcbNo == undefined ? '' : dcbNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBankDetails',{params});	
+	}
+	
 }

@@ -140,8 +140,8 @@
 	<div footer>
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
-          <button class="cust-btn" type="button" (click)="null;"><a>Yes</a></button> <!-- removed printMdl.closeModal(); and updateOrStatus(); it does not exists in TypeScript -->
-          <button class="cust-btn" type="button" (click)="printConfirmModal.open();"><a>No</a></button> <!-- removed printMdl.closeModal(); it does not exists in TypeScript -->
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateOrStatus();"><a>Yes</a></button> <!-- removed printMdl.closeModal(); and updateOrStatus(); it does not exists in TypeScript -->
+          <button class="cust-btn" type="button" (click)=" printMdl.closeModal();printConfirmModal.open();"><a>No</a></button> <!-- removed printMdl.closeModal(); it does not exists in TypeScript -->
         </div>
       </div>
   	</div>
@@ -154,12 +154,12 @@
 	  	<p style="margin: 0px">Indicate the last successfully printed Invoice Number:</p>
 	  </div>
 	  <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "lastOrNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'> PROD#ERROR -->
-	  <input type="text" class="form-control form-control-sm cust-sm col-sm" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+	  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "lastInvNo" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'  (change)="validateInvLastPrinted($event)">
 	</div>
 	<div footer class="text-center w-100">
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
-          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();"><a>OK</a></button> <!-- failedOrPrint(); does not exists in TypeScript -->
+          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();failedOrPrint();"><a>OK</a></button> <!-- failedOrPrint(); does not exists in TypeScript -->
         </div>
       </div>
   	</div>

@@ -236,6 +236,8 @@ export class QuotationProcessingComponent implements OnInit {
     disableModBtn: boolean = false;
     autoIntComp: any = '';
 
+    multiCompTag:boolean = false;
+
     constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
                 private authenticationService: AuthenticationService) {
@@ -384,46 +386,20 @@ export class QuotationProcessingComponent implements OnInit {
             this.loading = false;
             if(a['quotationList']!= null && a['quotationList'].length != 0){
                 this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
+                console.log(a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i));
                 this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
                 this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status == 'Requested' || a['quotationList'][0].status == 'In Progress');
+                
+                this.multiCompTag = a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i).length > 1;
             }
 
             if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
                 $('#modIntModal > #modalBtn').trigger('click');
 
             }else{
-                var qLine = this.line.toUpperCase();
-
-                if (qLine === 'CAR' ||
-                    qLine === 'EAR' ||
-                    qLine === 'EEI' ||
-                    qLine === 'CEC' ||
-                    qLine === 'MBI' ||
-                    qLine === 'BPV' ||
-                    qLine === 'MLP' ||
-                    qLine === 'DOS') {
-                    this.modalService.dismissAll();
-
-                    this.quotationService.rowData = [];
-                    this.quotationService.toGenInfo = [];
-                    this.quotationService.toGenInfo.push("add", qLine);
-                    /*this.router.navigate(['/quotation']);*/
-
-                    var addParams = {
-                        cessionId: this.typeOfCessionId,
-                        cessionDesc: this.typeOfCession,
-                        riskId: this.riskCd,
-                        intComp: false,
-                    }
-
-                    this.quotationService.savingType = 'normal';
-
-                    setTimeout(() => {
-                        this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
-                    },100); 
-                }
+                this.newQuote();
             //neco was overthrown until here
             //neco's influence ends here
             }
@@ -445,6 +421,43 @@ export class QuotationProcessingComponent implements OnInit {
         // }
 
         
+    }
+
+    newQuote(){
+        var qLine = this.line.toUpperCase();
+
+        if (qLine === 'CAR' ||
+            qLine === 'EAR' ||
+            qLine === 'EEI' ||
+            qLine === 'CEC' ||
+            qLine === 'MBI' ||
+            qLine === 'BPV' ||
+            qLine === 'MLP' ||
+            qLine === 'DOS') {
+            this.modalService.dismissAll();
+
+            this.quotationService.rowData = [];
+            this.quotationService.toGenInfo = [];
+            this.quotationService.toGenInfo.push("add", qLine);
+            /*this.router.navigate(['/quotation']);*/
+
+            var addParams = {
+                cessionId: this.typeOfCessionId,
+                cessionDesc: this.typeOfCession,
+                riskId: this.riskCd,
+                intComp: false,
+            }
+
+            this.quotationService.savingType = 'normal';
+
+            setTimeout(() => {
+                this.router.navigate(['/quotation', { line: qLine, addParams: JSON.stringify(addParams), from: 'quo-processing', exitLink:'/quotation-processing' }], { skipLocationChange: true });
+            },100); 
+        }
+    }
+
+    toIntCompModule(){
+        this.router.navigate(['/create-int-comp'])
     }
 
     onRowClick(event) {    

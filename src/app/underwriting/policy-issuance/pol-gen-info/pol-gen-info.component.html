@@ -61,7 +61,7 @@
 								<div class="form-row" style="margin-right: 0px; margin-bottom: 5px;">
 									<div class="input-group" style="margin-top: 10px;">
 										<label class="form-control-sm col-sm-2">Policy No</label>
-										<input name="input2" type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
+										<input name="input2" type="text" class="form-control form-control-sm cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
 										<!-- <input name="input3" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input name="input4" type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -72,6 +72,16 @@
 										ngbTooltip="Co Series No">
 										<input name="input7" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Alt No"> -->
+										<div class="col-sm-6 renewal-div px-0 ">
+											<div class="col-sm d-flex ng-star-inserted input-group pr-0 mb-0 pl-2" *ngIf="policyInfo.repPolicyNo!=null">
+												<span class="form-control-sm col-sm-4 cust-lbl-left-offset py-0 text-right pr-3">Renewal Policy:</span>
+												<span class="form-control-sm col-sm cust-lbl-left-offset py-0">{{policyInfo.repPolicyNo}}</span>
+											</div>
+											<div class="col-sm d-flex ng-star-inserted input-group pr-0 mb-0 pl-2" *ngIf="policyInfo.oldPolicyNo!=null" style="margin-top: 8px !important;">
+												<span class="form-control-sm col-sm-4 cust-lbl-left-offset py-0 text-right pr-3">Replacing Policy:</span>
+												<span class="form-control-sm col-sm cust-lbl-left-offset py-0">{{policyInfo.oldPolicyNo}}</span>
+											</div>
+										</div>
 									</div>
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
@@ -146,10 +156,10 @@
 							<div class="input-group col-sm-6" style="margin-top: 10px; padding: 0px;">
 								<label class="form-control-sm col-sm-4">Inception Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1];policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]; updateExpiryDate();"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.inceptDate?.split('T')[0]" (valueChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1];policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]; updateExpiryDate();policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1]"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.inceptDate?.split('T')[1]" (valueChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event;policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event;policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>								
 								<!-- <input name="input27" type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.inceptDate?.split('T')[0]" (ngModelChange)="policyInfo.inceptDate=$event+'T'+policyInfo.inceptDate.split('T')[1]" (change)="updateExpiryDate();" appRequired>
 								<input name="input28" type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.inceptDate?.split('T')[1]" (ngModelChange)="policyInfo.inceptDate=policyInfo.inceptDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -250,10 +260,10 @@
 							<div class="input-group col-sm-6" style="padding: 0px;">
 								<label class="form-control-sm col-sm-4">Effective Date</label>
 								<div class="col-sm dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];this.updateMinBookingDate();;"></datepicker>
+									<datepicker [disabled]="fromInq" [type]="'date'" [required]="true" [showIcon]="true" [value]="policyInfo.effDate?.split('T')[0]" (valueChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1];this.updateMinBookingDate();policyInfo.distDate=$event+'T'+policyInfo.distDate.split('T')[1];"></datepicker>
 								</div>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+									<datepicker [disabled]="fromInq" [type]="'time'" [required]="true" [value]="policyInfo.effDate?.split('T')[1]" (valueChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event;policyInfo.distDate=policyInfo.distDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
 								</div>
 								<!-- <input name="input43" type="date" class="form-control form-control-sm req" [ngModel]="policyInfo.effDate?.split('T')[0]" (ngModelChange)="policyInfo.effDate=$event+'T'+policyInfo.effDate.split('T')[1]" appRequired>
 								<input name="input44" type="time" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px; text-align: center;" [ngModel]="policyInfo.effDate?.split('T')[1]" (ngModelChange)="policyInfo.effDate=policyInfo.effDate.split('T')[0]+'T'+$event" appRequired> -->
@@ -623,8 +633,22 @@
 							</div>
 						</div>
 						<div class="input-group">
-							<label class="form-control-sm col-sm-1">Site</label>
-							<textarea name="textarea11" class="form-control form-control-sm col-sm-5 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+							<div class="col-sm-6">
+								<div class="row">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">Site</label>
+										<textarea name="textarea11" class="form-control form-control-sm col-sm-10 req" style="font-size: 11px; min-height: 47px; margin-bottom: 17px; margin-left: 2px;" [(ngModel)]="policyInfo.project.site" appRequired></textarea>
+									</div>
+								</div>
+								<!-- <div class="row" *ngIf="line === 'EEI'">
+									<div class="input-group">
+										<label class="form-control-sm col-sm-2">IPL</label>
+										<input name="input169" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.ipl" ngbTooltip="Month/s"  oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+										<label class="form-control-sm col-sm-2">Time Excess</label>
+										<input name="input170" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.timeExc" ngbTooltip="Day/s"  oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="3">
+									</div>
+								</div> -->
+							</div>
 							<div class="col-sm-6">
 								<div class="row">
 									<div class="input-group">
@@ -1110,7 +1134,7 @@
 							</div>
 							<div class="input-group" style="margin-top: 16px !important;">
 								<!-- <input name="input997" [disabled]="policyInfo.coTermTag != 'Y' || fromInq" [(ngModel)]="policyInfo.coTermText" type="text"  class="form-control form-control-sm col-sm" style="margin-left: 0px !important;"> -->
-								<text-editor class="col-sm px-0" [editorContent]="policyInfo?.coTermText" (fetchContent)="policyInfo.coTermText = $event" [edtrOpnrPos]="2"  [readonly]="policyInfo.coTermTag != 'Y' || fromInq">
+								<text-editor class="col-sm px-0" [editorContent]="policyInfo?.coTermText" (fetchContent)="policyInfo.coTermText = $event" [edtrOpnrPos]="2"  [readonly]="policyInfo.coTermTag != 'Y' || fromInq" style="height: 27px">
 								</text-editor>
 							</div>
 						</div>
@@ -2372,24 +2396,26 @@
 				<legend class="scheduler-border" style="margin-left: 16px !important;">Alteration</legend>
 				<div class="custom-row-inline-inset">
 					<div class="input-group" style="margin-bottom: -10px !important;">
-						<label class="form-control-sm col-sm-2">Policy</label>
+						<!-- <label class="form-control-sm col-sm-2">Policy</label> -->
 						<!-- <textarea name="textarea42" class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
-						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
+						<!-- <div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
 							<text-editor [editorContent]="policyInfo?.polWordings.text" (fetchContent)="policyInfo?.polWordings.text = $event" [edtrOpnrPos]="2" [readonly]="fromInq">
 								<ng-container icon-1>
 									<a (click)="clickDeductiblesLOV('polWordings')" *ngIf="!fromInq"><i class="fa fa-search"></i></a>
 								</ng-container>
 							</text-editor>
-						</div>
-
+						</div> -->
+						
+						 <label class="form-control-sm col-sm-2" style="padding-left: 20px">Company Alteration Ref No.</label>
+						 <input name="coAltRefNo" type="text" class="form-control form-control-sm col-sm-9" [(ngModel)]="policyInfo.coAltRefNo" [readonly]="fromInq">
 						<div class="col-sm-1"></div>
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Alteration</label>
 						<!-- <textarea name="textarea43" class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 60px; margin-bottom: 12px;" [(ngModel)]="policyInfo.wordings" appRequired></textarea> -->
 
-						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; padding-right: 6px !important; min-height: 60px;">
+						<div class="form-control-sm col-sm-9 edtr-cont" style="height: 60px; margin-left: 2px !important; min-height: 60px;">
 							<text-editor [editorContent]="policyInfo?.polWordings.altText" (fetchContent)="policyInfo?.polWordings.altText = $event" [edtrOpnrPos]="2" [required]="true" [readonly]="fromInq">
 								<ng-container icon-1>
 									<a (click)="clickDeductiblesLOV('polWordingsAlt')"  *ngIf="!fromInq"><i class="fa fa-search"></i></a>

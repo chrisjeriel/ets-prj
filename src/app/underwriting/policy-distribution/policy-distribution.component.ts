@@ -72,6 +72,7 @@ export class PolicyDistributionComponent implements OnInit {
     this.uw.getInstTagAcctEntDate(this.params.policyId).subscribe(a=>{
       this.acctDetails = a;
       this.acctDetails.acctDate = this.ns.toDateTimeString(this.acctDetails.acctDate);
+      this.acctDetails.bookingDate = this.ns.toDateTimeString(this.acctDetails.bookingDate);
     })
   }
 

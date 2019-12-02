@@ -165,8 +165,8 @@ export class InwardPolBalanceComponent implements OnInit {
             return true;
           });
         }
+        this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       }
-      this.instllmentTable.onRowClick(null,this.passData.tableData[0]);
       this.instllmentTable.refreshTable();
 
       var x = this.passData.tableData[this.passData.tableData.length - 1].dueDate;

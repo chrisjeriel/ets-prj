@@ -11,11 +11,13 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-jv-treaty-pull-out',
   templateUrl: './jv-treaty-pull-out.component.html',
-  styleUrls: ['./jv-treaty-pull-out.component.css']
+  styleUrls: ['./jv-treaty-pull-out.component.css'],
+  providers: [DatePipe]
 })
 export class JvTreatyPullOutComponent implements OnInit {
   
@@ -26,12 +28,13 @@ export class JvTreatyPullOutComponent implements OnInit {
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('invTable') invTable: CustEditableNonDatatableComponent;
   @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent; 
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild('lov') lovMdl: LovComponent;
+  @ViewChild('osQsoaLov') osQsoaLov: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
-  passData: any = {
+  /*passData: any = {
       tableData: [],
       tHeader: ['Quarter Ending', 'Currency', 'Currency Rate', 'Amount', 'Amount(PHP)'],
       dataTypes: ['date', 'text', 'percent', 'currency', 'currency'],
@@ -65,7 +68,9 @@ export class JvTreatyPullOutComponent implements OnInit {
       total: [null, null, 'Total', 'balanceAmt', 'localAmt'],
       keys: ['quarterEnding', 'currCd', 'currRate', 'balanceAmt', 'localAmt'],
       widths: [203,50,130,130,130],
-  };
+  };*/
+
+  passData: any = {};
 
   invesmentData: any = {
     tableData:[],
@@ -129,6 +134,12 @@ export class JvTreatyPullOutComponent implements OnInit {
     hide: []
   }
 
+  passLov2 : any = {
+    selector   : 'osQsoa',
+    payeeNo    : '',
+    hide       : []
+  };
+
   readOnly: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -136,16 +147,19 @@ export class JvTreatyPullOutComponent implements OnInit {
   cancelFlag: boolean = false;
   cedingFlag: boolean = false;
 
-  constructor(private ns: NotesService, private accountingService: AccountingService) { }
+  constructor(private ns: NotesService, private accountingService: AccountingService, private dp: DatePipe) { }
 
   ngOnInit() {
+    this.passData = this.accountingService.getTreatyKeys('JV');
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.pageLength = 3;
     this.passData.disableAdd = true;
     this.invesmentData.disableAdd = true;
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1, 4);
       this.readOnly = true;
       this.readOnly = true;
       this.passData.addFlag = false;
@@ -172,8 +186,9 @@ export class JvTreatyPullOutComponent implements OnInit {
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName
         this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
         for (var i = 0; i < data.acctTreatyBal.length; i++) {
+          console.log(data.acctTreatyBal[i]);
+          data.acctTreatyBal[i].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data.acctTreatyBal[i].quarterEnding), 'MM/dd/yyyy');
           this.passData.tableData.push(data.acctTreatyBal[i]);
-          this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.acctTreatyBal[i].quarterEnding);
         }
         this.quarterTable.refreshTable();
         this.quarterTable.onRowClick(null,this.passData.tableData[0]);
@@ -202,15 +217,53 @@ export class JvTreatyPullOutComponent implements OnInit {
                        });
   }
 
-  quarterEndModal(data){
+  /*quarterEndModal(data){
     this.quarterModal.modal.openNoClose();
+  }*/
+
+  showOsQsoaMdl() {
+    this.passLov2.selector = 'osQsoa';
+    this.passLov2.hide = this.passData.tableData.map(a => a.qsoaId);
+    this.passLov2.params = {
+      qsoaId: '',
+      currCd: this.jvDetail.currCd,
+      cedingId: this.jvDetails.cedingId
+    }
+
+    this.osQsoaLov.openLOV();
+  }
+
+  setOsQsoa(data) {
+    data['data'].forEach(a => {
+      if(this.passData.tableData.some(b => b.qsoaId != a.qsoaId)) {
+        a.currCd = this.jvDetail.currCd;
+        a.currRate = this.jvDetail.currRate;
+        a.prevPaytAmt = a.cumPayt;
+        a.prevBalance = a.remainingBal;
+        a.balanceAmt = a.remainingBal;
+        a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.balanceAmt)).toFixed(2);
+        a.newBalance = 0;
+        a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
+        a.edited = true;
+        a.checked = false;
+        a.createDate = '';
+        a.createUser = '';
+        a.localAmt = +(parseFloat(a.remainingBal) * parseFloat(this.jvDetail.currRate)).toFixed(2);
+        this.passData.tableData.push(a);
+      }
+    });
+
+    this.passData.tableData = this.passData.tableData.filter(a => a.qsoaId != '');
+
+    this.quarterTable.refreshTable();
+    this.quarterTable.markAsDirty();
   }
 
   onrowClick(data){
-    if(data !== null && data.quarterNo !== ''  && data.trtyInvmt.length != 0){
-      this.quarterNo = data.quarterNo;
-      this.invesmentData.quarterNo = this.quarterNo;
-      this.invesmentData.tableData = data.trtyInvmt;
+    if(data !== null && data.qsoaId){
+      this.invesmentData.qsoaId = data.qsoaId;
+      this.invesmentData.nData.qsoaId = data.qsoaId;
+      this.invesmentData.tableData = data.trtyInvmt == undefined ? [] : data.trtyInvmt;
       this.invesmentData.disableAdd = false;
     }else if(data!==null){
       this.invesmentData.disableAdd = false;
@@ -247,6 +300,10 @@ export class JvTreatyPullOutComponent implements OnInit {
     var table = ''
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 0:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
+
+      this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
+      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].netQsoaAmt) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
+
       if(this.passData.tableData[i].deleted){
         deletedFlag = true;
       }
@@ -320,12 +377,17 @@ export class JvTreatyPullOutComponent implements OnInit {
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
-        if(this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterNo === ''){
+        this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].createUser = this.ns.getCurrentUser();
+        this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].updateUser = this.ns.getCurrentUser();
+
+        /*if(this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterNo === ''){
           quarterNo = this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterEnding.split('T');
           quarterNo = quarterNo[0].split('-');
           quarterNo = quarterNo[0]+quarterNo[1];
           this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterNo =  parseInt(quarterNo); 
-        }
+        }*/
+
+        this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].quarterNo = this.jvDetails.saveaccTrty[this.jvDetails.saveaccTrty.length - 1].qsoaId;
       }
 
       if(this.passData.tableData[i].deleted){
@@ -335,6 +397,8 @@ export class JvTreatyPullOutComponent implements OnInit {
           this.jvDetails.delaccTrty[this.jvDetails.delaccTrty.length - 1].cedingId    =  this.jvDetails.cedingId;
           this.jvDetails.delaccTrty[this.jvDetails.delaccTrty.length - 1].qsoaId      = this.passData.tableData[i].qsoaId;
           this.jvDetails.delaccTrty[this.jvDetails.delaccTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+
+          this.jvDetails.delaccTrty[this.jvDetails.delaccTrty.length - 1].quarterNo  =  this.jvDetails.delaccTrty[this.jvDetails.delaccTrty.length - 1].qsoaId;
         }
       }
       
@@ -343,7 +407,7 @@ export class JvTreatyPullOutComponent implements OnInit {
           this.jvDetails.saveTrtyInvt.push(this.passData.tableData[i].trtyInvmt[j]);
           actualBalPaid += this.passData.tableData[i].trtyInvmt[j].maturityValue;
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].tranId  = this.jvDetail.tranId;
-          this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].quarterNo  = this.passData.tableData[i].quarterNo;
+          this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].quarterNo  = this.passData.tableData[i].qsoaId;
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].createDate);
           this.jvDetails.saveTrtyInvt[this.jvDetails.saveTrtyInvt.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].trtyInvmt[j].updateDate);
         }

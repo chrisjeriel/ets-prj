@@ -40,6 +40,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   oldValue: any = '';
   modalRef: NgbModalRef;
 
+  afterInit: boolean = false;
+
   constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
   ngOnInit() {
@@ -62,7 +64,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     //     this.style['background'] = '#fffacd85';
     //   }
     // }
-    if(changes.readonly && this.renderer != undefined) {
+    if(changes.readonly && this.renderer != undefined && this.afterInit) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }
   }
@@ -72,6 +74,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     if(!this.table) {
       this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
     }
+    this.afterInit = true;
   }
 
   showTextEditorModal(content) {

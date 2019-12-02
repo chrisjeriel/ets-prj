@@ -1,9 +1,12 @@
-import { Component, OnInit,ViewChild } from '@angular/core';
+import { Component, OnInit,ViewChild, OnDestroy } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from '@environments/environment';
 
 
 @Component({
@@ -11,9 +14,10 @@ import { Subject } from 'rxjs';
     templateUrl: './policy-issuance-alt.component.html',
     styleUrls: ['./policy-issuance-alt.component.css']
 })
-export class PolicyIssuanceAltComponent implements OnInit {
+export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
     @ViewChild('contentEditPol') contentEditPol;
     @ViewChild('tabset') tabset: any;
+    @ViewChild('recordLock') recordLock;
 
     policyInfo = {
         policyId: '',
@@ -45,6 +49,14 @@ export class PolicyIssuanceAltComponent implements OnInit {
     line:string = ""; /*Line added. TRBT#PROD_GRADE*/
 
     disableCov:boolean = false;
+
+    webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
+    topic: string = "/pol-alteration";
+    stompClient: any;
+    initLoad: boolean = true;
+    lockModalShown: boolean = false;
+    lockUser: string = "";
+    lockMessage: string = "";
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService,
         private ps:PrintService, private ns: NotesService) {}
@@ -81,7 +93,72 @@ export class PolicyIssuanceAltComponent implements OnInit {
             // }
         });
 
+      if (this.policyInfo.fromInq != 'true') {
+        this.wsConnect();
+      }
     }
+
+    ngOnDestroy() {
+      if (this.policyInfo.fromInq != 'true') {
+        this.wsDisconnect();
+      }
+    }
+
+    wsConnect() {
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          if (_this.initLoad) {
+            _this.sendMessage();
+            _this.initLoad = false;
+          }
+
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              var obj = JSON.parse(sdkEvent.body);
+              if (obj.message == "") {
+                if (_this.policyInfo.policyId == obj.refId) {
+                  if (_this.ns.getCurrentUser() == obj.user) {
+                    //Proceed because same user.
+                    console.log("Same user with same record, proceed.");
+                  } else {
+                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.policyInfo.policyId, message: "This record is currently being updated by " }));
+                  }
+                }
+              } else {
+                if (_this.policyInfo.policyId == obj.refId) {
+                  if (_this.ns.getCurrentUser() != obj.user) {
+                    setTimeout(() => {
+                        if (_this.lockModalShown == false) {
+                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                         _this.lockModalShown = true;
+                         _this.lockUser = obj.user;
+                         _this.lockMessage = obj.message;
+                        }
+                     });
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+  }; 
+
+  wsDisconnect() {
+    if (this.stompClient !== null) {
+        this.stompClient.disconnect();
+    }
+  }
+
+  sendMessage() {
+    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.policyInfo.policyId, message: "" }));
+  }
+
+  errorCallBack(error) {
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          this.wsConnect();
+      }, 5000);
+  }
 
     ngAfterViewInit(){
         this.status = this.policyInfo.status;

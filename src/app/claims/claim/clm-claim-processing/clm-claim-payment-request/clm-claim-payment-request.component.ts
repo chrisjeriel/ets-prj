@@ -24,15 +24,15 @@ export class ClmClaimPaymentRequestComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ["Payment Request No.", "Status", "Hist. No.", "Hist. Type", "Type", "Curr","Curr Rt", "Amount", "Payment Type","Payee","Particulars"],
-    dataTypes: ["text", "text", "number", "text", "text", "text","currencyRate", "currency", "text",'text' ,"text-editor"],
-    keys: ['paytReqNo','paytReqStatDesc','histNo','histCategoryDesc','histTypeDesc','currencyCd','currencyRt','reserveAmt','tranTypeName','payee','particulars'],
-    uneditable:[true,true,true,true,true,true,true,true,true,false,false],
+    tHeader: ["Payment Request No.", "Status", "Hist. No.", "Hist. Type", "Type","Ref. No" ,"Curr","Curr Rt", "Amount", "Payment Type","Payee","Particulars"],
+    dataTypes: ["text", "text", "number", "text", "text","text", "text","currencyRate", "currency", "text",'text' ,"text-editor"],
+    keys: ['paytReqNo','paytReqStatDesc','histNo','histCategoryDesc','histTypeDesc',"refNo",'currencyCd','currencyRt','reserveAmt','tranTypeName','payee','particulars'],
+    uneditable:[true,true,true,true,true,true,true,true,true,true,false,false],
     magnifyingGlass:['payee'],
     paginateFlag: true,
     pageInfo: true,
     pageLength: 10,
-    widths: [1,1,1,1,1,1,1,1,'auto','auto','auto'],
+    widths: [1,1,1,1,1,1,1,1,1,'auto','auto','auto'],
 
   }
 

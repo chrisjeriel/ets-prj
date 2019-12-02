@@ -11,11 +11,13 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-jv-offsetting-against-negative-treaty',
   templateUrl: './jv-offsetting-against-negative-treaty.component.html',
-  styleUrls: ['./jv-offsetting-against-negative-treaty.component.css']
+  styleUrls: ['./jv-offsetting-against-negative-treaty.component.css'],
+  providers: [DatePipe]
 })
 export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   
@@ -26,7 +28,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   @ViewChild('quarterTable') quarterTable: CustEditableNonDatatableComponent;
   @ViewChild('trytytrans') trytytransTable: CustEditableNonDatatableComponent;
   @ViewChild(CedingCompanyComponent) cedingCoLov: CedingCompanyComponent;
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild('lov') lovMdl: LovComponent;
+  @ViewChild('osQsoaLov') osQsoaLov: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent;
@@ -55,7 +58,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
 
   };*/
 
-  passData: any = {
+  // OLD
+  /*passData: any = {
       tableData: [],
       tHeader: ['Quarter Ending', 'Currency', 'Currency Rate', 'Amount', 'Amount(PHP)'],
       dataTypes: ['date', 'text', 'percent', 'currency', 'currency'],
@@ -89,7 +93,10 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
       total: [null, null, 'Total', 'balanceAmt', 'localAmt'],
       keys: ['quarterEnding', 'currCd', 'currRate', 'balanceAmt', 'localAmt'],
       widths: [203,50,130,130,130],
-  }
+  }*/
+  // END OLD
+
+  passData: any = {};
 
   claimsOffset: any = {
     tableData: [],
@@ -144,6 +151,12 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     hide: []
   }
 
+  passLov2 : any = {
+    selector   : 'osQsoa',
+    payeeNo    : '',
+    hide       : []
+  };
+
   quarterNo: any = null;
   dialogIcon : any;
   dialogMessage : any;
@@ -159,16 +172,21 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
   negativeHistType: number[] = [7,8,9];
   //END
 
-  constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, private dp: DatePipe) { }
 
   ngOnInit() {
+    this.passData = this.accountingService.getTreatyKeys('JV');
+    this.passData.nData['clmOffset'] = [];
     this.passData.nData.currRate = this.jvDetail.currRate;
     this.passData.nData.currCd = this.jvDetail.currCd;
+    this.passData.pageLength = 3;
     this.passLov.currCd = this.jvDetail.currCd;
+    this.passData['disableAdd'] = true;
     
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1, 4);
       this.readOnly = true;
       this.passData.addFlag = false;
       this.passData.checkFlag = false;
@@ -200,8 +218,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.passLov.cedingId     = this.jvDetails.ceding;
         this.check(this.jvDetails);
         for (var i = 0; i < data.negativeTrty.length; i++) {
+           data.negativeTrty[i].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding), 'MM/dd/yyyy');
            this.passData.tableData.push(data.negativeTrty[i]);
-           this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.ns.toDateTimeString(data.negativeTrty[i].quarterEnding);
            this.totalTrtyBal += this.passData.tableData[this.passData.tableData.length - 1].balanceAmt;
         }
         this.quarterTable.refreshTable();
@@ -248,8 +266,42 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.lovMdl.openLOV();
   }
 
-  quarterEndModal(){
-    this.quarterModal.modal.openNoClose();
+  showOsQsoaMdl() {
+    this.passLov2.selector = 'osQsoa';
+    this.passLov2.hide = this.passData.tableData.map(a => a.qsoaId);
+    this.passLov2.params = {
+      qsoaId: '',
+      currCd: this.jvDetail.currCd,
+      cedingId: this.jvDetails.ceding
+    }
+
+    this.osQsoaLov.openLOV();
+  }
+
+  setOsQsoa(data) {
+    data['data'].forEach(a => {
+      if(this.passData.tableData.some(b => b.qsoaId != a.qsoaId)) {
+        a.currCd = this.jvDetail.currCd;
+        a.currRate = this.jvDetail.currRate;
+        a.prevPaytAmt = a.cumPayt;
+        a.prevBalance = a.remainingBal;
+        a.balanceAmt = a.remainingBal;
+        a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.balanceAmt)).toFixed(2);
+        a.newBalance = 0;
+        a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
+        a.edited = true;
+        a.checked = false;
+        a.createDate = '';
+        a.createUser = '';
+        a.localAmt = +(parseFloat(a.remainingBal) * parseFloat(this.jvDetail.currRate)).toFixed(2);
+        this.passData.tableData.push(a);
+      }
+    });
+
+    this.passData.tableData = this.passData.tableData.filter(a => a.qsoaId != '');
+
+    this.quarterTable.refreshTable();
+    this.quarterTable.markAsDirty();
   }
 
   setQuarter(data){
@@ -272,6 +324,10 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     var table = ''
     for (var i = 0; i < this.passData.tableData.length; i++) {
       this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
+
+      this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
+      this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].netQsoaAmt) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
+
       if(this.passData.tableData[i].deleted){
         deletedFlag = true;
       }
@@ -317,12 +373,11 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
     this.quarterTable.onRowClick(null,this.quarterTable.indvSelect);
   }
 
-  onrowClick(data){
-    if(data!==null && data.quarterNo !== '' && data.clmOffset.length != 0){
-      this.quarterNo = data.quarterNo;
+  onrowClick(data) {
+    if(data!==null && data.qsoaId !== ''){
       this.claimsOffset.disableAdd = false;
-      this.claimsOffset.nData.quarterNo = this.quarterNo;
-      this.claimsOffset.tableData = data.clmOffset;
+      this.claimsOffset.nData.qsoaId = data.qsoaId;
+      this.claimsOffset.tableData = data.clmOffset == undefined ? [] : data.clmOffset;
     }else if(data!==null){
       this.claimsOffset.disableAdd = false;
       this.claimsOffset.tableData = [];
@@ -428,17 +483,22 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding)
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
         this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].createUser = this.ns.getCurrentUser();
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].updateUser = this.ns.getCurrentUser();
         
-        if(this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo === ''){
+        /*if(this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo === ''){
           quarterNo = this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterEnding.split('T');
           quarterNo = quarterNo[0].split('-');
           quarterNo = quarterNo[0]+quarterNo[1];
           this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo =  parseInt(quarterNo); 
-        }
+        }*/
+
+        this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].quarterNo = this.jvDetails.saveNegTrty[this.jvDetails.saveNegTrty.length - 1].qsoaId;
       }
 
       if(this.passData.tableData[i].deleted){
         if(this.passData.tableData[i].clmOffset.length == 0){
+          this.passData.tableData[i].quarterNo = this.passData.tableData[i].qsoaId;
           this.jvDetails.deleteNegTrty.push(this.passData.tableData[i]);
         }else{
           for (var a = 0; a < this.passData.tableData[i].clmOffset.length; a++) {
@@ -446,6 +506,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
             this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].cedingId  =  this.jvDetails.ceding;
             this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
             this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].updateDate  =  this.ns.toDateTimeString(0);
+
+            this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].quarterNo  = this.jvDetails.deleteNegTrty[this.jvDetails.deleteNegTrty.length - 1].qsoaId;
           }
         }
         
@@ -466,6 +528,8 @@ export class JvOffsettingAgainstNegativeTreatyComponent implements OnInit {
         if(this.passData.tableData[i].clmOffset[j].deleted){
           this.jvDetails.deleteClmOffset.push(this.passData.tableData[i].clmOffset[j]);
           this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].tranId = this.jvDetail.tranId;
+
+          this.jvDetails.deleteClmOffset[this.jvDetails.deleteClmOffset.length - 1].quarterNo = this.passData.tableData[i].qsoaId;
         }
       }
       if(!this.passData.tableData[i].deleted){
