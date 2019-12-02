@@ -891,9 +891,13 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = ['slName'];
       this.passData.params.activeTag = 'Y';
-      console.log(this.passData.params);
+      console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName)).map(e => {e.newRec = 1; return e;});
+        if(this.passData.from.toLowerCase() == 'prq-ins'){
+          this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+        }else{
+          this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
+        }
        this.table.refreshTable();
        })
 
@@ -1209,8 +1213,10 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'accountName','accountNo'];
-      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{
-        this.passTable.tableData = a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null);
+      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{ 
+
+        this.passTable.tableData = (this.passData.from == 'acit')?a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null)
+                                                                 :a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acSeGlDepNo != null);
         this.table.refreshTable();
       });
    /* }else if(this.passData.selector == 'mtnBussType'){

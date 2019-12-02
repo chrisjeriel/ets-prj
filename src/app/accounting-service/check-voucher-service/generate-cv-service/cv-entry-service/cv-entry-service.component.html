@@ -134,7 +134,7 @@
                         <div class="cust-btn-container">
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == ''" (click)="fromBtn='cancel-req';confirmMdl.openNoClose()">Cancel CV</button>
+                            <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'P' && saveAcseCv.mainAcctEntDate != null)?true:(saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == '')?true:false" (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'X')?true:(saveAcseCv.checkStatus != 'P' || saveAcseCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcseCv.cvStatus != 'F'">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
@@ -168,6 +168,7 @@
   </div>
 </div>
 </form>
+
 
 <app-modal class="d-none" #confirmMdl >
     <div header>Confirmation</div>

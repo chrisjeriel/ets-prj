@@ -39,7 +39,7 @@
                              <label class="form-control-sm col-sm-1" style="height: auto;">Payee</label>
                              <div class="p-0 col-sm-7" style="position: relative;">
                                 <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-12 warn payee" maxlength="250" [(ngModel)]="saveAcsePaytReq.payee" maxlength="500" appRequired [disabled]="(saveAcsePaytReq.tranTypeCd != 3 && saveAcsePaytReq.tranTypeCd != 4) && existsInReqDtl">
-                                <div *ngIf="(!removeIcon && !existsInReqDtl) || (saveAcsePaytReq.tranTypeCd == 3 || saveAcsePaytReq.tranTypeCd == 4)" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                                <div *ngIf="(!removeIcon && !existsInReqDtl) || ((saveAcsePaytReq.reqStatus == 'N' || saveAcsePaytReq.reqStatus == 'F') && (saveAcsePaytReq.tranTypeCd == 3 || saveAcsePaytReq.tranTypeCd == 4))" style="position:absolute;right: 6px !important;top: -1px ;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                               </div>
                               <label class="form-control-sm col-sm-1">Request Date</label>
                               <div class="input-group col-sm-3" style="padding: 0px;">
@@ -63,7 +63,7 @@
                           <label class="form-control-sm col-sm-1 labels">Amount</label>
                              <div class="input-group col-sm-3" style="padding: 0px;">
                               <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-3 warn curr cap-input" maxlength="3" [ngModel]="saveAcsePaytReq.currCd" (ngModelChange)="saveAcsePaytReq.currCd=$event" (change)="checkCode($event,'curr')" appRequired [disabled]="(saveAcsePaytReq.tranTypeCd != 3 && saveAcsePaytReq.tranTypeCd != 4) && existsInReqDtl">
-                              <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="(!removeIcon &&!existsInReqDtl) || (saveAcsePaytReq.tranTypeCd == 3 || saveAcsePaytReq.tranTypeCd == 4)"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                              <div style="margin-left: -19px !important;z-index: 200;font-size: 14px;" *ngIf="(!removeIcon && !existsInReqDtl) || ((saveAcsePaytReq.reqStatus == 'N' || saveAcsePaytReq.reqStatus == 'F') && (saveAcsePaytReq.tranTypeCd == 3 || saveAcsePaytReq.tranTypeCd == 4))"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
                               <input name="input8" *ngIf="saveAcsePaytReq.reqStatus != 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 8px ! important;" [ngModel]="saveAcsePaytReq.reqAmt" (ngModelChange)="saveAcsePaytReq.reqAmt=$event" appRequired (change)="setLocalAmt();" numbers-only maxlength="24">
                               <input name="input8" *ngIf="saveAcsePaytReq.reqStatus == 'X'" type="text" class="form-control form-control-sm cust-sm col-sm-9 warn" style="text-align: right;margin-left: 2px ! important;"  [(ngModel)]="saveAcsePaytReq.reqAmt"  numbers-only maxlength="26" readonly>
                              </div>
@@ -145,9 +145,9 @@
                     <div class="cust-btn-container">
                       <button type="button" class="cust-btn" (click) = "showConfirmMdl('new-req')">New Request</button>
                       <button type="button" class="cust-btn" [disabled]="(saveAcsePaytReq.reqStatus != 'N' && saveAcsePaytReq.reqStatus != 'F')" (click)="onClickSave()">Save</button>
-                      <button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcsePaytReq.reqStatus == 'X' || saveAcsePaytReq.reqStatus == 'P'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
+                      <button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcsePaytReq.reqStatus == 'X' || saveAcsePaytReq.reqStatus == 'P'" (click)="approvalCd='AC007';showConfirmMdl('cancel-req')">Cancel Request</button>
                       <button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
-                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcsePaytReq.reqStatus != 'F'" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
+                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcsePaytReq.reqStatus != 'F'" (click)="approvalCd='AC002';showConfirmMdl('approve')">Ok for Disbursement</button>
                     </div>
                   </div>
                 </div>
@@ -174,6 +174,7 @@
     </fieldset>
   </div>
 </div>
+</form>
 
 <app-modal class="d-none" #confirmMdl >
     <div header>Confirmation</div>
@@ -261,4 +262,4 @@
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
-</form>
+<app-override-login [approvalCd]="approvalCd" (isSuccess)="onOkOverride($event)" #override></app-override-login>

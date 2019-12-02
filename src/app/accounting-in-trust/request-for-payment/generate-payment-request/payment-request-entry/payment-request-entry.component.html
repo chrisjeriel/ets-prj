@@ -145,9 +145,9 @@
 	            			<div class="cust-btn-container">
 	            				<button type="button" class="cust-btn" (click)="showConfirmMdl('new-req')">New Request</button>
 	            				<button type="button" class="cust-btn" [disabled]="((saveAcitPaytReq.reqStatus != 'N' && saveAcitPaytReq.reqStatus != 'F') || saveAcitPaytReq.tranTypeCd == 1 || saveAcitPaytReq.tranTypeCd == 2 || saveAcitPaytReq.tranTypeCd == 3)" (click)="onClickSave()">Save</button>
-	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqStatus == 'P'" (click)="showConfirmMdl('cancel-req')">Cancel Request</button>
+	            				<button type="button" class="cust-btn" [disabled] ="initDisabled || saveAcitPaytReq.reqStatus == 'X' || saveAcitPaytReq.reqStatus == 'P'" (click)="approvalCd='AC007';showConfirmMdl('cancel-req')">Cancel Request</button>
 	            				<button type="button" class="cust-btn" [disabled] ="initDisabled" (click)="printMdl.openNoClose()">Print</button>
-                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcitPaytReq.reqStatus != 'F'" (click)="showConfirmMdl('approve')">Ok for Disbursement</button>
+                      <button type="button" class="cust-btn" style="min-width: 125px !important;" [disabled]="saveAcitPaytReq.reqStatus != 'F'" (click)="approvalCd='AC002';showConfirmMdl('approve')">Ok for Disbursement</button>
 	            			</div>
 	            		</div>
 	            	</div>
@@ -262,4 +262,6 @@
 <app-mtn-printable-names #prepUserLov (selectedData)="setData($event,'prep-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #reqUserLov (selectedData)="setData($event,'req-user')"></app-mtn-printable-names>
 <app-mtn-printable-names #appUserLov (selectedData)="setData($event,'app-user')"></app-mtn-printable-names>
+<app-override-login [approvalCd]="approvalCd" (isSuccess)="onOkOverride($event)" #override></app-override-login>
+
 
