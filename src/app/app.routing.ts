@@ -29,6 +29,7 @@ import { PolicyDistributionComponent } from './underwriting/policy-distribution/
 import { PolCreateOpenCoverComponent } from './underwriting/policy-issuance/pol-create-open-cover/pol-create-open-cover.component';
 import { PolIssuanceOpenCoverLetterComponent } from './underwriting/policy-issuance/pol-issuance-open-cover-letter.component';
 import { PurgeExtractedPolicyComponent } from './underwriting/expiry-and-renewal/purge-extracted-policy/purge-extracted-policy.component';
+import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 import { UpdateInformationComponent } from './utilities/update-information/update-information.component'
 import { OpenCoverProcessingComponent } from './quotation/open-cover-processing/open-cover-processing.component';
 import { OpenCoverComponent } from './quotation/open-cover/open-cover.component';
@@ -199,6 +200,8 @@ import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quo
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
 import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
+import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 
 const appRoutes: Routes = [
 
@@ -385,6 +388,8 @@ const appRoutes: Routes = [
     { path: 'pol-reports', component: PolicyReportsComponent
     },
 
+    { path: 'renew-exp-pol', component: RenewExpPolicyComponent
+    },
 
     
     
@@ -556,7 +561,9 @@ const appRoutes: Routes = [
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
     { path: 'create-int-comp', component: CreateInternalCompComponent},
     { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
+    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
     { path: 'uploader', component: UploaderComponent},
+    { path: 'acse-close-open-dcb', component: AcseCloseOpenDcbComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

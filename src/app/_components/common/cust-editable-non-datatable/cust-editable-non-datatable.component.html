@@ -281,6 +281,7 @@
                                              </ng-container>
                                          </select>
 
+
                                          <input  (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'text'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
                                     </ng-container>
 
@@ -450,6 +451,19 @@
                                             </select>
                                         </ng-template>
                                     </div>
+
+                                    <div *ngSwitchCase="'row-dropdown'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else rowdropdown2" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #rowdropdown2>
+                                                 <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;" [appRequired]="false">
+                                                     <ng-container *ngFor="let data2 of data.opts">
+                                                         <ng-container *ngIf="key == data2.selector">
+                                                             <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                         </ng-container>
+                                                     </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
 
                                     <div *ngSwitchCase="'req-select2'">
                                         <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
@@ -721,6 +735,7 @@
                                                      </ng-container>
                                                  </ng-container>
                                              </select>
+                                
 
                                              <input  (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'text'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
                                         </ng-container>
@@ -888,6 +903,21 @@
                                             </ng-template>
                                         </div>
 
+                                        <div *ngSwitchCase="'row-dropdown'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else rowdropdown2" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #rowdropdown2>
+                                                 <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;" [appRequired]="false">
+                                                     <ng-container *ngFor="let data2 of data.opts">
+                                                         <ng-container *ngIf="key == data2.selector">
+                                                             <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                         </ng-container>
+                                                     </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                       
+
                                         <div *ngSwitchCase="'req-select2'">
                                             <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">
                                                 <ng-container *ngFor="let opt of passData.opts">
@@ -998,6 +1028,7 @@
                                         <div *ngSwitchCase="passData.dataTypes[i] !== undefined && passData.dataTypes[i].split('-')[0] === 'sequence' ? passData.dataTypes[i] : ''" style="text-align: right">
                                             <span class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] | number: passData.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
                                         </div>
+                                        <span *ngSwitchCase="'text'" class="unclickable" [ngStyle]="{'width': (passData.magnifyingGlass.indexOf(key)==-1) ? '100%' : '97%'}">{{ data[key] }}</span>
                                         <ng-container *ngSwitchCase="'text-editor'">
                                             <div style="max-height: 21px; max-width: 91%">
                                                 <text-editor [table]="true" name="" [editorContent]="data[key]" [readonly]="true" [editablePrev]="false">
@@ -1351,6 +1382,19 @@
                                             </select>
                                         </ng-template>
                                     </div>
+
+                                    <div *ngSwitchCase="'row-dropdown'">
+                                            <span *ngIf="data.newRec != 1 && !data.others; else rowdropdown2" class="unclickable">{{ data[key] }}</span>
+                                            <ng-template #rowdropdown2>
+                                                 <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;" [appRequired]="false">
+                                                     <ng-container *ngFor="let data2 of data.opts">
+                                                         <ng-container *ngIf="key == data2.selector">
+                                                             <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                         </ng-container>
+                                                     </ng-container>
+                                                </select>
+                                            </ng-template>
+                                        </div>
 
                                     <div *ngSwitchCase="'req-select2'">
                                         <ng-container *ngIf="data.newRec != 1 && !data.others; else reqSelect2">

@@ -849,40 +849,40 @@ showCedingCompanyIntCompLOV() {
         },100); 
     }
 
-export(){
+    export(){
         //do something
-    let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
-    
-    delete paramsCpy['paginationRequest.count'];
-    delete paramsCpy['paginationRequest.position'];
-    console.log(paramsCpy);
+        let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+        
+        delete paramsCpy['paginationRequest.count'];
+        delete paramsCpy['paginationRequest.position'];
+        console.log(paramsCpy);
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var hr = String(today.getHours()).padStart(2,'0');
-    var min = String(today.getMinutes()).padStart(2,'0');
-    var sec = String(today.getSeconds()).padStart(2,'0');
-    var ms = today.getMilliseconds()
-    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'QuotationProcessing_'+currDate+'.xlsx'
-    var mystyle = {
-        headers:true, 
-        column: {style:{Font:{Bold:"1"}}}
-      };
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = String(today.getHours()).padStart(2,'0');
+        var min = String(today.getMinutes()).padStart(2,'0');
+        var sec = String(today.getSeconds()).padStart(2,'0');
+        var ms = today.getMilliseconds()
+        var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+        var filename = 'QuotationProcessing_'+currDate+'.xlsx'
+        var mystyle = {
+            headers:true, 
+            column: {style:{Font:{Bold:"1"}}}
+          };
 
-      alasql.fn.datetime = function(dateStr) {
-            var date = new Date(dateStr);
-            return date.toLocaleString().split(',')[0];
-      };
+        alasql.fn.datetime = function(dateStr) {
+              var date = new Date(dateStr);
+              return date.toLocaleString().split(',')[0];
+        };
 
-       alasql.fn.currency = function(currency) {
+        alasql.fn.currency = function(currency) {
             var parts = parseFloat(currency).toFixed(2).split(".");
             var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
-                (parts[1] ? "." + parts[1] : "");
-            return num
-      };
+                      (parts[1] ? "." + parts[1] : "");
+              return num
+        };
 
       this.quotationService.newGetQuoProcessingData(paramsCpy).subscribe(data => {
             var records = data['quotationList'];
@@ -904,7 +904,5 @@ export(){
                                  });
             alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
         });
-
-    
   }
 }

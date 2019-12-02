@@ -118,8 +118,12 @@ export class JournalVoucherComponent implements OnInit {
           a.jvStatusName = a.transactions.tranStatDesc;
         }
       });
-
-      this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
+      if(this.tranStat.toUpperCase() == 'CLOSED'){
+        this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.transactions.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase() && a.transactions.acctEntDate !== null);
+      }else{
+        this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
+      }
+      
       this.table.refreshTable();
 
       this.table.filterDisplay(this.table.filterObj, this.table.searchString);

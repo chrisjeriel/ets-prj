@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
+
 
 @Component({
   selector: 'app-payment-request-entry',
@@ -35,6 +37,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('mainLov') mainLov               : LovComponent;
   @ViewChild('myForm') form                   : NgForm;
+  @ViewChild('override') overrideLogin        : OverrideLoginComponent;
+
 
   saveAcitPaytReq : any = {
     paytReqNo       : '',
@@ -85,6 +89,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   existsInReqDtl    : boolean = false;
   removeIcon        : boolean = false;
   fromSave          : boolean = false;
+  approvalCd        : any;
 
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
@@ -218,8 +223,6 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.saveAcitPaytReq.currCd  = 'PHP';
         this.saveAcitPaytReq.currRate = 1;
         recPn.forEach(e => {
-          console.log(e.userId);
-          console.log(this.ns.getCurrentUser());
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitPaytReq.preparedName  = e.printableName;
             this.saveAcitPaytReq.preparedBy   = e.userId;
@@ -539,8 +542,9 @@ export class PaymentRequestEntryComponent implements OnInit {
       }
     }else{
       if(this.saveAcitPaytReq.processing == null){
-        this.confirmMdl.openNoClose();
+        // this.confirmMdl.openNoClose();
         this.fromBtn = from;
+        this.overrideFunc(this.approvalCd);
       }else{
         this.warnMsg = 'Please delete or cancel the transaction with Check Voucher No. ' + this.saveAcitPaytReq.processing + 
                        ' \nbefore cancelling this payment request.';
@@ -578,4 +582,24 @@ export class PaymentRequestEntryComponent implements OnInit {
                       this.ns.getCurrentUser() + '&reqId=' + this.saveAcitPaytReq.reqId, '_blank');
    }
    //end
+
+  overrideFunc(approvalCd){
+    this.loadingFunc(true);
+    this.mtnService.getMtnApprovalFunction(approvalCd)
+    .subscribe(data => {
+      var approverList = data['approverFn'].map(e => e.userId);
+      if(approverList.includes(this.ns.getCurrentUser())){
+        this.confirmMdl.openNoClose();
+      }else{
+        this.overrideLogin.getApprovalFn();
+        this.overrideLogin.overrideMdl.openNoClose();
+      }
+    });
+  }
+
+  onOkOverride(result){
+    if(result){
+      this.confirmMdl.openNoClose();
+    }
+  }
 }

@@ -1,25 +1,37 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {  NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 import { UnderwritingService, NotesService, PrintService} from '@app/_services';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-pol-issuance-open-cover-letter',
   templateUrl: './pol-issuance-open-cover-letter.component.html',
   styleUrls: ['./pol-issuance-open-cover-letter.component.css']
 })
-export class PolIssuanceOpenCoverLetterComponent implements OnInit {
+export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,private router: Router, private modalService: NgbModal, 
               private uw: UnderwritingService, private ns: NotesService, private ps: PrintService) { }
 
   @ViewChild('tabset') tabset: any;
+  @ViewChild('recordLock') recordLock;
   policyInfo:any;
   inqFlag:any;
   title:string = "Policy / Issuance / Create Open Cover /";
   exitLink:string;
+
+  webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
+  topic: string = "/pol-oc";
+  stompClient: any;
+  initLoad: boolean = true;
+  lockModalShown: boolean = false;
+  lockUser: string = "";
+  lockMessage: string = "";
 
   ngOnInit() {
   	this.route.params.subscribe(a=>{
@@ -31,7 +43,76 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit {
       }
       this.exitLink = a['exitLink']
 
+      if(!this.inqFlag){
+        this.wsConnect();
+      }
   	})    
+  }
+
+  ngOnDestroy() {
+    if (!this.inqFlag) {
+      this.wsDisconnect();
+    }
+  }
+
+  wsConnect() {
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          if (_this.initLoad) {
+            _this.sendMessage();
+            _this.initLoad = false;
+          }
+
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              var obj = JSON.parse(sdkEvent.body);
+              if (obj.message == "") {
+                if (_this.policyInfo.policyIdOc == obj.refId) {
+                  if (_this.ns.getCurrentUser() == obj.user) {
+                    //Proceed because same user.
+                    console.log("Same user with same record, proceed.");
+                  } else {
+                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.policyInfo.policyIdOc, message: "This record is currently being updated by " }));
+                  }
+                }
+              } else {
+                if (_this.policyInfo.policyIdOc == obj.refId) {
+                  if (_this.ns.getCurrentUser() != obj.user) {
+                    setTimeout(() => {
+                        if (_this.lockModalShown == false) {
+                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                         _this.lockModalShown = true;
+                         _this.lockUser = obj.user;
+                         _this.lockMessage = obj.message;
+                        }
+                     });
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+  }; 
+
+  wsDisconnect() {
+    if (this.stompClient !== null) {
+        this.stompClient.disconnect();
+    }
+  }
+
+  sendMessage() {
+    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.policyInfo.policyIdOc, message: "" }));
+  }
+
+  errorCallBack(error) {
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          this.wsConnect();
+      }, 5000);
+  }
+
+  returnOnModal(){
+      this.router.navigateByUrl(this.exitLink);
   }
 
   onTabChange($event: NgbTabChangeEvent) {

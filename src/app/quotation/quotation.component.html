@@ -141,7 +141,7 @@
 			</ng-template>
 
 		</ngb-tab>
-		<ngb-tab id="NotesReminders" *ngIf="!inquiryFlag">
+		<ngb-tab id="NotesReminders">
 				<ng-template ngbTabTitle>
 					<div>Notes & Reminders</div>
 				</ng-template>
@@ -170,12 +170,35 @@
 <!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE-->
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<!-- <<<<<<< HEAD
+<!-- 
 <ng-template #confirmLeave>
 	<app-confirm-leave></app-confirm-leave>
 </ng-template>
 <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
-======= -->
+ -->
+
+
+<ng-template #recordLock>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Record Locked</span>
+				</div>
+				<div class="modal-body" style="width: 390px">
+					<div class="row" style="padding-right: 10px !important; padding-left: 10px !important">
+							<fieldset class="scheduler-border" style="padding-bottom: 17px !important;">
+								<!-- <div class="custom-row-inline-inset"> -->
+									<div class="input-group" style="margin-top : 5px ! important; text-align: center;">
+										<p class="form-control-sm" for="xx" style="padding-left: 20px; padding-right: 15px; font-size: 13px; width: 100%;">{{ lockMessage }}<b>{{ lockUser }}</b>.<br/>You will be redirected to Quotation Listing.</p>
+									</div>
+								<!-- </div> -->
+							</fieldset>
+					</div>
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Ok</a></button>
+					</div>
+				</div>
+</ng-template>
 
 <app-modal #confirmReleaseMdl class="d-none">
 	<div header>Confirmation</div>
@@ -185,3 +208,4 @@
 		<button class="cust-btn" (click)="confirmReleaseMdl.closeModal()">No</button>
 	</div>
 </app-modal>
+

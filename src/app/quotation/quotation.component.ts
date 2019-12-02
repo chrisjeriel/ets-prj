@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,8 @@ import { QuotationService, UserService, NotesService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { ConfirmLeaveComponent, ModalComponent, SucessDialogComponent } from '@app/_components/common/';
 import { Subject } from 'rxjs';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 
 
 
@@ -17,7 +19,7 @@ import { Subject } from 'rxjs';
 	templateUrl: './quotation.component.html',
 	styleUrls: ['./quotation.component.css']
 })
-export class QuotationComponent implements OnInit {
+export class QuotationComponent implements OnInit, OnDestroy {
 	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, 
               private quotationService: QuotationService, private userService: UserService, private ns: NotesService) { 
   }
@@ -81,20 +83,99 @@ export class QuotationComponent implements OnInit {
   exitLink:string;
   accessibleModules:any [] = [];
   intCompTag:boolean = false;
-
   printMdlEvent:any;
 
+  webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
+  topic: string = "/quote-processing";
+  stompClient: any;
+  initLoad: boolean = true;
+  lockModalShown: boolean = false;
+  lockUser: string = "";
+  lockMessage: string = "";
+
   @ViewChild('active')activeComp:any;
+  @ViewChild('recordLock') recordLock;
 
 	ngOnInit() {
       this.sub = this.route.params.subscribe(params => {
           this.line = params['line'];
           this.inquiryFlag = params['inquiry'];
           this.exitLink = params['exitLink'];
+          this.quoteInfo.quoteId = params['quoteId'];
 
+          console.log(params);
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
       });
+      if (!this.inquiryFlag) {
+        this.wsConnect();
+      }
 	}
+
+  ngOnDestroy() {
+    if (!this.inquiryFlag) {
+      this.wsDisconnect();
+    }
+  }
+
+  wsConnect() {
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          if (_this.initLoad) {
+            _this.sendMessage();
+            _this.initLoad = false;
+          }
+
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              var obj = JSON.parse(sdkEvent.body);
+              if (obj.message == "") {
+                if (_this.quoteInfo.quoteId == obj.refId) {
+                  if (_this.ns.getCurrentUser() == obj.user) {
+                    //Proceed because same user.
+                    console.log("Same user with same record, proceed.");
+                  } else {
+                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.quoteInfo.quoteId, message: "This record is currently being updated by " }));
+                  }
+                }
+              } else {
+                if (_this.quoteInfo.quoteId == obj.refId) {
+                  if (_this.ns.getCurrentUser() != obj.user) {
+                    setTimeout(() => {
+                        if (_this.lockModalShown == false) {
+                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                         _this.lockModalShown = true;
+                         _this.lockUser = obj.user;
+                         _this.lockMessage = obj.message;
+                        }
+                     });
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+  }; 
+
+  wsDisconnect() {
+    if (this.stompClient !== null) {
+        this.stompClient.disconnect();
+    }
+  }
+
+  sendMessage() {
+    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.quoteInfo.quoteId, message: "" }));
+  }
+
+  errorCallBack(error) {
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          this.wsConnect();
+      }, 5000);
+  }
+
+  returnOnModal(){
+    this.router.navigateByUrl(this.exitLink);
+  }
 
 	showApprovalModal(content) {
 	  this.printType = "SCREEN";

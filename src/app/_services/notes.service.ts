@@ -73,6 +73,10 @@ export class NotesService {
     return JSON.parse(window.localStorage.currentUser).username;
   }
 
+  getCurrentUserFullName() {
+    return JSON.parse(window.localStorage.currentUser).firstName;
+  }
+
   dateConstructor(ev, data, type) {
     if(data != null && data != '') {
       var dArr = data.split('T');

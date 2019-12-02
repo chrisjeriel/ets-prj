@@ -166,6 +166,7 @@ export class AcctOrListingsComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data);
     if(data === null || (data !== null && Object.keys(data).length === 0)){
       this.otherInfo.createUser = '';
       this.otherInfo.createDate = '';

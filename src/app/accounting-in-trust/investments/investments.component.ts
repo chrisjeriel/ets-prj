@@ -59,8 +59,8 @@ export class InvestmentsComponent implements OnInit {
      tHeaderWithColspan : [],
    	 tHeader: ["Investment Code","Bank","Certificate No.","Investment Type","Security","Status","Maturity Period","Duration Unit","Interest Rate","Date Purchased","Maturity Date","Curr","Curr Rate","Investment","Investment Income","Bank Charges","Withholding Tax","Maturity Value","Pre-Termination Tag","Termination Date","Partial Pull-Out","Pull-out Date","Pulled-out Amount","Amortize Unit","Eff%","Price (Cost)"],
    	 resizable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-   	 dataTypes: ['reqtext','select','reqtext','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','checkbox','date','currency','select','percent','currency'],
-   	 nData: {
+   	 dataTypes: ['text','select','text','select','select','select','number','select','percent','date','date','select','percent','currency','currency','currency','currency','currency','checkbox','date','checkbox','date','currency','select','percent','currency'],
+      nData: {
           invtId   : null,
           invtCd   : null,
           bank     : null,
@@ -159,7 +159,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,1,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
+     widths: [130,130,150,150,150,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -200,12 +200,14 @@ export class InvestmentsComponent implements OnInit {
     resultCancel : boolean;
     statusList: any[] =[]; 
     statusCd: any = '';
-    matDateTo: any = '';
+    matDateTo: any = '';z
     matDateFrom: any = '';
     disableBtn: boolean = true;
     maxphp: any = 0;
     maxusd: any = 0;
     maxukp: any = 0;
+    errorAmort: any;
+
   constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
@@ -246,6 +248,8 @@ export class InvestmentsComponent implements OnInit {
                                       a.purDate = this.ns.toDateTimeString(a.purDate);
                                       a.createDate = this.ns.toDateTimeString(a.createDate);
                                       a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                      a.termDate = this.ns.toDateTimeString(a.termDate);
+                                      a.partialPullOutDate = this.ns.toDateTimeString(a.partialPullOutDate);
                                       a.edited = false;
                                       a.currRate =  a.currRate;
                                       var res = a.invtCd.split("-");
@@ -253,14 +257,8 @@ export class InvestmentsComponent implements OnInit {
                                          
                                       if (a.invtStatus === 'F'){
                                         a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt','preTerminatedTag','termDate'];
-                                         /* if (a.preTerminatedTag === 'Y' && a.partialPullOutTag === 'N'){
-                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
-                                          }else if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'Y'){
-                                            a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','preTerminatedTag','termDate'];
-                                          }else {
-                                           a.uneditable = ['invtCd','invtStatus','matVal','currRate','priceCost','partialPullOutTag','partialPullOutDate','partialPullOutAmt','preTerminatedTag','termDate'];
-                                          }*/
-                                      } else if(a.invtStatus === 'M') { 
+                                      }/* else if(a.invtStatus === 'M') { 
+
                                         if(a.preTerminatedTag == 'Y'){
                                           a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
@@ -268,21 +266,27 @@ export class InvestmentsComponent implements OnInit {
                                                         'whtaxAmt','matVal','preTerminatedTag','termDate',
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt',
                                                         'amortEff','priceCost'];
+                                        }else if (a.partialPullOutTag == 'Y') {
+                                          a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
+                                                        'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                         }else {
-                                          a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate'];
+                                          a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                         }
 
                                         
-                                      } else if(a.invtStatus === 'O'){
+                                      } */else if(a.invtStatus === 'O'){
 
                                           if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'N'){
-                                              if (a.amortized === null || a.amortized === ""){
+                                             if (a.amortized === null || a.amortized === ""){
                                                a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
                                              }else {
-                                               a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
+                                               a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                              }
                                           }else {
+
                                                a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -370,6 +374,7 @@ export class InvestmentsComponent implements OnInit {
         this.table.overlayLoader = false;
         this.disableBtn = true;
         this.table.refreshTable();
+         $('.ng-dirty').removeClass('ng-dirty');
       });
   }
 
@@ -420,7 +425,8 @@ export class InvestmentsComponent implements OnInit {
            this.passData.disableGeneric = true;     
        }else{
            this.passData.disableGeneric = false;
-       }   
+       }
+
 
        if(this.selectedData.amortized !== null){
          this.disableBtn = false;
@@ -553,13 +559,163 @@ uneditableItems(array, item, mode){
     
 }
 
-
-  update(data){
-    /*keys: ['invtCd','bank','certNo','invtType',
-            'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
-            'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-            'whtaxAmt','matVal','preTerminatedTag','termDate','amortized','amortEff','priceCost']*/
+ changeCurr(data) {
+     var  currRate,
+          currSeq,
+          invtCd;
+                    
+                    if (data.currCd === 'PHP'){
+                       var currRt = this.getCurrencyRt('PHP');
+                        currRate = currRt;
+                       
+                       if (data.invtCd === null){
+                          currSeq = null;
+                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                       } else {
+                         var res = data.invtCd.split("-");
+                         if (data.currCd !== res[3]){
+                            currSeq = null;
+                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                         } else {
+                            currSeq = parseInt(res[4]);
+                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                         }
+                       }  
+                     } else if (data.currCd === 'UKP'){
+                       var currRt = this.getCurrencyRt('UKP');
+                        currRate = currRt;
+                      
+                        if (data.invtCd === null){
+                           currSeq = null;
+                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                        } else {
+                          var res = data.invtCd.split("-");
+                            if (data.currCd !== res[3]){
+                               currSeq = null;
+                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                            }else {
+                               currSeq = parseInt(res[4]);
+                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                            }
+                        }  
+                     } else if (data.currCd === 'USD'){
+                       var currRt = this.getCurrencyRt('USD');
+                        currRate = currRt;
      
+                       if (data.invtCd === null){
+                          currSeq = null;
+                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                       } else {
+                         var res = data.invtCd.split("-");
+                           if (data.currCd !== res[3]){
+                              currSeq = null;
+                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                           } else { 
+                              currSeq = parseInt(res[4]);
+                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                           }
+                       }  
+                     }
+                     
+    return {
+        currRate: currRate, 
+        currSeq: currSeq,
+        invtCd : invtCd
+    }; 
+ }
+
+changePurDate(data){
+       var matPeriod,
+           purDate,
+           matDate,
+           error;
+        if(this.isEmptyObject(data.purDate) && data.matDate !== null && data.matDate !== ''){
+                       matPeriod = data.matPeriod;
+                       matDate = data.matDate;
+                       purDate = null;
+                       error = false;
+                     }else if(data.matDate <= data.purDate && 
+                              !this.isEmptyObject(data.matDate) &&
+                              !this.isEmptyObject(data.purDate)) { 
+                       matPeriod = null;
+                       matDate = data.matDate;
+                       purDate = null;
+                       error = true;
+                     }else if (this.isEmptyObject(data.matPeriod) && data.matDate !== null){
+                       var matPeriod = this.getMaturationPeriod(data.durUnit,data.purDate,data.matDate);
+                       var array = this.getDuration(data.purDate,data.matDate,matPeriod,data.durUnit);
+                       matPeriod = matPeriod;
+                       purDate = array[0];
+                       matDate = array[1];
+                       error = false;
+                     }else if(this.isEmptyObject(data.matDate) && data.matPeriod !== null){
+                        var array = this.getDuration(data.purDate,data.matDate,data.matPeriod,data.durUnit);
+                        purDate = array[0];
+                        matDate = array[1];
+                     }else if (data.matPeriod !== null && data.matDate !== null) {
+                       var matPeriod = this.getMaturationPeriod(data.durUnit,data.purDate,data.matDate);
+                       var array = this.getDuration(data.purDate,data.matDate,matPeriod,data.durUnit);
+                       matPeriod = matPeriod;
+                       purDate = array[0];
+                       matDate = array[1];
+                       error = false;
+                     }       
+     return {
+        matPeriod: matPeriod, 
+        purDate: purDate,
+        matDate : matDate,
+        error : error
+    }; 
+    
+}
+
+changeMatDate(data){
+       var matPeriod,
+           purDate,
+           matDate,
+           error;
+
+        if(this.isEmptyObject(data.matDate) && data.purDate !== null && data.purDate !== ''){
+                       matPeriod = null;
+                       purDate = data.purDate;
+                       matDate = null;
+                       error = false;
+                     }else if(data.matDate <= data.purDate && 
+                              !this.isEmptyObject(data.matDate) &&
+                              !this.isEmptyObject(data.purDate)) { 
+                       matPeriod = null;
+                       matDate = data.matDate;
+                       purDate = null;
+                       error = true;
+                     } else if (this.isEmptyObject(data.matPeriod) && data.purDate !== null && data.purDate !== ''){
+                       var matPeriod = this.getMaturationPeriod(data.durUnit,data.purDate,data.matDate);
+                       var array = this.getDuration(data.purDate,data.matDate,matPeriod,data.durUnit);
+                       matPeriod = matPeriod;
+                       purDate = array[0];
+                       matDate = array[1];
+                       error = false;
+                     }else if(this.isEmptyObject(data.purDate) && data.matPeriod !== null && data.matPeriod !== ''){
+                        var array = this.getDuration(data.purDate,data.matDate,data.matPeriod,data.durUnit);
+                        purDate = array[0];
+                        matDate = array[1];
+                     }else if (data.matPeriod !== null && data.purDate !== null && data.matDate !== null ) {
+                       var matPeriod = this.getMaturationPeriod(data.durUnit,data.purDate,data.matDate);
+                       var array = this.getDuration(data.purDate,data.matDate,matPeriod,data.durUnit);
+                       matPeriod = matPeriod;
+                       purDate = array[0];
+                       matDate = array[1];
+                       error = false;
+                     }       
+     return {
+        matPeriod: matPeriod, 
+        purDate: purDate,
+        matDate : matDate,
+        error : error
+    }; 
+    
+}
+
+update(data){
       for(var i= 0; i< this.passData.tableData.length; i++){
 
          if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
@@ -569,6 +725,7 @@ uneditableItems(array, item, mode){
              
               if(this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== ''   ||
                 this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== ''){
+
                   this.passData.tableData[i].matPeriod = null;
                }
 
@@ -576,16 +733,19 @@ uneditableItems(array, item, mode){
                  this.passData.tableData[i].priceCost = null;
                  this.passData.tableData[i].amortEff = null;
               }
+
            }else if(data.key === 'amortized'){
              this.passData.tableData[i].priceCost = null;
              this.disableBtn = true;
            }else if(data.key === 'amortEff'){
              this.passData.tableData[i].priceCost = null;
            }else if (data.key === 'invtAmt' || data.key === 'intRt' ){
+            
             if(this.passData.tableData[i].invtStatus === 'F'){
                this.passData.tableData[i].priceCost = null;
                this.passData.tableData[i].amortEff = null;
             }
+
            }else if(data.key === 'preTerminatedTag'){
              if (this.passData.tableData[i].preTerminatedTag === 'N'){
                 this.passData.tableData[i].termDate = null;
@@ -631,12 +791,20 @@ uneditableItems(array, item, mode){
                }
              }
            }else if(data.key === 'termDate'){
+          
              if (this.passData.tableData[i].termDate > this.passData.tableData[i].matDate || 
                  this.passData.tableData[i].termDate < this.passData.tableData[i].purDate ){
                  this.dialogMessage="Pre-termination Date must in between Date Purchased and Maturity Date";
                  this.dialogIcon = "error-message";
                  this.successDialog.open();
                  this.passData.tableData[i].termDate = null;
+             }else {
+                if( new Date(this.passData.tableData[i].termDate) > new Date(this.ns.toDateTimeString(0))){
+                 this.dialogMessage="Pre-termination Date must not be greater than current date.";
+                 this.dialogIcon = "error-message";
+                 this.successDialog.open();
+                 this.passData.tableData[i].termDate = null;
+                }
              }
            }else if(data.key === 'partialPullOutDate'){
              if (this.passData.tableData[i].partialPullOutDate > this.passData.tableData[i].matDate || 
@@ -646,7 +814,15 @@ uneditableItems(array, item, mode){
                  this.successDialog.open();
                  this.passData.tableData[i].partialPullOutDate = null;
              }
+           }else if(data.key === 'partialPullOutAmt'){
+             if (this.passData.tableData[i].partialPullOutAmt > this.passData.tableData[i].invtAmt){
+                 this.dialogMessage="Partial Pull-Out Amount must not be greater than Investment Amount.";
+                 this.dialogIcon = "error-message";
+                 this.successDialog.open();
+                 this.passData.tableData[i].partialPullOutAmt = null;
+             }
            }
+
 
            //LOGIC-COMPUTATION
                if (this.passData.tableData[i].durUnit !== null || this.passData.tableData[i].durUnit !== ''   && 
@@ -712,89 +888,23 @@ uneditableItems(array, item, mode){
                  }
                } 
 
-
-               
            //LOGIC - DATES
                  if(data.key === 'matPeriod'){
-                       if(this.passData.tableData[i].invtStatus === 'F'){
-                         this.passData.tableData[i].priceCost = null;
-                         this.passData.tableData[i].amortEff = null;
-                       }
-                       if(this.passData.tableData[i].durUnit === 'Days'){
-                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
-                         this.passData.tableData[i].purDate = array[0];
-                         this.passData.tableData[i].matDate = array[1];
-                       } else if (this.passData.tableData[i].durUnit === 'Months'){
-                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
-                         this.passData.tableData[i].purDate = array[0];
-                         this.passData.tableData[i].matDate = array[1];
-                       } else if (this.passData.tableData[i].durUnit === 'Years'){
-                         var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
-                         this.passData.tableData[i].purDate = array[0];
-                         this.passData.tableData[i].matDate = array[1];
-                       }
+                   if(this.passData.tableData[i].invtStatus === 'F'){
+                      this.passData.tableData[i].priceCost = null;
+                      this.passData.tableData[i].amortEff = null;
+                    }
+                  var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,this.passData.tableData[i].durUnit);
+                  console.log(array);
+                  this.passData.tableData[i].purDate = array[0];
+                  this.passData.tableData[i].matDate = array[1];
+
                  }else if(data.key === 'currCd'){
-
-                     if (this.passData.tableData[i].currCd === 'PHP'){
-                       var currRt = this.getCurrencyRt('PHP');
-                       this.passData.tableData[i].currRate = currRt;
-                       
-                       if (this.passData.tableData[i].invtCd === null){
-                         //var maxPHP = this.checkItemCurrency('PHP');
-                         this.passData.tableData[i].currSeq = null;
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
-                       } else {
-                         var res = this.passData.tableData[i].invtCd.split("-");
-                         if (this.passData.tableData[i].currCd !== res[3]){
-                           //var maxPHP = this.checkItemCurrency('PHP');
-                           this.passData.tableData[i].currSeq = null;
-                           this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
-                         } else {
-                            this.passData.tableData[i].currSeq = parseInt(res[4]);
-                            this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
-                         }
-                       }  
-                     } else if (this.passData.tableData[i].currCd === 'UKP'){
-                       var currRt = this.getCurrencyRt('UKP');
-                       this.passData.tableData[i].currRate = currRt;
-                      
-                        if (this.passData.tableData[i].invtCd === null){
-                         //var maxUKP = this.checkItemCurrency('UKP');
-                          this.passData.tableData[i].currSeq = null;
-                          this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
-                        } else {
-                          var res = this.passData.tableData[i].invtCd.split("-");
-                            if (this.passData.tableData[i].currCd !== res[3]){
-                              //var maxUKP = this.checkItemCurrency('UKP');
-                              this.passData.tableData[i].currSeq = null;
-                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
-                            }else {
-                              this.passData.tableData[i].currSeq = parseInt(res[4]);
-                              this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
-                            }
-                        }  
-                     } else if (this.passData.tableData[i].currCd === 'USD'){
-                       var currRt = this.getCurrencyRt('USD');
-                       this.passData.tableData[i].currRate = currRt;
-     
-                       if (this.passData.tableData[i].invtCd === null){
-                         //var maxUSD = this.checkItemCurrency('USD');
-                         this.passData.tableData[i].currSeq = null;
-                         this.passData.tableData[i].invtCd = this.generateInvtCd(null,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, this.passData.tableData[i].currSeq);
-                       } else {
-                         var res = this.passData.tableData[i].invtCd.split("-");
-                           if (this.passData.tableData[i].currCd !== res[3]){
-                             //var maxUSD = this.checkItemCurrency('USD');
-                             this.passData.tableData[i].currSeq = null;
-                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, null);
-                           } else { 
-                             this.passData.tableData[i].currSeq = parseInt(res[4]);
-                             this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
-                           }
-                       }  
-                     }
-
-                
+                   var result = this.changeCurr(this.passData.tableData[i]);
+                   console.log(result);
+                   this.passData.tableData[i].currRate = result.currRate;
+                   this.passData.tableData[i].currSeq = result.currSeq;
+                   this.passData.tableData[i].invtCd = result.invtCd;
                  } else if (data.key === 'invtType'){
                    if (this.passData.tableData[i].invtCd !== null){
                      var res = this.passData.tableData[i].invtCd.split("-");
@@ -806,131 +916,34 @@ uneditableItems(array, item, mode){
                          this.passData.tableData[i].priceCost = null;
                          this.passData.tableData[i].amortEff = null;
                     }
+                    var resultPurDate = this.changePurDate(this.passData.tableData[i]);
+                    console.log(resultPurDate);
 
-                     if(this.isEmptyObject(this.passData.tableData[i].purDate) && this.passData.tableData[i].matDate !== null && this.passData.tableData[i].matDate !== ''){
-                       this.passData.tableData[i].matPeriod = null;
-                     }else if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate && 
-                              !this.isEmptyObject(this.passData.tableData[i].matDate) &&
-                              !this.isEmptyObject(this.passData.tableData[i].purDate)) { 
+                    if (resultPurDate.error){
                        this.dialogMessage="Maturity Date must be greater than Date Purchased";
                        this.dialogIcon = "error-message";
                        this.successDialog.open();
-                       this.passData.tableData[i].matPeriod = null;
-                       this.passData.tableData[i].purDate = null;
-                     }else if (this.isEmptyObject(this.passData.tableData[i].matPeriod) && this.passData.tableData[i].matDate !== null){
-                       if(this.passData.tableData[i].durUnit === 'Days'){
-                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                         this.passData.tableData[i].matPeriod = matPeriod;
-                       } else if (this.passData.tableData[i].durUnit === 'Months'){
-                         var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                         this.passData.tableData[i].matPeriod = matPeriod;
-                       } else if (this.passData.tableData[i].durUnit === 'Years'){
-                         var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                             if(matPeriod === 0){
-                               this.passData.tableData[i].durUnit = 'Days';
-                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                               this.passData.tableData[i].matPeriod = newmatPeriod;
-                             } else {
-                                this.passData.tableData[i].matPeriod = matPeriod;
-                             }
-                       }
-                     }else if(this.isEmptyObject(this.passData.tableData[i].matDate) && this.passData.tableData[i].matPeriod !== null){
-                         if(this.passData.tableData[i].durUnit === 'Days'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         } else if (this.passData.tableData[i].durUnit === 'Months'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         } else if (this.passData.tableData[i].durUnit === 'Years'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         }
-                     }else if (this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].matDate !== null) {
-                         if(this.passData.tableData[i].durUnit === 'Days'){
-                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                         this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Months'){
-                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                           this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Years'){
-                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                             if(matPeriod === 0){
-                               this.passData.tableData[i].durUnit = 'Days';
-                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                               this.passData.tableData[i].matPeriod = newmatPeriod;
-                             } else {
-                                this.passData.tableData[i].matPeriod = matPeriod;
-                             }
-                         }
-                     } 
+                    }
+                   this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
+                   this.passData.tableData[i].purDate = resultPurDate.purDate;
+                   this.passData.tableData[i].matDate = resultPurDate.matDate;
                  }else if(data.key === 'matDate'){
                       if(this.passData.tableData[i].invtStatus === 'F'){
                          this.passData.tableData[i].priceCost = null;
                          this.passData.tableData[i].amortEff = null;
                        }
 
-                       if(this.isEmptyObject(this.passData.tableData[i].matDate) && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].purDate !== ''){
-                         this.passData.tableData[i].matPeriod = null;
-                       }else if(this.passData.tableData[i].matDate <= this.passData.tableData[i].purDate && 
-                            !this.isEmptyObject(this.passData.tableData[i].matDate) &&
-                            !this.isEmptyObject(this.passData.tableData[i].purDate)) {
-                            this.dialogMessage="Maturity Date must be greater than Date Purchased";
-                            this.dialogIcon = "error-message";
-                            this.successDialog.open();
-                            this.passData.tableData[i].matPeriod = null;
-                            this.passData.tableData[i].matDate = null;
-                      } else if (this.isEmptyObject(this.passData.tableData[i].matPeriod) && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].purDate !== ''){
-                         if(this.passData.tableData[i].durUnit === 'Days'){
-                           var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                           this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Months'){
-                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                           this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Years'){
-                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                             if(matPeriod === 0){
-                               this.passData.tableData[i].durUnit = 'Days';
-                               var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                               this.passData.tableData[i].matPeriod = newmatPeriod;
-                             } else {
-                                this.passData.tableData[i].matPeriod = matPeriod;
-                             }
-                         }
-                     } else if(this.isEmptyObject(this.passData.tableData[i].purDate) && this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].matPeriod !== ''){
-                         if(this.passData.tableData[i].durUnit === 'Days'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Days');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         } else if (this.passData.tableData[i].durUnit === 'Months'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Months');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         } else if (this.passData.tableData[i].durUnit === 'Years'){
-                           var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,'Years');
-                           this.passData.tableData[i].purDate = array[0];
-                           this.passData.tableData[i].matDate = array[1];
-                         }
-                     } else if (this.passData.tableData[i].matPeriod !== null && this.passData.tableData[i].purDate !== null && this.passData.tableData[i].matDate !== null ) {
-                         if(this.passData.tableData[i].durUnit === 'Days'){
-                         var matPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                         this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Months'){
-                           var matPeriod = this.getMaturationPeriod('Months',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                           this.passData.tableData[i].matPeriod = matPeriod;
-                         } else if (this.passData.tableData[i].durUnit === 'Years'){ 
-                           var matPeriod = this.getMaturationPeriod('Years',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                           if(matPeriod === 0){
-                             this.passData.tableData[i].durUnit = 'Days';
-                             var newmatPeriod = this.getMaturationPeriod('Days',this.passData.tableData[i].purDate,this.passData.tableData[i].matDate);
-                             this.passData.tableData[i].matPeriod = newmatPeriod;
-                           } else {
-                              this.passData.tableData[i].matPeriod = matPeriod;
-                           }
-                         }
-                     } 
+                    var resultPurDate = this.changeMatDate(this.passData.tableData[i]);
+                    console.log(resultPurDate);
+
+                    if (resultPurDate.error){
+                       this.dialogMessage="Maturity Date must be greater than Date Purchased";
+                       this.dialogIcon = "error-message";
+                       this.successDialog.open();
+                    }
+                   this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
+                   this.passData.tableData[i].purDate = resultPurDate.purDate;
+                   this.passData.tableData[i].matDate = resultPurDate.matDate;
                 }         
       }
     }
@@ -1047,6 +1060,8 @@ uneditableItems(array, item, mode){
     }
 
   onClickSave(){
+      this.errorAmort = '';
+      console.log(this.checkFields());
       if(this.checkFields()){
          //this.confirmSave.confirmModal();
         let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
@@ -1056,25 +1071,29 @@ uneditableItems(array, item, mode){
             this.successDialog.open();
             return;
           } else {
-
-
-
-
              this.confirmSave.confirmModal();
           }
       }else{
-        this.dialogMessage="Please check field values.";
-        this.dialogIcon = "error";
-        this.successDialog.open();
+        if (this.errorAmort === 'Error Amort'){
+          this.dialogMessage='Maturity period must be at least a year';
+          this.dialogIcon = "error-message";
+          this.successDialog.open();
+        }else {
+          this.dialogMessage="Please check field values.";
+          this.dialogIcon = "error";
+          this.successDialog.open();
+        }
       }
   }
 
+ 
   checkFields(){
     for(let check of this.passData.tableData){
+       console.log(check);
         if( check.bank === null || check.bank === '' ||
             check.invtType === null || check.invtType === '' ||
             check.invtSecCd === null || check.invtSecCd === '' ||
-            check.matPeriod === null || check.matPeriod === '' ||
+            check.matPeriod === null || check.matPeriod === '' ||  isNaN(check.matPeriod) ||
             check.intRt === null || check.intRt === '' ||
             check.purDate === null || check.purDate === '' ||
             check.matDate === null || check.matDate === '' ||
@@ -1084,7 +1103,7 @@ uneditableItems(array, item, mode){
             check.bankCharge === null || check.bankCharge === '' ||
             check.whtaxAmt === null || check.whtaxAmt === '' ||
             check.matVal === null || check.matVal === '' 
-          ) {   
+          ) {
             return false;
           } 
 
@@ -1094,15 +1113,18 @@ uneditableItems(array, item, mode){
               return false;          
         }
 
+
         if (check.partialPullOutTag === 'Y' && this.isEmptyObject(check.partialPullOutDate)){
            return false;
         }else if (check.partialPullOutTag === 'Y' && !this.isEmptyObject(check.partialPullOutDate)) {
+         
           if(Number.isNaN(check.partialPullOutAmt) || check.partialPullOutAmt === null){
             return false;
           }
         } else if (check.partialPullOutTag === 'N' && !this.isEmptyObject(check.partialPullOutDate)){
           return false;
         }
+
       
         if ( !this.isEmptyObject(check.amortized)){
            console.log(check.priceCost + '-' + check.amortEff);
@@ -1113,13 +1135,23 @@ uneditableItems(array, item, mode){
            } else {
              if (check.durUnit === 'Months' ){
                console.log((check.matPeriod % 12));
-               if ( (check.matPeriod % 12) !== 0) return false;
+               if ( (check.matPeriod % 12) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+               }
              } else if (check.durUnit === 'Years'){
-               if ( (check.matPeriod % 1) !== 0) return false;
+               if ( (check.matPeriod % 1) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+                }
              } else if (check.durUnit === 'Days'){
-               if ( (check.matPeriod % 365) !== 0) return false;
+               if ( (check.matPeriod % 365) !== 0) {
+                this.errorAmort = 'Error Amort';
+                return false;
+               }
              }
            }
+
         }
                                                                                                                                                                                                                                          
     }
@@ -1179,16 +1211,30 @@ uneditableItems(array, item, mode){
 
     tempSaveAcitInvestments.map(a => { 
 
-                                 var principal = parseFloat(a.invtAmt),
-                                     rate = parseFloat(a.intRt)/100,
+                                 var rate = parseFloat(a.intRt)/100,
                                      time,
                                      matPer,
                                      bankCharges,
-                                     matVal
+                                     matVal,
+                                     principal;
 
-                                     matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
+                                 if (a.preTerminatedTag === 'Y'){
+                                   principal = parseFloat(a.invtAmt);
+                                   matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
+                                   time = parseFloat(matPer)/360;
+                                 }else if (a.partialPullOutTag === 'Y') {
+                                   principal = a.invtAmt - a.partialPullOutAmt;
+                                   matPer = a.matPeriod;                    
+                                   if(a.durUnit === 'Days'){
                                      time = parseFloat(matPer)/360;
+                                   } else if (a.durUnit === 'Months'){
+                                     time = parseFloat(matPer)/12;
+                                   } else if (a.durUnit === 'Years'){
+                                     time = parseFloat(matPer);
+                                   }
 
+                                 }
+                                
                                      var invtIncome = principal * rate * time; 
                                      var taxRate = parseFloat(this.wtaxRate) / 100;
                                      var withHTaxAmt = invtIncome * taxRate;
@@ -1209,8 +1255,8 @@ uneditableItems(array, item, mode){
                                         certNo : a.certNo,
                                         purDate : a.purDate,
                                         matDate : a.termDate,
-                                        preTerminatedTag : 'Y',
-                                        termDate : a.termDate,
+                                        preTerminatedTag : 'N',
+                                        termDate : null,
                                         invtType : a.invtType,
                                         invtSecCd : a.invtSecCd,
                                         invtStatus : a.invtStatus,
@@ -1232,7 +1278,8 @@ uneditableItems(array, item, mode){
                                         bankCharge : a.bankCharge,
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
-                                        matVal : matVal
+                                        matVal : matVal,
+                                        refInvtId : a.invtId
                                       });
                                    }
 
@@ -1244,13 +1291,13 @@ uneditableItems(array, item, mode){
                                         bank : a.bank,
                                         certNo : a.certNo,
                                         purDate : a.purDate,
-                                        matDate : a.termDate,
-                                        preTerminatedTag : 'Y',
-                                        termDate : a.termDate,
+                                        matDate : a.matDate,
+                                        preTerminatedTag : 'N',
+                                        termDate : null,
                                         invtType : a.invtType,
                                         invtSecCd : a.invtSecCd,
-                                        invtStatus : 'M',
-                                        durUnit : 'Days',
+                                        invtStatus : 'F',
+                                        durUnit : a.durUnit,
                                         currCd : a.currCd,
                                         currRate : a.currRate,
                                         currSeq : null,
@@ -1263,12 +1310,16 @@ uneditableItems(array, item, mode){
                                         amortized : null,
                                         priceCost : null,
                                         amortEff : null,
+                                        partialPullOutTag : 'N',
+                                        partialPullOutDate : null,
+                                        partialPullOutAmt : null,
                                         matPeriod : matPer,
-                                        invtAmt : a.invtAmt,
+                                        invtAmt : principal,
                                         bankCharge : a.bankCharge,
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
-                                        matVal : matVal
+                                        matVal : matVal,
+                                        refInvtId : a.invtId
                                       });
                                    }
 
@@ -1313,6 +1364,11 @@ uneditableItems(array, item, mode){
                                                         }else {
                                                             a.preTerminatedTag = 'N';
                                                             a.termDate = null;
+                                                        }
+
+
+                                                        if (a.partialPullOutTag === 'Y' && a.invtStatus === 'O'){
+                                                            a.invtStatus = 'M'; 
                                                         }
 
                                                         if (a.amortized === null || a.amortized === ""){
@@ -1402,7 +1458,6 @@ uneditableItems(array, item, mode){
      this.cancelFlag = false;
    }else if (obj === true){
      this.passData.tableData = [];
-     this.searchParams = [];
      this.table.overlayLoader = true;
      this.retrieveInvestmentsList(this.searchParams);
    }
@@ -1427,6 +1482,7 @@ uneditableItems(array, item, mode){
         this.table.indvSelect.deleted = true;
         this.table.selected  = [this.table.indvSelect]
         this.table.confirmDelete();
+        $('#cust-table-container').addClass('ng-dirty');
      }
   }
 
@@ -1437,7 +1493,9 @@ uneditableItems(array, item, mode){
       
       if(obj){
             this.deletedData.push({
-                    "invtId": this.selectedData.invtId
+                    "invtId": this.selectedData.invtId,
+                    "refInvtId" : this.selectedData.refInvtId,
+                    "updateUser" : this.ns.getCurrentUser(),
                      });
             this.acitInvtReq.delAcitInvestments = this.deletedData;     
       } 
@@ -1492,6 +1550,9 @@ uneditableItems(array, item, mode){
     }
     return result;
   }
+
+ 
+
 }
 
 

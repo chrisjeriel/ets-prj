@@ -493,6 +493,9 @@ import { UpdateQuoteAttachmentComponent } from './quotation/utilities/update-quo
 import { CreateInternalCompComponent } from './quotation/utilities/create-internal-comp/create-internal-comp.component';
 import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-details/copy-quote-details.component';
 import { UploaderComponent } from './_components/common/uploader/uploader.component';
+import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
+import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
+import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 
 @NgModule({
     imports: [
@@ -990,6 +993,9 @@ import { UploaderComponent } from './_components/common/uploader/uploader.compon
         CreateInternalCompComponent,
         CopyQuoteDetailsComponent,
         UploaderComponent,
+        RenewExpPolicyComponent,
+        CloseOpenDcbComponent,
+        AcseCloseOpenDcbComponent,
     ],
 
   	providers: [

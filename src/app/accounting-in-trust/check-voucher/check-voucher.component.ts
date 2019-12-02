@@ -113,8 +113,11 @@ export class CheckVoucherComponent implements OnInit {
 
         return i;
       });
-
-      this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      if(this.tranStat.toUpperCase() == 'CLOSED'){
+        this.passData.tableData = rec.filter(a => String(a.mainTranStatDesc).toUpperCase() == this.tranStat.toUpperCase() && a.acctEntDate !== null);
+      }else{
+        this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      }
       this.table.refreshTable();
 
       this.table.filterDisplay(this.table.filterObj, this.table.searchString);

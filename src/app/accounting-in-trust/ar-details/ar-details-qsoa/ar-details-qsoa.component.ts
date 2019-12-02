@@ -7,6 +7,7 @@ import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/q
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-ar-details-qsoa',
@@ -19,14 +20,15 @@ export class ArDetailsQsoaComponent implements OnInit {
   @Input() record: any = {};
 
   @ViewChild(CustEditableNonDatatableComponent) table : CustEditableNonDatatableComponent;
-  @ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
+  //@ViewChild(QuarterEndingLovComponent) lovMdl: QuarterEndingLovComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
-  passData: any = {
+ /* passData: any = {
     tableData:[],
     tHeader:['Quarter Ending','Currency','Currency Rate','Amount', 'Amount (PHP)'],
     dataTypes:['date','text','percent','currency','currency'],
@@ -41,6 +43,7 @@ export class ArDetailsQsoaComponent implements OnInit {
       tranId: '',
       billId: 1,
       itemNo: '',
+      qsoaId: '',
       quarterEnding: '',
       currCd: '',
       currRate: '',
@@ -56,14 +59,16 @@ export class ArDetailsQsoaComponent implements OnInit {
     checkFlag: true,
     pageID: 'negtrty',
     widths:[150, 100, 150, 'auto', 'auto'],
-    /*opts: [
+    opts: [
       {
         selector: 'currCd',
         vals: [],
         prev: []
       }
-    ]*/
-  }
+    ]
+  }*/
+
+  passData: any = {};
 
   cancelFlag: boolean;
   totalLocalAmt: number = 0;
@@ -78,15 +83,23 @@ export class ArDetailsQsoaComponent implements OnInit {
 
   quarterEndingDates: string [] = [];
 
+  passLov: any = {
+    selector: 'osQsoa',
+    params: {},
+    hide: []
+  }
+
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
   ngOnInit() {
+    this.passData = this.accountingService.getTreatyKeys('AR');
     this.passData.nData.tranId = this.record.tranId;
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
     //this.getMtnCurrency();
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
-      this.passData.uneditable = [true, true, true, true, true ];
+      this.passData.uneditable = [true, true, true, true, true, true, true, true, true, true ];
+      this.passData.tHeaderWithColspan = [{header:'QSOA Details', span: 6},{header: 'Payment Details', span: 2}, {header: 'Summary of Payments', span: 2}];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
@@ -102,7 +115,7 @@ export class ArDetailsQsoaComponent implements OnInit {
         for(var i of data.negTrtyBalList){
           i.showMG = 0;
           i.uneditable = ['quarterEnding'];
-          //i.quarterEnding = this.dp.transform(this.ns.toDateTimeString(i.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          i.quarterEnding = this.dp.transform(i.quarterEnding, 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
         this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
@@ -116,15 +129,34 @@ export class ArDetailsQsoaComponent implements OnInit {
   openLOV(event){
     console.log(event);
     this.quarterEndingIndex = event.index;
+    this.passLov.params.cedingId = this.record.payeeNo;
+    this.passLov.params.currCd = this.record.currCd;
     this.lovMdl.modal.openNoClose();
   }
 
   setSelectedData(data){
-    console.log(data);
-    this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
-    this.passData.tableData[this.quarterEndingIndex].showMG = 0;
-    this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
-    console.log(this.quarterEndingDates);
+    console.log(this.record.payeeNo);
+    let selected = data.data;
+    console.log(selected);
+    this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+    for(var i = 0; i < selected.length; i++){
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1].qsoaId = selected[i].qsoaId; 
+      this.passData.tableData[this.passData.tableData.length - 1].netQsoaAmt = selected[i].netQsoaAmt; 
+      this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt = selected[i].cumPayt;
+      this.passData.tableData[this.passData.tableData.length - 1].prevBalance = selected[i].remainingBal; 
+      this.passData.tableData[this.passData.tableData.length - 1].balPaytAmt = selected[i].remainingBal; 
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = selected[i].remainingBal * this.record.currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].newPaytAmt = (parseFloat(selected[i].remainingBal) + parseFloat(selected[i].cumPayt)).toFixed(2);
+      this.passData.tableData[this.passData.tableData.length - 1].newBalance = 0;
+      this.passData.tableData[this.passData.tableData.length - 1].quarterEnding = this.dp.transform(selected[i].quarterEnding, 'MM/dd/yyyy');
+      this.passData.tableData[this.passData.tableData.length - 1].edited = true;
+      this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
+    }
+    this.table.refreshTable();
+    //this.passData.tableData[this.quarterEndingIndex].quarterEnding = data.data.quart;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+    //this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+    //this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 
@@ -132,6 +164,10 @@ export class ArDetailsQsoaComponent implements OnInit {
     if(!this.checkIfNegativeTotal()){
       this.dialogIcon = 'info';
       this.dialogMessage = 'Total Amount must be negative.';
+      this.successDiag.open();
+    }else if(this.remainingBalvsPaytAmt()){
+      this.dialogIcon = 'info';
+      this.dialogMessage = 'Payment amount must not be greater than the Balance.';
       this.successDiag.open();
     }else{
       this.confirm.confirmModal();
@@ -187,6 +223,7 @@ export class ArDetailsQsoaComponent implements OnInit {
           this.dialogIcon = '';
           this.successDiag.open();
           this.retrieveNegTrtyBal();
+          this.table.markAsPristine();
         }else if(data.returnCode === 0 && data.custReturnCode !== 2){
           this.dialogIcon = 'error';
           this.successDiag.open();
@@ -237,6 +274,9 @@ export class ArDetailsQsoaComponent implements OnInit {
     if(data.key === 'balPaytAmt' || data.key === 'currCd' || data.key === 'currRate'){
       for(var i = 0; i < this.passData.tableData.length; i++){
         data[i].localAmt = data[i].balPaytAmt * data[i].currRate;
+        //(parseFloat(selected[i].remainingBal) + parseFloat(selected[i].cumPayt)).toFixed(2);
+        data[i].newPaytAmt = +(parseFloat(data[i].prevPaytAmt) + parseFloat(data[i].balPaytAmt)).toFixed(2);
+        data[i].newBalance = +(parseFloat(data[i].prevBalance) - parseFloat(data[i].balPaytAmt)).toFixed(2);
       }
     }else if(data.key === 'quarterEnding'){
       //validation about non duplicate quarter ending here
@@ -273,6 +313,15 @@ export class ArDetailsQsoaComponent implements OnInit {
     }else{
       return false;
     }
+  }
+
+  remainingBalvsPaytAmt(): boolean{
+    for(var i of this.passData.tableData){
+      if(Math.abs(i.prevBalance) < Math.abs(i.balPaytAmt)){
+        return true;
+      }
+    }
+    return false;
   }
 
 }

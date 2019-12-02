@@ -1,0 +1,161 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Utilities / Close/Open DCBs</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Close/Close Temporarily/ Re-Opn DCBs">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 20px">
+						<fieldset class="scheduler-border">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="col-sm-2"></div>
+										<label class="form-control-sm col-sm-3 text-right labels">DCB Status</label>
+										<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.status" (ngModelChange)="params.status=$event;retrieveDCB()">
+											<option value="O">Open</option>
+											<option value="T">Temporarily Closed</option>
+											<option value="C">Closed</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 5px !important;">
+							<div class="row" style="margin-top: 10px">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable #dcb [passData]="passData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+								</div>
+								<div class="col-sm-12">
+									<div class="form-row">
+									    <div class="form-group col-sm">
+									        <div class="col-md-12 text-center">
+									            <div class="cust-btn-container" style="margin-top: 10px;">
+									                <button type="button" class="cust"(click)="onClickCancel()"><a>Cancel</a></button>
+									                <button type="button" class="cust" (click)="onClickSave()"><a>Save</a></button>
+									                <button type="button" class="cust" (click)="onClickClose()" [disabled]="params.status == 'C'" [class.cust-btn-disabled]="params.status == 'C'"><a>Close</a></button>
+									                <button type="button" class="cust" (click)="onClickTempClose()" [disabled]="params.status == 'T'" [class.cust-btn-disabled]="params.status == 'T'" ><a>Close Temporarily</a></button>
+									                <button type="button" class="cust" (click)="onClickReOpen()" [disabled]="params.status == 'O'" [class.cust-btn-disabled]="params.status == 'O'"><a>Re-Open</a></button>
+									                <button type="button" class="cust" (click)="onClickView()"><a>View Details</a></button>
+									                <button type="button" class="cust" (click)="getRecords()"><a>Print</a></button>
+									            </div>
+									        </div>
+									    </div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 6px !important;">
+					    	<div class="col-sm-12">
+						        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+						            <div class="input-group" style="margin-bottom: -15px !important;">
+						                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+						                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.createUser">
+						                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+						                <div class="col-sm-2" style="padding: 0px">
+						                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.createDate"></datepicker>
+						                </div>
+						                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+						                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.updateUser">
+						                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+						                <div class="col-sm-2" style="padding: 0px">
+						                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.updateDate"></datepicker>
+						                </div>
+						            </div>
+						        </div>
+						    </div>
+					    </fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal class="d-none" id="viewDcb" #viewDcb>
+    <div header>DCB Deposit Details</div>  
+    <div body>
+        <div body style=" max-width: 650px;">
+        	<div class="row">
+        		<div class="col-sm-12">
+    				<fieldset class="scheduler-border">
+    					<legend class="scheduler-border">Collection Breakdown</legend>
+    					<div style="margin-top: 10px !important;">
+    						<app-cust-editable-non-datatable #collectTbl [passData]="passDataCollection"></app-cust-editable-non-datatable>
+    					</div>
+    				</fieldset>
+    				<fieldset class="scheduler-border">
+	                	<legend class="scheduler-border">Bank Account Details</legend>
+	                	<div style="margin-top: 10px !important;">
+	                		<app-cust-editable-non-datatable #bankTbl [passData]="passDataBank"></app-cust-editable-non-datatable>
+	                	</div>
+	                </fieldset> 
+        		</div>
+        	</div>
+            <!-- <div class="row">
+        		<div class="col-sm-12">
+        			<div class="form-row custom-row-inline-inset">
+		                
+		            </div>
+		        </div>
+		    </div> -->
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="viewDcb.closeModal();"><a>Return</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="closeDcb" #closeDcb>
+    <div header>Confirmartion</div>  
+    <div body>
+        <!-- <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
+        </div> -->
+        <span>Are you sure you want to permanently <b>Close</b> the selected DCB's?</span>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="closeDcb.closeModal();closeDcbCollection()"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="closeDcb.closeModal();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #reOpenDcb>
+    <div header>Confirmartion</div>  
+    <div body>
+        <!-- <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
+        </div> -->
+        <span>Are you sure you want to <b>Re-open</b> the selected DCB's?</span>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="reOpenDcb.closeModal();reOpenDcbCollection()"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="reOpenDcb.closeModal();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #tempCloseDcb>
+    <div header>Confirmartion</div>  
+    <div body>
+        <!-- <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
+        </div> -->
+        <span>Are you sure you want to <b>temporarily Close</b> the selected DCB's?</span>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="tempCloseDcb.closeModal();temporaryClose()"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="tempCloseDcb.closeModal();"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveDcb()"></app-confirm-save>
+<app-cancel-button (onYes)="saveDcb('cancel')" [url]="''" ></app-cancel-button>

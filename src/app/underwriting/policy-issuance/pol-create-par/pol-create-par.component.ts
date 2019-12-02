@@ -520,8 +520,7 @@ export class PolCreatePARComponent implements OnInit {
 
           $('#convSuccessModal > #modalBtn').trigger('click');
         } 
-
-        console.log ("test");
+        
         // else if (data['coInsStatus'] === 1) {
         //   $('#convWarningModal > #modalBtn').trigger('click');
         // }

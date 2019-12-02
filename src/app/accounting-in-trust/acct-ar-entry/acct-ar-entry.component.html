@@ -110,7 +110,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled" [class.cust-btn-disabled]="isAdd || isCancelled" (click)="openCancelModal()">Cancel AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.acctEntDate !== null" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.acctEntDate !== null" (click)="openCancelModal()">Cancel AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
@@ -123,12 +123,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'PRINTED'" (click)="print();">Print AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" [class.cust-btn-disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" (click)="print();">Print AR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() != 'PRINTED'" (click)="print();">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW'" (click)="print();">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>

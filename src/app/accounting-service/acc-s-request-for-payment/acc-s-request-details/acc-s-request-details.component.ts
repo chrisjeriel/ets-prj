@@ -23,12 +23,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   providers: [DatePipe]
 })
 export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
-  @ViewChild('cvTbl') cvTbl         : CustEditableNonDatatableComponent;
-  @ViewChild('pcvTbl') pcvTbl       : CustEditableNonDatatableComponent;
-  @ViewChild('can') can             : CancelButtonComponent;
-  @ViewChild('con') con             : ConfirmSaveComponent;
-  @ViewChild('suc') suc             : SucessDialogComponent;
-  @ViewChild('lov') lov             : LovComponent;
+  @ViewChild('cvTbl') cvTbl             : CustEditableNonDatatableComponent;
+  @ViewChild('pcvTbl') pcvTbl           : CustEditableNonDatatableComponent;
+  @ViewChild('dieminsTbl') dieminsTbl   : CustEditableNonDatatableComponent;
+  @ViewChild('can') can                 : CancelButtonComponent;
+  @ViewChild('con') con                 : ConfirmSaveComponent;
+  @ViewChild('suc') suc                 : SucessDialogComponent;
+  @ViewChild('lov') lov                 : LovComponent;
+  @ViewChild('warnMdl') warnMdl         : ModalComponent;
   //Added by Neco 11/20/2019
   @ViewChild('taxAlloc') taxAllocMdl : ModalComponent;
   @ViewChild('genTaxTbl') genTaxTbl: CustEditableNonDatatableComponent;
@@ -96,6 +98,15 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     total         : [null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
     widths        : ['auto',300,'auto','auto',1,'auto','auto','auto'],
     keys          : ['acctCd','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+  };
+
+  diemInsData: any = {
+    tableData       : [],
+    paginateFlag  : true,
+    infoFlag      : true,
+    checkFlag     : true,
+    addFlag       : true,
+    deleteFlag    : true,
   };
 
   //Added by NECO 11/19/2019
@@ -175,6 +186,12 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   warnMsg            : string = '';
   recPrqTrans        : any;
   requestData        : any;
+  recDiemIns         : any;
+  dfType             : any;
+  lovRow             : any;
+  insTypeA           : any;
+  insTypeB           : any;
+  insTypeC           : any;
   selectedTblData    : any = {};
   private sub        : any;
 
@@ -186,9 +203,13 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   };
 
   params : any =  {
-    savePrqTrans     : [],
-    deletePrqTrans   : [],
-    delCvItemTaxes   : []
+    savePrqTrans       : [],
+    deletePrqTrans     : [],
+    delCvItemTaxes     : [],
+    savePerDiem        : [],
+    deletePerDiem      : [],
+    saveInsuranceExp   : [],
+    deleteInsuranceExp : []
   };
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
@@ -317,20 +338,25 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   //END 11/20/2019
 
   getPaytReqPrqTrans(){
-    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''))
-                 .pipe(map(([pr,prq]) => { return { pr, prq }; }));
+    var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''),
+                         this.acctService.getAcsePerDiem(this.rowData.reqId),this.mtnService.getMtnGlSubDepNo(),this.acctService.getAcseInsuranceExp(this.rowData.reqId))
+                 .pipe(map(([pr,prq,pd,df,ie]) => { return { pr, prq, pd, df, ie }; }));
     subRes.subscribe(data => {
       this.requestData = data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
                                                e.approvedDate = this.ns.toDateTimeString(e.approvedDate); return e; })[0];
-      this.recPrqTrans = data['prq']['acsePrqTrans'];
+      this.recPrqTrans     = data['prq']['acsePrqTrans'];
+      this.recDiemIns      = (this.requestData.tranTypeCd == 6)?data['pd']['acsePerDiem']:data['ie']['acseInsuranceExp'];
+      this.dfType          = (this.requestData.tranTypeCd == 6)?data['df']['glSubDepNoList'].filter(e => e.depCd == 'DF'):data['df']['glSubDepNoList'].filter(e => e.depCd == 'IE'); 
+
 
       console.log(this.requestData);
       console.log(this.recPrqTrans);
+      console.log(this.recDiemIns);
 
       if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
         this.cvData.tableData = [];
-        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.cvData):'';
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.cvData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
         this.cvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.cvTbl.refreshTable();
@@ -342,7 +368,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         
       }else if(this.requestData.tranTypeCd == 2){
         this.pcvData.tableData = [];
-        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.pcvData):'';
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.pcvData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
         this.pcvData.tableData = this.recPrqTrans;
         setTimeout(() => {
           this.pcvTbl.refreshTable();
@@ -352,8 +378,122 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           }
         },0);
         
+      }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+        ////
+
+        if(this.requestData.tranTypeCd == 6){
+          var otherDataDiemIns: any = {
+            tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','req-select','text','percent','currency','currency'],
+            magnifyingGlass : ['directorName'],
+            nData: {
+              directorName  : '',
+              feeType       : '',
+              feeTypeDesc   : '',
+              currCd        : '',
+              currRate      : '',
+              feeAmt        : 0,
+              localAmt      : 0,
+              newRec        : 1,
+              showMG        : 1
+            },
+            opts: [
+              {selector   : 'feeTypeDesc',  prev : [], vals: []},
+            ],
+            pageID        : 'diemInsData',
+            uneditable    : [true,false,true,true,false,true],
+            total         : [null, null, null,'Total', 'feeAmt', 'localAmt'],
+            widths        : ['auto','auto',1,'auto','auto','auto'],
+            keys          : ['directorName','feeTypeDesc','currCd','currRate','feeAmt','localAmt']
+          };
+
+          $.extend(this.diemInsData,otherDataDiemIns);
+          this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
+          this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
+        }else{
+          var otherDataDiemIns: any = {
+            tHeader         : ['Insured','Insurance Type','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','row-dropdown','text','percent','currency','currency'],
+            magnifyingGlass : ['insuredName'],
+            nData: {
+              insuredName        : '',
+              insuranceType      : '',
+              insuranceTypeDesc  : '',
+              currCd             : '',
+              currRate           : '',
+              insuredAmt         : 0,
+              localAmt           : 0,
+              newRec             : 1,
+              showMG             : 1,
+              opts               : [{selector   :'insuranceTypeDesc',  prev : [], vals: []}]
+            },
+            pageID        : 'diemInsData',
+            uneditable    : [true,false,true,true,false,true],
+            total         : [null, null, null,'Total', 'insuredAmt', 'localAmt'],
+            widths        : ['auto','auto',1,'auto','auto','auto'],
+            keys          : ['insuredName','insuranceTypeDesc','currCd','currRate','insuredAmt','localAmt']
+          };
+
+          $.extend(this.diemInsData,otherDataDiemIns);
+        }
+        console.log(this.diemInsData);
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.diemInsData):'';
+
+        ////
+        (this.requestData.tranTypeCd == 7)?this.assignInsType():'';
+        console.log(this.insTypeA);
+        this.diemInsData.tableData = [];
+        this.diemInsData.tableData = this.recDiemIns;
+        this.diemInsData.tableData = this.diemInsData.tableData.map(e => {
+          if(this.requestData.tranTypeCd == 7){
+            if(e.insuredTypeCd == 9){
+              e.opts = this.insTypeA;
+            }else if(e.insuredTypeCd == 8){
+              e.opts = this.insTypeB;
+            }else if(e.insuredTypeCd == 4){
+              e.opts = this.insTypeC;
+            }
+          } 
+          e.newRec = 0;
+          return e; 
+        });
+        console.log(this.diemInsData.tableData);
+        if(this.requestData.tranTypeCd == 6){
+          this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
+          this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);  
+        }
+        
+        setTimeout(() => {
+          this.dieminsTbl.refreshTable();
+          if(this.diemInsData.checkFlag){
+            if(this.requestData.tranTypeCd == 6){
+              this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+                              this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+            }else{
+              this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName}).length == 0 ? null :
+                              this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName})[0] );
+            }
+          }
+        },0);
       }
     });
+  }
+
+  validateData(tranTypeCd,e){
+    var x = [];
+    if(tranTypeCd == 2){
+      x.push((e.glAcctId == '')?true:false);
+    }else if(tranTypeCd == 6){
+      x.push((e.directorName == '' || e.directorName == null || e.feeTypeDesc == '' || e.feeTypeDesc == null || e.feeAmt == '' || e.feeAmt == null || isNaN(e.feeAmt) || e.feeAmt == 0)?true:false);
+    }else if(tranTypeCd == 7){
+      x.push((e.insuredName == '' || e.insuredName == null || e.insuranceTypeDesc  == '' || e.insuranceTypeDesc == null || 
+        e.insuredAmt == '' || e.insuredAmt == null || isNaN(e.insuredAmt) || e.insuredAmt == 0)?true:false);
+    }
+    if(tranTypeCd != 6 && tranTypeCd != 7){
+      x.push((e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0)?true:false);
+    }
+    x.push((e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null)?true:false);
+    return x.some(e => e == true)?true:false;
   }
 
   onClickSave(cancelFlag?){ 
@@ -361,28 +501,41 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     this.dialogIcon = '';
     this.dialogMessage = '';
     this.params.savePrqTrans = [];
+    this.params.deletePrqTrans = [];
     this.params.delCvItemTaxes = [];
+    this.params.savePerDiem = [];
+    this.params.deletePerDiem = [];
+    this.params.saveInsuranceExp = [];
+    this.params.deleteInsuranceExp = [];
 
     var isEmpty = 0;
-    var tbl;
+    var tbl = [];
+    var isUnique = [];
 
     if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5){
       tbl = this.cvData.tableData;
     }else if(this.requestData.tranTypeCd == 2){
       tbl = this.pcvData.tableData;
+    }else if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+      tbl = this.diemInsData.tableData;
     }
 
     tbl.forEach(e => {
       e.reqId    = this.rowData.reqId;
-      e.reqId    = this.rowData.reqId;
-      if((this.requestData.tranTypeCd == 2?((e.glAcctId == '')?true:false):false) || e.itemName == '' || e.itemName == null || e.currCd == '' || e.currCd == null || e.currRate == '' || e.currRate == null || 
-         e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
+      console.log(this.validateData(this.requestData.tranTypeCd,e));
+      if(this.validateData(this.requestData.tranTypeCd,e)){
         if(!e.deleted){
           isEmpty = 1;
           e.fromCancel = false;
         }else{
-          this.params.deletePrqTrans.push(e);
-          this.params.delCvItemTaxes.push(e.taxAllocation);
+          if(this.requestData.tranTypeCd == 6){
+            this.params.deletePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            this.params.deleteInsuranceExp.push(e);
+          }else{
+            this.params.deletePrqTrans.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
+          }
         }
       }else{
         e.fromCancel = true;
@@ -392,12 +545,26 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
-          this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
-          e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
-          this.params.savePrqTrans.push(e);
+          if(this.requestData.tranTypeCd == 6){
+            e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
+            this.params.savePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
+            this.params.saveInsuranceExp.push(e);
+          }else{
+            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            this.params.savePrqTrans.push(e);
+          }
         }else if(e.edited && e.deleted){ 
-          this.params.deletePrqTrans.push(e);
-          this.params.delCvItemTaxes.push(e.taxAllocation);
+          if(this.requestData.tranTypeCd == 6){
+            this.params.deletePerDiem.push(e);
+          }else if(this.requestData.tranTypeCd == 7){
+            this.params.deleteInsuranceExp.push(e);
+          }else{
+            this.params.deletePrqTrans.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
+          }
         }
 
       }
@@ -406,58 +573,142 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.params.updateUser = this.ns.getCurrentUser();
       this.params.tranTypeCd = this.requestData.tranTypeCd;
     });
-
+    console.log(this.params.saveInsuranceExp);
+    console.log(this.params.savePerDiem);
+    console.log(this.params.savePrqTrans);
+    if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
+      tbl.forEach(tblData => {
+        if(tblData.newRec != 1){
+          if(this.requestData.tranTypeCd == 6){
+            isUnique.push(this.params.savePerDiem.some(saveData => saveData.directorId == tblData.directorId && saveData.feeType == tblData.feeType)?false:true);
+          }else{
+            isUnique.push(this.params.saveInsuranceExp.some(saveData => saveData.insuredCd == tblData.insuredCd && saveData.insuranceType == tblData.insuranceType)?false:true);
+          }
+        }
+      });  
+    }else{
+      isUnique = [true];
+    }
+    
     if(isEmpty == 1){
       this.dialogIcon = 'error';
       this.suc.open();
-      this.params.savePrqTrans   = [];
+      this.params.savePrqTrans = [];
+      this.params.savePerDiem  = [];
+    }else if(isUnique.some(s => s == false)){
+      this.warnMsg = (this.requestData.tranTypeCd == 6)?'Directors\' Fee Type for every Board Member must be unique':'Insurance Type for every Insured must be unique';
+      this.warnMdl.openNoClose();
     }else{
+      var emp = false;
+      if(this.requestData.tranTypeCd == 6){
+        if(this.params.savePerDiem.length == 0 && this.params.deletePerDiem.length == 0){
+          this.dieminsTbl.markAsPristine();
+          emp = true;
+        }else{
+          emp = false;
+        }
+      }else if(this.requestData.tranTypeCd == 7){
+        if(this.params.saveInsuranceExp.length == 0 && this.params.deleteInsuranceExp.length == 0){
+          this.dieminsTbl.markAsPristine();
+          emp = true;
+        }else{
+          emp = false;
+        }
+      }else{
         if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
           (this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
-          this.con.confirmModal();
-          this.params.savePrqTrans   = [];
-          this.params.deletePrqTrans = [];
           this.cvData.tableData = this.cvData.tableData.filter(e => e.itemName != '');
+          emp = true;
         }else{
-          this.params.delCvItemTaxes = this.params.delCvItemTaxes.flat();
-          console.log(this.cancelFlag);
-          if(this.cancelFlag == true){
-            this.con.showLoading(true);
-            setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
-          }else{
-            this.con.confirmModal();
-          }
+          emp = false;
         }
+      }
+
+      if(emp){
+        this.con.confirmModal();
+        this.params.savePrqTrans   = [];
+        this.params.deletePrqTrans = [];
+        this.params.savePerDiem   = [];
+        this.params.deletePerDiem = [];
+        this.params.saveInsuranceExp   = [];
+        this.params.deleteInsuranceExp = [];
+
+      }else{
+        this.params.delCvItemTaxes = this.params.delCvItemTaxes.flat();
+        if(this.cancelFlag == true){
+          this.con.showLoading(true);
+          setTimeout(() => { try{this.con.onClickYes();}catch(e){}},500);
+        }else{
+          this.con.confirmModal();
+        }
+      }
     }
   }
 
   onSave(){
     console.log(this.params);
-    this.acctService.saveAcsePrqTrans(JSON.stringify(this.params))
-    .subscribe(data => {
-      console.log(data);
-      if(data['returnCode'] == -1){
-        this.getPaytReqPrqTrans();
-        this.genTaxTbl.markAsPristine();
-        this.whTaxTbl.markAsPristine();
-        if(this.cvTbl !== undefined){
-          this.cvTbl.markAsPristine();
+    if(this.requestData.tranTypeCd == 6){
+      this.acctService.saveAcsePerDiem(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.dieminsTbl.markAsPristine();
         }else{
-          this.pcvTbl.markAsPristine();
+          this.dialogIcon = 'error';
         }
-      }else{
-        this.dialogIcon = 'error';
-      }
-      this.suc.open();
-      this.params.savePrqTrans  = [];
-      this.params.deletePrqTrans  = [];
-      //(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
-    });
+        this.suc.open();
+        this.params.savePerDiem = [];
+        this.params.deletePerDiem = [];
+      });
+    }else if(this.requestData.tranTypeCd == 7){
+      this.acctService.saveAcseInsuranceExp(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.dieminsTbl.markAsPristine();
+        }else{
+          this.dialogIcon = 'error';
+        }
+        this.suc.open();
+        this.params.saveInsuranceExp = [];
+        this.params.deleteInsuranceExp = [];
+      });
+    }else{
+      this.acctService.saveAcsePrqTrans(JSON.stringify(this.params))
+      .subscribe(data => {
+        console.log(data);
+        if(data['returnCode'] == -1){
+          this.getPaytReqPrqTrans();
+          this.genTaxTbl.markAsPristine();
+          this.whTaxTbl.markAsPristine();
+          if(this.cvTbl !== undefined){
+            this.cvTbl.markAsPristine();
+          }else{
+            this.pcvTbl.markAsPristine();
+          }
+        }else{
+          this.dialogIcon = 'error';
+        }
+        this.suc.open();
+        this.params.savePrqTrans  = [];
+        this.params.deletePrqTrans  = [];
+        //(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 5)?this.cvTbl.markAsPristine():this.pcvTbl.markAsPristine();
+      });
+    }
   }
 
   showLOV(event, from){
+    console.log(event);
+    this.lovRow = event;
     if(from.toUpperCase() == 'PCVDATA'){
       this.passData.selector = 'acseChartAcct';
+      this.lov.openLOV();
+    }else if(from.toUpperCase() == 'DIEMINSDATA'){
+      this.passData.selector = 'sl';
+      this.passData.params.slTypeCd = (this.requestData.tranTypeCd == 6)?8:'';
+      this.passData.from = (this.requestData.tranTypeCd == 7)?'prq-ins':'';
       this.lov.openLOV();
     }
     //Added by Neco 11/20/2019
@@ -495,9 +746,80 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   }
   //END 11/20/2019
 
-  setData(data, from){
+  assignInsType(){
+    this.insTypeA   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
+    this.insTypeB   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
+    this.insTypeC   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
+
+    this.dfType.forEach(e => {
+      if(e.depNo == 2){
+        this.insTypeA[0].vals.push(e.depNo);
+        this.insTypeA[0].prev.push(e.description);
+      } 
+      if(e.depNo == 1 || e.depNo == 3 || e.depNo == 4){
+        this.insTypeC[0].vals.push(e.depNo);
+        this.insTypeC[0].prev.push(e.description);
+      }
+      if(e.depNo != 2){
+        this.insTypeB[0].vals.push(e.depNo);
+        this.insTypeB[0].prev.push(e.description);
+      }
+    });
+  }
+
+  setData(data){
     console.log(data);
-    if(from.toUpperCase() == 'PCVDATA'){
+    console.log(data['data']);
+    if(data.selector.toUpperCase() == 'SL'){
+      var rec = data['data'];
+      rec.forEach(e => {
+        e.newRec = 1;
+        this.diemInsData.tableData.push(e);
+      });
+      console.log(this.diemInsData.tableData);
+      if(this.requestData.tranTypeCd == 6){
+        this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.directorName != '').map((e,i) => {
+          if(e.newRec == 1){
+            e.directorName = e.slName;
+            e.directorId   = e.slCd;
+            e.createDate = '';
+            e.createUser = ''; 
+            e.updateUser = ''; 
+          }
+          e.checked = false;
+          return e;
+        });
+        this.dieminsTbl.refreshTable();
+        this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName}).length == 0 ? null :
+                          this.diemInsData.tableData.filter(a=>{return a.directorName == this.selectedTblData.directorName})[0] );
+      }else{
+        this.assignInsType();
+        this.diemInsData.tableData = this.diemInsData.tableData.filter(e => e.insuredName != '').map((e,i) => {
+          if(e.newRec == 1){
+            e.insuredName = e.slName;
+            e.insuredCd   = e.slCd;
+            e.insuredTypeCd = e.slTypeCd;
+            e.createDate = '';
+            e.createUser = ''; 
+            e.updateUser = ''; 
+          }
+          e.checked = false;
+          if(e.slTypeCd == 9){
+            e.opts = this.insTypeA;
+          }else if(e.slTypeCd == 8){
+            e.opts = this.insTypeB;
+          }else if(e.slTypeCd == 4){
+            e.opts = this.insTypeC;
+          }
+          return e;
+        });
+        this.dieminsTbl.refreshTable();
+        this.dieminsTbl.onRowClick(null, this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName}).length == 0 ? null :
+                            this.diemInsData.tableData.filter(a=>{return a.insuredName == this.selectedTblData.insuredName})[0] );
+      }
+      this.dieminsTbl.markAsDirty();
+      this.onDataChange('diemins');
+    }else{
       //Added by NECO 11/20/2019
       if(data.selector.toUpperCase() != 'ACSECHARTACCT'){
           let selected = data.data;
@@ -546,7 +868,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           (this.pcvData.tableData.some(e2 => e2.glAcctId != e.glAcctId))?this.pcvData.tableData.push(e):'';
         });
         this.pcvData.tableData = this.pcvData.tableData.filter(e => e.glAcctId != '').map(e => {
-          if(e.newRec == 1){
+          if(e.newRec == 1){  
             e.acctCd = e.shortCode; 
             e.itemName = e.shortDesc;
             e.taxAllocation = this.pcvData.nData.taxAllocation;
@@ -593,26 +915,27 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       tbl = this.cvData.tableData;
     }else if(from.toLowerCase() == 'pcv'){
       tbl = this.pcvData.tableData;
+    }else if(from.toLowerCase() == 'diemins'){
+      tbl = this.diemInsData.tableData;
     }
-    
+    console.log(tbl);
     tbl.map(e => {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
+      (this.requestData.tranTypeCd == 6)?e.currAmt=e.feeAmt:(this.requestData.tranTypeCd == 7)?e.currAmt=e.insuredAmt:'';
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
-      for(var j of e.taxAllocation){
-        if(j.taxCd == 'VAT' && this.rowData.vatTag == 2){ //if Payee is ZERO VAT
-            j.taxAmt = 0;
-          }else if(j.taxRate !== null && j.taxRate !== 0){
-            j.taxAmt = e.localAmt * (j.taxRate / 100);
-          }
-        j.edited = true;
+      if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+        for(var j of e.taxAllocation){
+          if(j.taxCd == 'VAT' && this.rowData.vatTag == 2){ //if Payee is ZERO VAT
+              j.taxAmt = 0;
+            }else if(j.taxRate !== null && j.taxRate !== 0){
+              j.taxAmt = e.localAmt * (j.taxRate / 100);
+            }
+          j.edited = true;
+        }
       }
       return e;
     });
-    // tbl.forEach(e => {
-      
-    // });
-
   }
 
   onRowClick(event){
@@ -620,17 +943,19 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     this.selectedTblData = event;
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);
-      this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);  
-      //Added by Neco 11/20/2019
-      this.disableTaxBtn = false;
-      this.passDataGenTax.nData.reqId = event.reqId;
-      this.passDataGenTax.nData.itemNo = event.itemNo;
-      this.passDataWhTax.nData.reqId = event.reqId;
-      this.passDataWhTax.nData.itemNo = event.itemNo;
-      this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
-      this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
-      this.genTaxTbl.refreshTable();
-      this.whTaxTbl.refreshTable();
+      this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);
+      if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+        //Added by Neco 11/20/2019
+        this.disableTaxBtn = false;
+        this.passDataGenTax.nData.reqId = event.reqId;
+        this.passDataGenTax.nData.itemNo = event.itemNo;
+        this.passDataWhTax.nData.reqId = event.reqId;
+        this.passDataWhTax.nData.itemNo = event.itemNo;
+        this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
+        this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
+        this.genTaxTbl.refreshTable();
+        this.whTaxTbl.refreshTable();
+      }
     }else{
       this.disableTaxBtn = true;
     }

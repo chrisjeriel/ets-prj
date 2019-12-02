@@ -98,6 +98,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'acitArInvPullout'){
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'osQsoa'){
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
           }
@@ -880,17 +883,21 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.slTypeCd - b.slTypeCd);
-        this.table.refreshTable();
       })
+        this.table.refreshTable();
     }else if(this.passData.selector == 'sl'){
       this.passTable.tHeader = ['SL Name'];
       this.passTable.widths =['auto']
       this.passTable.dataTypes = [ 'text'];
       this.passTable.keys = ['slName'];
       this.passData.params.activeTag = 'Y';
-      console.log(this.passData.params);
+      console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-       this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
+        if(this.passData.from.toLowerCase() == 'prq-ins'){
+          this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+        }else{
+          this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
+        }
        this.table.refreshTable();
        })
 
@@ -1206,8 +1213,10 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'accountName','accountNo'];
-      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{
-        this.passTable.tableData = a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null);
+      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{ 
+
+        this.passTable.tableData = (this.passData.from == 'acit')?a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null)
+                                                                 :a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acSeGlDepNo != null);
         this.table.refreshTable();
       });
    /* }else if(this.passData.selector == 'mtnBussType'){
@@ -1278,8 +1287,8 @@ export class LovComponent implements OnInit {
     }else if(this.passData.selector == 'acitJvList'){
       this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type", "JV Ref. No.", "Status", "Prepared By","Amount"];
       this.passTable.widths = [120,98,171,335,110,115];
-      this.passTable.dataTypes = ['text','date','text','text','text','currency',];
-      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','jvStatusName','jvAmt'];
+      this.passTable.dataTypes = ['text','date','text','text','text','text','text','currency',];
+      this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','refNo','jvStatusName','preparedName','jvAmt'];
       this.passTable.checkFlag = false;
       this.accountingService.getJVListing(null).subscribe((data:any)=>{
         data.transactions = data.transactions.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
@@ -1402,10 +1411,15 @@ export class LovComponent implements OnInit {
         var tblData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
         this.passTable.tableData = tblData.filter(a => this.passData.hide.indexOf(a.qsoaId) == -1);
 
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+
         this.table.refreshTable();
       });
     }
-
 
     this.modalOpen = true;
 	}

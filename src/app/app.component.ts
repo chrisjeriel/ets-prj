@@ -2,7 +2,7 @@ import { Component, Inject,  ViewChild,} from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
-import { AuthenticationService } from './_services';
+import { AuthenticationService, NotesService } from './_services';
 import { User } from './_models';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -44,6 +44,7 @@ export class AppComponent  {
      config: NgbModalConfig,
      public modalService: NgbModal,
      private eRef: ElementRef,
+     public ns: NotesService,
      @Inject(DOCUMENT) private document) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
         setInterval(() => {
@@ -64,6 +65,8 @@ export class AppComponent  {
     }
 
     open(content) {
+        console.log(content);
+
         this.content = content;
         this.modalService.dismissAll();
         this.modalService.open(this.content, { centered: true , windowClass : 'modal-size'} );
@@ -136,9 +139,6 @@ export class AppComponent  {
 
         if (this.currentUser != null) {
             this.userService.userLogin(this.currentUser.username, this.currentUser.password).subscribe(data => {
-                console.log("AppComponent : ");
-                console.log(data['modulesList']);
-                console.log("-------------");
                 localStorage.setItem('accessModules', JSON.stringify(data['modulesList']));
                 this.userService.emitAccessModules(data['modulesList']);
             });
@@ -146,8 +146,6 @@ export class AppComponent  {
 
         this.userService.accessibleModules.subscribe(value => {
             this.accessibleModules = value;
-
-            console.log("accessibleModules Retrieved : " + this.accessibleModules);
         });
 
         

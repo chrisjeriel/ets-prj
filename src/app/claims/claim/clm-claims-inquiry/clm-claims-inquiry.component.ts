@@ -46,11 +46,6 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	            dataType: 'text'
 	        },
 	        {
-	            key: 'cedingName',
-	            title:'Ceding Name',
-	            dataType: 'text'
-	        },
-	        {
 	            key: 'clmStatus',
 	            title:'Status',
 	            dataType: 'text'
@@ -61,8 +56,43 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	            dataType: 'text'
 	        },
 	        {
+	            key: 'coClaimNo',
+	            title:'Co Claim No',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'cessionDesc',
+	            title:'Type of Cession',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lineClassDesc',
+	            title:'Line Class',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'cedingName',
+	            title:'Ceding Company',
+	            dataType: 'text'
+	        },
+	        {
 	            key: 'insuredDesc',
 	            title:'Insured',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'coRefNo',
+	            title:'Co Ref No',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'adjName',
+	            title:'Adjuster',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'adjRefNo',
+	            title:'Adjuster Ref No',
 	            dataType: 'text'
 	        },
 	        {
@@ -80,18 +110,23 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	        },
 	        {
 	             keys: {
-	                  from: 'totalResFrom',
-	                  to: 'totalResTo'
+	                  from: 'reportDateFrom',
+	                  to: 'reportDateTo'
 	              },
-	              title: 'Total Reserve',
+	              title: 'Report Date',
 	              dataType: 'textspan'
 	        },
 	        {
+	            key: 'reportedBy',
+	            title:'Reported By',
+	            dataType: 'text'
+	        },
+	        {
 	             keys: {
-	                  from: 'totalPaytFrom',
-	                  to: 'totalPaytTo'
+	                  from: 'createDateFrom',
+	                  to: 'createDateTo'
 	              },
-	              title: 'Total Payment',
+	              title: 'Creation Date',
 	              dataType: 'textspan'
 	        },
 	        {
@@ -100,13 +135,68 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	            dataType: 'text'
 	        },
 	        {
+	            key: 'processedBy',
+	            title:'Processed By',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossAbbr',
+	            title:'Loss Cause',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossPdAbbr',
+	            title:'Loss Period',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'eventTypeDesc',
+	            title:'Event Type',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'eventDesc',
+	            title:'Event',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossDtl',
+	            title:'Loss Details',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'Remarks',
+	            dataType: 'text'
+	        },
+	        /*{
+	            key: 'remarks',
+	            title:'SECTION I',
+	            dataType: 'checkbox'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'SECTION II',
+	            dataType: 'checkbox'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'SECTION III',
+	            dataType: 'checkbox'
+	        },*/
+	        {
 	            key: 'currencyCd',
 	            title:'Currency',
 	            dataType: 'text'
 	        },
 	        {
-	            key: 'processedBy',
-	            title:'Processed By',
+	            key: 'totalLossExpRes',
+	            title:'Total Reserved',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'totalLossExpPd',
+	            title:'Total Payment',
 	            dataType: 'text'
 	        },
 	    ],

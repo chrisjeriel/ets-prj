@@ -1100,11 +1100,13 @@ export class UnderwritingService {
                      .set('distId','')
                      .set('riskDistId', '')
                      .set('status', '')
+                     .set('lineCd','')
                      .set('policyNo','')
                      .set('cedingName','')
                      .set('insuredDesc','')
                      .set('riskName','')
                      .set('currencyCd','')
+                     .set('totalSi','')
                      .set('distDateFrom','')
                      .set('distDateTo','')
                      .set('acctDateFrom','')
@@ -1216,6 +1218,15 @@ export class UnderwritingService {
 
     getNegateList(params?){
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrieveNegateDistList',{params:params});
+    }
+
+    extGenRenExpPolicy(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/extGenRenExpPolicy',JSON.stringify(params),header);
     }
 }            
 

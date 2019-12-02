@@ -116,7 +116,7 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || inquiryFlag" (click)="openCancelModal()">Cancel OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || inquiryFlag || orInfo.acctEntDate !== null" [class.cust-btn-disabled]="isAdd || isCancelled || inquiryFlag || orInfo.acctEntDate !== null" (click)="openCancelModal()">Cancel OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
@@ -129,12 +129,12 @@
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || inquiryFlag" (click)="print();">Print OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || orInfo.orStatDesc.toUpperCase() == 'POSTED' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'PRINTED' || orInfo.orStatDesc.toUpperCase() == 'POSTED' || inquiryFlag" (click)="print();">Print OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() != 'PRINTED' || inquiryFlag" (click)="print();">Reprint OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag" (click)="print();">Reprint OR</button>
 				</div>					
 			</div>
 		</fieldset>

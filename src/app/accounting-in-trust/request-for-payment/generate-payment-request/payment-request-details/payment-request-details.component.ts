@@ -104,10 +104,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   inwardPolBalData: any = {};
 
-  treatyBalanceData: any = {
+  /*treatyBalanceData: any = {
     tableData     : [],
-    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)'],
-    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency'],
+    tHeaderWithColspan: [{header:'', span: 1},{header:'QSOA Details', span: 6},{header: 'Payment Details', span: 2}, {header: 'Summary of Payments', span: 2}],
+    tHeader       : ['Quarter Ending', 'Currency', 'Currency Rate','Net Due','Cumulative Payments','Balance', 'Payment Amount', 'Payment Amount(PHP)', 'Total Payments', 'Remaining Balance'],
+    dataTypes     : ['text', 'text', 'percent','currency','currency', 'currency','currency', 'currency', 'currency', 'currency'],
     magnifyingGlass : ['quarterEnding'],
     nData: {
       qsoaId         : '',
@@ -115,10 +116,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       currCd         : '',
       currRate       : '',
       netQsoaAmt     : 0,
-      cumPayt        : 0,
-      remainingBal   : 0,
+      prevPaytAmt    : 0,
+      prevBalance    : 0,
       currAmt        : 0,
       localAmt       : 0,
+      newPaytAmt     : 0,
+      newBalance     : 0,
       newRec         : 1,
       showMG         : 1
     },
@@ -128,11 +131,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,true,true,true,true,false,true],
-    total         : [null, null, 'Total','netQsoaAmt','cumPayt','remainingBal','currAmt', 'localAmt'],
-    widths        : ['1','1','100','150','150','150','150','150'],
-    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','cumPayt','remainingBal','currAmt','localAmt']
-  };
+    uneditable    : [true,true,true,true,true,true,false,true,true,true],
+    total         : [null, null, 'Total','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance'],
+    widths        : ['1','1','1','120','120','120','120','120','120','120'],
+    keys          : ['quarterEnding','currCd','currRate','netQsoaAmt','prevPaytAmt','prevBalance','currAmt','localAmt','newPaytAmt','newBalance']
+  };*/
+
+  treatyBalanceData: any = {};
 
   investmentData: any = {
     tableData     : [],
@@ -376,8 +381,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
         }else if(this.requestData.tranTypeCd == 5){
           this.getAcctPrqServFee();
         }else if(this.requestData.tranTypeCd == 6){
+          this.treatyBalanceData = this.acctService.getTreatyKeys('PRQ');
           this.treatyBalanceData.tableData = [];
           (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.treatyBalanceData):'';
+          if(!['F','N'].includes(this.requestData.reqStatus)) {
+            this.treatyBalanceData.tHeaderWithColspan = this.treatyBalanceData.tHeaderWithColspan.slice(1, 4);
+          }
           this.getTreaty();
         }else if(this.requestData.tranTypeCd == 7){
           this.investmentData.tableData = [];
@@ -457,7 +466,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   getClmHist(){
     this.clmService.getClaimHistory()
     .subscribe(data => {
-      var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 3)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
+      var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 1)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
       this.cedingCompanyData.tableData = [];
       this.recPrqTrans.forEach(e => {
         this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
@@ -493,6 +502,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
       e.currCd = this.requestData.currCd;
       e.currRate = this.requestData.currRate;
       e.localAmt = (!isNaN(e.currAmt))?Number(e.currAmt)*Number(e.currRate):0;
+
+      if(from === 'tbd') {
+        e.newPaytAmt = +(parseFloat(e.prevPaytAmt) + parseFloat(e.currAmt)).toFixed(2);
+        e.newBalance = +(parseFloat(e.netQsoaAmt) - parseFloat(e.newPaytAmt)).toFixed(2);
+      }
     });
 
   }
@@ -648,15 +662,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.invtTbl.refreshTable();
       this.invtTbl.markAsDirty();
     } else if(from.toUpperCase() == 'LOVOSQSOATBL') {
-      console.log(this.requestData);
-      console.log(data['data']);
-
       data['data'].forEach(a => {
         if(this.treatyBalanceData.tableData.some(b => b.qsoaId != a.qsoaId)) {
           a.currCd = this.requestData.currCd;
           a.currRate = this.requestData.currRate;
+          a.prevPaytAmt = a.cumPayt;
+          a.prevBalance = a.remainingBal;
           a.currAmt = a.remainingBal;
-          a.quarterEnding = this.dp.transform(this.ns.toDateTimeString(a.quarterEnding).split('T')[0], 'MM/dd/yyyy');
+          a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.currAmt)).toFixed(2);
+          a.newBalance = 0;
+          a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
           a.edited = true;
           a.checked = false;
           a.createDate = '';
@@ -899,7 +914,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.params.savePrqTrans = this.params.savePrqTrans.filter(i => i.quarterEnding != e.quarterEnding);
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
-          e.quarterEnding = e.quarterEnding;
+          // e.quarterEnding = e.quarterEnding;
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
@@ -917,7 +932,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
         saveTrty.forEach(function(stData){
           if(ts.ns.toDateTimeString(tblData.quarterEnding) == ts.ns.toDateTimeString(stData.quarterEnding)){
             if(stData.newRec == 1){
-              isNotUnique = true;  
+              isNotUnique = true;
             }
           }
         });
@@ -935,6 +950,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.params.savePrqTrans = [];
       }else if(this.treatyBalanceData.tableData.filter(e => e.newRec == 1).some(e => e.currAmt <= 0)){
         this.warnMsg = 'Please enter amount greater than 0.';
+        this.warnMdl.openNoClose();
+        this.params.savePrqTrans = [];
+      }else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
+        this.warnMsg = 'Payment amount must not exceed the Balance amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
       }else{
@@ -1266,6 +1285,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onRowClick(event){
+    console.log(event);
     this.selectedTblData = event;
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);

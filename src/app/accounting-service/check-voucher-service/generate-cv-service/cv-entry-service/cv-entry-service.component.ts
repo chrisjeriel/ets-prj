@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
 import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
+
 
 @Component({
   selector: 'app-cv-entry-service',
@@ -35,9 +37,11 @@ export class CvEntryServiceComponent implements OnInit {
   @ViewChild('prepUserLov') prepUserLov       : MtnUsersComponent;
   @ViewChild('certUserLov') certUserLov       : MtnUsersComponent;
   @ViewChild('confirmMdl') confirmMdl         : ModalComponent; 
-  @ViewChild('printmMdl') printmMdl           : ModalComponent;
+  @ViewChild('printMdl') printMdl             : ModalComponent;
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('myForm') form                   : NgForm;
+  @ViewChild('override') overrideLogin        : OverrideLoginComponent;
+
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -51,6 +55,7 @@ export class CvEntryServiceComponent implements OnInit {
     certifiedDate : '',
     checkClass    : '',
     checkDate     : '',
+    checkId       : '',
     checkNo       : '',
     closeDate     : '',
     createDate    : '',
@@ -94,6 +99,9 @@ export class CvEntryServiceComponent implements OnInit {
   checkSeriesList      : any;
   existsInCvDtl        : boolean = false;
   fromSave             : boolean = false;
+  spoiled              : any;
+  approvalCd           : any;
+
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -188,7 +196,8 @@ export class CvEntryServiceComponent implements OnInit {
       this.checkSeriesList = recCn;
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
+      // var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
+      var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
 
       if(this.saveAcseCv.tranId == '' || this.saveAcseCv.tranId == null){
         this.loadingFunc(false);
@@ -214,8 +223,6 @@ export class CvEntryServiceComponent implements OnInit {
         var totalPrl = arrSum(data['sub2']['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
         var totalCredit = arrSum(data['sub2']['ae']['acctEntries'].map(e => e.foreignCreditAmt));
         var totalDebit = arrSum(data['sub2']['ae']['acctEntries'].map(e => e.foreignDebitAmt));
-        // var totalCredit = 0;
-        // var totalDebit = 0;
         var recCv = data['sub1']['cv']['acseCvList'].map(e => {
           e.createDate = this.ns.toDateTimeString(e.createDate);
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
@@ -260,6 +267,9 @@ export class CvEntryServiceComponent implements OnInit {
       this.cvData.emit(this.saveAcseCv);
       ((this.saveAcseCv.cvStatus == 'N' || this.saveAcseCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
       this.setLocalAmt();
+      if(this.saveAcseCv.checkStatus == 'S'){
+          this.spoiledFunc();
+      }
     });
   }
 
@@ -271,6 +281,7 @@ export class CvEntryServiceComponent implements OnInit {
       certifiedDate : '',
       checkClass    : '',
       checkDate     : '',
+      checkId       : '',
       checkNo       : '',
       closeDate     : '',
       createDate    : '',
@@ -338,6 +349,7 @@ export class CvEntryServiceComponent implements OnInit {
       certifiedDate    : (this.saveAcseCv.certifiedDate == '' || this.saveAcseCv.certifiedDate == null)?'':this.ns.toDateTimeString(this.saveAcseCv.certifiedDate),
       checkClass       : this.saveAcseCv.checkClass,
       checkDate        : (this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.checkDate,
+      checkId          : this.saveAcseCv.checkId,
       checkNo          : this.saveAcseCv.checkNo,
       closeDate        : this.ns.toDateTimeString(this.saveAcseCv.mainCloseDate),
       createDate       : (this.saveAcseCv.createDate == '' || this.saveAcseCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.createDate,
@@ -367,14 +379,33 @@ export class CvEntryServiceComponent implements OnInit {
     };
 
     console.log(saveCv);
+    (this.spoiled)?this.saveAcseCv.checkId='':'';
     this.accountingService.saveAcseCv(JSON.stringify(saveCv))
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
-      this.saveAcseCv.tranId = data['tranIdOut'];
-      this.saveAcseCv.mainTranId = data['mainTranIdOut'];
-      this.getAcseCv();
-      this.form.control.markAsPristine();
+      this.spoiled = true;
+      // this.saveAcseCv.tranId = data['tranIdOut'];
+      // this.saveAcseCv.mainTranId = data['mainTranIdOut'];
+      // this.getAcseCv();
+      // this.form.control.markAsPristine();
+
+      if(data['returnCode'] == -1){
+        this.saveAcseCv.tranId = data['tranIdOut'];
+        this.saveAcseCv.mainTranId = data['mainTranIdOut'];
+        this.getAcseCv();
+        this.spoiled = false;
+        this.form.control.markAsPristine();
+      }else if(data['returnCode'] == 0){
+        this.dialogIcon = 'error';
+        this.success.open();
+      }else if(data['returnCode'] == 2){
+        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMdl.openNoClose();
+      }else if(data['returnCode'] == -100){
+        this.warnMsg = 'There is no Check No. available for this Account No.';
+        this.warnMdl.openNoClose();
+      }
     });
   }
 
@@ -396,6 +427,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
+      this.passDataLov.from   = 'acse';
       this.passDataLov.currCd = this.saveAcseCv.currCd;
       this.passDataLov.bankCd = this.saveAcseCv.bank;
       this.bankAcctLov.openLOV();
@@ -431,14 +463,14 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.bank = data.data.bankCd;
       this.saveAcseCv.bankAcctDesc = '';
       this.saveAcseCv.bankAcct = '';
-      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcseCv.currCd && e.acseGlDepNo != null);
+      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcseCv.currCd && e.acSeGlDepNo != null);
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
           this.saveAcseCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcseCv.bankAcctDesc   = data.data.accountNo;
@@ -457,11 +489,15 @@ export class CvEntryServiceComponent implements OnInit {
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcseCv.currCd = data.currencyCd;
       this.saveAcseCv.currRate =  data.currencyRt;
-      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcseCv.bank && e.currCd == data.currencyCd && e.acseGlDepNo != null);
+      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcseCv.bank && e.currCd == data.currencyCd && e.acSeGlDepNo != null);
       console.log(ba);
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcseCv.bankAcct = ba[0].bankAcctCd; 
+        this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
+        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
+          this.saveAcseCv.checkNo = chkNo[0].checkNo;
+        } 
       }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
@@ -498,6 +534,8 @@ export class CvEntryServiceComponent implements OnInit {
       }else{
         return;
       }
+    }else{
+      this.success.modal.modalRef.close();
     }
   }
 
@@ -518,7 +556,7 @@ export class CvEntryServiceComponent implements OnInit {
   onClickOkPrint(){
     console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
     if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
-      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Credit amounts in the Accounting Entries must be balanced.';
       this.warnMdl.openNoClose();
     }else if(this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
       this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
@@ -528,7 +566,9 @@ export class CvEntryServiceComponent implements OnInit {
       this.warnMdl.openNoClose();
     }else{
       this.fromBtn = 'approve-req';
-      this.confirmMdl.openNoClose();
+      //this.confirmMdl.openNoClose();
+      this.approvalCd = 'AC003';
+      this.overrideFunc('AC003');
     }
   }
 
@@ -542,6 +582,7 @@ export class CvEntryServiceComponent implements OnInit {
     this.confirmMdl.closeModal();
     var updateAcseCvStat = {
       tranId       : this.saveAcseCv.tranId,
+      checkId      : this.saveAcseCv.checkId,
       cvStatus     : stat,
       updateUser  : this.ns.getCurrentUser()
     };
@@ -557,24 +598,62 @@ export class CvEntryServiceComponent implements OnInit {
       // this.success.open();
       this.fromSave = true;
       this.getAcseCv();
-      this.disableFlds(true);
+      (!this.spoiled)?this.disableFlds(true):'';
     });
   }
 
   onYesConfirmed(){
     console.log(this.fromBtn);
+    this.spoiled = false;
     if(this.fromBtn.toLowerCase() == 'print'){
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'spoil'){
+      this.onClickYesConfirmed('S');
+      this.spoiledFunc();
     }
   }
 
   loadingFunc(bool){
     var str = bool?'block':'none';
     $('.globalLoading').css('display',str);
+  }
+
+    spoiledFunc(){
+    $('.cl-spoil').prop('readonly',false);
+    this.spoiled = true;
+    this.saveAcseCv.checkId = '';
+  }
+
+  overrideFunc(approvalCd){
+    this.loadingFunc(true);
+    this.mtnService.getMtnApprovalFunction(approvalCd)
+    .subscribe(data => {
+      var approverList = data['approverFn'].map(e => e.userId);
+      if(approverList.includes(this.ns.getCurrentUser())){
+        if(this.fromBtn == 'print'){
+          this.printMdl.openNoClose();
+        }else{
+          this.confirmMdl.openNoClose();
+        }
+      }else{
+        this.overrideLogin.getApprovalFn();
+        this.overrideLogin.overrideMdl.openNoClose();
+      }
+    });
+  }
+
+  onOkOverride(result){
+    if(result){
+      if(this.fromBtn == 'print'){
+        this.printMdl.openNoClose();
+      }else{
+        this.confirmMdl.openNoClose();
+      }
+    }
   }
 
 }

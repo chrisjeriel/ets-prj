@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, Input} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
@@ -9,6 +9,9 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { map } from 'rxjs/operators';
 import { ClmClaimHistoryComponent } from '@app/claims/claim/clm-claim-processing/clm-claim-history/clm-claim-history.component';
 import { Location } from '@angular/common';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-claim',
@@ -21,6 +24,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   @ViewChild('overMdl') overMdl        : ModalComponent;
   @ViewChild(SucessDialogComponent) success  : SucessDialogComponent;
   @ViewChild('clmHist') clmHist: ClmClaimHistoryComponent;
+  @ViewChild('recordLock') recordLock;
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -65,6 +69,14 @@ export class ClaimComponent implements OnInit, OnDestroy {
   from : any ;
   proceed : any;
 
+  webSocketEndPoint: string = environment.prodApiUrl + '/moduleSecurity';
+    topic: string = "/clm-processing";
+    stompClient: any;
+    initLoad: boolean = true;
+    lockModalShown: boolean = false;
+    lockUser: string = "";
+    lockMessage: string = "";
+
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
                private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService,
                private securityService: SecurityService, private loc: Location) { }
@@ -88,13 +100,93 @@ export class ClaimComponent implements OnInit, OnDestroy {
           this.disableClmHistory = false;
           this.disableNextTabs = false;
           this.disablePaytReq = false;
+
+
         }
+
+        if (!this.isInquiry) {
+          this.claimInfo.claimId = params['claimId'];
+          this.wsConnect();
+        }
+
+
       }
     );
+    
   }
 
   ngOnDestroy(){
     this.sub.unsubscribe();
+
+    if (!this.isInquiry) {
+      this.wsDisconnect();
+    }
+  }
+
+    wsConnect() {
+      console.log("XXXX");
+      console.log(this.claimInfo);
+      console.log("XXXX");
+
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          if (_this.initLoad) {
+            _this.sendMessage();
+            _this.initLoad = false;
+          }
+
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              var obj = JSON.parse(sdkEvent.body);
+              if (obj.message == "") {
+                if (_this.claimInfo.claimId == obj.refId) {
+                  if (_this.ns.getCurrentUser() == obj.user) {
+                    //Proceed because same user.
+                    console.log("Same user with same record, proceed.");
+                  } else {
+                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.claimInfo.claimId, message: "This record is currently being updated by " }));
+                  }
+                }
+              } else {
+                if (_this.claimInfo.claimId == obj.refId) {
+                  if (_this.ns.getCurrentUser() != obj.user) {
+                    setTimeout(() => {
+                        if (_this.lockModalShown == false) {
+                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                         _this.lockModalShown = true;
+                         _this.lockUser = obj.user;
+                         _this.lockMessage = obj.message;
+                        }
+                     });
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+  }; 
+
+  wsDisconnect() {
+    if (this.stompClient !== null) {
+        this.stompClient.disconnect();
+    }
+  }
+
+  sendMessage() {
+    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.claimInfo.claimId, message: "" }));
+  }
+
+  errorCallBack(error) {
+      console.log("errorCallBack -> " + error)
+      setTimeout(() => {
+          this.wsConnect();
+      }, 5000);
+  }
+
+  returnOnModal(){
+    if (!this.isInquiry) {
+     this.router.navigateByUrl('/clm-claim-processing');
+    }
   }
 
   onTabChange($event: NgbTabChangeEvent) {
