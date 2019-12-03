@@ -314,10 +314,8 @@ export class BankAccountComponent implements OnInit {
             if(dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time') {
               val = $(this).find('input').val();
               highlight($(this), val);
-            } else if(dataTypes[i] == 'select') {
-              val = $(this).find('select').val();    
-              highlight($(this), val);
-            }else if(dataTypes[i] == 'text-editor') {
+            } 
+            else if(dataTypes[i] == 'text-editor') {
              if($(this).find('.align-middle.ng-star-inserted').length === 1){
               val = $(this).find('text-editor').text();
               highlight($(this), val);

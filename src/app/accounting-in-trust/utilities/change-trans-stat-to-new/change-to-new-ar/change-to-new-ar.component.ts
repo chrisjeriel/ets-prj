@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Input,Output ,EventEmitter} from '@angula
 import { Title } from '@angular/platform-browser';
 import { AccountingService, NotesService} from '@app/_services';
 import { Router } from '@angular/router';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -14,9 +14,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./change-to-new-ar.component.css']
 })
 export class ChangeToNewArComponent implements OnInit {
-  @ViewChild('ARTable') ARTable: CustEditableNonDatatableComponent;
-  @ViewChild('JVTable') JVTable: CustEditableNonDatatableComponent;
-  @ViewChild('CVTable') CVTable: CustEditableNonDatatableComponent;
+  @ViewChild('ARTable') ARTable: CustNonDatatableComponent;
+  @ViewChild('JVTable') JVTable: CustNonDatatableComponent;
+  @ViewChild('CVTable') CVTable: CustNonDatatableComponent;
 
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild("confirmSave") confirmSave: ConfirmSaveComponent;
@@ -73,9 +73,9 @@ export class ChangeToNewArComponent implements OnInit {
     pagination: true,
     pageID: 1,
     searchFlag: true,
-    infoFlag: true,
     paginateFlag: true,
-    genericBtn:'Change Status to New'
+    genericBtn1:'Change Status to New',
+    exportFlag: true
   }
 
   passDataJV: any = {
@@ -135,7 +135,8 @@ export class ChangeToNewArComponent implements OnInit {
       searchFlag: true,
       infoFlag: true,
       paginateFlag: true,
-      genericBtn:'Change Status to New'
+      genericBtn1:'Change Status to New',
+      exportFlag: true
   }
 
   passDataCV: any = {
@@ -180,7 +181,8 @@ export class ChangeToNewArComponent implements OnInit {
       searchFlag: true,
       infoFlag: true,
       paginateFlag: true,
-      genericBtn:'Change Status to New'
+      genericBtn1:'Change Status to New',
+      exportFlag: true
   }
 
    record: any = {
@@ -218,8 +220,9 @@ export class ChangeToNewArComponent implements OnInit {
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0){
+          console.log(data);
           for(var i:number = 1; i<data.ar.length; i++){
-              if (data.ar[i].arStatDesc === 'Printed' || data.ar[i].arStatDesc === 'Cancelled' ){
+              if (data.ar[i].arStatDesc === 'Cancelled' ){
                 this.passDataAR.tableData.push(data.ar[i]);
               }
           }
@@ -267,16 +270,15 @@ export class ChangeToNewArComponent implements OnInit {
         return i; 
       });
 
-      this.passDataCV.tableData = rec.filter(a => String(a.cvStatus).toUpperCase() === 'F' ||
-                                                  String(a.cvStatus).toUpperCase() === 'P' ||
-                                                  String(a.cvStatus).toUpperCase() === 'A' ||
-                                                  String(a.cvStatusDesc).toUpperCase() === 'X' 
+      this.passDataCV.tableData = rec.filter(a => String(a.cvStatus).toUpperCase() === 'X' ||
+                                                  String(a.cvStatus).toUpperCase() === 'P' 
                                             );
       this.CVTable.refreshTable();
     });
   }
 
    onRowClick(data){
+     console.log(data);
     if(data === null || (data !== null && Object.keys(data).length === 0)){
       this.record.createUser = '';
       this.record.createDate = '';
@@ -385,5 +387,23 @@ export class ChangeToNewArComponent implements OnInit {
         }
      });
    }
+
+   toViewRecord(data,tranflag){
+    if(this.tranFlag === 'AR') {
+      console.log(data);
+     let record = {
+        tranId: data.tranId,
+        arNo: data.arNo == null ? '' : data.arNo,
+        payor: data.payor,
+        arDate: data.arDate,
+        paymentType: data.tranTypeName,
+        status: data.arStatDesc,
+        particulars: data.particulars,
+        amount: data.arAmt
+      }
+
+      this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(record), action: 'edit' }], { skipLocationChange: true });
+    }
+  }
 
 }
