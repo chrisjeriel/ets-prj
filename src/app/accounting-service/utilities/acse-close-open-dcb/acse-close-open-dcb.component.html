@@ -23,7 +23,7 @@
 						<fieldset class="scheduler-border" style="margin-top: 5px !important;">
 							<div class="row" style="margin-top: 10px">
 								<div class="col-sm-12">
-									<app-cust-editable-non-datatable #dcb [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onChange($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #dcb [passData]="passData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-12">
 									<div class="form-row">
@@ -35,7 +35,7 @@
 									                <button type="button" class="cust" (click)="onClickClose()" [disabled]="params.status == 'C'" [class.cust-btn-disabled]="params.status == 'C'"><a>Close</a></button>
 									                <button type="button" class="cust" (click)="onClickTempClose()" [disabled]="params.status == 'T'" [class.cust-btn-disabled]="params.status == 'T'" ><a>Close Temporarily</a></button>
 									                <button type="button" class="cust" (click)="onClickReOpen()" [disabled]="params.status == 'O'" [class.cust-btn-disabled]="params.status == 'O'"><a>Re-Open</a></button>
-									                <button type="button" class="cust" (click)="onClickView()"><a>View Details</a></button>
+									                <button type="button" class="cust" (click)="onClickView()" [disabled]="viewFlag" [class.cust-btn-disabled]="viewFlag"><a>View Details</a></button>
 									                <button type="button" class="cust" (click)="getRecords()"><a>Print</a></button>
 									            </div>
 									        </div>
@@ -97,13 +97,6 @@
 	                </fieldset> 
         		</div>
         	</div>
-            <!-- <div class="row">
-        		<div class="col-sm-12">
-        			<div class="form-row custom-row-inline-inset">
-		                
-		            </div>
-		        </div>
-		    </div> -->
         </div>
     </div>
     <div footer class="text-center">
@@ -114,10 +107,6 @@
 <app-modal class="d-none" id="closeDcb" #closeDcb>
     <div header>Confirmartion</div>  
     <div body>
-        <!-- <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
-        </div> -->
         <span>Are you sure you want to permanently <b>Close</b> the selected DCB's?</span>
     </div>
     <div footer class="text-center">
@@ -129,10 +118,6 @@
 <app-modal class="d-none" #reOpenDcb>
     <div header>Confirmartion</div>  
     <div body>
-        <!-- <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
-        </div> -->
         <span>Are you sure you want to <b>Re-open</b> the selected DCB's?</span>
     </div>
     <div footer class="text-center">
@@ -144,10 +129,6 @@
 <app-modal class="d-none" #tempCloseDcb>
     <div header>Confirmartion</div>  
     <div body>
-        <!-- <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
-        </div> -->
         <span>Are you sure you want to <b>temporarily Close</b> the selected DCB's?</span>
     </div>
     <div footer class="text-center">
@@ -157,5 +138,5 @@
 </app-modal>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="null;"></app-confirm-save> <!-- saveDcb() does not exists -->
-<app-cancel-button (onYes)="null;" [url]="''" ></app-cancel-button> <!-- saveDcb('cancel') does not exists -->
+<app-confirm-save (onYes)="saveDcb();"></app-confirm-save>
+<app-cancel-button (onYes)="saveDcb('cancel');" [url]="''" ></app-cancel-button>

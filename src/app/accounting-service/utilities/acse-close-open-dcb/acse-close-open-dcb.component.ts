@@ -33,7 +33,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
     passData: any = {
       tableData: [],
       tHeader: ['DCB Date','DCB Year', 'DCB No', 'DCB Status', 'Remarks','Close Date','Auto'],
-      dataTypes: ['date','number', 'number', 'text', 'text','date','checkbox'],
+      dataTypes: ['date','year', 'number', 'text', 'text','date','checkbox'],
       searchFlag: true,
       infoFlag: true,
       paginateFlag: true,
@@ -86,6 +86,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
     dialogMessage : any;
     cancelFlag: boolean = false;
     subscription: Subscription = new Subscription();
+    viewFlag: boolean = true;
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, 
   			  private titleService: Title, private accountingService: AccountingService, 
@@ -112,6 +113,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
   onRowClick(data){
     console.log(data)
     if(data!== null){
+      this.viewFlag = false;
       this.params.dcbYear = data.dcbYear;
       this.params.dcbNo = data.dcbNo;
       this.params.createUser = data.createUser;
@@ -119,13 +121,42 @@ export class AcseCloseOpenDcbComponent implements OnInit {
       this.params.updateUser = data.updateUser;
       this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
     }else{
+      this.viewFlag = true;
       this.params.dcbYear = '';
       this.params.dcbNo = '';
       this.params.createUser = '';
       this.params.createDate = '';
-      this.params.upateUser = '';
+      this.params.updateUser = '';
       this.params.updateDate = '';
     }
+  }
+
+  onClickSave(){
+    this.confirm.confirmModal();
+  }
+
+  saveDcb(cancel?){
+    this.cancelFlag = cancel !== undefined;
+    this.saveData.saveDcb = []
+    for (var i = 0; i < this.passData.tableData.length; ++i) {
+      if(this.passData.tableData[i].edited){
+        this.saveData.saveDcb.push(this.passData.tableData[i]);
+        this.saveData.saveDcb[this.saveData.saveDcb.length - 1].updateUser = this.ns.getCurrentUser();
+      }
+    }
+
+    this.accountingService.saveAcseDCBNo(this.saveData).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.successDiag.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.successDiag.open();
+        this.retrieveDcb();
+      }
+    });
   }
 
   onClickClose(){
@@ -169,7 +200,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
     for (var i = 0; i < this.passData.tableData.length; ++i) {
       if(this.passData.tableData[i].checked){
         this.params.updateDcb.push(this.passData.tableData[i]);
-        this.params.updateDcb[this.params.updateDcb.length - 1].dcbStat = 'TC';
+        this.params.updateDcb[this.params.updateDcb.length - 1].dcbStat = 'T';
         this.params.updateDcb[this.params.updateDcb.length - 1].updateUser = this.ns.getCurrentUser();
       }
     }
@@ -178,7 +209,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
   }
 
   updateDcb(){
-    this.accountingService.updateDCBNo(this.params).subscribe((data:any) => {
+    this.accountingService.acseUpdateDCBNo(this.params).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
@@ -201,7 +232,6 @@ export class AcseCloseOpenDcbComponent implements OnInit {
                         ).pipe(map(([collection, bankDtl]) => { return { collection, bankDtl}}));
 
     this.subscription.add(sub$.subscribe((data:any) => {
-      console.log(data)
       
       this.passDataCollection.tableData = data.collection.dcbCollection;
       this.passDataBank.tableData = data.bankDtl.bankDetails;
@@ -214,7 +244,7 @@ export class AcseCloseOpenDcbComponent implements OnInit {
   }
 
   getRecords(){
-    this.maintenanceService.getMtnAcitDCBNo(null,null,null,this.params.status).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
+    this.maintenanceService.getMtnAcseDCBNo(null,null,null,this.params.status).pipe(finalize(() => this.finalGetRecords())).subscribe((data:any)=>{
       this.passData.tableData = data.dcbNoList;
     });
   }
