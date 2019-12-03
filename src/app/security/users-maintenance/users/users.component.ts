@@ -178,7 +178,7 @@ export class UsersComponent implements OnInit {
         for(var i =0; i < data.usersList.length;i++){
           this.passDataUsers.tableData.push(data.usersList[i]);
           this.passDataUsers.tableData[i].showMG = 1;
-          this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrp', 'userGrpDesc'];
+          this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrpDesc'];
         }
 
         this.usersList.refreshTable();
