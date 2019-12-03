@@ -707,8 +707,8 @@
         </div> -->
         <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;">
-                <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 500px;">
-                    <div class="custom-row-inline-inset" style="text-align: center">
+                <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 420px;">
+                    <div class="custom-row-inline-inset" style="text-align: center; padding-left: 0px; padding-right: 0px;">
                         <form>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">User Name</label>
@@ -724,18 +724,17 @@
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">Old Password</label>
-                                <input name="input3" type="password" [(ngModel)]="changePassObj.oldPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input3" type="password" [(ngModel)]="changePassObj.oldPassword" class="form-control form-control-sm">
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">New Password</label>
-                                <input name="input4" type="password" [(ngModel)]="changePassObj.newPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input4" type="password" [(ngModel)]="changePassObj.newPassword" class="form-control form-control-sm">
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">Repeat Password</label>
-                                <input name="input5" type="password" [(ngModel)]="changePassObj.confirmPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input5" type="password" [(ngModel)]="changePassObj.confirmPassword" class="form-control form-control-sm">
                             </div>
                         </form>
-                        <button type="button" class="cust-btn" (click)="onClickConfirmation()">Change Password</button>
                     </div>
                 </fieldset>
 
@@ -746,7 +745,8 @@
     </div>
     <div class="modal-footer" style="justify-content: center; margin-top: -5px">
         <div class="row" style="margin-top: -5px">
-            <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click');"><a>Close</a></button>
+            <button type="button" class="cust-btn" (click)="modal.close('Close click');"><a>Close</a></button>
+            <button type="button" class="cust-btn" (click)="onClickConfirmation()">Change Password</button>
         </div>
     </div>
 </ng-template>
