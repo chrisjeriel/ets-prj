@@ -28,17 +28,17 @@ export class CancelArCvJvComponent implements OnInit {
 
 	@Input() tranClass : string = '';
 	passDataCancelTrans: any = {
-		tableData    : [],
-		tHeader      : [],
-		dataTypes    : [],
-		keys         : [],
-		colSize      : [],
-		filters      : [],
+		// tableData    : [],
+		// tHeader      : [],
+		// dataTypes    : [],
+		// keys         : [],
+		// colSize      : [],
+		// filters      : [],
 		pageLength   : 10,
 		pageStatus   : true,
 		pagination   : true,
 		pageID       : 'ctTbl',
-		checkFlag    : true,
+		checkFlag    : false,
 		exportFlag   : true
 	};
   
@@ -64,6 +64,7 @@ export class CancelArCvJvComponent implements OnInit {
 	constructor( private acctService: AccountingService, private ns : NotesService, private titleService : Title ,private router: Router) { }
 
 	ngOnInit() {
+		
 		this.getAcitList();
 	}
 
@@ -84,7 +85,6 @@ export class CancelArCvJvComponent implements OnInit {
 			this.acctService.getAcitCvList([])
 			.subscribe(data => {
 				console.log(data);
-				// this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus == 'N' || e.cvStatus == 'F').map(e => { 
 				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus != 'X').map(e => { 
 				  	e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
@@ -107,11 +107,13 @@ export class CancelArCvJvComponent implements OnInit {
 	}
 
 	getTblOtherInfo(){
+		//this.cancelTranTbl.overlayLoader = true;
 		if(this.tranClass == 'ar'){
 			this.passDataCancelTrans.tHeader    = ['AR No','Payor','AR Date','Status','Payment Type','Particulars','Amount'];
 			this.passDataCancelTrans.dataTypes  = ['sequence-6','text','date','text','text','text','currency'];
-			this.passDataCancelTrans.keys       = ['arNo', 'payor', 'arDate', 'arStatDesc','tranTypeName', 'particulars', 'arAmt'],
-			this.passDataCancelTrans.colSize    = ['30px', '200px', '40px', '20px', '150px', '200px', '125px'],
+			this.passDataCancelTrans.keys       = ['arNo', 'payor', 'arDate', 'arStatDesc','tranTypeName', 'particulars', 'arAmt'];
+			this.passDataCancelTrans.colSize    = ['30px', '200px', '40px', '60px', '150px', '200px', '125px'];
+			this.passDataCancelTrans.checkFlag  = true;
 			this.passDataCancelTrans.filters    = [
 				{key   : 'arNo',title: 'AR No',dataType: 'text'},
 				{key   : 'payor',title: 'Payor',dataType: 'text'},
@@ -122,10 +124,11 @@ export class CancelArCvJvComponent implements OnInit {
 				{keys  : {from: 'arAmtFrom',to: 'arAmtTo'},title: 'Amount',dataType: 'textspan'}
 			];
 		}else if(this.tranClass == 'cv'){
-			this.passDataCancelTrans.tHeader    = ['CV No', 'Payee', 'CV Date', 'Status','Particulars','Amount'],
-			this.passDataCancelTrans.dataTypes  = ['text','text','date','text','text','currency'],
-			this.passDataCancelTrans.keys       = ['cvGenNo','payee','cvDate','cvStatusDesc','particulars','cvAmt'],
-			this.passDataCancelTrans.colSize    = ['50px', '80px', '40px', '100px', '200px', '125px'],
+			this.passDataCancelTrans.tHeader    = ['CV No', 'Payee', 'CV Date', 'Status','Particulars','Amount'];
+			this.passDataCancelTrans.dataTypes  = ['text','text','date','text','text','currency'];
+			this.passDataCancelTrans.keys       = ['cvGenNo','payee','cvDate','cvStatusDesc','particulars','cvAmt'];
+			this.passDataCancelTrans.colSize    = ['50px', '160px', '40px', '100px', '200px', '125px'];
+			this.passDataCancelTrans.checkFlag  = true;
 			this.passDataCancelTrans.filters    = [
 				{key   : 'cvGenNo',title: 'CV No',dataType: 'text'},
 				{key   : 'payee',title: 'Payee',dataType: 'text'},
@@ -135,10 +138,11 @@ export class CancelArCvJvComponent implements OnInit {
 				{keys  : {from: 'cvAmtFrom',to: 'cvAmtTo'},title: 'Amount',dataType: 'textspan'}
 			];
 		}else if(this.tranClass == 'jv'){
-			this.passDataCancelTrans.tHeader      = ['JV No', 'JV Date','Status','Particulars','JV Type', 'JV Ref. No.', 'Prepared By','Amount'],
-			this.passDataCancelTrans.dataTypes    = ['text','date','text','text','text','text','text','currency'],
-			this.passDataCancelTrans.keys         = ['jvNo','jvDate','jvStatusName','particulars','tranTypeName','refNo','preparedName','jvAmt'],
-			this.passDataCancelTrans.colSize      = ['120px','98px','100px','171px','335px','110px','118px','115px'],
+			this.passDataCancelTrans.tHeader      = ['JV No', 'JV Date','Status','Particulars','JV Type', 'JV Ref. No.', 'Prepared By','Amount'];
+			this.passDataCancelTrans.dataTypes    = ['text','date','text','text','text','text','text','currency'];
+			this.passDataCancelTrans.keys         = ['jvNo','jvDate','jvStatusName','particulars','tranTypeName','refNo','preparedName','jvAmt'];
+			this.passDataCancelTrans.colSize      = ['120px','98px','100px','200px','160px','110px','118px','115px'];
+			this.passDataCancelTrans.checkFlag    = true;
 			this.passDataCancelTrans.filters      = [
 				{key  : 'jvNo',title: 'J.V. No.',dataType: 'text'},
 				{keys : {from: 'jvDateFrom',to: 'jvDateTo'},title: 'AR Date',dataType: 'datespan'},
@@ -178,13 +182,8 @@ export class CancelArCvJvComponent implements OnInit {
     		this.mdlType = 1;
     		this.msg = 'Unable to cancel the selected transaction/s.\n Please provide Reason for Cancellation.';
     	}else{
-    		if(this.tranClass != 'cv'){
-    			this.mdlType = 1;
-    			this.msg = '******* Under Maintenance *******';
-    		}else{
-    			this.mdlType = 2;
-    			this.msg = 'Are you sure you want to cancel the selected transaction/s ?';
-    		}
+    		this.mdlType = 2;
+    		this.msg = 'Are you sure you want to cancel the selected transaction/s ?';
     	}
     	this.mdl.openNoClose();
 	}
@@ -195,16 +194,22 @@ export class CancelArCvJvComponent implements OnInit {
 		.subscribe(data => {
 			console.log(data);
 			this.loadingFunc(false);
-			this.suc.open();
-			this.params.updateAcitStatusList = [];
-			this.reason = '';
-			this.otherData = {
-				createUser : '',
-				createDate : '',
-				updateUser : '',
-				updateDate : ''
-			};
-			this.getAcitList();
+			if(data['returnCode'] == -1){
+				this.suc.open();
+				this.params.updateAcitStatusList = [];
+				this.reason = '';
+				this.otherData = {
+					createUser : '',
+					createDate : '',
+					updateUser : '',
+					updateDate : ''
+				};
+				this.getAcitList();
+			}else{
+				this.mdlType = 1;
+				this.msg = 'Cancellation process failed. \n' + data['invalidTranNos'].filter(e => e!=null).join(',') + '    cannot be cancelled.';
+				this.mdl.openNoClose();
+			}
 		});
 	}
 

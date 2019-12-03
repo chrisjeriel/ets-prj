@@ -65,13 +65,12 @@
 
 <app-confirm-save  #con></app-confirm-save>
 <app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
-<!-- <app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/check-voucher'" ></app-cancel-button> -->
 
 <app-modal class="d-none" #mdl >
     <div header> {{(mdlType == 1)?'Warning':'Confirmation'}}</div>
     <div body class="container-flex text-center">
         <div class="input-group">
-            <pre style="font-family: inherit !important; width: inherit !important;"><p class="col-sm-12"> {{ msg }}</p></pre>
+            <pre style="font-family: inherit !important;width: inherit !important; margin-bottom: 0px !important;"><p style="margin-bottom: 0px !important;">{{ msg }}</p></pre>
         </div>
     </div>
     <div footer class="d-flex justify-content-center w-100">                    
