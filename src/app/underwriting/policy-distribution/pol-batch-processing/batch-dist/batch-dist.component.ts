@@ -45,7 +45,7 @@ export class BatchDistComponent implements OnInit {
   passData: any = {
       tHeader: [
           "Dist No.", "Risk Dist No.", "Status", "Line", "Policy No.",
-          "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
+          "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Booking Date"
       ],
       filters: [
          {
@@ -106,7 +106,7 @@ export class BatchDistComponent implements OnInit {
                     from: 'acctDateFrom',
                     to: 'acctDateTo'
                 },
-                title: 'Acct Date',
+                title: 'Booking Date',
                 dataType: 'datespan'
             },
       ],
@@ -213,6 +213,6 @@ export class BatchDistComponent implements OnInit {
               var date = new Date(dateStr);
               return date.toLocaleString().split(',')[0];
         };
-     alasql('SELECT  distId AS [Dist No], riskDistId AS [Risk Dist No.], status AS [STATUS], lineCd AS [Line], policyNo AS [Policy No.], cedingName AS [Ceding Company], insuredDesc AS [Insured], riskName AS [Risk], currencyCd AS [Currency], totalSi AS [Sum Insured], datetime(distDate) AS [Distribution Date], datetime(acctDate) AS [Accounting Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+     alasql('SELECT  distId AS [Dist No], riskDistId AS [Risk Dist No.], status AS [STATUS], lineCd AS [Line], policyNo AS [Policy No.], cedingName AS [Ceding Company], insuredDesc AS [Insured], riskName AS [Risk], currencyCd AS [Currency], totalSi AS [Sum Insured], datetime(distDate) AS [Distribution Date], datetime(acctDate) AS [Booking Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
    }
 }

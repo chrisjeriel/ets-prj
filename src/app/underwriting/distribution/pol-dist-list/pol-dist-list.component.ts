@@ -17,7 +17,7 @@ export class PolDistListComponent implements OnInit {
     passData: any = {
         tHeader: [
             "Dist No.", "Risk Dist No.", "Status", "Line", "Policy No.",
-            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Accounting Date"
+            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Booking Date"
         ],
         filters: [
            {
@@ -68,7 +68,7 @@ export class PolDistListComponent implements OnInit {
                       from: 'acctDateFrom',
                       to: 'acctDateTo'
                   },
-                  title: 'Acct Date',
+                  title: 'Booking Date',
                   dataType: 'datespan'
               },
         ],
@@ -148,7 +148,7 @@ export class PolDistListComponent implements OnInit {
       };
 
       //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
-     alasql('SELECT distId AS DistNo,riskDistId AS RiskDistNo,status AS Status,lineCd AS Line,policyNo AS PolicyNo,cedingName AS CedingCompany,insuredDesc AS Insured,riskName AS Risk,currencyCd AS Currency,totalSi AS SumInsured,datetime(distDate) AS DistributionDate,datetime(acctDate) AS AccountingDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+     alasql('SELECT distId AS DistNo,riskDistId AS RiskDistNo,status AS Status,lineCd AS Line,policyNo AS PolicyNo,cedingName AS CedingCompany,insuredDesc AS Insured,riskName AS Risk,currencyCd AS Currency,totalSi AS SumInsured,datetime(distDate) AS DistributionDate,datetime(acctDate) AS BookingDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
    }
 
 }
