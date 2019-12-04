@@ -207,7 +207,12 @@ export class CancelArCvJvComponent implements OnInit {
 				this.getAcitList();
 			}else{
 				this.mdlType = 1;
-				this.msg = 'Cancellation process failed. \n' + data['invalidTranNos'].filter(e => e!=null).join(',') + '    cannot be cancelled.';
+				this.msg = '';
+				this.msg = 'Cancellation process failed. Transactions below might already have accounting entry dates.\n' +
+				            data['invalidTranNos'].filter(e => e!=null).map((e,i) => {
+				            	i+=1;
+				            	return (i%4 == 0)?e+'\n':(data['invalidTranNos'].filter(e => e != null).length == i)?e:e + ',  ';
+				            }).join('');
 				this.mdl.openNoClose();
 			}
 		});
@@ -222,5 +227,4 @@ export class CancelArCvJvComponent implements OnInit {
 		var str = bool?'block':'none';
 	    $('.globalLoading').css('display',str);
 	}
-
 }
