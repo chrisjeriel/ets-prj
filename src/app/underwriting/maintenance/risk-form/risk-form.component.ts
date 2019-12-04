@@ -9,6 +9,7 @@ import { User } from '@app/_models';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { NgForm } from '@angular/forms';
 
 @Component({
     selector: 'app-risk-form',
@@ -23,7 +24,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
     @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
-    @ViewChild('myForm') form: any;
+    @ViewChild('myForm') form: NgForm;
 
     private sub: any;
     info: string;
@@ -135,6 +136,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setDistrict(data){
         this.riskData.districtCd = data.districtCd;
         this.riskData.districtDesc = data.districtDesc;
+        this.form.control.markAsDirty();
     }
 
     showBlockModal() {
@@ -144,25 +146,30 @@ export class RiskFormComponent implements OnInit, OnDestroy {
     setCity(data){
         this.riskData.cityCd = data.cityCd;
         this.riskData.cityDesc = data.cityDesc;
+        this.form.control.markAsDirty();
     }
     setBlock(data){
         this.riskData.blockCd = data.blockCd;
         this.riskData.blockDesc = data.blockDesc;
+        this.form.control.markAsDirty();
     }
 
     setCrestaZone(data){
         this.riskData.zoneCd = data.zoneCd;
         this.riskData.zoneDesc = data.zoneDesc;
+        this.form.control.markAsDirty();
     }
 
     setRegion(data){
         this.riskData.regionCd = data.regionCd;
         this.riskData.regionDesc = data.regionDesc;
+        this.form.control.markAsDirty();
     }
 
     setProvince(data){
         this.riskData.provinceCd = data.provinceCd;
         this.riskData.provinceDesc = data.provinceDesc;
+        this.form.control.markAsDirty();
     }
 
     openGenericLOV(selector){
@@ -323,6 +330,7 @@ export class RiskFormComponent implements OnInit, OnDestroy {
         }
 
         this.ns.lovLoader(data.ev, 0);
+        this.form.control.markAsDirty();
     }
 
     onClickCancel(){

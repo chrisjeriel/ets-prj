@@ -72,7 +72,7 @@ export class MtnSectionCoversComponent implements OnInit {
       this.maintenanceService.getMtnSectionCovers(this.lineCd,this.coverCd).subscribe((data: any) =>{
         /*console.log(data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(parseInt(a.coverCd))==-1}));
         console.log(this.hideSectionCoverArray)*/
-        this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1})
+        this.sectionCover.tableData = data.sectionCovers.filter((a)=>{return this.hideSectionCoverArray.indexOf(a.coverCd)==-1 && a.activeTag == 'Y'})
          this.table.refreshTable();
       });
     } else {
