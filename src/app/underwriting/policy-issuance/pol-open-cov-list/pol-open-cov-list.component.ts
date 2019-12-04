@@ -13,7 +13,7 @@ export class PolOpenCovListComponent implements OnInit {
 	selected:any;
 	passData: any = {
 	  tHeader: [
-	      "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+	      "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status"
 	  ],
 	  dataTypes: [
 	           "text", "text", "text", "text", "text", "text",
@@ -111,7 +111,7 @@ export class PolOpenCovListComponent implements OnInit {
 	                  from: 'acctDateFrom',
 	                  to: 'acctDateTo'
 	              },
-	              title: 'Accounting Date',
+	              title: 'Booking Date',
 	              dataType: 'datespan'
 	          },
 	          {
@@ -194,7 +194,7 @@ export class PolOpenCovListComponent implements OnInit {
                 (parts[1] ? "." + parts[1] : "");
             return num
       };
-      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS MaxSi , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+      alasql('SELECT openPolicyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS MaxSi , datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS BookingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { NotesService } from '@app/_services/notes.service';
 import { NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,7 +15,7 @@ import * as alasql from 'alasql';
     styleUrls: ['./risk-list.component.css']
 })
 export class RiskListComponent implements OnInit {
-    @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+    @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     @ViewChild(NgbTabset) tabset: NgbTabset;
     maintenanceRiskListData: any = {
         tableData: [],
@@ -30,6 +30,7 @@ export class RiskListComponent implements OnInit {
         pagination: true,
         pageLength: 15,
         keys: ['riskId','riskName','riskAbbr','activeTag','regionDesc','provinceDesc','cityDesc','districtDesc','blockDesc','latitude','longitude'],
+        sortKeys :['RISK_ID','RISK_NAME','RISK_ABBR','ACTIVE_TAG','REGION_DESC','PROVINCE_DESC','CITY_DESC','DISTRICT_DESC','BLOCK_DESC','LATITUDE','LONGITUDE'],
         filters: [
             {
                 key: 'riskId',
@@ -84,7 +85,12 @@ export class RiskListComponent implements OnInit {
         ]
     }
     selected:any;
-    searchParams: any[] = [];
+    // searchParams: any[] = [];
+    searchParams: any = {
+        'paginationRequest.count':15,
+        'paginationRequest.position':1,        
+    };
+
     
     constructor(private titleService: Title, private underwritingService: UnderwritingService, 
                 private maintenanceService: MaintenanceService, private router: Router, private ns: NotesService) { }
@@ -96,13 +102,13 @@ export class RiskListComponent implements OnInit {
     }
 
     retrieveRiskListingMethod(){
-        this.maintenanceService.getMtnRiskListing(this.searchParams).subscribe(data => {
+        this.maintenanceService.getNewMtnRiskListing(this.searchParams).subscribe(data => {
             var records = data['risk'];
-            this.maintenanceRiskListData.tableData = records
-            this.table.refreshTable();
+            //this.maintenanceRiskListData.tableData = records
+            this.maintenanceRiskListData.count = data['count'];
+            this.table.placeData(records);
         },
         (error)=>{
-            this.table.refreshTable();
             this.table.loadingTableFlag = false;
         });
     }
@@ -126,8 +132,9 @@ export class RiskListComponent implements OnInit {
 
     //Method for DB query
     searchQuery(searchParams){
-        this.searchParams = searchParams;
-        this.maintenanceRiskListData.tableData = [];
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }        
         this.retrieveRiskListingMethod();
     }
 
@@ -160,19 +167,25 @@ export class RiskListComponent implements OnInit {
             return num
       };
 
-    var importData: any[] = [];
-    for(var i of this.maintenanceRiskListData.tableData){
-        i.latitude = i.latitude === null ? '' : i.latitude;
-        i.longitude = i.longitude === null ? '' : i.longitude;
-        i.remarks = i.remarks === null ? '' : i.remarks;
-        i.districtDesc = i.districtDesc === null ? '' : i.districtDesc;
-        i.blockDesc = i.blockDesc === null ? '' : i.blockDesc;
-        importData.push(i);
-    }
+      let params = JSON.parse(JSON.stringify(this.searchParams));
+      delete params['paginationRequest.count'];
+      delete params['paginationRequest.position'];
+      this.maintenanceService.getNewMtnRiskListing(params).subscribe(a=>{
+          var importData: any[] = [];
+          for(var i of a['risk']){
+              i.latitude = i.latitude === null ? '' : i.latitude;
+              i.longitude = i.longitude === null ? '' : i.longitude;
+              i.remarks = i.remarks === null ? '' : i.remarks;
+              i.districtDesc = i.districtDesc === null ? '' : i.districtDesc;
+              i.blockDesc = i.blockDesc === null ? '' : i.blockDesc;
+              importData.push(i);
+          }
 
-    alasql('SELECT riskId AS RiskNo, riskName AS RiskName, riskAbbr AS RiskAbbrev, activeTag AS ActiveTag, regionDesc AS Region, '+
-           'provinceDesc AS Province, cityDesc AS City, districtDesc AS District, blockDesc AS Block, latitude AS Latitude, longitude AS Longitude '+
-           'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,importData]);
+          alasql('SELECT riskId AS RiskNo, riskName AS RiskName, riskAbbr AS RiskAbbrev, activeTag AS ActiveTag, regionDesc AS Region, '+
+                 'provinceDesc AS Province, cityDesc AS City, districtDesc AS District, blockDesc AS Block, latitude AS Latitude, longitude AS Longitude '+
+                 'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,importData]);
+      })
+        
   }
 
   onTabChange($event: NgbTabChangeEvent) {
