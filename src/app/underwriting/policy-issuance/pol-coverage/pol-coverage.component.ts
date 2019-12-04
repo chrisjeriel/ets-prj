@@ -375,8 +375,8 @@ export class PolCoverageComponent implements OnInit {
     });
     
     if (!this.alteration) {
-      this.getPolCoverage();
-      setTimeout(() => {this.getAlopCd()});
+      this.getAlopCd();
+      setTimeout(() => {this.getPolCoverage()});
     } else {
       this.passData2.tableData = [
              {
@@ -518,14 +518,12 @@ export class PolCoverageComponent implements OnInit {
         }
 
       var alop = false;
-      console.log('aaaallloooppp');
-      console.log(alop);
-        this.passData.tableData.forEach(a=>{
-          if(a.covercd == this.alopCoverCd){
-            alop = true;
-          }
-        });
-        console.log(alop);
+      for (var i = 0; i < this.passData.tableData.length; ++i) {
+        if(this.passData.tableData[i].coverCd == this.alopCoverCd){
+          alop = true;
+        }
+      }
+      this.alopTab.emit(alop);
 
         if(data.policy.policyId != this.policyInfo.policyId){
           if(this.policyInfo.extensionTag == 'Y'){
@@ -745,7 +743,7 @@ export class PolCoverageComponent implements OnInit {
         }
         this.passData.tableData.forEach(a=>{
               a.others = a.coverCd == this.othersCoverCd;
-            })
+        });
         this.sectionTable.refreshTable();
 
         this.altCoverageData.prevtotalSi     = this.prevtotalSi;
@@ -909,17 +907,16 @@ export class PolCoverageComponent implements OnInit {
             }
 
             var alop = false;
-            console.log('aaaallloooppp');
-            console.log(this.alopCoverCd);
-            this.passDataSectionCover.tableData.forEach(a=>{
-              a.others = a.coverCd == this.othersCoverCd;
-              if(a.covercd == this.alopCoverCd){
+            for (var i = 0; i < this.passDataSectionCover.tableData.length; ++i) {
+              if(this.passDataSectionCover.tableData[i].coverCd == this.alopCoverCd){
                 alop = true;
               }
-              console.log(a)
-            });
+            }
             this.alopTab.emit(alop);
-            console.log(alop);
+
+            this.passDataSectionCover.tableData.forEach(a=>{
+              a.others = a.coverCd == this.othersCoverCd;
+            });
 
               this.sectionTable.refreshTable();
               this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
