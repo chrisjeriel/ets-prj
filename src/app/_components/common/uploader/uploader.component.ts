@@ -37,7 +37,7 @@ export class UploaderComponent implements OnInit {
         console.log(file);
 
 
-        this.upload.uploadFileToDB(file, d, 'table_uploads', this.notes.getCurrentUser(), 'jv_acct_entry')
+        this.upload.uploadFileToDB(file, d, 'acct_entries', 'ACIT', 'CV', '3', this.notes.getCurrentUser())
           .subscribe(
             event => {
               if (event.type == HttpEventType.UploadProgress) {

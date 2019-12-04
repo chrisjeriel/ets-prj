@@ -137,6 +137,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   disableTaxBtn: boolean = true;
 	quarterEndingIndex: number = 0;
 	cancelFlag: boolean = false;
+  loading: boolean = false;
   genTaxIndex: number;
   whTaxIndex: number;
 	dialogMessage: string = '';
@@ -348,10 +349,74 @@ export class OrServiceFeeLocalComponent implements OnInit {
   }
 
   setSelectedData(data){
-  	console.log(this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy'));
+    this.loading = true;
+    console.log(data);
+    let qtrMonth: string = data.substr(5,5).split('-').join('');
+    let qtrYear: number = parseInt(data.substr(0,4));
+
+    switch(qtrMonth){
+      case '0331':
+        qtrMonth = '1'; //1st quarter
+        break;
+      case '0630':
+        qtrMonth = '2'; //2nd quarter
+        break;
+      case '0930':
+        qtrMonth = '3'; //3rd quarter
+        break;
+      case '1231':
+        qtrMonth = '4'; //4th quarter
+        break;
+    }
+
+    this.as.getAcctPrqServFee(null,'normal',null,qtrMonth, qtrYear).subscribe(
+      (servFeeData:any)=>{
+        servFeeData.subDistList = servFeeData.subDistList.filter(a=>{return a.cedingId == this.record.payeeNo});
+        if(servFeeData.subDistList.length !== 0){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'The selected quarter already has an OR.';
+          this.successDiag.open();
+          this.loading = false;
+          /*this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.subDistList[0].servFeeTotals.mreInvoiceId}]).subscribe((invoiceData:any)=>{
+            if(invoiceData.batchInvoiceList.length !== 0 && invoiceData.batchInvoiceList[0].refNoTranId !== null){ //if selected quarter ending already has an OR
+              this.dialogIcon = 'info';
+              this.dialogMessage = 'The selected quarter already has an OR.';
+              this.successDiag.open();
+            }else{
+              this.passData.tableData[this.quarterEndingIndex].invoiceId = servFeeData.subDistList[0].servFeeTotals.mreInvoiceId;
+              this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
+              this.passData.tableData[this.quarterEndingIndex].showMG = 0;
+              this.passData.tableData[this.quarterEndingIndex].servFeeAmt = servFeeData.subDistList[0].servFeeTotals.mreSfeeAmt / this.record.currRate;
+              this.passData.tableData[this.quarterEndingIndex].localAmt = servFeeData.subDistList[0].servFeeTotals.mreSfeeAmt;
+              this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
+              this.lovMdl.modal.closeModal();
+              for(var i of this.passData.tableData){
+                i.localAmt = i.servFeeAmt * i.currRate;
+                for(var j of i.taxAllocation){
+                  if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
+                    i.taxAmt = 0;
+                  }else if(j.taxRate !== null && j.taxRate !== 0){
+                    j.taxAmt = i.localAmt * (j.taxRate / 100);
+                  }
+                  j.edited = true;
+                }
+              }
+            }
+            this.loading = false;
+          });*/
+        }else{
+          this.loading = false;
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'The amount for this specific Quarter is not yet generated.';
+          this.successDiag.open();
+        }
+      }
+    );
+
+  	/*console.log(this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy'));
     this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
     this.passData.tableData[this.quarterEndingIndex].showMG = 0;
-    this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
+    this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});*/
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 

@@ -183,6 +183,7 @@ export class AcseTranTypeComponent implements OnInit {
     pageID: 'genTax',
     addFlag: true,
     deleteFlag: true,
+    searchFlag: true,
     total: [null, null, 'Total', 'fixedAmount'],
     pageLength:5,
     widths: [100,200,150,150],

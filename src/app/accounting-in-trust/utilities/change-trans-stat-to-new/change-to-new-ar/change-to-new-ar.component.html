@@ -1,22 +1,22 @@
 <fieldset class="scheduler-border">
 	<legend class="scheduler-border">List of Records</legend>
 
-	<div *ngIf="tranFlag === 'AR'" class="form-row custom-row-inline-inset" style="margin-top: 15px ! important;">
+	<div *ngIf="tranFlag === 'AR'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-editable-non-datatable #ARTable (newClick)="onRowClick($event)" [passData]="passDataAR" (genericBtn)="onChange('AR')"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable #ARTable (rowClick)="onRowClick($event)" [passData]="passDataAR" (gnrc1)="onChange('AR')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchARQuery($event)" (export)="exportAR()"></app-cust-non-datatable>
 		</div>
 	</div>
 
-	<div *ngIf="tranFlag === 'JV'" class="form-row custom-row-inline-inset" style="margin-top: 15px ! important;">
+	<div *ngIf="tranFlag === 'JV'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-editable-non-datatable #JVTable (newClick)="onRowClick($event)" [passData]="passDataJV" (genericBtn)="onChange('JV')"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable #JVTable (rowClick)="onRowClick($event)" [passData]="passDataJV" (gnrc1)="onChange('JV')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchJVQuery($event)" (export)="exportJV()" ></app-cust-non-datatable>
 		</div>
 	</div>
 
 
-	<div *ngIf="tranFlag === 'CV'" class="form-row custom-row-inline-inset" style="margin-top: 15px ! important;">
+	<div *ngIf="tranFlag === 'CV'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-editable-non-datatable #CVTable (newClick)="onRowClick($event)" [passData]="passDataCV" (genericBtn)="onChange('CV')"></app-cust-editable-non-datatable>
+			<app-cust-non-datatable #CVTable (rowClick)="onRowClick($event)" [passData]="passDataCV" (gnrc1)="onChange('CV')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchCVQuery($event)" (export)="exportCV()" ></app-cust-non-datatable>
 		</div>
 	</div>
 
@@ -24,13 +24,13 @@
 
 	<div class="input-group" style="margin-left: -20px;">
 		<label class="form-control-sm col-sm-1">Created By</label>
-		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record.createUser">
+		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record.createUser" [disabled]="true">
 		<label class="form-control-sm col-sm-1">Date Created</label>
 		<div class="col-sm" style="padding: 0px">
 			<datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record.createDate"></datepicker>
 		</div>
 		<label class="form-control-sm col-sm-1">Last Updated By</label>
-		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record.updateUser">
+		<input type="text" class="form-control form-control-sm col-sm" [ngModel]="record.updateUser" [disabled]="true">
 		<label class="form-control-sm col-sm-1">Last Update</label>
 		<div class="col-sm" style="padding: 0px">
 			<datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record.updateDate"></datepicker>

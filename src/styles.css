@@ -807,3 +807,14 @@ body span.ui-state-default.ui-state-disabled {
 .modal-content-maxh-800 {
     max-height: 800px !important;
 }
+
+a.carousel-control-next {
+    display: none !important;
+}
+a.carousel-control-prev {
+    display: none !important;
+}
+
+ol.carousel-indicators {
+    display: none !important;
+}

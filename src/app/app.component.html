@@ -265,12 +265,16 @@
                                 <fa name="vcard"></fa>&nbsp;Claims
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
-                                    Processing</button>
-                                <br />
-                                <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
-                                    Claim Status</button>
+                                <ng-container *ngIf="accessibleModules.indexOf('CLM001') > -1">
+                                    <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
+                                        Processing</button>
                                     <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
+                                    <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
+                                        Claim Status</button>
+                                        <br />
+                                </ng-container>
                                 <!-- <button [routerLink]="['']" class="button btn btn-link">Claim
                                     Recovery</button>
                                 <br />  wag na po ibalik sabi ni sir elmon 08/23/2019-->
@@ -280,11 +284,15 @@
                                             Inquiry
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
-                                                Inquiry</button>
-                                            <br />
-                                            <button [routerLink]="['payment-request']" class="button btn btn-link">Claim Payment Request Inquiry</button>
-                                            <br />
+                                            <ng-container *ngIf="accessibleModules.indexOf('CLM008') > -1">
+                                                <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
+                                                    Inquiry</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('CLM010') > -1">
+                                                <button [routerLink]="['payment-request']" class="button btn btn-link">Claim Payment Request Inquiry</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -530,29 +538,12 @@
                                 <fa name="wrench"></fa>&nbsp;Maintenance
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <!--  -->
                                 <button [routerLink]="['/maintenance-qu-pol']" class="button btn btn-link">Quotation & Policy</button>
                                 <br/>
-                                <!-- <button [routerLink]="['/mtn-claims']" class="button btn btn-link">Claims</button> -->
                                 <button [routerLink]="['/maintenance-clm']" class="button btn btn-link">Claims</button>
                                 <br/>
                                 <button [routerLink]="['/maintenance-acct']" class="button btn btn-link">Accounting</button>
                                 <br/>
-                                <!-- <ngb-accordion #acc="ngbAccordion">
-                                    <ngb-panel>
-                                        <ng-template ngbPanelTitle>
-                                            Accounting In-Trust
-                                        </ng-template>
-                                        <ng-template ngbPanelContent>
-                                            <button [routerLink]="['chart-of-accounts']" class="button btn btn-link">Chart
-                                                of Accounts</button>
-                                            <br />
-                                            <button [routerLink]="['generate-number-series']" class="button btn btn-link">Generate Number
-                                                Series</button>
-                                        </ng-template>
-                                    </ngb-panel>
-                                </ngb-accordion> -->
-
                                 <button [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
                             </ng-template>
                         </ngb-panel>
@@ -565,19 +556,6 @@
                                 <br />
                                 <button [routerLink]="['modules-maintenance']" class="button btn btn-link">Modules Maintenance</button>
                                 <br />
-                                <!-- <ngb-accordion #acc="ngbAccordion">
-                                    <ngb-panel>
-                                        <ng-template ngbPanelTitle>
-                                            Users Maintenance
-                                        </ng-template>
-                                        <ng-template ngbPanelContent>
-                                            <button [routerLink]="['users']" class="button btn btn-link">Users</button>
-                                            <br />
-                                            <button [routerLink]="['user-group-maintenance']" class="button btn btn-link">User Groups Maintenance</button>
-                                            <br />
-                                        </ng-template>
-                                    </ngb-panel>
-                                </ngb-accordion> -->
                             </ng-template>
                         </ngb-panel>
                     </ngb-accordion>
@@ -707,8 +685,8 @@
         </div> -->
         <div layout="row" layout-wrap layout-align="center center">
             <div class="form-row" style="justify-content: center;">
-                <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 500px;">
-                    <div class="custom-row-inline-inset" style="text-align: center">
+                <fieldset class="scheduler-border" style="padding-bottom: 4px !important; width: 420px;">
+                    <div class="custom-row-inline-inset" style="text-align: center; padding-left: 0px; padding-right: 0px;">
                         <form>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">User Name</label>
@@ -724,18 +702,17 @@
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">Old Password</label>
-                                <input name="input3" type="password" [(ngModel)]="changePassObj.oldPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input3" type="password" [(ngModel)]="changePassObj.oldPassword" class="form-control form-control-sm">
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">New Password</label>
-                                <input name="input4" type="password" [(ngModel)]="changePassObj.newPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input4" type="password" [(ngModel)]="changePassObj.newPassword" class="form-control form-control-sm">
                             </div>
                             <div class="input-group" style="margin-bottom: -14px !important;">
                                 <label class="form-control-sm col-sm-3">Repeat Password</label>
-                                <input name="input5" type="password" [(ngModel)]="changePassObj.confirmPassword" class="form-control form-control-sm col-sm-4">
+                                <input name="input5" type="password" [(ngModel)]="changePassObj.confirmPassword" class="form-control form-control-sm">
                             </div>
                         </form>
-                        <button type="button" class="cust-btn" (click)="onClickConfirmation()">Change Password</button>
                     </div>
                 </fieldset>
 
@@ -746,7 +723,8 @@
     </div>
     <div class="modal-footer" style="justify-content: center; margin-top: -5px">
         <div class="row" style="margin-top: -5px">
-            <button type="button" class="cust-btn" style="margin-bottom: -5px" (click)="modal.close('Close click');"><a>Close</a></button>
+            <button type="button" class="cust-btn" (click)="modal.close('Close click');"><a>Close</a></button>
+            <button type="button" class="cust-btn" (click)="onClickConfirmation()">Change Password</button>
         </div>
     </div>
 </ng-template>
