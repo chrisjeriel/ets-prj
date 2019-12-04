@@ -103,7 +103,6 @@ export class UsersComponent implements OnInit {
     pageID: 2,
     addFlag: true,
     deleteFlag: true,
-    btnDisabled: true,
     disableAdd: true,
     pageLength:5,
     searchFlag: true,
@@ -210,6 +209,7 @@ export class UsersComponent implements OnInit {
 
   onRowClickTrans(data, accessLevel) {
     // transData
+    console.log(data)
     if(data != null){
       this.transData = data;
       this.PassDataModuleTrans.disableGeneric = data == null ? true : false;
@@ -220,8 +220,12 @@ export class UsersComponent implements OnInit {
       this.PassDataModule.btnDisabled = false;
     }else{
       this.transData = {};
+      this.PassDataModule.tableData = [];
+      this.PassDataModuleUserGroup.tableData = [];
       this.PassDataModule.disableAdd = true;
       this.PassDataModule.btnDisabled = true;
+      this.userModules.refreshTable();
+      this.userGroupModules.refreshTable();
     }
   }
 
@@ -241,7 +245,7 @@ export class UsersComponent implements OnInit {
       this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModule.tableData.push(data.modules[i]);
-          this.PassDataModule.tableData[i].showMG = 1;
+          this.PassDataModule.tableData[i].showMG = 0;
           this.PassDataModule.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
 
@@ -253,7 +257,7 @@ export class UsersComponent implements OnInit {
       this.securityService.getModules(accessLevel, null, this.userData.userGrp, this.transData.tranCd, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModuleUserGroup.tableData.push(data.modules[i]);
-          this.PassDataModuleUserGroup.tableData[i].showMG = 1;
+          this.PassDataModuleUserGroup.tableData[i].showMG = 0;
           this.PassDataModuleUserGroup.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
 
@@ -290,6 +294,7 @@ export class UsersComponent implements OnInit {
           }
 
           this.userTransactions.refreshTable();
+          this.userTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[0]);
         });
       } else if (accessLevel == 'USER_GROUP') {
         this.userGroupTransactions.overlayLoader = true;
@@ -302,6 +307,7 @@ export class UsersComponent implements OnInit {
           }
 
           this.userGroupTransactions.refreshTable();
+          this.userGroupTransactions.onRowClick(null,this.PassDataModuleTransUserGroup.tableData[0]);
         });
       }
 
@@ -382,7 +388,7 @@ export class UsersComponent implements OnInit {
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].tranCd = this.transData.tranCd;
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleId = data.data[i].moduleId;
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleDesc = data.data[i].moduleDesc;
-        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].showMG = 1;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].showMG = 0;
       }
       $('#cust-table-container').addClass('ng-dirty');
       this.userModules.refreshTable();
@@ -435,24 +441,21 @@ export class UsersComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(tran);
               saveUserTransactions.transactionList.push(tran);
             }
 
-
-            console.log("saveUserTransactions");
-            console.log(saveUserTransactions);
-
             this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
-                console.log("saveTransactions return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
                 } else{
-                  this.dialogIcon = "";
-                  this.successDialog.open();
-                  this.getTransactions('USER');
+                  if(this.saveModuleList.length > 0){
+                    this.getTransactions('USER');
+                  }else{
+                    this.dialogIcon = "";
+                    this.successDialog.open();
+                    this.getTransactions('USER');
+                  }
                 }
             },
             (err) => {
@@ -475,17 +478,10 @@ export class UsersComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(mod);
               saveUserModules.moduleList.push(mod);
             }
 
-
-            console.log("saveUserModules");
-            console.log(saveUserModules);
-
             this.securityService.saveModules(saveUserModules).subscribe((data:any)=>{
-                console.log("saveModules return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
