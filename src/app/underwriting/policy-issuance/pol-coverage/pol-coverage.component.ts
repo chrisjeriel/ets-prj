@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,  ViewChild} from '@angular/core';
+import { Component, OnInit, Input,  ViewChild, EventEmitter, Output} from '@angular/core';
 import { UnderwritingService, NotesService, MaintenanceService } from '@app/_services';
 import { UnderwritingCoverageInfo, CoverageDeductibles } from '@app/_models';
 import { Title } from '@angular/platform-browser';
@@ -38,6 +38,7 @@ export class PolCoverageComponent implements OnInit {
   @ViewChild('secDetails') form : any;
   @ViewChild('catPerilMdl') catPerilMdl: ModalComponent;
   @ViewChild('catPerilMdlAlt') catPerilMdlAlt: ModalComponent;
+  @Output() alopTab = new EventEmitter<any>();
   private underwritingCoverageInfo: UnderwritingCoverageInfo;
   tableData: any[] = [];
   tableData2: any[] = [];
@@ -340,6 +341,7 @@ export class PolCoverageComponent implements OnInit {
   positiveFlag: number = 0;
   negativeFlag: number = 0;
   holdCoverPrem: boolean = false;
+  alopCoverCd: any = '';
 
   showCatPerilBtn:boolean = false;
 
@@ -371,10 +373,10 @@ export class PolCoverageComponent implements OnInit {
             // })
 
     });
-
-
+    
     if (!this.alteration) {
       this.getPolCoverage();
+      setTimeout(() => {this.getAlopCd()});
     } else {
       this.passData2.tableData = [
              {
@@ -437,6 +439,7 @@ export class PolCoverageComponent implements OnInit {
           this.passData2.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Previous", span: 2 }, 
           { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
       }
+      this.getAlopCd();
       setTimeout(() => this.getPolCoverageAlt(),0);
     }
 
@@ -470,7 +473,6 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getPolCoverageAlt(){
-    console.log(this.policyInfo.extensionTag)
     this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
       console.log(data)
       this.passData.tableData  = [];  
@@ -514,7 +516,17 @@ export class PolCoverageComponent implements OnInit {
         for (var i = 0; i< dataTable.length;i++){
           this.passData.tableData.push(dataTable[i]);
         }
-        console.log(this.policyInfo.policyId)
+
+      var alop = false;
+      console.log('aaaallloooppp');
+      console.log(alop);
+        this.passData.tableData.forEach(a=>{
+          if(a.covercd == this.alopCoverCd){
+            alop = true;
+          }
+        });
+        console.log(alop);
+
         if(data.policy.policyId != this.policyInfo.policyId){
           if(this.policyInfo.extensionTag == 'Y'){
             this.passData.tableData.forEach(a=>{   
@@ -546,7 +558,7 @@ export class PolCoverageComponent implements OnInit {
             this.altCoverageData.extotalSi =  null;
           }
         }
-        for(var j=0;j<this.passData.tableData.length;j++){ 
+        for(var j=0;j<this.passData.tableData.length;j++){
 
           this.passData.tableData[j].cumSi       = isNaN(this.passData.tableData[j].sumInsured) ? this.passData.tableData[j].prevSumInsured:this.passData.tableData[j].prevSumInsured + this.passData.tableData[j].sumInsured
           this.passData.tableData[j].cumPremRt   = isNaN(this.passData.tableData[j].prevPremRt) ? this.passData.tableData[j].premRt:this.passData.tableData[j].premRt
@@ -816,8 +828,6 @@ export class PolCoverageComponent implements OnInit {
                 infoData[i].premAmt = infoData[i].cumPrem
               }
 
-              
-
               this.passDataSectionCover.tableData.push(infoData[i]);
               this.passDataSectionCover.tableData[i].cumPrem = this.passDataSectionCover.tableData[i].discountTag == 'Y' ? this.passDataSectionCover.tableData[i].cumPrem:this.passDataSectionCover.tableData[i].cumSi * (this.passDataSectionCover.tableData[i].premRt /100 )
 
@@ -897,11 +907,22 @@ export class PolCoverageComponent implements OnInit {
                 }
               }
             }
+
+            var alop = false;
+            console.log('aaaallloooppp');
+            console.log(this.alopCoverCd);
             this.passDataSectionCover.tableData.forEach(a=>{
               a.others = a.coverCd == this.othersCoverCd;
-            })
-            this.sectionTable.refreshTable();
-             this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
+              if(a.covercd == this.alopCoverCd){
+                alop = true;
+              }
+              console.log(a)
+            });
+            this.alopTab.emit(alop);
+            console.log(alop);
+
+              this.sectionTable.refreshTable();
+              this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
               this.passDataTotalPerSection.tableData[0].section = 'SECTION I'
               this.passDataTotalPerSection.tableData[0].sumInsured = this.sectionISi;
               this.passDataTotalPerSection.tableData[0].premium = this.sectionIPrem;
@@ -1387,6 +1408,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   onrowClick(data){
+    console.log(data);
     if(data == null){
       this.passDataDeductibles.disableAdd = true;
       this.passDataDeductibles.tableData = [];
@@ -2146,4 +2168,11 @@ export class PolCoverageComponent implements OnInit {
         this.deductibleData(data);
       }
     }
+
+  getAlopCd(){
+    var params = this.line+'_ALOP';
+    this.ms.getMtnParameters(null,params).subscribe((data:any)=>{
+        this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+    });
+  }
 }
