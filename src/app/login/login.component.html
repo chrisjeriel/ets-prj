@@ -202,7 +202,7 @@
         </div>
     </div>
 </div> -->
-<div class="login-main">
+<!-- <div class="login-main">
     <div class="login-panel">
         <div class="row" style="margin: 0px;">
             <div class="col-sm-7" style="padding: 10% 15%;">
@@ -239,8 +239,84 @@
             </div>
         </div>
     </div>
+</div> -->
+<style type="text/css">
+    #mydiv {
+        position:fixed;
+        top: 50%;
+        left: 50%;
+        width: 60em;
+        height: 30em;
+        margin-top: -15em;  /*set to a negative number 1/2 of your height*/
+        margin-left: -30em; /*set to a negative number 1/2 of your width*/
+        border: 1px solid #ccc;
+        background-color: #f3f3f3;
+    }
+
+    #leftPane {
+        float:left;
+        width:60%;
+        overflow:hidden;
+        border-right: 1px solid #8080803b;
+    }
+    
+    #rightPane {
+        float:left;
+        width:40%;
+        overflow:hidden;
+    }
+
+    .picsum-img-wrapper {
+      height: 478px !important;
+    }
+
+    img {
+      height: 478px !important;
+    }
+
+    
+</style>
+
+<div id="mydiv">
+    <div id="leftPane" style="padding: 10% 15%;">
+            <h3>Login</h3>
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" formControlName="username" maxlength="10" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                    <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+                        <div *ngIf="f.username.errors.required">Username is required</div>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-top: -15px;">
+                    <label for="password">Password</label>
+                    <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                    <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <div *ngIf="f.password.errors.required">Password is required</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button [disabled]="loading" style="font-size: 11px !important; margin-top: -12px; !important" class="btn btn-primary float-right">Login</button>
+                </div>
+            </form>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <p style="font-size: 11px;">&copy; Phil Machinery Management Services Corporation 2019.</p>
+    </div>
+    <div id="rightPane">
+        <ngb-carousel #carousel interval="2000" [pauseOnHover]="pauseOnHover">
+          <ng-template ngbSlide *ngFor="let img of images; index as i">
+            <!-- <div class="carousel-caption">
+              <h3>My slide {{i + 1}} title</h3>
+            </div> -->
+            <a target="_blank" rel="nofollow noopener noreferrer">
+              <div class="picsum-img-wrapper">
+                <img [src]="img" alt="My image {{i + 1}} description">
+              </div>
+            </a>
+          </ng-template>
+        </ngb-carousel>
+    </div>
 </div>
-
-
-
-
