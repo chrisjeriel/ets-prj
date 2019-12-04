@@ -863,7 +863,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.dialogMessage += this.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
       this.successDiag.open();
     }
-    if(this.orAmtEqualsOrDtlPayt()){
+    else if(this.orAmtEqualsOrDtlPayt()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'OR cannot be printed. Total Payments in OR Details must be equal to OR Amount';
       this.successDiag.open();
