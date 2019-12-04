@@ -562,7 +562,8 @@ export class UsersComponent implements OnInit {
     this.confirm.confirmModal();
   }
 
-  onClickSaveMain() {
+  onClickSaveMain(cancel?) {
+    this.cancelFlag = cancel !== undefined;
     try {
       console.log("Data to save:");
       this.prepareData();
@@ -732,5 +733,9 @@ export class UsersComponent implements OnInit {
   userGroupAccess(){
     this.getTransactions('USER_GROUP');
     $('#userGroupAccess #modalBtn').trigger('click');
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }
