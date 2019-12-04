@@ -3,20 +3,20 @@
 
 	<div *ngIf="tranFlag === 'AR'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-non-datatable #ARTable (newClick)="onRowClick($event)" [passData]="passDataAR" (gnrc1)="onChange('AR')" (newRowDblClick)="toViewRecord($event,tranflag);"></app-cust-non-datatable>
+			<app-cust-non-datatable #ARTable (rowClick)="onRowClick($event)" [passData]="passDataAR" (gnrc1)="onChange('AR')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchARQuery($event)" (export)="exportAR()"></app-cust-non-datatable>
 		</div>
 	</div>
 
 	<div *ngIf="tranFlag === 'JV'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-non-datatable #JVTable (newClick)="onRowClick($event)" [passData]="passDataJV" (gnrc1)="onChange('JV')" (newRowDblClick)="toViewRecord($event,tranflag);"></app-cust-non-datatable>
+			<app-cust-non-datatable #JVTable (rowClick)="onRowClick($event)" [passData]="passDataJV" (gnrc1)="onChange('JV')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchJVQuery($event)" (export)="exportJV()" ></app-cust-non-datatable>
 		</div>
 	</div>
 
 
 	<div *ngIf="tranFlag === 'CV'" class="form-row custom-row-inline-inset" style="margin-top: 0px ! important;">
 		<div class="col-sm-12">
-			<app-cust-non-datatable #CVTable (newClick)="onRowClick($event)" [passData]="passDataCV" (gnrc1)="onChange('CV')" (newRowDblClick)="toViewRecord($event,tranflag);"></app-cust-non-datatable>
+			<app-cust-non-datatable #CVTable (rowClick)="onRowClick($event)" [passData]="passDataCV" (gnrc1)="onChange('CV')" (newRowDblClick)="toViewRecord($event,tranflag);" (btnDisabled)="btnDisabled" (searchToDb)="searchCVQuery($event)" (export)="exportCV()" ></app-cust-non-datatable>
 		</div>
 	</div>
 

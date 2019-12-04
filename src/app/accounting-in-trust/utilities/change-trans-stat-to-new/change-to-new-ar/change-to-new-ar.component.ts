@@ -30,52 +30,58 @@ export class ChangeToNewArComponent implements OnInit {
   	uneditable:[true, true, true, true, true, true, true],
     keys: ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'],
   	widths:[1, 1, 1, 1, 1, 1, 1],
-    filters:[
-      {
+    filters: [
+        {
           key: 'arNo',
-          title:'A.R. No.',
+          title: 'A.R. No.',
           dataType: 'text'
-      },
-      {
+        },
+        {
           key: 'payor',
-          title:'Payor',
+          title: 'Payor',
           dataType: 'text'
-      },
-      {
-          key: 'arDate',
-          title:'AR Date',
+        },
+        {
+          keys: {
+            from: 'arDateFrom',
+            to: 'arDateTo'
+          },
+          title: 'AR Date',
           dataType: 'datespan'
-      },
-      {
+        },
+        {
           key: 'tranTypeName',
-          title:'Payment Type',
+          title: 'Payment Type',
           dataType: 'text'
-      },
-      {
+        },
+        /*{
           key: 'arStatDesc',
-          title:'Status',
+          title: 'Status',
           dataType: 'text'
-      },
-      {
+        },*/
+        {
           key: 'particulars',
-          title:'Particulars',
+          title: 'Particulars',
           dataType: 'text'
-      },
-      {
-          key: 'arAmt',
-          title:'Amount',
-          dataType: 'text'
-      },
+        },
+        {
+          keys: {
+            from: 'arAmtFrom',
+            to: 'arAmtTo'
+          },
+          title: 'Amount',
+          dataType: 'textspan'
+        }
     ],
+    btnDisabled: false,
+    genericBtn1: 'Change Status to New',
     checkFlag : true,
     pageLength: 10,
     pageStatus: true,
     pagination: true,
     pageID: 1,
-    searchFlag: true,
     paginateFlag: true,
-    genericBtn1:'Change Status to New',
-    exportFlag: true
+    exportFlag: true,
   }
 
   passDataJV: any = {
@@ -85,48 +91,48 @@ export class ChangeToNewArComponent implements OnInit {
     uneditable:[true, true, true, true, true, true, true, true],
     keys:['jvNo','jvDate','particulars','tranTypeName','refNo','preparedName','jvStatusName','jvAmt'],
     widths:[1, 1, 1, 1, 1, 1, 1, 1],
-      filters:[
-        {
-            key: 'jvNo',
-            title:'JV No.',
-            dataType: 'text'
-        },
-        {
-            key: 'jvDate',
-            title:'JV Date',
-            dataType: 'datespan'
-        },
-        {
-            key: 'particulars',
-            title:'Particulars',
-            dataType: 'text'
-        },
-        {
-            key: 'tranTypeName',
-            title:'JV Type',
-            dataType: 'text'
-        },
-        {
-            key: 'refNo',
-            title:'JV Ref. No',
-            dataType: 'text'
-        },
-        {
-            key: 'preparedName',
-            title:'Prepared By',
-            dataType: 'text'
-        },
-        {
-            key: 'jvStatusName',
-            title:'JV Status',
-            dataType: 'text'
-        },
-        {
-            key: 'jvAmt',
-            title:'Amount',
-            dataType: 'text'
-        },
-      ],
+    filters: [
+      {
+        key: 'jvNo',
+        title: 'J.V. No.',
+        dataType: 'text'
+      },
+      {
+        key: 'jvDate',
+        title: 'JV Date',
+        dataType: 'date'
+      },
+      {
+        key: 'particulars',
+        title: 'Particulars',
+        dataType: 'text'
+      },
+      {
+        key: 'jvType',
+        title: 'J.V Type',
+        dataType: 'text'
+      },
+      {
+        key: 'jvRefNo',
+        title: 'J.V Ref No',
+        dataType: 'text'
+      },
+      {
+        key: 'preparedBy',
+        title: 'Prepared By',
+        dataType: 'text'
+      },
+      /*{
+        key: 'jvStatus',
+        title: 'J.V Status',
+        dataType: 'text'
+      },*/
+      {
+        key: 'amount',
+        title: 'Amount',
+        dataType: 'text'
+      }
+    ],
       checkFlag : true,
       pageLength: 10,
       pageStatus: true,
@@ -136,7 +142,8 @@ export class ChangeToNewArComponent implements OnInit {
       infoFlag: true,
       paginateFlag: true,
       genericBtn1:'Change Status to New',
-      exportFlag: true
+      exportFlag: true,
+      addFlag: false
   }
 
   passDataCV: any = {
@@ -162,6 +169,11 @@ export class ChangeToNewArComponent implements OnInit {
           title: 'CV Date',
           dataType: 'date'
         },
+        /*{
+          key: 'cvStatusDesc',
+          title: 'Status',
+          dataType: 'text'
+        },*/
         {
           key: 'particulars',
           title: 'Particulars',
@@ -192,6 +204,7 @@ export class ChangeToNewArComponent implements OnInit {
     updateDate: ''
   }
 
+
   searchParams: any[] = [];
   selected: any;
   selectedData: any[] = [];
@@ -200,11 +213,24 @@ export class ChangeToNewArComponent implements OnInit {
   dialogIcon: string = '';
   dialogMessage: string = '';
 
+  btnDisabled: boolean = false;
+  tranStat: string = 'new';
+
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, public modalService: NgbModal) { }
 
   ngOnInit() {
+    this.as.arFilter = '';
+    this.as.jvFilter = '';
+    this.as.prqFilter = '';
+
+    if(this.as.cvFilter != '') {
+      this.tranStat = this.as.cvFilter;
+      console.log(this.tranStat);
+    }
+
     if (this.tranFlag === 'AR'){
        this.titleService.setTitle("Acct-IT | Change Transaction Status to New | Acknowledgement Receipt");
+       // this.passDataAR.btnDisabled = false;
        this.retrieveArList();
     } else if (this.tranFlag === 'JV'){
         this.titleService.setTitle("Acct-IT | Change Transaction Status to New | Journal Voucher");
@@ -227,6 +253,7 @@ export class ChangeToNewArComponent implements OnInit {
               }
           }
           this.ARTable.refreshTable();
+          this.passDataAR.btnDisabled = false;
         }
       },
       (error)=>{
@@ -262,7 +289,7 @@ export class ChangeToNewArComponent implements OnInit {
         i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
         i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);
 
-        if(i.mainTranStat != 'O') {
+        if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
           i.cvStatus = i.mainTranStat;
           i.cvStatusDesc = i.mainTranStatDesc;
         }
@@ -274,11 +301,11 @@ export class ChangeToNewArComponent implements OnInit {
                                                   String(a.cvStatus).toUpperCase() === 'P' 
                                             );
       this.CVTable.refreshTable();
+
     });
   }
 
    onRowClick(data){
-     console.log(data);
     if(data === null || (data !== null && Object.keys(data).length === 0)){
       this.record.createUser = '';
       this.record.createDate = '';
@@ -287,12 +314,21 @@ export class ChangeToNewArComponent implements OnInit {
       this.selected = {};
     }else{
       this.selected = data;
-      this.record.createUser = this.selected.createUser;
-      this.record.createDate = this.ns.toDateTimeString(this.selected.createDate);
-      this.record.updateUser = this.selected.updateUser;
-      this.record.updateDate = this.ns.toDateTimeString(this.selected.updateDate);
+      this.record.createUser = data[0].createUser;
+      this.record.createDate = this.ns.toDateTimeString(data[0].createDate);
+      this.record.updateUser = data[0].updateUser;
+      this.record.updateDate = this.ns.toDateTimeString(data[0].updateDate);
+      console.log(this.record);
     }
-    
+
+   if(this.tranFlag === 'AR'){
+     setTimeout(a=>{this.ARTable.btnDisabled = false,0});
+   }else if (this.tranFlag === 'CV'){
+     setTimeout(a=>{this.CVTable.btnDisabled = false,0});
+   }else if (this.tranFlag === 'JV'){
+     setTimeout(a=>{this.JVTable.btnDisabled = false,0});
+   };
+   
   }
 
   onChange(obj){
@@ -401,9 +437,128 @@ export class ChangeToNewArComponent implements OnInit {
         particulars: data.particulars,
         amount: data.arAmt
       }
-
       this.router.navigate(['/accounting-in-trust', { slctd: JSON.stringify(record), action: 'edit' }], { skipLocationChange: true });
-    }
+    }else if (this.tranFlag === 'CV'){
+       console.log(data);
+     let record = {
+        tranId: data.tranId,
+        arNo: data.arNo == null ? '' : data.arNo,
+        payor: data.payor,
+        arDate: data.arDate,
+        paymentType: data.tranTypeName,
+        status: data.arStatDesc,
+        particulars: data.particulars,
+        amount: data.arAmt
+      }
+      setTimeout(() => {
+        this.router.navigate(['/generate-cv', { tranId :data.tranId , from: 'cv-list' }], { skipLocationChange: true });
+      },100);}
+  }
+
+  searchCVQuery(searchParams){
+    this.searchParams = searchParams;
+    this.passDataCV.tableData = [];
+    console.log(this.searchParams);
+    this.retrieveCVlist();
+  }
+
+  searchARQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passDataAR.tableData = [];
+        this.retrieveArList();
+  }
+
+  searchJVQuery(searchParams){
+        this.searchParams = searchParams;
+        this.passDataAR.tableData = [];
+        this.retrieveJVlist();
+  }
+
+  exportCV(){
+     var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      var hr = String(today.getHours()).padStart(2,'0');
+      var min = String(today.getMinutes()).padStart(2,'0');
+      var sec = String(today.getSeconds()).padStart(2,'0');
+      var ms = today.getMilliseconds()
+      var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'CheckVoucherList_'+currDate+'.xlsx'
+    var mystyle = {
+      headers:true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+
+    alasql('SELECT cvGenNo AS [C.V. No], payee AS Payee, datetime(cvDate) AS [C.V. Date], cvStatusDesc AS Status, particulars AS Particulars, cvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataCV.tableData]);
+  }
+
+  exportAR(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'AckgtReceipt'+currDate+'.xlsx'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+      var tableData: any[] = [];
+      for(var i of this.passDataAR.tableData){
+        i.arNo = i.arNo == null ? '' : i.formattedArNo.split('-')[1];
+        tableData.push(i);
+      }
+      //alasql('SELECT paytReqNo AS PaytReqNo, payee AS Payee, tranTypeDesc AS PaymentType, reqStatusDesc AS Status, datetime(reqDate) AS RequestedDate, particulars AS Particulars, currCd AS Curr, reqAmt AS Amount, requestedBy AS RequestedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    alasql('SELECT arNo AS [A.R. No.], payor AS [Payor], datetime(arDate) AS [A.R. Date], tranTypeName AS [Payment Type], particulars AS [Particulars], currency(arAmt) AS [Amount] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,tableData]);
+  }
+
+  exportJV(){
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'JournalVoucherList_'+currDate+'.xlsx'
+
+    var mystyle = {
+      headers:true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJV.tableData]);
   }
 
 }
