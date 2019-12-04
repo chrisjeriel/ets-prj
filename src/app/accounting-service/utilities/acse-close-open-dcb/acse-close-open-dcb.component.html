@@ -157,5 +157,5 @@
 </app-modal>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo():null"></app-sucess-dialog>
-<app-confirm-save (onYes)="saveDcb()"></app-confirm-save>
-<app-cancel-button (onYes)="saveDcb('cancel')" [url]="''" ></app-cancel-button>
+<app-confirm-save (onYes)="null;"></app-confirm-save> <!-- saveDcb() does not exists -->
+<app-cancel-button (onYes)="null;" [url]="''" ></app-cancel-button> <!-- saveDcb('cancel') does not exists -->

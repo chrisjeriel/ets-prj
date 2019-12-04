@@ -242,7 +242,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.sub = this.actRoute.params.subscribe(params => {
       this.line = params['line'];
 
-      if(this.claimInfo.claimId != '' || this.claimInfo.claimNo != '') {
+      if((this.claimInfo.claimId != '' || this.claimInfo.claimNo != '')&& this.claimInfo.claimId != undefined) {
         this.claimId = Number(this.claimInfo.claimId);
         this.claimNo = this.claimInfo.claimNo;
 

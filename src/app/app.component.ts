@@ -1,4 +1,4 @@
-import { Component, Inject,  ViewChild,} from '@angular/core';
+import { Component, Inject,  ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
@@ -6,7 +6,9 @@ import { AuthenticationService, NotesService } from './_services';
 import { User } from './_models';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
-import { UserService } from './_services';
+import { UserService, SecurityService } from './_services';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -17,6 +19,10 @@ import { ChangeDetectorRef } from '@angular/core';
     templateUrl: 'app.component.html',
 })
 export class AppComponent  {
+
+    @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
+    @ViewChild(SucessDialogComponent)  successDialog: SucessDialogComponent;
+
     datetime: number;
     currentUser: User;
     public style: object = {};
@@ -45,6 +51,7 @@ export class AppComponent  {
      public modalService: NgbModal,
      private eRef: ElementRef,
      public ns: NotesService,
+     private securityService: SecurityService,
      @Inject(DOCUMENT) private document) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
         setInterval(() => {
@@ -65,7 +72,6 @@ export class AppComponent  {
     }
 
     open(content) {
-        console.log(content);
 
         this.content = content;
         this.modalService.dismissAll();
@@ -156,5 +162,93 @@ export class AppComponent  {
         window.localStorage.setItem("selectedTheme", this.theme);
     }
 
+    confirmationMessage: string;
+    onClickConfirmation(){
+        this.confirmationMessage = "Are you sure you want to change password for selected user?";
+        this.warningConfirmation.openNoClose();
+    }
+
+    changePassObj:any = {
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
+    };
+    dialogIcon:string;
+    dialogMessage:string;
+
+    confirmChangePassword() {
+
+    if (this.changePassObj.oldPassword == '' || this.changePassObj.newPassword == '' || this.changePassObj.confirmPassword == '') {
+      this.dialogIcon = "error";
+      this.successDialog.open();
+    } else {
+
+      this.securityService.secEncryption(this.changePassObj.oldPassword).subscribe((data:any)=>{
+
+
+          if (data.password != this.currentUser.password) {
+            this.dialogIcon = "error-message";
+            this.dialogMessage = 'Old password mismatched.';
+            this.successDialog.open();
+            return;
+          }
+
+          if (this.changePassObj.newPassword != this.changePassObj.confirmPassword) {
+            this.dialogIcon = "error-message";
+            this.dialogMessage = 'Confirm password mismatched.';
+            this.successDialog.open();
+            return;
+          }
+
+          let saveUsersList = 
+              {
+                  usersList:
+                      [{
+                          userId : this.currentUser.username,
+                          password :this.changePassObj.newPassword,
+                          updateUser: this.currentUser.username,
+                          decPass: data.password
+                      }]
+              }
+
+          ;
+
+          
+            this.userService.saveMtnUser(saveUsersList).subscribe((data:any)=>{
+                if (data["errorList"].length > 0) {
+                  this.dialogIcon = "error";
+                  this.dialogMessage = data["errorList"][0].errorMessage;
+                  this.successDialog.open();
+                } else {
+                  this.changePassObj.oldPassword = "";
+                  this.changePassObj.newPassword = "";
+                  this.changePassObj.confirmPassword = "";
+                  this.currentUser.password = data.password;
+                  this.modalService.dismissAll();
+
+                  this.dialogIcon = "success-message";
+                  this.dialogMessage = 'Password changed successfully!';
+                  this.successDialog.open();
+                }
+            },
+            (err) => {
+              console.log(err)
+              alert("Exception when calling services.");
+            });
+          
+      },
+      (err) => {
+          console.log(err);
+          alert("Exception when calling services.");
+      });
+
+    }
+
+  }
+
+
+  test(data){
+      console.log(data);
+  }
 }
 

@@ -58,7 +58,9 @@ export class AuthenticationService {
                     user.username = user.user.userId;
                     user.firstName = user.user.userName;
                     user.lastName = '';
+                    user.emailAddress = user.user.emailAddress;
                     user.token = "fake-jwt-token";
+                    user.password = user.user.password;
                     localStorage.setItem('currentUser', JSON.stringify(user));
 
                     this.currentUserSubject.next(user);
