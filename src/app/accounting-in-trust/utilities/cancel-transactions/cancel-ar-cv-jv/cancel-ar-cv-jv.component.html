@@ -2,7 +2,7 @@
 	<legend class="scheduler-border">Records for Cancellation</legend>
 	<div class="row">
 		<div class="col-sm-12" style="padding: 0">
-			<app-cust-non-datatable #cancelTranTbl [passData]="passDataCancelTrans" (rowClick)="onRowClick($event)" (tableDataChange)="passDataCancelTrans.tableData=$event;"></app-cust-non-datatable>
+			<app-cust-non-datatable #cancelTranTbl [passData]="passDataCancelTrans" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (tableDataChange)="passDataCancelTrans.tableData=$event;"></app-cust-non-datatable>
 		</div>
 	</div>
 	<div class="row" style="margin-bottom: 15px !important;">
