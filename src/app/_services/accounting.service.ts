@@ -3256,5 +3256,50 @@ export class AccountingService {
 
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBankDetails',{params});	
 	}
+
+/////////////////////////////////////////////////////////////////////
+	getAcseEditedAcctEntries(tranId){
+		const params = new HttpParams()
+			.set('tranId', tranId);
+		      	
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseEditedAcctEntries',{params});
+	}
+
+	editAcctEntServ(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/editAcctEntServ',params,header);
+    }
+
+	restoreAcctEntServ(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+        };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/restoreAcctEntServ',params,header);
+    }
+
+	getAcseAcctEntInq(tranClass?, tranDateFrom?, tranDateTo?){
+    	const params = new HttpParams()
+			.set('tranClass', (tranClass == null || tranClass == undefined ? '' : tranClass))
+			.set('tranDateFrom', (tranDateFrom == null || tranDateFrom == undefined ? '' : tranDateFrom))
+			.set('tranDateTo', (tranDateTo == null || tranDateTo == undefined ? '' : tranDateTo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcctEntInqServ',{params});	
+    }
+
+	getAcseAcctEntBackup(tranId?, histNo?){
+    	const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcctEntBackupServ',{params});	
+	}
 	
 }

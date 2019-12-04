@@ -1,3 +1,4 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div class="form-row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
@@ -43,7 +44,7 @@
   </div>
 </app-modal>
 
-<app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates"></app-quarter-ending-lov>
+<app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates" [overrideModal]="true"></app-quarter-ending-lov>
 <app-lov [passData]="passLov" (selectedData)="setSelectedDataTax($event)" #lov>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

@@ -883,8 +883,8 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       this.mtnService.getMtnSlType(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.slTypeCd - b.slTypeCd);
-      })
         this.table.refreshTable();
+      })
     }else if(this.passData.selector == 'sl'){
       this.passTable.tHeader = ['SL Name'];
       this.passTable.widths =['auto']
