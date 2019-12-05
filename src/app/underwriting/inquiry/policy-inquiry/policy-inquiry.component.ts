@@ -15,7 +15,7 @@ export class PolicyInquiryComponent implements OnInit {
   @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
-        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status"
     ],
     sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
     dataTypes: [
@@ -122,7 +122,7 @@ export class PolicyInquiryComponent implements OnInit {
                     from: 'acctDateFrom',
                     to: 'acctDateTo'
                 },
-                title: 'Accounting Date',
+                title: 'Booking Date',
                 dataType: 'datespan'
             },
             {
