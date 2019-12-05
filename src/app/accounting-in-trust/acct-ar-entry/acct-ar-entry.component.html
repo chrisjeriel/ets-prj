@@ -256,16 +256,30 @@ padding-right: 0px !important;">
 
 <app-modal class="d-none" #printModal>
 	<div header>Confirmation</div>
-	<div body>
+	<div body style="max-width: 400px">
 	  <div style="text-align: center">
 	  	<p style="margin: 0px" *ngIf="isPrinted">Was the printing of AR successful?</p>
-	  	<p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this AR with an AR No of <strong>{{arInfo.arNo !== null && arInfo.arNo.length !== 0 ? pad(arInfo.arNo, 'arNo') : generatedArNo}}</strong> ?</p>
+	  	<!-- <p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this AR with an AR No of <strong>{{arInfo.arNo !== null && arInfo.arNo.length !== 0 ? pad(arInfo.arNo, 'arNo') : generatedArNo}}</strong> ?</p>
 	  	<div class="input-group" style="margin-top: 12px">
 	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
 	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
 	  			<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
 	  			<option [value]="'2'">PRINTER</option>
 	  		</select>
+	  	</div> -->
+	  	<p style="margin: 0px" *ngIf="!isPrinted">Are you sure you want to print this receipt with below AR No.?</p>
+	  	<div class="custom-row-inline-inset">
+	  		<div class="input-group">
+	  			<label class="form-control-sm col-sm-4" style="margin: 0px !important">Current AR No.</label>
+	  			<input type="text" class="form-control form-control-sm cust-sm text-right col-sm-6" [ngModel]="this.generatedArNo" (change)="this.generatedArNo = pad($event.target.value, 'arNo')" (blur)="this.generatedArNo=pad(this.generatedArNo, 'arNo')">
+	  		</div>
+	  		<div class="input-group" style="margin-top: 12px">
+	  			<label class="form-control-sm col-sm-4" style="margin: 0px !important">Destination</label>
+	  			<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="printMethod">
+	  				<option *ngIf="screenPrint" [value]="'1'">SCREEN</option>
+	  				<option [value]="'2'">PRINTER</option>
+	  			</select>
+	  		</div>
 	  	</div>
 	  </div>
 	</div>
