@@ -1233,7 +1233,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'tranCd','tranDesc'];
       this.passTable.checkFlag = true;
       this.securityService.getMtnTransactions(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["transactions"];
+        this.passTable.tableData = a.transactions.filter((a)=>{return this.passData.hide.indexOf(a.tranCd)==-1});
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
@@ -1244,7 +1244,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'moduleId','moduleDesc'];
       this.passTable.checkFlag = true;
       this.securityService.getMtnModules(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["modules"];
+        this.passTable.tableData = a.modules.filter((a)=>{return this.passData.hide.indexOf(a.moduleId)==-1});;
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
