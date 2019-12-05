@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Title } from '@angular/platform-browser';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-cancel-transactions-service',
@@ -9,17 +10,24 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./cancel-transactions-service.component.css']
 })
 export class CancelTransactionsServiceComponent implements OnInit {
+  tranClass : string = '';
 
-  constructor( private router: Router, private titleService: Title) { }
+  constructor( private router: Router) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-Service | Cancel Transactions");
+    this.tranClass = 'or';
   }
 
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         this.router.navigateByUrl('');
-      } 
+      }else if($event.nextId == 'or') {
+        this.tranClass = 'or';
+      }else if($event.nextId == 'cv') {
+        this.tranClass = 'cv';
+      }else if($event.nextId == 'jv') {
+        this.tranClass = 'jv';
+      }
   
   }
 }

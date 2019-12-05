@@ -3256,5 +3256,14 @@ export class AccountingService {
 
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBankDetails',{params});	
 	}
+
+	updateAcseStat(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcseStat',JSON.stringify(params),header);
+	}
 	
 }
