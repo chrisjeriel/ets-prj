@@ -40,8 +40,8 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		tableData: [],
 		tHeader: ['Company', 'Currency', 'Quarter Ending','Status','Reference No.','Debit','Credit'],
 		dataTypes: ['text','text','date','text','text','currency','currency'],
-		keys: ['cedingName','currCd','quarterEnding','qsoaStatusDesc','refNoTranId','totalDebitAmt','totalCreditAmt'],
-		widths: ['auto','1','auto','auto','auto','auto','auto'],
+		keys: ['cedingName','currCd','quarterEnding','qsoaStatusDesc','refNo','totalDebitAmt','totalCreditAmt'],
+		widths: ['auto','1','auto','auto','300','auto','auto'],
 		infoFlag: true,
 		paginateFlag: true,
 		genericBtn: 'View Details',
@@ -72,11 +72,11 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 				title: 'Status',
 				dataType: 'text'
 			},
-			{
+			/*{
 				key: 'refNoTranId',
 				title: 'Ref. No.',
 				dataType: 'text'
-			},
+			},*/
 			{
 				key: 'totalDebitAmt',
 				title: 'Debit',
@@ -193,7 +193,6 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		this.qsoaListTbl.overlayLoader = true;
 		this.as.getQSOAList(param).subscribe(data => {
 			this.qsoaListTbl.overlayLoader = false;
-			console.log(data);
 			this.qsoaList.tableData = data['qsoaList'];
 			this.qsoaListTbl.refreshTable();
 		});

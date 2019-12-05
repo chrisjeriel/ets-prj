@@ -60,7 +60,8 @@ export class ProfitCommissionComponent implements OnInit {
   		infoFlag: true,
   	    genericBtn: 'View Details',
     	disableGeneric: true,
-    	searchFlag: true
+    	searchFlag: true,
+      pageID: 'profitCommMainTab'
 	}
 
 	passDataProfitComm:any = {
