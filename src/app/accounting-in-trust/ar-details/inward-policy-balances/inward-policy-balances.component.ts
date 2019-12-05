@@ -255,11 +255,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not be zero.';
       this.successDiag.open();
-    }else if(this.checkPaymentSigns().length !== 0){
+    }/*else if(this.checkPaymentSigns().length !== 0){
       this.dialogIcon = 'error-message';
       this.dialogMessage = this.checkPaymentSigns();
       this.successDiag.open();
-    }else{
+    }*/else{
       this.confirm.confirmModal();
     }
   }

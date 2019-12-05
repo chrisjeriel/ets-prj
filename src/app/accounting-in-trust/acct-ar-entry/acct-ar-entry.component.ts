@@ -10,6 +10,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -27,6 +28,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
+  @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   passData: any = {
         tableData: [],
@@ -111,6 +114,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   generatedArNo: string = '';
   printMethod: string = '2';
   approvalCd: string = '';
+
+  uploadLoading: boolean = false;
+  acctEntryFile: any;
+  fileName: string = '';
+  emitMessage: string = '';
+  canUpAcctEnt: boolean = true;
+  canReprint: boolean = true;
 
   arInfo: any = {
     tranId: '',
@@ -200,6 +210,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
     this.retrievePaymentType();
+    this.canUploadAcctEntry();
+    this.canReprintMethod();
     //this.retrieveCurrency();
     var tranId;
     var arNo;
@@ -1186,7 +1198,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   //UTILITIES STARTS HERE
 
   canPrintScreen(){
-    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+    this.ms.getMtnParameters('V', 'ALLOW_AR_PRINT_TO_SCREEN').subscribe(
         (data:any)=>{
           if(data.parameters.length !== 0){
             this.screenPrint = data.parameters[0].paramValueV == 'Y';
@@ -1194,6 +1206,31 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
         }
     );
+  }
+
+  canUploadAcctEntry(){
+    this.ms.getMtnParameters('V', 'ACITAR_ACCTENTRY_UPLOAD').subscribe(
+      (data:any)=>{
+        if(data.parameters.length !== 0){
+            this.canUpAcctEnt = data.parameters[0].paramValueV == 'Y';
+         }
+         else{
+           this.canUpAcctEnt = false;
+         }
+      });
+  }
+
+  canReprintMethod(){
+    this.ms.getMtnParameters('V', 'ALLOW_AR_REPRINTING').subscribe(
+      (data:any)=>{
+        if(data.parameters.length !== 0){
+            this.canReprint = data.parameters[0].paramValueV == 'Y';
+            console.log(this.canReprint);
+         }
+         else{
+           this.canReprint = false;
+         }
+      });
   }
 
   changeTranType(data){
@@ -1388,4 +1425,85 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+
+upload(){
+    this.upAcctEntMdl.openNoClose();
+  }
+
+  //open file box
+  openFile(){
+    $('#upload').trigger('click');
+  }
+
+//validate file to be uploaded
+  validateFile(event){
+    console.log(event.target.files);
+    var validate = '';
+    validate = this.up.validateFiles(event);
+
+    if(validate.length !== 0 ){
+      this.acctEntryFile = undefined;
+      this.fileName = '';
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = validate;
+      this.successDiag.open();
+    }else{
+      this.acctEntryFile = event;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+//upload accounting entries
+uploadAcctEntries(){
+  var result = '';
+  this.emitMessage = '';
+   if(this.acctEntryFile == undefined){
+     this.dialogIcon = 'info';
+     this.dialogMessage = 'No file selected.';
+     this.successDiag.open();
+   }else{
+     this.uploadLoading = true;
+     this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACIT', 'AR', this.arInfo.tranId);
+     /*setTimeout(()=>{
+       if(this.emitMessage.length === 0){
+         this.dialogIcon = 'info';
+         this.dialogMessage = 'Upload successfully.';
+         this.fileName = '';
+         this.acctEntryFile = undefined;
+         this.successDiag.open();
+       }else{
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = this.emitMessage;
+         this.successDiag.open();
+       }
+
+       this.acctEntryMdl.closeModal(); 
+     }, 0);*/
+   }
+  }
+
+  uploaderActivity(event){
+    console.log(event);
+    if(event instanceof Object){ //If theres an error regarding the upload
+      this.dialogIcon = 'error-message';
+     this.dialogMessage = event.message;
+     this.successDiag.open();
+     this.uploadLoading = false;
+    }else{
+      if(event.toUpperCase() == 'UPLOAD DONE'){
+            this.uploadLoading = false;
+        }else if(event.toUpperCase() == 'SUCCESS'){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Upload successfully.';
+          this.fileName = '';
+          this.acctEntryFile = undefined;
+          this.successDiag.open();
+          this.uploadLoading = false;
+          this.upAcctEntMdl.closeModal();
+        }
+    }
+  }
+
+
 }

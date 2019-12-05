@@ -94,7 +94,52 @@
 		</form>
 	</div>
 
-	<div class="col-sm-2">
+	<div class="col-sm-2" *ngIf="canUpAcctEnt">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 14px !important; padding-bottom: 13px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center" style="margin-bottom: 8px !important;">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="confirmNewAr();">New AR</button>
+				</div>
+				<div class="col-sm-12 text-center" style="margin-bottom: 2px !important;">
+					<input type="text" placeholder="Non-VAT" class="form-control form-control-sm cust-sm col-sm text-center" readonly>
+				</div>				
+			</div>
+		</fieldset>
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 12px !important; padding-bottom: 12px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.acctEntDate !== null" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.acctEntDate !== null" (click)="openCancelModal()">Cancel AR</button>
+				</div>					
+			</div>
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted" [class.cust-btn-disabled]="isCancelled || isPrinted">Save</button>
+				</div>					
+			</div>
+		<!-- </fieldset>
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 11px !important; padding-bottom: 11px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend> -->
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" [class.cust-btn-disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" (click)="print();">Print AR</button>
+				</div>					
+			</div>
+			<div class="input-group" style="margin-bottom: 6px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW' || !canReprint" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW' || !canReprint" (click)="print();">Reprint AR</button>
+				</div>					
+			</div>
+			<div class="input-group" style="margin-bottom: 2px !important;">
+				<div class="col-sm-12 text-center">
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" [class.cust-btn-disabled]="isAdd || isCancelled || (arInfo.arStatDesc.toUpperCase() == 'PRINTED' || arInfo.arStatDesc.toUpperCase() == 'POSTED')" (click)="upload();">Upload Acct. Ent.</button>
+				</div>					
+			</div>
+		</fieldset>
+	</div>
+
+	<div class="col-sm-2" *ngIf="!canUpAcctEnt">
 		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 14px !important; padding-bottom: 13px !important;">
 			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 			<div class="input-group" style="margin-bottom: 6px !important;">
@@ -128,7 +173,7 @@
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW'" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW'" (click)="print();">Reprint AR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW' || !canReprint" [class.cust-btn-disabled]="isAdd || isCancelled || arInfo.arStatDesc.toUpperCase() == 'NEW' || !canReprint" (click)="print();">Reprint AR</button>
 				</div>					
 			</div>
 		</fieldset>
@@ -276,4 +321,25 @@ padding-right: 0px !important;">
   	</div>
 </app-modal>
 
+<app-modal class="d-none" id="uploadAcct" #AcctEntries>
+    <div header>Uploading Accounting Entries</div>  
+    <div body>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2 text-right labels">File</label>
+                <input type="text" class="form-control form-control-sm col-sm-8" readonly [ngModel]="fileName">
+                <button class="fa fa-folder-open btn-file" title="Open File" style="height: 21px !important;margin-left: 6px;" (click)="openFile()">
+                    <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="validateFile($event)" id="upload" class="file-hidden">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <span class="fa fa-spinner fa-spin" style="font-size: 15px;" *ngIf="uploadLoading"></span>
+        <button type="button" class="cust-btn" (click)="uploadAcctEntries();" [disabled]="uploadLoading" [class.cust-btn-disabled]="uploadLoading"><a>Upload</a></button>
+        <button type="button" class="cust-btn" (click)="upAcctEntMdl.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
 <app-override-login [approvalCd]="approvalCd" (isSuccess)="whichProcess($event)" #override></app-override-login>
+<app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>
