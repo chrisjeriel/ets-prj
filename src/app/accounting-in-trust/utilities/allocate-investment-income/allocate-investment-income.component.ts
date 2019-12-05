@@ -277,6 +277,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	                             {key: "tranYear", search: this.fromYear },
 	                             {key: "tranDate", search: this.asOfYear },
 	                             ]; 
+         console.log(this.searchParams);
 	       this.retrieveAllInvtIncome(this.searchParams);
  }
 
