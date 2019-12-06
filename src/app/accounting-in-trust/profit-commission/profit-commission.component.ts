@@ -84,6 +84,9 @@ export class ProfitCommissionComponent implements OnInit {
 	gnrtCedingId: string = '';
 	gnrtDate: string = '';
 	yearParam: number = 0;
+  summaryArr: any[] = [];
+  lessIndex: any[] = [];
+  indx: number = null;
 
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
 
@@ -213,6 +216,9 @@ export class ProfitCommissionComponent implements OnInit {
   		this.as.getProfitCommDtl(this.selectedData.profCommId).subscribe(data => {
   			var records = data['acitProfCommDtl'];
   			this.passDataProfitComm.tableData = records;
+        this.summaryArr = data['acitProfCommSumm'];
+        this.lessIndex = data['acitProfCommSumm'].map((a, i) => a.year == 1 && i !== 0 ? a.carryAmt : 0);
+        this.indx = this.lessIndex.findIndex(a => a < 0);
 
   			if(data['acitProfCommDtl'].length > 0) {
   				this.yearParam = this.selectedData.year;
