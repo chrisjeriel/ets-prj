@@ -121,6 +121,7 @@ export class AcctOrEntryComponent implements OnInit {
   emitMessage: string = '';
   canUpAcctEnt: boolean = true;
   canReprint: boolean = true;
+  printLoading: boolean = false;
 
   orInfo: any = {
     tranId: '',
@@ -806,36 +807,41 @@ export class AcctOrEntryComponent implements OnInit {
         }
         else{
           this.isAdd = false;
-          this.retrieveOrEntry(data.outTranId, '');
           this.paytDtlTbl.refreshTable();
-          this.dialogIcon = 'success';
-          this.successDiag.open();
+          if(isPrint == undefined){
+            this.retrieveOrEntry(data.outTranId, '');
+            this.dialogIcon = 'success';
+            this.successDiag.open();
+          }
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
           if(isPrint !== undefined){
             this.reprintMethod();
-            let params: any = {
-              tranId: this.orInfo.tranId,
-              orNo: this.orInfo.orNo,
-              updateUser: this.ns.getCurrentUser(),
-              updateDate: this.ns.toDateTimeString(0)
-            }
-            setTimeout(()=>{
-               this.as.printOr(params).subscribe(
-                 (data:any)=>{
-                   if(data.returnCode == 0){
-                     this.dialogIcon = 'error-message';
-                     this.dialogIcon = 'An error has occured when updating OR status';
-                   }else{
-                     this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
-                   }
-                 }
-               );
-            },1000);
           }
         }
         this.loading = false;
+      }
+    );
+  }
+
+  printStatus(){
+    let params: any = {
+      tranId: this.orInfo.tranId,
+      orNo: this.orInfo.orNo,
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+    this.as.printOr(params).subscribe(
+      (data:any)=>{
+        if(data.returnCode == 0){
+          this.dialogIcon = 'error-message';
+          this.dialogIcon = 'An error has occured when updating OR status';
+        }else{
+          this.retrieveOrEntry(this.orInfo.tranId, this.orInfo.orNo);
+          this.printMdl.closeModal();
+        }
+        this.printLoading = false;
       }
     );
   }
@@ -920,12 +926,18 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  reprintMethod(){
+  reprintMethod(isReprint?){
+    this.printLoading = true;
     if(this.printMethod == '1'){
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
       this.loading = false;
+      if(isReprint == undefined){
+        this.printStatus();
+      }else{
+        this.reprintMdl.closeModal();  
+      }
     }else if(this.printMethod == '2'){
       this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
         (data:any)=>{
@@ -937,6 +949,18 @@ export class AcctOrEntryComponent implements OnInit {
                        document.body.appendChild(iframe);
                        iframe.contentWindow.print();
                        this.loading = false;
+                       if(isReprint == undefined){
+                         this.printStatus();
+                       }else{
+                         this.reprintMdl.closeModal();  
+                       }
+        },
+        (error)=>{
+          console.log(error);
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'An error has occured. AR was not printed.';
+          this.successDiag.open();
+          this.printLoading = false;
         });
     }
   }
@@ -954,19 +978,25 @@ export class AcctOrEntryComponent implements OnInit {
 
   //ALL RETRIEVALS FROM MAINTENANCE IS HERE
   retrieveMtnAcseOrSeries(){
-    this.ms.getAcseOrSeries(this.orInfo.orType, '', '', 'N').subscribe(
-      (data:any)=>{
-        if(data.orSeries.length !== 0){
-          this.generatedOrNo = data.orSeries[0].orNo;
-          this.printMdl.openNoClose();
-        }else{
-          this.dialogIcon = 'info';
-          this.dialogMessage = 'No O.R. number is available for use.';
-          this.successDiag.open();
+    if(this.orInfo.orNo == null || (this.orInfo.orNo != null && this.orInfo.orNo.length == 0)){
+      this.ms.getAcseOrSeries(this.orInfo.orType, '', '', 'N').subscribe(
+        (data:any)=>{
+          if(data.orSeries.length !== 0){
+            this.generatedOrNo = data.orSeries[0].orNo;
+            this.printMdl.openNoClose();
+          }else{
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'No O.R. number is available for use.';
+            this.successDiag.open();
+          }
+          this.loading = false;
         }
-        this.loading = false;
-      }
-    );
+      );
+    }else{
+      this.generatedOrNo = this.orInfo.orNo;
+      this.printMdl.openNoClose();
+      this.loading = false;
+    }
   }
 
   retrievePaymentType(){

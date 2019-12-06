@@ -121,6 +121,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   emitMessage: string = '';
   canUpAcctEnt: boolean = true;
   canReprint: boolean = true;
+  printLoading: boolean = false;
 
   arInfo: any = {
     tranId: '',
@@ -790,41 +791,50 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         else{
           this.isAdd = false;
-          this.retrieveArEntry(data.outTranId, '');
           this.paytDtlTbl.refreshTable();
-          this.dialogIcon = 'success';
-          this.successDiag.open();
+          if(isPrint == undefined){
+
+            this.retrieveArEntry(data.outTranId, '');
+            this.dialogIcon = 'success';
+            this.successDiag.open();
+          }
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
           if(isPrint !== undefined){
             this.reprintMethod();
-            //Update Transactions to Closed and AR Status to Printed
-            let params: any = {
-              tranId: this.arInfo.tranId,
-              arNo: this.arInfo.arNo,
-              updateUser: this.ns.getCurrentUser(),
-              updateDate: this.ns.toDateTimeString(0)
-            }
-            setTimeout(()=>{
-              this.as.printAr(params).subscribe(
-                (data:any)=>{
-                  if(data.returnCode == 0){
-                    this.dialogIcon = 'error-message';
-                    this.dialogIcon = 'An error has occured when updating AR status';
-                  }else{
-                    console.log(data);
-                    console.log('printed');
-                    this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
-                  }
-                }
-              );
-            },1000);
+           
           }
         }
         this.loading = false;
       }
     );
+  }
+
+  printStatus(){
+    //Update Transactions to Closed and AR Status to Printed
+    let params: any = {
+      tranId: this.arInfo.tranId,
+      arNo: this.arInfo.arNo,
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+    setTimeout(()=>{
+      this.as.printAr(params).subscribe(
+        (data:any)=>{
+          if(data.returnCode == 0){
+            this.dialogIcon = 'error-message';
+            this.dialogIcon = 'An error has occured when updating AR status';
+          }else{
+            console.log(data);
+            console.log('printed');
+            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+            this.printMdl.closeModal();
+          }
+          this.printLoading = false;
+        }
+      );
+    },1000);
   }
 
   whichProcess(mainAuth){
@@ -898,11 +908,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
-  reprintMethod(){
+  reprintMethod(isReprint?){
+    this.printLoading = true;
     if(this.printMethod == '1'){
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
+      if(isReprint == undefined){
+        this.printStatus();
+      }else{
+        this.reprintMdl.closeModal();  
+      }
     }else if(this.printMethod == '2'){
       this.as.acitGenerateReport('ACITR_AR', this.arInfo.tranId).subscribe(
         (data:any)=>{
@@ -913,6 +929,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                        iframe.src = downloadURL;
                        document.body.appendChild(iframe);
                        iframe.contentWindow.print();
+                       console.log(this.reprintMdl)
+                       if(isReprint == undefined){
+                         this.printStatus();
+                       }else{
+                         this.reprintMdl.closeModal();  
+                       }
+        },
+        (error)=>{
+          console.log(error);
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'An error has occured. AR was not printed.';
+          this.successDiag.open();
+          this.printLoading = false;
         });
     }
   }
@@ -1095,19 +1124,25 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   retrieveMtnAcitArSeries(){
-    this.ms.getMtnAcitArSeries('N', 1).subscribe(
-      (data:any)=>{
-        if(data.arSeriesList.length !== 0){
-          this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
-          this.printMdl.openNoClose();
-        }else{
-          this.dialogIcon = 'info';
-          this.dialogMessage = 'No A.R. number is available for use.';
-          this.successDiag.open();
+    if(this.arInfo.arNo == null || (this.arInfo.arNo != null && this.arInfo.arNo.length == 0)){
+      this.ms.getMtnAcitArSeries('N', 1).subscribe(
+        (data:any)=>{
+          if(data.arSeriesList.length !== 0){
+            this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
+            this.printMdl.openNoClose();
+          }else{
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'No A.R. number is available for use.';
+            this.successDiag.open();
+          }
+          this.loading = false;
         }
-        this.loading = false;
-      }
-    );
+      );
+    }else{
+      this.generatedArNo = this.pad(this.arInfo.arNo, 'arNo');
+      this.printMdl.openNoClose();
+      this.loading = false;
+    }
   }
 
   //VALIDATION STARTS HERE
