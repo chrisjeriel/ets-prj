@@ -953,6 +953,7 @@ export class AcctOrEntryComponent implements OnInit {
                          this.printStatus();
                        }else{
                          this.reprintMdl.closeModal();  
+                         this.printLoading = false;
                        }
         },
         (error)=>{

@@ -934,6 +934,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                          this.printStatus();
                        }else{
                          this.reprintMdl.closeModal();  
+                          this.printLoading = false;
                        }
         },
         (error)=>{
