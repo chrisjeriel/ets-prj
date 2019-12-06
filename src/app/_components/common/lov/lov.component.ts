@@ -893,6 +893,7 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
+        (this.passData.from == undefined)?this.passData.from='':'';
         if(this.passData.from.toLowerCase() == 'prq-ins'){
           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
         }else{

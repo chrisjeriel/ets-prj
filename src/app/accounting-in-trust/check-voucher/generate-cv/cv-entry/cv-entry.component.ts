@@ -387,7 +387,7 @@ export class CvEntryComponent implements OnInit {
         this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
         this.warnMdl.openNoClose();
       }else if(data['returnCode'] == -100){
-        this.warnMsg = 'There is no Check No. available for this Account No.';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }
       
@@ -396,6 +396,9 @@ export class CvEntryComponent implements OnInit {
 
   showLov(fromUser){
     console.log(fromUser);
+    console.log(this.saveAcitCv.currCd);
+    console.log(this.saveAcitCv.bank);
+    
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       if(this.saveAcitCv.paytReqType == 'S'){
@@ -415,6 +418,7 @@ export class CvEntryComponent implements OnInit {
       this.passDataLov.selector = 'bankAcct';
       this.passDataLov.currCd = this.saveAcitCv.currCd;
       this.passDataLov.bankCd = this.saveAcitCv.bank;
+      this.passDataLov.from = 'acit';
       this.bankAcctLov.openLOV();
     }else if(fromUser.toLowerCase() == 'class'){
       this.passDataLov.selector = 'checkClass';
@@ -448,12 +452,17 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bank = data.data.bankCd;
       this.saveAcitCv.bankAcctDesc = '';
       this.saveAcitCv.bankAcct = '';
+      // var ba = this.bankAcctList;
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.saveAcitCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
         }
       }
@@ -461,7 +470,11 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
       var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+      if(chkNo.length == 0){
+        this.saveAcitCv.checkNo = '';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+        this.warnMdl.openNoClose();
+      }else{
         this.saveAcitCv.checkNo = chkNo[0].checkNo;
       }
     }else if(from.toLowerCase() == 'class'){
@@ -480,9 +493,13 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.saveAcitCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
