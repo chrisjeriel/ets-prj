@@ -23,7 +23,7 @@ export class CustNonDatatableComponent implements OnInit {
     @Input() tableOnly: boolean = false;
     @Input() filterDataTypes: any[] = [];
     
-    btnDisabled: boolean = true;
+    @Input() btnDisabled: boolean = true;
     unselect: boolean = false;
     expireCounter: number = 0;
     expireValue: any;

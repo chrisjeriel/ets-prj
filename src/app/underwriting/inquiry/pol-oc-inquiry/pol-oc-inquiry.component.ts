@@ -15,7 +15,7 @@ export class PolOcInquiryComponent implements OnInit {
 @ViewChild('listTable') listTable: CustNonDatatableComponent;
   passData: any = {
     tHeader: [
-        "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+        "Open Cover Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Max Si", "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status"
     ],
     dataTypes: [
              "text", "text", "text", "text", "text", "text",
@@ -113,7 +113,7 @@ export class PolOcInquiryComponent implements OnInit {
                       from: 'acctDateFrom',
                       to: 'acctDateTo'
                   },
-                  title: 'Accounting Date',
+                  title: 'Booking Date',
                   dataType: 'datespan'
               },
               {
@@ -240,7 +240,7 @@ export class PolOcInquiryComponent implements OnInit {
             return dArr.join(' ');
       };
       
-     alasql('SELECT openPolicyNo AS [Open Cover Policy No], cessionDesc AS [Type of Cession], cedingName AS [Ceding Company], insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, totalSi AS [Max SI], datetime(issueDate) AS [Issue Date], datetime(inceptDate) AS [Inception Date], datetime(expiryDate) AS [Expiry Date], datetime(acctDate) AS [Accounting Date], statusDesc AS Status ' +
+     alasql('SELECT openPolicyNo AS [Open Cover Policy No], cessionDesc AS [Type of Cession], cedingName AS [Ceding Company], insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, totalSi AS [Max SI], datetime(issueDate) AS [Issue Date], datetime(inceptDate) AS [Inception Date], datetime(expiryDate) AS [Expiry Date], datetime(acctDate) AS [Booking Date], statusDesc AS Status ' +
             'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 

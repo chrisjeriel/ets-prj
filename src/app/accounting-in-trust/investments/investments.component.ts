@@ -78,7 +78,7 @@ export class InvestmentsComponent implements OnInit {
           currRate : null,
           invtAmt  : null,
           incomeAmt: null,
-          bankCharge: null,
+          bankCharge: 0,
           whtaxAmt : null,
           matVal   : null,
           createUser: this.ns.getCurrentUser(),

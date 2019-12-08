@@ -45,7 +45,7 @@ export class ParListingComponent implements OnInit {
     constructor(private uwService: UnderwritingService, private titleService: Title, private router: Router, private ns: NotesService) { }
     passDataListing: any = {
         tHeader: [
-           "Policy No", "Type of Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Accounting Date","Status"
+           "Policy No", "Type of Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status"
         ],
         sortKeys : ['POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
         resizable: [
@@ -149,7 +149,7 @@ export class ParListingComponent implements OnInit {
                     from: 'acctDateFrom',
                     to: 'acctDateTo'
                 },
-                title: 'Accounting Date',
+                title: 'Booking Date',
                 dataType: 'datespan'
             },
             {
@@ -357,7 +357,7 @@ export class ParListingComponent implements OnInit {
               })
               
 
-              alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS AcctingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
+              alasql('SELECT policyNo AS PolicyNo, cessionDesc AS TypeCession, cedComp AS CedingCompany, insured AS Insured, risk AS Risk, object AS Object, site AS Site, currency AS Currency, currency(sumInsured) AS SumInsured ,currency(premium) AS Premium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(accDate) AS BookingDate, status AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
 
           }
         );

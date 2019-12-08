@@ -35,7 +35,7 @@
 									                <button type="button" class="cust" (click)="onClickClose()" [disabled]="params.status == 'C'" [class.cust-btn-disabled]="params.status == 'C'"><a>Close</a></button>
 									                <button type="button" class="cust" (click)="onClickTempClose()" [disabled]="params.status == 'T'" [class.cust-btn-disabled]="params.status == 'T'" ><a>Close Temporarily</a></button>
 									                <button type="button" class="cust" (click)="onClickReOpen()" [disabled]="params.status == 'O'" [class.cust-btn-disabled]="params.status == 'O'"><a>Re-Open</a></button>
-									                <button type="button" class="cust" (click)="onClickView()"><a>View Details</a></button>
+									                <button type="button" class="cust" (click)="onClickView()" [disabled]="viewFlag" [class.cust-btn-disabled]="viewFlag"><a>View Details</a></button>
 									                <button type="button" class="cust" (click)="getRecords()"><a>Print</a></button>
 									            </div>
 									        </div>

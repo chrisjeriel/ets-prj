@@ -740,23 +740,23 @@ export class ClmClaimHistoryComponent implements OnInit {
     this.passDataHistory.tableData.slice().sort((a,b)=>a.histNo-b.histNo).reverse().forEach((e,i) => {
         
         // end
-        if(e.histType == 4 || e.histType == 5){
+        if((e.histType == 4 || e.histType == 5 ) && e.histCategory == 'L' ){
           paymentstAmt += isNaN(e.reserveAmt) || e.reserveAmt == null ? 0 : e.reserveAmt;
           console.log(paymentstAmt);
-          if(this.passDataApprovedAmt.tableData.length == 0){
+          if(this.passDataApprovedAmt.tableData.length == 0 ){
             this.warnMsg = 'Please add Approved Amount before proceeding.';
             this.showWarnMsg();
             e.histType = '';
             e.histTypeDesc = ''; 
-          }else if(paymentstAmt> this.clmHistoryData.approvedAmt){
+          }else if(paymentstAmt> this.clmHistoryData.approvedAmt && e.histCategory == 'L'){
             this.warnMsg = 'Please add Approved Amount before proceeding.';
             this.showWarnMsg();
             e.reserveAmt = 0;
             return;
           }else{
-            if((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
+            if( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
                (e.histCategory == 'A' && (e.reserveAmt > totAdjExpRes)) || 
-               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes))){
+               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes)) )){
                 this.warnMsg = 'Payment amount is more than the reserve amount.';
                 this.showWarnMsg();
             }
