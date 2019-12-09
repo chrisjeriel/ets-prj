@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AccountingService, NotesService } from '@app/_services'; 
+import { AccountingService, NotesService, MaintenanceService } from '@app/_services'; 
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
 import { environment } from '@environments/environment';
+import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
 
 @Component({
   selector: 'app-jv-entry-service',
@@ -31,6 +32,8 @@ export class JvEntryServiceComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
+  @ViewChild(UploaderComponent) up: UploaderComponent;
+  @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
 
   entryData:any = {
     jvYear:'',
@@ -93,11 +96,17 @@ export class JvEntryServiceComponent implements OnInit {
   allocBut: boolean = false;
   dcBut: boolean = false;
   //variance = 0;
+  uploadLoading: boolean = false;
+  canUploadAcctEnt: boolean = true;
+  acctEntryFile: any;
+  fileName: string = '';
+  emitMessage: string = '';
 
-  constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute) { }
+  constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acc-Service | Journal Voucher");
+    this.canUploadAcctEntMethod();
     this.route.params.subscribe(params => {
       if(params.from === 'add'){
         if(this.jvData.jvNo === ''){
@@ -518,6 +527,99 @@ export class JvEntryServiceComponent implements OnInit {
         this.retrieveJVEntry();
       }
     });
+  }
+
+
+upload(){
+    this.acctEntryMdl.openNoClose();
+  }
+
+  //open file box
+  openFile(){
+    $('#upload').trigger('click');
+  }
+
+//validate file to be uploaded
+  validateFile(event){
+    console.log(event.target.files);
+    var validate = '';
+    validate = this.up.validateFiles(event);
+
+    if(validate.length !== 0 ){
+      this.acctEntryFile = undefined;
+      this.fileName = '';
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = validate;
+      this.successDiag.open();
+    }else{
+      this.acctEntryFile = event;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+//upload accounting entries
+uploadAcctEntries(){
+  var result = '';
+  this.emitMessage = '';
+   if(this.acctEntryFile == undefined){
+     this.dialogIcon = 'info';
+     this.dialogMessage = 'No file selected.';
+     this.successDiag.open();
+   }else{
+     console.log(this.entryData.tranId);
+     this.uploadLoading = true;
+     this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACSE', 'JV', this.entryData.tranId);
+     /*setTimeout(()=>{
+       if(this.emitMessage.length === 0){
+         this.dialogIcon = 'info';
+         this.dialogMessage = 'Upload successfully.';
+         this.fileName = '';
+         this.acctEntryFile = undefined;
+         this.successDiag.open();
+       }else{
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = this.emitMessage;
+         this.successDiag.open();
+       }
+
+       this.acctEntryMdl.closeModal(); 
+     }, 0);*/
+   }
+  }
+
+  uploaderActivity(event){
+    console.log(event);
+    if(event instanceof Object){ //If theres an error regarding the upload
+      this.dialogIcon = 'error-message';
+     this.dialogMessage = event.message;
+     this.successDiag.open();
+     this.uploadLoading = false;
+    }else{
+      if(event.toUpperCase() == 'UPLOAD DONE'){
+            this.uploadLoading = false;
+        }else if(event.toUpperCase() == 'SUCCESS'){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Upload successfully.';
+          this.fileName = '';
+          this.acctEntryFile = undefined;
+          this.successDiag.open();
+          this.uploadLoading = false;
+          this.acctEntryMdl.closeModal();
+        }
+    }
+  }
+
+  canUploadAcctEntMethod(){
+    this.mtnService.getMtnParameters('V', 'ACSEJV_ACCTENTRY_UPLOAD').subscribe(
+       (data:any)=>{
+         if(data.parameters.length !== 0){
+            this.canUploadAcctEnt = data.parameters[0].paramValueV == 'Y';
+         }
+         else{
+           this.canUploadAcctEnt = false;
+         }
+       }
+    );
   }
 
   /*getAcctEnt(){
