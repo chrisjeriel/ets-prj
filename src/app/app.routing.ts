@@ -391,8 +391,37 @@ const appRoutes: Routes = [
     { path: 'renew-exp-pol', component: RenewExpPolicyComponent
     },
 
+
+    /*{ path: 'acct-ar-listings', component: AcctArListingsComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT001', verifyWithData: true }
+    },
+
+    { path: 'payt-req', component: RequestForPaymentComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT016', verifyWithData: true }
+    },
+
+    { path: 'check-voucher', component: CheckVoucherComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT028', verifyWithData: true }
+    },
     
+
+    { path: 'journal-voucher', component: JournalVoucherComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT031', verifyWithData: true }
+    },*/
+
+    { path: 'acct-ar-listings', component: AcctArListingsComponent },
+
+    { path: 'payt-req', component: RequestForPaymentComponent },
+
+    { path: 'check-voucher', component: CheckVoucherComponent },
     
+
+    { path: 'journal-voucher', component: JournalVoucherComponent },
+
     
     
 
@@ -414,13 +443,12 @@ const appRoutes: Routes = [
     /*{ path: 'maintenance-ceding-co', component: PolMxCedingCoComponent },*/
     { path: 'accounting', component: AccountingComponent },
     { path: 'accounting-in-trust', component: AccountingInTrustComponent, canDeactivate: [UnsavedChangesGuard]  },
-    { path: 'acct-ar-listings', component: AcctArListingsComponent },
-    { path: 'check-voucher', component: CheckVoucherComponent },
+    
+    
     { path: 'generate-cv', component: GenerateCvComponent },
-    { path: 'payt-req', component: RequestForPaymentComponent },
+    
     { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
-    { path: 'journal-voucher', component: JournalVoucherComponent },
     { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
     { path: 'trial-balance', component: TrialBalanceComponent },
