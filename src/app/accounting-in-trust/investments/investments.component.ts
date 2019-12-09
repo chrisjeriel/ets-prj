@@ -865,7 +865,7 @@ update(data){
 
 
                  var invtIncome = principal * rate * time;
-                 this.passData.tableData[i].incomeAmt = invtIncome;
+                 this.passData.tableData[i].incomeAmt = Math.round(invtIncome * 100)/100;
 
                  if(invtIncome === null){
                  }else {
@@ -877,13 +877,12 @@ update(data){
                        matVal;
 
                        if(Number.isNaN(bankCharges)){
-                         matVal = principal + invtIncome - withHTaxAmt;
+                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].whtaxAmt;
                        } else {
-                         matVal = principal + invtIncome - bankCharges - withHTaxAmt;
+                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
                        }
-                       console.log(withHTaxAmt + '-' + matVal);
 
-                       this.passData.tableData[i].whtaxAmt = withHTaxAmt;
+                       this.passData.tableData[i].whtaxAmt = Math.round(withHTaxAmt * 100);
                        this.passData.tableData[i].matVal = matVal;
                  }
                } 
