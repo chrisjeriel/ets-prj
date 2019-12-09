@@ -107,10 +107,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     widths: [110,225,30],
   }
 
-  constructor(private securityService: SecurityService, public modalService: NgbModal, 
-              private maintenanceService: MaintenanceService, private ns: NotesService,
-              private userService: UserService) { }
-
   userGroupData:any = {
     createDate: '',
     createUser: null,
@@ -122,6 +118,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     userGrpTran: []
   }
   btnDisabled:boolean = true;
+  cancelFlag: boolean = false;
   selRecordRow:number;
   passLOVData: any = {
       selector:'',
@@ -139,6 +136,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   dialogMessage: string = "";
   cancelFlag: boolean = false;
   saveMtnUserGrpParams:any = [];
+
+  constructor(private securityService: SecurityService, public modalService: NgbModal, 
+              private maintenanceService: MaintenanceService, private ns: NotesService,
+              private userService: UserService) { }
 
   ngOnInit() {
     this.getMtnUserGrp();
@@ -338,11 +339,11 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   }
 
-  saveTranModule(){
+  saveTranModule(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     try {
       this.prepareUserGroupTrans();
       this.prepareUserGroupModules();
-      console.log(this.saveModuleList.length)
       if (this.saveTranList.length > 0 || this.saveModuleList.length > 0 || 
           this.delTranList.length > 0 || this.delModuleList.length > 0) {
 
@@ -363,7 +364,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
               };
               saveUserTransactions.transactionList.push(tran);
             }
-            console.log(this.delTranList)
+
             for (let rec of this.delTranList) {
               var moduleTran = {
                 userGrp: rec.userGrp,
@@ -372,7 +373,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
               saveUserTransactions.delTranList.push(moduleTran);
             }
 
-            console.log(saveUserTransactions);
             this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
@@ -453,7 +453,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     this.delTranList = [];
     for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
       if(this.PassDataModuleTrans.tableData[i].deleted){
-        console.log(this.PassDataModuleTrans.tableData[i])
         this.PassDataModuleTrans.tableData[i].userGrp = this.userGroupData.userGrp;
         this.delTranList.push(this.PassDataModuleTrans.tableData[i]);
       }
@@ -544,7 +543,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   }
 
   onClickSaveConfirmation() {
-    $('#confirm-save #modalBtn2').trigger('click');
+    this.confirm.confirmModal();
   }
 
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
+  }
 }
