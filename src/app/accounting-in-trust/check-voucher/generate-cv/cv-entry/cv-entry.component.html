@@ -138,7 +138,7 @@
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
-                            <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="upload()"><a>Upload Acct. Ent</a></button>
+                            <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="upload()">Upload Acct. Ent</button>
                         </div>
                     </div>
                 </div>

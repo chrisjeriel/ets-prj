@@ -104,6 +104,7 @@ export class CvEntryComponent implements OnInit {
   destination          : string = '';
   spoiled              : any;
   approvalCd           : any;
+  suggestCheckNo       : any;
 
   uploadLoading: boolean = false;
   acctEntryFile: any;
@@ -259,13 +260,14 @@ export class CvEntryComponent implements OnInit {
           this.success.open();
           this.fromSave = false;
         }
+
+        this.saveAcitCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcitCv.checkNo:this.suggestCheckNo;
       }
 
       this.saveAcitCv['from'] = 'cv';
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
       (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
-      
       this.setLocalAmt();
       if(this.saveAcitCv.checkStatus == 'S'){
           this.spoiledFunc();
@@ -379,6 +381,7 @@ export class CvEntryComponent implements OnInit {
 
     (this.spoiled)?this.saveAcitCv.checkId='':'';
     console.log(saveCv);
+
     this.accountingService.saveAcitCv(JSON.stringify(saveCv))
     .subscribe(data => {
       console.log(data);
@@ -397,6 +400,7 @@ export class CvEntryComponent implements OnInit {
       }else if(data['returnCode'] == 2){
         this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
         this.warnMdl.openNoClose();
+        this.saveAcitCv.checkNo = Number(data['checkNo']);
       }else if(data['returnCode'] == -100){
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
@@ -612,7 +616,7 @@ export class CvEntryComponent implements OnInit {
       this.loadingFunc(false);
       this.fromSave = true;
       this.getAcitCv();
-      (!this.spoiled)?this.disableFlds(true):'';
+      (!this.spoiled)?this.disableFlds(true):this.form.control.markAsDirty();
     });
   }
 
@@ -637,9 +641,12 @@ export class CvEntryComponent implements OnInit {
   }
 
   spoiledFunc(){
+    this.suggestCheckNo = '';
     $('.cl-spoil').prop('readonly',false);
     this.spoiled = true;
     this.saveAcitCv.checkId = '';
+    var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+    (chkNo.length == 0)?'':this.suggestCheckNo = chkNo[0].checkNo;
   }
 
   overrideFunc(approvalCd){
