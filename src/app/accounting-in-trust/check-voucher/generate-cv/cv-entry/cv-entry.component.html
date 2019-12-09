@@ -184,7 +184,7 @@
     <div footer class="text-center">
         <span class="fa fa-spinner fa-spin" style="font-size: 15px;" *ngIf="uploadLoading"></span>
         <button type="button" class="cust-btn" (click)="uploadAcctEntries();" [disabled]="uploadLoading" [class.cust-btn-disabled]="uploadLoading"><a>Upload</a></button>
-        <button type="button" class="cust-btn" (click)="upAcctEntryMdl.closeModal();"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="upAcctEntMdl.closeModal();"><a>Cancel</a></button>
     </div>
 </app-modal>
 
