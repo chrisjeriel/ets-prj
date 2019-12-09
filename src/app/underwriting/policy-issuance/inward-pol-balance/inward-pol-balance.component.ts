@@ -257,7 +257,7 @@ export class InwardPolBalanceComponent implements OnInit {
     for(let rec of this.passData.tableData){
       if(rec.otherCharges.length != 0)
         rec.otherChargesInw = rec.otherCharges.filter((a)=>{return !a.deleted}).map(a=>a.amount).reduce((sum,curr)=>sum+curr,0);
-      rec.amtDue = rec.premAmt + rec.otherChargesInw;
+      //rec.amtDue = rec.premAmt + rec.otherChargesInw;
     }
     this.updateNDataDates();
     this.instllmentTable.refreshTable();
