@@ -927,9 +927,10 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   reprintMethod(isReprint?){
+    var reportType = this.orInfo.orType == 'VAT' ? 'ACSER_OR_VAT' : 'ACSER_OR_NVAT';
     this.printLoading = true;
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName='+ reportType + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
       this.loading = false;
@@ -939,7 +940,7 @@ export class AcctOrEntryComponent implements OnInit {
         this.reprintMdl.closeModal();  
       }
     }else if(this.printMethod == '2'){
-      this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
+      this.as.acitGenerateReport(reportType, this.orInfo.tranId).subscribe(
         (data:any)=>{
           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
                        var downloadURL = window.URL.createObjectURL(data);

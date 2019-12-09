@@ -3337,4 +3337,11 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveDcbCollection',params,header);
     }
 
+    getOrSFeeDtlDist(cedingId, sFeeYear, sFeeQtr){
+    	const params = new HttpParams()
+			.set('cedingId', cedingId)
+			.set('sFeeYear', sFeeYear)
+			.set('sFeeQtr', sFeeQtr);
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveOrSFeeDtlDist',{params});	
+    }
 }
