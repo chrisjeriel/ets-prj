@@ -90,24 +90,25 @@ export class UsersComponent implements OnInit {
   }
 
   PassDataModule: any = {
-    tableData:[],
-    tHeader: ['Module Id', 'Description'],
-    dataTypes: ['text', 'text'],
-    addFlag:true,
-    genericBtn :'Delete',
-    infoFlag:true,
-    paginateFlag:true,
-    magnifyingGlass: ['moduleId'],
-    nData: {
-      showMG: 1,
-      moduleId: null,
-      moduleDesc: null
-    },
-    keys: ['moduleId', 'moduleDesc'],
-    uneditable: [true, true],
-    pageID: 2,
-    disableAdd: true
-  };
+      tableData:[],
+      tHeader: ['Module Id', 'Description'],
+      dataTypes: ['text', 'text'],
+      nData: {
+        showMG: 1,
+        moduleId: null,
+        moduleDesc: null
+      },
+      magnifyingGlass: ['moduleId'],
+      keys: ['moduleId', 'moduleDesc'],
+      checkFlag: true,
+      addFlag: true,
+      deleteFlag: true,
+      infoFlag: true,
+      paginateFlag: true,
+      searchFlag: true,
+      pageID: 2,
+
+    };
 
   PassDataModuleTransUserGroup: any = {
     tableData: [],
@@ -245,14 +246,13 @@ export class UsersComponent implements OnInit {
     if (accessLevel == 'USER') {
       this.userModules.overlayLoader = true;
       this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd, null).subscribe((data: any) => {
-        console.log(data)
         this.PassDataModule.tableData = [];
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModule.tableData.push(data.modules[i]);
           this.PassDataModule.tableData[i].showMG = 0;
           this.PassDataModule.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
-
+        this.userModules.onRowClick(null,this.PassDataModule.tableData[0]);
         this.userModules.refreshTable();
       });
     } else if (accessLevel == 'USER_GROUP') {
@@ -264,7 +264,7 @@ export class UsersComponent implements OnInit {
           this.PassDataModuleUserGroup.tableData[i].showMG = 0;
           this.PassDataModuleUserGroup.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
-
+        this.userGroupModules.onRowClick(null,this.PassDataModuleUserGroup.tableData[0]);
         this.userGroupModules.refreshTable();
       });
     }
@@ -460,7 +460,7 @@ export class UsersComponent implements OnInit {
                   this.dialogIcon = "error";
                   this.successDialog.open();
                 } else{
-                  if(this.saveModuleList.length > 0){
+                  if(this.saveModuleList.length > 0 || this.delModuleList.length > 0){
                     this.getTransactions('USER');
                   }else{
                     this.dialogIcon = "";
@@ -745,5 +745,24 @@ export class UsersComponent implements OnInit {
 
   onClickCancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  rowClick(data){
+    if(data !== null){
+      this.PassDataModule.disableGeneric = false;
+    }else{
+      this.PassDataModule.disableGeneric = true;
+    }
+  }
+
+  tranDelete(){
+    var row;
+    for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
+      if(!this.PassDataModuleTrans.tableData[i].deleted){
+        row = i;
+        break;
+      }
+    }
+    this.userTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[row]);
   }
 }

@@ -64,7 +64,7 @@
 	        		<legend class="scheduler-border">Module Transaction</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable #userGroupTransactions (newClick)="onRowClickTrans($event, 'USER_GROUP')" (clickLOV)="clickLOV($event,'transactions')" [passData]="PassDataModuleTrans" (genericBtn)="onClickTransDelete();" (onDelete)="userGroupTransactions.onClickDelete('a');"></app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupTransactions (newClick)="onRowClickTrans($event, 'USER_GROUP')" (clickLOV)="clickLOV($event,'transactions')" [passData]="PassDataModuleTrans" (genericBtn)="onClickTransDelete();" (onDelete)="userGroupTransactions.onClickDelete('a');tranDelete()"></app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -74,7 +74,7 @@
 	        		<legend class="scheduler-border">Module</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable #userGroupModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (genericBtn)="onClickModuleDelete();" (onDelete)="userGroupModules.onClickDelete('a');"></app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userGroupModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule"></app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -116,5 +116,5 @@
 <app-confirm-save #confirm (onYes)="onClickSaveMain();"></app-confirm-save>
 <app-confirm-save #groupConfirm (onYes)="saveTranModule();"></app-confirm-save>
 <app-lov #lovComponent id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
-<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="onClickSaveMain('cancel')" [url]="''" ></app-cancel-button>

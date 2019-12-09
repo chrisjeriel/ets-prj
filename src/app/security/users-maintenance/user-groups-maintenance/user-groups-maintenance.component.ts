@@ -84,9 +84,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       moduleId: null,
       moduleDesc: null
     },
+    checkFlag: true,
     pageID: 2,
     addFlag: true,
-    genericBtn :'Delete',
+    deleteFlag: true,
     pageLength:5,
     searchFlag: true,
     paginateFlag: true,
@@ -134,7 +135,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   delModuleList:any =  [];
   dialogIcon: string = "";
   dialogMessage: string = "";
-  cancelFlag: boolean = false;
   saveMtnUserGrpParams:any = [];
 
   constructor(private securityService: SecurityService, public modalService: NgbModal, 
@@ -548,5 +548,16 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   onClickCancel(){
     this.cancelBtn.clickCancel();
+  }
+
+  tranDelete(){
+    var row;
+    for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
+      if(!this.PassDataModuleTrans.tableData[i].deleted){
+        row = i;
+        break;
+      }
+    }
+    this.userGroupTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[row]);
   }
 }
