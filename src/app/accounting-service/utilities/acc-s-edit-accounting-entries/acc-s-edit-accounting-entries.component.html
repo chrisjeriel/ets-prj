@@ -4,136 +4,109 @@
 		<ngb-tabset (tabChange)="onTabChange($event)">
 			<ngb-tab>
 				<ng-template ngbTabTitle>
-					<div>Edit</div>
+					<div>Edit Entries</div>
 				</ng-template>
 				<ng-template ngbTabContent>
 					<div class="row">
-						<div class="col-sm-9">
+						<div class="col-sm-12">
 						    <fieldset class="scheduler-border">
 						        <legend class="scheduler-border">Transaction Info</legend>
 						           <div class="container-fluid div-group">
 						           	   <div class="form-row custom-row-inline-inset" >
-						           	    <div class="input-group" style="margin-bottom: -8px !important;
-">
-						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Transaction Type</label>
+						           	    <div class="input-group" style="margin-bottom: -8px !important;">
+						           	    	<label class="form-control-sm col-sm-1 outer-labels labels">Transaction Class</label>
 						           	    	<div class="input-group div-group col-sm-2">
-						           	    		<select class="form-control form-control-sm cust-sm col-sm-12">
-						           	    			<option value="OR">Official Receipt</option>
-						           	    			<option value="CV" selected>Check Voucher</option>
-						           	    			<option value="JV">Journal Voucher</option>
+						           	    		<select class="form-control form-control-sm cust-sm col-sm-12" [(ngModel)]="tranClass" (change)="passData.tableData = []; table.refreshTable(); tranNo = ''; clearTranDetails();" appRequired>
+						           	    			<option [value]="'OR'">Official Receipt</option>
+						           	    			<option [value]="'CV'">Check Voucher</option>
+						           	    			<option [value]="'JV'">Journal Voucher</option>
 						           	    		</select>
 						           	    	</div>
-						           	    	<div class="input-group div-group col-sm-4">
-						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Date</label>
-						           	    		<input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-8" [value]="tranDate">
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4">Tran Date</label>
+						           	    		<div class="col-sm-8" style="padding: 0px">
+        										    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="tranDetails.tranDate"></datepicker>
+        										</div>
 						           	    	</div>
-						           	    	<div class="input-group div-group col-sm-4">
-						           	    		<label class="form-control-sm col-sm-4" for="xx">Tran Status</label>
-						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-8" placeholder="New">
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4">Backup By</label>
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="tranDetails.backupBy" readonly>
+						           	    	</div>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4">Tran Amount</label>
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="tranDetails.currCd" readonly>
+						           	        	<span>&nbsp;</span>
+						           	        	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.tranAmount | number: '1.2-2'" readonly appCurrency>
 						           	    	</div>
 						           	    </div>
-						           	    <div class="input-group" style="margin-bottom: -8px !important;
-">
-						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Reference Number</label>
+						           	    <div class="input-group" style="margin-bottom: -8px !important;">
+						           	    	<label class="form-control-sm col-sm-1 outer-labels labels">Reference Number</label>
 						           	    	<div class="input-group div-group col-sm-2">
-						           	    		<input type="text"  class="form-control form-control-sm cust-sm col-sm-12" placeholder="2015-00000598" >
-						           	    		<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+						           	    		<input type="text"  class="form-control form-control-sm cust-sm col-sm-12" [ngModel]="tranNo"appRequired>
+						           	    		<div class="text-search-ico" (click)="retrieveTransactions();"><a><i class="fa fa-search"></i></a></div>
 						           	    	</div>
-						           	    	<div class="input-group div-group col-sm-4">
-						           	    		<label class="form-control-sm col-sm-4" for="xx">Amount</label>
-						           	    		<div class="input-group div-group col-sm-8">
-						           	    			<select class="form-control form-control-sm cust-sm col-sm-4">
-   	    			                                      <option value="PHP">PHP</option>
-   	    			                                      <option value="EUR">EUR</option>
-   	    			                                      <option value="USD">USD</option>
-   	    			                              	</select>
-						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
-						           	    		</div>
+						           	    	<div class="input-group div-group col-sm-3">
+						           	    		<label class="form-control-sm col-sm-4">Tran Status</label>
+						           	    		<input type="text"  class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="tranDetails.tranStatDesc" readonly>
 						           	    	</div>
-						           	        <div class="input-group div-group col-sm-4">
-						           	    		<label class="form-control-sm col-sm-4" for="xx">Local Amount</label>
-						           	    		<div class="input-group div-group col-sm-8">
-						           	    			<select class="form-control form-control-sm cust-sm col-sm-3">
-   	    			                                      <option value="PHP">PHP</option>
-   	    			                                      <option value="EUR">EUR</option>
-   	    			                                      <option value="USD">USD</option>
-   	    			                              	</select>
-						           	    			<input type="text"  class="form-control form-control-sm cust-sm col-sm-9" placeholder="2,132,942.50" style="margin-left: 2px; text-align: right">
-						           	    		</div>
-						           	    	</div>
+					           	        	<div class="input-group div-group col-sm-3">
+					           	        		<label class="form-control-sm col-sm-4">Backup Date</label>
+					           	            	<div class="col-sm-8" style="padding: 0px">
+        										    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="tranDetails.backupDate"></datepicker>
+        										</div>
+					           	        	</div>
+				           	        		<div class="input-group div-group col-sm-3">
+				           	        			<label class="form-control-sm col-sm-4">Local Amount</label>
+				           	        	    	<input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="tranDetails.localCurrCd" readonly>
+				           	        	    	<span>&nbsp;</span>
+				           	        	    	<input type="text"  class="form-control form-control-sm cust-sm col-sm-10" [ngModel]="tranDetails.localAmt | number: '1.2-2'" readonly appCurrency>
+				           	        		</div>
 						           	    </div>
 						           	    <div class="input-group">
-						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Payor/Payee</label>
-						           	    	<div class="input-group div-group col-sm-10">
-		           	    						<input type="text" class="form-control form-control-sm cust-sm col-sm-12" placeholder="San Miguel Corporation">
+						           	    	<label class="form-control-sm col-sm-1 outer-labels labels">Payor/Payee</label>
+						           	    	<div class="input-group div-group col-sm-5">
+		           	    						<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [ngModel]="tranDetails.payeeName" readonly>
+						           	    	</div>
+						           	    	<label class="form-control-sm col-sm-1 labels">Tran Type</label>
+						           	    	<div class="input-group div-group col-sm-5">
+		           	    						<input type="text" class="form-control form-control-sm cust-sm col-sm-12" [ngModel]="tranDetails.tranTypeName" readonly>
 						           	    	</div>
 						           	    </div>
 						           	    <div class="input-group" style="margin-bottom: 0px !important;">
-						           	    	<label class="form-control-sm col-sm-2 outer-labels labels">Particulars</label>
-						           	        <div class="input-group div-group col-sm-10">
-		           	    						<textarea class="form-control form-control-sm cust-sm col-sm-12" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" placeholder="Billing for the period April 6 to May 15, 2015"></textarea>
+						           	    	<label class="form-control-sm col-sm-1 outer-labels labels">Particulars</label>
+						           	        <div class="input-group div-group col-sm-11">
+		           	    						<textarea class="form-control form-control-sm cust-sm col-sm-12" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [ngModel]="tranDetails.particulars" readonly></textarea>
 						           	    	</div>
 						           	    </div>
 						           	</div>
 						           </div>
 						    </fieldset>
 						</div>
-						<div class="col-sm-3" style="padding-left: 0px;">
-								<div class="col-sm-12 div-group">
-									<fieldset class="scheduler-border" style="margin-top: 0.756em !important;">
-										<div style="margin-top: 1em; margin-bottom: 0.9em;">
-											<div class="form-row">
-												<div class="form-group col-sm" style="margin-bottom: 0px">
-													<div class="col-sm-12 text-center">
-														<div class="cust-btn-container">
-															<button type="button" class="cust-btn"><a>Report</a></button>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div class="form-row" style="padding-right: 9px; margin-top: 4px;">
-												<div class="input-group">
-													<label class="form-control-sm col-sm-4 labels">Ref. No.</label>
-													<div class="input-group div-group col-sm">
-														<input type="text" class="form-control form-control-sm cust-sm col-sm">
-														<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-													</div>
-												</div>
-												<div class="input-group">
-													<label class="form-control-sm col-sm-4 labels">Back Up By</label>
-													<input type="text" class="form-control form-control-sm cust-sm col-sm">
-												</div>
-												<div class="input-group">
-													<label class="form-control-sm col-sm-4 labels">Back Up Date</label>
-													<input type="text" class="form-control form-control-sm cust-sm col-sm">
-												</div>
-											</div>
-										</div>
-								    </fieldset>
-								</div>
-						</div>
 					</div>
+
+					<form #myForm="ngForm">	
 					<div class="row">
 						<div class="col-sm-12">
 							<fieldset class="scheduler-border">
 								<legend class="scheduler-border">Accounting Entries</legend>
 								<div style="margin-bottom: 11px;margin-top:11px;">
-									<app-cust-editable-non-datatable [passData]="accountingEntriesUtilData"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
 									<div class="form-row" style="padding-top: 7px;">
-										<div class="input-group col-sm-2"></div>
-										<div class="input-group div-group col-sm-8">
-											<label class="form-control-sm col-sm-2">Reason for Change</label>
-											<textarea class="form-control form-control-sm cust-sm col-sm-10" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" placeholder="Account should be Internet Expense not Telephone Line"></textarea>
-										</div>
-										<div class="input-group col-sm-2"></div>
+											<div class="input-group col-sm-2"></div>
+											<div class="input-group div-group col-sm-8">
+													<label class="form-control-sm col-sm-2">Reason for Change</label>
+													<textarea class="form-control form-control-sm cust-sm col-sm-10" style="font-size: 11px; min-height: 38px; margin-bottom: 5px;" [(ngModel)]="tranDetails.reason" appRequired [readonly]="tranDetails.tranId.length == 0" name="reason"></textarea>
+											</div>
+											<div class="input-group col-sm-2"></div>
 									</div>
 									<div class="form-row">
 										<div class="form-group col-sm" style="margin-bottom: 0px">
 											<div class="col-md-13 text-center" style="margin-top: 8px;">
 												<div class="cust-btn-container">
-													<button type="button" class="cust-btn"><a>Save</a></button>
-													<button type="button" class="cust-btn"><a>Cancel</a></button>
-													<button type="button" class="cust-btn"><a>Restore</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canSave" [class.cust-btn-disabled]="!canSave" (click)="onClickSave()"><a>Save</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canCancel" [class.cust-btn-disabled]="!canCancel"><a>Cancel</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canRestore" [class.cust-btn-disabled]="!canRestore" (click)="restore();"><a>Restore</a></button>
+													<button type="button" class="cust-btn" [disabled]="!canPrint" [class.cust-btn-disabled]="!canPrint"><a>Print</a></button>
 												</div>
 											</div>
 										</div>
@@ -142,19 +115,24 @@
 							</fieldset>
 						</div>
 					</div>
+					</form>
 					<div class="row">
 						<div class="col-sm-12">
 							<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
 								<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
 							        <div class="input-group">
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Created By</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+							            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="createUpdate.createUser" readonly>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Date Created</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+							            <div class="col-sm-2" style="padding: 0px">
+							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate.createDate"></datepicker>
+							            </div>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update By</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="cuaresma" disabled>
+							            <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="createUpdate.updateUser" readonly>
 							            <label class="form-control-sm col-sm-1 text-right footer-labels">Last Update</label>
-							            <input type="text" class="form-control form-control-sm col-sm-2" placeholder="10/01/2018 11:49 AM" disabled>
+							            <div class="col-sm-2" style="padding: 0px">
+							                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate.updateDate"></datepicker>
+							            </div>
 							        </div>
 							    </div>
 							</fieldset>
@@ -172,3 +150,26 @@
 			</ngb-tab>
 		</ngb-tabset>
 </div>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-lov [passData]="passLovAe" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox" #aeLov></app-lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+
+<app-modal class="d-none" #restoreMdl>
+	<div header>&nbsp;</div>
+	<div body class="container-flex text-center" >
+	  	<ng-container [ngSwitch]="dialogIcon">
+            <span *ngSwitchCase="'error-message'" class="fa fa-times-circle fa-2x" style="vertical-align: middle;"></span>
+            <span *ngSwitchDefault class="fa fa-check-circle fa-2x" style="vertical-align: middle;"></span>
+        </ng-container>
+        <ng-container [ngSwitch]="dialogIcon">
+            <span *ngSwitchCase="'error-message'" style="vertical-align: middle; margin-left: 5px;font-size: 1em;">An error has occured when trying to restore.</span>
+            <span *ngSwitchDefault style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Successfully restored.</span>
+        </ng-container>
+	</div>
+	<div footer class="d-flex justify-content-center w-100">
+          <button class="cust-btn" type="button" (click)="restoreMdl.closeModal(); canRestore = false;"><a>Ok</a></button>
+  	</div>
+</app-modal>

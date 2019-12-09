@@ -1883,4 +1883,10 @@ export class MaintenanceService{
     	     		.set('depNo', (depNo === null || depNo === undefined ? '' : depNo));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGlSubDepNo", {params});
     }
+
+    getNewMtnRiskListing(searchParams: any) {
+		
+
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params:searchParams});
+	}
 }

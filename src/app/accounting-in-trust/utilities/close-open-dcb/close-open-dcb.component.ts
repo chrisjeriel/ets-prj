@@ -33,7 +33,7 @@ export class CloseOpenDcbComponent implements OnInit {
   passData: any = {
       tableData: [],
       tHeader: ['DCB Date','DCB Year', 'DCB No', 'DCB Status', 'Remarks','Close Date','Auto'],
-      dataTypes: ['date','number', 'number', 'text', 'text','date','checkbox'],
+      dataTypes: ['date','year', 'number', 'text', 'text','date','checkbox'],
       searchFlag: true,
       infoFlag: true,
       paginateFlag: true,
@@ -85,6 +85,7 @@ export class CloseOpenDcbComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  viewFlag: boolean = true;
   subscription: Subscription = new Subscription();
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, 
@@ -114,6 +115,7 @@ export class CloseOpenDcbComponent implements OnInit {
   onRowClick(data){
   	console.log(data)
   	if(data!== null){
+      this.viewFlag = false;
   		this.params.dcbYear = data.dcbYear;
   		this.params.dcbNo = data.dcbNo;
       this.params.createUser = data.createUser;
@@ -121,17 +123,14 @@ export class CloseOpenDcbComponent implements OnInit {
       this.params.updateUser = data.updateUser;
       this.params.updateDate = this.ns.toDateTimeString(data.updateDate);
   	}else{
+      this.viewFlag = true;
   		this.params.dcbYear = '';
   		this.params.dcbNo = '';
       this.params.createUser = '';
       this.params.createDate = '';
-      this.params.upateUser = '';
+      this.params.updateUser = '';
       this.params.updateDate = '';
   	}
-  }
-
-  onChange(data){
-    console.log(data)
   }
 
   onClickSave(){
@@ -142,7 +141,6 @@ export class CloseOpenDcbComponent implements OnInit {
     this.cancelFlag = cancel !== undefined;
   	this.saveData.saveDcb = []
   	for (var i = 0; i < this.passData.tableData.length; ++i) {
-      console.log(this.passData.tableData[i].edited);
   		if(this.passData.tableData[i].edited){
   			this.saveData.saveDcb.push(this.passData.tableData[i]);
   			this.saveData.saveDcb[this.saveData.saveDcb.length - 1].updateUser = this.ns.getCurrentUser();
@@ -204,7 +202,7 @@ export class CloseOpenDcbComponent implements OnInit {
   	for (var i = 0; i < this.passData.tableData.length; ++i) {
   		if(this.passData.tableData[i].checked){
   			this.params.updateDcb.push(this.passData.tableData[i]);
-  			this.params.updateDcb[this.params.updateDcb.length - 1].dcbStat = 'TC';
+  			this.params.updateDcb[this.params.updateDcb.length - 1].dcbStat = 'T';
   			this.params.updateDcb[this.params.updateDcb.length - 1].updateUser = this.ns.getCurrentUser();
   		}
   	}

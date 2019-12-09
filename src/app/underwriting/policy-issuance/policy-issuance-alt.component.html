@@ -9,7 +9,7 @@
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="Coverage">
 			<ng-template ngbTabContent>
-				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true"></app-pol-coverage>
+				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true" (alopTab)="policyInfo.showPolAlop=$event"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt" title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
@@ -65,7 +65,7 @@
 							<div class="input-group" style="margin-bottom:3px !important;">
 								<label class="form-control-sm col-sm-3 labels">Report</label>
 								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
-									<option value="POLR010">Policy Schedule</option>
+									<option value="POLR010B">Policy Schedule</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>
@@ -83,7 +83,7 @@
 								<div class="col-sm-8">
 									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
 									&nbsp;&nbsp;&nbsp;&nbsp; -->
-									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<input type="checkbox" style="vertical-align: middle" [(ngModel)]="inclEndt">&nbsp;<label>Include Endorsement</label>
 									<div class="col-sm-1"></div>
 								</div>
 							</div>

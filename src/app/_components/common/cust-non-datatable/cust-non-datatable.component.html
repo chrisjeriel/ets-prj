@@ -25,7 +25,7 @@
         </div>
     </ng-container>
     
-    <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn">
+    <div class="cust-btn-container" *ngIf="passData.addFlag || passData.editFlag || passData.deleteFlag || passData.copyFlag || passData.printBtn || passData.genericBtn1 !== undefined || passData.genericBtn2 !== undefined">
         <button *ngIf="passData.addFlag" class="cust-btn" (click)="onClickAdd(event)"><a>Add</a></button>
         <button *ngIf="passData.editFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled"[disabled]="btnDisabled || passData.btnDisabled" (click)="onClickEdit($event)"><a class="paginate_button previous">Edit</a></button>
         <button *ngIf="passData.deleteFlag" class="cust-btn" [class.btnDisabled]="btnDisabled || passData.btnDisabled" [disabled]="btnDisabled || passData.btnDisabled" (click)="onClickDelete()"><a class="paginate_button previous">Delete</a></button>

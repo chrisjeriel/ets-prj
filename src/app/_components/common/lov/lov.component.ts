@@ -65,7 +65,6 @@ export class LovComponent implements OnInit {
 
   // pinaikli ko lang, pabalik sa dati pag may mali - YELE
   select(data){
-    console.log(data);
     var index = 0;
     var ref = '';
     var processingCount = 0;
@@ -99,7 +98,7 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'osQsoa'){
-            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
@@ -204,7 +203,6 @@ export class LovComponent implements OnInit {
 
 
   checkCode(selector?,regionCd?, provinceCd?, cityCd?, districtCd?, blockCd?, ev?, slTypeCd?,payeeClassCd?) {
-    console.log(ev)
     if (selector == 'region') {
       if (regionCd === '') {
         this.selectedData.emit({
@@ -346,10 +344,8 @@ export class LovComponent implements OnInit {
                 }
                 );
             } else {
-              this.selectedData.emit({
-                data: null,
-                ev: ev
-              });
+              this.passData.ev = ev;
+              this.passData.userGrp = '';
               $('#lovMdl > #modalBtn').trigger('click');
             }
         });
@@ -827,7 +823,7 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = [ 'User Group','Description','Remarks'];
       this.passTable.dataTypes = [ 'number','text','text'];
       this.passTable.keys = ['userGrp','userGrpDesc','remarks'];
-      this.mtnService.getMtnUserGrp().subscribe(a=>{
+      this.mtnService.getMtnUserGrp(this.passData.userGrp).subscribe(a=>{
         this.passTable.tableData = a["userGroups"];
         this.table.refreshTable();
       })
@@ -1236,9 +1232,9 @@ export class LovComponent implements OnInit {
       this.passTable.widths = [77,'auto']
       this.passTable.dataTypes = [ 'number','text'];
       this.passTable.keys = [ 'tranCd','tranDesc'];
-      this.passTable.checkFlag = false;
+      this.passTable.checkFlag = true;
       this.securityService.getMtnTransactions(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["transactions"];
+        this.passTable.tableData = a.transactions.filter((a)=>{return this.passData.hide.indexOf(a.tranCd)==-1});
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
@@ -1247,9 +1243,9 @@ export class LovComponent implements OnInit {
       this.passTable.widths = [77,'auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'moduleId','moduleDesc'];
-      this.passTable.checkFlag = false;
+      this.passTable.checkFlag = true;
       this.securityService.getMtnModules(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["modules"];
+        this.passTable.tableData = a.modules.filter((a)=>{return this.passData.hide.indexOf(a.moduleId)==-1});;
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });

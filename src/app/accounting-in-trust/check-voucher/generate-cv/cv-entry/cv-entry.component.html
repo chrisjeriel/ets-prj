@@ -138,6 +138,7 @@
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
+                            <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="upload()"><a>Upload Acct. Ent</a></button>
                         </div>
                     </div>
                 </div>
@@ -166,6 +167,26 @@
   </div>
 </div>
 </form>
+
+<app-modal class="d-none" id="uploadAcct" #AcctEntries>
+    <div header>Uploading Accounting Entries</div>  
+    <div body>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2 text-right labels">File</label>
+                <input type="text" class="form-control form-control-sm col-sm-8" readonly [ngModel]="fileName">
+                <button class="fa fa-folder-open btn-file" title="Open File" style="height: 21px !important;margin-left: 6px;" (click)="openFile()">
+                    <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="validateFile($event)" id="upload" class="file-hidden">
+                </button>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <span class="fa fa-spinner fa-spin" style="font-size: 15px;" *ngIf="uploadLoading"></span>
+        <button type="button" class="cust-btn" (click)="uploadAcctEntries();" [disabled]="uploadLoading" [class.cust-btn-disabled]="uploadLoading"><a>Upload</a></button>
+        <button type="button" class="cust-btn" (click)="upAcctEntMdl.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
 
 <app-modal class="d-none" #confirmMdl >
     <div header>Confirmation</div>
@@ -257,3 +278,4 @@
 <app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/generate-cv'" ></app-cancel-button>
 
 <app-override-login [approvalCd]="approvalCd" (isSuccess)="onOkOverride($event)" #override></app-override-login>
+<app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>

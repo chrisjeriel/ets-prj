@@ -14,7 +14,7 @@
 		</ngb-tab>
 		<ngb-tab title="Coverage" [disabled]="!openTabs">
 			<ng-template ngbTabContent>
-				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo"></app-pol-coverage>
+				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo" (alopTab)="policyInfo.showPolAlop=$event"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop" [disabled]="!openTabs">
@@ -73,7 +73,7 @@
 								<div class="col-sm-8">
 									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
 									&nbsp;&nbsp;&nbsp;&nbsp; -->
-									<input type="checkbox" style="vertical-align: middle">&nbsp;<label>Include Endorsement</label>
+									<input type="checkbox" style="vertical-align: middle" [(ngModel)]="inclEndt">&nbsp;<label>Include Endorsement</label>
 									<div class="col-sm-1"></div>
 								</div>
 							</div>

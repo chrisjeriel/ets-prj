@@ -1,9 +1,11 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 
 import { AlertService, AuthenticationService, UserService } from '@app/_services';
+import { NgbCarousel } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({templateUrl: 'login.component.html'})
 export class LoginComponent implements OnInit {
@@ -11,6 +13,14 @@ export class LoginComponent implements OnInit {
     loading = false;
     submitted = false;
     returnUrl: string;
+
+    images = [1, 2, 3].map((n) => `app/resources/images/${n}.jpg`);
+    /*, 965, 982, 1043, 738*/
+
+      paused = false;
+      unpauseOnArrow = false;
+      pauseOnIndicator = false;
+      pauseOnHover = true;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -25,6 +35,17 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/']);
         }
     }
+
+    @ViewChild('carousel', {}) carousel: NgbCarousel;
+
+      togglePaused() {
+        if (this.paused) {
+          this.carousel.cycle();
+        } else {
+          this.carousel.pause();
+        }
+        this.paused = !this.paused;
+      }
 
     ngOnInit() {
         this.loginForm = this.formBuilder.group({

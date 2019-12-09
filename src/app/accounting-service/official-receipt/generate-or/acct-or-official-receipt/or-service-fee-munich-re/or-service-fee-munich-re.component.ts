@@ -370,7 +370,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
         break;
     }
 
-    this.as.getAcctPrqServFee('normal',null,qtrMonth, qtrYear).subscribe(
+    this.as.getAcctPrqServFee(null,'normal',null,qtrMonth, qtrYear).subscribe(
       (servFeeData:any)=>{
         if(servFeeData.subDistList.length !== 0){
           this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.subDistList[0].servFeeTotals.mreInvoiceId}]).subscribe((invoiceData:any)=>{
