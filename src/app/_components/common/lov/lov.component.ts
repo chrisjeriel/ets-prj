@@ -98,7 +98,7 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'osQsoa'){
-            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
