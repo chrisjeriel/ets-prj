@@ -564,11 +564,15 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
           "saveAcitAllocInvtIncome" : []
     }
 
-    for(var i= 0; i< obj.saveAcitJVEntryList.length; i++){
+    var i = 0;
+    while(i < obj.saveAcitJVEntryList.length){
       jvDatasList = obj.saveAcitJVEntryList[i];
-      jvDatasList.saveAcitAllocInvtIncome.push(this.jvDatasList.saveAcitAllocInvtIncome);
-       console.log(jvDatasList);
+      jvDatasList.saveAcitAllocInvtIncome = this.jvDatasList.saveAcitAllocInvtIncome;
+      console.log(JSON.stringify(jvDatasList))
+      i = i++;
     }
+
+
    /* this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
     	).subscribe((data:any) => {
       this.tranIdOut = data['tranIdOut'];
