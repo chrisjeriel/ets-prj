@@ -78,7 +78,7 @@ export class InvestmentsComponent implements OnInit {
           currRate : null,
           invtAmt  : null,
           incomeAmt: null,
-          bankCharge: 0,
+          bankCharge: null,
           whtaxAmt : null,
           matVal   : null,
           createUser: this.ns.getCurrentUser(),
@@ -89,7 +89,10 @@ export class InvestmentsComponent implements OnInit {
           amortized: null,
           priceCost: null,
           uneditable : ['invtStatus','currRate','priceCost','invtCd','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt'],
-          preTerminatedTag: null,
+          preTerminatedTag: 'N',
+          partialPullOutTag : 'N',
+          partialPullOutDate : null,
+          partialPullOutAmt : null,
           termDate: null,
           amortEff: null
         },
@@ -286,7 +289,6 @@ export class InvestmentsComponent implements OnInit {
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                              }
                                           }else {
-
                                                a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -414,6 +416,7 @@ export class InvestmentsComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data);
     if(data !== null){
       this.selectedData = data;
       this.invtRecord.createUser  = data.createUser;
