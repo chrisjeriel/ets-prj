@@ -198,7 +198,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
                     for (var i = data["approverList"].length - 1; i >= 0; i--) {
                       if (data["approverList"][i].userId == this.currentUserId) {
                         this.approveText = 'Approved';
-                        this.approver = this.currentUserId;
+                        this.approver = JSON.parse(window.localStorage.currentUser).username;
                       }
                     }
 

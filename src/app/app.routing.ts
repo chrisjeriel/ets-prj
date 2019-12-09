@@ -392,38 +392,165 @@ const appRoutes: Routes = [
     },
 
 
+    { path: 'acct-ar-listings', component: AcctArListingsComponent },
+    { path: 'payt-req', component: RequestForPaymentComponent },
+    { path: 'check-voucher', component: CheckVoucherComponent },
+    { path: 'journal-voucher', component: JournalVoucherComponent },
+	{ path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent,  canDeactivate: [UnsavedChangesGuard]},
+	{ path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard] },
+	{ path: 'profit-commission', component: ProfitCommissionComponent },
+	{ path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent },
+	{ path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
+	{ path: 'acct-it-edited-acct-entries', component: AcctItEditedAcctEntriesComponent },
+	{ path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
+	{ path: 'trial-balance', component: TrialBalanceComponent },
+	{ path: 'print-registers', component: RegistersComponent },
+	{ path: 'bordereaux', component: BordereauxComponent},
+	{ path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent },
+	{ path: 'edit-acct-entries', component: EditAccountingEntriesComponent },
+	{ path: 'cancel-transaction', component: CancelTransactionsComponent },
+	{ path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
+	{ path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
+	{ path: 'mon-end-data-chk-in-trust', component: MonEndDataChkComponent},
+	{ path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
+	{ path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
+	{ path: 'funds-held', component: FundsHeldComponent},
+	{ path: 'batch-os-takeup', component: BatchOsTakeupComponent},
+    
+
+    
     /*{ path: 'acct-ar-listings', component: AcctArListingsComponent,
     		canActivate: [AuthGuard, ModuleAccessGuard],
-    		data: { moduleId : 'ACIT001', verifyWithData: true }
+    		data: { moduleId : 'ACIT001' }
     },
 
     { path: 'payt-req', component: RequestForPaymentComponent,
     		canActivate: [AuthGuard, ModuleAccessGuard],
-    		data: { moduleId : 'ACIT016', verifyWithData: true }
+    		data: { moduleId : 'ACIT016' }
     },
 
     { path: 'check-voucher', component: CheckVoucherComponent,
     		canActivate: [AuthGuard, ModuleAccessGuard],
-    		data: { moduleId : 'ACIT028', verifyWithData: true }
+    		data: { moduleId : 'ACIT028' }
     },
-    
 
     { path: 'journal-voucher', component: JournalVoucherComponent,
     		canActivate: [AuthGuard, ModuleAccessGuard],
-    		data: { moduleId : 'ACIT031', verifyWithData: true }
+    		data: { moduleId : 'ACIT031' }
+    },
+
+    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent,  canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT046' }
+    },
+
+    { path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT048' }
+    },
+
+    { path: 'profit-commission', component: ProfitCommissionComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT049' }
+    },
+
+    { path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT050' }
+    },
+
+    { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT056' }
+    },
+    
+    // ACIT057	Edited Accounting Entries Inquiry
+    { path: 'acct-it-edited-acct-entries', component: AcctItEditedAcctEntriesComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT057' }
+    },
+
+    // ACIT058	Extract Accounting Entries
+    { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT058' }
+    },
+
+    // ACIT059	Extract Trial Balance
+    { path: 'trial-balance', component: TrialBalanceComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT059' }
+    },
+
+    // ACIT060	Accounting Register Reports
+    { path: 'print-registers', component: RegistersComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT060' }
+    },
+
+    // ACIT061	Bordereaux Reports
+    { path: 'bordereaux', component: BordereauxComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT061' }
+    },
+
+    // ACIT051	Change Transaction Status to New
+    { path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT051' }
+    },
+
+    // ACIT053	Edit Accounting Entries
+    { path: 'edit-acct-entries', component: EditAccountingEntriesComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT053' }
+    },
+
+    // ACIT052	Cancel Transactions
+    { path: 'cancel-transaction', component: CancelTransactionsComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT052' }
+    },
+
+    // ACIT054	Allocate Investment Income
+    { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard],
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT054' }
+    },
+
+    // ACIT055	Close/Open DCB
+    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT055' }
+    },
+
+    // ACIT062	Data Checking
+    { path: 'mon-end-data-chk-in-trust', component: MonEndDataChkComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT062' }
+    },
+
+    // ACIT063	Batch Production
+    { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT063' }
+    },
+
+    // ACIT066	Trial Balance
+    { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT066' }
+    },
+
+    //
+    { path: 'funds-held', component: FundsHeldComponent},
+
+    // ACIT064	Batch OS Losses
+    { path: 'batch-os-takeup', component: BatchOsTakeupComponent,
+    		canActivate: [AuthGuard, ModuleAccessGuard],
+    		data: { moduleId : 'ACIT064' }
     },*/
 
-    { path: 'acct-ar-listings', component: AcctArListingsComponent },
-
-    { path: 'payt-req', component: RequestForPaymentComponent },
-
-    { path: 'check-voucher', component: CheckVoucherComponent },
-    
-
-    { path: 'journal-voucher', component: JournalVoucherComponent },
-
-    
-    
 
     
     { path: 'clm-claim-processing', component: ClmClaimProcessingComponent },//, canDeactivate: [UnsavedChangesGuard] },
@@ -448,17 +575,17 @@ const appRoutes: Routes = [
     { path: 'generate-cv', component: GenerateCvComponent },
     
     { path: 'generate-payt-req', component: GeneratePaymentRequestComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'acct-it-cancelled-trans', component: AcctItCancelledTransactionsComponent },
-    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
-    { path: 'accounting-entries', component: AccountingEntriesComponent , canDeactivate: [UnsavedChangesGuard]},
-    { path: 'trial-balance', component: TrialBalanceComponent },
     
-    { path: 'investments', component: InvestmentsComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'print-registers', component: RegistersComponent },
-    { path: 'change-trans-stat-to-new', component: ChangeTransStatToNewComponent },
-    { path: 'edit-acct-entries', component: EditAccountingEntriesComponent },
-    { path: 'cancel-transaction', component: CancelTransactionsComponent },
-    { path: 'acct-it-edited-acct-entries', component: AcctItEditedAcctEntriesComponent },
+    { path: 'generate-jv', component: GenerateJvComponent , canDeactivate: [UnsavedChangesGuard]},
+    
+    
+    
+    
+    
+    
+    
+    
+    
     { path: 'generate-number-series', component: GenerateNumberSeriesComponent },
     { path: 'chart-of-accounts', component: ChartOfAccountsComponent },
     { path: 'generate-or', component: GenerateOrComponent },
@@ -489,22 +616,22 @@ const appRoutes: Routes = [
     { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent },
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent },
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent },
-    { path: 'acc-s-credit-debit-memo', component: InTrustCreditDebitComponent,  canDeactivate: [UnsavedChangesGuard]},
+    
     { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent },
     { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent },
     { path: 'print-registers-service', component: RegistersServiceComponent },
     { path: 'acct-srvc-inquiry-cncld-trans', component: AcctSrvcCancelledTransactionsComponent },
-    { path: 'mon-end-data-chk-in-trust', component: MonEndDataChkComponent},
-    { path: 'mon-end-batch-in-trust', component: MonEndBatchComponent},
-    { path: 'mon-end-trial-bal-in-trust', component: MonEndTrialBalComponent},
-    { path: 'funds-held', component: FundsHeldComponent},
-    { path: 'bordereaux', component: BordereauxComponent},
-    { path: 'batch-os-takeup', component: BatchOsTakeupComponent},
+    
+    
+    
+    
+    
+    
     { path: 'batch-or-printing', component: BatchOrPrintingComponent},
     { path: 'batch-invoice-printing', component: BatchInvoiceComponent},
     { path: 'acct-it-generate-cmdm', component: GenerateCMDMComponent, canDeactivate: [UnsavedChangesGuard]  },
-    { path: 'quarterly-stmt-of-acct', component: QuarterlyStmntOfAcctComponent },
-    { path: 'profit-commission', component: ProfitCommissionComponent },
+    
+    
     { path: 'user-group-maintenance', component: UserGroupsMaintenanceComponent },
     { path: 'users', component: UsersComponent },
     { path: 'users-maintenance', component: UsersMaintenanceComponent },
@@ -569,7 +696,7 @@ const appRoutes: Routes = [
     { path: 'mtn-bank', component: BankComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-acct', component: AccountingMtnComponent},
     { path: 'mtn-bank-acct', component: BankAccountComponent, canDeactivate: [UnsavedChangesGuard] },
-    { path: 'allocate-investment', component: AllocateInvestmentIncomeComponent, canDeactivate: [UnsavedChangesGuard] },
+    
     { path: 'mtn-bus-type', component: BusinessTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-dcb-user', component: DcbUserComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'mtn-employee', component: EmployeeComponent, canDeactivate: [UnsavedChangesGuard] },
@@ -589,7 +716,7 @@ const appRoutes: Routes = [
     { path: 'update-qu-attachment', component: UpdateQuoteAttachmentComponent},
     { path: 'create-int-comp', component: CreateInternalCompComponent},
     { path: 'copy-quote-details', component: CopyQuoteDetailsComponent},
-    { path: 'acit-close-open-dcb', component: CloseOpenDcbComponent},
+    
     { path: 'uploader', component: UploaderComponent},
     { path: 'acse-close-open-dcb', component: AcseCloseOpenDcbComponent},
     // otherwise redirect to home
