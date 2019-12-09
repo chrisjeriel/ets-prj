@@ -568,12 +568,15 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     while(i < obj.saveAcitJVEntryList.length){
       jvDatasList = obj.saveAcitJVEntryList[i];
       jvDatasList.saveAcitAllocInvtIncome = this.jvDatasList.saveAcitAllocInvtIncome;
-      console.log(JSON.stringify(jvDatasList))
-      i = i++;
+      console.log(JSON.stringify(jvDatasList));
+      
+      i++;
     }
 
+    console.log(this.tranIdOut);
+    console.log(this.result);
 
-   /* this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
+    /*this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
     	).subscribe((data:any) => {
       this.tranIdOut = data['tranIdOut'];
       console.log(data);
@@ -589,6 +592,24 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         this.result= true;
       }
     });*/
+  }
+
+  saveJv(obj){
+    this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result) )
+      ).subscribe((data:any) => {
+      this.tranIdOut = data['tranIdOut'];
+      console.log(data);
+
+      if(data['returnCode'] != -1) {
+         this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error-message";
+        this.dialogMessage = "Unable to allocate transaction. An error occured."
+        this.successDialog.open();
+        this.result= false;
+      }else{
+        this.result= true;
+      }
+    });
   }
 
   resultJVAllocation(tranIdout,res){
