@@ -374,6 +374,7 @@ export class CvEntryComponent implements OnInit {
       console.log(data);
       this.fromSave = true;
       this.spoiled = true;
+      
       if(data['returnCode'] == -1){
         this.saveAcitCv.tranId = data['tranIdOut'];
         this.saveAcitCv.mainTranId = data['mainTranIdOut'];
