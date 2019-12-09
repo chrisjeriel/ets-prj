@@ -8,7 +8,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
-
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-users',
@@ -169,16 +169,17 @@ export class UsersComponent implements OnInit {
     confirmPassword: "",
   }
 
-  constructor(private securityService: SecurityService, private ns: NotesService, public modalService: NgbModal, private userService: UserService) { }
+  constructor(private securityService: SecurityService, private ns: NotesService, public modalService: NgbModal, private userService: UserService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Sec | Security Users");
     this.getMtnUsers();
   }
 
   getMtnUsers() {
       this.passDataUsers.tableData = [];
       this.userService.retMtnUsers(null).subscribe((data: any) => {
-        for(var i =0; i < data.usersList.length;i++){
+        for(var i = 0; i < data.usersList.length;i++){
           this.passDataUsers.tableData.push(data.usersList[i]);
           this.passDataUsers.tableData[i].showMG = 1;
           this.passDataUsers.tableData[i].uneditable = ['userId', 'userGrpDesc'];

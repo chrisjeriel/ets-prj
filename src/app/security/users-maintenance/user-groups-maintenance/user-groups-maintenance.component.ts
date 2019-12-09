@@ -7,6 +7,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-groups-maintenance',
@@ -139,9 +140,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   constructor(private securityService: SecurityService, public modalService: NgbModal, 
               private maintenanceService: MaintenanceService, private ns: NotesService,
-              private userService: UserService) { }
+              private userService: UserService, private titleService: Title) { }
 
   ngOnInit() {
+    this.titleService.setTitle("Sec | User Groups Maintenance");
     this.getMtnUserGrp();
   }
 
