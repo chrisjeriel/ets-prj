@@ -402,6 +402,7 @@ export class InvestmentsComponent implements OnInit {
                              {key: "matDateFrom", search: this.matDateFrom },
                              {key: "matDateTo", search: this.matDateTo },
                              ]; 
+       console.log(this.searchParams);
        this.retrieveInvestmentsList(this.searchParams);
      }
 
@@ -1226,6 +1227,9 @@ update(data){
                                    principal = parseFloat(a.invtAmt);
                                    matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
                                    time = parseFloat(matPer)/360;
+                                   console.log(principal);
+                                   console.log(matPer);
+                                   console.log(time);
                                  }else if (a.partialPullOutTag === 'Y') {
                                    principal = a.invtAmt - a.partialPullOutAmt;
                                    matPer = a.matPeriod;                    
@@ -1245,11 +1249,8 @@ update(data){
                                      var res = a.invtCd.split("-");
 
                       
-                                       if(Number.isNaN(a.bankCharge)){
-                                         matVal = principal + invtIncome - withHTaxAmt;
-                                       } else {
-                                         matVal = principal + invtIncome - a.bankCharge - withHTaxAmt;
-                                       }
+                                       matVal = principal + invtIncome - a.bankCharge - withHTaxAmt;
+     
             
                                   if (a.preTerminatedTag === 'Y'){
                                       this.acitInvtReq.saveAcitInvestments.push({
@@ -1368,6 +1369,11 @@ update(data){
 
                                                         if (a.preTerminatedTag === 'Y'){
                                                             a.termDate = this.ns.toDateTimeString(a.termDate);
+
+                                                            if (a.invtStatus === 'O'){
+                                                              a.invtStatus = 'T';
+                                                            }
+
                                                         }else {
                                                             a.preTerminatedTag = 'N';
                                                             a.termDate = null;
