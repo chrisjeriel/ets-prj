@@ -560,7 +560,16 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
   saveJV(obj){
     console.log(obj);
-    this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
+    let jvDatasList : any = {
+          "saveAcitAllocInvtIncome" : []
+    }
+
+    for(var i= 0; i< obj.saveAcitJVEntryList.length; i++){
+      jvDatasList = obj.saveAcitJVEntryList[i];
+      jvDatasList.saveAcitAllocInvtIncome.push(this.jvDatasList.saveAcitAllocInvtIncome);
+       console.log(jvDatasList);
+    }
+   /* this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
     	).subscribe((data:any) => {
       this.tranIdOut = data['tranIdOut'];
       console.log(data);
@@ -575,7 +584,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
       }else{
         this.result= true;
       }
-    });
+    });*/
   }
 
   resultJVAllocation(tranIdout,res){
