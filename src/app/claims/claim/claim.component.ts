@@ -118,7 +118,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   ngOnDestroy(){
     this.sub.unsubscribe();
 
-    if (!this.isInquiry) {
+    if (!this.isInquiry && this.stompClient != undefined) {
       this.wsDisconnect();
     }
   }

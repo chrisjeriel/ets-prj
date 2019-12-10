@@ -9,7 +9,7 @@
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt || (disableCov && policyInfo.fromInq == 'true')" title="Coverage">
 			<ng-template ngbTabContent>
-				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true"></app-pol-coverage>
+				<app-pol-coverage [policyInfo]="policyInfo" [alteration]="true" (alopTab)="policyInfo.showPolAlop=$event"></app-pol-coverage>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [disabled]="us.fromCreateAlt" title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">

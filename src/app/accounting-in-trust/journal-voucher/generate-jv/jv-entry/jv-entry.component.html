@@ -186,7 +186,7 @@
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut " (click)="onClickCancelJV()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" [class.cust-btn-disabled]="printBut" (click)="onClickPrint()"><a>Print</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut " (click)="upload()"><a>Upload Acct. Ent</a></button>
+                            <button *ngIf="canUploadAcctEnt" type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut " (click)="upload()"><a>Upload Acct. Ent</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" (click)="onClickCMDM()"><a>Debit/Credit Memo</a></button>
                         </div>
@@ -224,14 +224,16 @@
         <div class="form-row custom-row-inline-inset">
             <div class="input-group">
                 <label class="form-control-sm col-sm-2 text-right labels">File</label>
-                <input type="text" class="form-control form-control-sm col-sm-8" readonly [(ngModel)]="entryData.createUser">
-                <button class="fa fa-folder-open btn-file" title="Open File" style="height: 21px !important;margin-left: 6px;">
+                <input type="text" class="form-control form-control-sm col-sm-8" readonly [ngModel]="fileName">
+                <button class="fa fa-folder-open btn-file" title="Open File" style="height: 21px !important;margin-left: 6px;" (click)="openFile()">
+                    <input type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" (change)="validateFile($event)" id="upload" class="file-hidden">
                 </button>
             </div>
         </div>
     </div>
     <div footer class="text-center">
-        <button type="button" class="cust-btn" (click)="acctEntryMdl.closeModal();"><a>Upload</a></button>
+        <span class="fa fa-spinner fa-spin" style="font-size: 15px;" *ngIf="uploadLoading"></span>
+        <button type="button" class="cust-btn" (click)="uploadAcctEntries();" [disabled]="uploadLoading" [class.cust-btn-disabled]="uploadLoading"><a>Upload</a></button>
         <button type="button" class="cust-btn" (click)="acctEntryMdl.closeModal();"><a>Cancel</a></button>
     </div>
 </app-modal>
@@ -334,3 +336,4 @@
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-confirm-save id="JVEntry" (onYes)="saveJV()"></app-confirm-save>
 <app-cancel-button (onYes)="saveJV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
+<app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>

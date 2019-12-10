@@ -17,7 +17,7 @@ import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
 import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
-
+import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
 
 @Component({
   selector: 'app-cv-entry-service',
@@ -41,6 +41,8 @@ export class CvEntryServiceComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('myForm') form                   : NgForm;
   @ViewChild('override') overrideLogin        : OverrideLoginComponent;
+  @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild(UploaderComponent) up            : UploaderComponent;
 
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
@@ -102,6 +104,12 @@ export class CvEntryServiceComponent implements OnInit {
   spoiled              : any;
   approvalCd           : any;
 
+  uploadLoading: boolean = false;
+  acctEntryFile: any;
+  fileName: string = '';
+  emitMessage: string = '';
+  canUploadAcctEnt: boolean = true;
+
   passDataLov  : any = {
     selector     : '',
     payeeClassCd : ''
@@ -115,6 +123,8 @@ export class CvEntryServiceComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-Serv | CV Entry");
+
+    this.canUploadAcctEntMethod();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(this.passData.tranId == '') {
@@ -403,7 +413,7 @@ export class CvEntryServiceComponent implements OnInit {
         this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
         this.warnMdl.openNoClose();
       }else if(data['returnCode'] == -100){
-        this.warnMsg = 'There is no Check No. available for this Account No.';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }
     });
@@ -468,7 +478,11 @@ export class CvEntryServiceComponent implements OnInit {
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.saveAcseCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcseCv.checkNo = chkNo[0].checkNo;
         }
       }
@@ -476,7 +490,11 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcseCv.bankAcct = data.data.bankAcctCd;
       var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
+      if(chkNo.length == 0){
+        this.saveAcseCv.checkNo = '';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+        this.warnMdl.openNoClose();
+      }else{
         this.saveAcseCv.checkNo = chkNo[0].checkNo;
       }
     }else if(from.toLowerCase() == 'class'){
@@ -495,7 +513,11 @@ export class CvEntryServiceComponent implements OnInit {
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.saveAcseCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcseCv.checkNo = chkNo[0].checkNo;
         } 
       }
@@ -649,6 +671,98 @@ export class CvEntryServiceComponent implements OnInit {
         this.confirmMdl.openNoClose();
       }
     }
+  }
+
+
+upload(){
+    this.upAcctEntMdl.openNoClose();
+  }
+
+  //open file box
+  openFile(){
+    $('#upload').trigger('click');
+  }
+
+//validate file to be uploaded
+  validateFile(event){
+    console.log(event.target.files);
+    var validate = '';
+    validate = this.up.validateFiles(event);
+
+    if(validate.length !== 0 ){
+      this.acctEntryFile = undefined;
+      this.fileName = '';
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = validate;
+      this.success.open();
+    }else{
+      this.acctEntryFile = event;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+//upload accounting entries
+uploadAcctEntries(){
+  var result = '';
+  this.emitMessage = '';
+   if(this.acctEntryFile == undefined){
+     this.dialogIcon = 'info';
+     this.dialogMessage = 'No file selected.';
+     this.success.open();
+   }else{
+     this.uploadLoading = true;
+     this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACSE', 'CV', this.saveAcseCv.tranId);
+     /*setTimeout(()=>{
+       if(this.emitMessage.length === 0){
+         this.dialogIcon = 'info';
+         this.dialogMessage = 'Upload successfully.';
+         this.fileName = '';
+         this.acctEntryFile = undefined;
+         this.success.open();
+       }else{
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = this.emitMessage;
+         this.success.open();
+       }
+
+       this.acctEntryMdl.closeModal(); 
+     }, 0);*/
+   }
+  }
+
+  uploaderActivity(event){
+    console.log(event);
+    if(event instanceof Object){ //If theres an error regarding the upload
+      this.dialogIcon = 'error-message';
+     this.dialogMessage = event.message;
+     this.success.open();
+     this.uploadLoading = false;
+    }else{
+      if(event.toUpperCase() == 'UPLOAD DONE'){
+            this.uploadLoading = false;
+        }else if(event.toUpperCase() == 'SUCCESS'){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Upload successfully.';
+          this.fileName = '';
+          this.acctEntryFile = undefined;
+          this.success.open();
+          this.uploadLoading = false;
+          this.upAcctEntMdl.closeModal();
+        }
+    }
+  }
+
+  canUploadAcctEntMethod(){
+    this.mtnService.getMtnParameters('V', 'ACSECV_ACCTENTRY_UPLOAD').subscribe(
+       (data:any)=>{
+         if(data.parameters.length !== 0){
+            this.canUploadAcctEnt = data.parameters[0].paramValueV == 'Y';
+         }
+         else{
+           this.canUploadAcctEnt = false;
+         }
+       }
+    );
   }
 
 }

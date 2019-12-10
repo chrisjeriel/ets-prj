@@ -90,28 +90,24 @@ export class UsersComponent implements OnInit {
   }
 
   PassDataModule: any = {
-    tableData: [],
+    tableData:[],
     tHeader: ['Module Id', 'Description'],
     dataTypes: ['text', 'text'],
-    keys: ['moduleId', 'moduleDesc'],
+    addFlag:true,
+    genericBtn :'Delete',
+    infoFlag:true,
+    paginateFlag:true,
     magnifyingGlass: ['moduleId'],
     nData: {
       showMG: 1,
       moduleId: null,
       moduleDesc: null
     },
+    keys: ['moduleId', 'moduleDesc'],
+    uneditable: [true, true],
     pageID: 2,
-    addFlag: true,
-    deleteFlag: true,
-    btnDisabled: true,
-    disableAdd: true,
-    pageLength:5,
-    searchFlag: true,
-    paginateFlag: true,
-    infoFlag: true,
-    //widths: [100,400],
-    uneditable: [true,true],
-  }
+    disableAdd: true
+  };
 
   PassDataModuleTransUserGroup: any = {
     tableData: [],
@@ -161,7 +157,9 @@ export class UsersComponent implements OnInit {
   saveMtnUserParams:any = {};
   fromLOV:string = "";
   saveTranList:any = [];
+  delTranList:any = [];
   saveModuleList:any = [];
+  delModuleList: any = [];
   confirmMethod:any;
   confirmationMessage:string = "";
   changePass:any = {
@@ -209,7 +207,6 @@ export class UsersComponent implements OnInit {
   }
 
   onRowClickTrans(data, accessLevel) {
-    // transData
     if(data != null){
       this.transData = data;
       this.PassDataModuleTrans.disableGeneric = data == null ? true : false;
@@ -220,8 +217,12 @@ export class UsersComponent implements OnInit {
       this.PassDataModule.btnDisabled = false;
     }else{
       this.transData = {};
+      this.PassDataModule.tableData = [];
+      this.PassDataModuleUserGroup.tableData = [];
       this.PassDataModule.disableAdd = true;
       this.PassDataModule.btnDisabled = true;
+      this.userModules.refreshTable();
+      this.userGroupModules.refreshTable();
     }
   }
 
@@ -231,17 +232,24 @@ export class UsersComponent implements OnInit {
     this.userTransactions.confirmDelete();
   }
 
+  onClickModuleDelete(){
+    this.userModules.indvSelect.deleted = true;
+    this.userModules.selected  = [this.userModules.indvSelect];
+    this.userModules.confirmDelete();
+  }
+
   getModules(accessLevel) {
     this.PassDataModule.tableData = [];
     this.PassDataModuleUserGroup.tableData = [];
 
     if (accessLevel == 'USER') {
       this.userModules.overlayLoader = true;
-
       this.securityService.getModules(accessLevel, this.userData.userId, null, this.transData.tranCd, null).subscribe((data: any) => {
+        console.log(data)
+        this.PassDataModule.tableData = [];
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModule.tableData.push(data.modules[i]);
-          this.PassDataModule.tableData[i].showMG = 1;
+          this.PassDataModule.tableData[i].showMG = 0;
           this.PassDataModule.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
 
@@ -253,7 +261,7 @@ export class UsersComponent implements OnInit {
       this.securityService.getModules(accessLevel, null, this.userData.userGrp, this.transData.tranCd, null).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModuleUserGroup.tableData.push(data.modules[i]);
-          this.PassDataModuleUserGroup.tableData[i].showMG = 1;
+          this.PassDataModuleUserGroup.tableData[i].showMG = 0;
           this.PassDataModuleUserGroup.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
 
@@ -280,7 +288,7 @@ export class UsersComponent implements OnInit {
 
       if (accessLevel == 'USER') {
         this.userTransactions.overlayLoader = true;
-
+        this.PassDataModuleTrans.tableData = [];
         this.securityService.getTransactions(accessLevel, this.userData.userId, null, null).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataModuleTrans.tableData.push(data.transactions[i]);
@@ -290,6 +298,7 @@ export class UsersComponent implements OnInit {
           }
 
           this.userTransactions.refreshTable();
+          this.userTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[0]);
         });
       } else if (accessLevel == 'USER_GROUP') {
         this.userGroupTransactions.overlayLoader = true;
@@ -302,6 +311,7 @@ export class UsersComponent implements OnInit {
           }
 
           this.userGroupTransactions.refreshTable();
+          this.userGroupTransactions.onRowClick(null,this.PassDataModuleTransUserGroup.tableData[0]);
         });
       }
 
@@ -328,8 +338,6 @@ export class UsersComponent implements OnInit {
     if (from == 'userGrp') {
       this.passLOVData.from = from;
       this.passLOVData.selector = 'userGrp';
-      this.usersList.tableData.filter((a)=>{return !a.deleted}).map(a=>a.userGrp);
-      
       setTimeout(() => {
         this.userGrp.openLOV();
       });
@@ -339,7 +347,7 @@ export class UsersComponent implements OnInit {
       this.passLOVData.from = from;
       this.passLOVData.selector = 'mtnTransactions';
       this.userTransactions.tableData.filter((a)=>{return !a.deleted}).map(a=>a.tranCd);
-      
+      this.passLOVData.hide = this.PassDataModuleTrans.tableData.filter((a)=>{return a.tranCd !== null && !a.deleted}).map(a=>{return a.tranCd.toString()});
       setTimeout(() => {
         this.lovComponent.openLOV();
       });
@@ -350,7 +358,7 @@ export class UsersComponent implements OnInit {
       this.passLOVData.selector = 'mtnModules';
       this.passLOVData.tranCd = this.transData.tranCd;
       this.userModules.tableData.filter((a)=>{return !a.deleted}).map(a=>a.moduleId);
-      
+      this.passLOVData.hide = this.PassDataModule.tableData.filter((a)=>{return a.moduleId !== null && !a.deleted}).map(a=>{return a.moduleId.toString()});
       setTimeout(() => {
         this.lovComponent.openLOV();
       });
@@ -372,7 +380,7 @@ export class UsersComponent implements OnInit {
         this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].tranDesc = data.data[i].tranDesc;
         this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].showMG = 0;
       }
-      $('#cust-table-container').addClass('ng-dirty');
+      this.userTransactions.markAsDirty();
       this.userTransactions.refreshTable();
     } else if (this.fromLOV == 'modules') {
       this.PassDataModule.tableData = this.PassDataModule.tableData.filter(a=>a.showMG!=1);
@@ -382,9 +390,9 @@ export class UsersComponent implements OnInit {
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].tranCd = this.transData.tranCd;
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleId = data.data[i].moduleId;
         this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleDesc = data.data[i].moduleDesc;
-        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].showMG = 1;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].showMG = 0;
       }
-      $('#cust-table-container').addClass('ng-dirty');
+      this.userModules.markAsDirty();
       this.userModules.refreshTable();
     }
   }
@@ -393,7 +401,7 @@ export class UsersComponent implements OnInit {
       this.passDataUsers.tableData[this.selRecordRow].edited = true;
       this.passDataUsers.tableData[this.selRecordRow].userGrp = data.data.userGrp;
       this.passDataUsers.tableData[this.selRecordRow].userGrpDesc = data.data.userGrpDesc;
-      $('#cust-table-container').addClass('ng-dirty');
+      this.usersList.markAsDirty();
       this.usersList.refreshTable();
       this.ns.lovLoader(data.ev, 0);
   }
@@ -420,11 +428,13 @@ export class UsersComponent implements OnInit {
 
       
 
-      if (this.saveTranList.length > 0 || this.saveModuleList.length > 0) {
-          if (this.saveTranList.length > 0) {
+      if (this.saveTranList.length > 0 || this.saveModuleList.length > 0 ||
+          this.delTranList.length > 0 || this.delModuleList.length > 0) {
+          if (this.saveTranList.length > 0 || this.delTranList.length > 0) {
             let saveUserTransactions:any = {
               accessLevel : 'USER',
-              transactionList : []
+              transactionList : [],
+              delTranList: []
             }
 
             for (let rec of this.saveTranList) {
@@ -435,24 +445,29 @@ export class UsersComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(tran);
               saveUserTransactions.transactionList.push(tran);
             }
 
-
-            console.log("saveUserTransactions");
-            console.log(saveUserTransactions);
-
+            for (let rec of this.delTranList) {
+              var moduleTran = {
+                userId: rec.userId,
+                tranCd: rec.tranCd
+              };
+              saveUserTransactions.delTranList.push(moduleTran);
+            }
             this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
-                console.log("saveTransactions return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
                 } else{
-                  this.dialogIcon = "";
-                  this.successDialog.open();
-                  this.getTransactions('USER');
+                  if(this.saveModuleList.length > 0){
+                    this.getTransactions('USER');
+                  }else{
+                    this.dialogIcon = "";
+                    this.successDialog.open();
+                    this.getTransactions('USER');
+                  }
+                  this.userTransactions.markAsPristine();
                 }
             },
             (err) => {
@@ -460,10 +475,11 @@ export class UsersComponent implements OnInit {
             });
           }
 
-          if (this.saveModuleList.length > 0) {
+          if (this.saveModuleList.length > 0 || this.delModuleList.length > 0) {
             let saveUserModules:any = {
               accessLevel : 'USER',
-              moduleList : []
+              moduleList : [],
+              delModuleList : []
             }
 
             for (let rec of this.saveModuleList) {
@@ -475,17 +491,19 @@ export class UsersComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(mod);
               saveUserModules.moduleList.push(mod);
             }
-
-
-            console.log("saveUserModules");
-            console.log(saveUserModules);
-
+            
+            for (let rec of this.delModuleList) {
+              var del = {
+                userId: rec.userId,
+                tranCd: rec.tranCd,
+                moduleId: rec.moduleId
+              };
+              saveUserModules.delModuleList.push(del);
+            }
+            console.log(saveUserModules.delModuleList);
             this.securityService.saveModules(saveUserModules).subscribe((data:any)=>{
-                console.log("saveModules return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
@@ -493,6 +511,7 @@ export class UsersComponent implements OnInit {
                   this.dialogIcon = "";
                   this.successDialog.open();
                   this.getModules('USER');
+                  this.userModules.markAsPristine();
                 }
             },
             (err) => {
@@ -515,28 +534,29 @@ export class UsersComponent implements OnInit {
 
   prepareUserTrans() {
     this.saveTranList = [];
+    this.delTranList = [];
     for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
-      if (this.PassDataModuleTrans.tableData[i].edited == true) {
+      if(this.PassDataModuleTrans.tableData[i].deleted){
+        this.PassDataModuleTrans.tableData[i].userId = this.userData.userId;
+        this.delTranList.push(this.PassDataModuleTrans.tableData[i]);
+      }
+
+      if (this.PassDataModuleTrans.tableData[i].edited) {
         this.PassDataModuleTrans.tableData[i].userId = this.userData.userId;
         this.PassDataModuleTrans.tableData[i].remarks = 'TestData';
         this.PassDataModuleTrans.tableData[i].createUser = this.ns.getCurrentUser();
         this.PassDataModuleTrans.tableData[i].updateUser = this.ns.getCurrentUser();
-        
-
         this.saveTranList.push(this.PassDataModuleTrans.tableData[i]);
       }
     }
-    
-    console.log("this.saveTranList");
-    console.log(this.saveTranList);
-
   }
 
   prepareUserModules() {
     this.saveModuleList = [];
+    this.delModuleList = [];
 
     for (var i = 0; i < this.PassDataModule.tableData.length; i++) {
-      if (this.PassDataModule.tableData[i].edited) {
+      if (this.PassDataModule.tableData[i].edited && !this.PassDataModule.tableData[i].deleted) {
         this.PassDataModule.tableData[i].userId = this.userData.userId;
         this.PassDataModule.tableData[i].remarks = 'TestData Modules';
         this.PassDataModule.tableData[i].createUser = this.ns.getCurrentUser();
@@ -544,10 +564,13 @@ export class UsersComponent implements OnInit {
 
         this.saveModuleList.push(this.PassDataModule.tableData[i]);
       }
+
+      if(this.PassDataModule.tableData[i].deleted){
+        this.PassDataModule.tableData[i].userId = this.userData.userId;
+        this.PassDataModule.tableData[i].tranCd = this.userTransactions.indvSelect.tranCd;
+        this.delModuleList.push(this.PassDataModule.tableData[i]);
+      }
     }
-    
-    console.log("this.saveModuleList");
-    console.log(this.saveModuleList);
   }
 
   onClickConfirmation(method) {
@@ -566,9 +589,9 @@ export class UsersComponent implements OnInit {
     this.confirm.confirmModal();
   }
 
-  onClickSaveMain() {
+  onClickSaveMain(cancel?) {
+    this.cancelFlag = cancel !== undefined;
     try {
-      console.log("Data to save:");
       this.prepareData();
 
       this.saveMtnUserParams = {
@@ -577,8 +600,6 @@ export class UsersComponent implements OnInit {
 
       if (this.saveMtnUserParams.usersList.length > 0) {
         this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
-            console.log("saveMtnUser return data");
-            console.log(data);
             if(data['returnCode'] == 0) {
               this.dialogIcon = "error";
               this.successDialog.open();
@@ -616,9 +637,6 @@ export class UsersComponent implements OnInit {
         this.saveUsersList.push(this.passDataUsers.tableData[i]);
       }
     }
-
-    console.log("saveUsersList : ");
-    console.log(this.saveUsersList);
   }
 
   confirmResetPassword() {
@@ -633,8 +651,6 @@ export class UsersComponent implements OnInit {
 
     if (this.saveMtnUserParams.usersList.length > 0) {
       this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
-          console.log("saveMtnUser return data");
-          console.log(data);
           if(data['returnCode'] == 0) {
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -652,21 +668,12 @@ export class UsersComponent implements OnInit {
   }
 
   confirmChangePassword() {
-
-    console.log("this.changePass.oldPassword : " + this.changePass.oldPassword);
-    console.log("this.usersList.indvSelect.password : " + this.usersList.indvSelect.password);
-    console.log("this.changePass.newPassword : " + this.changePass.newPassword);
-    console.log("this.changePass.confirmPassword : " + this.changePass.confirmPassword);
-
     if (this.changePass.oldPassword == '' || this.changePass.newPassword == '' || this.changePass.confirmPassword == '') {
       this.dialogIcon = "error";
       this.successDialog.open();
     } else {
 
       this.securityService.secEncryption(this.changePass.oldPassword).subscribe((data:any)=>{
-          console.log("secEncryption");
-          console.log(data);
-
           if (data.password != this.usersList.indvSelect.password) {
             this.dialogIcon = "error-message";
             this.dialogMessage = 'Old password mismatched.';
@@ -692,8 +699,6 @@ export class UsersComponent implements OnInit {
 
           if (this.saveMtnUserParams.usersList.length > 0) {
             this.userService.saveMtnUser(this.saveMtnUserParams).subscribe((data:any)=>{
-                console.log("saveMtnUser return data");
-                console.log(data);
                 if (data["errorList"].length > 0) {
                   this.dialogIcon = "error";
                   this.dialogMessage = data["errorList"][0].errorMessage;
@@ -736,5 +741,9 @@ export class UsersComponent implements OnInit {
   userGroupAccess(){
     this.getTransactions('USER_GROUP');
     $('#userGroupAccess #modalBtn').trigger('click');
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }
