@@ -200,7 +200,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   onClickSave(){
   	var errorFlag = false;
   	for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(this.passData.tableData[i].srcMaturityValue !== this.passData.tableData[i].invtAmt){
+      if(this.passData.tableData[i].srcMaturityValue !== this.passData.tableData[i].invtAmt && !this.passData.tableData[i].deleted){
       	errorFlag = true;
       }
     }
