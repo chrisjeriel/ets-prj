@@ -33,6 +33,7 @@ export class PolDistComponent implements OnInit {
 	policyListingData: any = {
 		tableData: [],
 		tHeader: ['Policy No.', 'Ceding Company', 'Insured', 'Risk'],
+		sortKeys:['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
 		dataTypes: ['text', 'text', 'text', 'text'],
 		pageLength: 10,
 		pagination: true,
