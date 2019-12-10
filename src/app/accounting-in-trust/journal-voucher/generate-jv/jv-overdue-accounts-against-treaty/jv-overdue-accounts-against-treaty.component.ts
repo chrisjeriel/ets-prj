@@ -299,7 +299,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     });
 
     this.passData.tableData = this.passData.tableData.filter(a => a.qsoaId != '');
-
+    this.quarterTable.onRowClick(null,this.passData.tableData[0]);
     this.quarterTable.refreshTable();
     this.quarterTable.markAsDirty();
   }
