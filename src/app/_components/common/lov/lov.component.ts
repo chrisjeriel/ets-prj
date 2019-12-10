@@ -1211,7 +1211,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'accountName','accountNo'];
       this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{ 
-
+        console.log(this.passData);
         this.passTable.tableData = (this.passData.from == 'acit')?a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null)
                                                                  :a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acSeGlDepNo != null);
         this.table.refreshTable();
