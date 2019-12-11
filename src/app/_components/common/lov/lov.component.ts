@@ -98,7 +98,7 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'osQsoa'){
-            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
@@ -889,6 +889,7 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
+        (this.passData.from == undefined)?this.passData.from='':'';
         if(this.passData.from.toLowerCase() == 'prq-ins'){
           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
         }else{

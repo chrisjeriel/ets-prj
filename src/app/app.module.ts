@@ -496,6 +496,7 @@ import { UploaderComponent } from './_components/common/uploader/uploader.compon
 import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew-exp-policy/renew-exp-policy.component';
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
+import { CancelArCvJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-ar-cv-jv-service/cancel-ar-cv-jv-service.component';
 
 @NgModule({
     imports: [
@@ -996,6 +997,7 @@ import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-c
         RenewExpPolicyComponent,
         CloseOpenDcbComponent,
         AcseCloseOpenDcbComponent,
+        CancelArCvJvServiceComponent,
     ],
 
   	providers: [

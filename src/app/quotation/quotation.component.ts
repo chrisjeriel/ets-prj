@@ -106,13 +106,13 @@ export class QuotationComponent implements OnInit, OnDestroy {
           console.log(params);
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
       });
-      if (!this.inquiryFlag) {
+      if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
         this.wsConnect();
       }
 	}
 
   ngOnDestroy() {
-    if (!this.inquiryFlag) {
+    if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null && this.stompClient != undefined) {
       this.wsDisconnect();
     }
   }
@@ -198,7 +198,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
                     for (var i = data["approverList"].length - 1; i >= 0; i--) {
                       if (data["approverList"][i].userId == this.currentUserId) {
                         this.approveText = 'Approved';
-                        this.approver = this.currentUserId;
+                        this.approver = JSON.parse(window.localStorage.currentUser).username;
                       }
                     }
 

@@ -3257,7 +3257,6 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseBankDetails',{params});	
 	}
 
-/////////////////////////////////////////////////////////////////////
 	getAcseEditedAcctEntries(tranId){
 		const params = new HttpParams()
 			.set('tranId', tranId);
@@ -3300,6 +3299,22 @@ export class AccountingService {
 			.set('histNo', (histNo == null || histNo == undefined ? '' : histNo));
 
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcctEntBackupServ',{params});	
+	}
+
+	updateAcseStat(params){
+		let header : any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		};
+		return this.http.post(environment.prodApiUrl + '/acct-serv-service/updateAcseStat',JSON.stringify(params),header);
+	}
+
+	getAcitClmHist(reqId?,itemNo?){
+		const params = new HttpParams()
+			.set('reqId', (reqId == null || reqId == undefined ? '' : reqId))
+			.set('itemNo', (itemNo == null || itemNo == undefined ? '' : itemNo));
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitClmHist',{params});	
 	}
 	
 	saveAcseDCBNo(params){

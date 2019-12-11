@@ -50,7 +50,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (!this.inqFlag) {
+    if (!this.inqFlag && this.stompClient != undefined) {
       this.wsDisconnect();
     }
   }

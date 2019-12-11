@@ -69,7 +69,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    if (!this.fromInq) {
+    if (!this.fromInq && this.stompClient != undefined) {
       this.wsDisconnect();
     }
   }

@@ -86,46 +86,78 @@
 			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">=======================</div>
 		</div>
 	  <div class="row">
-		<div class="col-sm-6">
-			<fieldset class="scheduler-border" style="padding-bottom: 10px !important;">
+	  	<div class="col-sm-1"></div>
+		<div class="col-sm-5" style="padding-right: 5px;">
+			<fieldset class="scheduler-border" style="padding-bottom: 10px !important; height: 100% !important;">
 				<legend class="scheduler-border">Summary</legend>
 					<div class="custom-row-inline-inset">
-						<div class="input-group" style="margin-bottom: -25px !important;">
+						<!-- <div class="input-group" style="margin-bottom: -25px !important;">
 							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT - Year {{ yearParam }}</label>
 							<label class="form-control-sm col-sm-3">{{ profitCurrYear | number: '1.2-2'}}</label>
 						</div>
-							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year {{ yearParam - 1 }}</label>
-								<label class="form-control-sm col-sm-3">{{ profitLastYear | number: '1.2-2' }}</label>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">LESS: LOSS CARRIED FORWARD - Year {{ yearParam - 1 }}</label>
+							<label class="form-control-sm col-sm-3">{{ profitLastYear | number: '1.2-2' }}</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+							<label class="form-control-sm col-sm-3">-----------------------</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year {{ yearParam }}</label>
+							<label class="form-control-sm col-sm-3">{{ carriedForward | number: '1.2-2' }}</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+							<label class="form-control-sm col-sm-3">x 20%</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -25px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+							<label class="form-control-sm col-sm-3">-----------------------</label>
+						</div>
+						<div class="input-group" style="margin-bottom: -30px !important;">
+							<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT COMMISSION</label>
+							<label class="form-control-sm col-sm-3">{{ profitCommission | number: '1.2-2' }}</label>
+						</div> -->
+
+						<ng-container *ngIf="summaryArr.length !== 0">
+							<ng-container *ngFor="let x of summaryArr; let i = index">
+								<div *ngIf="x.year != 0" class="input-group" style="margin-bottom: -25px !important;">
+									<label *ngIf="x.year == 1 && i > 0" class="form-control-sm col-sm-1" style="padding-left:0px !important;text-align: left !important;">{{ i == indx ? 'LESS: ' : ''}}</label>
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x.carryDesc }}</label>
+									<label class="form-control-sm col-sm-4" style="padding-right: 0;">{{ x.carryAmt | number: '1.2-2' | negativeAmount}}</label>
+								</div>
+								<div *ngIf="x.year == 0" class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+									<label class="form-control-sm col-sm-4" style="padding-right: 0;">-----------------------</label>
+								</div>
+							</ng-container>
+
+							<!-- <div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x.carryDesc }}</label>
+								<label class="form-control-sm col-sm-4">{{ x.carryAmt | number: '1.2-2' | negativeAmount}}</label>
 							</div>
-							<!-- <div class="input-group" style="margin-bottom: -30px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LOSS CARRIED FORWARD - Year 2017(1st Year)</label>
-								<label class="form-control-sm col-sm-3">(223,604.64)</label>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+								<label class="form-control-sm col-sm-4">-----------------------</label>
+							</div>
+							<div *ngFor="let x of summaryArr" class="input-group" style="margin-bottom: -25px !important;">
+								<label *ngIf="x.year == 2" class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x.carryDesc }}</label>
+								<label *ngIf="x.year == 2" class="form-control-sm col-sm-3">{{ x.carryAmt | number: '1.2-2'}}</label>
+							</div>
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+								<label class="form-control-sm col-sm-3">-----------------------</label>
+							</div>
+							<div *ngFor="let x of summaryArr" class="input-group" style="margin-bottom: -25px !important;">
+								<label *ngIf="x.year == 3" class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x.carryDesc }}</label>
+								<label *ngIf="x.year == 3" class="form-control-sm col-sm-3">{{ x.carryAmt | number: '1.2-2'}}</label>
 							</div> -->
-							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-								<label class="form-control-sm col-sm-3">-----------------------</label>
-							</div>
-							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">NET LOSS CARRIED FORWARD - Year {{ yearParam }}</label>
-								<label class="form-control-sm col-sm-3">{{ carriedForward | number: '1.2-2' }}</label>
-							</div>
-							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-								<label class="form-control-sm col-sm-3">x 20%</label>
-							</div>
-							<div class="input-group" style="margin-bottom: -25px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
-								<label class="form-control-sm col-sm-3">-----------------------</label>
-							</div>
-							<div class="input-group" style="margin-bottom: -30px !important;">
-								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">PROFIT COMMISSION</label>
-								<label class="form-control-sm col-sm-3">{{ profitCommission | number: '1.2-2' }}</label>
-							</div>
+						</ng-container>
 					</div>
 			</fieldset>
 		</div>
-		<div class="col-sm-6">
+		<div class="col-sm-5" style="padding-left: 5px;">
 			<fieldset class="scheduler-border">
 				<legend class="scheduler-border">Note</legend>
 					<div class="custom-row-inline-inset" style="margin-bottom: 26px !important;">
@@ -144,6 +176,7 @@
 					</div>
 			</fieldset>
 		</div>
+		<div class="col-sm-1"></div>
 	  </div>
 	</div>
 	<div footer class="text-center" style="width: 100% !important;">

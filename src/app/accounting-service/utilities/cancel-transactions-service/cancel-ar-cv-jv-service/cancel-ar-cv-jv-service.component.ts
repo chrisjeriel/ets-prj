@@ -15,31 +15,25 @@ import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
 @Component({
-  selector: 'app-cancel-ar-cv-jv',
-  templateUrl: './cancel-ar-cv-jv.component.html',
-  styleUrls: ['./cancel-ar-cv-jv.component.css']
+  selector: 'app-cancel-ar-cv-jv-service',
+  templateUrl: './cancel-ar-cv-jv-service.component.html',
+  styleUrls: ['./cancel-ar-cv-jv-service.component.css']
 })
-export class CancelArCvJvComponent implements OnInit {
+export class CancelArCvJvServiceComponent implements OnInit {
 	@ViewChild('cancelTranTbl') cancelTranTbl : CustNonDatatableComponent;
 	@ViewChild('can') can                 : CancelButtonComponent;
 	@ViewChild('con') con                 : ConfirmSaveComponent;
 	@ViewChild('suc') suc                 : SucessDialogComponent;
 	@ViewChild('mdl') mdl         	      : ModalComponent;
-
-	@Input() tranClass : string = '';
+  	
+  	@Input() tranClass : string = '';
 	passDataCancelTrans: any = {
-		// tableData    : [],
-		// tHeader      : [],
-		// dataTypes    : [],
-		// keys         : [],
-		// colSize      : [],
-		// filters      : [],
 		pageLength   : 10,
 		pageStatus   : true,
 		pagination   : true,
-		pageID       : 'ctTbl'
+		pageID       : 'ctTblServ'
 	};
-  
+
 	otherData: any = {
 		createUser : '',
 		createDate : '',
@@ -48,7 +42,7 @@ export class CancelArCvJvComponent implements OnInit {
 	};
 
 	params : any = { 
-    	updateAcitStatusList : []
+    	updateAcseStatList : []
     };
 
 	dialogIcon 		: string = '';
@@ -59,22 +53,20 @@ export class CancelArCvJvComponent implements OnInit {
 
     searchParams: any[] = [];
 
-    
-
-	constructor( private acctService: AccountingService, private ns : NotesService, private titleService : Title ,private router: Router) { }
+    constructor( private acctService: AccountingService, private ns : NotesService, private titleService : Title ,private router: Router) { }
 
 	ngOnInit() {
-		this.titleService.setTitle('Acct-IT | Cancel Transactions');
-		this.getAcitList();
+		this.titleService.setTitle('Acct-Service | Cancel Transactions');
+		this.getAcseList();
 	}
 
-	getAcitList(){
+	getAcseList(){
 		this.getTblOtherInfo();
-		if(this.tranClass == 'ar'){
-			this.acctService.getArList(this.searchParams)
+		if(this.tranClass == 'or'){
+			this.acctService.getAcseOrList(this.searchParams)
 			.subscribe(data => {
 			  console.log(data);
-			  this.passDataCancelTrans.tableData = data['ar'].filter(e => e.arStatus != 'X').map(e => { 
+			  this.passDataCancelTrans.tableData = data['orList'].filter(e => e.orStatus != 'X').map(e => { 
 			  	e.createDate = this.ns.toDateTimeString(e.createDate);
 			  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 			  	return e;
@@ -82,10 +74,10 @@ export class CancelArCvJvComponent implements OnInit {
 			  this.cancelTranTbl.refreshTable();
 			}); 
 		}else if(this.tranClass == 'cv'){
-			this.acctService.getAcitCvList(this.searchParams)
+			this.acctService.getAcseCvList(this.searchParams)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus != 'X').map(e => { 
+				this.passDataCancelTrans.tableData = data['acseCvList'].filter(e => e.cvStatus != 'X').map(e => { 
 				  	e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e;
@@ -93,13 +85,13 @@ export class CancelArCvJvComponent implements OnInit {
 				this.cancelTranTbl.refreshTable();
 			});
 		}else if(this.tranClass == 'jv'){
-			this.acctService.getJVListing('')
+			this.acctService.getACSEJvList('')
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['transactions'].filter(e => e.jvListings.jvStatus != 'X').map(e => {
-					e.jvListings.createDate = this.ns.toDateTimeString(e.createDate);
-				  	e.jvListings.updateDate = this.ns.toDateTimeString(e.updateDate);
-				  	return e.jvListings;
+				this.passDataCancelTrans.tableData = data['jvList'].filter(e => e.jvStatus != 'X').map(e => {
+					e.createDate = this.ns.toDateTimeString(e.createDate);
+				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
+				  	return e;
 				});
 				this.cancelTranTbl.refreshTable();
 			});
@@ -108,20 +100,20 @@ export class CancelArCvJvComponent implements OnInit {
 
 	getTblOtherInfo(){
 		//this.cancelTranTbl.overlayLoader = true;
-		if(this.tranClass == 'ar'){
-			this.passDataCancelTrans.tHeader    = ['AR No','Payor','AR Date','Status','Payment Type','Particulars','Amount'];
+		if(this.tranClass == 'or'){
+			this.passDataCancelTrans.tHeader    = ['OR No','Payor','OR Date','Status','Payment Type','Particulars','Amount'];
 			this.passDataCancelTrans.dataTypes  = ['sequence-6','text','date','text','text','text','currency'];
-			this.passDataCancelTrans.keys       = ['arNo', 'payor', 'arDate', 'arStatDesc','tranTypeName', 'particulars', 'arAmt'];
+			this.passDataCancelTrans.keys       = ['orNo', 'payor', 'orDate', 'orStatDesc','tranTypeName', 'particulars', 'orAmt'];
 			this.passDataCancelTrans.colSize    = ['30px', '200px', '40px', '60px', '150px', '200px', '125px'];
 			this.passDataCancelTrans.checkFlag  = true;
 			this.passDataCancelTrans.filters    = [
-				{key   : 'arNo',title: 'AR No',dataType: 'text'},
+				{key   : 'orNo',title: 'OR No',dataType: 'text'},
 				{key   : 'payor',title: 'Payor',dataType: 'text'},
-				{keys  : {from: 'arDateFrom',to: 'arDateTo'},title: 'AR Date',dataType: 'datespan'},
-				{key   : 'arStatus',title: 'Status',dataType: 'text'},
+				{keys  : {from: 'orDateFrom',to: 'orDateTo'},title: 'OR Date',dataType: 'datespan'},
+				{key   : 'orStatus',title: 'Status',dataType: 'text'},
 				{key   : 'tranTypeName',title: 'Payment Type',dataType: 'text'},
 				{key   : 'particulars',title: 'Particulars',dataType: 'text'},
-				{keys  : {from: 'arAmtFrom',to: 'arAmtTo'},title: 'Amount',dataType: 'textspan'}
+				{keys  : {from: 'orAmtFrom',to: 'orAmtTo'},title: 'Amount',dataType: 'textspan'}
 			];
 		}else if(this.tranClass == 'cv'){
 			this.passDataCancelTrans.tHeader    = ['CV No', 'Payee', 'CV Date', 'Status','Particulars','Amount'];
@@ -140,13 +132,13 @@ export class CancelArCvJvComponent implements OnInit {
 		}else if(this.tranClass == 'jv'){
 			this.passDataCancelTrans.tHeader      = ['JV No', 'JV Date','Status','Particulars','JV Type', 'JV Ref. No.', 'Prepared By','Amount'];
 			this.passDataCancelTrans.dataTypes    = ['text','date','text','text','text','text','text','currency'];
-			this.passDataCancelTrans.keys         = ['jvNo','jvDate','jvStatusName','particulars','tranTypeName','refNo','preparedName','jvAmt'];
+			this.passDataCancelTrans.keys         = ['jvNo','jvDate','statusName','particulars','tranTypeName','refNo','preparedName','jvAmt'];
 			this.passDataCancelTrans.colSize      = ['120px','98px','100px','200px','160px','110px','118px','115px'];
 			this.passDataCancelTrans.checkFlag    = true;
 			this.passDataCancelTrans.filters      = [
 				{key  : 'jvNo',title: 'J.V. No.',dataType: 'text'},
 				{keys : {from: 'jvDateFrom',to: 'jvDateTo'},title: 'AR Date',dataType: 'datespan'},
-				{key  : 'jvStatusName',title: 'Status',dataType: 'text'},
+				{key  : 'statusName',title: 'Status',dataType: 'text'},
 				{key  : 'particulars',title: 'Particulars',dataType: 'text'},
 				{key  : 'jvType',title: 'J.V Type',dataType: 'text'},
 				{key  : 'jvRefNo',title: 'J.V Ref No',dataType: 'text'},
@@ -159,11 +151,11 @@ export class CancelArCvJvComponent implements OnInit {
 	onClickCancel(){
 		this.dialogIcon 	= '';
     	this.dialogMessage  = '';
-    	this.params.updateAcitStatusList = [];
+    	this.params.updateAcseStatList = [];
 
     	this.passDataCancelTrans.tableData.forEach(e => {
     		if(e.checked){
-    			this.params.updateAcitStatusList.push({
+    			this.params.updateAcseStatList.push({
     				status		 : 'X',
 			        tranClass	 : this.tranClass,
 			        tranId		 : e.tranId,
@@ -174,8 +166,8 @@ export class CancelArCvJvComponent implements OnInit {
     	});
 
     	console.log(this.passDataCancelTrans.tableData);
-    	console.log(this.params.updateAcitStatusList);
-    	if(this.params.updateAcitStatusList.length == 0){
+    	console.log(this.params.updateAcseStatList);
+    	if(this.params.updateAcseStatList.length == 0){
     		this.mdlType = 1;
     		this.msg = 'Please select transaction/s to cancel';
     	}else if(this.reason.trim() == '' || this.reason == null){
@@ -190,13 +182,13 @@ export class CancelArCvJvComponent implements OnInit {
 
 	onClickYes(){
 		this.loadingFunc(true);
-		this.acctService.updateAcitStatus(this.params)
+		this.acctService.updateAcseStat(this.params)
 		.subscribe(data => {
 			console.log(data);
 			this.loadingFunc(false);
 			if(data['returnCode'] == -1){
 				this.suc.open();
-				this.params.updateAcitStatusList = [];
+				this.params.updateAcseStatList = [];
 				this.reason = '';
 				this.otherData = {
 					createUser : '',
@@ -204,7 +196,7 @@ export class CancelArCvJvComponent implements OnInit {
 					updateUser : '',
 					updateDate : ''
 				};
-				this.getAcitList();
+				this.getAcseList();
 			}else{
 				this.mdlType = 1;
 				this.msg = '';
@@ -230,15 +222,15 @@ export class CancelArCvJvComponent implements OnInit {
 
 	searchQuery(searchParams){
 		if(this.tranClass == 'ar'){
-			if(searchParams.some(e => e.key == 'arStatus' && e.search == 'NEW')){
-				searchParams.filter(el => el.key == 'arStatus').map(el => { el.search = 'OPEN';return el;});
-			}else if(searchParams.some(e => e.key == 'arStatus' && e.search == 'PRINTED')){
-				searchParams.filter(el => el.key == 'arStatus').map(el => { el.search = 'CLOSED';return el;});
+			if(searchParams.some(e => e.key == 'orStatus' && e.search == 'NEW')){
+				searchParams.filter(el => el.key == 'orStatus').map(el => { el.search = 'OPEN';return el;});
+			}else if(searchParams.some(e => e.key == 'orStatus' && e.search == 'PRINTED')){
+				searchParams.filter(el => el.key == 'orStatus').map(el => { el.search = 'CLOSED';return el;});
 			}
 		}
 	    this.searchParams = searchParams;
 	    this.passDataCancelTrans.tableData = [];
 	    console.log(this.searchParams);
-	    this.getAcitList();
+	    this.getAcseList();
   	}
 }
