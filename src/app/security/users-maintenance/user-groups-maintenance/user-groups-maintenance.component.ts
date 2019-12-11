@@ -6,7 +6,8 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
-
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user-groups-maintenance',
@@ -22,7 +23,9 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   @ViewChild("userGroupModules") userGroupModules: CustEditableNonDatatableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
-  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild('confirm') confirm: ConfirmSaveComponent;
+  @ViewChild('groupConfirm') groupConfirm: ConfirmSaveComponent;
+  @ViewChild('lovComponent') lovComponent: LovComponent;
   
   passDataUserGroup: any = {
     tableData: [],
@@ -60,14 +63,14 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     tHeader: ['Tran Code', 'Description'],
     keys: ['tranCd', 'tranDesc'],
     dataTypes: ['text', 'text'],
+    genericBtn :'Delete',
     pageID: 3,
     addFlag: true,
-    deleteFlag: true,
     pageLength:5,
     searchFlag: true,
     paginateFlag: true,
     infoFlag: true,
-    widths: [100,400],
+    //widths: [300,350],
     uneditable: [true,true],
   }
 
@@ -82,6 +85,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       moduleId: null,
       moduleDesc: null
     },
+    checkFlag: true,
     pageID: 2,
     addFlag: true,
     deleteFlag: true,
@@ -89,7 +93,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     searchFlag: true,
     paginateFlag: true,
     infoFlag: true,
-    widths: [100,400],
+   // widths: [300,350],
   }
 
   passDataUserListing: any = {
@@ -105,10 +109,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     widths: [110,225,30],
   }
 
-  constructor(private securityService: SecurityService, public modalService: NgbModal, 
-              private maintenanceService: MaintenanceService, private ns: NotesService,
-              private userService: UserService) { }
-
   userGroupData:any = {
     createDate: '',
     createUser: null,
@@ -120,6 +120,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     userGrpTran: []
   }
   btnDisabled:boolean = true;
+  cancelFlag: boolean = false;
   selRecordRow:number;
   passLOVData: any = {
       selector:'',
@@ -130,13 +131,19 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   saveUserGrpList:any = [];
   delUserGrpList:any = [];
   saveTranList:any = [];
+  delTranList:any = [];
   saveModuleList:any = [];
+  delModuleList:any =  [];
   dialogIcon: string = "";
   dialogMessage: string = "";
-  cancelFlag: boolean = false;
   saveMtnUserGrpParams:any = [];
 
+  constructor(private securityService: SecurityService, public modalService: NgbModal, 
+              private maintenanceService: MaintenanceService, private ns: NotesService,
+              private userService: UserService, private titleService: Title) { }
+
   ngOnInit() {
+    this.titleService.setTitle("Sec | User Groups Maintenance");
     this.getMtnUserGrp();
   }
 
@@ -200,7 +207,7 @@ export class UserGroupsMaintenanceComponent implements OnInit {
           this.PassDataModuleTrans.tableData[i].showMG = 0;
           this.PassDataModuleTrans.tableData[i].uneditable = ['tranCd', 'tranDesc'];
         }
-
+        this.userGroupTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[0]);
         this.userGroupTransactions.refreshTable();
       });
   }
@@ -215,9 +222,9 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       this.passLOVData.from = from;
       this.passLOVData.selector = 'mtnTransactions';
       this.userGroupTransactions.tableData.filter((a)=>{return !a.deleted}).map(a=>a.tranCd);
-      
+      this.passLOVData.hide = this.PassDataModuleTrans.tableData.filter((a)=>{return a.tranCd !== null && !a.deleted}).map(a=>{return a.tranCd.toString()});
       setTimeout(() => {
-        $('#lov #modalBtn2').trigger('click');
+        this.lovComponent.openLOV();
       });
 
       this.selRecordRow = data.index;
@@ -225,11 +232,10 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       this.passLOVData.from = from;
       this.passLOVData.selector = 'mtnModules';
       this.passLOVData.tranCd = this.transData.tranCd;
-      console.log("passLOVData : " + this.passLOVData);
       this.userGroupModules.tableData.filter((a)=>{return !a.deleted}).map(a=>a.moduleId);
-      
+      this.passLOVData.hide = this.PassDataModule.tableData.filter((a)=>{return a.moduleId !== null && !a.deleted}).map(a=>{return a.moduleId.toString()});
       setTimeout(() => {
-        $('#lov #modalBtn2').trigger('click');
+        this.lovComponent.openLOV();
       });
 
       this.selRecordRow = data.index;
@@ -238,21 +244,52 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     this.fromLOV = from;
   }
 
+  onClickTransDelete(){
+    this.userGroupTransactions.indvSelect.deleted = true;
+    this.userGroupTransactions.selected  = [this.userGroupTransactions.indvSelect];
+    this.userGroupTransactions.confirmDelete();
+  }
+
+  onClickModuleDelete(){
+    this.userGroupModules.indvSelect.deleted = true;
+    this.userGroupModules.selected  = [this.userGroupModules.indvSelect];
+    this.userGroupModules.confirmDelete();
+  }
+
+
+  onRowClickModule(data, accessLevel){
+    if(data != null){
+      this.PassDataModule.disableGeneric = false;
+    }else{
+      this.PassDataModule.disableGeneric = true;
+    }
+  }
+
   setSelected(data) {
+    console.log(data)
     if (this.fromLOV == 'transactions') {
-      this.PassDataModuleTrans.tableData[this.selRecordRow].edited = true;
-      this.PassDataModuleTrans.tableData[this.selRecordRow].tranCd = data.data.tranCd;
-      this.PassDataModuleTrans.tableData[this.selRecordRow].tranDesc = data.data.tranDesc;
-      this.PassDataModuleTrans.tableData[this.selRecordRow].showMG = 1;
-      $('#cust-table-container').addClass('ng-dirty');
+      this.PassDataModuleTrans.tableData = this.PassDataModuleTrans.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0 ; i < data.data.length; i++){
+        this.PassDataModuleTrans.tableData.push(JSON.parse(JSON.stringify(this.PassDataModuleTrans.nData)));
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].edited = true;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].tranCd = data.data[i].tranCd;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].tranDesc = data.data[i].tranDesc;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].showMG = 0;
+      }
+      this.userGroupTransactions.markAsDirty();
       this.userGroupTransactions.refreshTable();
+      this.userGroupTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1]);
     } else if (this.fromLOV == 'modules') {
-      this.PassDataModule.tableData[this.selRecordRow].edited = true;
-      this.PassDataModule.tableData[this.selRecordRow].tranCd = this.transData.tranCd;
-      this.PassDataModule.tableData[this.selRecordRow].moduleId = data.data.moduleId;
-      this.PassDataModule.tableData[this.selRecordRow].moduleDesc = data.data.moduleDesc;
-      this.PassDataModule.tableData[this.selRecordRow].showMG = 1;
-      $('#cust-table-container').addClass('ng-dirty');
+      this.PassDataModule.tableData = this.PassDataModule.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0 ; i < data.data.length; i++){
+        this.PassDataModule.tableData.push(JSON.parse(JSON.stringify(this.PassDataModule.nData)));
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].edited = true;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].tranCd = this.transData.tranCd;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleId = data.data[i].moduleId;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].moduleDesc = data.data[i].moduleDesc;
+        this.PassDataModule.tableData[this.PassDataModule.tableData.length - 1].showMG = 0;
+      }
+      this.userGroupModules.markAsDirty();
       this.userGroupModules.refreshTable();
     }
     
@@ -280,20 +317,19 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     // transData
     if(data != null){
       this.transData = data;
-
+      this.PassDataModuleTrans.disableGeneric = false;
       this.getModules();
     }else{
+      this.PassDataModuleTrans.disableGeneric = true;
       this.transData = {};
     }
   }
 
   getModules() {
-    this.PassDataModule.tableData = [];
-    
     this.userGroupModules.overlayLoader = true;
 
     this.securityService.getModules('USER_GROUP', null, this.userGroupData.userGrp, this.transData.tranCd).subscribe((data: any) => {
-
+      this.PassDataModule.tableData = [];
       for(var i =0; i < data.modules.length;i++){
         this.PassDataModule.tableData.push(data.modules[i]);
         this.PassDataModule.tableData[i].showMG = 1;
@@ -305,18 +341,19 @@ export class UserGroupsMaintenanceComponent implements OnInit {
 
   }
 
-  onClickSaveTranModules() {
+  saveTranModule(cancelFlag?){
+    this.cancelFlag = cancelFlag !== undefined;
     try {
       this.prepareUserGroupTrans();
       this.prepareUserGroupModules();
+      if (this.saveTranList.length > 0 || this.saveModuleList.length > 0 || 
+          this.delTranList.length > 0 || this.delModuleList.length > 0) {
 
-      
-
-      if (this.saveTranList.length > 0 || this.saveModuleList.length > 0) {
-          if (this.saveTranList.length > 0) {
+          if (this.saveTranList.length > 0 || this.delTranList.length > 0) {
             let saveUserTransactions:any = {
               accessLevel : 'USER_GROUP',
-              transactionList : []
+              transactionList : [],
+              delTranList: []
             }
 
             for (let rec of this.saveTranList) {
@@ -327,24 +364,29 @@ export class UserGroupsMaintenanceComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(tran);
               saveUserTransactions.transactionList.push(tran);
             }
 
-
-            console.log("saveUserTransactions");
-            console.log(saveUserTransactions);
+            for (let rec of this.delTranList) {
+              var moduleTran = {
+                userGrp: rec.userGrp,
+                tranCd: rec.tranCd
+              };
+              saveUserTransactions.delTranList.push(moduleTran);
+            }
 
             this.securityService.saveTransactions(saveUserTransactions).subscribe((data:any)=>{
-                console.log("saveTransactions return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
                 } else{
-                  this.dialogIcon = "";
-                  this.successDialog.open();
-                  this.getTransactions();
+                  if(this.saveModuleList.length > 0 || this.delModuleList.length > 0){
+                    this.getTransactions();
+                  }else{
+                    this.dialogIcon = "";
+                    this.successDialog.open();
+                    this.getTransactions();
+                  }
                 }
             },
             (err) => {
@@ -352,10 +394,11 @@ export class UserGroupsMaintenanceComponent implements OnInit {
             });
           }
 
-          if (this.saveModuleList.length > 0) {
+          if (this.saveModuleList.length > 0 || this.delModuleList.length > 0) {
             let saveUserModules:any = {
               accessLevel : 'USER_GROUP',
-              moduleList : []
+              moduleList : [],
+              delModuleList: []
             }
 
             for (let rec of this.saveModuleList) {
@@ -367,17 +410,19 @@ export class UserGroupsMaintenanceComponent implements OnInit {
                 createUser: rec.createUser,
                 updateUser: rec.updateUser
               };
-              console.log(mod);
               saveUserModules.moduleList.push(mod);
             }
 
-
-            console.log("saveUserModules");
-            console.log(saveUserModules);
+            for (let rec of this.delModuleList) {
+              var del = {
+                userGrp: rec.userGrp,
+                tranCd: rec.tranCd,
+                moduleId: rec.moduleId
+              };
+              saveUserModules.delModuleList.push(del);
+            }
 
             this.securityService.saveModules(saveUserModules).subscribe((data:any)=>{
-                console.log("saveModules return data");
-                console.log(data);
                 if(data['returnCode'] == 0) {
                   this.dialogIcon = "error";
                   this.successDialog.open();
@@ -401,41 +446,49 @@ export class UserGroupsMaintenanceComponent implements OnInit {
     }
   }
 
+  onClickSaveTranModules() {
+    this.groupConfirm.confirmModal();
+  }
+
   prepareUserGroupTrans() {
     this.saveTranList = [];
+    this.delTranList = [];
     for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
-      if (this.PassDataModuleTrans.tableData[i].edited == true) {
+      if(this.PassDataModuleTrans.tableData[i].deleted){
+        this.PassDataModuleTrans.tableData[i].userGrp = this.userGroupData.userGrp;
+        this.delTranList.push(this.PassDataModuleTrans.tableData[i]);
+      }
+
+      if (this.PassDataModuleTrans.tableData[i].edited == true && !this.PassDataModuleTrans.tableData[i].deleted) {
         this.PassDataModuleTrans.tableData[i].userGrp = this.userGroupData.userGrp;
         this.PassDataModuleTrans.tableData[i].remarks = 'TestData';
-        this.PassDataModuleTrans.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
-        this.PassDataModuleTrans.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
-        
-
+        this.PassDataModuleTrans.tableData[i].createUser = this.ns.getCurrentUser();
+        this.PassDataModuleTrans.tableData[i].updateUser = this.ns.getCurrentUser();
         this.saveTranList.push(this.PassDataModuleTrans.tableData[i]);
       }
     }
-    
-    console.log("this.saveTranList");
-    console.log(this.saveTranList);
-
   }
 
   prepareUserGroupModules() {
     this.saveModuleList = [];
+    this.delModuleList = [];
 
     for (var i = 0; i < this.PassDataModule.tableData.length; i++) {
-      if (this.PassDataModule.tableData[i].edited == true) {
+      if (this.PassDataModule.tableData[i].edited == true && !this.PassDataModule.tableData[i].deleted) {
         this.PassDataModule.tableData[i].userGrp = this.userGroupData.userGrp;
         this.PassDataModule.tableData[i].remarks = 'TestData Modules';
-        this.PassDataModule.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
-        this.PassDataModule.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        this.PassDataModule.tableData[i].createUser = this.ns.getCurrentUser();
+        this.PassDataModule.tableData[i].updateUser = this.ns.getCurrentUser();
 
         this.saveModuleList.push(this.PassDataModule.tableData[i]);
       }
+
+      if(this.PassDataModule.tableData[i].deleted){
+        this.PassDataModule.tableData[i].userGrp = this.userGroupData.userGrp;
+        this.PassDataModule.tableData[i].tranCd = this.userGroupTransactions.indvSelect.tranCd;
+        this.delModuleList.push(this.PassDataModule.tableData[i]);
+      }
     }
-    
-    console.log("this.saveModuleList");
-    console.log(this.saveModuleList);
   }
 
   onClickSaveMain() {
@@ -448,8 +501,6 @@ export class UserGroupsMaintenanceComponent implements OnInit {
       }
 
       this.userService.saveMtnUserGrp(this.saveMtnUserGrpParams).subscribe((data:any)=>{
-          console.log("saveMtnUserGrp return data");
-          console.log(data);
           if(data['returnCode'] == 0) {
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -479,9 +530,9 @@ export class UserGroupsMaintenanceComponent implements OnInit {
         this.delUserGrpList.push(this.passDataUserGroup.tableData[i]);
       } else if (this.passDataUserGroup.tableData[i].edited == true) {
         this.passDataUserGroup.tableData[i].createDate = this.ns.toDateTimeString(0);
-        this.passDataUserGroup.tableData[i].createUser = JSON.parse(window.localStorage.currentUser).username;
+        this.passDataUserGroup.tableData[i].createUser = this.ns.getCurrentUser();
         this.passDataUserGroup.tableData[i].updateDate = this.ns.toDateTimeString(0);
-        this.passDataUserGroup.tableData[i].updateUser = JSON.parse(window.localStorage.currentUser).username;
+        this.passDataUserGroup.tableData[i].updateUser = this.ns.getCurrentUser();
         
         this.saveUserGrpList.push(this.passDataUserGroup.tableData[i]);
       }
@@ -494,7 +545,21 @@ export class UserGroupsMaintenanceComponent implements OnInit {
   }
 
   onClickSaveConfirmation() {
-    $('#confirm-save #modalBtn2').trigger('click');
+    this.confirm.confirmModal();
   }
 
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
+  }
+
+  tranDelete(){
+    var row;
+    for (var i = 0; i < this.PassDataModuleTrans.tableData.length; i++) {
+      if(!this.PassDataModuleTrans.tableData[i].deleted){
+        row = i;
+        break;
+      }
+    }
+    this.userGroupTransactions.onRowClick(null,this.PassDataModuleTrans.tableData[row]);
+  }
 }

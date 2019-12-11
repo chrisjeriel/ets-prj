@@ -2,7 +2,7 @@
 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 	<div class="row">
 		<div class="col-sm-12 cust-margin">
-			<app-cust-editable-non-datatable [passData]="PassDataTransactions" (newClick)="onRowClickTransactions($event)"></app-cust-editable-non-datatable>
+			<app-cust-editable-non-datatable #table [passData]="PassDataTransactions" (newClick)="onRowClickTransactions($event)"></app-cust-editable-non-datatable>
 		</div>
 	</div>
 	<div class="form-row">
@@ -21,10 +21,8 @@
 	    <div class="form-group col-sm">
 	        <div class="col-md-13 text-center">
 	            <div class="cust-btn-container" style="margin-top: 10px">
-	                <!-- <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
-	                <button type="button" class="cust-btn"><a>Cancel</a></button>
-	                <button type="button" class="cust-btn"><a>Save</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
 	            </div>
 	        </div>
 	    </div>
@@ -124,3 +122,7 @@
         <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
     </div> 
 </app-modal>
+
+<app-confirm-save (onYes)="saveData();"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="''" ></app-cancel-button>
