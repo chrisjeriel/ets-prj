@@ -37,7 +37,7 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 	    pageLength    : 10,
 	    widths        : [1,80,1,100,1,1,1,1],
 	    pageID        : 'passDataCheckNoList',
-	    keys          : ['checkNo','tranId','usedTag','checkStatus','createUser','createDate','updateUser','updateDate']
+	    keys          : ['checkNo','tranId','usedTag','checkStatusDesc','createUser','createDate','updateUser','updateDate']
   	};
 
   	passDataLov  : any = {
@@ -63,41 +63,47 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 		this.getMtnAcitCheckSeries();
   	}
 
-  	getMtnAcitCheckSeries(){
-  		this.mtnService.getMtnAcitCheckSeries()
+  	getMtnAcitCheckSeries(bank?,bankAcct?,from?,to?){
+  		from 	 = from == ''?undefined:from;
+  		to 		 = to == ''?undefined:to;
+  		bank 	 = this.otherData.bankDesc == '' ? '': bank;
+  		bankAcct = this.otherData.bankAcctDesc == ''?'':bankAcct;
+
+  		this.checkNoTbl.overlayLoader = true;
+  		this.mtnService.getMtnAcitCheckSeries(bank,bankAcct)
   		.subscribe(data => {
   			console.log(data);
   			var rec = data['checkSeriesList'];
-  			this.passDataCheckNoList.tableData = rec.sort((a,b) => a.checkNo - b.checkNo);
+  			this.passDataCheckNoList.tableData = rec.sort((a,b) => a.checkNo - b.checkNo).slice(from-1,to);
   			this.checkNoTbl.refreshTable();
   		});
   	}
 
+  	onClickSearch(){
+  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
+  		this.getMtnAcitCheckSeries(this.otherData.bank,this.otherData.bankAcct,this.otherData.from,this.otherData.to);
+  	}
+
   	showLov(fromUser){
-  		console.log(event);
 	  	if(fromUser.toLowerCase() == 'bank'){
 	      this.passDataLov.selector = 'bankLov';
 	      this.passDataLov.glDepFor = 'acit';
 	    }else if(fromUser.toLowerCase() == 'bank-acct'){
 	      this.passDataLov.selector = 'bankAcct';
-	      this.passDataLov.from = 'acit';
 	      this.passDataLov.bankCd = this.otherData.bank;
-	      this.passDataLov.currCd = '';
-
+	      this.passDataLov.from = 'acit';
 	    }
 	    this.lov.openLOV();
   	}
 
-  	setData(data,from){
-  		console.log(data);
-  		console.log(data.data);
+  	setData(data){
 	  	setTimeout(() => {
 	      //this.removeRedBackShad(from);
 	      this.ns.lovLoader(data.ev, 0);
 	      this.form.control.markAsDirty();
 	    },0);
 
-	    if(from == 'bank'){
+	    if(data.selector == 'bankLov'){
 	    	this.otherData.bankDesc   = data.data.officialName;
 	        this.otherData.bank = data.data.bankCd;
 	        this.otherData.bankAcctDesc = '';
@@ -106,8 +112,10 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 	    	this.otherData.bankAcctDesc   = data.data.accountNo;
       		this.otherData.bankAcct = data.data.bankAcctCd;
 	    }
+  	}
 
-	    console.log(this.otherData);
+  	reset(){
+  		(this.otherData.bankAcctDesc == '')?(this.otherData.from='',this.otherData.to=''):'';
   	}
 
 }
