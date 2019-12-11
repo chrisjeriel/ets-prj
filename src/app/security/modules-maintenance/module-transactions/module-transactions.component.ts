@@ -16,9 +16,11 @@ export class ModuleTransactionsComponent implements OnInit {
 
  @ViewChild("modulesList") modulesList: CustEditableNonDatatableComponent;
  @ViewChild("usersWithAccess") usersWithAccess: CustEditableNonDatatableComponent;
+ @ViewChild("table") table: CustEditableNonDatatableComponent;
  @ViewChild("userGroupWithAccess") userGroupWithAccess: CustEditableNonDatatableComponent;
-
-
+ @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+ @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
+ @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
  PassDataTransactions: any = {
     tableData: [],
@@ -62,7 +64,7 @@ export class ModuleTransactionsComponent implements OnInit {
     keys:['userId','userName','activeTag'],
     dataTypes: ['text', 'text','checkbox'],
     uneditable: [true, true, true],
-    pageID: 7,
+    pageID: 2,
     pageLength:5,
     searchFlag: true,
     paginateFlag: true,
@@ -76,7 +78,7 @@ export class ModuleTransactionsComponent implements OnInit {
     keys:['userGrp','userGrpDesc'],
     dataTypes: ['text', 'text'],
     uneditable: [true, true],
-    pageID: 7,
+    pageID: 3,
     pageLength:5,
     searchFlag: true,
     paginateFlag: true,
@@ -84,9 +86,17 @@ export class ModuleTransactionsComponent implements OnInit {
     widths: [110,225],
   }
 
+  params:any ={
+    accessLevel : '',
+    transactionList : [],
+    delTranList : []
+  }
 
   transactionData:any = {};
   btnDisabled:boolean = true;
+  cancelFlag: boolean = false;
+  dialogIcon: string = "";
+  dialogMessage: string = "";
 
   constructor(private securityService: SecurityService,public modalService: NgbModal, private ns: NotesService) { }
 
@@ -95,8 +105,10 @@ export class ModuleTransactionsComponent implements OnInit {
   }
 
   getMtnTransactions() {
+    setTimeout(() => {this.table.loadingFlag = true});
     this.securityService.getMtnTransactions(null, null).subscribe((data: any) => {
       this.PassDataTransactions.tableData = data['transactions'];
+      this.table.loadingFlag = false;
     });
   }
 
@@ -106,7 +118,6 @@ export class ModuleTransactionsComponent implements OnInit {
       this.transactionData = data;
       this.transactionData.createDate = this.ns.toDateTimeString(data.createDate);
       this.transactionData.updateDate = this.ns.toDateTimeString(data.updateDate);
-      this.getMtnModules();
     }else{
       this.btnDisabled = true;
       this.transactionData = {};
@@ -115,17 +126,19 @@ export class ModuleTransactionsComponent implements OnInit {
 
   getMtnModules() {
       this.PassDataModules.tableData = [];
+      this.modulesList.loadingFlag = true;
       this.securityService.getMtnModules(null, this.transactionData.tranCd).subscribe((data: any) => {
         for(var i =0; i < data.modules.length;i++){
           this.PassDataModules.tableData.push(data.modules[i]);
           this.PassDataModules.tableData[i].uneditable = ['moduleId', 'moduleDesc'];
         }
-
+        this.modulesList.loadingFlag = false;
         this.modulesList.refreshTable();
       });
   }
 
   modules(){
+    this.getMtnModules();
     $('#modules #modalBtn').trigger('click');
   }
 
@@ -144,23 +157,61 @@ export class ModuleTransactionsComponent implements OnInit {
       this.PassDataUserGroupListing.tableData = [];
 
       if (accessLevel == 'USER') {
+        this.usersWithAccess.loadingFlag = true;
         this.securityService.getTransactions(accessLevel, null, null, this.transactionData.tranCd).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataUserListing.tableData.push(data.transactions[i]);
           }
-
+          this.usersWithAccess.loadingFlag = false;
           this.usersWithAccess.refreshTable();
         });
       } else if (accessLevel == 'USER_GROUP') {
+        this.userGroupWithAccess.loadingFlag = true;
         this.securityService.getTransactions(accessLevel, null, null, this.transactionData.tranCd).subscribe((data: any) => {
           for(var i =0; i < data.transactions.length;i++){
             this.PassDataUserGroupListing.tableData.push(data.transactions[i]);
           }
-
+          this.userGroupWithAccess.loadingFlag = false;
           this.userGroupWithAccess.refreshTable();
         });
       }
-
   }
 
+  onClickSave(){
+    this.confirm.confirmModal();
+  }
+
+  prepareData(){
+    this.params.transactionList = [];
+    this.params.delTranList = [];
+    for (var i = 0; i < this.PassDataTransactions.tableData.length; i++) {
+      if(this.PassDataTransactions.tableData[i].edited && !this.PassDataTransactions.tableData[i].deleted){
+        this.params.transactionList.push(this.PassDataTransactions.tableData[i]);
+      }
+
+      if(this.PassDataTransactions.tableData[i].deleted){
+        this.params.delTranList.push(this.PassDataTransactions.tableData[i]);
+      }
+    }
+  }
+
+  saveData(cancel?){
+    this.cancelFlag = cancel !== undefined;
+    this.prepareData();
+    this.params.accessLevel = 'MTN';
+    this.securityService.saveTransactions(this.params).subscribe((data:any) => {
+      if(data['returnCode'] == 0) {
+        this.dialogIcon = "error";
+        this.successDialog.open();
+      } else{
+        this.dialogIcon = "";
+        this.successDialog.open();
+        this.getMtnTransactions();
+      }
+    });
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
+  }
 }
