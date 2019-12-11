@@ -182,7 +182,7 @@ export class QuoteEndorsementComponent implements OnInit {
 
     deductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible (%)', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
         nData:{
             createDate: [2019, 2, 21, 0, 0, 0, 0],

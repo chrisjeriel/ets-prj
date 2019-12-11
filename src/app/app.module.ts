@@ -497,6 +497,7 @@ import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 import { CancelArCvJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-ar-cv-jv-service/cancel-ar-cv-jv-service.component';
+import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 
 @NgModule({
     imports: [
@@ -998,6 +999,7 @@ import { CancelArCvJvServiceComponent } from './accounting-service/utilities/can
         CloseOpenDcbComponent,
         AcseCloseOpenDcbComponent,
         CancelArCvJvServiceComponent,
+        UpdatePolAttachmentComponent,
     ],
 
   	providers: [
