@@ -1883,4 +1883,13 @@ export class MaintenanceService{
     	     		.set('depNo', (depNo === null || depNo === undefined ? '' : depNo));
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnGlSubDepNo", {params});
     }
+
+     generateAcseInvoiceSeries(params){
+		let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseInvoiceSeries', JSON.stringify(params), header);
+    }
 }
