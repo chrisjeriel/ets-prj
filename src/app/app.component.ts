@@ -156,6 +156,9 @@ export class AppComponent implements OnDestroy {
               for (let ob of obj) {
                 if (ob.user == _this.currentUser.username) {
                   _this.notifCount = ob.count;
+                  if (_this.notifToggle) {
+                    _this.loadNotif();
+                  }
                 }
               }
           });
@@ -221,6 +224,7 @@ export class AppComponent implements OnDestroy {
         });
 
         this.wsConnect();
+        this.loadNotif();
     }
     
     @HostListener('window:unload', ['$event'])
@@ -342,6 +346,7 @@ export class AppComponent implements OnDestroy {
       }
       this.notifs.sort((a:any, b:any) => (a.createDate < b.createDate) ? 1 : -1);
       this.notifIsLoading = false;
+      this.notifCount = this.notifs.length;
       
     });
 
