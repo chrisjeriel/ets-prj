@@ -407,7 +407,11 @@
                                                 </ngb-panel>
                                             </ngb-accordion>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL034') > -1">
-                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link">Spoil Policy/Alteration</button>
+                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link" >Spoil Policy/Alteration</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL046') > -1">
+                                                <button [routerLink]="['/update-pol-attachment']" class="button btn btn-link">Update Policy Attachment</button>
                                                 <br />
                                             </ng-container>
                                         </ng-template>

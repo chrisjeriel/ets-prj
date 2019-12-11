@@ -202,6 +202,7 @@ import { CopyQuoteDetailsComponent } from './quotation/utilities/copy-quote-deta
 import { UploaderComponent } from './_components/common/uploader/uploader.component'
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
+import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 
 const appRoutes: Routes = [
 
@@ -841,7 +842,8 @@ const appRoutes: Routes = [
     { path: 'mtn-sl', component: SlComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'uploader', component: UploaderComponent},
-    
+    { path: 'update-pol-attachment', component: UpdatePolAttachmentComponent},
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -83,7 +83,7 @@ export class QuoteOptionComponent implements OnInit {
 
     optionsDeductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible (%)', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent','currency'],
         keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
         //widths: [60,'auto',100,'auto'],
@@ -118,7 +118,7 @@ export class QuoteOptionComponent implements OnInit {
 
     coversDeductiblesData: any = {
         tableData: [],
-        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible Rate(%)', 'Deductible Amount'],
+        tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible (%)', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent','currency'],
         keys: ['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
         //widths: [60,'auto',100,'auto'],
