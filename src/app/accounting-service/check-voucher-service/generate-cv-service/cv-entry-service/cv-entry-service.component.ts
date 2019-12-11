@@ -103,6 +103,7 @@ export class CvEntryServiceComponent implements OnInit {
   fromSave             : boolean = false;
   spoiled              : any;
   approvalCd           : any;
+  suggestCheckNo       : any;
 
   uploadLoading: boolean = false;
   acctEntryFile: any;
@@ -206,7 +207,6 @@ export class CvEntryServiceComponent implements OnInit {
       this.checkSeriesList = recCn;
 
       this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      // var arrSum = function(arr){return arr.reduce((a,b) => a+b,0);};
       var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
 
       if(this.saveAcseCv.tranId == '' || this.saveAcseCv.tranId == null){
@@ -270,6 +270,8 @@ export class CvEntryServiceComponent implements OnInit {
           this.success.open();
           this.fromSave = false;
         }
+
+        this.saveAcseCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcseCv.checkNo:this.suggestCheckNo;
       }
 
       this.saveAcseCv['from'] = 'cv';
@@ -395,10 +397,6 @@ export class CvEntryServiceComponent implements OnInit {
       console.log(data);
       this.fromSave = true;
       this.spoiled = true;
-      // this.saveAcseCv.tranId = data['tranIdOut'];
-      // this.saveAcseCv.mainTranId = data['mainTranIdOut'];
-      // this.getAcseCv();
-      // this.form.control.markAsPristine();
 
       if(data['returnCode'] == -1){
         this.saveAcseCv.tranId = data['tranIdOut'];
@@ -412,6 +410,7 @@ export class CvEntryServiceComponent implements OnInit {
       }else if(data['returnCode'] == 2){
         this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
         this.warnMdl.openNoClose();
+        this.saveAcseCv.checkNo = Number(data['checkNo']);
       }else if(data['returnCode'] == -100){
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
@@ -473,6 +472,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.bank = data.data.bankCd;
       this.saveAcseCv.bankAcctDesc = '';
       this.saveAcseCv.bankAcct = '';
+      this.saveAcseCv.checkNo = '';
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcseCv.currCd && e.acSeGlDepNo != null);
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
@@ -485,6 +485,9 @@ export class CvEntryServiceComponent implements OnInit {
         }else{
           this.saveAcseCv.checkNo = chkNo[0].checkNo;
         }
+      }else if(ba.length == 0){
+        this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
+        this.warnMdl.openNoClose();
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcseCv.bankAcctDesc   = data.data.accountNo;
@@ -615,7 +618,7 @@ export class CvEntryServiceComponent implements OnInit {
       this.loadingFunc(false);
       this.fromSave = true;
       this.getAcseCv();
-      (!this.spoiled)?this.disableFlds(true):'';
+      (!this.spoiled)?this.disableFlds(true):this.form.control.markAsDirty();
     });
   }
 
@@ -639,10 +642,13 @@ export class CvEntryServiceComponent implements OnInit {
     $('.globalLoading').css('display',str);
   }
 
-    spoiledFunc(){
+  spoiledFunc(){
+    this.suggestCheckNo = '';
     $('.cl-spoil').prop('readonly',false);
     this.spoiled = true;
     this.saveAcseCv.checkId = '';
+    var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcseCv.bank && e.bankAcct == this.saveAcseCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+    (chkNo.length == 0)?'':this.suggestCheckNo = chkNo[0].checkNo;
   }
 
   overrideFunc(approvalCd){
