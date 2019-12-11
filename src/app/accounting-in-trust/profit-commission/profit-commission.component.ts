@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService} from '@app/_services';
+import { NotesService, AccountingService, UserService} from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -88,10 +88,11 @@ export class ProfitCommissionComponent implements OnInit {
   lessIndex: any[] = [];
   indx: number = null;
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
+    this.userService.emitModuleId("ACIT049");
   	this.queryModal.mdlOptions = { centered: true, backdrop: 'static', windowClass: "modal-size" };
   	/*this.queryModal.openNoClose();*/
   	this.getProfCommList(this.searchParams);

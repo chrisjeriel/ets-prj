@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AccountingService,NotesService } from '../../_services';
+import { AccountingService, NotesService, UserService } from '../../_services';
 import { CVListing } from '@app/_models'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -76,10 +76,11 @@ export class CheckVoucherComponent implements OnInit {
 
   tranStat: string = 'new';
 
-  constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
+  constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Check Voucher");
+    this.userService.emitModuleId("ACIT028");
     this.acctService.arFilter = '';
     this.acctService.jvFilter = '';
     this.acctService.prqFilter = '';

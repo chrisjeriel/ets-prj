@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, MaintenanceService} from '@app/_services';
+import { NotesService, AccountingService, MaintenanceService, UserService } from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -169,10 +169,12 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    loading: boolean = false;
 
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService) { }
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Allocate Investment Income");
+    this.userService.emitModuleId("ACIT054");
+
   	this.getYearList();
   }
 

@@ -13,7 +13,7 @@ export class ExtractComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acc | Extract");
+  	this.titleService.setTitle("Acct-IT | Extract Accounting Entries");
   }
 
 }

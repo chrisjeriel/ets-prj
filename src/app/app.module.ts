@@ -16,6 +16,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { FullCalendarModule } from 'primeng/fullcalendar';
+import { TimeagoModule } from 'ngx-timeago';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -519,6 +520,7 @@ import { CancelArCvJvServiceComponent } from './accounting-service/utilities/can
         AccordionModule,
         DropdownModule,
         FullCalendarModule,
+        TimeagoModule.forRoot(),
     ],
     declarations: [
         AppComponent,

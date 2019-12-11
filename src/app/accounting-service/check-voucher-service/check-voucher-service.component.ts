@@ -79,7 +79,7 @@ export class CheckVoucherServiceComponent implements OnInit {
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-Service | Check Voucher");
+    /*this.titleService.setTitle("Acct-Service | Check Voucher"); Commented out by Totz, already handled in module-access.guard.ts*/
 
     this.acctService.arFilter = '';
     this.acctService.jvFilter = '';

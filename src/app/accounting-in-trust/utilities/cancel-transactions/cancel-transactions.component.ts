@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal,NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { UserService } from '@app/_services';
 
 @Component({
   selector: 'app-cancel-transactions',
@@ -11,10 +12,12 @@ import { NgForm } from '@angular/forms';
 export class CancelTransactionsComponent implements OnInit {
   tranClass : string = '';
  
-  constructor(private router: Router) { }
+  constructor(private router: Router, private userService: UserService) { }
 
   ngOnInit() {
     this.tranClass = 'ar';
+    this.userService.emitModuleId("ACIT052");
+
   }
 
   onTabChange($event: NgbTabChangeEvent) {

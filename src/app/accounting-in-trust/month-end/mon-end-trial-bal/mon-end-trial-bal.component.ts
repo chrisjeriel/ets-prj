@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService } from '@app/_services';
+import { NotesService, AccountingService, UserService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -60,10 +60,12 @@ export class MonEndTrialBalComponent implements OnInit {
   returnCode2: number = null;
   mdl2Type: string = '';
 
-  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title) { }
+  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Trial Balance Processing");
+    this.userService.emitModuleId("ACIT066");
+
     this.getAcitMonthEndTrialBal(this.ns.toDateTimeString(0), true);
     this.getAcitMonthEndUnpostedMonths();
   }

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { ClaimsService, UnderwritingService, MaintenanceService, NotesService } from '@app/_services';
+import { ClaimsService, UnderwritingService, MaintenanceService, NotesService, UserService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
@@ -213,10 +213,12 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
 
   constructor(private titleService: Title, private modalService: NgbModal, private router: Router, 
               private cs : ClaimsService, private us : UnderwritingService, private ms : MaintenanceService,
-              private ns : NotesService) { }
+              private ns : NotesService, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
+    this.userService.emitModuleId("CLM001");
+
     this.retrieveClaimsList();
   }
 

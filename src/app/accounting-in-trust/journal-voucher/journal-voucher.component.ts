@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { AccountingService,NotesService } from '../../_services';
+import { AccountingService,NotesService, UserService } from '../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationExtras } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
@@ -83,10 +83,11 @@ export class JournalVoucherComponent implements OnInit {
 
     tranStat: string = 'new';
 
-  constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns : NotesService) { }
+  constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns : NotesService, private userService: UserService) { }
 
   ngOnInit() {
-     this.titleService.setTitle("Acct-IT | Journal Voucher");
+    this.titleService.setTitle("Acct-IT | Journal Voucher");
+    this.userService.emitModuleId("ACIT031");
     this.accountingService.arFilter = '';
     this.accountingService.cvFilter = '';
     this.accountingService.prqFilter = '';
