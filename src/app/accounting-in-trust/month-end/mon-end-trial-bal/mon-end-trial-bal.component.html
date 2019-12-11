@@ -8,33 +8,33 @@
         	<fieldset class="scheduler-border col-sm-6"  style="padding: 15px !important;">
         		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
         		
-        			<div class="input-group mt-1">
-				        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right">Transaction Date</label>
-                <div class="dp-cont col-sm-3">
-                  <datepicker [type]="'date'" [value]="tranDate" (valueChange)="tranDate=$event; checkMonth($event);"></datepicker>
-                </div>
+      			<div class="input-group mt-1">
+			        <label class="form-control-sm col-sm-5 pl-0 pr-1 text-right">Transaction Date</label>
+              <div class="dp-cont col-sm-3">
+                <datepicker [type]="'date'" [value]="tranDate" (valueChange)="tranDate=$event; checkMonth($event);"></datepicker>
+              </div>
 				    </div>
 
-        			<div class="input-group cust-ig">
-				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" [(ngModel)]="inclPrevMon" name="">
-				        </div>
-		            <label class="form-control-sm text-left col-sm">Include Previous Months</label>
+      			<div class="input-group cust-ig">
+			        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
+			        	<input type="checkbox" [(ngModel)]="inclPrevMon" name="">
+			        </div>
+	            <label class="form-control-sm text-left col-sm">Include Previous Months</label>
 				    </div>
-        			<div class="input-group cust-ig">
-				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" [(ngModel)]="inclPrevYrs" name="">
-				        </div>
-		            <label class="form-control-sm text-left col-sm">Include Previous Years</label>
+      			<div class="input-group cust-ig">
+			        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
+			        	<input type="checkbox" [(ngModel)]="inclPrevYrs" name="">
+			        </div>
+	            <label class="form-control-sm text-left col-sm">Include Previous Years</label>
 				    </div>
-        			<div class="input-group">
-				        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
-				        	<input type="checkbox" [(ngModel)]="adjEntsOnly" name="">
-				        </div>
-		            <label class="form-control-sm text-left col-sm">Adjusting Entries Only</label>
+      			<div class="input-group">
+			        <div class="form-control-sm col-sm-5 pl-0 pr-1 text-right mb-0">
+			        	<input type="checkbox" [(ngModel)]="adjEntsOnly" name="">
+			        </div>
+	            <label class="form-control-sm text-left col-sm">Adjusting Entries Only</label>
 				    </div>
 
-    			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">
+      			<div class="form-group col-sm text-center" style="margin-bottom: 5px;">
     		      <div class="cust-btn-container">
     		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="tranDate == null || tranDate == ''"><a>Generate</a></button>
                 <button type="button" class="cust-btn" (click)="onClickPrint()" [disabled]="monthlyTotals.length == 0"><a>Print</a></button>

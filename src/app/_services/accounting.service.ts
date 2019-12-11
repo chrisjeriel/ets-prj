@@ -3347,4 +3347,54 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitProfCommTran',params,header);
     }
 
+    saveAcseMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseMonthEndTrialBal',params,header);
+    }
+
+    getAcseMonthEndTrialBal(eomDate){
+		const params = new HttpParams()
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseMonthEndTrialBal',{params});	
+	}
+
+	getAcseMonthEndUnpostedMonths() {
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseMonthEndUnpostedMonths');	
+	}
+
+	postAcseMonthEndTrialBal(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/postAcseMonthEndTrialBal',params,header);
+    }
+
+    saveAcseMonthEndTBTempClose(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseMonthEndTBTempClose',params,header);
+    }
+
+    saveAcseMonthEndTBReopen(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveAcseMonthEndTBReopen',params,header);
+    }
 }
