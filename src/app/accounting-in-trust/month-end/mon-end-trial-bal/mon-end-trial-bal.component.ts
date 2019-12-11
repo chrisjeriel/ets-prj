@@ -218,6 +218,8 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   export() {
+    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
     var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
     var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
@@ -230,7 +232,7 @@ export class MonEndTrialBalComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'MonthlyTotalsList_'+currDate+'.xlsx'
+    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xlsx'
     var opts = [{
                 sheetid: 'PHP',
                 headers: true
@@ -262,60 +264,6 @@ export class MonEndTrialBalComponent implements OnInit {
       this.getAcitMonthEndTrialBal(ev);
     }
   }
-
-  /*onClickTempClose() {
-    $('.globalLoading').css('display', 'block');
-
-    var params = {
-      eomDate: this.tranDate,
-      eomUser: this.ns.getCurrentUser()
-    }
-
-    this.as.saveAcitMonthEndTBTempClose(params).subscribe(data => {
-      $('.globalLoading').css('display', 'none');
-      this.returnCode2 = data['returnCode'];
-      if([1,2,3,4].includes(this.returnCode2)) {
-        this.mdl2Type = 'tc';
-        this.eomTbMdl2.openNoClose();
-      } else if(this.returnCode2 == -1) {
-        this.dialogIcon = 'success-message';
-        this.dialogMessage = 'Month closed temporarily.'
-        this.eomTbDialog.open();
-      } else if(this.returnCode2 == 0) {
-        this.dialogIcon = 'error-message';
-        this.dialogMessage = 'Temporary closing failed.'
-        this.eomTbDialog.open();
-      }
-    });
-  }
-
-  onClickReopen() {
-    $('.globalLoading').css('display', 'block');
-
-    var params = {
-      eomDate: this.tranDate,
-      eomUser: this.ns.getCurrentUser()
-    }
-
-    this.as.saveAcitMonthEndTBReopen(params).subscribe(data => {
-      $('.globalLoading').css('display', 'none');
-      this.returnCode2 = data['returnCode'];
-      if([1,2].includes(this.returnCode2)) {
-        this.mdl2Type = 'ro';
-        this.eomTbMdl2.openNoClose();
-      } else if(this.returnCode2 == -1) {
-        this.returnCode = null;
-        this.dialogIcon = 'success-message';
-        this.dialogMessage = 'Month reopened.'
-        this.eomTbDialog.open();
-      } else if(this.returnCode2 == 0) {
-        this.returnCode = null;
-        this.dialogIcon = 'error-message';
-        this.dialogMessage = 'Month reopening failed.'
-        this.eomTbDialog.open();
-      }
-    });
-  }*/
 
   onClickNewBtn(str) {
     $('.globalLoading').css('display', 'block');
