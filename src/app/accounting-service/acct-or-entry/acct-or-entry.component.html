@@ -119,7 +119,7 @@
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || inquiryFlag || orInfo.acctEntDate !== null" [class.cust-btn-disabled]="isAdd || isCancelled || inquiryFlag || orInfo.acctEntDate !== null" (click)="openCancelModal()">Cancel OR</button>
 				</div>					
 			</div>
-			<div class="input-group" style="margin-bottom: 2px !important;">
+			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
 					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" (click)="onClickSave();" [disabled]="isCancelled || isPrinted || inquiryFlag" [class.cust-btn-disabled]="isCancelled || isPrinted || inquiryFlag">Save</button>
 				</div>					
@@ -292,6 +292,14 @@ padding-right: 0px !important;">
 	  				<option [value]="'2'">PRINTER</option>
 	  			</select>
 	  		</div>
+	  		<div class="input-group">
+	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Printer Name</label>
+	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="selectedPrinter" [disabled]="printMethod != '2'">
+	  			<ng-container *ngFor="let printer of printers">
+	  				<option *ngIf="printMethod == '2'" [value]="printer">{{printer}}</option>
+	  			</ng-container>
+	  		</select>
+	  	</div>
 	  	</div>
 	  </div>
 	</div>
@@ -319,14 +327,22 @@ padding-right: 0px !important;">
 	  			<option [value]="'2'">PRINTER</option>
 	  		</select>
 	  	</div>
+	  	<div class="input-group">
+	  		<label class="form-control-sm col-sm-4" style="margin: 0px !important">Printer Name</label>
+	  		<select class="form-control form-control-sm cust-sm col-sm-6" [(ngModel)]="selectedPrinter" [disabled]="printMethod != '2'">
+	  			<ng-container *ngFor="let printer of printers">
+	  				<option *ngIf="printMethod == '2'" [value]="printer">{{printer}}</option>
+	  			</ng-container>
+	  		</select>
+	  	</div>
 	  </div>
 	</div>
 	<div footer>
       <div class="d-flex justify-content-center text-center">
         <div class="col-sm-12 text-center">
         	<span class="fa fa-spinner fa-spin" style="font-size: 15px;" *ngIf="printLoading"></span>
-          <button class="cust-btn" type="button" (click)="reprintMdl.closeModal();"><a>Cancel</a></button>
-          <button class="cust-btn" type="button" [disabled]="printMethod.length == 0" [class.cust-btn-disabled]="printMethod.length == 0" (click)="reprintMethod(true);"><a>Ok</a></button>
+          <button class="cust-btn" type="button" (click)="reprintMdl.closeModal();" [disabled]="printMethod.length == 0 || printLoading" [class.cust-btn-disabled]="printMethod.length == 0 || printLoading"><a>Cancel</a></button>
+          <button class="cust-btn" type="button" [disabled]="printMethod.length == 0 || printLoading" [class.cust-btn-disabled]="printMethod.length == 0 || printLoading" (click)="reprintMethod(true);"><a>Ok</a></button>
         </div>
       </div>
   	</div>

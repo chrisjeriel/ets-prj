@@ -113,4 +113,12 @@ export class PrintService {
             }        
        });;
     }
+
+    getPrinters(){
+      return this.http.get(environment.prodApiUrl + '/util-service/retrievePrinters');  
+    }
+
+    directPrint(params:any){
+      return this.http.get(environment.prodApiUrl + '/util-service/directPrint',{ params:params});
+    }
 }
