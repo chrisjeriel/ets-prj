@@ -819,10 +819,10 @@
                             </fa>
                         </a>
                         <button *ngIf="notifCount == 0" id="bell-btns" type="button" class="btn btn-sm nav-item nav-link badge-btns" (click)="onClickNotif($event);" style="background-color: transparent; padding: 0px 10px 0px 10px !important; margin-right: -1px;">
-                          <fa name="bell" ngbTooltip="Notifications" placement="bottom"></fa>
+                          <fa name="bell" id="bell-fa" ngbTooltip="Notifications" placement="bottom"></fa>
                         </button>
                         <button *ngIf="notifCount > 0" id="bell-btns" type="button" class="btn btn-sm nav-item nav-link badge-btns" (click)="onClickNotif($event);" style="background-color: transparent; padding: 0px 10px 0px 10px !important; margin-right: -11px;">
-                          <fa name="bell" ngbTooltip="Notifications" placement="bottom"></fa> <span class="badge badge-danger" style="top: -6px; left: -5px; border: 1px solid white;">{{ notifCount }}</span>
+                          <fa name="bell" id="bell-fa2" ngbTooltip="Notifications" placement="bottom"></fa> <span id="bell-span" class="badge badge-danger" style="top: -6px; left: -5px; border: 1px solid white;">{{ notifCount }}</span>
                         </button>
                         <a class="nav-item nav-link">
                             <fa name="gear" placement="bottom" (click)="open(content)" ngbTooltip="Settings">
