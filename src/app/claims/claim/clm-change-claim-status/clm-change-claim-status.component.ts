@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-import { UnderwritingService, ClaimsService, MaintenanceService, NotesService } from '@app/_services';
+import { UnderwritingService, ClaimsService, MaintenanceService, NotesService, UserService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
@@ -156,10 +156,12 @@ export class ClmChangeClaimStatusComponent implements OnInit, AfterViewInit {
   searchLoading: boolean = false;
 
   constructor(private titleService: Title, private modalService: NgbModal, private us: UnderwritingService,
-              private cs: ClaimsService, private ms: MaintenanceService, private ns: NotesService) { }
+              private cs: ClaimsService, private ms: MaintenanceService, private ns: NotesService, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Clm | Change Claim Status");
+    this.userService.emitModuleId("CLM009");
+
     this.retrieveClaimStatus();
     setTimeout(()=>{$('#searchBtn').trigger('click');},0);
   }

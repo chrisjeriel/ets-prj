@@ -96,7 +96,7 @@ export class AccSEditAccountingEntriesComponent implements OnInit, OnDestroy {
   }
 
   constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
-      this.titleService.setTitle("Acct-Serv | Edit Acct Entries");
+      /*this.titleService.setTitle("Acct-Serv | Edit Acct Entries");*/
    }
 
   ngOnInit() {

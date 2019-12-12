@@ -509,7 +509,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	setCurrency(data){
-		this.form.control.markAsDirty();
+		
 
 		this.genInfoData.currencyCd = data.currencyCd;
 		this.genInfoData.currencyRt = data.currencyRt;
@@ -518,6 +518,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		setTimeout(() => {
 			$('input[appCurrencyRate]').focus();
 			$('input[appCurrencyRate]').blur();
+
+			this.form.control.markAsDirty();
 		},0) 
 
 	}

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
-import { ClaimsService, NotesService } from '../../_services';
+import { ClaimsService, NotesService, UserService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -129,12 +129,14 @@ export class PaymentRequestsComponent implements OnInit {
    @ViewChild('confirmation') confirmation;
    @ViewChild('inqTable') inqTable: LoadingTableComponent;
    
-  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService) { }
+  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService, private userService: UserService) { }
 
   ngOnInit() {
   	this.btnDisabled = false;
   	this.btnDisabled_neg = true;
   	this.titleService.setTitle("Clm | Payment Request Inquiry");
+    this.userService.emitModuleId("CLM010");
+
   	this.getList();
   }
 

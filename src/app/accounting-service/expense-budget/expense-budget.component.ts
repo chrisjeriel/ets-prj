@@ -21,7 +21,7 @@ export class ExpenseBudgetComponent implements OnInit {
   constructor(private titleService: Title,private router: Router,private accountingService: AccountingService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acc-Srv | Expense Budget") ;
+  	/*this.titleService.setTitle("Acc-Srv | Expense Budget") ;*/
   }
 
   onTabChange($event: NgbTabChangeEvent) {

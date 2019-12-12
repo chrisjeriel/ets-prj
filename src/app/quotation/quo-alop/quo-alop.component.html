@@ -104,7 +104,7 @@
 				<div class="input-group">
 					<label class="form-control-sm col-sm-6" for="maxIndemPeriod">Maximum Indemnity Period</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="maxIndemPeriod" [ngModel]="alopDetails?.maxIndemPd" (ngModelChange)="alopDetails.maxIndemPd = $event;table.indvSelect.maxIndemPd = $event;table.indvSelect.edited = true" (blur)="alopDetails.maxIndemPdSi = ((alopDetails.maxIndemPd/12)*alopDetails.annSi) ;table.indvSelect.maxIndemPdSi = alopDetails.maxIndemPdSi" numbers-only appRequired name="maxIndemPeriod">
-					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">month(s)</label>
 				</div>
 				<!-- <div class="input-group" [hidden]="true">
 					<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
@@ -117,7 +117,7 @@
 				<div class="input-group">
 					<label class="form-control-sm col-sm-6" for="interval">Progress reports to be presented at intervals of</label>
 					<input [readonly]="inquiryFlag || readonlyFlag" class="form-control form-control-sm  col-sm-1 text-right" type="text" id="interval" [ngModel]="alopDetails?.repInterval" (ngModelChange)="alopDetails.repInterval = $event;table.indvSelect.repInterval = $event;table.indvSelect.edited = true" numbers-only appRequired name="interval">
-					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+					<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">month(s)</label>
 				</div>
 			</div>
 		</fieldset>

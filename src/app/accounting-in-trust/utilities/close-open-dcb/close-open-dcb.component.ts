@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MaintenanceService, NotesService, AccountingService } from '@app/_services';
+import { MaintenanceService, NotesService, AccountingService, UserService } from '@app/_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -90,10 +90,12 @@ export class CloseOpenDcbComponent implements OnInit {
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, 
   			      private titleService: Title, private accountingService: AccountingService, 
-              private router: Router) { }
+              private router: Router, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Close/Open DCB");
+    this.userService.emitModuleId("ACIT055");
+
   	this.retrieveDCB();
   }
 

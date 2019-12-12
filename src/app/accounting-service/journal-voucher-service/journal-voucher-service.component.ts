@@ -78,7 +78,7 @@ export class JournalVoucherServiceComponent implements OnInit {
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-Service | Journal Voucher");
+    /*this.titleService.setTitle("Acct-Service | Journal Voucher");*/
     this.accountingService.arFilter = '';
     this.accountingService.cvFilter = '';
     this.accountingService.prqFilter = '';

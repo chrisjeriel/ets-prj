@@ -461,7 +461,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     onRowDblClick(event,data) {
         
-        if(!this.nullRow){
+        if(data!=this.fillData){
             this.rowDblClick.next(event);
             this.newRowDblClick.emit(data);
         }

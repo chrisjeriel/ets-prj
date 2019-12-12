@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, MaintenanceService} from '@app/_services';
+import { NotesService, AccountingService, MaintenanceService, UserService } from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -131,7 +131,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
   	jvDatasList : any = {
   				"saveAcitAllocInvtIncome" : [],
-  				"saveAcitJVEntryList" : []
+  				"saveAcitJvEntryList" : []
   	}
   	acitAllocInvtIncReq  : any = { 
                 "saveAcitAllocInvtIncome"  : []}
@@ -169,10 +169,12 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    loading: boolean = false;
 
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService) { }
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Allocate Investment Income");
+    this.userService.emitModuleId("ACIT054");
+
   	this.getYearList();
   }
 
@@ -292,6 +294,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data);
      this.invtId = [];
   	  if(data !== null){
 	      this.selectedData = data;
@@ -467,13 +470,12 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		    this.table.overlayLoader = true;
 		    this.boolAllocate = true;
 		    var result : boolean;
-		    this.allocateTransactionFinal();
-		
+		    this.createJV();
  		}	
  	} 
  }
 
- allocateTransactionFinal(obj?){
+/* allocateTransactionFinal(obj?){
  		this.selectedTranTypeCd = [];
 	    this.ms.getAcitTranType('JV','','','','','Y').pipe(finalize(() => this.createJV())
 	    	).subscribe((data:any) => {	
@@ -488,29 +490,55 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 		  	 		}
 	  	 	   }
 	    });
- }
+ }*/
 
  createJV(){
  	console.log(this.sumInvtIncome + ' ' + this.sumWhtax + ' ' + this.sumBankCharge );
  	this.jvDatasList.saveAcitAllocInvtIncome = this.acitAllocInvtIncReq.saveAcitAllocInvtIncome;
- 	this.jvDatasList.saveAcitJVEntryList = [];
+ 	this.jvDatasList.saveAcitJvEntryList = [];
 
- 	for(let rec of this.selectedTranTypeCd){
- 		if(rec.tranTypeCd === 54){
- 			this.prepareData(rec.tranTypeCd,this.refnoTranId,this.currCode,this.currRt,this.sumInvtIncome);
- 			this.jvDatasList.saveAcitJVEntryList.push(this.jvDatas);
- 		} else if (rec.tranTypeCd === 55){
- 			this.prepareData(rec.tranTypeCd,this.refnoTranId,this.currCode,this.currRt,this.sumWhtax);
- 			this.jvDatasList.saveAcitJVEntryList.push(this.jvDatas)
- 		} else if (rec.tranTypeCd === 56){
- 			this.prepareData(rec.tranTypeCd,this.refnoTranId,this.currCode,this.currRt,this.sumBankCharge);
- 			this.jvDatasList.saveAcitJVEntryList.push(this.jvDatas);
- 		}
- 	}
- 	
- 	this.saveJV(this.jvDatasList);
+   setTimeout(()=>{
+        this.prepareData(54,this.refnoTranId,this.currCode,this.currRt,this.sumInvtIncome);
+        this.jvDatasList.saveAcitJvEntryList.push(this.jvDatas);
+   },500);
+
+   setTimeout(()=>{
+        this.prepareData(55,this.refnoTranId,this.currCode,this.currRt,this.sumWhtax);
+        this.jvDatasList.saveAcitJvEntryList.push(this.jvDatas);
+   },500);
+
+   setTimeout(()=>{
+        this.prepareData(56,this.refnoTranId,this.currCode,this.currRt,this.sumBankCharge);
+        this.jvDatasList.saveAcitJvEntryList.push(this.jvDatas);
+   },500);
+
+   console.log(this.jvDatasList);
+ 	 this.saveJV(this.jvDatasList);
 
  }
+
+   saveJV(obj){
+    setTimeout(()=>{
+       this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
+          ).subscribe((data:any) => {
+          this.tranIdOut = data['tranIdOut'];
+          console.log(data);
+          console.log(this.tranIdOut);
+        
+          if(data['returnCode'] != -1) {
+             this.dialogMessage = data['errorList'][0].errorMessage;
+            this.dialogIcon = "error-message";
+            this.dialogMessage = "Unable to allocate transaction. An error occured."
+            this.successDialog.open();
+            this.result= false;
+          }else{
+            this.result= true;
+          }
+      });
+   },1000);
+
+  }
+
 
   prepareData(jvTranTypeCd?,refnoTranId?,currCd?,currRate?,jvAmt?){
     this.jvDatas = {
@@ -521,7 +549,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    postDate : null,
 	    tranClass : 'JV', 
 	    tranTypeCd: null,
-	    tranClassNo : null, 
+	    tranClassNo : null,   
 	    tranDate :  this.ns.toDateTimeString(0), 
 	    tranId : null, 
 	    tranStat : 'O', 
@@ -545,7 +573,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    localAmt : jvAmt * currRate,
 	    allocTag : 'Y',
 	    allocTranId : null,
-      adjEntryTag: null,
+      adjEntryTag: 'N',
 	    preparedBy : this.ns.getCurrentUser(),
 	    preparedDate : this.ns.toDateTimeString(0),
 	    approvedBy : null,
@@ -556,60 +584,6 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    updateDateJv : this.ns.toDateTimeString(0)
     } 
    
-  }
-
-  saveJV(obj){
-    console.log(obj);
-    let jvDatasList : any = {
-          "saveAcitAllocInvtIncome" : []
-    }
-
-    var i = 0;
-    while(i < obj.saveAcitJVEntryList.length){
-      jvDatasList = obj.saveAcitJVEntryList[i];
-      jvDatasList.saveAcitAllocInvtIncome = this.jvDatasList.saveAcitAllocInvtIncome;
-      console.log(JSON.stringify(jvDatasList));
-      
-      i++;
-    }
-
-    console.log(this.tranIdOut);
-    console.log(this.result);
-
-    /*this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
-    	).subscribe((data:any) => {
-      this.tranIdOut = data['tranIdOut'];
-      console.log(data);
-      console.log(this.tranIdOut);
-    
-      if(data['returnCode'] != -1) {
- 		    this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error-message";
-        this.dialogMessage = "Unable to allocate transaction. An error occured."
-        this.successDialog.open();
-        this.result= false;
-      }else{
-        this.result= true;
-      }
-    });*/
-  }
-
-  saveJv(obj){
-    this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result) )
-      ).subscribe((data:any) => {
-      this.tranIdOut = data['tranIdOut'];
-      console.log(data);
-
-      if(data['returnCode'] != -1) {
-         this.dialogMessage = data['errorList'][0].errorMessage;
-        this.dialogIcon = "error-message";
-        this.dialogMessage = "Unable to allocate transaction. An error occured."
-        this.successDialog.open();
-        this.result= false;
-      }else{
-        this.result= true;
-      }
-    });
   }
 
   resultJVAllocation(tranIdout,res){

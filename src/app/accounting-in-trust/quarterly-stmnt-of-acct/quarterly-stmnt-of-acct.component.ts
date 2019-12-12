@@ -5,6 +5,7 @@ import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { AccountingService } from '@app/_services/accounting.service';
+import { UserService } from '@app/_services';
 import { NotesService } from '@app/_services/notes.service';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -173,11 +174,11 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	totalDebit: any = 0;
 	totalCredit: any = 0;
 
-	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService) { }
+	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService, private userService: UserService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
-
+    	this.userService.emitModuleId("ACIT050");
 		var d = new Date();
 	    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
 	    this.gnrtYear = d.getFullYear();
