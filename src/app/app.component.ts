@@ -221,6 +221,12 @@ export class AppComponent implements OnDestroy {
             $("#context-menu a").on("click", function() {
               $(this).parent().removeClass("show").hide();
             });
+
+            $(document).on("click", function(e:any) {
+              console.log(e);
+              console.log("id: " + e.target.id);
+              console.log("id: " + e.target);
+            })
         });
 
         this.wsConnect();
