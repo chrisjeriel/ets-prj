@@ -97,9 +97,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true,true],
-    total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
-    widths        : [130,120, 120,200,200,1,1,1,1,85,120,120,120,120],
-    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
+    total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','currAmt', 'localAmt'],
+    widths        : [110,1,120,150,350,350,1,1,100,120,120,120,120,120],
+  //  keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
+    keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','approvedAmt','currAmt','localAmt']
   };
 
   inwardPolBalData: any = {};
@@ -464,28 +465,38 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   getClmHist(){
-    this.clmService.getClaimHistory()
+    this.acctService.getAcitClmHist(this.requestData.reqId)
     .subscribe(data => {
-      var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 1)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
-      this.cedingCompanyData.tableData = [];
-      this.recPrqTrans.forEach(e => {
-        this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
-                                                              .map(e2 => { 
-                                                                e2.paymentFor = this.requestData.particulars; 
-                                                                e2.createUser = e.createUser;
-                                                                e2.updateUser = e.updateUser;
-                                                                e2.createDate = e.createDate;
-                                                                e2.updateDate = e.updateDate;
-                                                                e2.approvedAmt = (e.approvedAmt == '' || e.approvedAmt == null)?0:e.approvedAmt;
-                                                                e2.paytAmt    = (e.currAmt == '' || e.currAmt == null)?0:e.currAmt;
-                                                                e2.localAmt   = (e.localAmt == '' || e.localAmt == null)?0:e.localAmt; 
-                                                                e2.itemNo     = e.itemNo;
-                                                                return e2; 
-                                                              }));
-      });
-      this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
+      console.log(data);
+      this.cedingCompanyData.tableData = data['acitClmHistList'].map(e => { 
+        e.paymentFor   = this.requestData.particulars; 
+        e.approvedAmt = (e.approvedAmt == '' || e.approvedAmt == null)?0:e.approvedAmt;
+        return e; });
       this.cedCompTbl.refreshTable();
     });
+
+    // this.clmService.getClaimHistory()
+    // .subscribe(data => {
+    //   var recClmHist  = data['claimReserveList'].map(e => e.clmHistory).flatMap(e => { return e }).filter(e => (this.requestData.tranTypeCd == 1)?e.histCategory == 'L':e.histCategory != 'L').map(e => { return e });
+    //   this.cedingCompanyData.tableData = [];
+    //   this.recPrqTrans.forEach(e => {
+    //     this.cedingCompanyData.tableData.push(recClmHist.filter(e2 => e2.claimId == e.claimId && e2.histNo == e.histNo && e2.projId == e.projId )
+    //                                                           .map(e2 => { 
+    //                                                             e2.paymentFor = this.requestData.particulars; 
+    //                                                             e2.createUser = e.createUser;
+    //                                                             e2.updateUser = e.updateUser;
+    //                                                             e2.createDate = e.createDate;
+    //                                                             e2.updateDate = e.updateDate;
+    //                                                             e2.approvedAmt = (e.approvedAmt == '' || e.approvedAmt == null)?0:e.approvedAmt;
+    //                                                             e2.paytAmt    = (e.currAmt == '' || e.currAmt == null)?0:e.currAmt;
+    //                                                             e2.localAmt   = (e.localAmt == '' || e.localAmt == null)?0:e.localAmt; 
+    //                                                             e2.itemNo     = e.itemNo;
+    //                                                             return e2; 
+    //                                                           }));
+    //   });
+    //   this.cedingCompanyData.tableData = this.cedingCompanyData.tableData.flatMap(e => { return e });
+    //   this.cedCompTbl.refreshTable();
+    // });
   }
 
   onChangeCurr(from){
@@ -738,7 +749,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
-          e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
+          e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?0:e.tranTypeCd;
           e.transdtlType  = (e.transdtlType == '' || e.transdtlType == null)?e.transdtlTypeDesc:e.transdtlType;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
@@ -796,7 +807,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
           e.createDate    = (e.createDate == '' || e.createDate == undefined)?this.ns.toDateTimeString(0):this.ns.toDateTimeString(e.createDate);
           e.quarterEnding = '';
-          e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
+          e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?8:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
           this.params.savePrqTrans.push(e);

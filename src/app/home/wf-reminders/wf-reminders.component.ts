@@ -55,7 +55,7 @@ export class WfRemindersComponent implements OnInit {
 
   retrieveReminders(obj){
        this.currentUser = JSON.parse(window.localStorage.currentUser).username;
-       
+     console.log(obj);
     if (obj === 'atm'){
        this.reminderBool = true;
        this.reminderList = [];
@@ -87,6 +87,8 @@ export class WfRemindersComponent implements OnInit {
        .subscribe((data)=>{
            var records = data['reminderList'];
                for(let rec of records){
+                 rec.createDate = this.ns.toDateTimeString(rec.createDate);
+                 rec.updateDate = this.ns.toDateTimeString(rec.updateDate);
                  if(rec.createUser === this.currentUser){
                    this.reminderList.push(rec);
                  }
@@ -131,6 +133,7 @@ export class WfRemindersComponent implements OnInit {
     }
 
   showReminderModal(reminder,isReadOnly){
+    console.log(reminder);
     this.wfReminder.reminder = reminder;
     this.wfReminder.isReadOnly = isReadOnly;
     $('#reminderModal #modalBtn').trigger('click');

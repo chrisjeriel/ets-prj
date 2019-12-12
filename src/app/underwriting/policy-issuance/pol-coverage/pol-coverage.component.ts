@@ -375,8 +375,7 @@ export class PolCoverageComponent implements OnInit {
     });
     
     if (!this.alteration) {
-      this.getPolCoverage();
-      setTimeout(() => {this.getAlopCd()});
+      this.getAlopCd();
     } else {
       this.passData2.tableData = [
              {
@@ -440,7 +439,6 @@ export class PolCoverageComponent implements OnInit {
           { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
       }
       this.getAlopCd();
-      setTimeout(() => this.getPolCoverageAlt(),0);
     }
 
     //paul
@@ -518,14 +516,12 @@ export class PolCoverageComponent implements OnInit {
         }
 
       var alop = false;
-      console.log('aaaallloooppp');
-      console.log(alop);
-        this.passData.tableData.forEach(a=>{
-          if(a.covercd == this.alopCoverCd){
-            alop = true;
-          }
-        });
-        console.log(alop);
+      for (var i = 0; i < this.passData.tableData.length; ++i) {
+        if(this.passData.tableData[i].coverCd == this.alopCoverCd){
+          alop = true;
+        }
+      }
+      this.alopTab.emit(alop);
 
         if(data.policy.policyId != this.policyInfo.policyId){
           if(this.policyInfo.extensionTag == 'Y'){
@@ -745,7 +741,7 @@ export class PolCoverageComponent implements OnInit {
         }
         this.passData.tableData.forEach(a=>{
               a.others = a.coverCd == this.othersCoverCd;
-            })
+        });
         this.sectionTable.refreshTable();
 
         this.altCoverageData.prevtotalSi     = this.prevtotalSi;
@@ -800,6 +796,7 @@ export class PolCoverageComponent implements OnInit {
        this.policyId = this.policyInfo.lastAffectingPolId
      }
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+          console.log(data)
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
           this.riskId = data.policy.project.riskId;
@@ -909,17 +906,16 @@ export class PolCoverageComponent implements OnInit {
             }
 
             var alop = false;
-            console.log('aaaallloooppp');
-            console.log(this.alopCoverCd);
-            this.passDataSectionCover.tableData.forEach(a=>{
-              a.others = a.coverCd == this.othersCoverCd;
-              if(a.covercd == this.alopCoverCd){
+            for (var i = 0; i < this.passDataSectionCover.tableData.length; ++i) {
+              if(this.passDataSectionCover.tableData[i].coverCd == this.alopCoverCd){
                 alop = true;
               }
-              console.log(a)
-            });
+            }
             this.alopTab.emit(alop);
-            console.log(alop);
+
+            this.passDataSectionCover.tableData.forEach(a=>{
+              a.others = a.coverCd == this.othersCoverCd;
+            });
 
               this.sectionTable.refreshTable();
               this.sectionTable.onRowClick(null,this.passDataSectionCover.tableData[0]);
@@ -1324,7 +1320,14 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableCov();
 
     if(this.coverageData.totalSi > parseFloat(this.coverageData.totalValue.toString().split(',').join(''))){
-      this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
+      if(this.line in ['EEI', 'MBI' , 'BPV']){
+        this.promptMessage = "Max sum insured of the policy exceeded the new replacement value of the project.";
+      }else if(this.line in ['EEI', 'MBI' , 'BPV']){
+        this.promptMessage = "Max sum insured of the policy exceeded the annual sum insured of the project.";
+      }else{
+        this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";  
+      }
+      
       this.promptType = "totalval";
       this.modal.open();
     }
@@ -2172,7 +2175,15 @@ export class PolCoverageComponent implements OnInit {
   getAlopCd(){
     var params = this.line+'_ALOP';
     this.ms.getMtnParameters(null,params).subscribe((data:any)=>{
-        this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+      if(data.parameters[0] !== undefined){
+          this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+          
+        }
+        if(!this.alteration){
+            this.getPolCoverage();
+          }else{
+            this.getPolCoverageAlt();
+          }
     });
   }
 }

@@ -146,7 +146,7 @@ export class AccSEditedAccountingEntriesComponent implements OnInit, OnDestroy {
   constructor(private titleService: Title, public modalService: NgbModal, private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-Serv | Edited Accounting Entries");
+    /*this.titleService.setTitle("Acct-Serv | Edited Accounting Entries");*/
   }
 
   ngOnDestroy(){

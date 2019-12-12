@@ -6,6 +6,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { ModuleInfo } from '@app/_models';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-security-modules',
@@ -16,11 +17,12 @@ export class SecurityModulesComponent implements OnInit {
 
   @ViewChild("modulesList") modulesList: CustEditableNonDatatableComponent;
   @ViewChild("userListing") userListing: CustEditableNonDatatableComponent;
+  @ViewChild("tranTbl") tranTbl: CustEditableNonDatatableComponent;
   @ViewChild("userGroupListing") userGroupListing: CustEditableNonDatatableComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
-
+  @ViewChild('lovComponent') lovComponent: LovComponent;
 
   passDataModules: any = {
       tableData: [],
@@ -58,6 +60,13 @@ export class SecurityModulesComponent implements OnInit {
       tableData: [],
       tHeader: ['Tran Code', 'Description'],
       dataTypes: ['text', 'text'],
+      keys:['tranCd','desc'],
+      nData:{
+        showMG: 1,
+        tranCd: '',
+        desc: ''
+      },
+      magnifyingGlass:['tranCd'],
       pageID: 3,
       pageLength:5,
       searchFlag: true,
@@ -89,7 +98,7 @@ export class SecurityModulesComponent implements OnInit {
       keys:['userGrp','userGrpDesc'],
       dataTypes: ['text', 'text'],
       uneditable: [true, true],
-      pageID: 7,
+      pageID: 8,
       pageLength:5,
       searchFlag: true,
       paginateFlag: true,
@@ -99,9 +108,14 @@ export class SecurityModulesComponent implements OnInit {
 
     modulesData : any = {
       createDate: '',
-      createUser: null,
+      createUser: '',
       updateDate: '',
-      updateUser: null
+      updateUser: ''
+    };
+
+    passLOVData: any = {
+      selector:'',
+      data:{}
     }
 
     edited: any =[];
@@ -111,6 +125,7 @@ export class SecurityModulesComponent implements OnInit {
     dialogIcon: string = "";
     dialogMessage: string = "";
     cancelFlag: boolean = false;
+    btnDisabled: boolean = true;
 
     constructor(private securityService: SecurityService,public modalService: NgbModal, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
@@ -148,38 +163,41 @@ export class SecurityModulesComponent implements OnInit {
       this.PassDataUserGroupListing.tableData = [];
 
       if (accessLevel == 'USER') {
+        this.userListing.loadingFlag = true;
         this.securityService.getModules(accessLevel, null, null, null, this.modulesData.moduleId).subscribe((data: any) => {
           for(var i =0; i < data.modules.length;i++){
             this.PassDataUserListing.tableData.push(data.modules[i]);
           }
-
+          this.userListing.loadingFlag = false;
           this.userListing.refreshTable();
         });
       } else if (accessLevel == 'USER_GROUP') {
+        this.userGroupListing.loadingFlag = true;
         this.securityService.getModules(accessLevel, null, null, null, this.modulesData.moduleId).subscribe((data: any) => {
           for(var i =0; i < data.modules.length;i++){
             this.PassDataUserGroupListing.tableData.push(data.modules[i]);
           }
-
+          this.userGroupListing.loadingFlag = false;
           this.userGroupListing.refreshTable();
         });
       }
     }
 
     onRowClick(data){
-      console.log(data)
       if(data != null){
         this.passDataModules.disableGeneric = false;
+        this.btnDisabled = false;
         this.modulesData = data;
         this.modulesData.createDate = this.ns.toDateTimeString(data.createDate);
         this.modulesData.updateDate = this.ns.toDateTimeString(data.updateDate);
       }else{
         this.passDataModules.disableGeneric = true;
+        this.btnDisabled = true;
         this.modulesData = {
           createDate: '',
-          createUser: null,
+          createUser: '',
           updateDate: '',
-          updateUser: null
+          updateUser: ''
         };
       }
     }
@@ -214,7 +232,7 @@ export class SecurityModulesComponent implements OnInit {
     }
 
     onConfirmSave() {
-      $('#confirm-save #modalBtn2').trigger('click');
+      this.confirm.confirmModal();
     }
 
    /* saveModules(params) {
@@ -226,7 +244,8 @@ export class SecurityModulesComponent implements OnInit {
         return this.http.post(environment.prodApiUrl + '/security-service/saveModules',params,header);
     }*/
 
-    onClickSaveMain() {
+    onClickSaveMain(cancelFlag?) {
+      this.cancelFlag = cancelFlag !== undefined;
       console.log("onClickSaveMain");
       this.prepareData();
 
@@ -267,5 +286,30 @@ export class SecurityModulesComponent implements OnInit {
           this.mtnModuleList.push(this.passDataModules.tableData[i]);
         }
       }
+    }
+
+    onClickCancel(){
+      this.cancelBtn.clickCancel();
+    }
+
+    clickLOV(data){
+      this.passLOVData.selector = 'mtnTransactions';
+      this.PassDataModuleTrans.tableData.filter((a)=>{return !a.deleted}).map(a=>a.tranCd);
+      this.passLOVData.hide = this.PassDataModuleTrans.tableData.filter((a)=>{return a.tranCd !== null && !a.deleted}).map(a=>{return a.tranCd.toString()});
+      setTimeout(() => {
+        this.lovComponent.openLOV();
+      });
+    }
+
+    setSelected(data){
+      this.PassDataModuleTrans.tableData = this.PassDataModuleTrans.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0 ; i < data.data.length; i++){
+        this.PassDataModuleTrans.tableData.push(JSON.parse(JSON.stringify(this.PassDataModuleTrans.nData)));
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].edited = true;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].tranCd = data.data[i].tranCd;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].desc = data.data[i].tranDesc;
+        this.PassDataModuleTrans.tableData[this.PassDataModuleTrans.tableData.length - 1].showMG = 0;
+      }
+      this.tranTbl.refreshTable();
     }
 }

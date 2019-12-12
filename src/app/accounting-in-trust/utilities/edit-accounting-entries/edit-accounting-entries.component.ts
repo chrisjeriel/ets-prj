@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AccountingEntriesCV } from '@app/_models';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, UserService } from '@app/_services';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -94,8 +94,9 @@ export class EditAccountingEntriesComponent implements OnInit, OnDestroy {
     updateDate: ''
   }
 
-  constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService) {
+  constructor(private accountingService: AccountingService, private titleService: Title, private router: Router, private ns: NotesService, private userService: UserService) {
   		this.titleService.setTitle("Acct-IT | Edit Acct Entries");
+      this.userService.emitModuleId("ACIT053");
    }
 
   ngOnInit() {

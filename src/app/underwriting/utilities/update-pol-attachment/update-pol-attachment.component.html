@@ -1,0 +1,123 @@
+<style type="text/css">
+    .float-sm-center {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .txt-content-rght {
+        text-align: right
+    }
+
+    .mrgn-fieldset {
+        margin-top: 17px;
+    }
+
+    .fieldset-height {
+        height: 104%;
+    }
+
+    .input-group {
+        margin-bottom: -14px !important;
+    }
+</style>
+
+<div class="cust-tabs-container">
+    <h4>Policy / Utilities / Update Policy Attachment</h4>
+    <ngb-tabset>
+        <ngb-tab id="quoteListing" class="ngb-tab" title="Update Policy Attachment">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+                
+                <div style="margin-top: 10px !important;">
+                    <fieldset class="scheduler-border">
+                    	<div class="form-row custom-row-inline-inset">
+                    		<div class="col-sm-2"></div>
+                			<div class="input-group col-sm-8">
+	                            <label class="form-control-sm col-sm-1">Policy No</label>
+	                            <input type="text" [ngModel]="polInfo.polNo[0]" mask="SSS" (ngModelChange)="polInfo.polNo[0]=$event.toUpperCase()" style="margin-left: 3px;" (change)="search('lineCd',$event)" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line" appRequired>
+	                            <input type="text" [(ngModel)]="polInfo.polNo[1]" mask="9999" (change)="search('year',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year" appRequired>
+	                            <input type="text" [(ngModel)]="polInfo.polNo[2]" mask="99999" (blur)="polInfo.polNo[2]=pad($event,5)" (change)="search('seqNo',$event)" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No" appRequired>
+	                            <input type="text" [(ngModel)]="polInfo.polNo[3]" mask="999" (blur)="polInfo.polNo[3]=pad($event,3)" (change)="search('cedingId',$event)" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No" appRequired>
+	                            <input type="text" [(ngModel)]="polInfo.polNo[4]" mask="9999" (blur)="polInfo.polNo[4]=pad($event,4)" (change)="search('coSeriesNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No" appRequired>
+	                             <input type="text" [(ngModel)]="polInfo.polNo[5]" mask="999" (blur)="polInfo.polNo[5]=pad($event,3)" (change)="search('altNo',$event)" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No" appRequired>
+	                            <span>&nbsp;</span>
+	                            <div class="text-search-ico"><a><i (click)="showQuoteLov()" class="fa fa-search"></i></a></div>
+	                            <div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
+	            					<div class="cust-btn-container" style="margin-left: 15px;">
+	            						<button type="button" class="cust-btn" style="z-index: 3 !important" (click)="clearAll()">Clear</button>
+	            					</div>
+	            				</div>
+	                        </div>     
+                		</div>
+                	</fieldset>
+                </div>
+
+                <div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Quotation Info</legend>
+                        <div class="form-row custom-row-inline-inset">
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="polInfo.cedingName"
+                                    disabled="disabled">
+                                <label class="form-control-sm col-sm-1">Insured</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4"
+                                    [ngModel]="polInfo.insuredDesc" disabled="disabled">
+                            </div>
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-2">Risk</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="polInfo.riskName" disabled="disabled">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Attached Files</legend>
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10" style="padding-top: 8px; padding-bottom: 15px;">
+                                <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="passData.tableData=$event" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-13 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px">
+                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" [disabled]="polInfo.riskName == '' || polInfo.riskName == undefined" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
+                <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+                <app-cancel-button [url]="'/quotation-processing'" ></app-cancel-button>
+
+                <!-- <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="onClickCancelSave()" [url]="'/'" ></app-cancel-button> -->
+
+
+
+
+                <app-modal class="d-none" #quoteMdl>
+                    <div header>List Of Values</div>
+                    <div body class="container-flex">
+                       <app-loading-table [passData]="passDataQuoteLOV" (searchToDb)="searchQuery($event)"></app-loading-table>
+                    </div>
+                    <div footer class="d-flex justify-content-center w-100">                    
+                        <button type="button" class="cust-btn" (click)="quoteMdl.closeModal();"><a>Cancel</a></button>
+                		<button type="button" [disabled]="quoteTable?.indvSelect == ''" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
+                    </div>
+                </app-modal>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

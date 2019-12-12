@@ -8,6 +8,7 @@ import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { ModalComponent }  from '@app/_components/common/modal/modal.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 @Component({
   selector: 'app-purge-extracted-policy',
@@ -98,6 +99,10 @@ export class PurgeExtractedPolicyComponent implements OnInit {
     coSeriesNo: '',
     altNo: ''
   }
+
+  dialogIcon:string = '';
+  dialogMessage:string;
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   constructor(public modalService: NgbModal,private underwritingService: UnderwritingService,private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
@@ -446,6 +451,26 @@ export class PurgeExtractedPolicyComponent implements OnInit {
 
   //Added by Neco 10/09/2019
   filterMainTable(){
+    // added by paul 12/13/2020
+      if(this.radioVal == 'byMonthYear' && ((this.dateParams.byYearFrom == '' || this.dateParams.byYearFrom == null || this.dateParams.byYearTo == '' || this.dateParams.byYearTo == null) || (this.dateParams.byMonthFrom == '' || this.dateParams.byMonthFrom == null || this.dateParams.byMonthTo == '' || this.dateParams.byMonthTo == null))){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Entered Month/Year range is invalid.';
+        this.successDiag.open();
+        return;
+      }else if(this.radioVal == 'byMonthYear' && parseInt(this.dateParams.byYearFrom) > parseInt(this.dateParams.byYearTo) && this.dateParams.byYearFrom != '' && this.dateParams.byYearTo != ''){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Entered Month/Year range is invalid.';
+        this.successDiag.open();
+        return;
+      }else if(this.radioVal == 'byMonthYear' && parseInt(this.dateParams.byYearFrom) == parseInt(this.dateParams.byYearTo) && parseInt(this.dateParams.byMonthFrom) > parseInt(this.dateParams.byMonthTo) && this.dateParams.byMonthFrom != '' && this.dateParams.byMonthTo != ''){
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'Entered Month/Year range is invalid.';
+          this.successDiag.open();
+          return;
+        }
+
+    // paul end
+    this.modalService.dismissAll();
     this.table.overlayLoader = true;
     this.underwritingService.getPolForPurging(null).subscribe((data:any) => {
       console.log(data)

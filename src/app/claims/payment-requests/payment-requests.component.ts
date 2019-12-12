@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
-import { ClaimsService, NotesService } from '../../_services';
+import { ClaimsService, NotesService, UserService } from '../../_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustNonDatatableComponent } from '@app/_components/common/';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { finalize } from 'rxjs/operators';
 
@@ -64,6 +64,11 @@ export class PaymentRequestsComponent implements OnInit {
       {
         key: 'paytType',
         title:'Payment Type',
+        dataType: 'text'
+      },
+      {
+        key: 'status',
+        title:'Status',
         dataType: 'text'
       },
       {
@@ -127,21 +132,25 @@ export class PaymentRequestsComponent implements OnInit {
   selected:any = null;
 
    @ViewChild('confirmation') confirmation;
-   @ViewChild('inqTable') inqTable: LoadingTableComponent;
+   @ViewChild('inqTable') inqTable: CustNonDatatableComponent;
    
-  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService) { }
+  constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService, private userService: UserService) { }
 
   ngOnInit() {
   	this.btnDisabled = false;
   	this.btnDisabled_neg = true;
   	this.titleService.setTitle("Clm | Payment Request Inquiry");
+    this.userService.emitModuleId("CLM010");
+
   	this.getList();
   }
 
   getList(){
     var recs = []
     this.claimsService.getClaimPaytReqInq(this.searchParams).subscribe((a:any)=>{
-      this.inqTable.placeData(a['list']);
+      this.passData.tableData = a['list'];
+      this.inqTable.refreshTable();
+      //this.inqTable.placeData(a['list']);
     })
   }
 

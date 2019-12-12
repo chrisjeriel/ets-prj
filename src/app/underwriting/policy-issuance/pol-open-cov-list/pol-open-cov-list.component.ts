@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, UserService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Router } from '@angular/router';
@@ -124,9 +124,11 @@ export class PolOpenCovListComponent implements OnInit {
 	};
 	@ViewChild('listTable') listTable: any;
 	searchParams: any[] = [];
-  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
+  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router, private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.emitModuleId("POL020");
+
   	this.retrievePolListing();
   }
 

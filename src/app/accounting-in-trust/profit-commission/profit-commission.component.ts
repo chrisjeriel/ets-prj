@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService} from '@app/_services';
+import { NotesService, AccountingService, UserService} from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -60,7 +60,8 @@ export class ProfitCommissionComponent implements OnInit {
   		infoFlag: true,
   	    genericBtn: 'View Details',
     	disableGeneric: true,
-    	searchFlag: true
+    	searchFlag: true,
+      pageID: 'profitCommMainTab'
 	}
 
 	passDataProfitComm:any = {
@@ -83,11 +84,17 @@ export class ProfitCommissionComponent implements OnInit {
 	gnrtCedingId: string = '';
 	gnrtDate: string = '';
 	yearParam: number = 0;
+  summaryArr: any[] = [];
+  lessIndex: any[] = [];
+  indx: number = null;
+  disableGenerateJV: boolean = true;
+  profCommParams: any[] = [];
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService) { }
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
+    this.userService.emitModuleId("ACIT049");
   	this.queryModal.mdlOptions = { centered: true, backdrop: 'static', windowClass: "modal-size" };
   	/*this.queryModal.openNoClose();*/
   	this.getProfCommList(this.searchParams);
@@ -169,6 +176,7 @@ export class ProfitCommissionComponent implements OnInit {
   	getProfCommList(search?){
   		this.as.getProfitCommSumm(search).subscribe(data => {
       		var records = data['acitProfCommSummList'];
+          this.profCommParams = data['acitProfCommParams'].map(a => a.carryDesc);
 
       		this.passData.tableData = [];
 			for(let rec of records){
@@ -185,7 +193,10 @@ export class ProfitCommissionComponent implements OnInit {
  											createDate  : this.ns.toDateTimeString(rec.createDate),
  											updateUser  : rec.updateUser,
  											updateDate  : this.ns.toDateTimeString(rec.updateDate),
- 											currCd		: rec.currCd
+ 											currCd		: rec.currCd,
+                      profitLossAmt: rec.profitLossAmt,
+                      profitLossComm: rec.profitLossComm,
+                      profitLossTotal: rec.profitLossTotal
 											});
 		    }                        
       			this.table.refreshTable();
@@ -212,38 +223,18 @@ export class ProfitCommissionComponent implements OnInit {
   		this.as.getProfitCommDtl(this.selectedData.profCommId).subscribe(data => {
   			var records = data['acitProfCommDtl'];
   			this.passDataProfitComm.tableData = records;
+        this.summaryArr = data['acitProfCommSumm'];
+        this.lessIndex = data['acitProfCommSumm'].map((a, i) => a.year == 1 && i !== 0 ? a.carryAmt : 0);
+        this.indx = this.lessIndex.findIndex(a => a < 0);
 
   			if(data['acitProfCommDtl'].length > 0) {
   				this.yearParam = this.selectedData.year;
   				this.profitCurrYear = this.selectedData.profitLossAmt;
-  				this.carriedForward = this.selectedData.profitLossTotal; //parseFloat(this.profitCurrYear) + parseFloat(this.profitLastYear);
-  				this.profitCommission = this.selectedData.profitLossComm; //parseFloat(this.carriedForward) * 0.2;
-  			}
+  				this.carriedForward = this.selectedData.profitLossTotal;
+  				this.profitCommission = this.selectedData.profitLossComm;
 
-  			/*for (let i = 0; i < records.length; i++) {
-			  	if (records[i].itemNo === '1'){
-			  		this.passDataProfitComm.tableData[0].actual = records[i].actualAmt;
-			  		this.passDataProfitComm.tableData[0].natcat = records[i].natcedcatAmt;
-			  		this.passDataProfitComm.tableData[0].income = records[i].income;
-			  		this.quotaIncome = records[i].income;
-			  	}else if (records[i].itemNo === '2'){
-			  		this.passDataProfitComm.tableData[3].particulars = "UNEARNED AT " + this.profDate +"-HELD";
-			  		this.passDataProfitComm.tableData[3].actual = records[i].actualAmt;
-			  		this.passDataProfitComm.tableData[3].natcat = records[i].natcatAmt;
-			  		this.passDataProfitComm.tableData[3].outgo = records[i].outgo;
-			  	}else if (records[i].itemNo === '3'){
-			  		this.passDataProfitComm.tableData[11].particulars = "-"+" 15 % of " + this.quotaIncome.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-			  		this.passDataProfitComm.tableData[11].outgo  = records[i].outgo;
-			  	}else if (records[i].itemNo === '4'){
-			  		this.passDataProfitComm.tableData[8].actual = records[i].actualAmt;
-			  		this.passDataProfitComm.tableData[8].natcat = records[i].natcatAmt;
-			  		this.passDataProfitComm.tableData[8].outgo  = records[i].outgo;
-			  	}else if (records[i].itemNo === '5'){
-			  		this.passDataProfitComm.tableData[9].actual = records[i].actualAmt;
-			  		this.passDataProfitComm.tableData[9].natcat = records[i].natcatAmt;
-			  		this.passDataProfitComm.tableData[9].outgo  = records[i].outgo;
-			  	}
-			}*/
+          this.disableGenerateJV = this.selectedData.profitLossTotal < 0;
+  			}
 			this.profitCommtable.refreshTable(); 		
   		});
   	}
@@ -287,15 +278,13 @@ export class ProfitCommissionComponent implements OnInit {
   	}
 
   	this.as.saveAcitProfComm(a).subscribe(data => {
-  		console.log(data);
-
   		if(data['returnCode'] == -1) {
   			this.dialogIcon = 'success-message';
   			this.dialogMessage = 'Profit Commision successfully generated';
   			this.getProfCommList(this.searchParams);
   		} else {
   			this.dialogIcon = 'error-message';
-  			this.dialogMessage = 'Profit Commision failed';
+  			this.dialogMessage = 'Profit Commision generation failed';
   		}
 
   		this.successDialog.open();
@@ -303,10 +292,85 @@ export class ProfitCommissionComponent implements OnInit {
    }
 
 	valChanged(fromVal, toVal) {
-        if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
-            return new Date(fromVal) > new Date(toVal) ? '' : toVal;
-        } else {
-            return fromVal === undefined || fromVal === '' ? toVal : '';
-        }
+    if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+      return new Date(fromVal) > new Date(toVal) ? '' : toVal;
+    } else {
+      return fromVal === undefined || fromVal === '' ? toVal : '';
     }
+  }
+
+  onClickGenerateJV() {
+    var param = {
+      profCommId: this.selectedData.profCommId,
+      closeDate: null,
+      createDate: this.ns.toDateTimeString(0),
+      createUser: this.ns.getCurrentUser(),
+      deleteDate: null,
+      postDate: null,
+      tranClass: 'JV',
+      tranTypeCd: null,
+      tranClassNo: null,
+      tranDate: this.ns.toDateTimeString(0), 
+      tranId: null,
+      tranStat: 'O',
+      tranYear: null,
+      updateDate: this.ns.toDateTimeString(0), 
+      updateUser: this.ns.getCurrentUser(),
+      adjEntryTag: 'N',
+
+      tranIdJv: null,
+      jvYear: new Date().getFullYear(),
+      jvNo: null,
+      jvDate: this.ns.toDateTimeString(0),
+      jvStatus: 'N',
+      jvTranTypeCd: 28,
+      autoTag: 'N',
+      refnoTranId: '',
+      refnoDate: '',
+      particulars: '--',
+      currCd: 'PHP',
+      currRate: 1,
+      jvAmt: this.selectedData.profitLossComm,
+      localAmt: this.selectedData.profitLossComm,
+      allocTag: '',
+      allocTranId: '',
+      preparedBy: this.ns.getCurrentUser(),
+      preparedDate: this.ns.toDateTimeString(0),
+      approvedBy: '',
+      approvedDate: '',
+      createUserJv: this.ns.getCurrentUser(),
+      createDateJv: this.ns.toDateTimeString(0),
+      updateUserJv: this.ns.getCurrentUser(),
+      updateDateJv: this.ns.toDateTimeString(0)
+    }
+
+    this.as.saveAccJVEntry(param).subscribe(data => {
+      if(data['returnCode'] == -1) {
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = 'Journal Voucher successfully generated. Ref. No.: ' + data['tranNo'];
+        this.getProfCommList(this.searchParams);
+        this.successDialog.open();
+
+        var prm = {
+          profCommId: this.selectedData.profCommId,
+          tranId: data['tranIdOut'],
+          updateUser: this.ns.getCurrentUser(),
+          updateDate: this.ns.toDateTimeString(0)
+        }
+
+        this.as.saveAcitProfCommTran(prm).subscribe(data2 => {
+          console.log(data2);
+        });
+      } else if(data['returnCode'] == 0) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Journal Voucher generation failed';
+        this.successDialog.open();
+      } else if(data['returnCode'] == 1) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Journal Voucher was already generated. Ref. No.: ' + data['tranNo'];
+        this.successDialog.open();
+      }
+    });
+  }
+
 }

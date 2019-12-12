@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
+import { UserService } from '@app/_services';
+
 
 @Component({
   selector: 'app-mon-end-data-chk',
@@ -20,10 +23,11 @@ export class MonEndDataChkComponent implements OnInit {
     keys: ['scriptNo', 'scriptDesc', 'solution']
   }
 
-  constructor( private router: Router) { }
+  constructor( private router: Router, private titleService: Title,private userService: UserService) { }
 
   ngOnInit() {
-
+    this.titleService.setTitle("Acct-IT | Data Checking");
+    this.userService.emitModuleId("ACIT062");
   }
 
   onTabChange($event: NgbTabChangeEvent) {

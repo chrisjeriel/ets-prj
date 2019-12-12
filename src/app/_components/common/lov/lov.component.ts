@@ -98,7 +98,7 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'osQsoa'){
-            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
+            this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
@@ -889,6 +889,7 @@ export class LovComponent implements OnInit {
       this.passData.params.activeTag = 'Y';
       console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
+        (this.passData.from == undefined)?this.passData.from='':'';
         if(this.passData.from.toLowerCase() == 'prq-ins'){
           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
         }else{
@@ -1209,10 +1210,10 @@ export class LovComponent implements OnInit {
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'accountName','accountNo'];
-      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{ 
-
-        this.passTable.tableData = (this.passData.from == 'acit')?a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acItGlDepNo != null)
-                                                                 :a.bankAcctList.filter(e => e.currCd == this.passData.currCd && e.acSeGlDepNo != null);
+      this.mtnService.getMtnBankAcct(this.passData.bankCd).subscribe((a:any)=>{
+          this.passTable.tableData = (this.passData.from == 'acit')
+                  ?a.bankAcctList.filter(e => ((this.passData.currCd == '' || this.passData.currCd == null || this.passData.currCd == undefined)?true:e.currCd == this.passData.currCd) && e.acItGlDepNo != null)
+                  :a.bankAcctList.filter(e => ((this.passData.currCd == '' || this.passData.currCd == null || this.passData.currCd == undefined)?true:e.currCd == this.passData.currCd) && e.acSeGlDepNo != null);
         this.table.refreshTable();
       });
    /* }else if(this.passData.selector == 'mtnBussType'){
@@ -1233,7 +1234,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'tranCd','tranDesc'];
       this.passTable.checkFlag = true;
       this.securityService.getMtnTransactions(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["transactions"];
+        this.passTable.tableData = a.transactions.filter((a)=>{return this.passData.hide.indexOf(a.tranCd)==-1});
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });
@@ -1244,7 +1245,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = [ 'moduleId','moduleDesc'];
       this.passTable.checkFlag = true;
       this.securityService.getMtnModules(this.passData.moduleId, this.passData.tranCd).subscribe((a:any)=>{
-        this.passTable.tableData = a["modules"];
+        this.passTable.tableData = a.modules.filter((a)=>{return this.passData.hide.indexOf(a.moduleId)==-1});;
         //this.passTable.tableData = a.bussTypeList.filter((data)=>{return  this.passData.hide.indexOf(data.bussTypeCd)==-1});
         this.table.refreshTable();
       });

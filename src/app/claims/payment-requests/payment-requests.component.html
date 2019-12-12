@@ -6,7 +6,7 @@
             <ng-template ngbTabContent>
                 <div>
                     <div class="col-sm-12" style="padding: 0">
-                        <app-loading-table #inqTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="toPaytReq($event)" (searchToDb)="searchQuery($event)" (export)="getRecords()"></app-loading-table>
+                        <app-cust-non-datatable #inqTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="toPaytReq($event)" (searchToDb)="searchQuery($event)" (export)="getRecords()"></app-cust-non-datatable>
                      </div>
                      <div class="col-sm" style="margin-top: 50px !important; margin-bottom: 10px ! important;padding: 0">
                             <div class="input-group">

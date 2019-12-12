@@ -187,7 +187,7 @@ export class AccSrvInquiryComponent implements OnInit {
   constructor(private titleService: Title, private router: Router, private accountingService: AccountingService, private modalService: NgbModal) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acc-Srv | Inquiry") ;
+  	/*this.titleService.setTitle("Acc-Srv | Inquiry") ;*/
     this.passData.tableData = this.accountingService.getAccSrvInquiry();
     this.passOldVatData.tableData = this.accountingService.getTaxDetails();
     this.passNewVatData.tableData = this.accountingService.getTaxDetails();

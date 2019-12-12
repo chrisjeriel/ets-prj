@@ -37,9 +37,7 @@ export class CancelArCvJvComponent implements OnInit {
 		pageLength   : 10,
 		pageStatus   : true,
 		pagination   : true,
-		pageID       : 'ctTbl',
-		checkFlag    : false,
-		exportFlag   : true
+		pageID       : 'ctTbl'
 	};
   
 	otherData: any = {
@@ -59,19 +57,21 @@ export class CancelArCvJvComponent implements OnInit {
     msg				: string = '';
     mdlType			: any;
 
+    searchParams: any[] = [];
+
     
 
 	constructor( private acctService: AccountingService, private ns : NotesService, private titleService : Title ,private router: Router) { }
 
 	ngOnInit() {
-		
+		this.titleService.setTitle('Acct-IT | Cancel Transactions');
 		this.getAcitList();
 	}
 
 	getAcitList(){
 		this.getTblOtherInfo();
 		if(this.tranClass == 'ar'){
-			this.acctService.getArList([])
+			this.acctService.getArList(this.searchParams)
 			.subscribe(data => {
 			  console.log(data);
 			  this.passDataCancelTrans.tableData = data['ar'].filter(e => e.arStatus != 'X').map(e => { 
@@ -82,7 +82,7 @@ export class CancelArCvJvComponent implements OnInit {
 			  this.cancelTranTbl.refreshTable();
 			}); 
 		}else if(this.tranClass == 'cv'){
-			this.acctService.getAcitCvList([])
+			this.acctService.getAcitCvList(this.searchParams)
 			.subscribe(data => {
 				console.log(data);
 				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus != 'X').map(e => { 
@@ -118,7 +118,7 @@ export class CancelArCvJvComponent implements OnInit {
 				{key   : 'arNo',title: 'AR No',dataType: 'text'},
 				{key   : 'payor',title: 'Payor',dataType: 'text'},
 				{keys  : {from: 'arDateFrom',to: 'arDateTo'},title: 'AR Date',dataType: 'datespan'},
-				{key   : 'arStatDesc',title: 'Status',dataType: 'text'},
+				{key   : 'arStatus',title: 'Status',dataType: 'text'},
 				{key   : 'tranTypeName',title: 'Payment Type',dataType: 'text'},
 				{key   : 'particulars',title: 'Particulars',dataType: 'text'},
 				{keys  : {from: 'arAmtFrom',to: 'arAmtTo'},title: 'Amount',dataType: 'textspan'}
@@ -133,7 +133,7 @@ export class CancelArCvJvComponent implements OnInit {
 				{key   : 'cvGenNo',title: 'CV No',dataType: 'text'},
 				{key   : 'payee',title: 'Payee',dataType: 'text'},
 				{keys  : {from: 'cvDateFrom',to: 'cvDateTo'},title: 'CV Date',dataType: 'datespan'},
-				{key   : 'statusDesc',title: 'Status',dataType: 'text'},
+				{key   : 'cvStatusDesc',title: 'Status',dataType: 'text'},
 				{key   : 'particulars',title: 'Particulars',dataType: 'text'},
 				{keys  : {from: 'cvAmtFrom',to: 'cvAmtTo'},title: 'Amount',dataType: 'textspan'}
 			];
@@ -227,4 +227,18 @@ export class CancelArCvJvComponent implements OnInit {
 		var str = bool?'block':'none';
 	    $('.globalLoading').css('display',str);
 	}
+
+	searchQuery(searchParams){
+		if(this.tranClass == 'ar'){
+			if(searchParams.some(e => e.key == 'arStatus' && e.search == 'NEW')){
+				searchParams.filter(el => el.key == 'arStatus').map(el => { el.search = 'OPEN';return el;});
+			}else if(searchParams.some(e => e.key == 'arStatus' && e.search == 'PRINTED')){
+				searchParams.filter(el => el.key == 'arStatus').map(el => { el.search = 'CLOSED';return el;});
+			}
+		}
+	    this.searchParams = searchParams;
+	    this.passDataCancelTrans.tableData = [];
+	    console.log(this.searchParams);
+	    this.getAcitList();
+  	}
 }

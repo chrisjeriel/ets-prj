@@ -17,6 +17,7 @@ import { DecimalPipe } from '@angular/common';
 import { environment } from '@environments/environment';
 import { NgForm } from '@angular/forms';
 import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
+import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
 
 
 @Component({
@@ -41,7 +42,8 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('myForm') form                   : NgForm;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
-
+  @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -102,6 +104,13 @@ export class CvEntryComponent implements OnInit {
   destination          : string = '';
   spoiled              : any;
   approvalCd           : any;
+  suggestCheckNo       : any;
+
+  uploadLoading: boolean = false;
+  acctEntryFile: any;
+  fileName: string = '';
+  emitMessage: string = '';
+  canUploadAcctEnt: boolean = true;
 
   passDataLov  : any = {
     selector     : '',
@@ -115,6 +124,8 @@ export class CvEntryComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
+
+    this.canUploadAcctEntMethod();
 
     this.sub = this.activatedRoute.params.subscribe(params => {
       if(this.passData.tranId == '') {
@@ -249,13 +260,14 @@ export class CvEntryComponent implements OnInit {
           this.success.open();
           this.fromSave = false;
         }
+
+        this.saveAcitCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcitCv.checkNo:this.suggestCheckNo;
       }
 
       this.saveAcitCv['from'] = 'cv';
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
       (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
-      
       this.setLocalAmt();
       if(this.saveAcitCv.checkStatus == 'S'){
           this.spoiledFunc();
@@ -369,11 +381,13 @@ export class CvEntryComponent implements OnInit {
 
     (this.spoiled)?this.saveAcitCv.checkId='':'';
     console.log(saveCv);
+
     this.accountingService.saveAcitCv(JSON.stringify(saveCv))
     .subscribe(data => {
       console.log(data);
       this.fromSave = true;
       this.spoiled = true;
+      
       if(data['returnCode'] == -1){
         this.saveAcitCv.tranId = data['tranIdOut'];
         this.saveAcitCv.mainTranId = data['mainTranIdOut'];
@@ -386,8 +400,9 @@ export class CvEntryComponent implements OnInit {
       }else if(data['returnCode'] == 2){
         this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
         this.warnMdl.openNoClose();
+        this.saveAcitCv.checkNo = Number(data['checkNo']);
       }else if(data['returnCode'] == -100){
-        this.warnMsg = 'There is no Check No. available for this Account No.';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }
       
@@ -396,6 +411,7 @@ export class CvEntryComponent implements OnInit {
 
   showLov(fromUser){
     console.log(fromUser);
+
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       if(this.saveAcitCv.paytReqType == 'S'){
@@ -415,6 +431,7 @@ export class CvEntryComponent implements OnInit {
       this.passDataLov.selector = 'bankAcct';
       this.passDataLov.currCd = this.saveAcitCv.currCd;
       this.passDataLov.bankCd = this.saveAcitCv.bank;
+      this.passDataLov.from = 'acit';
       this.bankAcctLov.openLOV();
     }else if(fromUser.toLowerCase() == 'class'){
       this.passDataLov.selector = 'checkClass';
@@ -448,20 +465,32 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bank = data.data.bankCd;
       this.saveAcitCv.bankAcctDesc = '';
       this.saveAcitCv.bankAcct = '';
+      this.saveAcitCv.checkNo = '';
+      // var ba = this.bankAcctList;
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
         }
+      }else if(ba.length == 0){
+        this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
+        this.warnMdl.openNoClose();
       }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
       var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+      if(chkNo.length == 0){
+        this.saveAcitCv.checkNo = '';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+        this.warnMdl.openNoClose();
+      }else{
         this.saveAcitCv.checkNo = chkNo[0].checkNo;
       }
     }else if(from.toLowerCase() == 'class'){
@@ -480,9 +509,13 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null){
+        if(chkNo.length == 0){
+          this.saveAcitCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
           this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        } 
+        }
       }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
@@ -583,7 +616,7 @@ export class CvEntryComponent implements OnInit {
       this.loadingFunc(false);
       this.fromSave = true;
       this.getAcitCv();
-      (!this.spoiled)?this.disableFlds(true):'';
+      (!this.spoiled)?this.disableFlds(true):this.form.control.markAsDirty();
     });
   }
 
@@ -608,9 +641,12 @@ export class CvEntryComponent implements OnInit {
   }
 
   spoiledFunc(){
+    this.suggestCheckNo = '';
     $('.cl-spoil').prop('readonly',false);
     this.spoiled = true;
     this.saveAcitCv.checkId = '';
+    var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+    (chkNo.length == 0)?'':this.suggestCheckNo = chkNo[0].checkNo;
   }
 
   overrideFunc(approvalCd){
@@ -639,5 +675,96 @@ export class CvEntryComponent implements OnInit {
         this.confirmMdl.openNoClose();
       }
     }
+  }
+
+upload(){
+    this.upAcctEntMdl.openNoClose();
+  }
+
+  //open file box
+  openFile(){
+    $('#upload').trigger('click');
+  }
+
+//validate file to be uploaded
+  validateFile(event){
+    console.log(event.target.files);
+    var validate = '';
+    validate = this.up.validateFiles(event);
+
+    if(validate.length !== 0 ){
+      this.acctEntryFile = undefined;
+      this.fileName = '';
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = validate;
+      this.success.open();
+    }else{
+      this.acctEntryFile = event;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+//upload accounting entries
+uploadAcctEntries(){
+  var result = '';
+  this.emitMessage = '';
+   if(this.acctEntryFile == undefined){
+     this.dialogIcon = 'info';
+     this.dialogMessage = 'No file selected.';
+     this.success.open();
+   }else{
+     this.uploadLoading = true;
+     this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACIT', 'CV', this.saveAcitCv.tranId);
+     /*setTimeout(()=>{
+       if(this.emitMessage.length === 0){
+         this.dialogIcon = 'info';
+         this.dialogMessage = 'Upload successfully.';
+         this.fileName = '';
+         this.acctEntryFile = undefined;
+         this.success.open();
+       }else{
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = this.emitMessage;
+         this.success.open();
+       }
+
+       this.acctEntryMdl.closeModal(); 
+     }, 0);*/
+   }
+  }
+
+  uploaderActivity(event){
+    console.log(event);
+    if(event instanceof Object){ //If theres an error regarding the upload
+      this.dialogIcon = 'error-message';
+     this.dialogMessage = event.message;
+     this.success.open();
+     this.uploadLoading = false;
+    }else{
+      if(event.toUpperCase() == 'UPLOAD DONE'){
+            this.uploadLoading = false;
+        }else if(event.toUpperCase() == 'SUCCESS'){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Upload successfully.';
+          this.fileName = '';
+          this.acctEntryFile = undefined;
+          this.success.open();
+          this.uploadLoading = false;
+          this.upAcctEntMdl.closeModal();
+        }
+    }
+  }
+
+  canUploadAcctEntMethod(){
+    this.mtnService.getMtnParameters('V', 'ACITCV_ACCTENTRY_UPLOAD').subscribe(
+       (data:any)=>{
+         if(data.parameters.length !== 0){
+            this.canUploadAcctEnt = data.parameters[0].paramValueV == 'Y';
+         }
+         else{
+           this.canUploadAcctEnt = false;
+         }
+       }
+    );
   }
 }

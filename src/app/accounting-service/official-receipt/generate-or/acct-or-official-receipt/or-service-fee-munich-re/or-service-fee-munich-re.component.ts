@@ -355,7 +355,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     let qtrMonth: string = data.substr(5,5).split('-').join('');
     let qtrYear: number = parseInt(data.substr(0,4));
 
-    switch(qtrMonth){
+    /*switch(qtrMonth){
       case '0331':
         qtrMonth = '1'; //1st quarter
         break;
@@ -368,22 +368,22 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       case '1231':
         qtrMonth = '4'; //4th quarter
         break;
-    }
+    }*/
 
-    this.as.getAcctPrqServFee(null,'normal',null,qtrMonth, qtrYear).subscribe(
+    this.as.getOrSFeeDtlDist(this.record.payeeNo, qtrYear, qtrMonth).subscribe(
       (servFeeData:any)=>{
-        if(servFeeData.subDistList.length !== 0){
-          this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.subDistList[0].servFeeTotals.mreInvoiceId}]).subscribe((invoiceData:any)=>{
+        if(servFeeData.servFeeDist !== null && servFeeData.servFeeDist.invoiceId !== null){
+          this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.servFeeDist.invoiceId}]).subscribe((invoiceData:any)=>{
             if(invoiceData.batchInvoiceList.length !== 0 && invoiceData.batchInvoiceList[0].refNoTranId !== null){ //if selected quarter ending already has an OR
               this.dialogIcon = 'info';
               this.dialogMessage = 'The selected quarter already has an OR.';
               this.successDiag.open();
             }else{
-              this.passData.tableData[this.quarterEndingIndex].invoiceId = servFeeData.subDistList[0].servFeeTotals.mreInvoiceId;
+              this.passData.tableData[this.quarterEndingIndex].invoiceId = servFeeData.servFeeDist.invoiceId;
               this.passData.tableData[this.quarterEndingIndex].quarterEnding = data;//this.dp.transform(this.ns.toDateTimeString(data).split('T')[0], 'MM/dd/yyyy');
               this.passData.tableData[this.quarterEndingIndex].showMG = 0;
-              this.passData.tableData[this.quarterEndingIndex].servFeeAmt = servFeeData.subDistList[0].servFeeTotals.mreSfeeAmt / this.record.currRate;
-              this.passData.tableData[this.quarterEndingIndex].localAmt = servFeeData.subDistList[0].servFeeTotals.mreSfeeAmt;
+              this.passData.tableData[this.quarterEndingIndex].servFeeAmt = servFeeData.servFeeDist.actualShrAmt / this.record.currRate;
+              this.passData.tableData[this.quarterEndingIndex].localAmt = servFeeData.servFeeDist.actualShrAmt;
               this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
               this.lovMdl.modal.closeModal();
               for(var i of this.passData.tableData){

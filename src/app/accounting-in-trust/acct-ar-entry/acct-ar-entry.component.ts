@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
@@ -10,6 +10,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
+import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -27,6 +28,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
+  @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   passData: any = {
         tableData: [],
@@ -112,6 +115,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   printMethod: string = '2';
   approvalCd: string = '';
 
+  uploadLoading: boolean = false;
+  acctEntryFile: any;
+  fileName: string = '';
+  emitMessage: string = '';
+  canUpAcctEnt: boolean = true;
+  canReprint: boolean = true;
+  printLoading: boolean = false;
+
   arInfo: any = {
     tranId: '',
     tranClass: 'AR',
@@ -175,8 +186,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   bankAccts: any[] = [];
   savedData: any[] = [];
   deletedData: any[] = [];
+  printers: string[] = [];
 
   selectedCurrency: string = 'PHP';
+  selectedPrinter: string = "";
 
   selectedBank: any = {
     bankCd: '',
@@ -194,12 +207,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     activeTag: ''
   };
 
-  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
     this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
+    this.getPrinters();
     this.retrievePaymentType();
+    this.canUploadAcctEntry();
+    this.canReprintMethod();
     //this.retrieveCurrency();
     var tranId;
     var arNo;
@@ -464,7 +480,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = (parseFloat(data.toString().split(',').join('')));
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt)*100) / 100;
   }
 
   setLov(data){
@@ -778,41 +794,50 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         else{
           this.isAdd = false;
-          this.retrieveArEntry(data.outTranId, '');
           this.paytDtlTbl.refreshTable();
-          this.dialogIcon = 'success';
-          this.successDiag.open();
+          if(isPrint == undefined){
+
+            this.retrieveArEntry(data.outTranId, '');
+            this.dialogIcon = 'success';
+            this.successDiag.open();
+          }
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
           if(isPrint !== undefined){
             this.reprintMethod();
-            //Update Transactions to Closed and AR Status to Printed
-            let params: any = {
-              tranId: this.arInfo.tranId,
-              arNo: this.arInfo.arNo,
-              updateUser: this.ns.getCurrentUser(),
-              updateDate: this.ns.toDateTimeString(0)
-            }
-            setTimeout(()=>{
-              this.as.printAr(params).subscribe(
-                (data:any)=>{
-                  if(data.returnCode == 0){
-                    this.dialogIcon = 'error-message';
-                    this.dialogIcon = 'An error has occured when updating AR status';
-                  }else{
-                    console.log(data);
-                    console.log('printed');
-                    this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
-                  }
-                }
-              );
-            },1000);
+           
           }
         }
         this.loading = false;
       }
     );
+  }
+
+  printStatus(){
+    //Update Transactions to Closed and AR Status to Printed
+    let params: any = {
+      tranId: this.arInfo.tranId,
+      arNo: this.arInfo.arNo,
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+    setTimeout(()=>{
+      this.as.printAr(params).subscribe(
+        (data:any)=>{
+          if(data.returnCode == 0){
+            this.dialogIcon = 'error-message';
+            this.dialogIcon = 'An error has occured when updating AR status';
+          }else{
+            console.log(data);
+            console.log('printed');
+            this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
+            this.printMdl.closeModal();
+          }
+          this.printLoading = false;
+        }
+      );
+    },1000);
   }
 
   whichProcess(mainAuth){
@@ -886,13 +911,51 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     }
   }
 
-  reprintMethod(){
+  reprintMethod(isReprint?){
+    this.printLoading = true;
     if(this.printMethod == '1'){
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
+      if(isReprint == undefined){
+        this.printStatus();
+      }else{
+        this.reprintMdl.closeModal();  
+      }
     }else if(this.printMethod == '2'){
-      this.as.acitGenerateReport('ACITR_AR', this.arInfo.tranId).subscribe(
+      if(this.selectedPrinter.length == 0){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Please select a printer.';
+        this.successDiag.open();
+        this.printLoading = false;
+      }else{
+        let params = {
+          reportName: 'ACITR_AR',
+          tranId: this.arInfo.tranId,
+          printerName: this.selectedPrinter,
+          pageOrientation: 'PORTRAIT',
+          paperSize: 'HALFLETTER'
+        }
+        this.ps.directPrint(params).subscribe(
+          (data:any)=>{
+            console.log(data);
+            if(data.errorList.length == 0 && data.messageList.length != 0){
+              if(isReprint == undefined){
+                this.printStatus();
+              }else{
+                this.reprintMdl.closeModal();  
+                 this.printLoading = false;
+              }
+            }else{
+              this.dialogIcon = 'error-message';
+              this.dialogMessage = 'An error has occured. AR was not printed.';
+              this.successDiag.open();
+              this.printLoading = false;
+            }
+          }
+        );
+      }
+      /*this.as.acitGenerateReport('ACITR_AR', this.arInfo.tranId).subscribe(
         (data:any)=>{
           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
                        var downloadURL = window.URL.createObjectURL(data);
@@ -901,7 +964,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                        iframe.src = downloadURL;
                        document.body.appendChild(iframe);
                        iframe.contentWindow.print();
-        });
+                       console.log(this.reprintMdl)
+                       if(isReprint == undefined){
+                         this.printStatus();
+                       }else{
+                         this.reprintMdl.closeModal();  
+                          this.printLoading = false;
+                       }
+        },
+        (error)=>{
+          console.log(error);
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'An error has occured. AR was not printed.';
+          this.successDiag.open();
+          this.printLoading = false;
+        });*/
     }
   }
 
@@ -909,9 +986,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(!this.isPrinted){
       this.loading = true;
       //Save Ar Entry first
-      if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
+      //if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
         this.arInfo.arNo = parseInt(this.generatedArNo);
-      }
+        console.log(this.arInfo.arNo);
+      //}
       this.save(undefined, true);
       /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
@@ -1015,16 +1093,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   retrieveMtnAcitDCBNo(dcbYear?, dcbDate?){
     this.ms.getMtnAcitDCBNo(dcbYear,null,dcbDate,null).subscribe(
       (data:any)=>{
-        if(data.dcbNoList.length === 0){
+        /*if(data.dcbNoList.length === 0){
           this.dialogIcon = 'info';
           this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
           this.successDiag.open();
           this.generateDCBNo(dcbYear,dcbDate);
-        }else{
-          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
-          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
-          this.dcbStatus   = data.dcbNoList[0].dcbStatus;
-        }
+        }else{*/
+          if(data.dcbNoList[0].dcbNo == null){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
+            this.successDiag.open();
+          }
+          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear == null ? dcbYear : data.dcbNoList[0].dcbYear;
+          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo == null ? data.dcbNoList[0].nextDcbNo : data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus == null ? 'O' : data.dcbNoList[0].dcbStatus;
+        //}
       }
     );
   }
@@ -1065,7 +1148,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       dcbYear: dcbYear,
       remarks: 'created from AR Entry',
       updateDate: this.ns.toDateTimeString(0),
-      updateUser: this.ns.getCurrentUser()
+      updateUser: this.ns.getCurrentUser(),
     });
 
     this.ms.saveMtnAcitDCBNo([],saveDCBNo).subscribe(
@@ -1083,19 +1166,25 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   retrieveMtnAcitArSeries(){
-    this.ms.getMtnAcitArSeries('N', 1).subscribe(
-      (data:any)=>{
-        if(data.arSeriesList.length !== 0){
-          this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
-          this.printMdl.openNoClose();
-        }else{
-          this.dialogIcon = 'info';
-          this.dialogMessage = 'No A.R. number is available for use.';
-          this.successDiag.open();
+    if(this.arInfo.arNo == null || (this.arInfo.arNo != null && this.arInfo.arNo.length == 0)){
+      this.ms.getMtnAcitArSeries('N', 1).subscribe(
+        (data:any)=>{
+          if(data.arSeriesList.length !== 0){
+            this.generatedArNo = this.pad(data.arSeriesList[0].minArNo, 'arNo');
+            this.printMdl.openNoClose();
+          }else{
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'No A.R. number is available for use.';
+            this.successDiag.open();
+          }
+          this.loading = false;
         }
-        this.loading = false;
-      }
-    );
+      );
+    }else{
+      this.generatedArNo = this.pad(this.arInfo.arNo, 'arNo');
+      this.printMdl.openNoClose();
+      this.loading = false;
+    }
   }
 
   //VALIDATION STARTS HERE
@@ -1185,8 +1274,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   //UTILITIES STARTS HERE
 
+  getPrinters(){
+    this.ps.getPrinters().subscribe(
+      (data:any)=>{
+        console.log(data);
+        this.printers = data;
+      }
+    );
+  }
+
   canPrintScreen(){
-    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+    this.ms.getMtnParameters('V', 'ALLOW_AR_PRINT_TO_SCREEN').subscribe(
         (data:any)=>{
           if(data.parameters.length !== 0){
             this.screenPrint = data.parameters[0].paramValueV == 'Y';
@@ -1194,6 +1292,31 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
         }
     );
+  }
+
+  canUploadAcctEntry(){
+    this.ms.getMtnParameters('V', 'ACITAR_ACCTENTRY_UPLOAD').subscribe(
+      (data:any)=>{
+        if(data.parameters.length !== 0){
+            this.canUpAcctEnt = data.parameters[0].paramValueV == 'Y';
+         }
+         else{
+           this.canUpAcctEnt = false;
+         }
+      });
+  }
+
+  canReprintMethod(){
+    this.ms.getMtnParameters('V', 'ALLOW_AR_REPRINTING').subscribe(
+      (data:any)=>{
+        if(data.parameters.length !== 0){
+            this.canReprint = data.parameters[0].paramValueV == 'Y';
+            console.log(this.canReprint);
+         }
+         else{
+           this.canReprint = false;
+         }
+      });
   }
 
   changeTranType(data){
@@ -1388,4 +1511,85 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     );
   }
+
+
+upload(){
+    this.upAcctEntMdl.openNoClose();
+  }
+
+  //open file box
+  openFile(){
+    $('#upload').trigger('click');
+  }
+
+//validate file to be uploaded
+  validateFile(event){
+    console.log(event.target.files);
+    var validate = '';
+    validate = this.up.validateFiles(event);
+
+    if(validate.length !== 0 ){
+      this.acctEntryFile = undefined;
+      this.fileName = '';
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = validate;
+      this.successDiag.open();
+    }else{
+      this.acctEntryFile = event;
+      this.fileName = event.target.files[0].name;
+    }
+  }
+
+//upload accounting entries
+uploadAcctEntries(){
+  var result = '';
+  this.emitMessage = '';
+   if(this.acctEntryFile == undefined){
+     this.dialogIcon = 'info';
+     this.dialogMessage = 'No file selected.';
+     this.successDiag.open();
+   }else{
+     this.uploadLoading = true;
+     this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACIT', 'AR', this.arInfo.tranId);
+     /*setTimeout(()=>{
+       if(this.emitMessage.length === 0){
+         this.dialogIcon = 'info';
+         this.dialogMessage = 'Upload successfully.';
+         this.fileName = '';
+         this.acctEntryFile = undefined;
+         this.successDiag.open();
+       }else{
+         this.dialogIcon = 'error-message';
+         this.dialogMessage = this.emitMessage;
+         this.successDiag.open();
+       }
+
+       this.acctEntryMdl.closeModal(); 
+     }, 0);*/
+   }
+  }
+
+  uploaderActivity(event){
+    console.log(event);
+    if(event instanceof Object){ //If theres an error regarding the upload
+      this.dialogIcon = 'error-message';
+     this.dialogMessage = event.message;
+     this.successDiag.open();
+     this.uploadLoading = false;
+    }else{
+      if(event.toUpperCase() == 'UPLOAD DONE'){
+            this.uploadLoading = false;
+        }else if(event.toUpperCase() == 'SUCCESS'){
+          this.dialogIcon = 'info';
+          this.dialogMessage = 'Upload successfully.';
+          this.fileName = '';
+          this.acctEntryFile = undefined;
+          this.successDiag.open();
+          this.uploadLoading = false;
+          this.upAcctEntMdl.closeModal();
+        }
+    }
+  }
+
+
 }

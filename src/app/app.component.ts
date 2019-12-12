@@ -1,8 +1,8 @@
-import { Component, Inject,  ViewChild} from '@angular/core';
+import { Component, Inject,  ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResizeEvent } from 'angular-resizable-element';
 import { HostListener, ElementRef } from '@angular/core';
-import { AuthenticationService, NotesService } from './_services';
+import { AuthenticationService, NotesService, WorkFlowManagerService } from './_services';
 import { User } from './_models';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DOCUMENT } from '@angular/platform-browser';
@@ -11,6 +11,9 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 
 import { ChangeDetectorRef } from '@angular/core';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from '@environments/environment';
 
 
 
@@ -18,7 +21,7 @@ import { ChangeDetectorRef } from '@angular/core';
     selector: 'app',
     templateUrl: 'app.component.html',
 })
-export class AppComponent  {
+export class AppComponent implements OnDestroy {
 
     @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
     @ViewChild(SucessDialogComponent)  successDialog: SucessDialogComponent;
@@ -28,7 +31,7 @@ export class AppComponent  {
     public style: object = {};
     accessibleModules: string[] = [];
     moduleId:string = 'MAIN';
-
+    notifToggle:boolean = false;
 
     private _opened: boolean = true; /*must be added*/
     private _closeOnClickOutside: boolean = true; /*must be added*/
@@ -52,6 +55,7 @@ export class AppComponent  {
      private eRef: ElementRef,
      public ns: NotesService,
      private securityService: SecurityService,
+     private workFlowManagerService: WorkFlowManagerService,
      @Inject(DOCUMENT) private document) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
         setInterval(() => {
@@ -134,6 +138,52 @@ export class AppComponent  {
         this.theme = window.localStorage.getItem("selectedTheme");
     }
 
+    webSocketEndPoint: string = environment.prodApiUrl + '/notifications';
+    topic: string = "/notif-sync";
+    stompClient: any;
+    notifCount:number = 0;
+    notifs:Array<Object> = [];
+    notifIsLoading:boolean = false;
+    notifProgIsShown:boolean = false;
+    progValue:number = 0;
+
+    wsConnect() {
+      let ws = new SockJS(this.webSocketEndPoint);
+      this.stompClient = Stomp.over(ws);
+      const _this = this;
+      _this.stompClient.connect({}, function (frame) {
+          _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
+              let obj = JSON.parse(sdkEvent.body);
+              console.log(obj);
+              for (let ob of obj) {
+                if (ob.user == _this.currentUser.username) {
+                  _this.notifCount = ob.count;
+                  if (_this.notifToggle) {
+                    _this.loadNotif();
+                  }
+                }
+              }
+          });
+      }, this.errorCallBack);
+    };
+
+    wsDisconnect() {
+      if (this.stompClient !== null) {
+          this.stompClient.disconnect();
+      }
+    }
+
+    errorCallBack(error) {
+        console.log("errorCallBack -> " + error)
+        setTimeout(() => {
+            this.wsConnect();
+        }, 5000);
+    }
+
+    ngOnDestroy() {
+      this.wsDisconnect();
+    }
+
     ngOnInit(){
         this.theme = window.localStorage.getItem("selectedTheme");
         this.changeTheme(this.theme);
@@ -154,7 +204,35 @@ export class AppComponent  {
             this.accessibleModules = value;
         });
 
-        
+        $(document).ready(function(){
+            $('.app-active-table').on('contextmenu', function(e) {
+              var parentOffset = $(this).parent().offset(); 
+             //or $(this).offset(); if you really just want the current element's offset
+             var relX = e.pageX - parentOffset.left;
+             var relY = e.pageY - parentOffset.top;
+              $("#context-menu").css({
+                display: "block",
+                top: (relY + 35),
+                left: (relX + 17)
+              }).addClass("show");
+              return false; //blocks default Webbrowser right click menu
+            }).on("click", function() {
+              $("#context-menu").removeClass("show").hide();
+            });
+
+            $("#context-menu a").on("click", function() {
+              $(this).parent().removeClass("show").hide();
+            });
+
+            $(document).on("click", function(e:any) {
+              /*console.log(e);
+              console.log("id: " + e.target.id);
+              console.log("id: " + e.target);*/
+            })
+        });
+
+        this.wsConnect();
+        this.loadNotif();
     }
     
     @HostListener('window:unload', ['$event'])
@@ -164,7 +242,7 @@ export class AppComponent  {
 
     confirmationMessage: string;
     onClickConfirmation(){
-        this.confirmationMessage = "Are you sure you want to change password for selected user?";
+        this.confirmationMessage = "Are you sure you want to change password?";
         this.warningConfirmation.openNoClose();
     }
 
@@ -249,6 +327,87 @@ export class AppComponent  {
 
   test(data){
       console.log(data);
+  }
+
+  //
+  loadNotif() {
+    this.notifs = [];
+    this.notifIsLoading = true;
+
+    this.workFlowManagerService.retrieveWfmNotes('', this.currentUser.username, '', '', '', 'A').subscribe((data:any) => {
+      if (data != null) {
+        if (data.noteList.length > 0) {
+          for (let obj of data.noteList) {
+            this.notifs.push({ id: obj.noteId, title: obj.title, msg: obj.note, assignee: obj.createUser, createDate: obj.createDate });
+          }
+        }
+      }
+    });
+
+    this.workFlowManagerService.retrieveWfmReminders('', this.currentUser.username, '', '', '', 'A').subscribe((data:any) => {
+      if (data != null) {
+        if (data.reminderList.length > 0) {
+          for (let obj of data.reminderList) {
+            this.notifs.push({ id: obj.reminderId, title: obj.title, msg: obj.reminder, assignee: obj.createUser, createDate: obj.createDate });
+          }
+        }
+      }
+      this.notifs.sort((a:any, b:any) => (a.createDate < b.createDate) ? 1 : -1);
+      this.notifIsLoading = false;
+      this.notifCount = this.notifs.length;
+      
+    });
+
+    /*setTimeout(()=> {
+      if (this.notifs.length > 0) {
+        this.notifs.sort((a:any, b:any) => (a.createData < b.createDate) ? 1 : -1);
+      }
+    }, 500)*/
+
+    console.log(this.notifs);
+  }
+
+  onClickNotif(event) {
+    let btns = $('#bell-btns');
+    let nc = $('#notif-context');
+    this.notifToggle = !this.notifToggle;
+
+    if (this.notifToggle) {
+      this.loadNotif();
+      if (this._opened) {
+        setTimeout(() => {
+          $("#notif-context").css({
+              display: "block",
+              top: (btns[0].offsetHeight+btns[0].offsetTop),
+              left: ((btns[0].offsetLeft+btns[0].offsetWidth) - (nc[0].clientWidth+10+8))
+          }).addClass("show");
+          $("#notif-context").css({
+              display: "block",
+              top: (btns[0].offsetHeight+btns[0].offsetTop),
+              left: ((btns[0].offsetLeft+btns[0].offsetWidth) - (nc[0].clientWidth+10+8) )
+          }).addClass("show");
+        }, 400);
+      } else {
+        $("#notif-context").css({
+            display: "block",
+            top: (btns[0].offsetHeight+btns[0].offsetTop),
+            left: ((btns[0].offsetLeft+btns[0].offsetWidth) - (nc[0].clientWidth+10+8))
+        }).addClass("show");
+        $("#notif-context").css({
+            display: "block",
+            top: (btns[0].offsetHeight+btns[0].offsetTop),
+            left: ((btns[0].offsetLeft+btns[0].offsetWidth) - (nc[0].clientWidth+10+8) )
+        }).addClass("show");
+      }
+    } else {
+      $("#notif-context").removeClass("show").hide();
+    }
+    
+  }
+
+  mkCompleted() {
+    this.notifProgIsShown = !this.notifProgIsShown;
+
   }
 }
 

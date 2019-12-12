@@ -9,6 +9,10 @@ input[type="checkbox"]{
     margin-bottom: 0px !important;
 }
 
+.cust-ig {
+    margin-bottom: -14px !important;
+}
+
 .cust {
 	width: 100% !important;
 	font-size: 11px;

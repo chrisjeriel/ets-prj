@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, UserService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { forkJoin, Subscription } from 'rxjs';
@@ -143,10 +143,11 @@ export class AcctItEditedAcctEntriesComponent implements OnInit, OnDestroy {
     tranTypeName: ''
   }
 
-  constructor(private titleService: Title, public modalService: NgbModal, private accountingService: AccountingService, private ns: NotesService) { }
+  constructor(private titleService: Title, public modalService: NgbModal, private accountingService: AccountingService, private ns: NotesService, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Edited Accounting Entries");
+    this.userService.emitModuleId("ACIT057");
   }
 
   ngOnDestroy(){

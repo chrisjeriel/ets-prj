@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AccountingService, NotesService } from '../../_services';
+import { AccountingService, NotesService, UserService } from '../../_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Location } from '@angular/common';
 import * as alasql from 'alasql';
@@ -57,11 +57,12 @@ export class RequestForPaymentComponent implements OnInit {
 
   tranStat: string = 'new';
 
-  constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
+  constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Request for Payment");
     // this.getPaytReq();
+    this.userService.emitModuleId("ACIT016");
     this.acctService.arFilter = '';
     this.acctService.cvFilter = '';
     this.acctService.jvFilter = '';

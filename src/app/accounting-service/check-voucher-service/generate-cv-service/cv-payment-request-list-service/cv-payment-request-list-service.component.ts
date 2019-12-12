@@ -251,9 +251,10 @@ export class CvPaymentRequestListServiceComponent implements OnInit {
     if(this.cancelFlag){
       this.can.onNo();
     }else{
-      this.suc.modal.closeModal();
+      this.suc.modal.modalRef.close();
     }
   }
+
 
   onClickViewDetails(){
     setTimeout(() => {

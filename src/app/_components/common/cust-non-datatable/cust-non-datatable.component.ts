@@ -377,7 +377,7 @@ export class CustNonDatatableComponent implements OnInit {
                             this.unselect = true;
                             this.btnDisabled = true;
                             this.indvSelect = "";
-                            data = {};
+                            data = {}; 
                         }else{
                            /* if(this.passData.checkFlag !== undefined && this.passData.checkFlag){
                                 console.log('here');
@@ -461,7 +461,7 @@ export class CustNonDatatableComponent implements OnInit {
 
     onRowDblClick(event,data) {
         
-        if(!this.nullRow){
+        if(data!=this.fillData){
             this.rowDblClick.next(event);
             this.newRowDblClick.emit(data);
         }
@@ -498,6 +498,8 @@ export class CustNonDatatableComponent implements OnInit {
                 return itm[filterObj[filt].key].toString().toLowerCase( ).includes(filterObj[filt].search.toLowerCase( ));
             })
         }
+        this.indvSelect = "";
+        this.rowClick.emit({});
         this.addFiller();
     }
 

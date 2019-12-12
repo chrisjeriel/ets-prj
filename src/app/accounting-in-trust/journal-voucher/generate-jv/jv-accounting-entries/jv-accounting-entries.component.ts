@@ -114,8 +114,11 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
       this.readOnly = false;
+    }else if(this.jvDetails.statusType == 'F'){
+      this.notBalanced = false;
+      this.readOnly = false;
     }else {
-      this.notBalanced = true;
+      //this.notBalanced = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -494,7 +497,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getJvInvRollOver(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invtRollOver;
           for (var i = 0; i < datas.length; i++) {
-            total += datas[i].maturityValue
+            total += datas[i].srcMaturityValue
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;
@@ -504,7 +507,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getJvInvPullout(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.pullOut;
           for (var i = 0; i < datas.length; i++) {
-            total += datas[i].srcMaturityValue
+            total += datas[i].maturityValue
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;
