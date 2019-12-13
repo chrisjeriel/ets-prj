@@ -223,9 +223,9 @@ export class AppComponent implements OnDestroy {
             });
 
             $(document).on("click", function(e:any) {
-              console.log(e);
-              console.log("id: " + e.target.id);
-              console.log("id: " + e.target);
+              // console.log(e);
+              // console.log("id: " + e.target.id);
+              // console.log("id: " + e.target);
             })
         });
 
