@@ -80,7 +80,7 @@
 						<select class="form-control form-control-sm cust-sm col-sm-2 required" [ngModel]="selectedCurrency" (ngModelChange)="changeCurrency($event)" appRequired [disabled]="isCancelled || isPrinted || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd == 2 || orInfo.tranTypeCd == 3 || inquiryFlag" name="amt">
 							<option *ngFor="let curr of passData.opts[1].prev" [ngValue]="curr">{{curr}}</option>
 						</select>
-						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [ngModel]="orInfo.orAmt" (ngModelChange)="changeOrAmt($event)" appRequired appCurrency [readonly]="isCancelled || isPrinted || inquiryFlag" name="amt2">
+						<input id="orAmt" type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-4 required" [(ngModel)]="orInfo.orAmt" (change)="changeOrAmt($event.target.value)" appRequired appCurrency [readonly]="isCancelled || isPrinted || inquiryFlag" name="amt2">
 						<label class="form-control-sm col-sm-3">Currency Rate</label>
 						<input type="text" class="form-control form-control-sm cust-sm text-right cust-mrgn col-sm-3 rate" [(ngModel)]="orInfo.currRate" (change)="changeCurrencyRt();" appOtherRates [readonly]="isCancelled || isPrinted || selectedCurrency == 'PHP' || orInfo.rstrctTranUp === 1 || inquiryFlag" name="rate">
 					</div>
