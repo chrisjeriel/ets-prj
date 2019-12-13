@@ -144,6 +144,8 @@ export class AppComponent implements OnDestroy {
     notifCount:number = 0;
     notifs:Array<Object> = [];
     notifIsLoading:boolean = false;
+    notifProgIsShown:boolean = false;
+    progValue:number = 0;
 
     wsConnect() {
       let ws = new SockJS(this.webSocketEndPoint);
@@ -401,6 +403,11 @@ export class AppComponent implements OnDestroy {
       $("#notif-context").removeClass("show").hide();
     }
     
+  }
+
+  mkCompleted() {
+    this.notifProgIsShown = !this.notifProgIsShown;
+
   }
 }
 

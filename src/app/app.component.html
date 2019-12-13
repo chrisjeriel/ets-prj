@@ -41,8 +41,16 @@
     .notif-div {
         width: 100%;
         display: inline-block;
-        padding: 5px;
-        border-radius: 5px;
+        padding: 6px 12px 5px 12px;
+        border-radius: 1px;
+        border-bottom: 1px solid #dddfe2;
+    }
+
+    .notif-div-scrollable {
+        overflow-y: scroll; 
+        max-height: 60vh;
+        margin: 0px;
+        padding: 0px;
     }
 
     .notif-left{
@@ -58,7 +66,7 @@
         width:80%;
         overflow:hidden;
         padding-left: 10px;
-        padding-top: 5px;
+        /*padding-top: 5px;*/
         padding-bottom: 5px;
     } 
 
@@ -113,6 +121,11 @@
     .notif-title {
         font-style: normal !important;
         font-weight: bold;
+    }
+
+    div.progress {
+        height: 10px !important;
+        font-size: 10px !important;
     }
 
 </style>
@@ -1004,7 +1017,7 @@
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 
-<div class="dropdown-menu col-sm-3" id="notif-context" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 10px; overflow-y: scroll; max-height: 60vh">
+<div class="dropdown-menu col-sm-3" id="notif-context" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);padding: 0px !important;">
     <div style="text-align: center; padding: 5px;" *ngIf="notifIsLoading">
         <img src="app/resources/images/Loading_icon2.gif" style="width: 50px;" alt="loading.gif" id="loading">
     </div>
@@ -1016,147 +1029,34 @@
         <p style="font-size: 13px; color: #000000b0;">You don't have any pending notifications.</p>
     </div>
 
-    <ng-container *ngIf="!notifIsLoading">
-        <div *ngFor="let notif of notifs" class="notif-div">
-            <div class="notif-left">
-                <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-            </div>
-            <div class="notif-right">
-                <p class="notif-tstmp">{{ notif.createDate | timeago:live }}</p>
-                <p class="notif-msg"><span class="notif-title">{{ notif.title }}:</span> "{{ notif.msg }}"</p>
+    <div *ngIf="!notifIsLoading">
+        <div *ngIf="notifs.length != 0" style="display: flex; padding: 8px 12px 6px 12px; border-bottom: solid 1px #dddfe2; overflow-x: hidden !important;">
+            <p class="col-sm" style="font-weight: bold; color: #333; padding: 0px;">
+                Notifications
+            </p>
+            <p class="col-sm text-right" style="padding: 0px; margin-right: 0px;">
+                <a href="#">Mark All as Completed</a>
+            </p>
+        </div>
+        <div class="notif-div-scrollable">
+            <div *ngFor="let notif of notifs" class="notif-div">
                 <div>
-                    <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                    <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+                    <div class="notif-left">
+                        <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+                    </div>
+                    <div class="notif-right">
+                        <p class="notif-tstmp">{{ notif.createDate | timeago:live }}</p>
+                        <p class="notif-msg"><span class="notif-title">{{ notif.title }}:</span> "{{ notif.msg }}"</p>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                            <button type="button" (click)="mkCompleted();" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="notifProgIsShown" id="notif-progress" style="display: inline-block; width: 100%; margin-top: -10px !important;">
+                    <p><ngb-progressbar type="warning" [value]="100" [striped]="true" [animated]="true"><i></i></ngb-progressbar></p>
                 </div>
             </div>
         </div>
-    </ng-container>
-
-
-    <!-- <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <img class="notif-left" src="app/resources/images/avatars/totzavatar.jpg">
-        <div class="notif-right">
-            <p class="notif-tstmp">2 mins ago</p>
-            <p class="notif-msg"><span class="notif-title">Missing Coverage:</span> "Please check details on this Policy, some coverages are not covered."</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
     </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-tstmp">10 mins ago</p>
-            <p class="notif-msg"><span class="notif-title">Low Premium:</span> "Please check details on this Policy, premium is too low."</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-tstmp">1 hour ago</p>
-            <p class="notif-msg"><span class="notif-title">Insufficient Attachments:</span> "Please check attachments of this Policy, ugh :(."</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-tstmp">Dec 08, 2019 12:00:53 AM</p>
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-tstmp">Dec 07, 2019 12:00:53 AM</p>
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div>
-    <div class="notif-div">
-        <div class="notif-left">
-            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
-        </div>
-        <div class="notif-right">
-            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
-            <div>
-                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
-            </div>
-        </div>
-    </div> -->
 </div>
