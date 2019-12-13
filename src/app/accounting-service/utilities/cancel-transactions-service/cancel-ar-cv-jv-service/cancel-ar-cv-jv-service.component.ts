@@ -56,7 +56,7 @@ export class CancelArCvJvServiceComponent implements OnInit {
     constructor( private acctService: AccountingService, private ns : NotesService, private titleService : Title ,private router: Router) { }
 
 	ngOnInit() {
-		this.titleService.setTitle('Acct-Service | Cancel Transactions');
+		/*this.titleService.setTitle('Acct-Service | Cancel Transactions');*/
 		this.getAcseList();
 	}
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { UserService } from '@app/_services';
 
 @Component({
   selector: 'app-change-trans-stat-to-new',
@@ -9,9 +10,10 @@ import { Router } from '@angular/router';
 })
 export class ChangeTransStatToNewComponent implements OnInit {
 
-  constructor( private router: Router) { }
+  constructor( private router: Router, private userService: UserService) { }
 
   ngOnInit() {
+    this.userService.emitModuleId("ACIT001");
   }
 
   onTabChange($event: NgbTabChangeEvent) {

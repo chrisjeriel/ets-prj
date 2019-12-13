@@ -16,6 +16,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { FullCalendarModule } from 'primeng/fullcalendar';
+import { TimeagoModule } from 'ngx-timeago';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -497,7 +498,9 @@ import { RenewExpPolicyComponent } from './underwriting/expiry-and-renewal/renew
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 import { CancelArCvJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-ar-cv-jv-service/cancel-ar-cv-jv-service.component';
+import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/mtn-acit-check-series/mtn-acit-check-series.component';
+import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
 
 @NgModule({
     imports: [
@@ -520,6 +523,7 @@ import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/g
         AccordionModule,
         DropdownModule,
         FullCalendarModule,
+        TimeagoModule.forRoot(),
     ],
     declarations: [
         AppComponent,
@@ -999,7 +1003,9 @@ import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/g
         CloseOpenDcbComponent,
         AcseCloseOpenDcbComponent,
         CancelArCvJvServiceComponent,
+        UpdatePolAttachmentComponent,
         MtnAcitCheckSeriesComponent,
+        InvoiceSeriesComponent,
     ],
 
   	providers: [

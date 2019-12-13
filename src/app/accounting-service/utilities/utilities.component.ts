@@ -65,7 +65,7 @@ tableData: any[] = [];
     sub: any;
 
   ngOnInit() {
-  	this.titleService.setTitle(" Acct | Utilities | Edit Tax Details");
+  	/*this.titleService.setTitle(" Acct | Utilities | Edit Tax Details");*/
   	this.passData.tableData = this.accountingService.getTaxDetails();
   	this.passDataWTax.tableData = this.accountingService.getWTaxDetails();
 		this.sub = this.route.params.subscribe(params => {

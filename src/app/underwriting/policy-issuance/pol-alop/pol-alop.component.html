@@ -114,7 +114,7 @@
 				<label class="form-control-sm col-sm-4" for="maxIndemPeriod">Maximum Indemnity Period</label>
 
 				<input class="form-control form-control-sm  col-sm-1" type="text" id="maxIndemPeriod" [ngModel]="polAlopData.maxIndemPd" (ngModelChange)= "polAlopData.maxIndemPd = $event" (blur)="polAlopData.maxIndemPdSi = ((this.polAlopData.maxIndemPd/12)*this.polAlopData.annSi)" name="maxIndemPd" appRequired  numbers-only>
-				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">month(s)</label>
 			</div>
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="fromIndem">from</label>
@@ -133,7 +133,7 @@
 			<div class="input-group">
 				<label class="form-control-sm col-sm-4" for="interval">Progress reports to be presented at intervals of</label>
 				<input class="form-control form-control-sm  col-sm-1" type="text" id="interval" [(ngModel)]="polAlopData.repInterval" name="repInterval"  numbers-only appRequired>
-				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">months</label>
+				<label class="form-control-sm col-sm-1 text-left" for="maxIndemPeriod">month(s)</label>
 			</div>
 		</div>
 	</fieldset>

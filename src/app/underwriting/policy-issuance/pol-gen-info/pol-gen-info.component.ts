@@ -538,21 +538,23 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.mtnService.getMtnPolWordings({ wordType: 'A', activeTag: 'Y', ocTag: this.policyInfo.openCoverTag, lineCd: this.policyInfo.lineCd })
                        .subscribe(data =>{
                          var wordings = data['mtnPolWordings'].filter(a => a.defaultTag === 'Y');
+                         if(wordings.length != 0){
+                           this.policyInfo.polWordings.wordingCd = wordings[0].wordingCd;
+                           var altText = '';
+                           Object.keys(wordings[0]).forEach(function(key) {
+                             if(/wordText/.test(key)) {
+                               altText += wordings[0][key] === null ? '' : wordings[0][key];
+                             }
+                           });
 
-                         this.policyInfo.polWordings.wordingCd = wordings[0].wordingCd;
-                         var altText = '';
-                         Object.keys(wordings[0]).forEach(function(key) {
-                           if(/wordText/.test(key)) {
-                             altText += wordings[0][key] === null ? '' : wordings[0][key];
-                           }
-                         });
-
-                         this.policyInfo.polWordings.altText = altText;
+                           this.policyInfo.polWordings.altText = altText;
+                         }
                        });
 
         this.policyInfo.issueDate = this.ns.toDateTimeString(new Date());
         this.policyInfo.effDate = this.policyInfo.inceptDate;
         this.form.control.markAsDirty();
+        console.log(this.form.dirty);
         this.getValidBookingMth(this.policyInfo.issueDate,this.policyInfo.effDate);
       }else{
         setTimeout(a=>this.form.control.markAsPristine(),0);

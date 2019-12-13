@@ -21,6 +21,100 @@
         word-wrap: break-word;       /* Internet Explorer 5.5+ */
     }
 
+    .homePanel:hover {
+        background-color: transparent !important;
+    }
+
+    .badge-btns:active {
+        box-shadow: none !important;
+    }
+
+    .badge-btns:focus {
+        box-shadow: none !important;
+    }
+
+    #notif-context p {
+        font-size: 12px;
+        margin: 0px;
+    }
+
+    .notif-div {
+        width: 100%;
+        display: inline-block;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .notif-left{
+        float:left;
+        width:20%;
+        overflow:hidden;
+        border-radius: 50px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0px 0 20px 0px, rgba(0, 0, 0, 0.19) 0px 0px 5px 0px;
+    }
+
+    .notif-right{
+        float:left;
+        width:80%;
+        overflow:hidden;
+        padding-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    } 
+
+    .notif-msg {
+        font-style: italic;
+        line-height: 13px;
+        padding: 2px 0px;
+        display: -webkit-box;
+        max-width: 100%;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .notif-div:hover {
+        background-color: rgba(82, 168, 236, 0.23);
+    }
+
+    .notif-right button {
+        font-size: 10px;
+        margin-right: 4px;
+        padding: 2px 5px;
+    }
+
+    .notif-right div {
+        text-align: right;
+    }
+
+    .btn-v-x {
+        color: black;
+        font-weight: 600;
+        background-color: rgba(0, 123, 255, .45);
+        border-color: rgba(0, 123, 255, .45);
+    }
+
+    .btn-m-x {
+        color: black;
+        font-weight: 600;
+        background-color: rgba(90, 90, 90, 0.35);
+        border-color: rgba(90, 90, 90, 0.35);
+    }
+
+    .notif-tstmp {
+        text-align: right;
+        font-size: 10px !important;
+        font-weight: 600;
+        margin-bottom: -2px;
+        color: rgba(0, 0, 0, 0.70);
+    }
+
+    .notif-title {
+        font-style: normal !important;
+        font-weight: bold;
+    }
+
 </style>
 
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
@@ -49,18 +143,30 @@
                     <ngb-accordion #acc="ngbAccordion">
                         <ngb-panel>
                             <ng-template ngbPanelTitle>
+                                <a class="homePanel" style="text-decoration: none; font-size: 12px; font-weight: bold; padding: 0px;" (click)="onClickHome()" ><fa name="home"></fa>&nbsp;Home</a>
+                            </ng-template>
+                        </ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('QUOTE012') > -1 ||
+                                           accessibleModules.indexOf('QUOTE001') > -1 ||
+                                           accessibleModules.indexOf('QUOTE013') > -1 ||
+                                           accessibleModules.indexOf('QUOTE014') > -1 ||
+                                           accessibleModules.indexOf('QUOTE015') > -1 ||
+                                           accessibleModules.indexOf('QUOTE018') > -1 ||
+                                           accessibleModules.indexOf('QUOTE020') > -1 ||
+                                           accessibleModules.indexOf('QUOTE019') > -1)">
+                            <ng-template ngbPanelTitle>
                                 <fa name="file"></fa>&nbsp;Quotation
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE001') > -1">
-                                    <button id="QUOTE001" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
-                                        Processing</button>
-                                    <br />
-                                </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
                                     <button id="QUOTE012" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
                                         Inquiry</button>
                                     <br>
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('QUOTE001') > -1">
+                                    <button id="QUOTE001" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
+                                        Processing</button>
+                                    <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE013') > -1">
                                     <button id="QUOTE013" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
@@ -77,18 +183,26 @@
                                         Quote Status</button>
                                     <br />
                                 </ng-container>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('QUOTE018') > -1 ||
+                                                       accessibleModules.indexOf('QUOTE020') > -1 ||
+                                                       accessibleModules.indexOf('QUOTE019') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Utilities
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button *ngIf="accessibleModules.indexOf('QUOTE018') > -1" [routerLink]="['/update-qu-attachment']" class="button btn btn-link">Update Quote Attachment</button>
-                                            <br/>
-                                            <button *ngIf="accessibleModules.indexOf('QUOTE020') > -1" [routerLink]="['/create-int-comp']" class="button btn btn-link">Create Internal Competition</button>
-                                            <br/>
-                                            <button *ngIf="accessibleModules.indexOf('QUOTE019') > -1" [routerLink]="['/copy-quote-details']" class="button btn btn-link">Copy Quote Details</button>
-                                            <br/>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTE018') > -1">
+                                                <button [routerLink]="['/update-qu-attachment']" class="button btn btn-link">Update Quote Attachment</button>
+                                                <br/>
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTE020') > -1">
+                                                <button [routerLink]="['/create-int-comp']" class="button btn btn-link">Create Internal Competition</button>
+                                                <br/>
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('QUOTE019') > -1">
+                                                <button [routerLink]="['/copy-quote-details']" class="button btn btn-link">Copy Quote Details</button>
+                                                <br/>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -103,13 +217,55 @@
                                 </ng-container> -->
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('POL021') > -1 ||
+                                            accessibleModules.indexOf('POL024') > -1 ||
+                                            accessibleModules.indexOf('POL001') > -1 ||
+                                            accessibleModules.indexOf('POL012') > -1 ||
+                                            accessibleModules.indexOf('POL017') > -1 ||
+                                            accessibleModules.indexOf('POL020') > -1 ||
+                                            accessibleModules.indexOf('POL013') > -1 ||
+                                            accessibleModules.indexOf('POL016') > -1 ||
+                                            accessibleModules.indexOf('POL035') > -1 ||
+                                            accessibleModules.indexOf('POL036') > -1 ||
+                                            accessibleModules.indexOf('POL041') > -1 ||
+                                            accessibleModules.indexOf('POL039') > -1 ||
+                                            accessibleModules.indexOf('POL040') > -1 ||
+                                            accessibleModules.indexOf('POL025') > -1 ||
+                                            accessibleModules.indexOf('POL027') > -1 ||
+                                            accessibleModules.indexOf('POL028') > -1 ||
+                                            accessibleModules.indexOf('POL029') > -1 ||
+                                            accessibleModules.indexOf('POL030') > -1 ||
+                                            accessibleModules.indexOf('POL026') > -1 ||
+                                            accessibleModules.indexOf('POL031') > -1 ||
+                                            accessibleModules.indexOf('POL042') > -1 ||
+                                            accessibleModules.indexOf('POL032') > -1 ||
+                                            accessibleModules.indexOf('POL033') > -1 ||
+                                            accessibleModules.indexOf('POL034') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="list-ul"></fa>&nbsp;Policy
                             </ng-template>
                             <ng-template ngbPanelContent>
                                 <ngb-accordion #acc="ngbAccordion">
-                                    <ngb-panel title="Issuance">
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL021') > -1 ||
+                                            accessibleModules.indexOf('POL024') > -1)" title="Inquiry">
+                                        <ng-template ngbPanelContent>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL021') > -1">
+                                                <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
+                                                Inquiry</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL024') > -1">
+                                                <button [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
+                                                <br />
+                                            </ng-container>
+                                        </ng-template>
+                                    </ngb-panel>
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL001') > -1 ||
+                                                        accessibleModules.indexOf('POL012') > -1 ||
+                                                        accessibleModules.indexOf('POL017') > -1 ||
+                                                        accessibleModules.indexOf('POL020') > -1 ||
+                                                        accessibleModules.indexOf('POL013') > -1 ||
+                                                        accessibleModules.indexOf('POL016') > -1)" title="Issuance">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL001') > -1">
                                             <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
@@ -142,7 +298,10 @@
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
-                                    <ngb-panel title="Distribution">
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL035') > -1 ||
+                                                    accessibleModules.indexOf('POL036') > -1 ||
+                                                    accessibleModules.indexOf('POL041') > -1 ||
+                                                    accessibleModules.indexOf('POL039') > -1)" title="Distribution">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL035') > -1">
                                                 <button [routerLink]="['/pol-dist']" class="button btn btn-link">Distribution Processing</button>
@@ -167,9 +326,14 @@
                                             
                                         </ng-template>
                                     </ngb-panel>
-                                    <ngb-panel title="Expiry & Renewal">
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL025') > -1 ||
+                                                        accessibleModules.indexOf('POL027') > -1 ||
+                                                        accessibleModules.indexOf('POL028') > -1 ||
+                                                        accessibleModules.indexOf('POL029') > -1 ||
+                                                        accessibleModules.indexOf('POL030') > -1 ||
+                                                        accessibleModules.indexOf('POL026') > -1)" title="Expiry & Renewal">
                                         <ng-template ngbPanelContent>
-                                            <ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL027') > -1 || accessibleModules.indexOf('POL028') > -1">
                                                 <button [routerLink]="['/renew-exp-pol']" class="button btn btn-link">Renew
                                                     Expiring Policy</button>
                                                 <br />
@@ -198,20 +362,8 @@
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
-                                    <ngb-panel title="Inquiry">
-                                        <ng-template ngbPanelContent>
-                                            <ng-container *ngIf="accessibleModules.indexOf('POL021') > -1">
-                                                <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
-                                                Inquiry</button>
-                                                <br />
-                                            </ng-container>
-                                            <ng-container *ngIf="accessibleModules.indexOf('POL024') > -1">
-                                                <button [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
-                                                <br />
-                                            </ng-container>
-                                        </ng-template>
-                                    </ngb-panel>
-                                    <ngb-panel title="Generate Documents">
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL031') > -1 ||
+                                            accessibleModules.indexOf('POL042') > -1)" title="Generate Documents">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
                                                 <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
@@ -235,9 +387,12 @@
                                                 <br />
                                             </ng-template>
                                         </ngb-panel> -->
-                                    <ngb-panel title="Utilities">
+                                    <ngb-panel *ngIf="(accessibleModules.indexOf('POL032') > -1 ||
+                                                        accessibleModules.indexOf('POL033') > -1 ||
+                                                        accessibleModules.indexOf('POL034') > -1)" title="Utilities">
                                         <ng-template ngbPanelContent>
-                                            <ngb-accordion #acc="ngbAccordion">
+                                            <ngb-accordion *ngIf="(accessibleModules.indexOf('POL032') > -1 ||
+                                                        accessibleModules.indexOf('POL033') > -1)" #acc="ngbAccordion">
                                                 <ngb-panel title="Update Information">
                                                     <ng-template ngbPanelContent>
                                                         <ng-container *ngIf="accessibleModules.indexOf('POL032') > -1">
@@ -252,7 +407,11 @@
                                                 </ngb-panel>
                                             </ngb-accordion>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL034') > -1">
-                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link">Spoil Policy/Alteration</button>
+                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link" >Spoil Policy/Alteration</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL046') > -1">
+                                                <button [routerLink]="['/update-pol-attachment']" class="button btn btn-link">Update Policy Attachment</button>
                                                 <br />
                                             </ng-container>
                                         </ng-template>
@@ -260,25 +419,16 @@
                                 </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('CLM001') > -1 ||
+                                            accessibleModules.indexOf('CLM009') > -1 ||
+                                            accessibleModules.indexOf('CLM008') > -1 ||
+                                            accessibleModules.indexOf('CLM010') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="vcard"></fa>&nbsp;Claims
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <ng-container *ngIf="accessibleModules.indexOf('CLM001') > -1">
-                                    <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
-                                        Processing</button>
-                                    <br />
-                                </ng-container>
-                                <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
-                                    <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
-                                        Claim Status</button>
-                                        <br />
-                                </ng-container>
-                                <!-- <button [routerLink]="['']" class="button btn btn-link">Claim
-                                    Recovery</button>
-                                <br />  wag na po ibalik sabi ni sir elmon 08/23/2019-->
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('CLM008') > -1 ||
+                                                        accessibleModules.indexOf('CLM010') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Inquiry
@@ -296,6 +446,19 @@
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
+                                <ng-container *ngIf="accessibleModules.indexOf('CLM001') > -1">
+                                    <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
+                                        Processing</button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
+                                    <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
+                                        Claim Status</button>
+                                        <br />
+                                </ng-container>
+                                <!-- <button [routerLink]="['']" class="button btn btn-link">Claim
+                                    Recovery</button>
+                                <br />  wag na po ibalik sabi ni sir elmon 08/23/2019-->
                             </ng-template>
                         </ngb-panel>
                         <!-- <ngb-panel>
@@ -315,110 +478,186 @@
 
                             </ng-template>
                         </ngb-panel> -->
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('ACIT001') > -1 ||
+                                            accessibleModules.indexOf('ACIT028') > -1 ||
+                                            accessibleModules.indexOf('ACIT031') > -1 ||
+                                            accessibleModules.indexOf('ACIT016') > -1 ||
+                                            accessibleModules.indexOf('ACIT048') > -1 ||
+                                            accessibleModules.indexOf('ACIT046') > -1 ||
+                                            accessibleModules.indexOf('ACIT050') > -1 ||
+                                            accessibleModules.indexOf('ACIT049') > -1 ||
+                                            accessibleModules.indexOf('ACIT056') > -1 ||
+                                            accessibleModules.indexOf('ACIT057') > -1 ||
+                                            accessibleModules.indexOf('ACIT058') > -1 ||
+                                            accessibleModules.indexOf('ACIT059') > -1 ||
+                                            accessibleModules.indexOf('ACIT060') > -1 ||
+                                            accessibleModules.indexOf('ACIT061') > -1 ||
+                                            accessibleModules.indexOf('ACIT051') > -1 ||
+                                            accessibleModules.indexOf('ACIT053') > -1 ||
+                                            accessibleModules.indexOf('ACIT052') > -1 ||
+                                            accessibleModules.indexOf('ACIT054') > -1 ||
+                                            accessibleModules.indexOf('ACIT055') > -1 ||
+                                            accessibleModules.indexOf('ACIT062') > -1 ||
+                                            accessibleModules.indexOf('ACIT063') > -1 ||
+                                            accessibleModules.indexOf('ACIT066') > -1 ||
+                                            accessibleModules.indexOf('ACIT064') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link">
-                                    Acknowledgement Receipt </button>
-                                <br />
-                                <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher
-                                </button>
-                                <br />
-                                <button [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal
-                                    Voucher </button>
-                                <br />
-                                <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment
-                                </button>
-                                <br />
-                                <button [routerLink]="['/investments']" class="button btn btn-link"> Investments
-                                </button>
-                                <br />
-                                <button [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
-                                <br />
-                                <button [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
-                                <br />
-                                <button [routerLink]="['profit-commission']" class="button btn btn-link">Profit Commission</button>
-                                <br />
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT001') > -1">
+                                    <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link">
+                                        Acknowledgement Receipt </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT028') > -1">
+                                    <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher
+                                    </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT031') > -1">
+                                    <button [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal
+                                        Voucher </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT016') > -1">
+                                    <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment
+                                    </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT048') > -1">
+                                    <button [routerLink]="['/investments']" class="button btn btn-link"> Investments
+                                    </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT046') > -1">
+                                    <button [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT050') > -1">
+                                    <button [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT049') > -1">
+                                    <button [routerLink]="['profit-commission']" class="button btn btn-link">Profit Commission</button>
+                                    <br />
+                                </ng-container>
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT056') > -1 ||
+                                                       accessibleModules.indexOf('ACIT057') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Inquiry
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled
-                                                Transactions</button>
-                                            <br />
-                                            <button [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
-                                                Accounting Entries</button>
-                                            <br />
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT056') > -1">
+                                                <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled
+                                                    Transactions</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT057') > -1">
+                                                <button [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
+                                                    Accounting Entries</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT058') > -1 ||
+                                                       accessibleModules.indexOf('ACIT059') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Extract
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
-                                                Entries</button>
-                                            <br />
-                                            <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial
-                                                Balance</button>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT058') > -1">
+                                                <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
+                                                    Entries</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT059') > -1">
+                                                <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial Balance</button>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT060') > -1 ||
+                                                       accessibleModules.indexOf('ACIT061') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Reports
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
-                                            <br/>
-                                            <button [routerLink]="['bordereaux']" class="button btn btn-link">Bordereaux</button>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT060') > -1">
+                                                <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
+                                                <br/>
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT061') > -1">
+                                                <button [routerLink]="['bordereaux']" class="button btn btn-link">Bordereaux</button>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT051') > -1 ||
+                                                        accessibleModules.indexOf('ACIT053') > -1 ||
+                                                        accessibleModules.indexOf('ACIT052') > -1 ||
+                                                        accessibleModules.indexOf('ACIT054') > -1 ||
+                                                        accessibleModules.indexOf('ACIT055') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Utilities
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change
-                                                Transaction Status to New</button>
-                                            <br />
-                                            <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit
-                                                Accounting Entries</button>
-                                            <br />
-                                            <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
-                                                Transaction</button>
-                                            <br />
-                                            <button [routerLink]="['allocate-investment']" class="button btn btn-link">Allocate Investment Income</button>
-                                            <br />
-                                            <button [routerLink]="['acit-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT051') > -1">
+                                                <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change
+                                                    Transaction Status to New</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT053') > -1">
+                                                <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit
+                                                    Accounting Entries</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT052') > -1">
+                                                <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
+                                                    Transaction</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT054') > -1">
+                                                <button [routerLink]="['allocate-investment']" class="button btn btn-link">Allocate Investment Income</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT055') > -1">
+                                                <button [routerLink]="['acit-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
-                                <ngb-accordion #acc="ngbAccordion">
+                                <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT062') > -1 ||
+                                                        accessibleModules.indexOf('ACIT063') > -1 ||
+                                                        accessibleModules.indexOf('ACIT066') > -1 ||
+                                                        accessibleModules.indexOf('ACIT064') > -1)" #acc="ngbAccordion">
                                     <ngb-panel>
                                         <ng-template ngbPanelTitle>
                                             Month End
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
-                                            <br />
-                                            <button [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
-                                            <br />
-                                            <button [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
-                                            <br />
-                                            <button [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
-                                            <br />
-                                            <button [routerLink]="['batch-os-takeup']" class="button btn btn-link">Batch Outstanding Losses</button>
-                                            <br />
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT062') > -1">
+                                                <button [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT063') > -1">
+                                                <button [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
+                                                <br />
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT066') > -1">
+                                                <button [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
+                                                <br />
+                                            </ng-container>
+                                            <!-- <button [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
+                                            <br /> -->
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT064') > -1">
+                                                <button [routerLink]="['batch-os-takeup']" class="button btn btn-link">Batch Outstanding Losses</button>
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -579,6 +818,12 @@
                             <fa name="user" placement="bottom" (click)="open(changePass)" ngbTooltip="User Control">
                             </fa>
                         </a>
+                        <button *ngIf="notifCount == 0" id="bell-btns" type="button" class="btn btn-sm nav-item nav-link badge-btns" (click)="onClickNotif($event);" style="background-color: transparent; padding: 0px 10px 0px 10px !important; margin-right: -1px;">
+                          <fa name="bell" id="bell-fa" ngbTooltip="Notifications" placement="bottom"></fa>
+                        </button>
+                        <button *ngIf="notifCount > 0" id="bell-btns" type="button" class="btn btn-sm nav-item nav-link badge-btns" (click)="onClickNotif($event);" style="background-color: transparent; padding: 0px 10px 0px 10px !important; margin-right: -11px;">
+                          <fa name="bell" id="bell-fa2" ngbTooltip="Notifications" placement="bottom"></fa> <span id="bell-span" class="badge badge-danger" style="top: -6px; left: -5px; border: 1px solid white;">{{ notifCount }}</span>
+                        </button>
                         <a class="nav-item nav-link">
                             <fa name="gear" placement="bottom" (click)="open(content)" ngbTooltip="Settings">
                             </fa>
@@ -758,3 +1003,160 @@
 </app-modal>
 
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<div class="dropdown-menu col-sm-3" id="notif-context" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); padding: 10px; overflow-y: scroll; max-height: 60vh">
+    <div style="text-align: center; padding: 5px;" *ngIf="notifIsLoading">
+        <img src="app/resources/images/Loading_icon2.gif" style="width: 50px;" alt="loading.gif" id="loading">
+    </div>
+
+    <div *ngIf="notifs.length == 0 && !notifIsLoading" style="text-align: center; padding: 20px 0px 30px 0px;">
+        <img src="app/resources/images/ghost.png" style="width: 110px;" alt="ghost" id="loading">
+        <p style="font-size: 30px; font-weight: 500; margin-top: -10px;">WOO!</p>
+        <p style="font-size: 14px; font-weight: 600;">Nothing Here, But Me</p>
+        <p style="font-size: 13px; color: #000000b0;">You don't have any pending notifications.</p>
+    </div>
+
+    <ng-container *ngIf="!notifIsLoading">
+        <div *ngFor="let notif of notifs" class="notif-div">
+            <div class="notif-left">
+                <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+            </div>
+            <div class="notif-right">
+                <p class="notif-tstmp">{{ notif.createDate | timeago:live }}</p>
+                <p class="notif-msg"><span class="notif-title">{{ notif.title }}:</span> "{{ notif.msg }}"</p>
+                <div>
+                    <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                    <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+
+    <!-- <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <img class="notif-left" src="app/resources/images/avatars/totzavatar.jpg">
+        <div class="notif-right">
+            <p class="notif-tstmp">2 mins ago</p>
+            <p class="notif-msg"><span class="notif-title">Missing Coverage:</span> "Please check details on this Policy, some coverages are not covered."</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-tstmp">10 mins ago</p>
+            <p class="notif-msg"><span class="notif-title">Low Premium:</span> "Please check details on this Policy, premium is too low."</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-tstmp">1 hour ago</p>
+            <p class="notif-msg"><span class="notif-title">Insufficient Attachments:</span> "Please check attachments of this Policy, ugh :(."</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-tstmp">Dec 08, 2019 12:00:53 AM</p>
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-tstmp">Dec 07, 2019 12:00:53 AM</p>
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+    <div class="notif-div">
+        <div class="notif-left">
+            <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+        </div>
+        <div class="notif-right">
+            <p class="notif-msg">Please check details on this Policy, some coverages are not covered.</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                <button type="button" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+            </div>
+        </div>
+    </div> -->
+</div>

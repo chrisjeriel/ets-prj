@@ -22,16 +22,21 @@ export class MtnInsuredComponent implements OnInit {
 
     passData: any = {
         tableData: [],   
-        tHeader: ['Insured Id', 'Insured Name','Address'],
-        dataTypes: ['sequence-6', 'text', 'text'],
-        keys:['insuredId', 'insuredName','address'],
+        tHeader: ['Insured Id', 'Abbreviation', 'Insured Name','Address'],
+        dataTypes: ['sequence-6','text', 'text', 'text'],
+        keys:['insuredId', 'insuredAbbr', 'insuredName','address'],
         resizable: [],     
-        colSize: ['74px','374px','374px'],      
+        colSize: ['74px','113PX','374px','374px'],      
         tabIndexes: [],   
         pageLength: 10,         
         pageID: 1,
-        dbKeys:['INSURED_ID','INSURED_NAME','ADDRESS'],
+        dbKeys:['INSURED_ID','INSURED_ABBR','INSURED_NAME','ADDRESS'],
         filters:[
+            {
+                key: 'insuredAbbr',
+                title: 'Insured Abbr.',
+                dataType: 'text'
+            },
             {
                 key: 'insuredName',
                 title: 'Insured Name',
@@ -252,8 +257,9 @@ export class MtnInsuredComponent implements OnInit {
             'paginationRequest.position':'1',
             'sortRequest.sortKey':this.request.sortKey,
             'sortRequest.order':this.request.order,
-            address: this.passData.filters[1].enabled ? this.passData.filters[1].search : '',
-            insuredName: this.passData.filters[0].enabled ? this.passData.filters[0].search :''
+            address: this.passData.filters[2].enabled ? this.passData.filters[2].search : '',
+            insuredName: this.passData.filters[1].enabled ? this.passData.filters[1].search :'',
+            insuredAbbr: this.passData.filters[0].enabled ? this.passData.filters[0].search :''
         }
         this.p = 1;
         console.log(this.request)

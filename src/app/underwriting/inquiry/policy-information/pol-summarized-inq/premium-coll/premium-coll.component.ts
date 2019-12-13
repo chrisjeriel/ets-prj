@@ -34,7 +34,7 @@ export class PremiumCollComponent implements OnInit {
 
   passData2: any = {
     tableData: [],
-    tHeader: ['Reference No','Transaction Date','Premium Amount','Comm Amount','VAT on R/I Comm','Other Charges','Collection Ammount'],
+    tHeader: ['Reference No','Transaction Date','Premium Amount','Comm Amount','VAT on R/I Comm','Other Charges','Collection Amount'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,],
     total:[null,'Total','premAmt','riComm','riCommVat','charges','paytAmt'],
     dataTypes: ["text","date","currency","currency","currency","currency","currency"],

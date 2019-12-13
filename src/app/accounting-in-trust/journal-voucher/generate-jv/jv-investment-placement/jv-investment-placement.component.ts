@@ -165,11 +165,11 @@ export class JvInvestmentPlacementComponent implements OnInit {
         this.selectedBank = bank[0];
         this.selectedBankCd = this.selectedBank.bankCd;
         this.selectedBankAcct = bankAcct[0];
-        this.accountNo =  this.selectedBankAcct.bankAcctCd;
+        //this.accountNo =  this.selectedBankAcct.bankAcctCd;
 
 
         for (var i = 0; i < data.invPlacement.length; i++) {
-          if(data.invPlacement[i].bank === this.selectedBankCd && data.invPlacement[i].bankAcct === this.accountNo){
+          if(data.invPlacement[i].bank === this.selectedBankCd /*&& data.invPlacement[i].bankAcct === this.accountNo*/){
             this.passData.tableData.push(data.invPlacement[i]);
           }
         }

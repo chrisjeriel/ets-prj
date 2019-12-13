@@ -494,7 +494,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getJvInvRollOver(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.invtRollOver;
           for (var i = 0; i < datas.length; i++) {
-            total += datas[i].maturityValue
+            total += datas[i].srcMaturityValue
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;

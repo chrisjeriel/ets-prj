@@ -1,5 +1,5 @@
 import { Title } from '@angular/platform-browser';
-import { NotesService,AccountingService,MaintenanceService } from '@app/_services';
+import { NotesService,AccountingService,MaintenanceService, UserService } from '@app/_services';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccInvestments} from '@app/_models';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -71,7 +71,7 @@ export class InvestmentsComponent implements OnInit {
           matPeriod: null,
           durUnit  : 'Days',
           intRt    : null,
-          purDate  : null,
+          purDate  : this.ns.toDateTimeString(0),
           matDate  : null,
           currSeq  : null,
           currCd : null,
@@ -89,7 +89,10 @@ export class InvestmentsComponent implements OnInit {
           amortized: null,
           priceCost: null,
           uneditable : ['invtStatus','currRate','priceCost','invtCd','preTerminatedTag','termDate','partialPullOutTag','partialPullOutDate','partialPullOutAmt'],
-          preTerminatedTag: null,
+          preTerminatedTag: 'N',
+          partialPullOutTag : 'N',
+          partialPullOutDate : null,
+          partialPullOutAmt : null,
           termDate: null,
           amortEff: null
         },
@@ -208,10 +211,11 @@ export class InvestmentsComponent implements OnInit {
     maxukp: any = 0;
     errorAmort: any;
 
-  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
+    this.userService.emitModuleId("ACIT048");
     this.selectedData = [];
     this.retrieveInvestmentsList(this.searchParams);
     this.getWTaxRate();
@@ -286,7 +290,6 @@ export class InvestmentsComponent implements OnInit {
                                                         'partialPullOutTag','partialPullOutDate','partialPullOutAmt'];
                                              }
                                           }else {
-
                                                a.uneditable = ['invtCd','bank','certNo','invtType',
                                                         'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -400,6 +403,7 @@ export class InvestmentsComponent implements OnInit {
                              {key: "matDateFrom", search: this.matDateFrom },
                              {key: "matDateTo", search: this.matDateTo },
                              ]; 
+       console.log(this.searchParams);
        this.retrieveInvestmentsList(this.searchParams);
      }
 
@@ -414,6 +418,7 @@ export class InvestmentsComponent implements OnInit {
   }
 
   onRowClick(data){
+    console.log(data);
     if(data !== null){
       this.selectedData = data;
       this.invtRecord.createUser  = data.createUser;
@@ -746,6 +751,7 @@ update(data){
                this.passData.tableData[i].amortEff = null;
             }
 
+
            }else if(data.key === 'preTerminatedTag'){
              if (this.passData.tableData[i].preTerminatedTag === 'N'){
                 this.passData.tableData[i].termDate = null;
@@ -873,16 +879,17 @@ update(data){
                    var taxRate = parseFloat(this.wtaxRate) / 100,
                        
                        withHTaxAmt = invtIncome * taxRate,
-                       bankCharges = (this.passData.tableData[i].bankCharge === null || this.passData.tableData[i].bankCharge === '' ) ? null : this.passData.tableData[i].bankCharge,
+                       bankCharges = this.passData.tableData[i].bankCharge,
                        matVal;
 
-                       if(Number.isNaN(bankCharges)){
+                       /*if(Number.isNaN(bankCharges)){
                          matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].whtaxAmt;
                        } else {
                          matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
                        }
-
-                       this.passData.tableData[i].whtaxAmt = Math.round(withHTaxAmt * 100);
+*/
+                       this.passData.tableData[i].whtaxAmt = Math.round(withHTaxAmt * 100)/100;
+                       matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
                        this.passData.tableData[i].matVal = matVal;
                  }
                } 
@@ -1221,6 +1228,9 @@ update(data){
                                    principal = parseFloat(a.invtAmt);
                                    matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
                                    time = parseFloat(matPer)/360;
+                                   console.log(principal);
+                                   console.log(matPer);
+                                   console.log(time);
                                  }else if (a.partialPullOutTag === 'Y') {
                                    principal = a.invtAmt - a.partialPullOutAmt;
                                    matPer = a.matPeriod;                    
@@ -1240,11 +1250,8 @@ update(data){
                                      var res = a.invtCd.split("-");
 
                       
-                                       if(Number.isNaN(a.bankCharge)){
-                                         matVal = principal + invtIncome - withHTaxAmt;
-                                       } else {
-                                         matVal = principal + invtIncome - a.bankCharge - withHTaxAmt;
-                                       }
+                                       matVal = principal + invtIncome - a.bankCharge - withHTaxAmt;
+     
             
                                   if (a.preTerminatedTag === 'Y'){
                                       this.acitInvtReq.saveAcitInvestments.push({
@@ -1278,7 +1285,10 @@ update(data){
                                         incomeAmt : invtIncome,
                                         whtaxAmt : withHTaxAmt,
                                         matVal : matVal,
-                                        refInvtId : a.invtId
+                                        refInvtId : a.invtId,
+                                        partialPullOutTag: 'N',
+                                        partialPullOutDate : null,
+                                        partialPullOutAmt: null
                                       });
                                    }
 
@@ -1360,6 +1370,11 @@ update(data){
 
                                                         if (a.preTerminatedTag === 'Y'){
                                                             a.termDate = this.ns.toDateTimeString(a.termDate);
+
+                                                            if (a.invtStatus === 'O'){
+                                                              a.invtStatus = 'T';
+                                                            }
+
                                                         }else {
                                                             a.preTerminatedTag = 'N';
                                                             a.termDate = null;
