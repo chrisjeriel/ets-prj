@@ -92,6 +92,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
   lockModalShown: boolean = false;
   lockUser: string = "";
   lockMessage: string = "";
+  addParams:any;
 
   @ViewChild('active')activeComp:any;
   @ViewChild('recordLock') recordLock;
@@ -102,14 +103,16 @@ export class QuotationComponent implements OnInit, OnDestroy {
           this.inquiryFlag = params['inquiry'];
           this.exitLink = params['exitLink'];
           this.quoteInfo.quoteId = params['quoteId'];
-
-          /*console.log(params);
-          console.log("TOTZ CHECKING");*/
+          this.addParams = params['addParams'];
+          
 
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
       });
 
       if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
+        this.wsConnect();
+      } else if (this.addParams != undefined){
+        console.log("TEST");
         this.wsConnect();
       }
 	}
@@ -132,26 +135,53 @@ export class QuotationComponent implements OnInit, OnDestroy {
 
           _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
               var obj = JSON.parse(sdkEvent.body);
-              if (obj.message == "") {
-                if (_this.quoteInfo.quoteId == obj.refId) {
-                  if (_this.ns.getCurrentUser() == obj.user) {
-                    //Proceed because same user.
-                    console.log("Same user with same record, proceed.");
-                  } else {
-                    _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.quoteInfo.quoteId, message: "This record is currently being updated by " }));
+
+              if (_this.addParams != undefined) {
+                if (obj.message == "") {
+                  if (_this.addParams.riskId == obj.riskId) {
+                    if (_this.ns.getCurrentUser() == obj.user) {
+                      //Proceed because same user.
+                      console.log("Same user with same record, proceed.");
+                    } else {
+                      _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), riskId: _this.addParams.riskId, message: "is currently creating a quotation for this risk number" }));
+                    }
+                  }
+                } else {
+                  if (_this.addParams.riskId == obj.riskId) {
+                    if (_this.ns.getCurrentUser() != obj.user) {
+                      setTimeout(() => {
+                          if (_this.lockModalShown == false) {
+                           _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                           _this.lockModalShown = true;
+                           _this.lockUser = obj.user;
+                           _this.lockMessage = obj.message;
+                          }
+                       });
+                    }
                   }
                 }
               } else {
-                if (_this.quoteInfo.quoteId == obj.refId) {
-                  if (_this.ns.getCurrentUser() != obj.user) {
-                    setTimeout(() => {
-                        if (_this.lockModalShown == false) {
-                         _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
-                         _this.lockModalShown = true;
-                         _this.lockUser = obj.user;
-                         _this.lockMessage = obj.message;
-                        }
-                     });
+                if (obj.message == "") {
+                  if (_this.quoteInfo.quoteId == obj.refId) {
+                    if (_this.ns.getCurrentUser() == obj.user) {
+                      //Proceed because same user.
+                      console.log("Same user with same record, proceed.");
+                    } else {
+                      _this.stompClient.send(_this.topic, {}, JSON.stringify({ user: _this.ns.getCurrentUser(), refId: _this.quoteInfo.quoteId, message: "This record is currently being updated by " }));
+                    }
+                  }
+                } else {
+                  if (_this.quoteInfo.quoteId == obj.refId) {
+                    if (_this.ns.getCurrentUser() != obj.user) {
+                      setTimeout(() => {
+                          if (_this.lockModalShown == false) {
+                           _this.modalService.open(_this.recordLock, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+                           _this.lockModalShown = true;
+                           _this.lockUser = obj.user;
+                           _this.lockMessage = obj.message;
+                          }
+                       });
+                    }
                   }
                 }
               }
@@ -166,7 +196,16 @@ export class QuotationComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
-    this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.quoteInfo.quoteId, message: "" }));
+    if (this.addParams != undefined) {
+      console.log("sendMessage addparams");
+      console.log(this.addParams);
+      console.log(this.addParams.riskId);
+      this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), riskId: this.addParams.riskId, message: "" }));
+    } else {
+      console.log("sendMessage real quote");
+      this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), refId: this.quoteInfo.quoteId, message: "" }));
+    }
+    
   }
 
   errorCallBack(error) {
@@ -194,9 +233,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
             .pipe(first())
             .subscribe(
                 data => {
-                    console.log(JSON.stringify(data));
                     this.approverList = data["approverList"];
-                    console.log(this.approverList)
                     this.approveText = 'For Approval';
                     for (var i = data["approverList"].length - 1; i >= 0; i--) {
                       if (data["approverList"][i].userId == this.currentUserId) {
@@ -278,9 +315,6 @@ export class QuotationComponent implements OnInit, OnDestroy {
   			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   		}
       this.selectedReport = this.reportsList[0].val;
-
-      console.log("this.stompClient");
-      console.log(this.stompClient);
 
       if (this.stompClient === null || this.stompClient === undefined) {
         if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {

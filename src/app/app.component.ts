@@ -363,8 +363,6 @@ export class AppComponent implements OnDestroy {
         this.notifs.sort((a:any, b:any) => (a.createData < b.createDate) ? 1 : -1);
       }
     }, 500)*/
-
-    console.log(this.notifs);
   }
 
   onClickNotif(event) {

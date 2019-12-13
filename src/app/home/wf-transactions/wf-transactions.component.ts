@@ -31,8 +31,6 @@ export class WfTransactionsComponent implements OnInit {
   }
 
   redirectToPage(data) {
-    console.log('redirectToPage');
-    console.log(data);
     if (data.tranTitle == 'Quotation') {
       this.router.navigate(['/quotation-processing', {}], { skipLocationChange: false });
     } else if (data.tranTitle == 'Policy') {
