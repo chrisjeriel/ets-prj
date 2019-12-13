@@ -103,9 +103,12 @@ export class QuotationComponent implements OnInit, OnDestroy {
           this.exitLink = params['exitLink'];
           this.quoteInfo.quoteId = params['quoteId'];
 
-          console.log(params);
+          /*console.log(params);
+          console.log("TOTZ CHECKING");*/
+
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
       });
+
       if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
         this.wsConnect();
       }
@@ -275,6 +278,15 @@ export class QuotationComponent implements OnInit, OnDestroy {
   			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   		}
       this.selectedReport = this.reportsList[0].val;
+
+      console.log("this.stompClient");
+      console.log(this.stompClient);
+
+      if (this.stompClient === null || this.stompClient === undefined) {
+        if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
+          this.wsConnect();
+        }
+      }
   	}
 
     onClickPrint(event?){

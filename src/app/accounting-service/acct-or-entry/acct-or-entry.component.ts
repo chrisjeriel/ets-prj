@@ -493,7 +493,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeOrAmt(data){
-    this.orInfo.orAmt = (parseFloat(data.toString().split(',').join('')));
+    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round((this.orInfo.orAmt)*100) / 100;
   }
 
   setLov(data){
@@ -956,8 +956,8 @@ export class AcctOrEntryComponent implements OnInit {
           reportName: reportType,
           tranId: this.orInfo.tranId,
           printerName: this.selectedPrinter,
-          pageOrientation: 'LANDSCAPE',
-          paperSize: ''
+          pageOrientation: 'PORTRAIT',
+          paperSize: 'HALFLETTER'
         }
         this.ps.directPrint(params).subscribe(
           (data:any)=>{

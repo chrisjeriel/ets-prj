@@ -480,7 +480,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = (parseFloat(data.toString().split(',').join('')));
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt)*100) / 100;
   }
 
   setLov(data){
@@ -933,8 +933,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           reportName: 'ACITR_AR',
           tranId: this.arInfo.tranId,
           printerName: this.selectedPrinter,
-          pageOrientation: 'LANDSCAPE',
-          paperSize: 'LETTER'
+          pageOrientation: 'PORTRAIT',
+          paperSize: 'HALFLETTER'
         }
         this.ps.directPrint(params).subscribe(
           (data:any)=>{
@@ -986,9 +986,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(!this.isPrinted){
       this.loading = true;
       //Save Ar Entry first
-      if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
+      //if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
         this.arInfo.arNo = parseInt(this.generatedArNo);
-      }
+        console.log(this.arInfo.arNo);
+      //}
       this.save(undefined, true);
       /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
@@ -1092,16 +1093,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   retrieveMtnAcitDCBNo(dcbYear?, dcbDate?){
     this.ms.getMtnAcitDCBNo(dcbYear,null,dcbDate,null).subscribe(
       (data:any)=>{
-        if(data.dcbNoList.length === 0){
+        /*if(data.dcbNoList.length === 0){
           this.dialogIcon = 'info';
           this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
           this.successDiag.open();
           this.generateDCBNo(dcbYear,dcbDate);
-        }else{
-          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
-          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
-          this.dcbStatus   = data.dcbNoList[0].dcbStatus;
-        }
+        }else{*/
+          if(data.dcbNoList[0].dcbNo == null){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
+            this.successDiag.open();
+          }
+          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear == null ? dcbYear : data.dcbNoList[0].dcbYear;
+          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo == null ? data.dcbNoList[0].nextDcbNo : data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus == null ? 'O' : data.dcbNoList[0].dcbStatus;
+        //}
       }
     );
   }
@@ -1142,7 +1148,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       dcbYear: dcbYear,
       remarks: 'created from AR Entry',
       updateDate: this.ns.toDateTimeString(0),
-      updateUser: this.ns.getCurrentUser()
+      updateUser: this.ns.getCurrentUser(),
     });
 
     this.ms.saveMtnAcitDCBNo([],saveDCBNo).subscribe(
