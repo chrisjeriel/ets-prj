@@ -528,7 +528,8 @@ export class AcctOrEntryComponent implements OnInit {
     var sub$ = forkJoin(this.as.getAcseOrEntry(tranId, orNo),
                         this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y', this.orDate.date)).pipe(map(([or, bank, bankAcct, curr]) => { return { or, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.orDate.date),
+                        this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y')).pipe(map(([or, bank, bankAcct, curr, paymentType]) => { return { or, bank, bankAcct, curr, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         console.log('arEntry first');
@@ -536,7 +537,20 @@ export class AcctOrEntryComponent implements OnInit {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        let paymentType = forkData.paymentType;
+        
+        var groupTag = data.orEntry.orType == 'VAT' ? 'V' : 'N';
+
+        //payment type
+        paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
+        this.paymentTypes = paymentType.tranTypeList;
+        console.log(this.paymentTypes);
+        this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+        if(this.paymentTypes.length == 1){
+          this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
+        }
         console.log(data);
+
         //ar
         if(data.or !== null){
           this.orInfo.acctEntDate    = data.orEntry.acctEntDate;
@@ -1043,13 +1057,18 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   retrievePaymentType(){
+    var groupTag = this.orInfo.orType == 'VAT' ? 'V' : 'N';
     this.paymentTypes = [];
     this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
-          data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+          data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
           this.paymentTypes = data.tranTypeList;
+          console.log(this.paymentTypes);
           this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+          if(this.paymentTypes.length == 1){
+            this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
+          }
         }
       }
     );
@@ -1340,6 +1359,11 @@ export class AcctOrEntryComponent implements OnInit {
            this.canReprint = false;
          }
       });
+  }
+
+  changeOrType(data){
+    this.orInfo.orType = data;
+    this.retrievePaymentType();
   }
 
   changeTranType(data){
