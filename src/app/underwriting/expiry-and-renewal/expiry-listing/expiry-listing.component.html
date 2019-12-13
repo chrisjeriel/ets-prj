@@ -460,7 +460,7 @@
 											<div class="col-sm-1"></div>
 											<label class="form-control-sm col-sm-1 cust-sm from" for="fromDate">From</label>
 											<div class="col-sm-3 dp-cont">
-											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [(value)]="dateParams.byDateFrom" [disabled]="radioVal != 'byDate'"></datepicker>
+											<datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="dateParams.byDateFrom" [disabled]="radioVal != 'byDate'" (valueChange)="dateParams.byDateFrom=$event;dateParams.byDateTo=valChanged(dateParams.byDateFrom,dateParams.byDateTo);"></datepicker>
 											</div>
 											<label class="form-control-sm col-sm-1 cust-sm" style="margin-left: -10px !important;">To</label>
 											<div class="col-sm-3 dp-cont">

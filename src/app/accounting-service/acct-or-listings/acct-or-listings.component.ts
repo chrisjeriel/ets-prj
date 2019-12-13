@@ -101,7 +101,7 @@ export class AcctOrListingsComponent implements OnInit {
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.titleService.setTitle("Acct-Se | Official Receipt");
+    /*this.titleService.setTitle("Acct-Se | Official Receipt"); Commented out by Totz, already handled in module-access.guard.ts */ 
     this.as.cvFilter = '';
     this.as.jvFilter = '';
     this.as.prqFilter = '';

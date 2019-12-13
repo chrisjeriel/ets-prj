@@ -97,7 +97,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     addFlag       : false,
     deleteFlag    : false,
     uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true,true],
-    total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','paytAmt', 'localAmt'],
+    total         : [null, null, null, null,null, null, null,null, 'Total', 'reserveAmt','approvedAmt','currAmt', 'localAmt'],
     widths        : [110,1,120,150,350,350,1,1,100,120,120,120,120,120],
   //  keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currencyCd','currencyRt','reserveAmt','approvedAmt','paytAmt','localAmt']
     keys          : ['claimNo','histNo','histCatDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','approvedAmt','currAmt','localAmt']

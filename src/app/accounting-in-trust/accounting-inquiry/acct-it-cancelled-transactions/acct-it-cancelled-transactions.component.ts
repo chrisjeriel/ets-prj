@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccountingService } from '../../../_services/accounting.service';
+import { UserService } from '@app/_services';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
@@ -85,11 +86,12 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   tranId:any;
   viewTran: boolean = true;
 
-  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router) { }
+  constructor(private titleService: Title, private accountingService: AccountingService, private route: Router, private userService: UserService) { }
 
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
+    this.userService.emitModuleId("ACIT056");
     //this.retrieveCancelledTrans();
   }
 

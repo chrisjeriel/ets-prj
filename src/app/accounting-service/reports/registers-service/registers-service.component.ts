@@ -13,7 +13,7 @@ export class RegistersServiceComponent implements OnInit {
 	constructor(private router: Router, private titleService: Title) { }
 
 	ngOnInit() {
-		this.titleService.setTitle("Acct-Service | Registers");
+		/*this.titleService.setTitle("Acct-Service | Registers");*/
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {

@@ -132,7 +132,7 @@
 	        		<legend class="scheduler-border">Module Transaction</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable #userTransactions (genericBtn)="onClickTransDelete();" (clickLOV)="clickLOV($event,'transactions')" (newClick)="onRowClickTrans($event, 'USER')" [passData]="PassDataModuleTrans" (onDelete)="userTransactions.onClickDelete('a');"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userTransactions (genericBtn)="onClickTransDelete();" (clickLOV)="clickLOV($event,'transactions')" (newClick)="onRowClickTrans($event, 'USER')" [passData]="PassDataModuleTrans" (onDelete)="userTransactions.onClickDelete('a');tranDelete()"></app-cust-editable-non-datatable>
 	        				</div>
 	        			</div>
 	        	</fieldset>
@@ -142,7 +142,8 @@
 	        		<legend class="scheduler-border">Module</legend>
 	        			<div class="row model-align">
 	        				<div class="col-sm-12">
-	        					<app-cust-editable-non-datatable #userModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (genericBtn)="onClickModuleDelete();" (onDelete)="userModules.onClickDelete('a');"> </app-cust-editable-non-datatable>
+	        					<app-cust-editable-non-datatable #userModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (newClick)="rowClick($event)"></app-cust-editable-non-datatable>
+	        					<!-- <app-cust-editable-non-datatable #userModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (genericBtn)="onClickModuleDelete();" (onDelete)="userModules.onClickDelete('a');" (newClick)="rowClick($event)"></app-cust-editable-non-datatable> -->
 	        				</div>
 	        			</div>
 	        	</fieldset>

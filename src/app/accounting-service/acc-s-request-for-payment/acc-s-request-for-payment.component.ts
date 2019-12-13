@@ -62,7 +62,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
   constructor(private titleService: Title, private router: Router, private location: Location, private acctService: AccountingService, private ns : NotesService) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acct-Service | Request for Payment");
+  	/*this.titleService.setTitle("Acct-Service | Request for Payment");*/
     this.acctService.arFilter = '';
     this.acctService.cvFilter = '';
     this.acctService.jvFilter = '';

@@ -186,7 +186,6 @@ export class JvTreatyPullOutComponent implements OnInit {
         this.jvDetails.cedingName = data.acctTreatyBal[0].cedingName
         this.jvDetails.cedingId = data.acctTreatyBal[0].cedingId;
         for (var i = 0; i < data.acctTreatyBal.length; i++) {
-          console.log(data.acctTreatyBal[i]);
           data.acctTreatyBal[i].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data.acctTreatyBal[i].quarterEnding), 'MM/dd/yyyy');
           this.passData.tableData.push(data.acctTreatyBal[i]);
         }
@@ -254,7 +253,7 @@ export class JvTreatyPullOutComponent implements OnInit {
     });
 
     this.passData.tableData = this.passData.tableData.filter(a => a.qsoaId != '');
-
+    this.quarterTable.onRowClick(null,this.passData.tableData[0]);
     this.quarterTable.refreshTable();
     this.quarterTable.markAsDirty();
   }
@@ -322,6 +321,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
+    console.log(data.data)
     this.quarterTable.indvSelect.trtyInvmt = this.quarterTable.indvSelect.trtyInvmt.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
       this.quarterTable.indvSelect.trtyInvmt.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
@@ -356,7 +356,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   openLOV(data){
-    this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'MATURED'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'M%'}];
     this.passLov.hide = this.invesmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }
@@ -443,7 +443,27 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    var netMaturity = 0;
+    var errorFlag = false;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      console.log(this.passData.tableData[i]);
+      netMaturity = 0;
+      for (var j = 0; j < this.passData.tableData[i].trtyInvmt.length; j++) {
+        netMaturity += this.passData.tableData[i].trtyInvmt[j].maturityValue;
+      }
+      console.log(netMaturity)
+      if(this.passData.tableData[i].balanceAmt < netMaturity){
+        errorFlag = true;
+      }
+    }
+
+    if(errorFlag){
+      this.dialogMessage = 'Payment Amount must not be less than Net Maturity Value.';
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+    }else{
+      this.confirm.confirmModal();
+    }
   }
 
   cancel(){

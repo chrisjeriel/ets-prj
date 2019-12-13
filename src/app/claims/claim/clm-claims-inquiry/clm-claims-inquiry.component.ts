@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 //import { UnderwritingPolicyInquiryInfo } from '@app/_models';
-import { ClaimsService, NotesService } from '@app/_services';
+import { ClaimsService, NotesService, UserService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -256,10 +256,11 @@ export class ClmClaimsInquiryComponent implements OnInit {
 
   	lossDate: string = null;
 
-	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService, private router: Router) { }
+	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService, private router: Router, private userService: UserService) { }
 
   	ngOnInit() {
     	this.titleService.setTitle("Clm | Claim Inquiry");
+    	this.userService.emitModuleId("CLM008");
 
     	this.retrieveClaimlist();
 	}

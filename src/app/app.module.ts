@@ -16,6 +16,7 @@ import { CalendarModule } from 'primeng/calendar';
 import { AccordionModule } from 'primeng/accordion';
 import { DropdownModule } from 'primeng/dropdown';
 import { FullCalendarModule } from 'primeng/fullcalendar';
+import { TimeagoModule } from 'ngx-timeago';
 
 // used to create fake backend
 import { fakeBackendProvider } from './_helpers';
@@ -498,6 +499,8 @@ import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-ope
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 import { CancelArCvJvServiceComponent } from './accounting-service/utilities/cancel-transactions-service/cancel-ar-cv-jv-service/cancel-ar-cv-jv-service.component';
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
+import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/mtn-acit-check-series/mtn-acit-check-series.component';
+import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
 
 @NgModule({
     imports: [
@@ -520,6 +523,7 @@ import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-po
         AccordionModule,
         DropdownModule,
         FullCalendarModule,
+        TimeagoModule.forRoot(),
     ],
     declarations: [
         AppComponent,
@@ -1000,6 +1004,8 @@ import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-po
         AcseCloseOpenDcbComponent,
         CancelArCvJvServiceComponent,
         UpdatePolAttachmentComponent,
+        MtnAcitCheckSeriesComponent,
+        InvoiceSeriesComponent,
     ],
 
   	providers: [

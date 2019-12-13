@@ -165,11 +165,11 @@ export class JvInvestmentPlacementComponent implements OnInit {
         this.selectedBank = bank[0];
         this.selectedBankCd = this.selectedBank.bankCd;
         this.selectedBankAcct = bankAcct[0];
-        this.accountNo =  this.selectedBankAcct.bankAcctCd;
+        //this.accountNo =  this.selectedBankAcct.bankAcctCd;
 
 
         for (var i = 0; i < data.invPlacement.length; i++) {
-          if(data.invPlacement[i].bank === this.selectedBankCd && data.invPlacement[i].bankAcct === this.accountNo){
+          if(data.invPlacement[i].bank === this.selectedBankCd /*&& data.invPlacement[i].bankAcct === this.accountNo*/){
             this.passData.tableData.push(data.invPlacement[i]);
           }
         }
@@ -180,7 +180,7 @@ export class JvInvestmentPlacementComponent implements OnInit {
   }
 
   openInvLOV(data){
-    this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'FOR PLACEMENT'}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.selectedBankCd}, {key:'invtStatus', search: 'F%'}];
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }

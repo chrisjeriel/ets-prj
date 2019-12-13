@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { NotesService, MaintenanceService } from '@app/_services';
+import { NotesService, MaintenanceService, UserService } from '@app/_services';
 import { MtnLineComponent } from '@app/maintenance/mtn-line/mtn-line.component';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
 
@@ -29,10 +29,11 @@ export class BordereauxComponent implements OnInit {
 	periodTo: string = '';
 	asOf: string = '';
 
-	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService) { }
+	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
+    	this.userService.emitModuleId("ACIT061");
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {

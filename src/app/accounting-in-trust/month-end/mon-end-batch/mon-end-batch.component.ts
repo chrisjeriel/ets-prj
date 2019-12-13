@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, UserService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { environment } from '@environments/environment';
 import { Title } from '@angular/platform-browser';
@@ -26,11 +26,13 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   topic: string = "/prodLogs";
   stompClient: any;
 
-  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title) {
+  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService) {
   }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Batch Processing");
+    this.userService.emitModuleId("ACIT063");
+
     this.wsConnect();
     this.getAcitMonthEnd();
   }

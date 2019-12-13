@@ -11,7 +11,7 @@ export class TrialBalanceExtractComponent implements OnInit {
   constructor(private titleService: Title) { }
 
   ngOnInit() {
-  	this.titleService.setTitle("Acc | Trial Balance");
+  	this.titleService.setTitle("Acct-IT | Trial Balance");
   }
 
   accountCode:string = 'Total';

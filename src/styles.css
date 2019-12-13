@@ -249,7 +249,7 @@ ul.ngx-pagination{
 }
 
 .nav-link {
-    padding: 5px 10px !important;
+    padding: 5px 5px !important;
 }
 
 .cap-input {
@@ -817,4 +817,14 @@ a.carousel-control-prev {
 
 ol.carousel-indicators {
     display: none !important;
+}
+
+#notif-progress .progress {
+    height: 12px;
+    font-size: 10px;
+}
+
+#notif-progress .progress-bar {
+    height: 12px;
+    font-size: 10px;
 }

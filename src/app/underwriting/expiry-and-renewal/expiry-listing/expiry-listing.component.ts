@@ -1953,4 +1953,12 @@ export class ExpiryListingComponent implements OnInit {
   onClickCovCancel(){
     this.cancelCov.clickCancel();
   }
+
+  valChanged(fromVal, toVal) {
+    if(toVal !== undefined && toVal !== '' && fromVal !== undefined && fromVal !== '') {
+      return new Date(fromVal) > new Date(toVal) ? '' : toVal;
+    } else {
+      return fromVal === undefined || fromVal === '' ? toVal : '';
+    }
+  }
 }

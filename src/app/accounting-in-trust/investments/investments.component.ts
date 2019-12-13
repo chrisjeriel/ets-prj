@@ -1,5 +1,5 @@
 import { Title } from '@angular/platform-browser';
-import { NotesService,AccountingService,MaintenanceService } from '@app/_services';
+import { NotesService,AccountingService,MaintenanceService, UserService } from '@app/_services';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AccInvestments} from '@app/_models';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
@@ -211,10 +211,11 @@ export class InvestmentsComponent implements OnInit {
     maxukp: any = 0;
     errorAmort: any;
 
-  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService) { }
+  constructor(private accountingService: AccountingService,private titleService: Title,private router: Router,private ns: NotesService, private mtnService: MaintenanceService, private userService: UserService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Investments");
+    this.userService.emitModuleId("ACIT048");
     this.selectedData = [];
     this.retrieveInvestmentsList(this.searchParams);
     this.getWTaxRate();

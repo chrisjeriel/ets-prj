@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
@@ -188,9 +188,10 @@ export class AcctOrEntryComponent implements OnInit {
   bankAccts: any[] = [];
   savedData: any[] = [];
   deletedData: any[] = [];
+  printers: string[] = [];
 
   selectedCurrency: string = 'PHP';
-
+  selectedPrinter: string = "";
   selectedBank: any = {
     bankCd: '',
     officialName: ''
@@ -209,11 +210,12 @@ export class AcctOrEntryComponent implements OnInit {
 
   @Input() inquiryFlag: boolean = false; //added by ENGEL
 
-  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
+  constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
     this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
+    this.getPrinters();
     this.retrievePaymentType();
     this.canUploadAcctEntry();
     this.canReprintMethod();
@@ -382,7 +384,11 @@ export class AcctOrEntryComponent implements OnInit {
   openLOV(type){
     if(type === 'payor'){
       this.passLov.selector = 'payee';
-      this.passLov.payeeClassCd = null;
+      if(this.orInfo.tranTypeCd == 2){
+        this.passLov.payeeClassCd = 1;
+      }else{
+        this.passLov.payeeClassCd = null;
+      }
     }else if(type === 'business'){
       this.passLov.selector = 'mtnBussType';
       this.passLov.activeTag = 'Y';
@@ -927,9 +933,10 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   reprintMethod(isReprint?){
+    var reportType = this.orInfo.orType == 'VAT' ? 'ACSER_OR_VAT' : 'ACSER_OR_NVAT';
     this.printLoading = true;
     if(this.printMethod == '1'){
-      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_OR' + '&userId=' + 
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName='+ reportType + '&userId=' + 
                             this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
       this.loading = false;
@@ -939,8 +946,41 @@ export class AcctOrEntryComponent implements OnInit {
         this.reprintMdl.closeModal();  
       }
     }else if(this.printMethod == '2'){
-      this.as.acitGenerateReport('ACSER_OR', this.orInfo.tranId).subscribe(
+      if(this.selectedPrinter.length == 0){
+        this.dialogIcon = 'info';
+        this.dialogMessage = 'Please select a printer.';
+        this.successDiag.open();
+        this.printLoading = false;
+      }else{
+        let params = {
+          reportName: reportType,
+          tranId: this.orInfo.tranId,
+          printerName: this.selectedPrinter,
+          pageOrientation: 'LANDSCAPE',
+          paperSize: ''
+        }
+        this.ps.directPrint(params).subscribe(
+          (data:any)=>{
+            console.log(data);
+            if(data.errorList.length == 0 && data.messageList.length != 0){
+              if(isReprint == undefined){
+                this.printStatus();
+              }else{
+                this.reprintMdl.closeModal();  
+                 this.printLoading = false;
+              }
+            }else{
+              this.dialogIcon = 'error-message';
+              this.dialogMessage = 'An error has occured. AR was not printed.';
+              this.successDiag.open();
+              this.printLoading = false;
+            }
+          }
+        );
+      }
+      /*this.as.acitGenerateReport(reportType, this.orInfo.tranId).subscribe(
         (data:any)=>{
+          console.log(data);
           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
                        var downloadURL = window.URL.createObjectURL(data);
                        const iframe = document.createElement('iframe');
@@ -962,7 +1002,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.dialogMessage = 'An error has occured. AR was not printed.';
           this.successDiag.open();
           this.printLoading = false;
-        });
+        });*/
     }
   }
 
@@ -1246,6 +1286,15 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   //UTILITIES STARTS HERE
+
+  getPrinters(){
+    this.ps.getPrinters().subscribe(
+      (data:any)=>{
+        console.log(data);
+        this.printers = data;
+      }
+    );
+  }
 
   canPrintScreen(){
     this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(

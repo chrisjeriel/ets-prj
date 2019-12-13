@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, UserService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { environment } from '@environments/environment';
 import { Title } from '@angular/platform-browser';
@@ -28,10 +28,12 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
   topic: string = "/osLogs";
   stompClient: any;
 
-  constructor( private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title) { }
+  constructor( private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Batch OS Losses");
+    this.userService.emitModuleId("ACIT064");
+
     this.wsConnect();
     this.getAcitMonthEnd();
   }

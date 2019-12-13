@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { AccountingService, NotesService } from '@app/_services';
+import { AccountingService, NotesService, UserService } from '@app/_services';
 
 @Component({
   selector: 'app-acct-ar-listings',
@@ -93,10 +93,11 @@ export class AcctArListingsComponent implements OnInit {
 
   tranStat: string = 'open';
 
-  constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
+  constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, private userService: UserService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Acknowledgement Receipt");
+    this.userService.emitModuleId("ACIT001");
     this.as.cvFilter = '';
     this.as.jvFilter = '';
     this.as.prqFilter = '';
