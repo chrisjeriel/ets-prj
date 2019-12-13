@@ -376,7 +376,6 @@ export class PolCoverageComponent implements OnInit {
     
     if (!this.alteration) {
       this.getAlopCd();
-      setTimeout(() => {this.getPolCoverage()});
     } else {
       this.passData2.tableData = [
              {
@@ -440,7 +439,6 @@ export class PolCoverageComponent implements OnInit {
           { header: "This Alteration", span: 2 }, { header: "Cumulative", span: 2 });
       }
       this.getAlopCd();
-      setTimeout(() => this.getPolCoverageAlt(),0);
     }
 
     //paul
@@ -2170,6 +2168,11 @@ export class PolCoverageComponent implements OnInit {
     var params = this.line+'_ALOP';
     this.ms.getMtnParameters(null,params).subscribe((data:any)=>{
         this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+        if(!this.alteration){
+          this.getPolCoverage();
+        }else{
+          this.getPolCoverageAlt();
+        }
     });
   }
 }
