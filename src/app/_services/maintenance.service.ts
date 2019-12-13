@@ -1889,4 +1889,13 @@ export class MaintenanceService{
 
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params:searchParams});
 	}
+
+	generateMtnAcitCheckSeries(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             }) 
+         };
+   		return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnAcitCheckSeries',params,header);
+    }
 }

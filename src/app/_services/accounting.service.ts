@@ -3336,5 +3336,4 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/saveDcbCollection',params,header);
     }
-
 }

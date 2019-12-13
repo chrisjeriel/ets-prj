@@ -4,7 +4,9 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { NgForm } from '@angular/forms';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-mtn-acit-check-series',
@@ -15,6 +17,9 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 	@ViewChild('checkNoTbl') checkNoTbl			: CustEditableNonDatatableComponent;
 	@ViewChild('lov') lov       				: LovComponent;
   	@ViewChild('myForm') form                   : NgForm;
+  	@ViewChild(SucessDialogComponent) success   : SucessDialogComponent;
+ 	@ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
+  	@ViewChild('warnMdl') warnMdl               : ModalComponent;
 
 	passDataCheckNoList: any = {
 	    tableData       : [],
@@ -34,7 +39,7 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 	    infoFlag      : true,
 	    paginateFlag  : true,
 	    searchFlag	  : true,
-	    pageLength    : 10,
+	    pageLength    : 15,
 	    widths        : [1,80,1,100,1,1,1,1],
 	    pageID        : 'passDataCheckNoList',
 	    keys          : ['checkNo','tranId','usedTag','checkStatusDesc','createUser','createDate','updateUser','updateDate']
@@ -54,13 +59,15 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 		to				: ''
 	};
 
-	removeIcon       : boolean;
+	dialogMessage        : string = '';
+    dialogIcon           : string = '';
+    warnMsg              : string = '';
+
 
 	constructor(private titleService: Title,private mtnService : MaintenanceService, private ns : NotesService) {}
 	
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Check Number');
-		this.getMtnAcitCheckSeries();
   	}
 
   	getMtnAcitCheckSeries(bank?,bankAcct?,from?,to?){
@@ -82,6 +89,50 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
   	onClickSearch(){
   		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
   		this.getMtnAcitCheckSeries(this.otherData.bank,this.otherData.bankAcct,this.otherData.from,this.otherData.to);
+  	}
+
+  	onClickGenerate(){
+  		if(this.otherData.bank == '' || this.otherData.bank == null || this.otherData.bankAcct == '' || this.otherData.bankAcct == null ||
+  			this.otherData.from == '' || this.otherData.from == null || this.otherData.to == '' || this.otherData.to == null){
+  			this.dialogIcon = 'error';
+	        this.success.open();	
+	        $('.warn').focus().blur();
+  		}else{
+  			if(this.otherData.from > this.otherData.to){
+  				this.warnMsg = 'Check Number From should not be greater than Check Number to';
+  				this.warnMdl.openNoClose();
+  			}else{
+  				this.cs.confirmModal();
+  			}
+	    }
+  	}
+
+  	onSave(){
+  		var save = {
+		 	bank			: this.otherData.bank,
+			bankAcct		: this.otherData.bankAcct,
+			checkNoFrom		: this.otherData.from,
+			checkNoTo		: this.otherData.to,
+			user			: this.ns.getCurrentUser()
+		};
+
+  		this.mtnService.generateMtnAcitCheckSeries(JSON.stringify(save))
+  		.subscribe(data => {
+  			console.log(data);
+  			if(data['returnCode'] == -1){
+  				this.dialogIcon = '';
+	            this.dialogMessage = '';
+	          	this.success.open();
+	          	this.getMtnAcitCheckSeries(this.otherData.bank,this.otherData.bankAcct);
+	          	this.otherData.from = '';
+	          	this.otherData.to = '';
+	          	this.checkNoTbl.markAsPristine();
+	          	this.form.control.markAsPristine();
+  			}else if(data['returnCode'] == 0){
+  				this.warnMsg = 'Existing number series was already created for\nthe specified transaction numbers '+ this.otherData.from + ' to ' + this.otherData.to + '.\nPlease adjust your From-To range values.';
+  				this.warnMdl.openNoClose();
+  			}
+  		})
   	}
 
   	showLov(fromUser){
