@@ -128,6 +128,14 @@
         font-size: 10px !important;
     }
 
+    .notif-a-btn {
+        color: #00000080 !important;
+    }
+
+    a.notif-a-btn:hover {
+        color: #000000cc !important;
+    }
+
 </style>
 
 <div id="cust-tooltip" style="position: absolute;z-index: 99999;background-color: rgb(25,25,25);color: rgb(217,217,217);font-size: 9px !important; display: none ; padding: 3px 5px;">
@@ -1048,8 +1056,16 @@
                         <p class="notif-tstmp">{{ notif.createDate | timeago:live }}</p>
                         <p class="notif-msg"><span class="notif-title">{{ notif.title }}:</span> "{{ notif.msg }}"</p>
                         <div>
-                            <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
-                            <button type="button" (click)="mkCompleted();" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button>
+                            <!-- <button type="button" class="btn btn-sm btn-primary btn-v-x">View</button>
+                            <button type="button" (click)="mkCompleted();" class="btn btn-sm btn-danger btn-m-x">Mark as Completed</button> -->
+                            <a class="notif-a-btn" style="margin-right: 7px;">
+                                <fa name="pencil-square-o" ngbTooltip="View">
+                                </fa>
+                            </a>
+                            <a class="notif-a-btn">
+                                <fa name="ellipsis-h" ngbTooltip="Mark as Completed">
+                                </fa>
+                            </a>
                         </div>
                     </div>
                 </div>
