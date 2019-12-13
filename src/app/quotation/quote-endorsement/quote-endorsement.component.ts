@@ -357,9 +357,9 @@ export class QuoteEndorsementComponent implements OnInit {
         fromOptionNo: this.currentSelectedOption,
         toOptionNo: this.copyEndtParams,
         createUser: this.ns.getCurrentUser(),
-        createDate: new Date().toISOString(),
+        createDate: this.ns.toDateTimeString(0),
         updateUser: this.ns.getCurrentUser(),
-        updateDate: new Date().toISOString(),
+        updateDate: this.ns.toDateTimeString(0),
       }
 
       this.quotationService.copyEndorsement(JSON.stringify(params)).subscribe((data: any) =>{
@@ -493,25 +493,25 @@ export class QuoteEndorsementComponent implements OnInit {
         if(this.from === "quo-processing"){
 
             for (var i = 0 ; this.endorsementData.tableData.length > i; i++) {
-              (this.saveEndt.createDate === null) ? new Date().toISOString() : this.saveEndt.createDate;
+              (this.saveEndt.createDate === null) ? this.ns.toDateTimeString(0) : this.saveEndt.createDate;
               (this.saveEndt.createUser == null) ? this.ns.getCurrentUser() : this.saveEndt.createUser;
-              if(this.endorsementData.tableData[i].edited && this.endorsementData.tableData[i].deleted){
+              if(this.endorsementData.tableData[i].deleted){
                   saveEndtReq.deleteEndorsements.push({
-                      "createDate": new Date().toISOString(),
+                      "createDate": this.ns.toDateTimeString(0),
                       "createUser": this.ns.getCurrentUser(),
                       "endtCd": this.endorsementData.tableData[i].endtCd,
                       "remarks":  this.endorsementData.tableData[i].endtWording,
-                      "updateDate": new Date().toISOString(),
+                      "updateDate": this.ns.toDateTimeString(0),
                       "updateUser": this.saveEndt.updateUser
                   })
                   // this.endorsementReq = {
                   //    "deleteEndorsements": [
                   //       {
-                  //         "createDate": new Date().toISOString(),
+                  //         "createDate": this.ns.toDateTimeString(0),
                   //         "createUser": this.ns.getCurrentUser(),
                   //         "endtCd": this.endorsementData.tableData[i].endtCode,
                   //         "remarks":  this.endorsementData.tableData[i].endtWording,
-                  //         "updateDate": new Date().toISOString(),
+                  //         "updateDate": this.ns.toDateTimeString(0),
                   //         "updateUser": this.saveEndt.updateUser
                   //       }
                   //    ],
@@ -527,11 +527,11 @@ export class QuoteEndorsementComponent implements OnInit {
               }
               else if(this.endorsementData.tableData[i].edited && !this.endorsementData.tableData[i].deleted){
                   saveEndtReq.saveEndorsements.push({
-                      "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? new Date().toISOString() : this.saveEndt.createDate,
+                      "createDate": (this.saveEndt.createDate === null || this.saveEndt.createDate === "") ? this.ns.toDateTimeString(0) : this.saveEndt.createDate,
                       "createUser": (this.saveEndt.createUser === null || this.saveEndt.createUser === "") ? this.ns.getCurrentUser() : this.saveEndt.createUser,
                       "endtCd": this.endorsementData.tableData[i].endtCd,
                       "remarks":  this.endorsementData.tableData[i].remarks,
-                      "updateDate": new Date().toISOString(),
+                      "updateDate": this.ns.toDateTimeString(0),
                       "updateUser": this.ns.getCurrentUser()
                   })
 

@@ -67,6 +67,11 @@ export class PaymentRequestsComponent implements OnInit {
         dataType: 'text'
       },
       {
+        key: 'status',
+        title:'Status',
+        dataType: 'text'
+      },
+      {
         key: 'currCd',
         title:'Curr',
         dataType: 'text'
