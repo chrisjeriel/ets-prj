@@ -103,8 +103,8 @@ export class QuotationComponent implements OnInit, OnDestroy {
           this.exitLink = params['exitLink'];
           this.quoteInfo.quoteId = params['quoteId'];
 
-          console.log(params);
-          console.log("TOTZ CHECKING");
+          /*console.log(params);
+          console.log("TOTZ CHECKING");*/
 
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
       });
