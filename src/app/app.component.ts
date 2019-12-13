@@ -144,6 +144,8 @@ export class AppComponent implements OnDestroy {
     notifCount:number = 0;
     notifs:Array<Object> = [];
     notifIsLoading:boolean = false;
+    notifProgIsShown:boolean = false;
+    progValue:number = 0;
 
     wsConnect() {
       let ws = new SockJS(this.webSocketEndPoint);
@@ -221,6 +223,12 @@ export class AppComponent implements OnDestroy {
             $("#context-menu a").on("click", function() {
               $(this).parent().removeClass("show").hide();
             });
+
+            $(document).on("click", function(e:any) {
+              console.log(e);
+              console.log("id: " + e.target.id);
+              console.log("id: " + e.target);
+            })
         });
 
         this.wsConnect();
@@ -395,6 +403,11 @@ export class AppComponent implements OnDestroy {
       $("#notif-context").removeClass("show").hide();
     }
     
+  }
+
+  mkCompleted() {
+    this.notifProgIsShown = !this.notifProgIsShown;
+
   }
 }
 
