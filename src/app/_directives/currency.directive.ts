@@ -11,16 +11,23 @@ export class CurrencyDirective implements OnInit{
 
   }
 
+  focused:boolean = false;
+
   ngOnInit(){
       this.el.nativeElement.style.textAlign = "right";
       this.model.valueChanges.subscribe(a=>{
-        if(this.model.control.untouched){
+        if(this.model.control.untouched && !this.focused){
           this.onBlur(this.el.nativeElement);
         }
       })
   }
 
+  @HostListener("focus", ["$event.target"]) onFocus(target) {
+    this.focused = true;
+  }
+
   @HostListener("blur", ["$event.target"]) onBlur(target) {
+    this.focused = false;
     if(this.model.control.untouched){
       this.model.control.markAsPristine();
     }
