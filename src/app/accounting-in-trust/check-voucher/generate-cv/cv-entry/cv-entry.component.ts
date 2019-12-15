@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService,PrintService } from '@app/_services';
 import { CVListing } from '@app/_models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -117,10 +117,18 @@ export class CvEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  printData : any = {
+    printers    : [],
+    destination : '',
+    reportType  : null,
+    copyNo      : null,
+    printCbx    : ''
+  };
+
   lovCheckBox:boolean = true;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
-              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe) { }
+              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
@@ -253,6 +261,8 @@ export class CvEntryComponent implements OnInit {
         console.log(totalDebit);
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+
+        (this.saveAcitCv.cvStatus == 'A' || this.saveAcitCv.cvStatus == 'P') ? this.getPrinters() : '';
 
         if(this.fromSave){
           this.dialogIcon = '';
@@ -402,6 +412,7 @@ export class CvEntryComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.saveAcitCv.checkNo = Number(data['checkNo']);
       }else if(data['returnCode'] == -100){
+        this.saveAcitCv.checkNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }
@@ -589,7 +600,6 @@ export class CvEntryComponent implements OnInit {
       this.warnMdl.openNoClose();
     }else{
       this.fromBtn = 'approve-req';
-      //this.confirmMdl.openNoClose();
       this.approvalCd = 'AC003';
       this.overrideFunc('AC003');
     }
@@ -766,5 +776,16 @@ uploadAcctEntries(){
          }
        }
     );
+  }
+
+  test(){
+    console.log(this.printData.reportType);
+  }
+
+  getPrinters(){
+    this.ps.getPrinters()
+    .subscribe(data => {
+      this.printData.printers = data;
+    });
   }
 }

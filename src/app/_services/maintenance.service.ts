@@ -1890,7 +1890,16 @@ export class MaintenanceService{
         return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnRiskListing', {params:searchParams});
 	}
 
-     generateAcseInvoiceSeries(params){
+	generateMtnAcitCheckSeries(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             }) 
+         };
+   		return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnAcitCheckSeries',params,header);
+    }
+
+    generateAcseInvoiceSeries(params){
 		let header : any = {
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
@@ -1899,4 +1908,12 @@ export class MaintenanceService{
         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateAcseInvoiceSeries', JSON.stringify(params), header);
     }
 
+    generateMtnAcseCheckSeries(params){
+         let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             }) 
+         };
+   		return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnAcseCheckSeries',params,header);
+    }
 }
