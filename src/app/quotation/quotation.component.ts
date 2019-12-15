@@ -104,6 +104,10 @@ export class QuotationComponent implements OnInit, OnDestroy {
           this.exitLink = params['exitLink'];
           this.quoteInfo.quoteId = params['quoteId'];
           this.addParams = params['addParams'];
+
+          if (this.addParams != undefined) {
+            this.addParams = JSON.parse(this.addParams);
+          }
           
 
           this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
@@ -200,6 +204,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
       console.log("sendMessage addparams");
       console.log(this.addParams);
       console.log(this.addParams.riskId);
+      var obj = 
       this.stompClient.send(this.topic, {}, JSON.stringify({ user: this.ns.getCurrentUser(), riskId: this.addParams.riskId, message: "" }));
     } else {
       console.log("sendMessage real quote");
