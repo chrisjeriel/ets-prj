@@ -6,6 +6,7 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
 
 @Component({
   selector: 'app-create-internal-comp',
@@ -53,6 +54,7 @@ export class CreateInternalCompComponent implements OnInit {
 	copyCedingName: string;
 
 	@ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
+    @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
 	exclude: any[] = [];
 
 	copyStatus = 0;
@@ -62,10 +64,12 @@ export class CreateInternalCompComponent implements OnInit {
 
 	loading: boolean = false;
 	dialogMessage = "";
-   dialogIcon = "";
+  dialogIcon = "";
 
   typeOfCessionId:any = '';
   typeOfCession:any = '';
+  reinsurerId:any = "";
+  reinsurerName:any = "";
 
     
     @ViewChild('copyIntCompModal') copyIntCompModal: ModalComponent;
@@ -184,8 +188,11 @@ export class CreateInternalCompComponent implements OnInit {
 	    if(field === 'cedingCoIntComp') {
 	        this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);
 	    } else if(field === 'typeOfCession'){
-            this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
-        }
+          this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+      } else if(field === 'RI'){
+          this.reinsurerId = this.pad(this.reinsurerId);
+          this.cedingCoNotMemberLov.checkCode(this.reinsurerId, ev);
+      }
 	}
 
 	setCedingIntCompCompany(data) {
@@ -220,7 +227,8 @@ export class CreateInternalCompComponent implements OnInit {
                 "riskId": this.quoteInfo.project.riskId,
                 "updateDate": currentDate,
                 "updateUser": this.ns.getCurrentUser(),
-                "cessionId" : this.typeOfCessionId
+                "cessionId" : this.typeOfCessionId,
+                "reinsurerId" : this.typeOfCessionId == 2 ? this.reinsurerId : '' 
             }
 
             this.qs.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
@@ -288,6 +296,24 @@ export class CreateInternalCompComponent implements OnInit {
         showTypeOfCessionLOV(){
             // $('#typeOfCessionLOV #modalBtn').trigger('click');
             this.typeOfCessionLov.modal.openNoClose();
+        }
+
+        pad(str, num?) {
+            if(str === '' || str == null){
+                return '';
+            }
+            
+            return String(str).padStart(num != null ? num : 3, '0');
+        }
+
+        setReinsurer(event) {
+            this.reinsurerId = this.pad(event.cedingId);
+            this.reinsurerName = event.cedingName;
+            this.ns.lovLoader(event.ev, 0);
+        }
+
+        showCedingCompanyNotMemberLOV() {
+            this.cedingCoNotMemberLov.modal.openNoClose();
         }
 
 }

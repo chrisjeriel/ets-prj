@@ -79,7 +79,14 @@
                                         <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
                                         &nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
-                                    </div>              
+                                    </div>
+                                    <div class="input-group" style="margin-top: -12px" *ngIf="typeOfCessionId==2">
+                                        <label class="form-control-sm col-sm-3">Reinsurance From</label>
+                                        <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="reinsurerId" (change)="checkCode($event, 'RI')" maxlength="4" numbers-only appRequired>
+                                        <div class="text-search-ico" (click)="showCedingCompanyNotMemberLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        &nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="reinsurerName" readonly tabindex="-1">
+                                    </div>                    
                                 </div>
                         </fieldset>
                     </div>
@@ -109,6 +116,7 @@
                 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 
                 <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+                <app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [membershipTag]="''"></app-mtn-ceding-company>
 
 
             </ng-template>
