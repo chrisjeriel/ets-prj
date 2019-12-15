@@ -55,16 +55,35 @@
                    <label class="form-control-sm col-sm-4">Currency</label>
                    <input type="text" name="coverageData.currencyCd" class="form-control form-control-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
                    <label class="form-control-sm col-sm-3">Exch. Rt.</label>
-                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt = $event" readonly appOtherRates tabindex="-1" name="coverageData.currencyRt">
+                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.currencyRt | number:'1.6-6'" (ngModelChange)="coverageData.currencyRt = $event" readonly appCurrencyRate tabindex="-1" name="coverageData.currencyRt">
                  </div>
                  <div class="input-group" style="margin-bottom: -13px !important">
                   <label class="form-control-sm col-sm-4">Total Sum Insured</label>
-                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTSi  | number:'1.2-2'" (ngModelChange)="coverageData.cumTSi = $event;" readonly appOtherRates tabindex="-1" name="coverageData.cumTSi">
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTSi  | number:'1.2-2'" (ngModelChange)="coverageData.cumTSi = $event;" readonly appCurrency tabindex="-1" name="coverageData.cumTSi">
                 </div>
-                <div class="input-group" style="margin-bottom: 2px !important">
-                  <label class="form-control-sm col-sm-4">Total Premium</label>
-                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
-                </div>
+                <ng-container *ngIf="line!='EEI'">
+                  <div class="input-group" style="margin-bottom: 2px !important">
+                    <label class="form-control-sm col-sm-4">Total Premium</label>
+                    <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
+                  </div>
+                </ng-container>
+
+                
+                <ng-container *ngIf="line=='EEI'">
+                  <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-4">Total Premium</label>
+                    <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
+                  </div>
+                  <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-4">Prem. Dep. (%)</label>
+                    <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.premDepPct" (ngModelChange)="coverageData.premDepPct = $event;"  appOtherRates name="coverageData.premDepPct" >
+                  </div>
+                  <div class="input-group" style="margin-bottom: 2px !important">
+                    <label class="form-control-sm col-sm-4">Annual Premium</label>
+                    <input type="text" class="form-control form-control-sm req" [ngModel]="(coverageData.premDepPct/100)*coverageData.cumTPrem" appCurrency name="coverageData.annualPrem" >
+                  </div>
+                </ng-container>
+                
               </div>
             </fieldset>
           </div>

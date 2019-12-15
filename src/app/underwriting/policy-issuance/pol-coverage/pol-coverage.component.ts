@@ -1576,11 +1576,11 @@ export class PolCoverageComponent implements OnInit {
   }
 
   focusBlur(){
-    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    // setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   focusCalc(){
-    setTimeout(() => {$('.calc').focus();$('.calc').blur()},0)
+    // setTimeout(() => {$('.calc').focus();$('.calc').blur()},0)
   }
 
   onClickSave(){
