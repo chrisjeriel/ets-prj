@@ -27,8 +27,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
+  @ViewChild("myForm2") form2: any;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild('successPrintMdl') successPrintMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   passData: any = {
@@ -356,6 +358,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
     this.form.control.markAsPristine();
+    this.form2.control.markAsPristine();
   }
 
   ngOnDestroy(){
@@ -707,6 +710,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
         }
         this.form.control.markAsPristine();
+        this.form2.control.markAsPristine();
         this.loading = false;
       },
       (error: any)=>{
@@ -802,6 +806,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.successDiag.open();
           }
           this.form.control.markAsPristine();
+          this.form2.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
           if(isPrint !== undefined){
@@ -918,9 +923,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                             this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
       if(isReprint == undefined){
-        this.printStatus();
+        this.successPrintMdl.openNoClose();
       }else{
-        this.reprintMdl.closeModal();  
+        this.reprintMdl.closeModal();
+        this.printLoading = false;
       }
     }else if(this.printMethod == '2'){
       if(this.selectedPrinter.length == 0){
@@ -941,7 +947,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             console.log(data);
             if(data.errorList.length == 0 && data.messageList.length != 0){
               if(isReprint == undefined){
-                this.printStatus();
+                this.successPrintMdl.openNoClose();
+                
               }else{
                 this.reprintMdl.closeModal();  
                  this.printLoading = false;

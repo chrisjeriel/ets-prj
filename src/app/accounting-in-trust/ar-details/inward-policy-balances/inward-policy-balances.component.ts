@@ -527,4 +527,94 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var rowLength: number = this.passData.tableData.length + 6;
+    console.log("Row Length >>>" + rowLength);
+    var mystyle = {
+        headers:false, 
+        column: {style:{Font:{Bold:"1"}}},
+        rows: {0:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               2:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
+      };
+    console.log(mystyle);
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+      alasql.fn.rate = function(rate) {
+            var parts = parseFloat(rate).toFixed(10).split(".");
+            var num = parts[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return num
+      };
+    var prevPrem = 0;
+    var prevRiComm = 0;
+    var prevRiCommVat = 0;
+    var prevCharges = 0;
+    var prevNetDue = 0;
+    var prevCumPayt = 0;
+    var prevBalance = 0;
+    var balPaytAmt = 0;
+    var premium = 0;
+    var riComm = 0;
+    var riCommVat = 0;
+    var charges = 0;
+    var totalPayments = 0;
+    var remainingBal = 0;
+
+    alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2, row7 VARCHAR2, row8 VARCHAR2, row9 VARCHAR2, row10 VARCHAR2,'+
+                                'row11 VARCHAR2, row12 VARCHAR2, row13 VARCHAR2, row14 VARCHAR2, row15 VARCHAR2, row16 VARCHAR2, row17 VARCHAR2, row18 VARCHAR2, row19 VARCHAR2, row20 VARCHAR2)');
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt, '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?),?,?,?,?,?,?,?,?,?,?,?,?,?,?)', [this.record.payor, '','', this.record.arStatDesc, 'PHP', this.record.currRate * this.record.arAmt, '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ["Policy No","Co. Ref. No.", "Inst No.", "Due Date", "Curr","Curr Rate", "Premium", "RI Comm", 'Ri Comm Vat', "Charges", "Net Due", "Cumulative Payments", "Balance",
+                'Payment Amount', "Premium", "RI Comm", 'Ri Comm Vat', "Charges", 'Total Payments', 'Remaining Balance']);
+    for(var i of this.passData.tableData){
+      //totalCredit += i.creditAmt;
+      //totalDebit += i.debitAmt;
+      prevPrem        += i.prevPremAmt;
+      prevRiComm      += i.prevRiComm;
+      prevRiCommVat   += i.prevRiCommVat;
+      prevCharges     += i.prevCharges;
+      prevNetDue      += i.prevNetDue;
+      prevCumPayt     += i.cumPayment;
+      prevBalance     += i.prevBalance;
+      balPaytAmt      += i.balPaytAmt;
+      premium         += i.premAmt;
+      riComm          += i.riComm;
+      riCommVat       += i.riCommVat;
+      charges         += i.charges;
+      totalPayments   += i.totalPayments;
+      remainingBal    += i.netDue;
+      alasql('INSERT INTO sample VALUES(?,?,?,datetime(?),?,rate(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?))', [i.policyNo, i.coRefNo == null ? '' : i.coRefNo, i.instNo, i.dueDate, i.currCd, i.currRate, i.prevPremAmt, i.prevRiComm, i.prevRiCommVat, i.prevCharges, i.prevNetDue, i.cumPayment, i.prevBalance,i.balPaytAmt,i.premAmt, i.riComm, i.riCommVat, i.charges,i.totalPayments, i.netDue]);
+    }
+    //alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?), currency(?))', ["","", "", "", "","TOTAL", prevPrem ,prevRiComm ,prevRiCommVat ,prevCharges ,prevNetDue ,prevCumPayt ,prevBalance ,balPaytAmt ,premium ,riComm ,riCommVat ,charges ,totalPayments ,remainingBal]);
+    alasql('SELECT row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15, row16, row17, row18, row19, row20 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
+    alasql('DROP TABLE sample');  
+  }
+
 }
