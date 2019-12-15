@@ -5,7 +5,9 @@ import { QuotationService, NotesService } from '@app/_services';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
+import { MtnTypeOfCessionComponent } from '@app/maintenance/mtn-type-of-cession/mtn-type-of-cession.component';
+import { MtnCedingCompanyComponent } from '@app/maintenance/mtn-ceding-company/mtn-ceding-company.component';
 
 @Component({
   selector: 'app-copy-quote-details',
@@ -55,6 +57,7 @@ export class CopyQuoteDetailsComponent implements OnInit {
 	@ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
 	@ViewChild('ceding') cedingLov: CedingCompanyComponent;
 	@ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
+  @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: MtnCedingCompanyComponent;
 
 	exclude: any[] = [];
 
@@ -78,6 +81,12 @@ export class CopyQuoteDetailsComponent implements OnInit {
 	trueCopyCedingName: string;
 	copyRiskId: any = "";
 	copyRiskName: any = "";
+
+  typeOfCessionId:any = '';
+  typeOfCession:any = '';
+  reinsurerId:any = "";
+  reinsurerName:any = "";
+  @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
 
 	mdlConfig = {
         mdlBtnAlign: 'center',
@@ -197,7 +206,12 @@ export class CopyQuoteDetailsComponent implements OnInit {
             this.cedingLov.checkCode(String(this.trueCopyCedingId).padStart(3, '0'), ev);            
         } else if(field === 'copyRisk') {
             this.copyRiskLOV.checkCode(this.copyRiskId, '#copyRiskLOV', ev);
-        }
+        }else if(field === 'RI'){
+          this.reinsurerId = this.pad(this.reinsurerId);
+          this.cedingCoNotMemberLov.checkCode(this.reinsurerId, ev);
+      }else if(field === 'typeOfCession'){
+          this.typeOfCessionLov.checkCode(this.typeOfCessionId, ev);
+      } 
 	}
 
 	setCedingIntCompCompany(data) {
@@ -329,7 +343,9 @@ export class CopyQuoteDetailsComponent implements OnInit {
                 "quoteYear": new Date().getFullYear().toString(),
                 "riskId": this.copyRiskId,
                 "updateDate": currentDate,
-                "updateUser": this.ns.getCurrentUser(), //JSON.parse(window.localStorage.currentUser).username,
+                "updateUser": this.ns.getCurrentUser(),
+                "cessionId" : this.typeOfCessionId,
+                "reinsurerId" : this.typeOfCessionId == 2 ? this.reinsurerId : ''  //JSON.parse(window.localStorage.currentUser).username,
             }
 
             this.qs.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
@@ -350,6 +366,39 @@ export class CopyQuoteDetailsComponent implements OnInit {
                     this.successMdl.open();
                 }
             });
+        }
+
+        setTypeOfCession(data) {        
+            this.typeOfCessionId = data.cessionId;
+            this.typeOfCession = data.description;
+            this.ns.lovLoader(data.ev, 0);
+            
+            /*if(data.hasOwnProperty('fromLOV')){
+                this.onClickAdd('#typeOfCessionId');    
+            } */
+        }
+
+        showTypeOfCessionLOV(){
+            // $('#typeOfCessionLOV #modalBtn').trigger('click');
+            this.typeOfCessionLov.modal.openNoClose();
+        }
+
+        pad(str, num?) {
+            if(str === '' || str == null){
+                return '';
+            }
+            
+            return String(str).padStart(num != null ? num : 3, '0');
+        }
+
+        setReinsurer(event) {
+            this.reinsurerId = this.pad(event.cedingId);
+            this.reinsurerName = event.cedingName;
+            this.ns.lovLoader(event.ev, 0);
+        }
+
+        showCedingCompanyNotMemberLOV() {
+            this.cedingCoNotMemberLov.modal.openNoClose();
         }
 
 }

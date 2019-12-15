@@ -54,7 +54,7 @@ export class CreateInternalCompComponent implements OnInit {
 	copyCedingName: string;
 
 	@ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
-    @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: CedingCompanyComponent;
+    @ViewChild(MtnCedingCompanyComponent) cedingCoNotMemberLov: MtnCedingCompanyComponent;
 	exclude: any[] = [];
 
 	copyStatus = 0;

@@ -398,7 +398,7 @@ export class QuotationProcessingComponent implements OnInit {
                 this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
-                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status == 'Requested' || a['quotationList'][0].status == 'In Progress');
+                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status in (['Requested','In Progress','Pending Approval','Approved','Rejected']));
                 
                 this.multiCompTag = a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i).length > 1;
             }
