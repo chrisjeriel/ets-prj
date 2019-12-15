@@ -620,4 +620,9 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
     });
   }
+
+  testPrintAe() {
+    console.log('Test me daddy');
+    // this.ns.export();
+  }
 }
