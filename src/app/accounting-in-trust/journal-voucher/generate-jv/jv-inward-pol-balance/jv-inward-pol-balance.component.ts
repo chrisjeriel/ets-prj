@@ -406,5 +406,31 @@ export class JvInwardPolBalanceComponent implements OnInit {
     }
     return false;
   }
+
+  onClickExport() {
+    var name = 'InwardPolicyBalances_PolicyList_' + this.jvDetail.jvYear + '-' + this.jvDetail.jvNo;
+    var query = 'SELECT policyNo AS [Policy No], ' +
+                       'CASE WHEN coRefNo IS NULL THEN \'\' ELSE coRefNo END AS [Co. Ref. No.], ' +
+                       'instNo AS [Inst No.], ' +
+                       'datetime(dueDate) AS [Due Date], ' +
+                       'currCd AS [Curr], ' +
+                       'currRate AS [Curr Rate], ' +
+                       'currency(prevPremAmt) AS [Premium], ' +
+                       'currency(prevRiComm) AS [RI Comm], ' +
+                       'currency(prevRiCommVat) AS [RI Comm Vat], ' +
+                       'currency(prevCharges) AS [Charges], ' +
+                       'currency(prevNetDue) AS [Net Due], ' +
+                       'currency(cumPayment) AS [Cumulative Payments], ' +
+                       'currency(balance) AS [Balance], ' +
+                       'currency(paytAmt) AS [Payment Amount], ' +
+                       'currency(premAmt) AS [Premium], ' +
+                       'currency(riComm) AS [RI Comm], ' +
+                       'currency(riCommVat) AS [RI Comm Vat], ' +
+                       'currency(charges) AS [Charges], ' +
+                       'currency(totalPayt) AS [Total Payments], ' +
+                       'currency(remainingBal) AS [Remaining Balance]';
+
+    this.ns.export(name, query, this.passData.tableData);
+  }
   
 }

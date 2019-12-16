@@ -5,7 +5,7 @@ import { CVListing } from '@app/_models'
 import { Router } from '@angular/router';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Location } from '@angular/common';
-import * as alasql from 'alasql';
+// import * as alasql from 'alasql';
 
 @Component({
   selector: 'app-check-voucher',
@@ -133,33 +133,12 @@ export class CheckVoucherComponent implements OnInit {
   }
 
 
-  export(){
-     var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-      var yyyy = today.getFullYear();
-      var hr = String(today.getHours()).padStart(2,'0');
-      var min = String(today.getMinutes()).padStart(2,'0');
-      var sec = String(today.getSeconds()).padStart(2,'0');
-      var ms = today.getMilliseconds()
-      var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'CheckVoucherList_'+currDate+'.xlsx'
-    var mystyle = {
-      headers:true, 
-      column: {style:{Font:{Bold:"1"}}}
-    };
+  export() {
+    var name = 'CheckVoucherList';
+    var query = 'SELECT cvGenNo AS [C.V. No], payee AS Payee, datetime(cvDate) AS [C.V. Date], cvStatusDesc AS Status, particulars AS Particulars, currency(cvAmt) AS Amount';
 
-    alasql.fn.datetime = function(dateStr) {
-      var date = new Date(dateStr);
-      return date.toLocaleString();
-    };
-
-
-    alasql('SELECT cvGenNo AS [C.V. No], payee AS Payee, datetime(cvDate) AS [C.V. Date], cvStatusDesc AS Status, particulars AS Particulars, cvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+    this.ns.export(name, query, this.passData.tableData);
   }
-
-
-
 
   onClickAdd(event){
     this.acctService.cvFilter = this.tranStat;

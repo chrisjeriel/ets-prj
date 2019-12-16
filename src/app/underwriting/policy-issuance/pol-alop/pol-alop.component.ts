@@ -417,7 +417,6 @@ export class PolAlopComponent implements OnInit {
 
   openGenericLOV(selector){
     this.passLOV.selector = selector;
-    // $('#lov #modalBtn').trigger('click');
     this.lovModal.openLOV();
   }
 

@@ -225,9 +225,7 @@ export class AppComponent implements OnDestroy {
             });
 
             $(document).on("click", function(e:any) {
-              /*console.log(e);
-              console.log("id: " + e.target.id);
-              console.log("id: " + e.target);*/
+              
             })
         });
 
@@ -363,8 +361,6 @@ export class AppComponent implements OnDestroy {
         this.notifs.sort((a:any, b:any) => (a.createData < b.createDate) ? 1 : -1);
       }
     }, 500)*/
-
-    console.log(this.notifs);
   }
 
   onClickNotif(event) {
