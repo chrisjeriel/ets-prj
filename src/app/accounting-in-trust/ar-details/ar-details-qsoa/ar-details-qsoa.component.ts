@@ -8,6 +8,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ar-details-qsoa',
@@ -25,7 +26,7 @@ export class ArDetailsQsoaComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
  /* passData: any = {
@@ -89,6 +90,10 @@ export class ArDetailsQsoaComponent implements OnInit {
     hide: []
   }
 
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
+
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe) { }
 
   ngOnInit() {
@@ -96,6 +101,7 @@ export class ArDetailsQsoaComponent implements OnInit {
     this.passData.nData.tranId = this.record.tranId;
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
+    this.isReopen = this.record.reopenTag == 'Y';
     //this.getMtnCurrency();
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true, true, true, true, true, true, true, true, true, true ];
@@ -115,6 +121,7 @@ export class ArDetailsQsoaComponent implements OnInit {
         for(var i of data.negTrtyBalList){
           i.showMG = 0;
           i.uneditable = ['quarterEnding'];
+          this.originalNet += i.balPaytAmt;
           i.quarterEnding = this.dp.transform(i.quarterEnding, 'MM/dd/yyyy');
           this.passData.tableData.push(i);
         }
@@ -160,7 +167,7 @@ export class ArDetailsQsoaComponent implements OnInit {
     //this.passData.tableData[this.quarterEndingIndex].uneditable = ['quarterEnding'];
   }
 
-  onClickSave(){
+  onClickSave(cancel?){
     if(!this.checkIfNegativeTotal()){
       this.dialogIcon = 'info';
       this.dialogMessage = 'Total Amount must be negative.';
@@ -169,8 +176,14 @@ export class ArDetailsQsoaComponent implements OnInit {
       this.dialogIcon = 'info';
       this.dialogMessage = 'Payment amount must not be greater than the Balance.';
       this.successDiag.open();
+    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+        this.netMdl.openNoClose();
     }else{
-      this.confirm.confirmModal();
+      if(cancel != undefined){
+          this.save(cancel);
+        }else{
+          this.confirm.confirmModal();
+        }
     }
   }
 
@@ -322,6 +335,18 @@ export class ArDetailsQsoaComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.balPaytAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
   }
 
   export(){
