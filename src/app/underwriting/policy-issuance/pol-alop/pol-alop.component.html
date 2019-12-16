@@ -28,7 +28,7 @@
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2 text-right" for="xx">Insured</label>
 						<input [readonly]="!alterFlag" class="form-control form-control-sm  col-sm-2" type="text" name="insId" [(ngModel)]="polAlopData.insId">
-						<div *ngIf="alterFlag" class="text-search-ico"><a (click)="openGenericLOV('insured')"><i *ngIf="alterFlag"  class="fa fa-search"></i></a></div>&nbsp;
+						<div *ngIf="alterFlag" class="text-search-ico"><a (click)="openInsuredLOV()"><i *ngIf="alterFlag"  class="fa fa-search"></i></a></div>&nbsp;
 						<input readonly="" class="form-control form-control-sm  col-sm" type="text" style="margin-left: -7px !important;" name="insuredName"
 						[(ngModel)]="polAlopData.insuredName">
 

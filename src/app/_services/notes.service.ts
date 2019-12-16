@@ -41,7 +41,7 @@ export class NotesService {
 
   toDate(s:string):Date{
     let dateString = s.split('T')[0];
-    let timeString = s.split('T')[1];
+    let timeString = s.split('T')[1] != undefined ? s.split('T')[1] : '00:00:00' ;
     return new Date(
                     parseInt(dateString.split('-')[0]),
                     parseInt(dateString.split('-')[1])-1,
