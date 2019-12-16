@@ -162,7 +162,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
+     widths: [130,250,150,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -363,7 +363,7 @@ export class InvestmentsComponent implements OnInit {
         this.passData.opts[4].prev = data['currency']['currency'].map(a => a.currencyCd);
 
         this.passData.opts[5].vals = data['bank']['bankList'].map(a => a.bankCd);
-        this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.shortName);
+        this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.officialName);
 
         this.passData.opts[6].vals = data['amortized']['refCodeList'].map(a => a.code);
         this.passData.opts[6].prev = data['amortized']['refCodeList'].map(a => a.description);
