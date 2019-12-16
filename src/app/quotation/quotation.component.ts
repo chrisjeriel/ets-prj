@@ -115,9 +115,9 @@ export class QuotationComponent implements OnInit, OnDestroy {
 
       if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
         this.wsConnect();
-      } else if (this.addParams != undefined){
+      } /*else if (this.addParams != undefined){
         this.wsConnect();
-      }
+      }*/
 	}
 
   ngOnDestroy() {
