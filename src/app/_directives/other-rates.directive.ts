@@ -12,13 +12,20 @@ export class OtherRatesDirective implements OnInit {
     ngOnInit(){
       this.el.nativeElement.style.textAlign = "right";
       this.model.valueChanges.subscribe(a=>{
-        if(this.model.control.untouched){
+        if(this.model.control.untouched && !this.focused){
           this.onBlur(this.el.nativeElement);
         }
       })
     }
 
+    focused:boolean = false;
+
+    @HostListener("focus", ["$event.target"]) onFocus(target) {
+      this.focused = true;
+    }
+
     @HostListener("blur", ["$event.target"]) onBlur(target) {
+      this.focused = false;
     	if(target.value !='' && target.value != undefined){
   	  	let sNum = target.value.split('.');
   	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");

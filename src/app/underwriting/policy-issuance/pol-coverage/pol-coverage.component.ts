@@ -1992,6 +1992,9 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.saveDeductibleList = this.editedDedt;
   }
 
+
+  @ViewChild('premDepForm') premDepForm: any;
+
   alterationSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareAlterationSave();
@@ -2008,6 +2011,9 @@ export class PolCoverageComponent implements OnInit {
           this.getPolCoverageAlt();
           this.form.control.markAsPristine();
           this.table.markAsPristine();
+          if(this.premDepForm != undefined){
+            this.premDepForm.control.markAsPristine();
+          }
           //this.getCoverageInfo();
         }
     });
