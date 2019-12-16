@@ -590,8 +590,10 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.tin            = data.orEntry.tin;
           this.orInfo.refCd          = data.orEntry.refCd;
           this.orInfo.currCd         = data.orEntry.currCd;
+          this.passData.nData.currCd = data.orEntry.currCd;
           this.orInfo.orAmt          = data.orEntry.orAmt;
           this.orInfo.currRate       = data.orEntry.currRate;
+          this.passData.nData.currRate = data.orEntry.currRate;
           this.orInfo.particulars    = data.orEntry.particulars;
           this.orInfo.createUser     = data.orEntry.createUser;
           this.orInfo.createDate     = this.ns.toDateTimeString(data.orEntry.createDate);

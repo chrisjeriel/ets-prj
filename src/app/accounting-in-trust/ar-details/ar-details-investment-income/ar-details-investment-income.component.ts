@@ -167,6 +167,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
       this.passData.tableData[this.passData.tableData.length - 1].netIncome = selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt);
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = (selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt)) * selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'I';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -195,7 +196,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     this.totalLocalAmt = 0;
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(!this.passData.tableData[i].deleted){
-        this.totalLocalAmt += this.passData.tableData[i].netIncome;
+        this.totalLocalAmt += this.passData.tableData[i].localAmt;
       }
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
