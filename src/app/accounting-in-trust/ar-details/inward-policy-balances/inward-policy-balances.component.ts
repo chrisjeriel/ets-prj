@@ -7,6 +7,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -21,6 +22,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
 
   @Input() record: any = {};
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
@@ -94,6 +96,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   isReopen: boolean = false;
   originalNet: number = 0;
+  newAlteredAmt: number = 0;
 
   constructor(private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
@@ -232,7 +235,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.variance = this.allotedAmt - this.totalBal;
   }
 
-  onClickSave(){
+  onClickSave(cancel?){
     console.log(this.isReopen);
     console.log(this.checkOriginalAmtvsAlteredAmt());
     if(this.checkBalance()){
@@ -252,9 +255,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
     }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
-      this.dialogIcon = 'error-message';
-      this.dialogMessage = 'Net payments must remain the same.';
-      this.successDiag.open();
+      this.netMdl.openNoClose();
     }else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
@@ -272,7 +273,11 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogMessage = this.checkPaymentSigns();
       this.successDiag.open();
     }*/else{
-      this.confirm.confirmModal();
+      if(cancel != undefined){
+        this.save(cancel);
+      }else{
+        this.confirm.confirmModal();
+      }
     }
   }
 
@@ -474,15 +479,15 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   checkOriginalAmtvsAlteredAmt(): boolean{
-    var newAlteredAmt: number = 0;
+    this.newAlteredAmt = 0;
     for(var i of this.passData.tableData){
-      if(i.deleted){
-        newAlteredAmt += i.balPaytAmt;
+      if(!i.deleted){
+        this.newAlteredAmt += i.balPaytAmt;
       }
     }
     console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + newAlteredAmt);
-    return newAlteredAmt != this.originalNet;
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
   }
 
   checkVariance(): boolean{

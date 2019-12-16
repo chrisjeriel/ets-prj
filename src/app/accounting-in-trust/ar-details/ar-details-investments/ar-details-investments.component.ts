@@ -6,7 +6,8 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
- 
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+
 @Component({
   selector: 'app-ar-details-investments',
   templateUrl: './ar-details-investments.component.html',
@@ -22,7 +23,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() investment: EventEmitter<any> = new EventEmitter();
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
@@ -85,6 +86,10 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   dialogMessage: string = '';
   invtPulloutIndex: number = 0;
 
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
+
   savedData: any[] = [];
   deletedData: any[] = [];
 
@@ -94,6 +99,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     console.log(this.record.tranId);
     console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
+    this.isReopen = this.record.reopenTag == 'Y';
     this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M%'}, {key:'currCd', search:this.record.currCd}];
     if(this.invData !== undefined){
       for(var i of this.invData){
@@ -116,6 +122,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       (data: any)=>{
         for(var i of data.invPulloutList){
           i.uneditable = ['invtCode'];
+          this.originalNet += i.maturityValue;
           this.passData.tableData.push(i);
           this.passLov.hide.push(i.invtCode);
         }
@@ -171,8 +178,16 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     this.table.refreshTable();
   }
 
-  onClickSave(){
-      this.confirm.confirmModal();
+  onClickSave(cancel?){
+      if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+        this.netMdl.openNoClose();
+      }else{
+        if(cancel != undefined){
+          this.save(cancel);
+        }else{
+          this.confirm.confirmModal();
+        }
+      }
   }
 
   save(cancelFlag?){
@@ -261,6 +276,18 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   }
   onTableDataChange(data){
     console.log(data);
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.currAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
   }
 
   export(){

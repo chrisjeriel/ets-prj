@@ -293,6 +293,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   newAr(){
     this.loading = true;
     this.isAdd = true;
+    this.isReopen = false;
     this.disableTab.emit(true);
     this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
     this.setDefaultValues();
@@ -498,7 +499,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt.split(',').join(''))*100) / 100;
+    console.log(data);
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){
@@ -578,8 +580,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.tin            = data.ar.tin;
           this.arInfo.refCd          = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
+          this.passData.nData.currCd = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
+          this.passData.nData.currRate = data.ar.currRate;
           this.arInfo.particulars    = data.ar.particulars;
           this.arInfo.createUser     = data.ar.createUser;
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
