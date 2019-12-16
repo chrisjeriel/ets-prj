@@ -87,7 +87,7 @@
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px">
-                                <button type="button" class="cust-btn"><a>Cancel</a></button>
+                                <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
                                 <button type="button" [disabled]="quoteInfo.riskName == '' || quoteInfo.riskName == undefined" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
                             </div>
                         </div>
