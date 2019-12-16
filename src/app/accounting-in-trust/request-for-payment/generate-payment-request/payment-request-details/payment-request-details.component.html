@@ -61,7 +61,11 @@
                         </div>
                       </div>
                     </div> -->
-                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();"></app-cust-editable-non-datatable>
+                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();">
+                      <ng-container controls-r>
+                        <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                      </ng-container>
+                    </app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
                     <div class="row pt-1" >
