@@ -114,11 +114,12 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
       this.readOnly = false;
+      this.notBalanced = false;
     }else if(this.jvDetails.statusType == 'F'){
       this.notBalanced = false;
       this.readOnly = false;
     }else {
-      //this.notBalanced = true;
+      this.notBalanced = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -131,7 +132,6 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   retrieveAcctEntries(){
     this.accountingService.getAcitAcctEntries(this.jvData.tranId).subscribe((data:any) => {
-      console.log(data)
       this.passData.tableData = [];
       this.debitTotal = 0;
       this.creditTotal = 0;
@@ -155,8 +155,10 @@ export class JvAccountingEntriesComponent implements OnInit {
 
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100;
-      if(this.variance === 0 && this.jvDetails.statusType == 'N'){
+      if(this.variance === 0 && (this.jvDetails.statusType == 'N' || this.jvDetails.statusType == 'F')){
         this.notBalanced = false;
+      }else{
+        this.notBalanced = true;
       }
       this.table.refreshTable();
     });
@@ -609,12 +611,21 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   retrieveJVEntry(){
     this.accountingService.getJVEntry(this.jvDetails.tranId).subscribe((data:any) => {
+      console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.notBalanced = true;
-        this.readOnly = true;
+        this.jvDetails.statusType = 'F'
         this.passData.disableAdd = true;  
+        this.passData.btnDisabled = true;
         this.passData.uneditable = [true,true,true,true,true,true,true,true]
+        this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
+        this
+      }
+      if(data.transactions.jvListings.jvStatus == 'N'){
+        this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
+        this.jvDetails.statusType = 'N'
+        this.passData.disableAdd = false;  
+        this.passData.btnDisabled = false;
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this
       }
