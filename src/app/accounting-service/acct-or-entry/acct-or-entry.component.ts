@@ -494,7 +494,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeOrAmt(data){
-    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round(parseFloat(this.orInfo.orAmt.toString().split(',').join(''))*100) / 100;
+    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round((this.orInfo.orAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){

@@ -483,7 +483,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt)*100) / 100;
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){

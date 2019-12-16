@@ -413,10 +413,15 @@ export class PolAlopComponent implements OnInit {
 
   openGenericLOV(selector){
     this.passLOV.selector = selector;
+    console.log("SELECTOR:" );
+    console.log(selector);
     $('#lov #modalBtn').trigger('click');
   }
 
   setInsured(data){
+    console.log("setInsured");
+    console.log(data);
+
     this.polAlopData.insuredName = data.data.insuredAbbr;
     this.polAlopData.insuredDesc = data.data.insuredName;
     this.polAlopData.insId = data.data.insuredId;
