@@ -1,19 +1,25 @@
 import { Directive, ElementRef, HostListener, HostBinding, OnInit } from '@angular/core';
 import { unHighlight, highlight, hideTooltip, showTooltip} from './highlight';
+import { NgModel } from '@angular/forms';
 
 @Directive({
   selector: '[appOtherRates]'
 })
 export class OtherRatesDirective implements OnInit {
 
-  constructor(private el: ElementRef) { }
+  constructor(private el: ElementRef,private model: NgModel) { }
 
     ngOnInit(){
-      this.el.nativeElement.style.textAlign = "right"
+      this.el.nativeElement.style.textAlign = "right";
+      this.model.valueChanges.subscribe(a=>{
+        if(this.model.control.untouched){
+          this.onBlur(this.el.nativeElement);
+        }
+      })
     }
 
     @HostListener("blur", ["$event.target"]) onBlur(target) {
-    	if(target.value !=''){
+    	if(target.value !='' && target.value != undefined){
   	  	let sNum = target.value.split('.');
   	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   	    if(!/^(?:[- (])?\d{1,3}(,\d{3})*(\.\d+)?(?:[)])?$/.test(sNum.join('.'))){

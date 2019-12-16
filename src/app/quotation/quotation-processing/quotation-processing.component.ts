@@ -21,12 +21,13 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 export class QuotationProcessingComponent implements OnInit {
     @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
-    @ViewChild(MtnTypeOfCessionComponent) typeOfCessionLov: MtnTypeOfCessionComponent;
+    @ViewChild('typeOfCessionLOV') typeOfCessionLov: MtnTypeOfCessionComponent;
     @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
     @ViewChild('copyRiskLOV') copyRiskLOV: MtnRiskComponent;
     @ViewChild('ceding') cedingLov: CedingCompanyComponent;
     @ViewChild('cedingIntComp') cedingIntLov: CedingCompanyComponent;
     @ViewChild(NgbTabset) tabset: NgbTabset;
+
 
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -238,6 +239,13 @@ export class QuotationProcessingComponent implements OnInit {
 
     multiCompTag:boolean = false;
 
+    @ViewChild('cedingCompanyNotMember') cedingCoNotMemberLov: CedingCompanyComponent;
+    typeOfCessionIdIntComp:any = '';
+    typeOfCessionIntComp:any = '';
+    reinsurerId:any = "";
+    reinsurerName:any = "";
+    @ViewChild('typeOfCessionLOVIntComp') typeOfCessionLOVIntComp: MtnTypeOfCessionComponent;
+
     constructor(private route: ActivatedRoute, private quotationService: QuotationService, public modalService: NgbModal, private router: Router,
                 private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService, private userService: UserService,
                 private authenticationService: AuthenticationService) {
@@ -376,7 +384,7 @@ export class QuotationProcessingComponent implements OnInit {
         let params:any = {
             statusArr: [1,2,3,4,5,'P','A','R'],
             riskName: this.riskName,
-            cessionDesc: this.typeOfCession,
+            //cessionDesc: this.typeOfCession,
             quotationNo: this.line + '%'
         }
 
@@ -390,7 +398,7 @@ export class QuotationProcessingComponent implements OnInit {
                 this.exclude = a['quotationList'].map(a=>a.cedingId);
                 this.riskIdList = a['quotationList']
                 this.tempQuoteId = a['quotationList'][0].quoteId;
-                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status == 'Requested' || a['quotationList'][0].status == 'In Progress');
+                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status in (['Requested','In Progress','Pending Approval','Approved','Rejected']));
                 
                 this.multiCompTag = a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i).length > 1;
             }
@@ -643,7 +651,12 @@ showCedingCompanyIntCompLOV() {
             this.cedingLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);            
         } else if(field === 'cedingCoIntComp') {
             this.cedingIntLov.checkCode(String(this.copyCedingId).padStart(3, '0'), ev);
-        } 
+        } else if(field == 'typeOfCessionIntComp'){
+            this.typeOfCessionLOVIntComp.checkCode(this.typeOfCessionIdIntComp, ev);
+        } else if(field === 'RI'){
+          this.reinsurerId = String(this.reinsurerId).padStart(3,'0');
+          this.cedingCoNotMemberLov.checkCode(this.reinsurerId, ev);
+      }
     }
 
     clearAddFields(){
@@ -735,7 +748,14 @@ showCedingCompanyIntCompLOV() {
             //     if(sq.lineCd == i.lineCd && sq.quotationNo.split('T')[1] == i.quotationNo.split('T')[1] && sq.project.riskId == i.project.riskId && sq.cessionDesc == i.cessionDesc) {
             //         this.exclude.push(i.quotationNo.split('-')[4]);
             //     }
-            // }    
+            // }  
+            this.copyQuoteId = this.selectedQuotation.quoteId;
+            this.copyFromQuotationNo = this.selectedQuotation.quotationNo;
+            this.copyQuoteLineCd = this.selectedQuotation.quotationNo.split('-')[0];
+            this.copyQuoteYear = this.selectedQuotation.quotationNo.split('-')[1];
+            this.copyCessionDesc = this.selectedQuotation.cessionDesc;
+            this.copyIntCompRiskId = this.selectedQuotation.riskId;
+            this.copyIntCompRiskName = this.selectedQuotation.riskName;  
         } else {
             this.autoIntComp = 'Y';
             this.copyQuoteId = this.riskIdList[0].quoteId;
@@ -774,6 +794,8 @@ showCedingCompanyIntCompLOV() {
             "riskId": this.copyIntCompRiskId,
             "updateDate": currentDate,
             "updateUser": JSON.parse(window.localStorage.currentUser).username,
+            "cessionId" : this.typeOfCessionIdIntComp,
+            "reinsurerId" : this.typeOfCessionIdIntComp == 2 ? this.reinsurerId : '' 
         }
 
         this.quotationService.saveQuotationCopy(JSON.stringify(params)).subscribe(data => {
@@ -904,5 +926,31 @@ showCedingCompanyIntCompLOV() {
                                  });
             alasql('SELECT quotationNo AS QuotationNo, cessionDesc AS TypeOfCession, lineClassCdDesc AS LineClass, status AS Status, cedingName AS CedingCompany, principalName AS Principal, contractorName AS Contractor, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, policyNo AS PolicyNo, currencyCd AS Currency, datetime(issueDate) AS QuoteDate, datetime(expiryDate) AS ValidUntil, reqBy AS RequestedBy, createUser AS CreatedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
         });
+  }
+
+  setTypeOfCessionIntComp(data) {        
+      this.typeOfCessionIdIntComp = data.cessionId;
+      this.typeOfCessionIntComp = data.description;
+      this.ns.lovLoader(data.ev, 0);
+      
+      /*if(data.hasOwnProperty('fromLOV')){
+          this.onClickAdd('#typeOfCessionIdIntComp');    
+      } */
+  }
+
+  showTypeOfCessionLOVIntComp(){
+      // $('#typeOfCessionLOV #modalBtn').trigger('click');
+      this.typeOfCessionLOVIntComp.modal.openNoClose();
+  }
+
+
+  setReinsurer(event) {
+      this.reinsurerId = String(event.cedingId).padStart(3,'0');
+      this.reinsurerName = event.cedingName;
+      this.ns.lovLoader(event.ev, 0);
+  }
+
+  showCedingCompanyNotMemberLOV() {
+      this.cedingCoNotMemberLov.modal.openNoClose();
   }
 }

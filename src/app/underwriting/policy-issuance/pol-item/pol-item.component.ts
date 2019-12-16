@@ -23,8 +23,8 @@ export class PolItemComponent implements OnInit {
 
     eeiPassData:any={
         tableData:[],
-        tHeader: ['Quantity', 'Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
-        dataTypes:['number', 'text-editor', 'string', 'string', 'currency'],
+        tHeader: ['Quantity', 'Section','Description of Items', 'Year of Make', 'Deductible', 'Sum Insured'],
+        dataTypes:['number', 'select' ,'text-editor', 'string', 'string', 'currency'],
         nData: {
             "quantity": null,
             "itemDesc": null,
@@ -35,20 +35,26 @@ export class PolItemComponent implements OnInit {
             "createUser": JSON.parse(window.localStorage.currentUser).username,
             "updateDate": this.ns.toDateTimeString(0),
             "updateUser":JSON.parse(window.localStorage.currentUser).username,
-            "stockType" : 'N'
+            "stockType" : 'N',
+            "section": ''
         },
         checkFlag:true,
         addFlag:true,
         deleteFlag:true,
-        total:[null,null,null,'Total','sumInsured'],
-        widths: ["1","auto","2","auto","228"],
+        total:[null,null,null,null,'Total','sumInsured'],
+        widths: ["1",1,"auto","2","auto","228"],
         searchFlag:true,
-        keys:['quantity','itemDesc','makeYear','deductibleTxt','sumInsured'],
-        uneditable: [false,false,false,false,false],
+        keys:['quantity','section','itemDesc','makeYear','deductibleTxt','sumInsured'],
+        uneditable: [false,false,false,false,false,false],
         pageLength:'unli',
         limit: {
             quantity: 3
-        }
+        },
+        opts: [{
+            selector: 'section',
+            prev: ['I','I','III'],
+            vals: ['I','I','III'],
+        }],
 
     }
 
@@ -241,7 +247,7 @@ export class PolItemComponent implements OnInit {
             this.eeiPassData.checkFlag = false;
             this.eeiPassData.addFlag = false;
             this.eeiPassData.deleteFlag = false;
-            this.eeiPassData.uneditable = [true,true,true,true,true,true]
+            this.eeiPassData.uneditable = [true,true,true,true,true,true,true]
             this.bpvPassData.checkFlag = false;
             this.bpvPassData.addFlag = false;
             this.bpvPassData.deleteFlag = false;
