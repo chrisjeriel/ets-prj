@@ -23,6 +23,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('specCancelMdl') specCancelMdl: ModalComponent;
   @ViewChild('reprintModal') reprintMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
@@ -106,6 +107,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dcbBankAcctCurrCd: string = '';
   disablePayor: boolean = false;
   isPrinted: boolean = false;
+  isReopen: boolean = false;
   loading: boolean = false;
   screenPrint: boolean = false;
   canOverride: boolean = false;
@@ -168,7 +170,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     arDtlSum: '',
     acctEntriesSum: '',
     acctEntDate: '',
-    allocTag: 'N'
+    allocTag: 'N',
+    reopenTag: '',
+    reopenDate: ''
   }
 
   arDate: any = {
@@ -345,7 +349,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arDtlSum: '',
       acctEntriesSum: '',
       acctEntDate: '',
-      allocTag: ''
+      allocTag: '',
+      reopenTag: '',
+      reopenDate: ''
     }
     this.prDate = {
       date: '',
@@ -392,7 +398,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
           //User has the authority to cancel AR
-          this.cancelMdl.openNoClose();
+          if([1,2,3,5].includes(this.arInfo.tranTypeCd) && this.arInfo.arStatDesc.toUpperCase() == 'PRINTED'){
+            this.specCancelMdl.openNoClose();
+          }else{
+            this.cancelMdl.openNoClose();
+          }
         }else{
           //User has no authority. Open Override Login
           this.overrideLogin.getApprovalFn();
@@ -404,15 +414,20 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   toCancelAr(auth){
     if(auth){
-      this.cancelMdl.openNoClose();
+      if([1,2,3,5].includes(this.arInfo.tranTypeCd) && this.arInfo.arStatDesc.toUpperCase() == 'PRINTED'){
+        this.specCancelMdl.openNoClose();
+      }else{
+        this.cancelMdl.openNoClose();
+      }
     }
   }
 
-  cancelAr(){
+  cancelAr(reopen?){
     let params: any = {
       tranId: this.arInfo.tranId,
       updateUser: this.ns.getCurrentUser(),
-      updateDate: this.ns.toDateTimeString(0)
+      updateDate: this.ns.toDateTimeString(0),
+      reopen: reopen == undefined ? 'N' : 'Y'
     };
     this.as.cancelAr(params).subscribe(
       (data: any)=>{
@@ -483,7 +498,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt)*100) / 100;
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round((this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){
@@ -575,6 +590,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
           this.arInfo.arDtlSum       = data.ar.arDtlSum;
           this.arInfo.acctEntriesSum = data.ar.acctEntriesSum;
+          this.arInfo.reopenTag       = data.ar.reopenTag;
+          this.arInfo.reopenDate     = this.ns.toDateTimeString(data.ar.reopenDate);
+          this.isReopen              = this.arInfo.reopenTag != null;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
@@ -588,6 +606,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isPrinted = true;
+          }else if(this.isReopen){
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
           }
 
           if(this.arInfo.tranTypeCd == 7){
@@ -670,6 +692,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             cedingId: this.arInfo.payeeNo,
             bussTypeName: this.arInfo.bussTypeName,
             refCd: this.arInfo.refCd,
+            reopenTag: this.arInfo.reopenTag,
             from: 'ar',
             exitLink: 'acct-ar-listings'
           }

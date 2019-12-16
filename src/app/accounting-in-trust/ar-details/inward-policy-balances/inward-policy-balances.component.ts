@@ -92,6 +92,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   selected: any;
   $sub: any;
 
+  isReopen: boolean = false;
+  originalNet: number = 0;
+
   constructor(private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -101,7 +104,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     //this.passData.pageLength = 'unli';
     //end
     console.log(this.record.payeeNo);
+    console.log(this.record.reopenTag);
     this.passLov.payeeNo = this.record.payeeNo;
+    this.isReopen = this.record.reopenTag == 'Y';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
@@ -128,7 +133,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   retrieveInwPolBal(){
     this.passData.tableData = [];
-    console.log('nani');
+    this.originalNet = 0;
     this.as.getAcitArInwPolBal(this.record.tranId, 1).subscribe( //billId for Inward Policy Balances is always 1
       (data: any)=>{
         if(data.arInwPolBal.length !== 0){
@@ -139,6 +144,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           //this.passData.tableData = data.arInwPolBal;
           data.arInwPolBal = data.arInwPolBal.filter(a=>{return a.tranId != null});
           for(var i of data.arInwPolBal){
+            this.originalNet += i.balPaytAmt;
             i.cumPayment = i.prevCumPayment;
             i.totalPayments = i.cumPayment + i.balPaytAmt;
             //i.uneditable = ['balPaytAmt'];
@@ -227,6 +233,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
+    console.log(this.isReopen);
+    console.log(this.checkOriginalAmtvsAlteredAmt());
     if(this.checkBalance()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment must not be greater than the Balance.';
@@ -242,6 +250,10 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     }*/else if(this.checkNetPayments()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
+      this.successDiag.open();
+    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Net payments must remain the same.';
       this.successDiag.open();
     }else if(this.canRefund()){
       this.dialogIcon = 'error-message';
@@ -459,6 +471,18 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       }
     }
     return '';
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    var newAlteredAmt: number = 0;
+    for(var i of this.passData.tableData){
+      if(i.deleted){
+        newAlteredAmt += i.balPaytAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + newAlteredAmt);
+    return newAlteredAmt != this.originalNet;
   }
 
   checkVariance(): boolean{
