@@ -307,6 +307,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
 
   	if(this.quoteInfo.typeOfCession.toUpperCase() == 'RETROCESSION'){
   			/*this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter and RI Confirmation of Acceptance Letter" })*/
+        this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   			this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" });
   		}
   		if(this.quoteInfo.status == '10'){
