@@ -126,6 +126,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   canUpAcctEnt: boolean = true;
   canReprint: boolean = true;
   printLoading: boolean = false;
+  genAcctEnt: boolean = false;
 
   arInfo: any = {
     tranId: '',
@@ -451,6 +452,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrency(data){
+    this.genAcctEnt = true;
     this.selectedCurrency = data;
     this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
@@ -475,6 +477,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrencyRt(){
+    this.genAcctEnt = true;
     this.passData.nData.currRate = this.arInfo.currRate;
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.arInfo.currRate;
@@ -484,6 +487,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeDcbBank(data){
+    this.genAcctEnt = true;
     this.selectedBank = data;
     this.arInfo.dcbBank = data.bankCd;
     this.arInfo.dcbBankName = data.officialName;
@@ -491,6 +495,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeDcbBankAcct(data){
+    this.genAcctEnt = true;
     this.selectedBankAcct = data;
     this.arInfo.dcbBankAcct = data.bankAcctCd;
     this.arInfo.dcbBankAcctNo = data.accountNo;
@@ -500,6 +505,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   changeArAmt(data){
     console.log(data);
+    this.genAcctEnt = true;
     this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
@@ -514,6 +520,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.arInfo.mailAddress = data.data.mailAddress;
       this.arInfo.cedingId = data.data.cedingId;
       this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.genAcctEnt = true;
       this.form.control.markAsDirty();
       setTimeout(()=>{
         $('.payor').focus().blur();
@@ -536,6 +543,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                         this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
+        this.genAcctEnt = false;
         console.log('arEntry first');
         let data = forkData.ar;
         let bankData = forkData.bank;
@@ -810,6 +818,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
     params.isPrint = isPrint !== undefined ? '1' : null;
+    params.genAcctEnt = this.genAcctEnt ? 'Y' : 'N';
 
     //save
     this.as.saveAcitArTrans(params).subscribe(
@@ -1256,11 +1265,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank == null || i.bankAcct == null || i.bank.length === 0 || i.bankAcct.length === 0)){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
         return true;
       }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
-        return true;
-      }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
         return true;
       }
     }
@@ -1427,6 +1434,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data){
+    if(data.key !== 'remarks'){
+      this.genAcctEnt = true;
+    }
     console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){

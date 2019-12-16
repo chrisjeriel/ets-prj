@@ -844,10 +844,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'payee'){
-      this.passTable.tHeader = ['Payee Name','Payee Class'];
-      this.passTable.widths =[500,500]
-      this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'payeeName','payeeClassName'];
+      this.passTable.tHeader = ['Payee Class', 'Payee No' ,'Payee Name',];
+      this.passTable.widths =[500,500,500]
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['payeeClassName', 'payeeNo', 'payeeName',];
       this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();

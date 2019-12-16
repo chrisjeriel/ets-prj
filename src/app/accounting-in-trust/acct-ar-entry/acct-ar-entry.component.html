@@ -54,8 +54,9 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || arInfo.rstrctTranUp === 1 || arInfo.tranTypeCd.length == 0 || isReopen" name="payor">
+				<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="arInfo.payeeNo" appRequired [readonly]="isCancelled || isPrinted || disablePayor || arInfo.rstrctTranUp === 1 || arInfo.tranTypeCd.length == 0 || isReopen" name="payeeNo">
 				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && arInfo.rstrctTranUp !== 1 && arInfo.tranTypeCd.length != 0 && !isReopen"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required cust-mrgn payor" [(ngModel)]="arInfo.payor" appRequired [readonly]="isCancelled || isPrinted || arInfo.tranTypeCd.length == 0 || isReopen" name="payor">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
