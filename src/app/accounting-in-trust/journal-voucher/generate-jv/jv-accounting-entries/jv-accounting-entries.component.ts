@@ -618,8 +618,17 @@ export class JvAccountingEntriesComponent implements OnInit {
     });
   }
 
-  testPrintAe() {
-    console.log('Test me daddy');
-    // this.ns.export();
+  onClickPrintAe() {
+    var name = 'AccountingEntries_' + this.jvData.jvYear + '-' + this.jvData.jvNo;
+    var query = 'SELECT glShortCd AS [Account Code], ' +
+                       'glShortDesc AS [Account Name], ' +
+                       'CASE WHEN slTypeName IS NULL THEN  \'\' ELSE slTypeName END AS [SL Type], ' +
+                       'CASE WHEN slName IS NULL THEN \'\' ELSE slName END AS [SL Name], ' +
+                       'currency(debitAmt) AS [Local Debit Amount], ' +
+                       'currency(creditAmt) AS [Local Credit Amount], ' +
+                       'currency(foreignDebitAmt) AS [Foreign Debit Amount], ' +
+                       'currency(foreignCreditAmt) AS [Foreign Credit Amount]';
+
+    this.ns.export(name, query, this.passData.tableData);
   }
 }
