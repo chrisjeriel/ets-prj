@@ -102,6 +102,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   rowData:any;
   detailDatas :any;
   errorMessage: any;
+  statusType:any;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -111,6 +112,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.jvDetails = this.jvData;
     this.jvDetails.jvDate = this.ns.toDateTimeString(this.jvDetails.jvDate);
     this.jvDetails.refnoDate = this.jvDetails.refnoDate === "" ? "":this.ns.toDateTimeString(this.jvDetails.refnoDate);
+    this.statusType = this.jvDetails.statusType;
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
       this.readOnly = false;
@@ -131,6 +133,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   retrieveAcctEntries(){
+    console.log(this.jvDetails)
     this.accountingService.getAcitAcctEntries(this.jvData.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.debitTotal = 0;
@@ -155,7 +158,7 @@ export class JvAccountingEntriesComponent implements OnInit {
 
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100;
-      if(this.variance === 0 && (this.jvDetails.statusType == 'N' || this.jvDetails.statusType == 'F')){
+      if(this.variance === 0 && (this.statusType == 'N' || this.statusType == 'F')){
         this.notBalanced = false;
       }else{
         this.notBalanced = true;
@@ -242,7 +245,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.dialogIcon = "success";
         this.successDiag.open();
         this.retrieveJVEntry();
-        this.retrieveAcctEntries();
         this.form.control.markAsPristine();
       }
     });
@@ -614,21 +616,21 @@ export class JvAccountingEntriesComponent implements OnInit {
       console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.jvDetails.statusType = 'F'
+        this.statusType = 'F'
         this.passData.disableAdd = true;  
         this.passData.btnDisabled = true;
         this.passData.uneditable = [true,true,true,true,true,true,true,true]
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this
-      }
-      if(data.transactions.jvListings.jvStatus == 'N'){
+      }else if(data.transactions.jvListings.jvStatus == 'N'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.jvDetails.statusType = 'N'
+        this.statusType = 'N'
         this.passData.disableAdd = false;  
         this.passData.btnDisabled = false;
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this
       }
+      this.retrieveAcctEntries();
     });
   }
 
