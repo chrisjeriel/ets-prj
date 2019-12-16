@@ -501,6 +501,7 @@ import { CancelArCvJvServiceComponent } from './accounting-service/utilities/can
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/mtn-acit-check-series/mtn-acit-check-series.component';
 import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
+import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/mtn-acse-check-series/mtn-acse-check-series.component';
 
 @NgModule({
     imports: [
@@ -1006,6 +1007,7 @@ import { InvoiceSeriesComponent } from './maintenance/accounting-service/generat
         UpdatePolAttachmentComponent,
         MtnAcitCheckSeriesComponent,
         InvoiceSeriesComponent,
+        MtnAcseCheckSeriesComponent,
     ],
 
   	providers: [

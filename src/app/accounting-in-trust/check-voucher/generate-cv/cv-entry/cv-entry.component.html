@@ -137,7 +137,8 @@
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'P' && saveAcitCv.mainAcctEntDate != null)?true:(saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '')?true:false" (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
+                            <!-- <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
                             <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="upload()">Upload Acct. Ent</button>
                         </div>
                     </div>
@@ -231,24 +232,38 @@
                     <div class="col-sm-4"></div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
                         <input name="input21" type="checkbox" style="margin-top: 6px;" checked>
-                        <label class="form-control-sm" for="xx">CV</label>
+                        <label class="form-control-sm">CV</label>
                     </div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
                         <input name="input22" type="checkbox" style="margin-top: 6px;" checked>
-                        <label class="form-control-sm" for="xx">Check</label>
+                        <label class="form-control-sm">Check</label>
                     </div>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
                     <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option>Screen</option>
                         <option>Printer</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Printer Name</label>
                     <select class="form-control form-control-sm cust-sm col-sm-8">
-                        <option>EPSON 3600i</option>
-                        <option>BROTHER J100</option>
+                        <ng-container *ngFor="let printer of printData.printers">
+                            <option [value]="printer">{{ printer }}</option>    
+                        </ng-container>
                     </select>
                 </div>
                 <div class="input-group">

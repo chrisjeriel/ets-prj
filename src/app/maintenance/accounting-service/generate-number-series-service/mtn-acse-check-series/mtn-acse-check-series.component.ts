@@ -9,11 +9,11 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
-  selector: 'app-mtn-acit-check-series',
-  templateUrl: './mtn-acit-check-series.component.html',
-  styleUrls: ['./mtn-acit-check-series.component.css']
+  selector: 'app-mtn-acse-check-series',
+  templateUrl: './mtn-acse-check-series.component.html',
+  styleUrls: ['./mtn-acse-check-series.component.css']
 })
-export class MtnAcitCheckSeriesComponent implements OnInit {
+export class MtnAcseCheckSeriesComponent implements OnInit {
 	@ViewChild('checkNoTbl') checkNoTbl			: CustEditableNonDatatableComponent;
 	@ViewChild('lov') lov       				: LovComponent;
   	@ViewChild('myForm') form                   : NgForm;
@@ -21,7 +21,7 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
  	@ViewChild(ConfirmSaveComponent) cs         : ConfirmSaveComponent;
   	@ViewChild('warnMdl') warnMdl               : ModalComponent;
 
-	passDataCheckNoList: any = {
+  	passDataCheckNoList: any = {
 	    tableData       : [],
 	    tHeader         : ['Check No','Tran ID','Used Tag','Status','Created By','Date Created','Last Update By','Last Update'],
 	    dataTypes       : ['number','number','checkbox','text','text','date','text','date'],
@@ -63,21 +63,20 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
     dialogIcon           : string = '';
     warnMsg              : string = '';
 
-
 	constructor(private titleService: Title,private mtnService : MaintenanceService, private ns : NotesService) {}
 	
 	ngOnInit() {
 		this.titleService.setTitle('Mtn | Check Number');
   	}
 
-  	getMtnAcitCheckSeries(bank?,bankAcct?,from?,to?){
+  	getMtnAcseCheckSeries(bank?,bankAcct?,from?,to?){
   		from 	 = from == ''?undefined:from;
   		to 		 = to == ''?undefined:to;
   		bank 	 = this.otherData.bankDesc == '' ? '': bank;
   		bankAcct = this.otherData.bankAcctDesc == ''?'':bankAcct;
 
   		this.checkNoTbl.overlayLoader = true;
-  		this.mtnService.getMtnAcitCheckSeries(bank,bankAcct)
+  		this.mtnService.getMtnAcseCheckSeries(bank,bankAcct)
   		.subscribe(data => {
   			console.log(data);
   			var rec = data['checkSeriesList'];
@@ -88,7 +87,7 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 
   	onClickSearch(){
   		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
-  		this.getMtnAcitCheckSeries(this.otherData.bank,this.otherData.bankAcct,this.otherData.from,this.otherData.to);
+  		this.getMtnAcseCheckSeries(this.otherData.bank,this.otherData.bankAcct,this.otherData.from,this.otherData.to);
   	}
 
   	onClickGenerate(){
@@ -116,14 +115,14 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 			user			: this.ns.getCurrentUser()
 		};
 
-  		this.mtnService.generateMtnAcitCheckSeries(JSON.stringify(save))
+  		this.mtnService.generateMtnAcseCheckSeries(JSON.stringify(save))
   		.subscribe(data => {
   			console.log(data);
   			if(data['returnCode'] == -1){
   				this.dialogIcon = '';
 	            this.dialogMessage = '';
 	          	this.success.open();
-	          	this.getMtnAcitCheckSeries(this.otherData.bank,this.otherData.bankAcct);
+	          	this.getMtnAcseCheckSeries(this.otherData.bank,this.otherData.bankAcct);
 	          	this.otherData.from = '';
 	          	this.otherData.to = '';
 	          	this.checkNoTbl.markAsPristine();
@@ -138,18 +137,17 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
   	showLov(fromUser){
 	  	if(fromUser.toLowerCase() == 'bank'){
 	      this.passDataLov.selector = 'bankLov';
-	      this.passDataLov.glDepFor = 'acit';
+	      this.passDataLov.glDepFor = 'acse';
 	    }else if(fromUser.toLowerCase() == 'bank-acct'){
 	      this.passDataLov.selector = 'bankAcct';
 	      this.passDataLov.bankCd = this.otherData.bank;
-	      this.passDataLov.from = 'acit';
+	      this.passDataLov.from = 'acse';
 	    }
 	    this.lov.openLOV();
   	}
 
   	setData(data){
 	  	setTimeout(() => {
-	      //this.removeRedBackShad(from);
 	      this.ns.lovLoader(data.ev, 0);
 	      this.form.control.markAsDirty();
 	    },0);
@@ -168,5 +166,4 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
   	reset(){
   		(this.otherData.bankAcctDesc == '')?(this.otherData.from='',this.otherData.to=''):'';
   	}
-
 }

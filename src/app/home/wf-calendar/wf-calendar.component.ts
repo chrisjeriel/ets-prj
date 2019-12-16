@@ -43,8 +43,6 @@ export class WfCalendarComponent implements OnInit {
 
     this.workFlowService.retrieveWfmReminders('',currentUser,'','','', '').subscribe((data)=>{
        var records = data['reminderList'];
-       	console.log(records.length);
-       	
            for(let rec of records){
                eventsHolder.push({
                  "title" : rec.title,

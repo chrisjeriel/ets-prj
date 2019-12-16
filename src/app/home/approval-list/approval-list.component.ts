@@ -75,11 +75,8 @@ export class ApprovalListComponent implements OnInit {
 
 
       this.workFlowManagerService.retrieveWfmApprovals(this.currentUser.username).subscribe((data)=>{
-        console.log(data["approvalList"]);
           if (data["approvalList"].length > 0) {
             this.collectionSize = data["approvalList"].length;
-
-            console.log("Collection Size : " + this.collectionSize);
 
             for (var i = data["approvalList"].length - 1; i >= 0; i--) {
               this.approvalList.push({'referenceId' : data["approvalList"][i].referenceId,

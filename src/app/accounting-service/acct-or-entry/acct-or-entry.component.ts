@@ -29,6 +29,7 @@ export class AcctOrEntryComponent implements OnInit {
   @ViewChild("myForm") form: any;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild('successPrintMdl') successPrintMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   passData: any = {
@@ -493,7 +494,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeOrAmt(data){
-    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round((this.orInfo.orAmt)*100) / 100;
+    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round(parseFloat(this.orInfo.orAmt.toString().split(',').join(''))*100) / 100;
   }
 
   setLov(data){
@@ -527,7 +528,8 @@ export class AcctOrEntryComponent implements OnInit {
     var sub$ = forkJoin(this.as.getAcseOrEntry(tranId, orNo),
                         this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y', this.orDate.date)).pipe(map(([or, bank, bankAcct, curr]) => { return { or, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.orDate.date),
+                        this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y')).pipe(map(([or, bank, bankAcct, curr, paymentType]) => { return { or, bank, bankAcct, curr, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         console.log('arEntry first');
@@ -535,7 +537,20 @@ export class AcctOrEntryComponent implements OnInit {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        let paymentType = forkData.paymentType;
+        
+        var groupTag = data.orEntry.orType == 'VAT' ? 'V' : 'N';
+
+        //payment type
+        paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
+        this.paymentTypes = paymentType.tranTypeList;
+        console.log(this.paymentTypes);
+        this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+        if(this.paymentTypes.length == 1){
+          this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
+        }
         console.log(data);
+
         //ar
         if(data.or !== null){
           this.orInfo.acctEntDate    = data.orEntry.acctEntDate;
@@ -941,9 +956,10 @@ export class AcctOrEntryComponent implements OnInit {
       //this.printMdl.openNoClose();
       this.loading = false;
       if(isReprint == undefined){
-        this.printStatus();
+        this.successPrintMdl.openNoClose();
       }else{
         this.reprintMdl.closeModal();  
+        this.printLoading = false;
       }
     }else if(this.printMethod == '2'){
       if(this.selectedPrinter.length == 0){
@@ -964,7 +980,7 @@ export class AcctOrEntryComponent implements OnInit {
             console.log(data);
             if(data.errorList.length == 0 && data.messageList.length != 0){
               if(isReprint == undefined){
-                this.printStatus();
+                this.successPrintMdl.openNoClose();
               }else{
                 this.reprintMdl.closeModal();  
                  this.printLoading = false;
@@ -1009,9 +1025,9 @@ export class AcctOrEntryComponent implements OnInit {
   updateOrStatus(){
     this.loading = true;
     if(!this.isPrinted){
-      if(this.orInfo.orNo === null || (this.orInfo.orNo !== null && this.orInfo.orNo.length === 0)){
+      //if(this.orInfo.orNo === null || (this.orInfo.orNo !== null && this.orInfo.orNo.length === 0)){
         this.orInfo.orNo = parseInt(this.generatedOrNo);
-      }
+      //}
       this.save(undefined, true);
       
     }
@@ -1041,13 +1057,18 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   retrievePaymentType(){
+    var groupTag = this.orInfo.orType == 'VAT' ? 'V' : 'N';
     this.paymentTypes = [];
     this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
-          data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+          data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
           this.paymentTypes = data.tranTypeList;
+          console.log(this.paymentTypes);
           this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+          if(this.paymentTypes.length == 1){
+            this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
+          }
         }
       }
     );
@@ -1135,7 +1156,15 @@ export class AcctOrEntryComponent implements OnInit {
   retrieveMtnAcseDCBNo(dcbYear?, dcbDate?){
     this.ms.getMtnAcseDCBNo(dcbYear,null,dcbDate,null).subscribe(
       (data:any)=>{
-        if(data.dcbNoList.length === 0){
+        if(data.dcbNoList[0].dcbNo == null){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
+            this.successDiag.open();
+          }
+          this.orInfo.dcbYear = data.dcbNoList[0].dcbYear == null ? dcbYear : data.dcbNoList[0].dcbYear;
+          this.orInfo.dcbNo = data.dcbNoList[0].dcbNo == null ? data.dcbNoList[0].nextDcbNo : data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus == null ? 'O' : data.dcbNoList[0].dcbStatus;
+        /*if(data.dcbNoList.length === 0){
           this.dialogIcon = 'info';
           this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
           this.successDiag.open();
@@ -1144,7 +1173,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.dcbYear = data.dcbNoList[0].dcbYear;
           this.orInfo.dcbNo = data.dcbNoList[0].dcbNo;
           this.dcbStatus   = data.dcbNoList[0].dcbStatus;
-        }
+        }*/
       }
     );
   }
@@ -1330,6 +1359,11 @@ export class AcctOrEntryComponent implements OnInit {
            this.canReprint = false;
          }
       });
+  }
+
+  changeOrType(data){
+    this.orInfo.orType = data;
+    this.retrievePaymentType();
   }
 
   changeTranType(data){

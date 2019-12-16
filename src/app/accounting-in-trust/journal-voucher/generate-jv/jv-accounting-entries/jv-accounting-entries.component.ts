@@ -114,8 +114,11 @@ export class JvAccountingEntriesComponent implements OnInit {
     if(this.jvDetails.statusType == 'N'){
       this.passData.disableAdd = false;
       this.readOnly = false;
+    }else if(this.jvDetails.statusType == 'F'){
+      this.notBalanced = false;
+      this.readOnly = false;
     }else {
-      this.notBalanced = true;
+      //this.notBalanced = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuoteEndorsementComponent } from './quote-endorsement.component';
+import { MtnAcseCheckSeriesComponent } from './mtn-acse-check-series.component';
 
-describe('QuoteEndorsmentComponent', () => {
-  let component: QuoteEndorsementComponent;
-  let fixture: ComponentFixture<QuoteEndorsementComponent>;
+describe('MtnAcseCheckSeriesComponent', () => {
+  let component: MtnAcseCheckSeriesComponent;
+  let fixture: ComponentFixture<MtnAcseCheckSeriesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuoteEndorsementComponent ]
+      declarations: [ MtnAcseCheckSeriesComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuoteEndorsementComponent);
+    fixture = TestBed.createComponent(MtnAcseCheckSeriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

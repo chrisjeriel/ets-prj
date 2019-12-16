@@ -90,6 +90,7 @@
               <div *ngSwitchCase="'1'">Official Receipt</div>
               <div *ngSwitchCase="'2'">Official Receipt Service Fee Local</div>
               <div *ngSwitchCase="'3'">Official Receipt Service Fee Munich Re</div>
+              <div *ngSwitchCase="'5'">Acknowledgement Receipt</div>
             </ng-container>
           </ng-template>
           <ng-template ngbTabContent>
@@ -105,12 +106,15 @@
                   <ng-container *ngSwitchCase="'3'">
                     <app-or-service-fee-munich-re [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-service-fee-munich-re>
                   </ng-container>
+                  <ng-container *ngSwitchCase="'5'">
+                    <app-or-only [record]="record" (emitCreateUpdate)="createUpdate = $event" [inquiryFlag]="inquiryFlag"></app-or-only>
+                  </ng-container>
                 </ng-container>
               </div>
             </div>
           </ng-template>
         </ngb-tab>
-        <ngb-tab class="ngb-tab" title="Others" *ngIf="paymentType != '1'">
+        <ngb-tab class="ngb-tab" title="Others" *ngIf="paymentType != '1' && paymentType != '5'">
           <ng-template ngbTabContent>
             <div class="input-group cust-border" style="padding-top: 0.6em">
               <div class="col-sm-12">

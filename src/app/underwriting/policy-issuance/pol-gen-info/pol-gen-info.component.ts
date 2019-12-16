@@ -52,6 +52,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   @ViewChild('genInfoConSave') genInfoConSave: ConfirmSaveComponent;
   @ViewChild('dedConSave') dedConSave: ConfirmSaveComponent;
+  defCotermTag:string = '';
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -323,6 +324,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(this.underwritingService.fromCreateAlt) {
         this.alteration = true;
         this.newAlt = true;
+      }
+
+      if(this.line == 'CEC'){
+        this.mtnService.getMtnParameters('V','WITH_REP_PERIOD').subscribe(a=>{
+          this.defCotermTag = a['parameters'][0].paramValueV;
+        })
       }
 
       //edit by paul
@@ -1655,6 +1662,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     onClickOkDed(){
       if(this.cancelFlag && this.dialogIcon != 'error'){
        this.dedCancelBtn.onNo()
+      }
+    }
+
+    updateCoTermText(){
+      if(this.policyInfo.coTermTag == 'Y'){
+        this.policyInfo.coTermText = this.defCotermTag;
+      }else{
+        this.policyInfo.coTermText = '';
       }
     }
 }

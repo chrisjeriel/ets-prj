@@ -55,7 +55,6 @@ export class WfRemindersComponent implements OnInit {
 
   retrieveReminders(obj){
        this.currentUser = JSON.parse(window.localStorage.currentUser).username;
-     console.log(obj);
     if (obj === 'atm'){
        this.reminderBool = true;
        this.reminderList = [];
@@ -133,11 +132,9 @@ export class WfRemindersComponent implements OnInit {
     }
 
   showReminderModal(reminder,isReadOnly){
-    console.log(reminder);
     this.wfReminder.reminder = reminder;
     this.wfReminder.isReadOnly = isReadOnly;
     $('#reminderModal #modalBtn').trigger('click');
-    console.log('jejejejejejejeje');
   }
 
   updateReminderModal(reminder, status){
@@ -216,7 +213,6 @@ export class WfRemindersComponent implements OnInit {
     saveReminderParams(obj){
      this.workFlowManagerService.saveWfmReminders(obj).pipe(finalize(() => this.saveFinalProcess())).
      subscribe(data => {
-             console.log(data);
             if(data['returnCode'] === 0) {
                  this.dialogIcon = 'error-message';
                  this.dialogMessage = "Error saving reminder";

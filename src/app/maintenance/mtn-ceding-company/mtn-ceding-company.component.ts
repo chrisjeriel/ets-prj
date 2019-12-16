@@ -109,7 +109,7 @@ export class MtnCedingCompanyComponent implements OnInit {
         singleSearchLov: true
       });
     } else {
-      this.underwritingService.getCedingCompanyList(code,'','','','','','','','','N').subscribe(data => {
+      this.underwritingService.getCedingCompanyList(code,'','','','','','','','',this.membershipTag).subscribe(data => {
         if(data['cedingcompany'].length > 0) {
           data['cedingcompany'][0]['ev'] = ev;
           data['cedingcompany'][0]['singleSearchLov'] = true;

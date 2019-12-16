@@ -258,7 +258,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       var recCurr        = data['cov']['claims']['project']['clmCoverage'];
       var recParam       = data['param']['parameters'].filter(el => el.paramName.toUpperCase() == 'ALLOW_MAX_SI').map(el => {return el});
       var recBookingMth  = data['bookingMth']['bookingMonthList'].filter(e => e.bookedTag != 'Y').map(e => {return e});
-      recBookingMth.sort((a,b) => a.bookingMm - b.bookingMm);
+      //recBookingMth.sort((a,b) => a.bookingMm - b.bookingMm);
 
       this.histTypeData = recHistType;
 
