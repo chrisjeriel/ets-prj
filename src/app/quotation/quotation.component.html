@@ -187,10 +187,10 @@
 							<fieldset class="scheduler-border" style="padding-bottom: 17px !important;">
 								<!-- <div class="custom-row-inline-inset"> -->
 									<div *ngIf="addParams == undefined" class="input-group" style="margin-top : 5px ! important; text-align: center;">
-										<p class="form-control-sm" for="xx" style="padding-left: 20px; padding-right: 15px; font-size: 13px; width: 100%;">{{ lockMessage }}<b>{{ lockUser }}</b>.<br/>You will be redirected to Quotation Listing.</p>
+										<p class="form-control-sm" for="xx" style="font-size: 13px; width: 100%; height: 100%;padding-bottom: 0px; margin-bottom: 0px;">{{ lockMessage }}<b>{{ lockUser }}</b>. You will be redirected to Quotation Listing.</p>
 									</div>
 									<div *ngIf="addParams != undefined" class="input-group" style="margin-top : 5px ! important; text-align: center;">
-										<p class="form-control-sm" for="xx" style="padding-left: 20px; padding-right: 15px; font-size: 13px; width: 100%;"><b>{{ lockUser }} </b>{{ lockMessage }} <b>[{{ addParams.riskId}}]</b>.<br/>You will be redirected to Quotation Listing.</p>
+										<p class="form-control-sm" for="xx" style="font-size: 13px; width: 100%; height: 100%;padding-bottom: 0px; margin-bottom: 0px;"><b>{{ lockUser }} </b>{{ lockMessage }} <b>({{ addParams.riskId}})</b>. You will be redirected to Quotation Listing.</p>
 									</div>
 								<!-- </div> -->
 							</fieldset>

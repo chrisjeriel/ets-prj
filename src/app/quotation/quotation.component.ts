@@ -116,7 +116,6 @@ export class QuotationComponent implements OnInit, OnDestroy {
       if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
         this.wsConnect();
       } else if (this.addParams != undefined){
-        console.log("TEST");
         this.wsConnect();
       }
 	}
@@ -140,7 +139,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
           _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
               var obj = JSON.parse(sdkEvent.body);
 
-              if (_this.addParams != undefined) {
+              /*if (_this.addParams != undefined) {
                 if (obj.message == "") {
                   if (_this.addParams.riskId == obj.riskId) {
                     if (_this.ns.getCurrentUser() == obj.user) {
@@ -164,7 +163,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
                     }
                   }
                 }
-              } else {
+              } else {*/
                 if (obj.message == "") {
                   if (_this.quoteInfo.quoteId == obj.refId) {
                     if (_this.ns.getCurrentUser() == obj.user) {
@@ -188,7 +187,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
                     }
                   }
                 }
-              }
+              /*}*/
           });
       }, this.errorCallBack);
   }; 
@@ -320,6 +319,16 @@ export class QuotationComponent implements OnInit, OnDestroy {
   			this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
   		}
       this.selectedReport = this.reportsList[0].val;
+
+      /*if (this.stompClient !== null || this.stompClient !== undefined) {
+        if (this.addParams != undefined) {
+          this.addParams = undefined;
+          this.wsDisconnect();
+        }
+        if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
+          this.wsConnect();
+        }
+      }*/
 
       if (this.stompClient === null || this.stompClient === undefined) {
         if (!this.inquiryFlag && this.quoteInfo.quoteId != undefined && this.quoteInfo.quoteId != "" && this.quoteInfo.quoteId != null) {
