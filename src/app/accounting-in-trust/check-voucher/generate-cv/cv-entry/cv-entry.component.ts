@@ -118,11 +118,13 @@ export class CvEntryComponent implements OnInit {
   };
 
   printData : any = {
+    selPrinter  : '',
     printers    : [],
     destination : '',
     reportType  : null,
     copyNo      : null,
-    printCbx    : ''
+    printCv     : '',
+    printCheck  : ''
   };
 
   lovCheckBox:boolean = true;
@@ -606,10 +608,52 @@ export class CvEntryComponent implements OnInit {
   }
 
   print(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+    let params = {
+          tranId: this.saveAcitCv.tranId,
+          printerName: this.printData.selPrinter,
+          pageOrientation: 'LANDSCAPE',
+          paperSize: 'LETTER'
+        };
+
+    let cvParams    = Object.assign({},params);
+    $.extend(cvParams,{reportName: 'ACITR_CV'});
+    let checkParams = Object.assign({},params);
+    $.extend(checkParams,{reportName: 'ACITR_CV_CHECK'});
+
+    if(this.printData.printCv && this.printData.printCheck){
+      if(this.printData.destination == 'screen'){
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV_CHECK' + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+      }else if(this.printData.destination == 'printer'){
+        var subRes = forkJoin(this.ps.directPrint(cvParams),this.ps.directPrint(checkParams)).pipe(map(([cv,ck]) => { return { cv, ck };}));
+        subRes.subscribe(data => {
+          console.log(data);
+        });
+      }
+    }else{
+      if(this.printData.printCv){
+        if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+        }else if(this.printData.destination == 'printer'){
+          this.ps.directPrint(cvParams).subscribe(data => {
+            console.log(data);
+          });
+        }
+      }else if(this.printData.printCheck){
+        if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV_CHECK' + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+        }else if(this.printData.destination == 'printer'){
+          this.ps.directPrint(checkParams).subscribe(data => {
+            console.log(data);
+          });
+        }
+      }
+    }
   }
 
+  
   onClickYesConfirmed(stat){
     this.loadingFunc(true);
     this.confirmMdl.closeModal();
@@ -779,7 +823,9 @@ uploadAcctEntries(){
   }
 
   test(){
-    console.log(this.printData.reportType);
+    console.log(this.printData.printCv);
+    console.log(this.printData.printCheck);
+    
   }
 
   getPrinters(){

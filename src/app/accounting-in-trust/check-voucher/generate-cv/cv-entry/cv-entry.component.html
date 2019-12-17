@@ -199,7 +199,14 @@
             <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
         </div>
         <div *ngIf="fromBtn == 'print'" class="input-group">
-            <p class="col-sm-12">Was the printing of Check Voucher successful?</p>
+            <ng-container *ngIf="printData.printCv && printData.printCheck; else elseMsg">
+                <p class="col-sm-12">Was the printing of Check Voucher and Check successful?</p>    
+            </ng-container>
+            
+            <ng-template #elseMsg>
+                <p *ngIf="printData.printCv" class="col-sm-12">Was the printing of Check Voucher successful?</p>
+                <p *ngIf="printData.printCheck" class="col-sm-12">Was the printing of Check successful?</p>
+            </ng-template>
         </div>
         <div *ngIf="fromBtn == 'spoil'" class="input-group">
             <p class="col-sm-12">Are you sure you want to spoil this Check?</p>
@@ -231,51 +238,51 @@
                 <div class="input-group">
                     <div class="col-sm-4"></div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                        <input name="input21" type="checkbox" style="margin-top: 6px;" checked>
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" value="cv" [ngModel]="printData.printCv" (ngModelChange)="printData.printCv=$event;test();" checked>
                         <label class="form-control-sm">CV</label>
                     </div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                        <input name="input22" type="checkbox" style="margin-top: 6px;" checked>
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" value="ck" [ngModel]="printData.printCheck" (ngModelChange)="printData.printCheck=$event;test();"  checked>
                         <label class="form-control-sm">Check</label>
                     </div>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;test()">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" value="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
-                        <option>Screen</option>
-                        <option>Printer</option>
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;">
+                        <option value="screen">Screen</option>
+                        <option value="printer">Printer</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Printer Name</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="printData.selPrinter">
                         <ng-container *ngFor="let printer of printData.printers">
                             <option [value]="printer">{{ printer }}</option>    
                         </ng-container>
                     </select>
                 </div>
-                <div class="input-group">
+                <!-- <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">No. of Copies</label>
                     <input name="input23" type="number" class="form-control form-control-sm cust-sm col-sm-8 text-right">
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();" [disabled]="(printData.printCv == '' && printData.printCheck == '') || printData.destination == '' || printData.selPrinter == ''">Print</button>
     </div>
 </app-modal>
 
