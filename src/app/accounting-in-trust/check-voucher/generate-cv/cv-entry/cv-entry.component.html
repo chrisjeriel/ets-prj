@@ -138,7 +138,7 @@
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button> -->
-                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
+                            <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004');">Print</button>
                             <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="upload()">Upload Acct. Ent</button>
                         </div>
                     </div>
@@ -238,36 +238,36 @@
                 <div class="input-group">
                     <div class="col-sm-4"></div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                        <input name="cb1" type="checkbox" style="margin-top: 6px;" value="cv" [ngModel]="printData.printCv" (ngModelChange)="printData.printCv=$event;test();" checked>
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" [ngModel]="printData.printCv" (ngModelChange)="printData.printCv=$event;">
                         <label class="form-control-sm">CV</label>
                     </div>
                     <div class="input-group col-sm-3 labels" style="padding: 0px;">
-                        <input name="cb1" type="checkbox" style="margin-top: 6px;" value="ck" [ngModel]="printData.printCheck" (ngModelChange)="printData.printCheck=$event;test();"  checked>
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" id="checkCbId" [ngModel]="printData.printCheck" (ngModelChange)="printData.printCheck=$event;validateCheck();">
                         <label class="form-control-sm">Check</label>
                     </div>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" value="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
                     <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;">
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName();">
                         <option value="screen">Screen</option>
                         <option value="printer">Printer</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Printer Name</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8" [(ngModel)]="printData.selPrinter">
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printer'">
                         <ng-container *ngFor="let printer of printData.printers">
                             <option [value]="printer">{{ printer }}</option>    
                         </ng-container>
@@ -282,7 +282,7 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
-        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();" [disabled]="(printData.printCv == '' && printData.printCheck == '') || printData.destination == '' || printData.selPrinter == ''">Print</button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();" [disabled]="(!printData.printCv && !printData.printCheck) || printData.destination == '' || (printData.destination == 'printer')?(printData.selPrinter == '')?true:false:false">Print</button>
     </div>
 </app-modal>
 

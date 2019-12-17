@@ -121,7 +121,7 @@ export class CvEntryComponent implements OnInit {
     selPrinter  : '',
     printers    : [],
     destination : '',
-    reportType  : null,
+    reportType  : 0,
     copyNo      : null,
     printCv     : '',
     printCheck  : ''
@@ -623,7 +623,7 @@ export class CvEntryComponent implements OnInit {
     if(this.printData.printCv && this.printData.printCheck){
       if(this.printData.destination == 'screen'){
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId + '&reportType=' + this.printData.reportType, '_blank');
         window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV_CHECK' + '&tranId=' + this.saveAcitCv.tranId, '_blank');
       }else if(this.printData.destination == 'printer'){
         var subRes = forkJoin(this.ps.directPrint(cvParams),this.ps.directPrint(checkParams)).pipe(map(([cv,ck]) => { return { cv, ck };}));
@@ -635,7 +635,7 @@ export class CvEntryComponent implements OnInit {
       if(this.printData.printCv){
         if(this.printData.destination == 'screen'){
           window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId + '&reportType=' + this.printData.reportType, '_blank');
         }else if(this.printData.destination == 'printer'){
           this.ps.directPrint(cvParams).subscribe(data => {
             console.log(data);
@@ -661,6 +661,7 @@ export class CvEntryComponent implements OnInit {
       tranId       : this.saveAcitCv.tranId,
       checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
+      printType    : (this.printData.printCv && this.printData.printCheck)?'ALL':(this.printData.printCv)?'PCV':'PCK',
       updateUser   : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
@@ -671,6 +672,11 @@ export class CvEntryComponent implements OnInit {
       this.fromSave = true;
       this.getAcitCv();
       (!this.spoiled)?this.disableFlds(true):this.form.control.markAsDirty();
+      this.printData.destination = '';
+      this.printData.selPrinter = '';
+      this.printData.printCv = false;
+      this.printData.printCheck = false;
+      this.printData.reportType = 0;
     });
   }
 
@@ -834,4 +840,19 @@ uploadAcctEntries(){
       this.printData.printers = data;
     });
   }
+
+  validateCheck(){
+    if(this.saveAcitCv.checkStatus == 'P' || this.saveAcitCv.checkStatus == 'S'){
+      this.warnMsg = (this.saveAcitCv.checkStatus == 'P')?'This check was already been printed.\nPlease Spoil Check to generate new Check No.'
+                                                         :'This check has been spoiled. \nPlease save your changes first before printing this check.';
+      this.warnMdl.openNoClose();
+      this.printData.printCheck = false;
+      $('#checkCbId').prop('checked',false);
+    }
+  }
+
+  clearPrinterName(){
+    (this.printData.destination != 'printer')?this.printData.selPrinter='':''
+  }
+
 }
