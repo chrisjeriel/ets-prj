@@ -162,7 +162,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,250,150,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
+     widths: [110,250,140,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -194,6 +194,7 @@ export class InvestmentsComponent implements OnInit {
     oldData:any[] =[];
     currencyData: any[] = [];
     wtaxRate: any;
+    wtaxRateUSD: any;
     cancelFlag: boolean;
     acitInvtReq  : any = { 
                 "delAcitInvestments": [],
@@ -218,9 +219,9 @@ export class InvestmentsComponent implements OnInit {
     this.userService.emitModuleId("ACIT048");
     this.selectedData = [];
     this.retrieveInvestmentsList(this.searchParams);
-    this.getWTaxRate();
     this.oldData = this.passData.tableData;
-
+    this.getWTaxRate('PHP');
+    this.getWTaxRate('USD');
     this.passData.tHeaderWithColspan.push({ header: "", span: 18 },
          { header: "Pre-Termination", span: 2 },
          { header: "Partial Pull-Out", span: 3 },
@@ -875,10 +876,16 @@ update(data){
 
                  if(invtIncome === null){
                  }else {
-                   console.log(this.wtaxRate);
-                   var taxRate = parseFloat(this.wtaxRate) / 100,
-                       
-                       withHTaxAmt = invtIncome * taxRate,
+
+                  if(this.passData.tableData[i].currCd === 'PHP'){
+                    var taxRate = parseFloat(this.wtaxRate) / 100;
+                   }else if (this.passData.tableData[i].currCd === 'USD') {
+                     var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+                   };
+
+                   console.log(taxRate);
+                   
+                       var withHTaxAmt = invtIncome * taxRate,
                        bankCharges = this.passData.tableData[i].bankCharge,
                        matVal;
 
@@ -955,14 +962,22 @@ update(data){
     }
   }
 
-  getWTaxRate(){
+  getWTaxRate(currCd?){
     var wtaxRt;
-    this.mtnService.getMtnParameters('N','INVT_WHTAX_RT').pipe(
+    if (currCd === 'USD'){
+      this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_USD').pipe(
+           finalize(() => this.wtaxRateUSD = wtaxRt)
+           ).subscribe(data => {
+       wtaxRt = data['parameters'][0].paramValueN;
+      });
+    }else if (currCd === 'PHP') {
+       this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_PHP').pipe(
            finalize(() => this.wtaxRate = wtaxRt)
            ).subscribe(data => {
-      wtaxRt = data['parameters'][0].paramValueN;
+       wtaxRt = data['parameters'][0].paramValueN;
     });
-
+    }
+   
   }
 
  
@@ -1069,16 +1084,8 @@ update(data){
       this.errorAmort = '';
       console.log(this.checkFields());
       if(this.checkFields()){
-         //this.confirmSave.confirmModal();
-        let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
-          if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
-            this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
-            this.dialogIcon = 'error-message';
-            this.successDialog.open();
-            return;
-          } else {
-             this.confirmSave.confirmModal();
-          }
+         //this.confirmSave.confirmModal()
+         this.confirmSave.confirmModal();
       }else{
         if (this.errorAmort === 'Error Amort'){
           this.dialogMessage='Maturity period must be at least a year';

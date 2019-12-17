@@ -9,6 +9,7 @@ import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component'
 import { PrintModalMtnAcctComponent } from '@app/_components/common/print-modal-mtn-acct/print-modal-mtn-acct.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -94,8 +95,10 @@ export class BankAccountComponent implements OnInit {
   boolPrint: boolean = true;
 
   bank:any = {};
+  private sub: any;
+  from: string;
 
-  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.form.control.markAsPristine();
@@ -115,6 +118,20 @@ export class BankAccountComponent implements OnInit {
       this.passTable.opts[2].prev = a['currency'].map(a=>a.currencyCd);
       this.passTable.opts[2].vals = a['currency'].map(a=>a.currencyCd);
     })
+
+   this.sub = this.route.params.subscribe(params => {
+
+      this.from = params['from'];
+      if (this.from == "mtn-bank") {
+        this.bank.bankCd = params['bankCd'];
+        this.bank.shortName = params['shortName'];
+        this.bank.officialName = params['officialName'];
+        this.getBankAcct();        
+      }
+
+    });
+
+
   }
 
   getBankAcct(){
@@ -316,12 +333,17 @@ export class BankAccountComponent implements OnInit {
               highlight($(this), val);
             } 
             else if(dataTypes[i] == 'text-editor') {
-             if($(this).find('.align-middle.ng-star-inserted').length === 1){
-              val = $(this).find('text-editor').text();
+               if($(this).find('.align-middle.ng-star-inserted').length === 1){
+                 if($(this).find('p').text() === ''){
+                  val = $(this).find('text-editor').val();
+                  highlight($(this), val);
+                 }else{
+                   console.log('false');  
+                 };
+               }
+            } else if (dataTypes[i] == 'select'){
+              val = $(this).find('select').val();    
               highlight($(this), val);
-             }
-            } else if(dataTypes[i] == 'number' || dataTypes[i] == 'currency') {
-              val = isNaN(Number($(this).find('input').val())) ? null : $(this).find('input').val();
             }
           }
         });
@@ -350,6 +372,7 @@ export class BankAccountComponent implements OnInit {
      this.ms.getMtnBankAcct(bank).pipe(
            finalize(() => this.finalGetRecords() )
            ).subscribe(a=>{
+      console.log(a['bankAcctList']);
       this.allRecords.tableData = a['bankAcctList'];
         this.allRecords.tableData.forEach(a=>{
           if (a.openDate === null){
@@ -408,3 +431,4 @@ export class BankAccountComponent implements OnInit {
     alasql('SELECT bankName AS Bank,bankAcctCd AS Code, accountNo AS [Account No], accountName AS [Account Name], acctStatusName AS [Account Status],currCd AS Currency, bankBranch AS [Bank Branch], acctTypeName AS [Account Type], datetime(openDate) AS [Open Date], datetime(closeDate) AS [Close Date], dcbTag AS [Dcb Tag] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
   }
 }
+

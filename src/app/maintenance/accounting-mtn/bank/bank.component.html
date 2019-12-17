@@ -4,12 +4,12 @@
         <ngb-tab title="Bank Maintenance">
             <ng-template ngbTabContent>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-	                	<app-cust-editable-non-datatable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+	                	<app-cust-editable-non-datatable #banktable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
 	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
                     	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
                     	<button class="cust-btn" (click)="onClickSave()">Save</button>
-                        <button class="cust-btn" style="max-width: 500px;">Bank Acct Maintenance</button>
-                        <button class="cust-btn">Print</button>
+                        <button class="cust-btn" style="max-width: 500px;" (click)="onClickBankMain()" [disabled]="boolBankMain" >Bank Acct Maintenance</button>
+                        <button class="cust-btn" (click)="print()">Print</button>
                     </div>
                 </fieldset>
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
@@ -33,3 +33,4 @@
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
