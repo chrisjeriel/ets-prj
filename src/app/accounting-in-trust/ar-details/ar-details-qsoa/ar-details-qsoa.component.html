@@ -1,5 +1,8 @@
 <div class="col-sm-12" style="position: relative; padding-left: 0px; padding-right: 0px;">
 	<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)" (clickLOV)="openLOV($event)">
+    <ng-container controls-r>
+        <button class="cust-btn" style="margin-right: 0px !important;" (click)="export()">Export to Excel</button>
+      </ng-container>
 	</app-cust-editable-non-datatable>
 </div>
 <div class="form-row" *ngIf="record.arStatDesc.toUpperCase() == 'NEW'">
@@ -15,9 +18,23 @@
 </div>
 
 
+<app-modal class="d-none" >
+  <div header>Warning</div>
+  <div body>
+    <div style="text-align: center">
+      <p style="margin: 0px">Net payments must remain the same.</p>
+      <p style="margin: 0px"><strong>Original Net Amount: {{originalNet | number: '1.2-2'}}</strong></p>
+      <p style="margin: 0px"><strong>Altered Net Amount: {{newAlteredAmt | number: '1.2-2'}}</strong></p>
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="netMdl.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
 <!-- <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov> -->
 <!-- <app-quarter-ending-lov (selectedData)="setSelectedData($event)" [quarterDates]="quarterEndingDates"></app-quarter-ending-lov> -->
 <app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="save('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>

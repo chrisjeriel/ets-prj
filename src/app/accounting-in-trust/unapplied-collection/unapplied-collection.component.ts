@@ -5,6 +5,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-unapplied-collection',
@@ -19,7 +20,7 @@ export class UnappliedCollectionComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   dialogIcon: string = '';
@@ -31,6 +32,9 @@ export class UnappliedCollectionComponent implements OnInit {
   cancelFlag: boolean = false;
 
   totalLocalAmt: number = 0;
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
 
   passData: any = {
   	tableData: [],
@@ -70,6 +74,7 @@ export class UnappliedCollectionComponent implements OnInit {
   ngOnInit() {
     this.passData.nData.tranId = this.arDetails.tranId;
     this.passData.nData.billId = 2;
+    this.isReopen = this.arDetails.reopenTag == 'Y';
     //this.getCurrency();
     if(this.arDetails.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true, true, true, true, true, true,true, true];
@@ -88,10 +93,9 @@ export class UnappliedCollectionComponent implements OnInit {
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 2).subscribe( //Bill id = 2 for unapplied collection
       (data: any)=>{
         if(data.transDtlList.length !== 0){
-          /*for(var i of data.transDtlList){
-            i.currCd = i.currCd+'T'+i.currRate;
-            this.passData.tableData.push(i);
-          }*/
+          for(var i of data.transDtlList){
+            this.originalNet += i.currAmt;
+          }
           this.passData.tableData = data.transDtlList;
           this.table.refreshTable();
         }
@@ -126,8 +130,16 @@ export class UnappliedCollectionComponent implements OnInit {
     );
   }
 
-  onClickSave(){
-    this.confirm.confirmModal();
+  onClickSave(cancel?){
+    if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      this.netMdl.openNoClose();
+    }else{
+      if(cancel != undefined){
+        this.save(cancel);
+      }else{
+        this.confirm.confirmModal();
+      }
+    }
   }
 
   onClickCancel(){
@@ -217,6 +229,18 @@ export class UnappliedCollectionComponent implements OnInit {
     }else{
       this.emitCreateUpdate.emit(null);
     }
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.currAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
   }
 
 }

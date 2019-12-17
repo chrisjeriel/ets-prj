@@ -24,6 +24,7 @@ import { environment } from '@environments/environment';
 export class AppComponent implements OnDestroy {
 
     @ViewChild('warningConfirmation') warningConfirmation: ModalComponent;
+    @ViewChild('nrConfirmation') nrConfirmation: ModalComponent;
     @ViewChild(SucessDialogComponent)  successDialog: SucessDialogComponent;
 
     datetime: number;
@@ -32,6 +33,11 @@ export class AppComponent implements OnDestroy {
     accessibleModules: string[] = [];
     moduleId:string = 'MAIN';
     notifToggle:boolean = false;
+    macParam:any = {
+      type: '',
+      id: '',
+      status: 'C'
+    };
 
     private _opened: boolean = true; /*must be added*/
     private _closeOnClickOutside: boolean = true; /*must be added*/
@@ -144,6 +150,10 @@ export class AppComponent implements OnDestroy {
     notifCount:number = 0;
     notifs:Array<Object> = [];
     notifIsLoading:boolean = false;
+    notifProgIsShown:boolean = false;
+    progValue:number = 0;
+    nrConfirmationMsg:string = "";
+    nrSaveMultiple:boolean = false;
 
     wsConnect() {
       let ws = new SockJS(this.webSocketEndPoint);
@@ -223,9 +233,7 @@ export class AppComponent implements OnDestroy {
             });
 
             $(document).on("click", function(e:any) {
-              // console.log(e);
-              // console.log("id: " + e.target.id);
-              // console.log("id: " + e.target);
+              
             })
         });
 
@@ -336,7 +344,7 @@ export class AppComponent implements OnDestroy {
       if (data != null) {
         if (data.noteList.length > 0) {
           for (let obj of data.noteList) {
-            this.notifs.push({ id: obj.noteId, title: obj.title, msg: obj.note, assignee: obj.createUser, createDate: obj.createDate });
+            this.notifs.push({ type:'note', id: obj.noteId, title: obj.title, msg: obj.note, assignee: obj.createUser, createDate: obj.createDate });
           }
         }
       }
@@ -346,7 +354,7 @@ export class AppComponent implements OnDestroy {
       if (data != null) {
         if (data.reminderList.length > 0) {
           for (let obj of data.reminderList) {
-            this.notifs.push({ id: obj.reminderId, title: obj.title, msg: obj.reminder, assignee: obj.createUser, createDate: obj.createDate });
+            this.notifs.push({ type:'reminder', id: obj.reminderId, title: obj.title, msg: obj.reminder, assignee: obj.createUser, createDate: obj.createDate });
           }
         }
       }
@@ -361,8 +369,6 @@ export class AppComponent implements OnDestroy {
         this.notifs.sort((a:any, b:any) => (a.createData < b.createDate) ? 1 : -1);
       }
     }, 500)*/
-
-    console.log(this.notifs);
   }
 
   onClickNotif(event) {
@@ -401,6 +407,74 @@ export class AppComponent implements OnDestroy {
       $("#notif-context").removeClass("show").hide();
     }
     
+  }
+
+  mkCompleted() {
+    this.notifProgIsShown = !this.notifProgIsShown;
+
+  }
+
+  onClickMAC(type:string, id:number) {
+    this.nrSaveMultiple = false;
+
+    this.macParam = {
+      type: type,
+      id: id,
+      status: 'C'
+    };
+    this.nrConfirmationMsg = "Are you sure you want to mark this as Completed?";
+    this.nrConfirmation.openNoClose();
+  }
+
+  onClickAllMAC() {
+    this.nrSaveMultiple = true;
+    this.nrConfirmationMsg = "Are you sure you want to mark All as Completed?";
+    this.nrConfirmation.openNoClose();
+  }
+
+  onSaveMAC() {
+    let rnStatusList:Array<any> = [];
+
+    if (this.nrSaveMultiple) {
+
+      for (let x of this.notifs) {
+        let rn:any = x;
+
+         rnStatusList.push({
+                              type: rn.type,
+                              id: rn.id,
+                              status: 'C'
+                            }); 
+      }
+
+      let param = {
+        rnStatusList : rnStatusList
+      }
+
+      this.workFlowManagerService.changeRNStatus(param).subscribe((data:any) => {
+        if (data != null) {
+          if (data.errorList.length > 0) {
+            console.log(data.errorList[0].errorMessage);
+          }
+        }
+      });
+
+
+    } else {
+      rnStatusList.push(this.macParam);
+
+      let param = {
+        rnStatusList : rnStatusList
+      }
+
+      this.workFlowManagerService.changeRNStatus(param).subscribe((data:any) => {
+        if (data != null) {
+          if (data.errorList.length > 0) {
+            console.log(data.errorList[0].errorMessage);
+          }
+        }
+      });
+    }
   }
 }
 

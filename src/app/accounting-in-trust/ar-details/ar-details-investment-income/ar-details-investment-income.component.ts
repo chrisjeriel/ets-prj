@@ -6,6 +6,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ar-details-investment-income',
@@ -21,7 +22,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() investment: EventEmitter<any> = new EventEmitter();
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
   
@@ -83,6 +84,10 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   dialogMessage: string = '';
   invtPulloutIndex: number = 0;
 
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
+
   savedData: any[] = [];
   deletedData: any[] = [];
 
@@ -91,7 +96,8 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   ngOnInit() {
     console.log(this.record.tranId);
     this.passData.nData.tranId = this.record.tranId;
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'MATURED'}];
+    this.isReopen = this.record.reopenTag == 'Y';
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M%'}];
     if(this.invData !== undefined){
         for(var i of this.invData){
           this.passLov.hide.push(i);
@@ -113,6 +119,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
         for(var i of data.invPulloutList){
           i.uneditable = ['invtCode'];
           i.netIncome = i.incomeAmt - (i.bankCharge + i.whtaxAmt);
+          this.originalNet += i.netIncome;
           this.passData.tableData.push(i);
           this.passLov.hide.push(i.invtCode);
         }
@@ -160,6 +167,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
       this.passData.tableData[this.passData.tableData.length - 1].netIncome = selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt);
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = (selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt)) * selected[i].currRate;
       this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'I';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -168,8 +176,16 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     this.table.refreshTable();
   }
 
-  onClickSave(){
-      this.confirm.confirmModal();
+  onClickSave(cancel?){
+     if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+       this.netMdl.openNoClose();
+     }else{
+       if(cancel != undefined){
+         this.save(cancel);
+       }else{
+         this.confirm.confirmModal();
+       }
+     }
   }
 
   save(cancelFlag?){
@@ -180,7 +196,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     this.totalLocalAmt = 0;
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(!this.passData.tableData[i].deleted){
-        this.totalLocalAmt += this.passData.tableData[i].netIncome;
+        this.totalLocalAmt += this.passData.tableData[i].localAmt;
       }
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
@@ -258,6 +274,88 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   }
   onTableDataChange(data){
     console.log(data);
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.currAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
+  }
+
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var rowLength: number = this.passData.tableData.length + 7;
+    console.log("Row Length >>>" + rowLength);
+    var mystyle = {
+        headers:false, 
+        column: {style:{Font:{Bold:"1"}}},
+        rows: {0:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               2:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               6:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
+      };
+    console.log(mystyle);
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+      alasql.fn.rate = function(rate) {
+            var parts = parseFloat(rate).toFixed(10).split(".");
+            var num = parts[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return num
+      };
+    var incomeAmt = 0;
+    var bankCharge = 0;
+    var whtaxAmt = 0;
+    var maturityValue = 0;
+
+    alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2, row7 VARCHAR2, row8 VARCHAR2, row9 VARCHAR2, row10 VARCHAR2,'+
+                                'row11 VARCHAR2, row12 VARCHAR2, row13 VARCHAR2, row14 VARCHAR2, row15 VARCHAR2)');
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?),?,?,?,?,?,?,?,?,?)', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt, '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?),?,?,?,?,?,?,?,?,?)', [this.record.payor, '','', this.record.arStatDesc, 'PHP', this.record.currRate * this.record.arAmt, '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Income Pull-out', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment Income','Bank Charge','Withholding Tax','Maturity Value']);
+    for(var i of this.passData.tableData){
+      incomeAmt   += i.incomeAmt;
+      bankCharge     += i.bankCharge;
+      whtaxAmt      += i.whtaxAmt;
+      maturityValue     += i.maturityValue;
+      alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,rate(?), datetime(?), datetime(?), ?, rate(?), currency(?), currency(?), currency(?), currency(?), currency(?))', [i.invtCode, i.certNo, i.invtTypeDesc, i.securityDesc, i.maturityPeriod, i.durationUnit, i.interestRate, i.purchasedDate, i.maturityDate, i.currCd, i.currRate, 
+           i.incomeAmt, i.bankCharge, i.whtaxAmt, i.maturityValue]);
+    }
+    //alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?, ?, ?, ?, ?, currency(?), currency(?), currency(?), currency(?))', ["", "", "", "", "","", "", "", "", "","TOTAL" ,incomeAmt ,bankCharge ,whtaxAmt ,maturityValue]);
+    alasql('SELECT row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13, row14, row15 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
+    alasql('DROP TABLE sample');  
   }
 
 }

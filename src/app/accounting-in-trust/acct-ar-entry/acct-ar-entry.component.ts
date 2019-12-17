@@ -23,12 +23,15 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild('cancelMdl') cancelMdl: ModalComponent;
+  @ViewChild('specCancelMdl') specCancelMdl: ModalComponent;
   @ViewChild('reprintModal') reprintMdl: ModalComponent;
   @ViewChild('printModal') printMdl: ModalComponent;
   @ViewChild('leaveMdl') leaveMdl: ModalComponent;
   @ViewChild("myForm") form: any;
+  @ViewChild("myForm2") form2: any;
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
+  @ViewChild('successPrintMdl') successPrintMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
 
   passData: any = {
@@ -104,6 +107,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   dcbBankAcctCurrCd: string = '';
   disablePayor: boolean = false;
   isPrinted: boolean = false;
+  isReopen: boolean = false;
   loading: boolean = false;
   screenPrint: boolean = false;
   canOverride: boolean = false;
@@ -122,6 +126,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   canUpAcctEnt: boolean = true;
   canReprint: boolean = true;
   printLoading: boolean = false;
+  genAcctEnt: boolean = false;
 
   arInfo: any = {
     tranId: '',
@@ -166,7 +171,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     arDtlSum: '',
     acctEntriesSum: '',
     acctEntDate: '',
-    allocTag: 'N'
+    allocTag: 'N',
+    reopenTag: '',
+    reopenDate: ''
   }
 
   arDate: any = {
@@ -287,6 +294,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   newAr(){
     this.loading = true;
     this.isAdd = true;
+    this.isReopen = false;
     this.disableTab.emit(true);
     this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
     this.setDefaultValues();
@@ -343,7 +351,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       arDtlSum: '',
       acctEntriesSum: '',
       acctEntDate: '',
-      allocTag: ''
+      allocTag: '',
+      reopenTag: '',
+      reopenDate: ''
     }
     this.prDate = {
       date: '',
@@ -356,6 +366,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     //this.retrieveMtnBank();
     this.passData.disableGeneric = true;
     this.form.control.markAsPristine();
+    this.form2.control.markAsPristine();
   }
 
   ngOnDestroy(){
@@ -389,7 +400,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
           //User has the authority to cancel AR
-          this.cancelMdl.openNoClose();
+          if([1,2,3,5].includes(this.arInfo.tranTypeCd) && this.arInfo.arStatDesc.toUpperCase() == 'PRINTED'){
+            this.specCancelMdl.openNoClose();
+          }else{
+            this.cancelMdl.openNoClose();
+          }
         }else{
           //User has no authority. Open Override Login
           this.overrideLogin.getApprovalFn();
@@ -401,15 +416,20 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   toCancelAr(auth){
     if(auth){
-      this.cancelMdl.openNoClose();
+      if([1,2,3,5].includes(this.arInfo.tranTypeCd) && this.arInfo.arStatDesc.toUpperCase() == 'PRINTED'){
+        this.specCancelMdl.openNoClose();
+      }else{
+        this.cancelMdl.openNoClose();
+      }
     }
   }
 
-  cancelAr(){
+  cancelAr(reopen?){
     let params: any = {
       tranId: this.arInfo.tranId,
       updateUser: this.ns.getCurrentUser(),
-      updateDate: this.ns.toDateTimeString(0)
+      updateDate: this.ns.toDateTimeString(0),
+      reopen: reopen == undefined ? 'N' : 'Y'
     };
     this.as.cancelAr(params).subscribe(
       (data: any)=>{
@@ -432,6 +452,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrency(data){
+    this.genAcctEnt = true;
     this.selectedCurrency = data;
     this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
@@ -456,6 +477,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeCurrencyRt(){
+    this.genAcctEnt = true;
     this.passData.nData.currRate = this.arInfo.currRate;
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.arInfo.currRate;
@@ -465,6 +487,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeDcbBank(data){
+    this.genAcctEnt = true;
     this.selectedBank = data;
     this.arInfo.dcbBank = data.bankCd;
     this.arInfo.dcbBankName = data.officialName;
@@ -472,6 +495,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeDcbBankAcct(data){
+    this.genAcctEnt = true;
     this.selectedBankAcct = data;
     this.arInfo.dcbBankAcct = data.bankAcctCd;
     this.arInfo.dcbBankAcctNo = data.accountNo;
@@ -480,7 +504,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changeArAmt(data){
-    this.arInfo.arAmt = (parseFloat(data.toString().split(',').join('')));
+    console.log(data);
+    this.genAcctEnt = true;
+    this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){
@@ -494,6 +520,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       this.arInfo.mailAddress = data.data.mailAddress;
       this.arInfo.cedingId = data.data.cedingId;
       this.arInfo.bussTypeName = data.data.bussTypeName;
+      this.genAcctEnt = true;
       this.form.control.markAsDirty();
       setTimeout(()=>{
         $('.payor').focus().blur();
@@ -516,6 +543,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                         this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
+        this.genAcctEnt = false;
         console.log('arEntry first');
         let data = forkData.ar;
         let bankData = forkData.bank;
@@ -560,8 +588,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.tin            = data.ar.tin;
           this.arInfo.refCd          = data.ar.refCd;
           this.arInfo.currCd         = data.ar.currCd;
+          this.passData.nData.currCd = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
           this.arInfo.currRate       = data.ar.currRate;
+          this.passData.nData.currRate = data.ar.currRate;
           this.arInfo.particulars    = data.ar.particulars;
           this.arInfo.createUser     = data.ar.createUser;
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
@@ -572,6 +602,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
           this.arInfo.arDtlSum       = data.ar.arDtlSum;
           this.arInfo.acctEntriesSum = data.ar.acctEntriesSum;
+          this.arInfo.reopenTag       = data.ar.reopenTag;
+          this.arInfo.reopenDate     = this.ns.toDateTimeString(data.ar.reopenDate);
+          this.isReopen              = this.arInfo.reopenTag != null;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
@@ -585,6 +618,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isPrinted = true;
+          }else if(this.isReopen){
+            this.passData.addFlag = false;
+            this.passData.genericBtn = undefined;
+            this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
           }
 
           if(this.arInfo.tranTypeCd == 7){
@@ -667,6 +704,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             cedingId: this.arInfo.payeeNo,
             bussTypeName: this.arInfo.bussTypeName,
             refCd: this.arInfo.refCd,
+            reopenTag: this.arInfo.reopenTag,
             from: 'ar',
             exitLink: 'acct-ar-listings'
           }
@@ -707,6 +745,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           }
         }
         this.form.control.markAsPristine();
+        this.form2.control.markAsPristine();
         this.loading = false;
       },
       (error: any)=>{
@@ -779,6 +818,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
     params.isPrint = isPrint !== undefined ? '1' : null;
+    params.genAcctEnt = this.genAcctEnt ? 'Y' : 'N';
 
     //save
     this.as.saveAcitArTrans(params).subscribe(
@@ -802,6 +842,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.successDiag.open();
           }
           this.form.control.markAsPristine();
+          this.form2.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
           this.paytDtlTbl.markAsPristine();
           if(isPrint !== undefined){
@@ -918,9 +959,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
                             this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');
       //this.printMdl.openNoClose();
       if(isReprint == undefined){
-        this.printStatus();
+        this.successPrintMdl.openNoClose();
       }else{
-        this.reprintMdl.closeModal();  
+        this.reprintMdl.closeModal();
+        this.printLoading = false;
       }
     }else if(this.printMethod == '2'){
       if(this.selectedPrinter.length == 0){
@@ -933,15 +975,16 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           reportName: 'ACITR_AR',
           tranId: this.arInfo.tranId,
           printerName: this.selectedPrinter,
-          pageOrientation: 'LANDSCAPE',
-          paperSize: 'LETTER'
+          pageOrientation: 'PORTRAIT',
+          paperSize: 'HALFLETTER'
         }
         this.ps.directPrint(params).subscribe(
           (data:any)=>{
             console.log(data);
             if(data.errorList.length == 0 && data.messageList.length != 0){
               if(isReprint == undefined){
-                this.printStatus();
+                this.successPrintMdl.openNoClose();
+                
               }else{
                 this.reprintMdl.closeModal();  
                  this.printLoading = false;
@@ -986,9 +1029,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(!this.isPrinted){
       this.loading = true;
       //Save Ar Entry first
-      if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
+      //if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
         this.arInfo.arNo = parseInt(this.generatedArNo);
-      }
+        console.log(this.arInfo.arNo);
+      //}
       this.save(undefined, true);
       /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.arInfo.tranId, '_blank');*/
@@ -1092,16 +1136,21 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   retrieveMtnAcitDCBNo(dcbYear?, dcbDate?){
     this.ms.getMtnAcitDCBNo(dcbYear,null,dcbDate,null).subscribe(
       (data:any)=>{
-        if(data.dcbNoList.length === 0){
+        /*if(data.dcbNoList.length === 0){
           this.dialogIcon = 'info';
           this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
           this.successDiag.open();
           this.generateDCBNo(dcbYear,dcbDate);
-        }else{
-          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear;
-          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo;
-          this.dcbStatus   = data.dcbNoList[0].dcbStatus;
-        }
+        }else{*/
+          if(data.dcbNoList[0].dcbNo == null){
+            this.dialogIcon = 'info';
+            this.dialogMessage = 'DCB No. was not yet generated for the selected date. A DCB No. will be automatically generated.';
+            this.successDiag.open();
+          }
+          this.arInfo.dcbYear = data.dcbNoList[0].dcbYear == null ? dcbYear : data.dcbNoList[0].dcbYear;
+          this.arInfo.dcbNo = data.dcbNoList[0].dcbNo == null ? data.dcbNoList[0].nextDcbNo : data.dcbNoList[0].dcbNo;
+          this.dcbStatus   = data.dcbNoList[0].dcbStatus == null ? 'O' : data.dcbNoList[0].dcbStatus;
+        //}
       }
     );
   }
@@ -1142,7 +1191,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       dcbYear: dcbYear,
       remarks: 'created from AR Entry',
       updateDate: this.ns.toDateTimeString(0),
-      updateUser: this.ns.getCurrentUser()
+      updateUser: this.ns.getCurrentUser(),
     });
 
     this.ms.saveMtnAcitDCBNo([],saveDCBNo).subscribe(
@@ -1216,11 +1265,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank == null || i.bankAcct == null || i.bank.length === 0 || i.bankAcct.length === 0)){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
-        return true;
-      }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank == null || i.bank.length === 0 || i.checkNo == null || i.checkNo.length === 0 || i.checkDate == null || i.checkDate.length === 0 || i.checkClass == null || i.checkClass.length === 0)){
         return true;
       }
     }
@@ -1387,25 +1434,36 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data){
+    if(data.key !== 'remarks'){
+      this.genAcctEnt = true;
+    }
     console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
-        data[i].uneditable = [];
+        /*data[i].uneditable = [];
         data[i].bank = '';
         data[i].bankAcct = '';
         data[i].checkNo = '';
         data[i].checkDate = '';
         data[i].checkClass = '';
-        data[i].uneditable = [];
+        data[i].uneditable = [];*/
         switch(data[i].paytMode){
           case 'BT':
             data[i].uneditable = ['checkNo', 'checkDate', 'checkClass'];
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = ''
             break;
           case 'CK':
             data[i].uneditable = [];
             data[i].checkClass = 'LC';
             break;
           case 'CA':
+            data[i].bank = '';
+            data[i].bankAcct = '';
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = '';
             data[i].uneditable = ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'];
             break;
         }
@@ -1431,22 +1489,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
       }
-    }else if(data.key === 'currCd'){
-      for(var j = 0; j < data.length; j++){
-        for(var k = 0; k < this.currencies.length; k++){
-          if(data[j].currCd == this.currencies[k].currencyCd){
-            data[j].currRate = this.currencies[k].currencyRt;
-            data[j].paytAmt = data[j].currCd * data[j].currRate;
-            break;
-          }
-        }
-      }
-    }else if(data.key === 'currRate'){
-      for(var j = 0; j < data.length; j++){
-      }
     }
     this.passData.tableData = data;
-    //this.paytDtlTbl.refreshTable();
+    this.paytDtlTbl.refreshTable();
   }
 
   setDefaultValues(){

@@ -818,3 +818,13 @@ a.carousel-control-prev {
 ol.carousel-indicators {
     display: none !important;
 }
+
+#notif-progress .progress {
+    height: 12px;
+    font-size: 10px;
+}
+
+#notif-progress .progress-bar {
+    height: 12px;
+    font-size: 10px;
+}
