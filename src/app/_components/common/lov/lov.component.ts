@@ -1416,6 +1416,17 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'unappliedColl'){
+      this.passTable.tHeader = ['Item','Type','Reference No','Amount'];
+      this.passTable.widths = [125, 125, 100, 120];
+      this.passTable.dataTypes = ['text','text','text','currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'currAmt'];
+      this.passTable.checkFlag = true;
+
+      this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
+        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+        this.table.refreshTable();
+      });
     }
 
     this.modalOpen = true;
