@@ -1051,10 +1051,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitInvt'){
-      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
-      this.passTable.widths     = [150,200,150,1,1,120,1,1,1,120,150];
-      this.passTable.dataTypes  = ['text','text','text','number','text','percent','date','date','text','percent','currency'];
-      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
+      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Maturity Value', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
+      this.passTable.widths     = [150,200,150,1,1,1,120,1,1,1,120,150];
+      this.passTable.dataTypes  = ['text','text','text','number','currency','text','percent','date','date','text','percent','currency'];
+      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','matVal','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
       this.passTable.checkFlag  = true;
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
