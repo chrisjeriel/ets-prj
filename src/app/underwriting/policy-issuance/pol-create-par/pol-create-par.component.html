@@ -121,14 +121,26 @@
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
                         </div>
-                        <!-- REMOVED 4/15/2019 -->
+                        <!-- REMOVED 4/15/2019 --> <!-- NOPE -->
                         <div class="input-group ig-row ">
                             <label class="form-control-sm col-sm-2">Inception Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="inceptionDate" (change)="updateExpiryDate();" appRequired>
-                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="inceptionTime" appRequired>
+                            <!-- <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="inceptionDate" (change)="updateExpiryDate();" appRequired>
+                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="inceptionTime" appRequired> -->
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="inceptionDate" (valueChange)="inceptionDate=$event; updateExpiryDate();"></datepicker>
+                            </div>
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [value]="inceptionTime" (valueChange)="inceptionTime=$event;" [textAlign]="'center'"></datepicker>  
+                            </div>
                             <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
-                            <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="expiryDate" min="{{ inceptionDate }}" appRequired>
-                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="expiryTime" min="{{ inceptionTime }}" appRequired>
+                            <!-- <input type="date" class="form-control form-control-sm col-sm-3 req" [(ngModel)]="expiryDate" min="{{ inceptionDate }}" appRequired>
+                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2 req" [(ngModel)]="expiryTime" min="{{ inceptionTime }}" appRequired> -->
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="expiryDate" (valueChange)="expiryDate=$event" [minDate]="inceptionDate"></datepicker>
+                            </div>
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [value]="expiryTime" (valueChange)="expiryTime=$event;" [textAlign]="'center'"></datepicker>  
+                            </div>
                         </div>
                     </div>
                 </div>
