@@ -152,7 +152,7 @@ export class PolItemComponent implements OnInit {
         dataTypes: [ "number", "text-editor", "text", "currency"],
         nData: {
             "itemNo":null,
-            "standbyUnit": null,
+            "quantity": null,
             "itemDesc": null,
             "makeYear": null,
             "sumInsured": null,
@@ -168,7 +168,7 @@ export class PolItemComponent implements OnInit {
         addFlag:true,
         deleteFlag:true,
         total:[null,null,'Total','sumInsured'],
-        keys:['standbyUnit','itemDesc','makeYear','sumInsured'],
+        keys:['quantity','itemDesc','makeYear','sumInsured'],
         searchFlag: true,
         pageID: 'dosMachinery'
     }
