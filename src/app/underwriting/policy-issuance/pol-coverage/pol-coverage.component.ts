@@ -346,6 +346,7 @@ export class PolCoverageComponent implements OnInit {
   showCatPerilBtn:boolean = false;
 
   othersCoverCd:number = 999;
+  premDepTag:boolean = false;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe,
@@ -366,6 +367,10 @@ export class PolCoverageComponent implements OnInit {
 
             this.ms.getLineLOV(this.line).subscribe(a=>{
               this.showCatPerilBtn = a['line'][0].catTag == 'Y';
+            });
+
+            this.ms.getLineLOV(this.line).subscribe(a=>{
+              this.premDepTag = a['line'][0].premDepTag == 'Y';
             });
 
             // this.ms.getMtnParameters('N',this.line+'_OTHERS').subscribe(a=>{
