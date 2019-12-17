@@ -61,7 +61,7 @@
                     <label class="form-control-sm col-sm-4">Total Sum Insured</label>
                     <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTSi  | number:'1.2-2'" (ngModelChange)="coverageData.cumTSi = $event;" readonly appCurrency tabindex="-1" name="coverageData.cumTSi">
                   </div>
-                  <ng-container *ngIf="line!='EEI'">
+                  <ng-container *ngIf="!premDepTag">
                     <div class="input-group" style="margin-bottom: 2px !important">
                       <label class="form-control-sm col-sm-4">Total Premium</label>
                       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
@@ -69,7 +69,7 @@
                   </ng-container>
 
                   
-                  <ng-container *ngIf="line=='EEI'">
+                  <ng-container *ngIf="premDepTag">
                     <div class="input-group" style="margin-bottom: -13px !important">
                       <label class="form-control-sm col-sm-4">Total Premium</label>
                       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.cumTPrem  | number:'1.2-2'" (ngModelChange)="coverageData.cumTPrem = $event" readonly appCurrency tabindex="-1" name="coverageData.cumTPrem">
@@ -79,7 +79,7 @@
                       <input type="text" class="form-control form-control-sm req" [ngModel]="coverageData.premDepPct" (ngModelChange)="coverageData.premDepPct = $event;"  appOtherRates name="coverageData.premDepPct" >
                     </div>
                     <div class="input-group" style="margin-bottom: 2px !important">
-                      <label class="form-control-sm col-sm-4">Annual Premium</label>
+                      <label class="form-control-sm col-sm-4">First Premium</label>
                       <input type="text" class="form-control form-control-sm req" [ngModel]="(coverageData.premDepPct/100)*coverageData.cumTPrem" readonly appCurrency name="coverageData.annualPrem" >
                     </div>
                   </ng-container>
@@ -278,11 +278,11 @@
               <input type="text" class="form-control form-control-sm col-sm-3 req" readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.alttotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.alttotalPrem = $event">
               <input type="text" class="form-control form-control-sm col-sm-3 req"  readonly appCurrency style="margin-left: 5px !important;max-width: 120px" [ngModel] = "altCoverageData.comtotalPrem | number:'1.2-2'" (ngModelChange) = "altCoverageData.comtotalPrem">
             </div>
-            <div class="input-group" style="margin-top: -8px;" *ngIf="policyInfo.extensionTag !== 'Y' && line == 'EEI'">
+            <div class="input-group" style="margin-top: -8px;" *ngIf="policyInfo.extensionTag !== 'Y' && premDepTag">
               <form #premDepForm="ngForm" class="d-flex w-100">
                 <label class="form-control-sm col-sm-3">Prem. Dep. (%)</label>
                 <input type="text" class="form-control form-control-sm col-sm-3 req" [ngModel]="altCoverageData.premDepPct" (ngModelChange)="altCoverageData.premDepPct = $event;"  appOtherRates name="altCoverageData.premDepPct" style="max-width: 120px" >
-                <label class="form-control-sm col-sm-3" style="max-width: 120px;margin-left: 5px">Annual Premium</label>
+                <label class="form-control-sm col-sm-3" style="max-width: 120px;margin-left: 5px">First Premium</label>
                 <input type="text" class="form-control form-control-sm col-sm-3 req" style="margin-left: 5px !important;max-width: 120px" readonly [ngModel]="(altCoverageData.premDepPct/100)*altCoverageData.cumTPrem" appCurrency name="altCoverageData.annualPrem" >
               </form>
             </div>
@@ -313,7 +313,7 @@
                 <form #premDepForm="ngForm" class="d-flex w-100">
                   <label class="form-control-sm col-sm-2">Prem. Dep. (%)</label>
                   <input type="text" class="form-control form-control-sm col-sm req" [ngModel]="altCoverageData.premDepPct" (ngModelChange)="altCoverageData.premDepPct = $event;"  appOtherRates name="altCoverageData.premDepPct"  >
-                  <label class="form-control-sm" >Annual Premium</label>
+                  <label class="form-control-sm" >First Premium</label>
                   <input type="text" class="form-control form-control-sm col-sm req" readonly [ngModel]="(altCoverageData.premDepPct/100)*altCoverageData.cumTPrem" appCurrency name="altCoverageData.annualPrem" >
                 </form>
               </div>

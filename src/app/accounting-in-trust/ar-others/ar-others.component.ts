@@ -30,6 +30,7 @@ export class ArOthersComponent implements OnInit {
   deletedData: any[] = [];
 
   cancelFlag: boolean = false;
+  genAcctEnt: boolean = false;
 
   totalLocalAmt: number = 0;
   isReopen: boolean = false;
@@ -87,6 +88,7 @@ export class ArOthersComponent implements OnInit {
   }
 
   retrieveOthers(){
+    this.genAcctEnt = false;
     this.passData.tableData = [];
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 3).subscribe( //Bill id = 3 for others
       (data: any)=>{
@@ -168,7 +170,8 @@ export class ArOthersComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       saveTransDtl: this.savedData,
-      delTransDtl: this.deletedData
+      delTransDtl: this.deletedData,
+      genAcctEnt: this.genAcctEnt ? 'Y' : 'N'
     }
     console.log(params);
     this.accountingService.saveAcitArTransDtl(params).subscribe(
@@ -196,11 +199,13 @@ export class ArOthersComponent implements OnInit {
     if(data.key === 'currAmt' || data.key === 'currRate'){
       for(var i = 0; i < data.length; i++){
         data[i].localAmt = data[i].currAmt * data[i].currRate;
+        this.genAcctEnt = true;
       }
     }else if(data.key === 'currCd'){
       for(var i = 0; i < data.length; i++){
         data[i].currRate = data[i].currCd.split('T')[1];
         data[i].localAmt = data[i].currAmt * data[i].currRate;
+        this.genAcctEnt = true;
       }
     }
     this.passData.tableData = data;

@@ -1335,7 +1335,32 @@
 											<div class="input-group" style="    margin-top: -2px !important;
 											margin-bottom: -14px !important;">
 											<label class="form-control-sm col-sm-2">Policy No</label>
-											<input name="input229" type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
+											<!-- <input name="input229" type="text" class="form-control form-control-sm col-sm-10 cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
+
+											<div class="input-group" style="margin-top: 10px;">
+												<label class="form-control-sm col-sm-2">Policy No</label> -->
+												<input name="input2" type="text" class="form-control form-control-sm cap-input" [(ngModel)]="policyInfo.policyNo" readonly style="font-weight: bold;">
+												<!-- <input name="input3" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+												ngbTooltip="Year">
+												<input name="input4" type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
+												ngbTooltip="Sequence No">
+												<input name="input5" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+												ngbTooltip="Co Code">
+												<input name="input6" type="text" class="form-control form-control-sm col-sm-2 cap-input" style="margin-left: 5px;"
+												ngbTooltip="Co Series No">
+												<input name="input7" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
+												ngbTooltip="Alt No"> -->
+												<div class="col-sm-6 renewal-div px-0 ">
+													<div class="col-sm d-flex ng-star-inserted input-group pr-0 mb-0 pl-2" *ngIf="policyInfo.repPolicyNo!=null">
+														<span class="form-control-sm col-sm-4 cust-lbl-left-offset py-0 text-right pr-3">Renewal Policy:</span>
+														<span class="form-control-sm col-sm cust-lbl-left-offset py-0">{{policyInfo.repPolicyNo}}</span>
+													</div>
+													<div class="col-sm d-flex ng-star-inserted input-group pr-0 mb-0 pl-2" *ngIf="policyInfo.oldPolicyNo!=null" style="margin-top: 8px !important;">
+														<span class="form-control-sm col-sm-4 cust-lbl-left-offset py-0 text-right pr-3">Replacing Policy:</span>
+														<span class="form-control-sm col-sm cust-lbl-left-offset py-0">{{policyInfo.oldPolicyNo}}</span>
+													</div>
+												</div>
+											<!-- </div> -->
 										<!-- <input name="input230" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Year">
 										<input name="input231" type="text" class="form-control form-control-sm col-sm-4 cap-input" style="margin-left: 5px;"
@@ -1347,6 +1372,8 @@
 										<input name="input234" type="text" class="form-control form-control-sm col-sm-1 cap-input" style="margin-left: 5px;"
 										ngbTooltip="Alt No"> -->
 									</div>
+
+
 									<div class="input-group">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Type of Cession</label>
 										<input name="input235" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.cessionDesc" readonly tabindex="-1">
@@ -1402,9 +1429,18 @@
 										<!-- <span class="form-control-sm col-sm-2">&nbsp;</span>
 											<span class="form-control-sm col-sm">&nbsp;</span> -->
 										</div>
-										<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
+										<!-- <div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
 											<input name="input251" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo">
+										</div> -->
+										<div *ngIf="line === 'MLP'" class="input-group">
+											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
+											<input readonly="readonly" name="mlpinput23" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo">
+											<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showPolLov()"></i></a></div>
+										</div>
+										<div *ngIf="line === 'DOS'" class="input-group">
+											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
+											<input name="dosinput23" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo" appRequired>
 										</div>
 									</div>
 								</div>
