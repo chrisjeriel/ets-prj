@@ -123,6 +123,7 @@ export class AcctOrEntryComponent implements OnInit {
   canUpAcctEnt: boolean = true;
   canReprint: boolean = true;
   printLoading: boolean = false;
+  genAcctEnt: boolean = false;
 
   orInfo: any = {
     tranId: '',
@@ -446,6 +447,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeCurrency(data){
+    this.genAcctEnt
     this.selectedCurrency = data;
     this.passData.nData.currCd = data;
     this.orInfo.currCd = data;
@@ -470,6 +472,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeCurrencyRt(){
+    this.genAcctEnt = true;
     for(var i = 0; i < this.passData.tableData.length; i++){
       this.passData.tableData[i].currRate = this.orInfo.currRate;
       this.passData.nData.currRate = this.orInfo.currRate;
@@ -479,6 +482,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeDcbBank(data){
+    this.genAcctEnt = true;
     this.selectedBank = data;
     this.orInfo.dcbBank = data.bankCd;
     this.orInfo.dcbBankName = data.officialName;
@@ -486,6 +490,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeDcbBankAcct(data){
+    this.genAcctEnt = true;
     this.selectedBankAcct = data;
     this.orInfo.dcbBankAcct = data.bankAcctCd;
     this.orInfo.dcbBankAcctNo = data.accountNo;
@@ -494,12 +499,14 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   changeOrAmt(data){
-    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round((this.orInfo.orAmt.split(',').join(''))*100) / 100;
+    this.genAcctEnt = true;
+    this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round(parseFloat(this.orInfo.orAmt.toString().split(',').join(''))*100) / 100;
   }
 
   setLov(data){
     console.log(data);
     if(data.selector === 'payee'){
+      this.genAcctEnt = true;
       this.orInfo.payeeNo = data.data.payeeNo;
       this.orInfo.payeeClassCd = data.data.payeeClassCd;
       this.orInfo.payor = data.data.payeeName;
@@ -532,6 +539,7 @@ export class AcctOrEntryComponent implements OnInit {
                         this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y')).pipe(map(([or, bank, bankAcct, curr, paymentType]) => { return { or, bank, bankAcct, curr, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
+        this.genAcctEnt = false;
         console.log('arEntry first');
         let data = forkData.or;
         let bankData = forkData.bank;
@@ -590,8 +598,10 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.tin            = data.orEntry.tin;
           this.orInfo.refCd          = data.orEntry.refCd;
           this.orInfo.currCd         = data.orEntry.currCd;
+          this.passData.nData.currCd = data.orEntry.currCd;
           this.orInfo.orAmt          = data.orEntry.orAmt;
           this.orInfo.currRate       = data.orEntry.currRate;
+          this.passData.nData.currRate = data.orEntry.currRate;
           this.orInfo.particulars    = data.orEntry.particulars;
           this.orInfo.createUser     = data.orEntry.createUser;
           this.orInfo.createDate     = this.ns.toDateTimeString(data.orEntry.createDate);
@@ -813,6 +823,7 @@ export class AcctOrEntryComponent implements OnInit {
     params.delPaytDtl = this.deletedData;
     params.savePaytDtl = this.savedData;
     params.isPrint = isPrint !== undefined ? '1' : null;
+    params.genAcctEnt = this.genAcctEnt ? 'Y' : 'N';
 
     //save
     this.as.saveAcseOrEntry(params).subscribe(
@@ -1266,11 +1277,9 @@ export class AcctOrEntryComponent implements OnInit {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank == null || i.bankAcct == null || i.bank.length === 0 || i.bankAcct.length === 0)){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
-        return true;
-      }else if(i.paytMode == 'CR' && (i.bank.length === 0 || i.bankAcct.length === 0 || i.checkNo.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank == null || i.bank.length === 0 || i.checkNo == null || i.checkNo.length === 0 || i.checkDate == null || i.checkDate.length === 0 || i.checkClass == null || i.checkClass.length === 0)){
         return true;
       }
     }
@@ -1506,25 +1515,37 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  onTableDataChange(data){
+   onTableDataChange(data){
+    if(data.key !== 'remarks'){
+      this.genAcctEnt = true;
+    }
     console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
+        /*data[i].uneditable = [];
         data[i].bank = '';
         data[i].bankAcct = '';
         data[i].checkNo = '';
         data[i].checkDate = '';
         data[i].checkClass = '';
-        data[i].uneditable = [];
+        data[i].uneditable = [];*/
         switch(data[i].paytMode){
           case 'BT':
             data[i].uneditable = ['checkNo', 'checkDate', 'checkClass'];
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = ''
             break;
           case 'CK':
             data[i].uneditable = [];
             data[i].checkClass = 'LC';
             break;
           case 'CA':
+            data[i].bank = '';
+            data[i].bankAcct = '';
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = '';
             data[i].uneditable = ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'];
             break;
         }
@@ -1550,22 +1571,9 @@ export class AcctOrEntryComponent implements OnInit {
         console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
       }
-    }else if(data.key === 'currCd'){
-      for(var j = 0; j < data.length; j++){
-        for(var k = 0; k < this.currencies.length; k++){
-          if(data[j].currCd == this.currencies[k].currencyCd){
-            data[j].currRate = this.currencies[k].currencyRt;
-            data[j].paytAmt = data[j].currCd * data[j].currRate;
-            break;
-          }
-        }
-      }
-    }else if(data.key === 'currRate'){
-      for(var j = 0; j < data.length; j++){
-      }
     }
     this.passData.tableData = data;
-    //this.paytDtlTbl.refreshTable();
+    this.paytDtlTbl.refreshTable();
   }
 
   setDefaultValues(){

@@ -844,10 +844,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'payee'){
-      this.passTable.tHeader = ['Payee Name','Payee Class'];
-      this.passTable.widths =[500,500]
-      this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'payeeName','payeeClassName'];
+      this.passTable.tHeader = ['Payee Class', 'Payee No' ,'Payee Name',];
+      this.passTable.widths =[500,500,500]
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['payeeClassName', 'payeeNo', 'payeeName',];
       this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
@@ -1047,10 +1047,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArInvPullout'){
-      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax'];
-      this.passTable.widths =[300,300,300,300,300,300]
-      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency',];
-      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt'];
+      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax', 'Maturity Value'];
+      this.passTable.widths =[300,300,300,300,300,300, 300]
+      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency', 'currency'];
+      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt', 'matVal'];
       this.passTable.checkFlag = true;
       this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];

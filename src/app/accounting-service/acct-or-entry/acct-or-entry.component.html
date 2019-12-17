@@ -57,8 +57,9 @@
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Payor</label>
-				<input type="text" class="form-control form-control-sm cust-sm required payor" [(ngModel)]="orInfo.payor" appRequired [readonly]="isCancelled || isPrinted || disablePayor || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd.length == 0 || inquiryFlag" name="payor">
+				<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="orInfo.payeeNo" appRequired [readonly]="isCancelled || isPrinted || disablePayor || orInfo.rstrctTranUp === 1 || orInfo.tranTypeCd.length == 0 || inquiryFlag" name="payeeNo">
 				<div class="text-search-ico" (click)="openLOV('payor')" *ngIf="!isCancelled && !isPrinted && !disablePayor && orInfo.rstrctTranUp !== 1 && orInfo.tranTypeCd.length != 0 && !inquiryFlag"><a><i class="fa fa-search"></i></a></div>
+				<input type="text" class="form-control form-control-sm cust-sm required cust-mrgn payor" [(ngModel)]="orInfo.payor" appRequired [readonly]="isCancelled || isPrinted || orInfo.tranTypeCd.length == 0 || inquiryFlag" name="payor">
 			</div>
 			<div class="input-group cust-ig">
 				<label class="form-control-sm col-sm-1">Address</label>
@@ -318,7 +319,7 @@ padding-right: 0px !important;">
 	<div header>Confirmation</div>
 	<div body>
 	  <div style="text-align: center">
-	  	<p style="margin: 0px">Was the printing of AR successful?</p>
+	  	<p style="margin: 0px">Was the printing of OR successful?</p>
 	  </div>
 	</div>
 	<div footer>
