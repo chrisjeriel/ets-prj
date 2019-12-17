@@ -35,6 +35,7 @@ export class UnappliedCollectionComponent implements OnInit {
   isReopen: boolean = false;
   originalNet: number = 0;
   newAlteredAmt: number = 0;
+  genAcctEnt: boolean = false;
 
   passData: any = {
   	tableData: [],
@@ -89,6 +90,7 @@ export class UnappliedCollectionComponent implements OnInit {
   }
 
   retrieveArUnappliedCollection(){
+    this.genAcctEnt = false;
     this.passData.tableData = [];
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 2).subscribe( //Bill id = 2 for unapplied collection
       (data: any)=>{
@@ -183,7 +185,8 @@ export class UnappliedCollectionComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       saveTransDtl: this.savedData,
-      delTransDtl: this.deletedData
+      delTransDtl: this.deletedData,
+      genAcctEnt: this.genAcctEnt ? 'Y' : 'N'
     }
     console.log(params);
     this.accountingService.saveAcitArTransDtl(params).subscribe(
@@ -209,10 +212,12 @@ export class UnappliedCollectionComponent implements OnInit {
 
   unappliedCollection(data){
     if(data.key === 'currAmt' || data.key === 'currRate'){
+      this.genAcctEnt = true;
       for(var i = 0; i < data.length; i++){
         data[i].localAmt = data[i].currAmt * data[i].currRate;
       }
     }else if(data.key === 'currCd'){
+      this.genAcctEnt = true;
       for(var i = 0; i < data.length; i++){
         data[i].currRate = data[i].currCd.split('T')[1];
         data[i].localAmt = data[i].currAmt * data[i].currRate;

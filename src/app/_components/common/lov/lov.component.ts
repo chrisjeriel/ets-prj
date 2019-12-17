@@ -451,6 +451,45 @@ export class LovComponent implements OnInit {
          });
       }
      
+    } else if(selector == 'payee'){
+      if(this.passData.payeeNo == null || this.passData.payeeNo.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'payee'
+        });
+      }else{
+        console.log(this.passData.payeeClassCd);
+         this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe((data:any) => {
+           if(data.payeeList.length == 1){
+             data.payeeList[0]['ev'] = ev;
+             data.payeeList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['payeeList'][0], ev : ev, selector: 'payee'});
+           }else if(data.payeeList.length == 0){
+             this.passData.payeeNo = '';
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'payee'
+             });
+
+             this.passData.selector = 'payee';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'payee'
+             });
+
+             this.passData.selector = 'payee';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+         });
+      }
+     
     } 
     /*if(districtCd === ''){
       this.selectedData.emit({

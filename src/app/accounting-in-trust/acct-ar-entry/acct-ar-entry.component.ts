@@ -380,6 +380,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   openLOV(type){
     if(type === 'payor'){
       this.passLov.selector = 'payee';
+      this.passLov.payeeNo = '';
       if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
         this.passLov.payeeClassCd = 3;
       }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
@@ -451,6 +452,22 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   	this.onChange.emit({ type: this.arInfo.tranTypeCd });
   }
 
+  changePayeeNo(event){
+  this.ns.lovLoader(event, 1);
+  this.passLov.selector = 'payee';
+    if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
+      this.passLov.payeeClassCd = 3;
+    }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
+      console.log('test')
+      this.passLov.payeeClassCd = '';
+    }else{
+      this.passLov.payeeClassCd = 1; //get only cedants
+      this.arInfo.payeeNo = this.pad(this.arInfo.payeeNo, 'payeeNo');
+    }
+    this.passLov.payeeNo = this.arInfo.payeeNo;
+    this.lov.checkCode('payee',null,null,null,null,null,event);
+  }
+
   changeCurrency(data){
     this.genAcctEnt = true;
     this.selectedCurrency = data;
@@ -512,14 +529,28 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   setLov(data){
     console.log(data);
     if(data.selector === 'payee'){
-      this.arInfo.payeeNo = data.data.payeeNo;
-      this.arInfo.payeeClassCd = data.data.payeeClassCd;
-      this.arInfo.payor = data.data.payeeName;
-      this.arInfo.tin = data.data.tin;
-      this.arInfo.bussTypeCd = data.data.bussTypeCd;
-      this.arInfo.mailAddress = data.data.mailAddress;
-      this.arInfo.cedingId = data.data.cedingId;
-      this.arInfo.bussTypeName = data.data.bussTypeName;
+      if(data.ev != undefined){
+        this.ns.lovLoader(data.ev, 0);
+      }
+      if(data.data == null){
+        this.arInfo.payeeNo      = '';
+        this.arInfo.payeeClassCd = '';
+        this.arInfo.payor        = '';
+        this.arInfo.tin          = '';
+        this.arInfo.bussTypeCd   = '';
+        this.arInfo.mailAddress  = '';
+        this.arInfo.cedingId     = '';
+        this.arInfo.bussTypeName = '';
+      }else{
+        this.arInfo.payeeNo = data.data.payeeNo;
+        this.arInfo.payeeClassCd = data.data.payeeClassCd;
+        this.arInfo.payor = data.data.payeeName;
+        this.arInfo.tin = data.data.tin;
+        this.arInfo.bussTypeCd = data.data.bussTypeCd;
+        this.arInfo.mailAddress = data.data.mailAddress;
+        this.arInfo.cedingId = data.data.cedingId;
+        this.arInfo.bussTypeName = data.data.bussTypeName;
+      }
       this.genAcctEnt = true;
       this.form.control.markAsDirty();
       setTimeout(()=>{
@@ -656,13 +687,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
-              this.passData.dataTypes[4] = 'select';
-              this.passData.dataTypes[5] = 'text'; 
+              //this.passData.dataTypes[4] = 'select';
+              //this.passData.dataTypes[5] = 'text'; 
             }
             if(i.paytMode !== 'CK'){
               if(i.paytMode !== 'CR'){
                 i.uneditable.push('checkNo');
-                this.passData.dataTypes[5] = 'text'; 
+                //this.passData.dataTypes[5] = 'text'; 
               }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
@@ -1067,6 +1098,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
               this.selectedCurrency = i.currencyCd;
               this.arInfo.currCd = i.currencyCd;
               this.arInfo.currRate = i.currencyRt;
+              this.passData.nData.currCd = i.currencyCd;
+              this.passData.nData.currRate = i.currencyRt;
             }
             this.currencies.push({currencyCd: i.currencyCd, currencyRt: i.currencyRt});
             this.passData.opts[1].vals.push(i.currencyCd);
@@ -1414,6 +1447,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       if(field === 'arNo'){
         return String(str).padStart(this.arInfo.arNoDigits, '0');
       }else if(field === 'dcbSeqNo'){
+        return String(str).padStart(3, '0');
+      }else if(field === 'payeeNo'){
         return String(str).padStart(3, '0');
       }
     }
