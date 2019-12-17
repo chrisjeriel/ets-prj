@@ -123,9 +123,14 @@
 											<span>&nbsp;</span>
 											<input name="input22" type="text" class="form-control form-control-sm col-sm ig-mrgn" tabindex="-1" [(ngModel)]="policyInfo.intmName" style="margin-left: -2px !important;" readonly tabindex="-1">
 										</div>
-										<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group">
+										<div *ngIf="line === 'MLP'" class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
-											<input name="input23" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo">
+											<input readonly="readonly" name="mlpinput23" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo">
+											<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showPolLov()"></i></a></div>
+										</div>
+										<div *ngIf="line === 'DOS'" class="input-group">
+											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">MBI Ref No</label>
+											<input name="dosinput23" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.mbiRefNo" appRequired>
 										</div>
 										<div *ngIf="policyInfo.holdCoverTag === 'Y'" class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Hold Cover No</label>
@@ -2729,3 +2734,14 @@
 <app-sucess-dialog #dedSuccess [message]="dialogMsg" [icon]="dialogIcon" (onOk)="onClickOkDed()"></app-sucess-dialog>
 <app-confirm-save #dedConSave (onYes)="saveDeductibles();" [form]="deductiblesTable.form?.first"></app-confirm-save>
 </form>
+
+<app-modal class="d-none" #polMdl>
+    <div header>List Of Values</div>
+    <div body class="container-flex">
+       <app-loading-table [passData]="passDataPolLOV" (searchToDb)="searchQuery($event)"></app-loading-table>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="polMdl.closeModal();"><a>Cancel</a></button>
+		<button type="button" [disabled]="polTable?.indvSelect == ''" class="cust-btn" (click)="onClickOkPolLov()"><a>Ok</a></button>
+    </div>
+</app-modal>
