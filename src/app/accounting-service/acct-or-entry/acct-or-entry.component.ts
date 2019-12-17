@@ -1277,9 +1277,9 @@ export class AcctOrEntryComponent implements OnInit {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0 )){
+      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank.length === 0 || i.checkNo.length === 0 || i.checkDate.length === 0 || i.checkClass.length === 0)){
+      }else if(i.paytMode == 'CK' && (i.bank == null || i.bank.length === 0 || i.checkNo == null || i.checkNo.length === 0 || i.checkDate == null || i.checkDate.length === 0 || i.checkClass == null || i.checkClass.length === 0)){
         return true;
       }
     }
@@ -1515,28 +1515,37 @@ export class AcctOrEntryComponent implements OnInit {
     }
   }
 
-  onTableDataChange(data){
-    if(data.key != 'remarks'){
+   onTableDataChange(data){
+    if(data.key !== 'remarks'){
       this.genAcctEnt = true;
     }
     console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
+        /*data[i].uneditable = [];
         data[i].bank = '';
         data[i].bankAcct = '';
         data[i].checkNo = '';
         data[i].checkDate = '';
         data[i].checkClass = '';
-        data[i].uneditable = [];
+        data[i].uneditable = [];*/
         switch(data[i].paytMode){
           case 'BT':
             data[i].uneditable = ['checkNo', 'checkDate', 'checkClass'];
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = ''
             break;
           case 'CK':
             data[i].uneditable = [];
             data[i].checkClass = 'LC';
             break;
           case 'CA':
+            data[i].bank = '';
+            data[i].bankAcct = '';
+            data[i].checkNo = '';
+            data[i].checkDate = '';
+            data[i].checkClass = '';
             data[i].uneditable = ['bank', 'bankAcct', 'checkNo', 'checkDate', 'checkClass'];
             break;
         }
@@ -1562,22 +1571,9 @@ export class AcctOrEntryComponent implements OnInit {
         console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
       }
-    }else if(data.key === 'currCd'){
-      for(var j = 0; j < data.length; j++){
-        for(var k = 0; k < this.currencies.length; k++){
-          if(data[j].currCd == this.currencies[k].currencyCd){
-            data[j].currRate = this.currencies[k].currencyRt;
-            data[j].paytAmt = data[j].currCd * data[j].currRate;
-            break;
-          }
-        }
-      }
-    }else if(data.key === 'currRate'){
-      for(var j = 0; j < data.length; j++){
-      }
     }
     this.passData.tableData = data;
-    //this.paytDtlTbl.refreshTable();
+    this.paytDtlTbl.refreshTable();
   }
 
   setDefaultValues(){
