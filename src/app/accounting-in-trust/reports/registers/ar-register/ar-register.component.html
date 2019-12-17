@@ -50,7 +50,7 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2">Payment Mode</label>
-							<input type="text" class="form-control form-control-sm col-sm-2">
+							<input type="text" [(ngModel)]="params.paytMode" class="form-control form-control-sm col-sm-2">
 							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
 							<input type="text" class="form-control form-control-sm col-sm" readonly="true" style="margin-left: 2px !important;" [(ngModel)]="selPaytMode">
 						</div>
@@ -66,22 +66,24 @@
 						<div style="padding-left: 18px">
 							<div class="row">
 								<div class="col-sm" style="margin-bottom: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="typeRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Summary</label>
+									<input value="S" [(ngModel)]="rType" id="rType1" type="radio" style="vertical-align: middle;" name="typeRadio" checked><label for="rType1" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Summary</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm" style="margin-top: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="typeRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Detailed</label>
+									<input value="D" [(ngModel)]="rType" id="rType2" type="radio" style="vertical-align: middle;" name="typeRadio"><label for="rType2" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Detailed</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm" style="margin-bottom: -8px !important;">
-									<input type="checkbox" checked style="vertical-align: middle;" [disabled]="(dateRadio == '2') ? true : false"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Closed Transactions</label>
+									<input id="iClo" type="checkbox" [(ngModel)]="iCloTag"
+  [ngModelOptions]="{standalone: true}" style="vertical-align: middle;" [disabled]="(dateRadio == '2') ? true : false"><label for="iClo" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Closed Transactions</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm" style="margin-top: -8px !important;">
-									<input type="checkbox" checked style="vertical-align: middle;"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Cancelled Transactions</label>
+									<input id="iCan" type="checkbox" [(ngModel)]="iCanTag"
+  [ngModelOptions]="{standalone: true}" style="vertical-align: middle;"><label for="iCan" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Include Cancelled Transactions</label>
 								</div>
 							</div>
 						</div>
@@ -92,10 +94,10 @@
 						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-4">Destination</label>
-							<select class="form-control form-control-sm cust-sm">
-								<option selected>Printer</option>
-								<option>Option 2</option>
-								<option>Option 3</option>
+							<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+								<option value="screen">Screen</option>
+		    					<option value="dlPdf">PDF</option>
+		    					<option value="printPdf">Printer</option>
 							</select>
 						</div>
 						<div class="input-group cust-ig" style="padding-top: 8px !important; margin-bottom: -16px !important;">
@@ -121,7 +123,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center" style="margin-top: 18px !important;">
-					<button class="cust-btn">Print</button>
+					<button class="cust-btn" (click)="onClickPrint();">Print</button>
 				</div>
 			</div>
 		</fieldset>

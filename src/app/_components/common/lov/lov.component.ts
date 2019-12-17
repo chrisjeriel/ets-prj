@@ -1462,9 +1462,9 @@ export class LovComponent implements OnInit {
       this.passTable.minColSize = ['1px', '120px'];
       this.passTable.dataTypes  = ['number','text'];
       this.passTable.keys       = ['tranTypeCd','tranTypeName'];
-      this.passTable.checkFlag  = true;
+      // this.passTable.checkFlag  = true;
 
-      this.mtnService.getAcitTranType('AR', '', '', '', '', 'Y').subscribe((data:any) => {
+      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', '', '', 'Y').subscribe((data:any) => {
         this.passTable.tableData = data.tranTypeList;
 
         this.table.refreshTable();
