@@ -660,13 +660,13 @@ export class AcctOrEntryComponent implements OnInit {
             if(i.paytMode !== 'BT' && i.paytMode !== 'CK' && i.paytMode !== 'CR'){
               i.uneditable.push('bank');
               i.uneditable.push('bankAcct');
-              this.passData.dataTypes[4] = 'select';
-              this.passData.dataTypes[5] = 'text'; 
+              //this.passData.dataTypes[4] = 'select';
+              //this.passData.dataTypes[5] = 'text'; 
             }
             if(i.paytMode !== 'CK'){
               if(i.paytMode !== 'CR'){
                 i.uneditable.push('checkNo');
-                this.passData.dataTypes[5] = 'text'; 
+                //this.passData.dataTypes[5] = 'text'; 
               }
               i.uneditable.push('checkDate');
               i.uneditable.push('checkClass');
