@@ -15,14 +15,14 @@ export class PolicyInquiryComponent implements OnInit {
   @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
-        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status"
+        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status","Created By"
     ],
-    sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC'],
+    sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC','CREATE_USER'],
     dataTypes: [
             "text","text", "text", "text", "text", "text", "text", "text",
-            "text", "currency", "currency", "date", "date", "date", "date", "text"
+            "text", "currency", "currency", "date", "date", "date", "date", "text", "text"
     ],
-    keys: ['lineCd','policyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','totalPrem','issueDate','inceptDate','expiryDate','acctDate','statusDesc'],
+    keys: ['lineCd','policyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','totalPrem','issueDate','inceptDate','expiryDate','acctDate','statusDesc','createUser'],
     // checkFlag: false,
     // selectFlag: false,
     // addFlag: false,
@@ -128,6 +128,11 @@ export class PolicyInquiryComponent implements OnInit {
             {
                 key: 'statusDesc',
                 title: 'Status',
+                dataType: 'text'
+            },
+            {
+                key: 'createUser',
+                title: 'Created By',
                 dataType: 'text'
             },
         ],
@@ -270,7 +275,7 @@ export class PolicyInquiryComponent implements OnInit {
          });
 
 
-         alasql('SELECT lineCd AS Line, policyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS TotalSi, currency(totalPrem) AS TotalPremium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
+         alasql('SELECT lineCd AS Line, policyNo AS PolicyNo, cessionDesc AS TypeCession, cedingName AS CedingCompany, insuredDesc AS Insured, riskName AS Risk, objectDesc AS Object, site AS Site, currencyCd AS Currency, currency(totalSi) AS TotalSi, currency(totalPrem) AS TotalPremium, datetime(issueDate) AS IssueDate, datetime(inceptDate) AS InceptDate, datetime(expiryDate) AS ExpiryDate, datetime(acctDate) AS AcctingDate, statusDesc AS Status, createUser AS CreatedBy  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,recs]);
        })
 
      
