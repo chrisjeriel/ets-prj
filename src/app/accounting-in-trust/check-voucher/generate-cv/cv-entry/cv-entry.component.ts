@@ -424,7 +424,7 @@ export class CvEntryComponent implements OnInit {
 
   showLov(fromUser){
     console.log(fromUser);
-
+    console.log(this.saveAcitCv.paytReqType);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       if(this.saveAcitCv.paytReqType == 'S'){
@@ -432,7 +432,7 @@ export class CvEntryComponent implements OnInit {
       }else if(this.saveAcitCv.paytReqType == 'I'){
         this.passDataLov.payeeClassCd = 3;
       }else{
-        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null)?'':1;
+        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null || this.saveAcitCv.paytReqType == 'O')?'':1;
       }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
