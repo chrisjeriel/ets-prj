@@ -77,8 +77,16 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044N',
                         'POLR044O',
                         'POLR044P',
-                        'POLR044Q'
+                        'POLR044Q',
+                        'POLR044V',
+                        'POLR044W',
+                        'POLR044X',
+                        'ACITR061F',
+                        'ACITR061G',
+                        'ACITR048A'
                         ];
+
+  paramsToggle: Array<string> = [];
 
   extractDisabled: boolean = true;
   modalHeader: string = "";
@@ -97,6 +105,8 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   setReport(data){
+    this.paramsToggle = [];
+    this.params = [];
   	console.log(data.data);
   	this.params.reportId = data.data.reportId;
   	this.params.reportName = data.data.reportTitle;
@@ -105,6 +115,112 @@ export class PolicyReportsComponent implements OnInit {
       this.extractDisabled = false;
     } else {
       this.extractDisabled = true;
+    }
+
+      // this.paramsToggle.push('issueDate');
+      // this.paramsToggle.push('lossDate');
+      // this.paramsToggle.push('distributionDate');
+      // this.paramsToggle.push('tranDate');
+      // this.paramsToggle.push('postingDate');
+      // this.paramsToggle.push('createDate');
+      // this.paramsToggle.push('effectiveDate');
+      // this.paramsToggle.push('accountingDate');
+      // this.paramsToggle.push('line');
+      // this.paramsToggle.push('company');
+      // this.paramsToggle.push('policy');
+      // this.paramsToggle.push('alteration');
+      // this.paramsToggle.push('policyAlteration');
+      // this.paramsToggle.push('distributed');
+      // this.paramsToggle.push('undistributed');
+      // this.paramsToggle.push('byDate');
+      // this.paramsToggle.push('byMonthYear');
+      // this.paramsToggle.push('asOf');
+
+    if(this.params.reportId == 'POLR044A'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration', 'distributed', 'undistributed',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044B'){
+      this.paramsToggle.push('byDate', 'byMonthYear', 'asOf', 'line', 'company');
+    } 
+    else if(this.params.reportId == 'POLR044D'){
+      this.paramsToggle.push('accountingDate', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044E'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'distributed', 'undistributed',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044G'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'distributed', 'undistributed', 'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044H'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'distributed', 'undistributed', 'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044I'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044J'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'byDate',
+                             'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044K'){
+      this.paramsToggle.push('line', 'company', 'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044L'){
+      this.paramsToggle.push('line', 'company', 'policy', 'alteration', 'policyAlteration',
+                             'distributed', 'undistributed', 'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044M'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'byDate', 'byMonthYear',
+                             'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044N'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044O'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'line', 'company',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044P'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'company', 'byDate',
+                             'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044Q'){
+      this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'company', 'byDate',
+                             'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'ACITR061F'){
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'byDate', 'byMonthYear',
+                             'asOf');
+    } 
+    else if(this.params.reportId == 'ACITR061G'){
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'byDate', 'byMonthYear',
+                             'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044V'){
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration', 'distributed', 'undistributed',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044W'){
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration', 'distributed', 'undistributed',
+                             'byDate', 'byMonthYear', 'asOf');
+    } 
+    else if(this.params.reportId == 'POLR044X'){
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration', 'distributed', 'undistributed',
+                             'byDate', 'byMonthYear', 'asOf');
     }
 
     this.ns.lovLoader(data.ev, 0);
