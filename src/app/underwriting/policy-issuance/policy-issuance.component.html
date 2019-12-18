@@ -56,6 +56,7 @@
 								<label class="form-control-sm col-sm-3 labels">Report</label>
 								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
 									<option value="POLR010">Policy Schedule</option>
+									<option value="POLR029B" *ngIf="policyInfo.holdCoverTag=='Y'">Policy Hold Cover</option>
 								</select>
 								<div class="col-sm-1"></div>
 							</div>

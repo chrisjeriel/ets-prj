@@ -42,7 +42,8 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
         lastAffectingPolId:undefined,
         quoteId:'',
         quotationNo: '',
-        retDone: false
+        retDone: false,
+        holdCoverTag: 'N'
   }
   @Input() fromSummary = false;
 
@@ -237,6 +238,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
       this.policyInfo.insuredDesc = event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
       this.policyInfo.riskName = event.riskName != undefined ? event.riskName : this.policyInfo.riskName;
       this.policyInfo.cedingName = event.cedingName != undefined ? event.cedingName : this.policyInfo.cedingName;
+      this.policyInfo.holdCoverTag = event.holdCoverTag != undefined ? event.holdCoverTag : this.policyInfo.holdCoverTag;
   }
 
   returnOnModal(){
