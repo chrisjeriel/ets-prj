@@ -20,7 +20,7 @@
                 <fieldset class="scheduler-border col-sm">
                     <legend class="scheduler-border">Unapplied Collection</legend>
                         <div style="position: relative;margin-top: 10px">
-                            <app-cust-editable-non-datatable #tbl [passData]="passDataUnapplied" (clickLOV)="unappliedLOV($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+                            <app-cust-editable-non-datatable #tbl [passData]="passDataUnapplied" (clickLOV)="unappliedLOV($event)" (tableDataChange)="update($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
                         </div>
                 </fieldset>
              </div>

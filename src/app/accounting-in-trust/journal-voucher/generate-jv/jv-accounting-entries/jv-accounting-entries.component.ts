@@ -101,6 +101,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   cancelFlag: boolean = false;
   rowData:any;
   detailDatas :any;
+  unappliedData: any;
   errorMessage: any;
   statusType:any;
 
@@ -325,6 +326,23 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
       this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
+    }else if(this.jvType === 67){
+      var total = 0;
+      var inwTotal = 0;
+      for (var i = 0; i < this.detailDatas.length; ++i) {
+        total += this.detailDatas[i].actualBalPaid;
+      }
+
+      for (var j = 0; j < this.unappliedData.length; j++) {
+         inwTotal += this.unappliedData[j].paytAmt;
+      }
+
+      if(total - inwTotal == 0){
+        return true;
+      }
+
+      this.errorMessage = 'Payment for selected policy is not proportional to payment for Unapplied Collection.';
+      return false;
     }
     return true;
   }
@@ -369,22 +387,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         }
       }
     }else if(this.jvType === 6){
-
-      /*for (var i = 0; i < this.detailDatas.length; i++) {
-        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
-          if(!this.detailDatas[i].acctOffset[j].deleted){
-            if((this.detailDatas[i].acctOffset[j].prevNetDue > 0 &&  this.detailDatas[i].acctOffset[j].paytAmt < 0 &&
-                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment < 0)  ||
-               
-               (this.detailDatas[i].acctOffset[j].prevNetDue < 0 && this.detailDatas[i].acctOffset[j].paytAmt > 0 &&
-                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > 0)
-              ){
-                errorFlag = true;
-                break;
-            }
-          }
-        }
-      }*/
 
       for (var i = 0; i < this.detailDatas.length; i++) {
         for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
@@ -537,6 +539,22 @@ export class JvAccountingEntriesComponent implements OnInit {
             this.errorFlag = true;
           }
       });
+    }else if(this.jvType === 67){
+      this.accountingService.getJvUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.unappliedColl;
+        this.detailDatas = data.unappliedColl;;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].actualBalPaid;
+
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+        }
+
+        this.accountingService.getJvInwUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+          this.unappliedData = data.inwUnappColl;
+        });
+      });
     }
   }
 
@@ -632,5 +650,9 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
       this.retrieveAcctEntries();
     });
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 }

@@ -100,6 +100,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'osQsoa'){
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'unappliedColl'){
+            this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
           }

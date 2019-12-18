@@ -99,6 +99,8 @@ export class JvUnappliedInwpolComponent implements OnInit {
   ngOnInit() {
     console.log(this.jvDetail)
     this.passData = this.accountingService.getInwardPolicyKeys('JV');
+    this.passData.disableAdd = true;
+    this.passDataUnapplied.disableAdd = true;
     this.passData.nData = {showMG:1,tranId: '',soaNo: '', itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.retrieveUnappInw();
   }
@@ -112,6 +114,11 @@ export class JvUnappliedInwpolComponent implements OnInit {
       if(data.collection.unappliedColl.length !== 0 || data.iwnPol.inwUnappColl.length !== 0){
         this.passDataUnapplied.tableData = data.collection.unappliedColl;
         this.passData.tableData = data.iwnPol.inwUnappColl;
+      }
+      if(data.collection.unappliedColl.length !== 0){
+        this.table.onRowClick(null,this.passDataUnapplied.tableData[0]);
+        this.jvDetails.cedingName = this.passDataUnapplied.tableData[0].cedingName;
+        this.jvDetails.ceding = this.passDataUnapplied.tableData[0].cedingId;
       }
       this.table.refreshTable();
       this.inwTbl.refreshTable();
@@ -172,8 +179,20 @@ export class JvUnappliedInwpolComponent implements OnInit {
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newBalance     = this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt - this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid;
     }
     this.table.refreshTable();
+    this.table.onRowClick(null, this.passDataUnapplied.tableData[0]);
   }
   
+  onRowClick(data){
+    console.log(data)
+    if(data !== null){
+      this.passData.disableAdd = false;
+      this.passDataUnapplied.disableAdd = false;
+    }else{
+      this.passData.disableAdd = true;
+      this.passDataUnapplied.disableAdd = false;
+    }
+  }
+
   update(data){
     for (var i = 0; i < this.passDataUnapplied.tableData.length; i++) {
       this.passDataUnapplied.tableData[i].localAmt = this.passDataUnapplied.tableData[i].actualBalPaid * this.jvDetail.currRate;
@@ -262,6 +281,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
       if(this.passDataUnapplied.tableData[i].edited && !this.passDataUnapplied.tableData[i].deleted){
         this.params.saveUnappliedColl.push(this.passDataUnapplied.tableData[i]);
         this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].tranId     = this.jvDetail.tranId;
+        this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].cedingId   = this.jvDetails.ceding;
         this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].createDate = this.ns.toDateTimeString(0);
         this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].updateDate = this.ns.toDateTimeString(0);
       }
@@ -273,10 +293,20 @@ export class JvUnappliedInwpolComponent implements OnInit {
 
     for (var j = 0; j < this.passData.tableData.length; j++) {
       if(this.passData.tableData[j].edited && !this.passData.tableData[j].deleted){
-        this.params.saveInwCollection.push(this.passData.tableData[j]);
-        this.params.saveInwCollection[this.params.saveInwCollection.length - 1].netDue     = this.passData.tableData[j].premAmt - this.passData.tableData[j].riComm - this.passData.tableData[j].riCommVat + this.passData.tableData[j].charges;
-        this.params.saveInwCollection[this.params.saveInwCollection.length - 1].createDate = this.ns.toDateTimeString(0);
-        this.params.saveInwCollection[this.params.saveInwCollection.length - 1].updateDate = this.ns.toDateTimeString(0);
+        if(this.passData.tableData[j].balance >= 0 && this.passData.tableData[j].paytAmt >= 0){
+           this.passData.tableData[j].paytType = 1
+         }else if(this.passData.tableData[j].balance >= 0 && this.passData.tableData[j].paytAmt < 0){
+           this.passData.tableData[j].paytType = 2
+         }else if(this.passData.tableData[j].balance <= 0 && this.passData.tableData[j].paytAmt <= 0){
+           this.passData.tableData[j].paytType = 3
+         }else if(this.passData.tableData[j].balance <= 0 && this.passData.tableData[j].paytAmt > 0){
+           this.passData.tableData[j].paytType = 4
+         }
+
+         this.params.saveInwCollection.push(this.passData.tableData[j]);
+         this.params.saveInwCollection[this.params.saveInwCollection.length - 1].netDue     = this.passData.tableData[j].premAmt - this.passData.tableData[j].riComm - this.passData.tableData[j].riCommVat + this.passData.tableData[j].charges;
+         this.params.saveInwCollection[this.params.saveInwCollection.length - 1].createDate = this.ns.toDateTimeString(0);
+         this.params.saveInwCollection[this.params.saveInwCollection.length - 1].updateDate = this.ns.toDateTimeString(0);
       }
 
       if(this.passData.tableData[j].deleted){
@@ -290,7 +320,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
     this.prepareData();
     if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0 ||
        this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
-      console.log(this.params)
+
       if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0){
         this.accountingService.saveJvUnappliedColl(this.params).subscribe((data:any) => {
           if(data['returnCode'] != -1) {
@@ -299,7 +329,18 @@ export class JvUnappliedInwpolComponent implements OnInit {
             this.successDiag.open();
           }else{
             if(this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
-
+              this.accountingService.saveJvInwUnappliedColl(this.params).subscribe((data:any) => {
+                if(data['returnCode'] != -1) {
+                  this.dialogMessage = data['errorList'][0].errorMessage;
+                  this.dialogIcon = "error";
+                  this.successDiag.open();
+                }else{
+                  this.dialogMessage = "";
+                  this.dialogIcon = "success";
+                  this.successDiag.open();
+                  this.retrieveUnappInw();
+                }
+              });
             }else{
               this.dialogMessage = "";
               this.dialogIcon = "success";
@@ -308,9 +349,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
             }
           }
         });
-      }
-
-      if(this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
+      }else if(this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
         this.accountingService.saveJvInwUnappliedColl(this.params).subscribe((data:any) => {
           if(data['returnCode'] != -1) {
             this.dialogMessage = data['errorList'][0].errorMessage;
