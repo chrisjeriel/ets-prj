@@ -192,6 +192,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
 	@Output() enblOptTab = new EventEmitter<any>(); //Paul
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
+	@Input() intCompTag:boolean = false; 
 
 	compCedList:any = [];
 

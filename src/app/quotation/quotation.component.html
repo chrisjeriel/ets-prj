@@ -5,7 +5,7 @@
 		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
 		<ngb-tab class="ngb-tab" title="General Info" [disabled]="accessibleModules.indexOf('QUOTE002') == -1">
 			<ng-template ngbTabContent>
-				<app-general-info #active (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"
+				<app-general-info #active (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" [intCompTag]="intCompTag"
 					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
 			</ng-template>
 		</ngb-tab>
