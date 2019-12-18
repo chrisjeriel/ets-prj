@@ -21,7 +21,6 @@ export class CopyQuoteDetailsComponent implements OnInit {
   };
 
   searchParams: any = {
-        statusArr: [1,2,3,4,5,'P','A','R'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
   };
