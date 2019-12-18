@@ -286,7 +286,10 @@ export class JvEntryComponent implements OnInit {
         this.UploadBut    = true;
         this.allocBut     = true;
         this.dcBut        = true;
+        this.saveJVBut    = false;
         this.approvedStat = false;
+        this.disableBut   = false;
+
         this.entryData.currRate  = this.decimal.transform(this.entryData.currRate,'1.6-6');
         this.entryData.jvAmt     = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt  = this.decimal.transform(this.entryData.localAmt,'1.2-2');
