@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService,PrintService } from '@app/_services';
 import { CVListing } from '@app/_models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -117,10 +117,20 @@ export class CvEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  printData : any = {
+    selPrinter  : '',
+    printers    : [],
+    destination : '',
+    reportType  : 0,
+    copyNo      : null,
+    printCv     : '',
+    printCheck  : ''
+  };
+
   lovCheckBox:boolean = true;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
-              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe) { }
+              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | CV Entry");
@@ -253,6 +263,8 @@ export class CvEntryComponent implements OnInit {
         console.log(totalDebit);
         this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
         this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+
+        (this.saveAcitCv.cvStatus == 'A' || this.saveAcitCv.cvStatus == 'P') ? this.getPrinters() : '';
 
         if(this.fromSave){
           this.dialogIcon = '';
@@ -402,6 +414,7 @@ export class CvEntryComponent implements OnInit {
         this.warnMdl.openNoClose();
         this.saveAcitCv.checkNo = Number(data['checkNo']);
       }else if(data['returnCode'] == -100){
+        this.saveAcitCv.checkNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }
@@ -411,7 +424,7 @@ export class CvEntryComponent implements OnInit {
 
   showLov(fromUser){
     console.log(fromUser);
-
+    console.log(this.saveAcitCv.paytReqType);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
       if(this.saveAcitCv.paytReqType == 'S'){
@@ -419,7 +432,7 @@ export class CvEntryComponent implements OnInit {
       }else if(this.saveAcitCv.paytReqType == 'I'){
         this.passDataLov.payeeClassCd = 3;
       }else{
-        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null)?'':1;
+        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null || this.saveAcitCv.paytReqType == 'O')?'':1;
       }
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
@@ -589,17 +602,58 @@ export class CvEntryComponent implements OnInit {
       this.warnMdl.openNoClose();
     }else{
       this.fromBtn = 'approve-req';
-      //this.confirmMdl.openNoClose();
       this.approvalCd = 'AC003';
       this.overrideFunc('AC003');
     }
   }
 
   print(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+    let params = {
+          tranId: this.saveAcitCv.tranId,
+          printerName: this.printData.selPrinter,
+          pageOrientation: 'LANDSCAPE',
+          paperSize: 'LETTER'
+        };
+
+    let cvParams    = Object.assign({},params);
+    $.extend(cvParams,{reportName: 'ACITR_CV'});
+    let checkParams = Object.assign({},params);
+    $.extend(checkParams,{reportName: 'ACITR_CV_CHECK'});
+
+    if(this.printData.printCv && this.printData.printCheck){
+      if(this.printData.destination == 'screen'){
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId + '&reportType=' + this.printData.reportType, '_blank');
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV_CHECK' + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+      }else if(this.printData.destination == 'printer'){
+        var subRes = forkJoin(this.ps.directPrint(cvParams),this.ps.directPrint(checkParams)).pipe(map(([cv,ck]) => { return { cv, ck };}));
+        subRes.subscribe(data => {
+          console.log(data);
+        });
+      }
+    }else{
+      if(this.printData.printCv){
+        if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV' + '&userId=' + 
+                      this.ns.getCurrentUser() + '&tranId=' + this.saveAcitCv.tranId + '&reportType=' + this.printData.reportType, '_blank');
+        }else if(this.printData.destination == 'printer'){
+          this.ps.directPrint(cvParams).subscribe(data => {
+            console.log(data);
+          });
+        }
+      }else if(this.printData.printCheck){
+        if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_CV_CHECK' + '&tranId=' + this.saveAcitCv.tranId, '_blank');
+        }else if(this.printData.destination == 'printer'){
+          this.ps.directPrint(checkParams).subscribe(data => {
+            console.log(data);
+          });
+        }
+      }
+    }
   }
 
+  
   onClickYesConfirmed(stat){
     this.loadingFunc(true);
     this.confirmMdl.closeModal();
@@ -607,6 +661,7 @@ export class CvEntryComponent implements OnInit {
       tranId       : this.saveAcitCv.tranId,
       checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
+      printType    : (this.printData.printCv && this.printData.printCheck)?'ALL':(this.printData.printCv)?'PCV':'PCK',
       updateUser   : this.ns.getCurrentUser()
     };
     console.log(updateAcitCvStat);
@@ -617,6 +672,11 @@ export class CvEntryComponent implements OnInit {
       this.fromSave = true;
       this.getAcitCv();
       (!this.spoiled)?this.disableFlds(true):this.form.control.markAsDirty();
+      this.printData.destination = '';
+      this.printData.selPrinter = '';
+      this.printData.printCv = false;
+      this.printData.printCheck = false;
+      this.printData.reportType = 0;
     });
   }
 
@@ -767,4 +827,32 @@ uploadAcctEntries(){
        }
     );
   }
+
+  test(){
+    console.log(this.printData.printCv);
+    console.log(this.printData.printCheck);
+    
+  }
+
+  getPrinters(){
+    this.ps.getPrinters()
+    .subscribe(data => {
+      this.printData.printers = data;
+    });
+  }
+
+  validateCheck(){
+    if(this.saveAcitCv.checkStatus == 'P' || this.saveAcitCv.checkStatus == 'S'){
+      this.warnMsg = (this.saveAcitCv.checkStatus == 'P')?'This check was already been printed.\nPlease Spoil Check to generate new Check No.'
+                                                         :'This check has been spoiled. \nPlease save your changes first before printing this check.';
+      this.warnMdl.openNoClose();
+      this.printData.printCheck = false;
+      $('#checkCbId').prop('checked',false);
+    }
+  }
+
+  clearPrinterName(){
+    (this.printData.destination != 'printer')?this.printData.selPrinter='':''
+  }
+
 }

@@ -60,7 +60,8 @@ export class OverrideLoginComponent implements OnInit {
       this.securityService.secEncryption(this.password).subscribe((data:any)=>{
           if(data.password == pass.toString()){
             //Check if the user that was inputted in override is authorized.
-            if(this.allowedLogins.map(a => {return a.userId}).includes(this.userId.toUpperCase())){
+            console.log(this.allowedLogins);
+            if(this.allowedLogins.map(a => {return a.userId.toUpperCase()}).includes(this.userId.toUpperCase())){
             	this.overrideMdl.closeModal();
             	this.dialogIcon = 'success-message';
             	this.dialogMessage = 'Login Successfully';

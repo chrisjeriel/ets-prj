@@ -21,11 +21,11 @@ export class PremiumCollComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Alt No','Inst No','Due Date','Booking Date','Memo No','Acct. Entry Date','Premium','Comm Rate(%)','Comm Amt','VAT on R/I Comm','Other Charges','Amount Due'],
+    tHeader: ['Alt No','Inst No','Booking Date','Due Date','Memo No','Acct. Entry Date','Premium','Comm Rate(%)','Comm Amt','VAT on R/I Comm','Other Charges','Amount Due'],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,],
     total:[null,null,null,null,null,'Total','premAmt',null,'commAmt','vatRiComm','otherChargesInw','amtDue'],
     dataTypes: ["number","number","date","date",'text',"date","currency","percent","currency","currency","currency","currency",],
-    keys:['altNo','instNo','dueDate','bookingDate','memoNo','acctEntDate','premAmt','commRt','commAmt','vatRiComm','otherChargesInw','amtDue'],
+    keys:['altNo','instNo','bookingDate','dueDate','memoNo','acctEntDate','premAmt','commRt','commAmt','vatRiComm','otherChargesInw','amtDue'],
     nData: {},
     widths:[1,"1", "1", "1", "1","1", "auto", "auto", "auto", "auto", "auto", "auto"],
     pageID:'installment',

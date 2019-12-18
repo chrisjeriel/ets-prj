@@ -15,9 +15,13 @@
  		 </div>
  	</div>
  	<div class="row">
- 	 	 <div class="col-sm" style="margin-top: 20px" >
- 	 	 	 <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (tableDataChange)="update($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
- 	 	 </div>
+ 	 	<div class="col-sm" style="margin-top: 20px" >
+ 	 	 	<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (tableDataChange)="update($event)" (newClick)="onRowClick($event)">
+                <ng-container controls-r>
+                    <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                </ng-container>      
+            </app-cust-editable-non-datatable>
+ 	 	</div>
  	</div>
     <div class="form-row" style="margin-top: 13px !important;">
         <div class="form-group col-sm">

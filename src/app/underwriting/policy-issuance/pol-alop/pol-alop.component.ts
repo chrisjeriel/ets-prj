@@ -12,6 +12,8 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { LovComponent } from '@app/_components/common';
+import { MtnInsuredComponent } from '@app/maintenance/mtn-insured/mtn-insured.component';
 
 @Component({
   selector: 'app-pol-alop',
@@ -29,6 +31,7 @@ export class PolAlopComponent implements OnInit {
   @ViewChild('alopSuccess') successDiag: SucessDialogComponent;
   @ViewChild('alopItemSuccess') successItemDiag: SucessDialogComponent;
   @ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
+  @ViewChild(MtnInsuredComponent) insuredLOV : MtnInsuredComponent;
 
   aLOPInfo: ALOPInfo = new ALOPInfo();
   
@@ -130,6 +133,7 @@ export class PolAlopComponent implements OnInit {
                      updateUser: null,
                      updateDate: null
   };
+  @ViewChild(LovComponent) lovModal: LovComponent; 
 
   constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private route: ActivatedRoute, private titleService: Title, private ns: NotesService, private mtnService: MaintenanceService) { }
 
@@ -413,14 +417,18 @@ export class PolAlopComponent implements OnInit {
 
   openGenericLOV(selector){
     this.passLOV.selector = selector;
-    $('#lov #modalBtn').trigger('click');
+    this.lovModal.openLOV();
+  }
+
+  openInsuredLOV(){
+    this.insuredLOV.openLOV();
   }
 
   setInsured(data){
-    this.polAlopData.insuredName = data.data.insuredAbbr;
-    this.polAlopData.insuredDesc = data.data.insuredName;
-    this.polAlopData.insId = data.data.insuredId;
-    this.polAlopData.address = data.data.address;
+    this.polAlopData.insuredName = data.insuredAbbr;
+    this.polAlopData.insuredDesc = data.insuredName;
+    this.polAlopData.insId = data.insuredId;
+    this.polAlopData.address = data.address;
     this.form.control.markAsDirty();
   }
 

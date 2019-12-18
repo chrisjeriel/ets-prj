@@ -51,7 +51,6 @@ export class WfNotesComponent implements OnInit {
 
   retrieveNotes(obj){
        this.currentUser = JSON.parse(window.localStorage.currentUser).username;
-       console.log(obj);
        
     if (obj === 'atm'){
        this.noteBool = true;
@@ -94,7 +93,6 @@ export class WfNotesComponent implements OnInit {
   }
 
   setNoteList(){
-    console.log(this.noteList);
     this.loadingFlag = false;
     if(this.isEmptyObject(this.noteList)){
       $("#noteDiv").css({"height": "auto"});

@@ -17,6 +17,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.component';
 
@@ -52,6 +53,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
   @ViewChild('genInfoConSave') genInfoConSave: ConfirmSaveComponent;
   @ViewChild('dedConSave') dedConSave: ConfirmSaveComponent;
+  defCotermTag:string = '';
   lovCheckBox:boolean;
   passLOVData:any = {
     selector: '',
@@ -323,6 +325,12 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       if(this.underwritingService.fromCreateAlt) {
         this.alteration = true;
         this.newAlt = true;
+      }
+
+      if(this.line == 'CEC'){
+        this.mtnService.getMtnParameters('V','WITH_REP_PERIOD').subscribe(a=>{
+          this.defCotermTag = a['parameters'][0].paramValueV;
+        })
       }
 
       //edit by paul
@@ -868,7 +876,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "lineClassCd"     : this.policyInfo.lineClassCd,
       "maintenanceFrom" : this.policyInfo.maintenanceFrom == 'T' ? '' : this.policyInfo.maintenanceFrom.replace('undefined',''),
       "maintenanceTo"   : this.policyInfo.maintenanceTo == 'T' ? '' : this.policyInfo.maintenanceTo.replace('undefined',''),
-      "mbiRefNo"        : this.policyInfo.mbiRefNo,
+      "mbiRefNo"        : this.line == 'MLP' ? '' : this.policyInfo.mbiRefNo,
       "minDepTag"       : this.policyInfo.minDepTag,
       "noClaimPd"       : this.policyInfo.project.noClaimPd,
       "objectId"        : this.policyInfo.project.objectId,
@@ -1225,7 +1233,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        req.push('contractorId', 'duration', 'testing');
        break;
      case 'MLP':
-       req.push('ipl', 'timeExc', 'mbiRefNo');
+       req.push('ipl', 'timeExc', 'mbiPolicyId');
        break;
      case 'DOS':
        req.push('noClaimPd', 'mbiRefNo');
@@ -1657,4 +1665,77 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
        this.dedCancelBtn.onNo()
       }
     }
+
+    updateCoTermText(){
+      if(this.policyInfo.coTermTag == 'Y'){
+        this.policyInfo.coTermText = this.defCotermTag;
+      }else{
+        this.policyInfo.coTermText = '';
+      }
+    }
+
+   //--------------------------------------------------------------------------------------------------------------------------
+
+   @ViewChild('polMdl') polMdl:ModalComponent;
+   @ViewChild(LoadingTableComponent) polTable:LoadingTableComponent;
+
+   passDataPolLOV : any = {
+    tableData  : [],
+    tHeader    : ["Policy No.", "Ceding Company", "Insured", "Risk"],
+      sortKeys:['POLICY_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
+    dataTypes  : ["text","text","text","text"],
+    pageLength  : 10,
+    resizable  : [false,false,false,false],
+    tableOnly  : false,
+    keys    : ['policyNo','cedingName','insuredDesc','riskName'],
+    pageStatus  : true,
+    pagination  : true,
+    colSize    : ['', '250px', '250px', '250px'],
+    filters: [
+      {key: 'policyNo', title: 'Policy No.',dataType: 'text'},
+      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+      {key: 'riskName',title: 'Risk',dataType: 'text'},
+    ]
+  };
+
+  searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        'lineCd':'MBI'
+  };
+
+  searchQuery(searchParams){
+    for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+    this.getQuoteList();
+  }
+
+
+  getQuoteList(){
+    this.underwritingService.newGetParListing(this.searchParams).subscribe(a=>{
+      this.passDataPolLOV.count = a['length'];
+      this.polTable.placeData(a['policyList'].map(i => 
+          { 
+            i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName;
+              return i;
+          }
+        )
+      ); 
+    });
+  }
+
+  onClickOkPolLov(){
+    this.form.control.markAsDirty();
+    this.policyInfo.mbiPolicyId = this.polTable.indvSelect.policyId;
+    this.policyInfo.mbiRefNo = this.polTable.indvSelect.policyNo;
+    this.polMdl.closeModal();
+  }
+
+  showPolLov(){
+    this.polMdl.openNoClose();
+    this.getQuoteList();
+  }
+
 }

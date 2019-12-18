@@ -116,12 +116,12 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   invstLOV(data){
   	if(data.key === 'srcInvtCode'){
-  		this.passLov.searchParams = [{key:'invtStatus', search: 'MATURED'}];
+  		this.passLov.searchParams = [{key:'invtStatus', search: 'M%'}];
   		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.lovMdl.openLOV();
   	}else if(data.key === 'invtCode'){
-  		this.passLov.searchParams = [{key:'invtStatus', search: 'FOR PLACEMENT'}];
+  		this.passLov.searchParams = [{key:'invtStatus', search: 'F%'}];
   		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.newlovMdl.openLOV();

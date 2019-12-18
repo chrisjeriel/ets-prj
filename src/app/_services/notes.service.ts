@@ -41,7 +41,7 @@ export class NotesService {
 
   toDate(s:string):Date{
     let dateString = s.split('T')[0];
-    let timeString = s.split('T')[1];
+    let timeString = s.split('T')[1] != undefined ? s.split('T')[1] : '00:00:00' ;
     return new Date(
                     parseInt(dateString.split('-')[0]),
                     parseInt(dateString.split('-')[1])-1,
@@ -101,4 +101,28 @@ export class NotesService {
     this.formGroup.reset();
   }
   
+  export(name, query, tableData) {
+    var currDate = this.toDateTimeString(0).replace(':', '.');
+    var fileName = name + '_' + currDate + '.xlsx';
+    var mystyle = {
+      headers: true, 
+      column: {style:{Font:{Bold:"1"}}}
+    };
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql.fn.currency = function(currency) {
+      var parts = parseFloat(currency).toFixed(2).split(".");
+      var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+          (parts[1] ? "." + parts[1] : "");
+      return num;
+    };
+
+    var into = "INTO XLSXML('" + fileName + "', ?)";
+
+    alasql(query + ' ' + into + ' FROM ?', [mystyle,tableData]);
+  }
 }
