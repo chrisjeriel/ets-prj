@@ -1043,7 +1043,7 @@
                 Notifications
             </p>
             <p class="col-sm text-right" style="padding: 0px; margin-right: 0px;">
-                <a href="#">Mark All as Completed</a>
+                <a href="#" (click)="onClickAllMAC();">Mark All as Completed</a>
             </p>
         </div>
         <div class="notif-div-scrollable">
@@ -1062,7 +1062,7 @@
                                 <fa name="pencil-square-o" ngbTooltip="View">
                                 </fa>
                             </a>
-                            <a class="notif-a-btn">
+                            <a class="notif-a-btn" (click)="onClickMAC(notif.type, notif.id);">
                                 <fa name="ellipsis-h" ngbTooltip="Mark as Completed">
                                 </fa>
                             </a>
@@ -1076,3 +1076,14 @@
         </div>
     </div>
 </div>
+
+<app-modal #nrConfirmation class="d-none">
+  <div header>Confirmation Message</div>
+  <div body>
+     {{ nrConfirmationMsg }}
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="nrConfirmation.closeModal(); onSaveMAC();" ><a>Yes</a></button>
+    <button type="button" class="cust-btn" (click)="nrConfirmation.closeModal();" ><a>No</a></button>
+  </div>
+</app-modal>

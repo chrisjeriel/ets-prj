@@ -475,7 +475,7 @@ export class PaymentRequestEntryComponent implements OnInit {
       }else if(this.saveAcitPaytReq.tranTypeCd == 7){
         this.passDataLov.payeeClassCd = 3;
       }else{
-        this.passDataLov.payeeClassCd = (this.saveAcitPaytReq.tranTypeCd == '' || this.saveAcitPaytReq.tranTypeCd == null)?'':1;
+        this.passDataLov.payeeClassCd = (this.saveAcitPaytReq.tranTypeCd == '' || this.saveAcitPaytReq.tranTypeCd == null || this.saveAcitPaytReq.tranTypeCd == 8)?'':1;
       }
       this.mainLov.openLOV();
     }

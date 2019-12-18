@@ -72,4 +72,13 @@ export class WorkFlowManagerService {
         return this.http.get(environment.prodApiUrl + '/work-flow-service/retRelatedRecords', {params});
     }
 
+    changeRNStatus(params){
+        let header: any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        }
+        return this.http.post(environment.prodApiUrl +'/work-flow-service/changeRNStatus',params,header);
+    }
+
 }
