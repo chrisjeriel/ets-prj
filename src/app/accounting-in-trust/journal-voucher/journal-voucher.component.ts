@@ -211,7 +211,7 @@ export class JournalVoucherComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'JournalVoucherList_'+currDate+'.xlsx'
+    var filename = 'JournalVoucherList_'+currDate+'.xls'
 
     var mystyle = {
       headers:true, 

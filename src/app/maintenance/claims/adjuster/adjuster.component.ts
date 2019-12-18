@@ -146,7 +146,7 @@ export class AdjusterComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'MtnAdjusterList_'+currDate+'.xlsx'
+    var filename = 'MtnAdjusterList_'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"}}}

@@ -215,7 +215,7 @@ export class ExtractFromLastYearComponent implements OnInit {
       var sec = String(today.getSeconds()).padStart(2,'0');
       var ms = today.getMilliseconds()
       var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;*/
-      var filename = this.selectedYear + 'ActualExpenseByMonth.xlsx'
+      var filename = this.selectedYear + 'ActualExpenseByMonth.xls'
       var mystyle = {
           headers:false, 
           column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},

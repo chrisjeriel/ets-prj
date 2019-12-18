@@ -353,7 +353,7 @@ export class ClaimRecoveryComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
     console.log("Row Length >>>" + rowLength);
     var mystyle = {

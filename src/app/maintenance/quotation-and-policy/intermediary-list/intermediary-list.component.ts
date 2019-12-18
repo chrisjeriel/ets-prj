@@ -83,7 +83,7 @@ export class IntermediaryListComponent implements OnInit {
 		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 		var yyyy = today.getFullYear();
 		var currDate = mm + dd+ yyyy;
-		var filename = 'MtnIntermediaryList_'+currDate+'.xlsx'
+		var filename = 'MtnIntermediaryList_'+currDate+'.xls'
 		var mystyle = {
 			headers:true, 
 			column: {style:{Font:{Bold:"1"}}}

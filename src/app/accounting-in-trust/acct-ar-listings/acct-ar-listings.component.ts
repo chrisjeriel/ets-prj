@@ -195,7 +195,7 @@ export class AcctArListingsComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'AckgtReceipt'+currDate+'.xlsx'
+    var filename = 'AckgtReceipt'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}

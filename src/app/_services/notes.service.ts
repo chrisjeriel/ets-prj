@@ -103,7 +103,7 @@ export class NotesService {
   
   export(name, query, tableData) {
     var currDate = this.toDateTimeString(0).replace(':', '.');
-    var fileName = name + '_' + currDate + '.xlsx';
+    var fileName = name + '_' + currDate + '.xls';
     var mystyle = {
       headers: true, 
       column: {style:{Font:{Bold:"1"}}}

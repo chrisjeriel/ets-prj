@@ -485,7 +485,7 @@ export class ArPreviewComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'AccountingEntries'+currDate+'.xlsx'
+    var filename = 'AccountingEntries'+currDate+'.xls'
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
