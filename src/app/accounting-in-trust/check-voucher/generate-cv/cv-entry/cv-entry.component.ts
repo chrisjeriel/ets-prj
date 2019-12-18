@@ -314,6 +314,7 @@ export class CvEntryComponent implements OnInit {
       paytReqType   : '',
       payee         : '',
       payeeNo       : '',
+      payeeCd       : '',
       postDate      : '',
       preparedBy    : '',
       preparedDate  : '',
@@ -330,7 +331,7 @@ export class CvEntryComponent implements OnInit {
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
 
-    if(this.saveAcitCv.cvDate == null || this.saveAcitCv.cvDate == '' || this.saveAcitCv.payee == '' ||  this.saveAcitCv.payee == null || this.saveAcitCv.particulars == '' || 
+    if(this.saveAcitCv.cvDate == null || this.saveAcitCv.cvDate == '' || this.saveAcitCv.payeeCd == '' ||  this.saveAcitCv.payeeCd == null || this.saveAcitCv.payee == '' ||  this.saveAcitCv.payee == null || this.saveAcitCv.particulars == '' || 
        this.saveAcitCv.particulars == null || this.saveAcitCv.bank == '' || this.saveAcitCv.bank == null || this.saveAcitCv.bankAcct == '' || this.saveAcitCv.bankAcct == null ||
        this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt < 0 ||  this.saveAcitCv.checkNo == '' || this.saveAcitCv.checkNo == null || this.saveAcitCv.currCd == '' || 
        this.saveAcitCv.currCd == null || this.saveAcitCv.currRate == '' || this.saveAcitCv.currRate == null || this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null ||
@@ -470,9 +471,15 @@ export class CvEntryComponent implements OnInit {
     },0);
 
     if(from.toLowerCase() == 'payee'){
-      this.saveAcitCv.payee   = data.data.payeeName;
-      this.saveAcitCv.payeeCd = data.data.payeeNo;
-      this.saveAcitCv.payeeClassCd = data.data.payeeClassCd;
+      if(data.data == null){
+        this.saveAcitCv.payee   = '';
+        this.saveAcitCv.payeeCd = '';
+        this.saveAcitCv.payeeClassCd = '';
+      }else{
+        this.saveAcitCv.payee   = data.data.payeeName;
+        this.saveAcitCv.payeeCd = data.data.payeeNo;
+        this.saveAcitCv.payeeClassCd = data.data.payeeClassCd;
+      }
     }else if(from.toLowerCase() == 'bank'){
       this.saveAcitCv.bankDesc   = data.data.officialName;
       this.saveAcitCv.bank = data.data.bankCd;
@@ -556,8 +563,19 @@ export class CvEntryComponent implements OnInit {
       this.currLov.checkCode(this.saveAcitCv.currCd.toUpperCase(), event);
     }else if(from.toLowerCase() == 'prep-user'){
       this.prepUserLov.checkCode(this.saveAcitCv.preparedByName.toUpperCase(), event);
-    } else if(from.toLowerCase() == 'cert-user') {
+    }else if(from.toLowerCase() == 'cert-user') {
       this.certUserLov.checkCode(this.saveAcitCv.certifiedByName.toUpperCase(), event);
+    }else if(from.toLowerCase() == 'payee'){
+      this.passDataLov.selector = 'payee';
+      this.passDataLov.payeeNo = this.saveAcitCv.payeeCd;
+      if(this.saveAcitCv.paytReqType == 'S'){
+        this.passDataLov.payeeClassCd = 2;
+      }else if(this.saveAcitCv.paytReqType == 'I'){
+        this.passDataLov.payeeClassCd = 3;
+      }else{
+        this.passDataLov.payeeClassCd = (this.saveAcitCv.paytReqType == '' || this.saveAcitCv.paytReqType == null || this.saveAcitCv.paytReqType == 'O')?'':1;
+      }
+      this.payeeLov.checkCode('payee',null,null,null,null,null,event,null,this.passDataLov.payeeClassCd);
     }
   }
 
@@ -843,7 +861,7 @@ uploadAcctEntries(){
 
   validateCheck(){
     if(this.saveAcitCv.checkStatus == 'P' || this.saveAcitCv.checkStatus == 'S'){
-      this.warnMsg = (this.saveAcitCv.checkStatus == 'P')?'This check was already been printed.\nPlease Spoil Check to generate new Check No.'
+      this.warnMsg = (this.saveAcitCv.checkStatus == 'P')?'This check has already been printed.\nPlease Spoil Check to generate new Check No.'
                                                          :'This check has been spoiled. \nPlease save your changes first before printing this check.';
       this.warnMdl.openNoClose();
       this.printData.printCheck = false;

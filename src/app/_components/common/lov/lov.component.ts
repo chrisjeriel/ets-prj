@@ -452,6 +452,7 @@ export class LovComponent implements OnInit {
       }
      
     } else if(selector == 'payee'){
+      console.log(this.passData);
       if(this.passData.payeeNo == null || this.passData.payeeNo.length == 0){
         this.selectedData.emit({
           data: null,
