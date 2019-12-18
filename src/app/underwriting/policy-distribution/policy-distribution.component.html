@@ -16,6 +16,11 @@
 				<app-distribution-by-ins [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId"></app-distribution-by-ins>
 			</ng-template>
 		</ngb-tab>
+		<ngb-tab title="Cumulative Policy Distribution" *ngIf="distTtitle == 'Alteration Distribution'">
+			<ng-template ngbTabContent>
+				<app-pol-distribution-cum [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus" [acctDetails]="acctDetails"></app-pol-distribution-cum>
+			</ng-template>
+		</ngb-tab>
 	</ngb-tabset>
 </div>
 

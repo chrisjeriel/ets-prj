@@ -1034,6 +1034,13 @@ export class UnderwritingService {
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDist', {params});
     }
 
+    getPolDistributionCum(policyId, distId?){
+        const params = new HttpParams()
+            .set('policyId', policyId)
+            .set('distId', distId === undefined || distId === null || distId === '' ? '' : distId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolDistCum', {params});
+    }
+
     postDistribution(postData){
         let header : any = {
             headers: new HttpHeaders({
@@ -1073,6 +1080,13 @@ export class UnderwritingService {
             .set('riskDistId', riskDistId)
             .set('policyId', policyId)
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolPoolDist', {params});
+    }
+
+    getPolPoolDistributionCum(riskDistId,policyId){
+        const params = new HttpParams()
+            .set('riskDistId', riskDistId)
+            .set('policyId', policyId)
+        return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolPoolDistCum', {params});
     }
 
     saveDistRisk(params){
