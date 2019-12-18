@@ -1702,7 +1702,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   searchParams: any = {
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
-        'lineCd':'MBI'
+        'lineCd':'MBI',
+        statusArr:['2']
   };
 
   searchQuery(searchParams){

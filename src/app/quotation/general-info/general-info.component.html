@@ -131,9 +131,14 @@
 											</div> -->
 											
 										</div>
-										<div *ngIf="line === 'MLP' || line === 'DOS'" class="input-group ig-cust">
+										<div *ngIf="line === 'DOS'" class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-4">MBI Ref No</label>
 											<input name="input21" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="genInfoData.mbiRefNo" appRequired>
+										</div>
+										<div *ngIf="line === 'MLP'" class="input-group ig-cust">
+											<label  class="form-control-sm col-sm-4">MBI Ref No</label>
+											<input name="input21" type="text" class="form-control form-control-sm req col-sm-8" [(ngModel)]="genInfoData.mbiRefNo" readonly="readonly">
+											<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'"><a><i class="fa fa-search" (click)="showQuoteLov()"></i></a></div>
 										</div>
 									</div>
 								</div>
@@ -1023,3 +1028,13 @@
 
 <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
 
+<app-modal class="d-none" #quoteMdl>
+    <div header>List Of Values</div>
+    <div body class="container-flex">
+       <app-loading-table [passData]="passDataQuoteLOV" (searchToDb)="searchQuery($event)"></app-loading-table>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="quoteMdl.closeModal();"><a>Cancel</a></button>
+		<button type="button" [disabled]="quoteTable?.indvSelect == ''" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
+    </div>
+</app-modal>
