@@ -78,3 +78,17 @@
         <button class="cust-btn" type="button" (click)="mdl.closeModal()">{{(mdlType == 1)?'Ok':'No'}}</button>
     </div>
 </app-modal>
+
+<app-modal class="d-none" #specCancelMdl>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Would you like to fully <strong>CANCEL</strong> this AR or <strong>RE-OPEN</strong> it for update of details?</p>
+	  </div>
+	</div>
+	<div footer class="w-100 text-center">
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();onClickYes('reopen');"><a>Full Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();onClickYes();"><a>Re-open</a></button>
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();"><a>Return</a></button>
+  	</div>
+</app-modal>
