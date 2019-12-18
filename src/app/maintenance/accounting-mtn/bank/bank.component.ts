@@ -123,7 +123,12 @@ export class BankComponent implements OnInit {
   }
 
   onClickSave(){
-  	this.conSave.confirmModal();
+   if (this.checkValidation()){
+        this.conSave.confirmModal();
+   }else {
+        this.successDialog.open();
+        this.tblHighlightReq('#mtn-bank',this.passTable.dataTypes,[1,2]);
+   }
   }
 
   onClickCancel(){
@@ -191,6 +196,49 @@ export class BankComponent implements OnInit {
     setTimeout(() => {
        this.router.navigate(['/mtn-bank-acct', { bankCd: this.info.bankCd,shortName: this.info.shortName,officialName: this.info.officialName, from: 'mtn-bank'}], { skipLocationChange: true });
     },100); 
+  }
+
+  tblHighlightReq(el, dataTypes, reqInd) {
+    setTimeout(() => {
+      $(el).find('tbody').children().each(function() {
+        $(this).children().each(function(i) {
+          if(reqInd.includes(i)) {
+            var val;
+            if(dataTypes[i] == 'text' || dataTypes[i] == 'date' || dataTypes[i] == 'time') {
+              val = $(this).find('input').val();
+              highlight($(this), val);
+            } 
+          }
+        });
+      });
+
+      function highlight(td, val) {
+        td.css('background', typeof val == 'undefined' ? 'transparent' : val == '' || val == null ? '#fffacd85' : 'transparent');
+      }
+    }, 0);
+  }
+
+
+   checkFields(){
+   
+      for(let check of this.passTable.tableData){
+         if( check.shortName === null || check.shortName === '' ||
+             check.officialName === null || check.officialName === ''
+          ) {   
+            return false;
+          }
+      }
+       return true;
+   }
+
+ checkValidation(){
+   if(this.checkFields()){
+        return true;
+   }else{
+        this.dialogMessage="Please check field values.";
+        this.dialogIcon = "error";
+        return false;
+   }
   }
 
 

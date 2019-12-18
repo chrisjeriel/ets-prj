@@ -424,7 +424,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	  for(var i= 0; i< this.passData.tableData.length; i++){
 	  		if(this.passData.tableData[i].checked){
 	  			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId, currCd : this.passData.tableData[i].currCd , 
-	  									   refTranId : this.passData.tableData[i].tranId, 
+	  									   refTranId :  this.passData.tableData[i].tranId, 
 	  									   createDate : this.ns.toDateTimeString(0), 
     									   createUser : this.ns.getCurrentUser(),
     									   updateDate : this.ns.toDateTimeString(0), 
