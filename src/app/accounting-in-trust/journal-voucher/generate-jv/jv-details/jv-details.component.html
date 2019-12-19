@@ -59,6 +59,7 @@
                     <div *ngSwitchCase="10">Investment (Placement)</div>
                     <div *ngSwitchCase="11">Offsetting of Investment Pull-Out Against Treaty Balance</div>
                     <div *ngSwitchCase="67">Offsetting of Unapplied Collection Against Receivable In-Trust</div>
+                    <div *ngSwitchCase="68">Offsetting of Unapplied Collection Against Treaty Balance</div>
                 </ng-container>
             </ng-template>
             <ng-template ngbTabContent>
@@ -110,7 +111,11 @@
                             </ng-container>
 
                             <ng-container *ngSwitchCase="67">
-                                <app-jv-unapplied-inwpol [jvDetail]="jvDetails" (emitData)="ceding($event)"></app-jv-unapplied-inwpol>
+                                <app-jv-unapplied-inwpol [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-unapplied-inwpol>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="68">
+                                <app-jv-unapplied-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-unapplied-treaty>
                             </ng-container>
                         </ng-container>
                     </div>

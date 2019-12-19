@@ -3450,4 +3450,22 @@ export class AccountingService {
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVInwUnappliedColl',params,header);
     }
     
+    getJvTrtyUnappliedColl(tranId,qsoaId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveTrtyUnappliedCollection',{params});	
+	}
+
+	saveJvTrtyUnappliedColl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVTrtyUnappliedColl',params,header);
+    } 
+
 }

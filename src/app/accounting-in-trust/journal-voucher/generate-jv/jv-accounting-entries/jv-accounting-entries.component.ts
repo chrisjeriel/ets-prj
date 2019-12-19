@@ -555,6 +555,18 @@ export class JvAccountingEntriesComponent implements OnInit {
           this.unappliedData = data.inwUnappColl;
         });
       });
+    }else if(this.jvType === 68){
+      this.accountingService.getJvUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.unappliedColl;
+        this.detailDatas = data.unappliedColl;;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].actualBalPaid;
+
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+        }
+      });
     }
   }
 

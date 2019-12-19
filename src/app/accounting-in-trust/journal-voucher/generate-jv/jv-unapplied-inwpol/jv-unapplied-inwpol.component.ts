@@ -16,7 +16,9 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 export class JvUnappliedInwpolComponent implements OnInit {
   
   @Input() jvDetail: any;
+  @Input() cedingParams:any;
   @Output() emitData = new EventEmitter<any>();
+  @Output() infoData = new EventEmitter<any>();
   @ViewChild('tbl') table: CustEditableNonDatatableComponent;
   @ViewChild('inwTbl') inwTbl: CustEditableNonDatatableComponent;
   @ViewChild('lov') lovMdl: LovComponent;
@@ -28,7 +30,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
   passDataUnapplied :any = {
   	tableData: [],
     tHeaderWithColspan: [{header:'', span:1},{header: 'Unapplied Collection Info', span: 9}, {header: 'Payment Details', span: 2}, {header: '', span: 2}],
-  	tHeader: ['Type', 'Item', 'Reference No', 'Description', 'Curr', 'Curr Rate', 'Previous Payment','Balance', 'Unapplied Amt','Payment Amount','Payment Amount(PHP)','Total Payment', 'Remaining Bal'],
+  	tHeader: ['Type', 'Item', 'Reference No', 'Description', 'Curr', 'Curr Rate', 'Unapplied Amt', 'Previous Payment','Balance','Payment Amount','Payment Amount(PHP)','Total Payment', 'Remaining Bal'],
   	dataTypes: ['text', 'text', 'text', 'text', 'text', 'percent', 'currency',  'currency', 'currency',  'currency', 'currency','currency','currency'],
   	nData: {
   	  showMG: 1,
@@ -64,9 +66,9 @@ export class JvUnappliedInwpolComponent implements OnInit {
   	paginateFlag: true,
   	pageLength: 5,
   	pageID: '1',
-  	//uneditable: [true, true,true,false,true],
-  	total: [null, null, null, null, null, 'Total', 'prevPaytAmt', 'prevBalance', 'unappliedAmt','actualBalPaid', 'localAmt', 'newPaytAmt', 'newBalance'],
-  	keys: ['transDtlName', 'itemName', 'refNo', 'remarks', 'currCd', 'currRate','prevPaytAmt', 'prevBalance', 'unappliedAmt', 'actualBalPaid','localAmt','newPaytAmt', 'newBalance'],
+  	uneditable: [true, true,true,true,true,true,true,true,true,false,false,false,false],
+  	total: [null, null, null, null, null, 'Total', 'unappliedAmt', 'prevPaytAmt', 'prevBalance', 'actualBalPaid', 'localAmt', 'newPaytAmt', 'newBalance'],
+  	keys: ['transDtlName', 'itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'unappliedAmt', 'prevPaytAmt', 'prevBalance', 'actualBalPaid','localAmt','newPaytAmt', 'newBalance'],
   	widths: [110,100,85,110,48,65,105,85,90,100,130,90,90],
   }
 
@@ -170,13 +172,13 @@ export class JvUnappliedInwpolComponent implements OnInit {
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].remarks        = data.data[i].remarks;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].currCd         = data.data[i].currCd;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].currRate       = data.data[i].currRate;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt    = 0;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevBalance    = data.data[i].currAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt   = data.data[i].currAmt - this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid  = data.data[i].currAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt    = data.data[i].prevPaytAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevBalance    = data.data[i].prevBalance;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt   = data.data[i].unappliedAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid  = data.data[i].actualBalPaid;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].localAmt       = data.data[i].localAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newPaytAmt     = this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt + this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newBalance     = this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt - this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newPaytAmt     = data.data[i].newPaytAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newBalance     = data.data[i].newBalance;
     }
     this.table.refreshTable();
     this.table.onRowClick(null, this.passDataUnapplied.tableData[0]);
@@ -187,6 +189,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
     if(data !== null){
       this.passData.disableAdd = false;
       this.passDataUnapplied.disableAdd = false;
+      this.infoData.emit(data);
     }else{
       this.passData.disableAdd = true;
       this.passDataUnapplied.disableAdd = false;
@@ -287,7 +290,8 @@ export class JvUnappliedInwpolComponent implements OnInit {
       }
 
       if(this.passDataUnapplied.tableData[i].deleted){
-        this.params.delUnappliedColl.push(this.passData.tableData[i]);
+        this.params.delUnappliedColl.push(this.passDataUnapplied.tableData[i]);
+        this.params.delUnappliedColl[this.params.delUnappliedColl.length - 1].tranId     = this.jvDetail.tranId;
       }
     }
 
@@ -304,6 +308,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
          }
 
          this.params.saveInwCollection.push(this.passData.tableData[j]);
+         this.params.saveInwCollection[this.params.saveInwCollection.length - 1].tranId     = this.jvDetail.tranId;
          this.params.saveInwCollection[this.params.saveInwCollection.length - 1].netDue     = this.passData.tableData[j].premAmt - this.passData.tableData[j].riComm - this.passData.tableData[j].riCommVat + this.passData.tableData[j].charges;
          this.params.saveInwCollection[this.params.saveInwCollection.length - 1].createDate = this.ns.toDateTimeString(0);
          this.params.saveInwCollection[this.params.saveInwCollection.length - 1].updateDate = this.ns.toDateTimeString(0);
@@ -311,6 +316,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
 
       if(this.passData.tableData[j].deleted){
         this.params.delInwCollection.push(this.passData.tableData[j]);
+        this.params.delInwCollection[this.params.delInwCollection.length - 1].tranId     = this.jvDetail.tranId;
       }
     }
   }
@@ -320,7 +326,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
     this.prepareData();
     if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0 ||
        this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
-
+      console.log(this.params)
       if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0){
         this.accountingService.saveJvUnappliedColl(this.params).subscribe((data:any) => {
           if(data['returnCode'] != -1) {
