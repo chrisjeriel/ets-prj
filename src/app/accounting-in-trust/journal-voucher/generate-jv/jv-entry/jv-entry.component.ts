@@ -140,10 +140,10 @@ export class JvEntryComponent implements OnInit {
         this.tranId = this.jvData.tranId;
       }
 
-      if(params.from == 'add'){
+      if(params.from == 'add' && this.jvData.tranId == undefined){
         this.newJV();
       }else{
-        this.tranId = params.tranId;
+        this.tranId = this.jvData.tranId == undefined ? params.tranId : this.jvData.tranId;
         this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
         this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
         this.jvDatas.createUser  = params.createUserTran, 
