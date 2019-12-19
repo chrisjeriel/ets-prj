@@ -381,7 +381,9 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.sub.unsubscribe();
+    if(this.sub !== undefined){
+      this.sub.unsubscribe();
+    }
     this.ns.clearFormGroup();
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
@@ -713,6 +715,7 @@ export class AcctOrEntryComponent implements OnInit {
             orStatDesc: this.orInfo.orStatDesc,
             orDate: this.orInfo.orDate,
             dcbNo: this.orInfo.dcbYear+/*'-'+this.orInfo.dcbUserCd+*/'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
+            dcbStatus: this.orInfo.dcbStatus,
             tranTypeCd: this.orInfo.tranTypeCd,
             tranTypeName: this.orInfo.tranTypeName,
             currCd: this.orInfo.currCd,

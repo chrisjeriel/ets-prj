@@ -181,7 +181,12 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   }
 
   onClickSave(cancel?){
-      if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+        this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+        this.successDiag.open();
+      }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
         this.netMdl.openNoClose();
       }else{
         if(cancel != undefined){

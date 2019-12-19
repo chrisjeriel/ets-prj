@@ -736,6 +736,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             arStatDesc: this.arInfo.arStatDesc,
             arDate: this.arInfo.arDate,
             dcbNo: this.arInfo.dcbYear+/*'-'+this.arInfo.dcbUserCd+*/'-'+this.pad(this.arInfo.dcbNo, 'dcbSeqNo'),
+            dcbStatus: this.arInfo.dcbStatus,
             tranTypeCd: this.arInfo.tranTypeCd,
             tranTypeName: this.arInfo.tranTypeName,
             currCd: this.arInfo.currCd,

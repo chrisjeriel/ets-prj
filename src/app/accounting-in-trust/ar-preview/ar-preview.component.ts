@@ -230,7 +230,14 @@ export class ArPreviewComponent implements OnInit {
   }
 
   onClickSave(){
-     this.confirm.confirmModal();
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else {
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
