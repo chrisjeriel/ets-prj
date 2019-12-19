@@ -303,7 +303,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
           this.jvDetails.delTrtyUnapplied[this.jvDetails.delTrtyUnapplied.length - 1].tranId = this.jvDetail.tranId;
         }
       }
-      console.log(this.params)
     }	
 
     saveData(cancel?){
