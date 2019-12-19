@@ -117,6 +117,10 @@ export class JvUnappliedTreatyComponent implements OnInit {
   	  console.log(data);
   	  if(data.collection.unappliedColl.length !== 0 || data.treaty.trtyUnappColl.length !== 0){
   	    this.passDataUnapplied.tableData = data.collection.unappliedColl;
+        this.passData.tableData = data.treaty.trtyUnappColl;
+        this.passData.tableData.forEach(a => {
+          a.quarterEnding = this.dp.transform(this.ns.toDateTimeString(a.quarterEnding), 'MM/dd/yyyy');
+        });
   	  }
 
       if(data.collection.unappliedColl.length !== 0){
@@ -125,6 +129,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
         this.jvDetails.ceding = this.passDataUnapplied.tableData[0].cedingId;
       }
   	  this.table.refreshTable();
+      this.inwTbl.refreshTable();
   	});
   }
 
@@ -218,6 +223,25 @@ export class JvUnappliedTreatyComponent implements OnInit {
 	}		
 
     setQsoaLOV(data){
+      console.log(data.data)
+      /*this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
+      for (var i = 0; i < data.data.length; i++) {
+        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+        this.passData.tableData[this.passData.tableData.length - 1].showMG             = 0;
+        this.passData.tableData[this.passData.tableData.length - 1].edited             = true;
+        this.passData.tableData[this.passData.tableData.length - 1].qsoaId             = data.data[i].qsoaId;
+        this.passData.tableData[this.passData.tableData.length - 1].currCd             = this.jvDetail.currCd;
+        this.passData.tableData[this.passData.tableData.length - 1].currRate           = this.jvDetail.currRate;
+        this.passData.tableData[this.passData.tableData.length - 1].currAmt            = data.data[i].currAmt;
+        this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt        = data.data[i].cumPayt;
+        this.passData.tableData[this.passData.tableData.length - 1].prevBalance        = data.data[i].remainingBal;
+        this.passData.tableData[this.passData.tableData.length - 1].balanceAmt         = data.data[i].remainingBal;
+        this.passData.tableData[this.passData.tableData.length - 1].newPaytAmt         = +(parseFloat(data.data[i].cumPayt) + parseFloat(data.data[i].balanceAmt)).toFixed(2);
+        this.passData.tableData[this.passData.tableData.length - 1].newBalance         = data.data[i].cumPayt;
+        this.passData.tableData[this.passData.tableData.length - 1].quarterEnding      = this.dp.transform(data.data[i].quarterEnding, 'MM/dd/yyyy');
+        this.passData.tableData[this.passData.tableData.length - 1].localAmt           = +(parseFloat(data.data[i].remainingBal) * parseFloat(this.jvDetail.currRate)).toFixed(2);
+      }*/
+
 	    data['data'].forEach(a => {
 	    if(this.passData.tableData.some(b => b.qsoaId != a.qsoaId)) {
 	      a.currCd = this.jvDetail.currCd;
@@ -268,7 +292,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
 	    this.params.delUnappliedColl  = [];
       this.params.saveTrtyUnapplied = [];
       this.params.delTrtyUnapplied  = [];
-
+      var actualBalPaid = 0;
 	    for (var i = 0; i < this.passDataUnapplied.tableData.length; i++) {
 	      if(this.passDataUnapplied.tableData[i].edited && !this.passDataUnapplied.tableData[i].deleted){
 	        this.params.saveUnappliedColl.push(this.passDataUnapplied.tableData[i]);
@@ -276,6 +300,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
           this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].cedingId   = this.jvDetails.ceding;
 	        this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].createDate = this.ns.toDateTimeString(0);
 	        this.params.saveUnappliedColl[this.params.saveUnappliedColl.length - 1].updateDate = this.ns.toDateTimeString(0);
+          actualBalPaid += this.passDataUnapplied.tableData[i].actualBalPaid;
 	      }
 
 	      if(this.passDataUnapplied.tableData[i].deleted){
@@ -286,21 +311,22 @@ export class JvUnappliedTreatyComponent implements OnInit {
 
       for( var i = 0 ; i < this.passData.tableData.length; i++){
         if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
-          this.jvDetails.saveTrtyUnapplied.push(this.passData.tableData[i]);
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].tranId = this.jvDetail.tranId;
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].cedingId = this.jvDetails.ceding;
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].createDate = this.ns.toDateTimeString(0);
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].updateDate = this.ns.toDateTimeString(0);
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].createUser = this.ns.getCurrentUser();
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].updateUser = this.ns.getCurrentUser();
-          this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].quarterNo = this.jvDetails.saveTrtyUnapplied[this.jvDetails.saveTrtyUnapplied.length - 1].qsoaId;
+          this.params.saveTrtyUnapplied.push(this.passData.tableData[i]);
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].tranId = this.jvDetail.tranId;
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].qsoaId = this.passData.tableData[i].qsoaId;
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].cedingId = this.jvDetails.ceding;
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].quarterEnding = this.ns.toDateTimeString(this.passData.tableData[i].quarterEnding);
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].createDate = this.ns.toDateTimeString(0);
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].updateDate = this.ns.toDateTimeString(0);
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].createUser = this.ns.getCurrentUser();
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].updateUser = this.ns.getCurrentUser();
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].quarterNo = this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].qsoaId;
+          this.params.saveTrtyUnapplied[this.params.saveTrtyUnapplied.length - 1].actualBalPaid = actualBalPaid;
         }
 
         if(this.passData.tableData[i].deleted){
-          this.jvDetails.delTrtyUnapplied.push(this.passData.tableData[i]);
-          this.jvDetails.delTrtyUnapplied[this.jvDetails.delTrtyUnapplied.length - 1].tranId = this.jvDetail.tranId;
+          this.params.delTrtyUnapplied.push(this.passData.tableData[i]);
+          this.params.delTrtyUnapplied[this.params.delTrtyUnapplied.length - 1].tranId = this.jvDetail.tranId;
         }
       }
     }	
@@ -344,6 +370,9 @@ export class JvUnappliedTreatyComponent implements OnInit {
           }
         });
       }
+    }
 
+    onClickCancel(){
+      console.log(this.passData.tableData);
     }
 }

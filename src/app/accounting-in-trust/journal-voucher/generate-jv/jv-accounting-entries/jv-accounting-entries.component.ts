@@ -566,6 +566,10 @@ export class JvAccountingEntriesComponent implements OnInit {
             this.errorFlag = true;
           }
         }
+
+        this.accountingService.getJvTrtyUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+          this.unappliedData = data.trtyUnappColl;
+        });
       });
     }
   }
