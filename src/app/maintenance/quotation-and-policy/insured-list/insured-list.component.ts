@@ -104,7 +104,7 @@ export class InsuredListComponent implements OnInit {
 		var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
 		var yyyy = today.getFullYear();
 		var currDate = mm + dd+ yyyy;
-		var filename = 'MtnInsuredList_'+currDate+'.xlsx'
+		var filename = 'MtnInsuredList_'+currDate+'.xls'
 		var mystyle = {
 			headers:true, 
 			column: {style:{Font:{Bold:"1"}}}

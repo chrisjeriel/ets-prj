@@ -14,6 +14,8 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { NgForm} from '@angular/forms';
+import { ModalComponent } from '@app/_components/common';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
 	selector: 'app-general-info',
@@ -190,6 +192,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	@Output() enblEndtTab = new EventEmitter<any>(); //Paul
 	@Output() enblOptTab = new EventEmitter<any>(); //Paul
 	//@Output() enblQuoteOpTab = new EventEmitter<any>(); //EJVA
+	@Input() intCompTag:boolean = false; 
 
 	compCedList:any = [];
 
@@ -730,7 +733,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 			"totalSi"		: this.project.totalSi,
 			"totalValue"	: this.project.totalValue,
 			"updateDate"	: this.genInfoData.updateDate,
-			"updateUser"	: this.genInfoData.updateUser
+			"updateUser"	: this.genInfoData.updateUser,
+			"mbiQuoteId"	: this.genInfoData.mbiQuoteId
 		}
 
 		if(this.quotationService.toGenInfo[0] === 'edit') {
@@ -1056,6 +1060,71 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
   			this.project.pctShare = pctArr.join('.');
   		}
   	}
+  }
+
+  //--------------------------------------------------------------------------------------
+
+   @ViewChild('quoteMdl') quoteMdl:ModalComponent;
+   @ViewChild(LoadingTableComponent) quoteTable:LoadingTableComponent;
+
+   passDataQuoteLOV : any = {
+    tableData  : [],
+    tHeader    : ["Quotation No.", "Ceding Company", "Insured", "Risk"],
+      sortKeys:['QUOTATION_NO','CEDING_NAME','INSURED_DESC','RISK_NAME'],
+    dataTypes  : ["text","text","text","text"],
+    pageLength  : 10,
+    resizable  : [false,false,false,false],
+    tableOnly  : false,
+    keys    : ['quotationNo','cedingName','insuredDesc','riskName'],
+    pageStatus  : true,
+    pagination  : true,
+    colSize    : ['', '250px', '250px', '250px'],
+    filters: [
+      {key: 'quotationNo', title: 'Quotation No.',dataType: 'text'},
+      {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+      {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+      {key: 'riskName',title: 'Risk',dataType: 'text'},
+    ]
+  };
+
+  searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        'line':'MBI',
+        statusArr:['3','4','5','7']
+  };
+
+  searchQuery(searchParams){
+    for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+    this.getQuoteList();
+  }
+
+
+  getQuoteList(){
+    this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(a=>{
+      this.passDataQuoteLOV.count = a['length'];
+      this.quoteTable.placeData(a['quotationList'].map(i => 
+          { 
+            i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName;
+              return i;
+          }
+        )
+      ); 
+    });
+  }
+
+  onClickOkQuoteLov(){
+    this.form.control.markAsDirty();
+    this.genInfoData.mbiQuoteId = this.quoteTable.indvSelect.quoteId;
+    this.genInfoData.mbiRefNo = this.quoteTable.indvSelect.quotationNo;
+    this.quoteMdl.closeModal();
+  }
+
+  showQuoteLov(){
+    this.quoteMdl.openNoClose();
+    this.getQuoteList();
   }
 
 }

@@ -34,7 +34,8 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
         prevPolicyId: '',
         cedingName:'',
         principalId: '',
-        extensionTag:''
+        extensionTag:'',
+        holdCoverTag: 'N'
     }
 
     alterFlag: boolean = false;
@@ -243,6 +244,7 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
       if(this.us.fromCreateAlt) {
         this.policyInfo.prevPolicyId = event.refPolicyId;
       }
+      this.policyInfo.holdCoverTag = event.holdCoverTag != undefined ? event.holdCoverTag : this.policyInfo.holdCoverTag;
     }
 
    returnOnModal(){

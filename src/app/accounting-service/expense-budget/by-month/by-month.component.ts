@@ -708,7 +708,7 @@ export class ByMonthComponent implements OnInit {
       var sec = String(today.getSeconds()).padStart(2,'0');
       var ms = today.getMilliseconds()
       var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;*/
-      var filename = this.selectedYear + 'BudgetByMonth.xlsx'
+      var filename = this.selectedYear + 'BudgetByMonth.xls'
       var mystyle = {
           headers:false, 
           column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},

@@ -232,7 +232,7 @@ export class MonEndTrialBalComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xlsx'
+    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
     var opts = [{
                 sheetid: 'PHP',
                 headers: true

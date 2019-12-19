@@ -503,6 +503,7 @@ import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/g
 import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
 import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/mtn-acse-check-series/mtn-acse-check-series.component';
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
+import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
 
 @NgModule({
     imports: [
@@ -1010,6 +1011,7 @@ import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-repo
         InvoiceSeriesComponent,
         MtnAcseCheckSeriesComponent,
         ClaimReportsComponent,
+        PolDistributionCumComponent,
     ],
 
   	providers: [
