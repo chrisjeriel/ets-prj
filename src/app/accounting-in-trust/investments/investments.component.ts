@@ -162,6 +162,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
+     exportFlag: true,
      widths: [110,250,140,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
@@ -284,7 +285,10 @@ export class InvestmentsComponent implements OnInit {
 
                                           if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'N'){
                                              if (a.amortized === null || a.amortized === ""){
-                                               a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
+                                              a.uneditable = ['invtCd','bank','invtType',
+                                                        'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
+                                                        'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
+                                                        'whtaxAmt','matVal', 'amortEff','priceCost'];
                                              }else {
                                                a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
@@ -1570,6 +1574,65 @@ update(data){
       result = 'Yearly';
     }
     return result;
+  }
+
+  export(){
+        //do something
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = String(today.getHours()).padStart(2,'0');
+        var min = String(today.getMinutes()).padStart(2,'0');
+        var sec = String(today.getSeconds()).padStart(2,'0');
+        var ms = today.getMilliseconds()
+        var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+        var filename = 'Investments'+currDate+'.xlsx'
+        var mystyle = {
+            headers:true, 
+            column: {style:{Font:{Bold:"1"}}}
+          };
+
+        alasql.fn.datetime = function(dateStr) {
+              if (dateStr === '' || dateStr === null) {
+                return '';
+              }else {
+               var date = new Date(dateStr);
+               return date.toLocaleString().split(',')[0];
+              }
+        };
+
+        alasql.fn.currency = function(currency) {
+           if (currency === '' || currency === null) {
+                return '';
+           }else {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                      (parts[1] ? "." + parts[1] : "");
+              return num;
+          }
+        };
+
+     this.accountingService.getAccInvestments(this.searchParams).subscribe(data => {
+            var records = data['invtList'];
+            //this.table.refreshTable();
+            records = records.map(i => {
+                                      i.matDate = this.ns.toDateTimeString(i.matDate);
+                                      i.purDate = this.ns.toDateTimeString(i.purDate);
+                                      i.createDate = this.ns.toDateTimeString(i.createDate);
+                                      i.updateDate = this.ns.toDateTimeString(i.updateDate);
+                                      i.termDate = this.ns.toDateTimeString(i.termDate);
+                                      i.partialPullOutDate = this.ns.toDateTimeString(i.partialPullOutDate);
+
+                                     for(let key of Object.keys(i)){
+                                         i[key] = i[key]==null ? '' : i[key];
+                                     }
+
+                                     return i;
+                                 });
+            console.log(records);
+            alasql('SELECT invtCd AS [Investment Code], bankName AS [Bank], certNo AS [Certificate No], invtTypeDesc AS [Investment Type], invtSecDesc AS [Security], matPeriod AS [Maturity Period], durUnit AS [Duration Unit], intRt AS [Interesr Rate],datetime(purDate) AS [Purchased Date],  datetime(matDate) AS [Maturity Date], currCd AS [Currency], currRate AS [Currenct Rate],currency(invtAmt) AS Investment, currency(incomeAmt) AS [Investment Income], currency(bankCharge) AS [Bank Charge], currency(whtaxAmt) AS [Withholding Tax], matVal AS [Maturity Value],amortized AS [Amortized Unit], amortEff AS [Amort Eff%], currency(priceCost) AS [Price (Cost)], partialPullOutTag AS [Partial Pullout Tag], datetime(partialPullOutDate) AS [Partial Pullout Date], currency(partialPullOutAmt) AS [Partial Pullout Amount],preTerminatedTag AS [Pre-Terminated Tag], datetime(termDate) AS [Term Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
+        });
   }
 
  
