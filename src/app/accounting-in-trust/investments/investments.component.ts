@@ -736,9 +736,13 @@ update(data){
               if( (this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== '' || this.passData.tableData[i].matDate !== undefined)   ||
                 (this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== '' || this.passData.tableData[i].purDate !== undefined)){
                   var resultPurDate = this.changePurDate(this.passData.tableData[i]);
-                  this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
-                  this.passData.tableData[i].purDate = resultPurDate.purDate;
-                  this.passData.tableData[i].matDate = resultPurDate.matDate;
+                  
+                  if (this.passData.tableData[i].matPeriod === null){
+                  }else {
+                     this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
+                     this.passData.tableData[i].purDate = resultPurDate.purDate;
+                     this.passData.tableData[i].matDate = resultPurDate.matDate;
+                  }
                }
 
               if(this.passData.tableData[i].invtStatus === 'F'){
