@@ -573,12 +573,12 @@ uneditableItems(array, item, mode){
      var  currRate,
           currSeq,
           invtCd;
-                    
+                    console.log(data.invtCd);
                     if (data.currCd === 'PHP'){
                        var currRt = this.getCurrencyRt('PHP');
                         currRate = currRt;
                        
-                       if (data.invtCd === null){
+                       if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                        } else {
@@ -594,8 +594,8 @@ uneditableItems(array, item, mode){
                      } else if (data.currCd === 'UKP'){
                        var currRt = this.getCurrencyRt('UKP');
                         currRate = currRt;
-                      
-                        if (data.invtCd === null){
+            
+                        if (data.invtCd === null || data.invtCd === undefined ){
                            currSeq = null;
                            invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                         } else {
@@ -612,7 +612,7 @@ uneditableItems(array, item, mode){
                        var currRt = this.getCurrencyRt('USD');
                         currRate = currRt;
      
-                       if (data.invtCd === null){
+                       if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                        } else {
@@ -931,11 +931,12 @@ update(data){
                   this.passData.tableData[i].matDate = array[1];
 
                  }else if(data.key === 'currCd'){
+
                    var result = this.changeCurr(this.passData.tableData[i]);
-                   console.log(result);
                    this.passData.tableData[i].currRate = result.currRate;
                    this.passData.tableData[i].currSeq = result.currSeq;
                    this.passData.tableData[i].invtCd = result.invtCd;
+                 
                  } else if (data.key === 'invtType'){
                    if (this.passData.tableData[i].invtCd !== null){
                      var res = this.passData.tableData[i].invtCd.split("-");
