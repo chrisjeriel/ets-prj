@@ -281,14 +281,14 @@ export class InvestmentsComponent implements OnInit {
                                         }
 
                                         
-                                      } */else if(a.invtStatus === 'O'){
+                                      } */else if(a.invtStatus === 'O' || a.invtStatus === 'M' || a.invtStatus === '' ){
 
                                           if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'N'){
                                              if (a.amortized === null || a.amortized === ""){
                                               a.uneditable = ['invtCd','bank','invtType',
-                                                        'invtSecCd','invtStatus','amortized','matPeriod','durUnit','intRt','purDate',
-                                                        'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
-                                                        'whtaxAmt','matVal', 'amortEff','priceCost'];
+                                                        'invtSecCd','invtStatus','amortized','matPeriod','durUnit','purDate',
+                                                        'matDate','currCd','currRate','invtAmt',
+                                                        'matVal', 'amortEff','priceCost'];
                                              }else {
                                                a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
@@ -733,10 +733,12 @@ update(data){
           //LOGIC-FUNCTIONALITIES
            if (data.key === 'durUnit'){
              
-              if(this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== ''   ||
-                this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== ''){
-
-                  this.passData.tableData[i].matPeriod = null;
+              if( (this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== '' || this.passData.tableData[i].matDate !== undefined)   ||
+                (this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== '' || this.passData.tableData[i].purDate !== undefined)){
+                  var resultPurDate = this.changePurDate(this.passData.tableData[i]);
+                  this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
+                  this.passData.tableData[i].purDate = resultPurDate.purDate;
+                  this.passData.tableData[i].matDate = resultPurDate.matDate;
                }
 
               if(this.passData.tableData[i].invtStatus === 'F'){
@@ -834,7 +836,8 @@ update(data){
              }
            }
 
-
+           //console.log(this.computation(data,this.passData.tableData[i].invtAmt,this.passData.tableData[i].intRt,this.passData.tableData[i].durUnit,this.passData.tableData[i].matPeriod,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge))
+          
            //LOGIC-COMPUTATION
                if (this.passData.tableData[i].durUnit !== null || this.passData.tableData[i].durUnit !== ''   && 
                    this.passData.tableData[i].intRt !== null || this.passData.tableData[i].intRt !== '' &&
@@ -843,7 +846,24 @@ update(data){
                    ){
 
 
-                  var principal = parseFloat(this.passData.tableData[i].invtAmt),
+                if(data.key === 'invtAmt' || data.key === 'intRt' || data.key === 'matPeriod' || data.key === 'durUnit' ||  data.key === 'purDate' ||  data.key === 'matDate' || data.key === 'currCd' ){
+                  var resultInvt = this.computation(data,this.passData.tableData[i].invtAmt,this.passData.tableData[i].intRt,this.passData.tableData[i].durUnit,this.passData.tableData[i].matPeriod,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge);
+                  this.passData.tableData[i].invtAmt = resultInvt.invtAmt;
+                  this.passData.tableData[i].incomeAmt = resultInvt.incomeAmt;
+                  this.passData.tableData[i].whtaxAmt = resultInvt.whtaxAmt;
+                  this.passData.tableData[i].matVal = resultInvt.matVal;
+                }else if(data.key === 'incomeAmt'){
+                  var resultInvtAmt = this.computationWthax(this.passData.tableData[i].invtAmt,this.passData.tableData[i].incomeAmt,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge);
+                  this.passData.tableData[i].incomeAmt = resultInvtAmt.incomeAmt;
+                  this.passData.tableData[i].whtaxAmt = resultInvtAmt.whtaxAmt;
+                  this.passData.tableData[i].matVal = resultInvtAmt.matVal; 
+                  this.passData.tableData[i].bankCharge = resultInvtAmt.bankCharge;
+                }else if(data.key === 'bankCharge' || data.key === 'whtaxAmt' ){
+                   this.passData.tableData[i].matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
+                }
+
+
+/*                  var principal = parseFloat(this.passData.tableData[i].invtAmt),
                      rate = parseFloat(this.passData.tableData[i].intRt)/100,
                      time,
                      matPeriod;
@@ -893,16 +913,10 @@ update(data){
                        bankCharges = this.passData.tableData[i].bankCharge,
                        matVal;
 
-                       /*if(Number.isNaN(bankCharges)){
-                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].whtaxAmt;
-                       } else {
-                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
-                       }
-*/
                        this.passData.tableData[i].whtaxAmt = Math.round(withHTaxAmt * 100)/100;
                        matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
                        this.passData.tableData[i].matVal = matVal;
-                 }
+                 }*/
                } 
 
            //LOGIC - DATES
@@ -966,6 +980,78 @@ update(data){
     }
   }
 
+  computation(data,invtAmt,intRt,durUnit,matPeriod,currCd,bankCharge){
+     var principal = parseFloat(invtAmt),
+                     rate = parseFloat(intRt)/100,
+                     time,
+                     matPeriod;
+
+                       if(durUnit === 'Days'){
+                          time = parseFloat(matPeriod)/360;
+                       } else if (durUnit === 'Months'){
+                         time = parseFloat(matPeriod)/12;
+                       } else if (durUnit === 'Years'){
+                         time = parseFloat(matPeriod);
+                       }
+
+                       console.log(time);
+
+                 var invtIncome = principal * rate * time;
+                 var incomeAmt = Math.round(invtIncome * 100)/100;
+
+                 if(invtIncome === null){
+                 }else {
+                  if(currCd === 'PHP'){
+                    var taxRate = parseFloat(this.wtaxRate) / 100;
+                   }else if (currCd === 'USD') {
+                     var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+                   };
+
+                   console.log(taxRate);
+                   
+                       var withHTaxAmt = invtIncome * taxRate,
+                       matVal;
+
+                       var whtaxAmt = Math.round(withHTaxAmt * 100)/100;
+                       matVal = invtAmt + incomeAmt - bankCharge - whtaxAmt;
+                       var matVal = matVal;
+                 }
+    return {
+        matVal: matVal, 
+        incomeAmt: incomeAmt,
+        invtAmt : invtAmt,
+        whtaxAmt : whtaxAmt,
+        bankCharge : bankCharge
+    }; 
+
+   } 
+
+   computationWthax(invtAmt,incomeAmt,currCd,bankCharge){
+     if(currCd === 'PHP'){
+        var taxRate = parseFloat(this.wtaxRate) / 100;
+     }else if (currCd === 'USD') {
+        var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+     };
+
+     console.log(taxRate);
+                   
+     var withHTaxAmt = incomeAmt * taxRate,
+     matVal;
+
+     var whtaxAmt = Math.round(withHTaxAmt * 100)/100;
+     matVal = invtAmt + incomeAmt - bankCharge - whtaxAmt;
+     var matVal = matVal;
+
+     return {
+        matVal: matVal, 
+        incomeAmt: incomeAmt,
+        whtaxAmt : whtaxAmt,
+        bankCharge : bankCharge
+    }; 
+
+   }
+
+ 
   getWTaxRate(currCd?){
     var wtaxRt;
     if (currCd === 'USD'){
