@@ -84,7 +84,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     addFlag: true,
     deleteFlag: true,
     editFlag: false,
-    pageLength: 10,
+    pageLength: 'unli',
     paginateFlag:true,
     infoFlag:true,
     widths: [105,240,125,170,120,120,120,120],

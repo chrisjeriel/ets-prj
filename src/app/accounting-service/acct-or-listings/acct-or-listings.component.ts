@@ -194,7 +194,7 @@ export class AcctOrListingsComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'OfficialReceipt'+currDate+'.xlsx'
+    var filename = 'OfficialReceipt'+currDate+'.xls'
     var mystyle = {
         headers:true, 
         column: {style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}
@@ -212,9 +212,11 @@ export class AcctOrListingsComponent implements OnInit {
             return num
       };
       var tableData: any[] = [];
-      for(var i of this.passData.tableData){
-        i.orNo = i.orNo == null ? '' : i.formattedOrNo.split('-')[1];
-        tableData.push(i);
+      for(var i of this.table.displayData){
+        if(i != null){
+          i.orNo = i.orNo == null ? '' : i.formattedOrNo.split('-')[1];
+          tableData.push(i);
+        }
       }
       //alasql('SELECT paytReqNo AS PaytReqNo, payee AS Payee, tranTypeDesc AS PaymentType, reqStatusDesc AS Status, datetime(reqDate) AS RequestedDate, particulars AS Particulars, currCd AS Curr, reqAmt AS Amount, requestedBy AS RequestedBy INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
     alasql('SELECT orType AS [O.R. Type], orNo AS [O.R. No.], payor AS [Payor], datetime(orDate) AS [A.R. Date], tranTypeName AS [Payment Type], particulars AS [Particulars], currency(orAmt) AS [Amount] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,tableData]);

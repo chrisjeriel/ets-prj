@@ -167,7 +167,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
       this.passData.tableData[this.passData.tableData.length - 1].netIncome = selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt);
-      this.passData.tableData[this.passData.tableData.length - 1].localAmt = (selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt)) * selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = Math.round(((selected[i].incomeAmt - (selected[i].bankCharge + selected[i].whtaxAmt)) * selected[i].currRate)*100) / 100;
       this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'I';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -299,7 +299,7 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 7;
     console.log("Row Length >>>" + rowLength);
     var mystyle = {
