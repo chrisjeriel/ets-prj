@@ -271,7 +271,7 @@ export class PolicyReportsComponent implements OnInit {
   extract(cancel?){
     this.prepareData();
 
-    this.printService.extractReport({ polr044Params:this.sendData }).subscribe((data:any)=>{
+    this.printService.extractReport({ reportId: this.params.reportId, polr044Params:this.sendData }).subscribe((data:any)=>{
         console.log("extractReport return data");
         console.log(data);
         if (data.errorList.length > 0) {

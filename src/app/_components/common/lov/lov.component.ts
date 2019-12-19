@@ -490,7 +490,35 @@ export class LovComponent implements OnInit {
          });
       }
      
-    } 
+    } else if (selector == 'bankLov') {
+
+      if(this.passData.bank == null || this.passData.bank.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'bankLov'
+        });
+      } else {
+        this.mtnService.getBankLov(this.passData.bank,'','Y','Y',this.passData.glDepFor).subscribe((data:any)=>{
+          if(data.bankLovList.length > 0){
+             data.bankLovList[0]['ev'] = ev;
+             data.bankLovList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['bankLovList'][0], ev : ev});
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev
+             });
+
+             this.passData.selector = 'bankLov';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+        });
+      }
+
+      
+    }
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -1456,15 +1484,15 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     } else if(this.passData.selector == 'acitTranType') {
-      console.log("within lov component");
 
       this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
       this.passTable.minColSize = ['1px', '120px'];
       this.passTable.dataTypes  = ['number','text'];
       this.passTable.keys       = ['tranTypeCd','tranTypeName'];
       // this.passTable.checkFlag  = true;
+      // getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
 
-      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', '', '', 'Y').subscribe((data:any) => {
+      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
         this.passTable.tableData = data.tranTypeList;
 
         this.table.refreshTable();

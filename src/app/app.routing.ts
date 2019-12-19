@@ -203,6 +203,7 @@ import { UploaderComponent } from './_components/common/uploader/uploader.compon
 import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-open-dcb/close-open-dcb.component';
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
+import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 
 const appRoutes: Routes = [
 
@@ -815,6 +816,7 @@ const appRoutes: Routes = [
     { path: 'mtn-adjuster-list', component: AdjusterComponent },
     { path: 'adjuster-form', component: AdjusterFormComponent },
     { path: 'claim-status', component: ClaimStatusComponent, canDeactivate: [UnsavedChangesGuard]  },
+    { path: 'clm-reports', component: ClaimReportsComponent },
     { path: 'maintenance-clm', component: MtnClaimsComponent },
     { path: 'maintenance-clm-event-type', component: ClaimEventTypeComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'maintenance-clm-event', component: ClaimEventComponent, canDeactivate: [UnsavedChangesGuard] },

@@ -157,7 +157,7 @@
 									[disabled]="paramsToggle.indexOf('line') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -173,7 +173,7 @@
 									[disabled]="paramsToggle.indexOf('company') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
 								</div>
 							</div>
 							<div class="col-sm-1">
