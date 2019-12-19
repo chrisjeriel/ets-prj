@@ -226,36 +226,38 @@ export class AcctOrEntryComponent implements OnInit {
     var tranId;
     var orNo;
     this.onChange.emit({ type: this.orInfo.tranTypeCd });
-    this.sub = this.route.params.subscribe(
-       data=>{
-         console.log(data)
-         if(data.from === 'CancelledTran'){
-           tranId = data.tranId;
-           orNo = '';
-           this.isCancelled = true;
-           this.passData.addFlag = false;
-           this.passData.genericBtn = undefined;
-           this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-           this.paytDtlTbl.refreshTable();
-         }else{
-           if('add' === data['action'].trim()){
-             this.isAdd = true;
+    if(this.emittedValue == undefined){
+      this.sub = this.route.params.subscribe(
+         data=>{
+           console.log(data)
+           if(data.from === 'CancelledTran'){
+             tranId = data.tranId;
+             orNo = '';
+             this.isCancelled = true;
+             this.passData.addFlag = false;
+             this.passData.genericBtn = undefined;
+             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+             this.paytDtlTbl.refreshTable();
            }else{
-             this.isAdd = false;
-             let params = JSON.parse(data['slctd']);
-             tranId = params.tranId;
-             orNo = params.orNo;
-             if(params.status === 'Cancelled' || params.status === 'Deleted'){
-               this.isCancelled = true;
-               this.passData.addFlag = false;
-               this.passData.genericBtn = undefined;
-               this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-               this.paytDtlTbl.refreshTable();
-             }         
+             if('add' === data['action'].trim()){
+               this.isAdd = true;
+             }else{
+               this.isAdd = false;
+               let params = JSON.parse(data['slctd']);
+               tranId = params.tranId;
+               orNo = params.orNo;
+               if(params.status === 'Cancelled' || params.status === 'Deleted'){
+                 this.isCancelled = true;
+                 this.passData.addFlag = false;
+                 this.passData.genericBtn = undefined;
+                 this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+                 this.paytDtlTbl.refreshTable();
+               }         
+             }
            }
          }
-       }
-    );
+      );
+    }
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     //Aug 8, 2019 Thank you for optimizing 
     if(!this.isAdd && this.emittedValue === undefined){
@@ -379,7 +381,9 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.sub.unsubscribe();
+    if(this.sub !== undefined){
+      this.sub.unsubscribe();
+    }
     this.ns.clearFormGroup();
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
@@ -711,6 +715,7 @@ export class AcctOrEntryComponent implements OnInit {
             orStatDesc: this.orInfo.orStatDesc,
             orDate: this.orInfo.orDate,
             dcbNo: this.orInfo.dcbYear+/*'-'+this.orInfo.dcbUserCd+*/'-'+this.pad(this.orInfo.dcbNo, 'dcbSeqNo'),
+            dcbStatus: this.orInfo.dcbStatus,
             tranTypeCd: this.orInfo.tranTypeCd,
             tranTypeName: this.orInfo.tranTypeName,
             currCd: this.orInfo.currCd,
@@ -1099,6 +1104,8 @@ export class AcctOrEntryComponent implements OnInit {
           if(this.paymentTypes.length == 1){
             this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
           }
+
+          this.loading = !this.loading;
         }
       }
     );
@@ -1415,6 +1422,7 @@ export class AcctOrEntryComponent implements OnInit {
 
   changeOrType(data){
     this.orInfo.orType = data;
+    this.loading = true;
     this.retrievePaymentType();
   }
 
@@ -1430,11 +1438,11 @@ export class AcctOrEntryComponent implements OnInit {
     }
 
     //Change default OR Type
-    if(data == 1){
+    /*if(data == 1){
       this.orInfo.orType = 'NON-VAT';
     }else if(data == 2 || data == 3){
       this.orInfo.orType = 'VAT';
-    }
+    }*/
 
     if(data == 1 || data == 2){
       this.disablePayor = false;

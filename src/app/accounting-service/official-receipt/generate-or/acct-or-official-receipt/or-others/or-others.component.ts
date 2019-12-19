@@ -410,7 +410,12 @@ export class OrOthersComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    if(this.checkFields()){
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else if(this.checkFields()){
       this.dialogIcon = 'error';
       this.successDiag.open();
     }else{

@@ -230,7 +230,14 @@ export class ArPreviewComponent implements OnInit {
   }
 
   onClickSave(){
-     this.confirm.confirmModal();
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else {
+      this.confirm.confirmModal();
+    }
   }
 
   onClickCancel(){
@@ -460,8 +467,8 @@ export class ArPreviewComponent implements OnInit {
 
   computeTotals(){   
     console.log(this.accEntriesData.tableData)
-    this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
-    this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
+    this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
+    this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat( b.foreignDebitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
@@ -485,7 +492,7 @@ export class ArPreviewComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'AccountingEntries'+currDate+'.xlsx'
+    var filename = 'AccountingEntries'+currDate+'.xls'
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},

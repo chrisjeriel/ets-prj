@@ -84,7 +84,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     addFlag: true,
     deleteFlag: true,
     editFlag: false,
-    pageLength: 10,
+    pageLength: 'unli',
     paginateFlag:true,
     infoFlag:true,
     widths: [105,240,125,170,120,120,120,120],
@@ -506,6 +506,15 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       }else{
         this.confirm.confirmModal();
       }
+    }else if(this.record.from.toLowerCase() == 'or'){
+      if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+            this.dialogIcon = 'error-message';
+            this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
+            this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+            this.successDiag.open();
+      }else {
+        this.confirm.confirmModal();
+      } 
     }else{
       this.confirm.confirmModal();
     }

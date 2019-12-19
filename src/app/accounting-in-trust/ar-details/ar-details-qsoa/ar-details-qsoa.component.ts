@@ -168,7 +168,12 @@ export class ArDetailsQsoaComponent implements OnInit {
   }
 
   onClickSave(cancel?){
-    if(!this.checkIfNegativeTotal()){
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else if(!this.checkIfNegativeTotal()){
       this.dialogIcon = 'info';
       this.dialogMessage = 'Total Amount must be negative.';
       this.successDiag.open();
@@ -360,7 +365,7 @@ export class ArDetailsQsoaComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
     console.log("Row Length >>>" + rowLength);
     var mystyle = {
