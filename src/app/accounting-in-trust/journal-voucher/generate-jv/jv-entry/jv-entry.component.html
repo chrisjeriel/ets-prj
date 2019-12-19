@@ -241,10 +241,6 @@
 <app-modal class="d-none" id="cancelAcct" #CancelEntries>
     <div header>Confirmation</div>  
     <div body>
-        <!-- <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 12px !important">Are you sure you want to cancel this Journal Voucher?</label>
-        </div> -->
         <span>Are you sure you want to cancel this Journal Voucher?</span>
     </div>
     <div footer class="text-center">
@@ -256,10 +252,6 @@
 <app-modal class="d-none" id="printAcct" #PrintEntries>
     <div header>Confirmartion</div>  
     <div body>
-        <!-- <div class="form-row custom-row-inline-inset">
-            <span class="col-sm-2"></span>
-            <label class="form-control-sm col-sm-10 text-right labels" style="text-align: left !important;font-size: 14px !important">Was the printing of the Journal Voucher successful?</label>
-        </div> -->
         <span>Was the printing of the Journal Voucher successful?</span>
     </div>
     <div footer class="text-center">
@@ -327,7 +319,48 @@
     </div>
 </app-modal>
 
-<!-- <app-modal class="d-none" id="allocation" #printJVDetailed>
+<app-modal class="d-none" #printJVDetailed>
+    <div header>Print</div>
+    <div body>
+        <div class="container-fluid">
+            <div class="custom-row-inline-inset">
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Destination</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <option value="screen">Screen</option>
+                        <option value="printer">Printer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                        <ng-container *ngFor="let printer of printData.printers">
+                            <option [value]="printer">{{ printer }}</option>    
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="printJVDetailed.closeModal()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="printJVDetailed.closeModal();printJVDetails()">Print</button>
+    </div>
+</app-modal>
+
+<!-- <app-modal class="d-none" id="allocation" >
     <div header>Print</div>  
     <div body style=" max-width: 450px;">
         <div class="row">
