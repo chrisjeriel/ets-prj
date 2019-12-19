@@ -1,7 +1,7 @@
 <div class="cust-tabs-container">
-	<h4>Policy / Generate Documents</h4>
+	<h4>Claims</h4>
 	<ngb-tabset>
-		<ngb-tab class="ngb-tab" title="Policy Reports">
+		<ngb-tab class="ngb-tab" title="Claim Reports">
 			<ng-template ngbTabContent>
 				<div class="row top-row">
 					<div class="col-sm-2"></div>
@@ -28,45 +28,13 @@
 					<div class="col-sm-2"></div>
 					<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
-							<div class="input-group">
-								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" 
-									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
-								<label class="form-control-sm" for="radio">Issue Date</label>
-							</div>
-							<div class="input-group">
-								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="2" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('effectiveDate') == -1">
-								<label class="form-control-sm" for="radio6">Effective Date</label>
+							<div class="input-group" >
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="9" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" >
+								<label class="form-control-sm" for="radio9">Claim File Date</label>
 							</div>
 							<div class="input-group" >
-								<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="5" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('accountingDate') == -1">
-								<label class="form-control-sm" for="radio7">Accounting Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('lossDate') == -1">
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="6" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('distributionDate') == -1">
-								<label class="form-control-sm" for="radio8">Distribution Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="7" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('tranDate') == -1">
-								<label class="form-control-sm" for="radio8">Tran Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="8" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('postingDate') == -1">
-								<label class="form-control-sm" for="radio8">Posting Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('createDate') == -1">
-								<label class="form-control-sm" for="radio9">Create Date</label>
 							</div>
 						</div>
 					</fieldset>
@@ -148,7 +116,6 @@
 					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
 						<div class="row">
 							<div class="col-sm-1">
-
 							</div>
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
@@ -183,25 +150,59 @@
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
-								<div class="input-group align-rad">
-									<!-- <div class="col-sm-2"></div>
-									<input name="input197" type="checkbox" class="col-sm-1" style="margin-top: 5px;" [checked]="params.alteration == 'Y'" (change)="params.alteration = (params.alteration == 'Y' ? 'N':'Y')">
-									<label class="form-control-sm col-sm" >Include Alteration</label> -->
-									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('policy') == -1">
-									<label class="form-control-sm" for="radirt1">Policy</label>
-									<input id="radirt2" class="form-control-sm" type="radio" name="incRecTag" value="A" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('alteration') == -1">
-									<label class="form-control-sm" for="radirt2">Alteration</label>
-									<input id="radirt3" class="form-control-sm" type="radio" name="incRecTag" value="B" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('policyAlteration') == -1">
-									<label class="form-control-sm" for="radirt3">Policy & Alteration</label>
-									<input id="radirt4" class="form-control-sm" type="radio" name="incRecTag" value="D" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('distributed') == -1">
-									<label class="form-control-sm" for="radirt4">Distributed</label>
-									<input id="radirt5" class="form-control-sm" type="radio" name="incRecTag" value="U" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('undistributed') == -1">
-									<label class="form-control-sm" for="radirt5">Undistributed</label>
+								<div class="input-group" style="margin-bottom: 0px !important;">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Status</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									[disabled]="paramsToggle.indexOf('line') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL STATUS">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group" style="margin-bottom: 0px !important;">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Adjuster</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									[disabled]="paramsToggle.indexOf('line') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL ADJUSTERS">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group" style="margin-bottom: 0px !important;">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Event</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									[disabled]="paramsToggle.indexOf('line') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL EVENTS">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group" style="margin-bottom: 0px !important;">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Min. Loss Amt</label>
+									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input">
+									<input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
+									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label>
 								</div>
 							</div>
 							<div class="col-sm-1">

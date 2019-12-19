@@ -288,6 +288,7 @@ export class JvEntryComponent implements OnInit {
         this.allocBut     = true;
         this.dcBut        = true;
         this.saveJVBut    = false;
+        this.disableBut   = false;
         this.approvedStat = false;
         this.disableBut   = false;
 

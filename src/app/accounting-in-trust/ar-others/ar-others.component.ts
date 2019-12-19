@@ -5,6 +5,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-ar-others',
@@ -19,7 +20,7 @@ export class ArOthersComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
 
   dialogIcon: string = '';
@@ -29,8 +30,12 @@ export class ArOthersComponent implements OnInit {
   deletedData: any[] = [];
 
   cancelFlag: boolean = false;
+  genAcctEnt: boolean = false;
 
   totalLocalAmt: number = 0;
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
 
   passData: any = {
     tableData: [],
@@ -71,6 +76,7 @@ export class ArOthersComponent implements OnInit {
     this.passData.nData.billId = 3;
     this.passData.nData.currCd = this.arDetails.currCd;
     this.passData.nData.currRate = this.arDetails.currRate;
+    this.isReopen = this.arDetails.reopenTag == 'Y';
     if(this.arDetails.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true, true, true, true, true, true,true ];
       this.passData.addFlag = false;
@@ -82,14 +88,14 @@ export class ArOthersComponent implements OnInit {
   }
 
   retrieveOthers(){
+    this.genAcctEnt = false;
     this.passData.tableData = [];
     this.accountingService.getAcitArTransDtl(this.arDetails.tranId, 3).subscribe( //Bill id = 3 for others
       (data: any)=>{
         if(data.transDtlList.length !== 0){
-          /*for(var i of data.transDtlList){
-            i.currCd = i.currCd+'T'+i.currRate;
-            this.passData.tableData.push(i);
-          }*/
+          for(var i of data.transDtlList){
+            this.originalNet += i.currAmt;
+          }
           this.passData.tableData = data.transDtlList;
           this.table.refreshTable();
         }
@@ -111,8 +117,16 @@ export class ArOthersComponent implements OnInit {
     );
   }
 
-  onClickSave(){
-    this.confirm.confirmModal();
+  onClickSave(cancel?){
+    if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      this.netMdl.openNoClose();
+    }else{
+      if(cancel != undefined){
+        this.save(cancel);
+      }else{
+        this.confirm.confirmModal();
+      }
+    }
   }
 
   onClickCancel(){
@@ -156,7 +170,8 @@ export class ArOthersComponent implements OnInit {
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
       saveTransDtl: this.savedData,
-      delTransDtl: this.deletedData
+      delTransDtl: this.deletedData,
+      genAcctEnt: this.genAcctEnt ? 'Y' : 'N'
     }
     console.log(params);
     this.accountingService.saveAcitArTransDtl(params).subscribe(
@@ -184,11 +199,13 @@ export class ArOthersComponent implements OnInit {
     if(data.key === 'currAmt' || data.key === 'currRate'){
       for(var i = 0; i < data.length; i++){
         data[i].localAmt = data[i].currAmt * data[i].currRate;
+        this.genAcctEnt = true;
       }
     }else if(data.key === 'currCd'){
       for(var i = 0; i < data.length; i++){
         data[i].currRate = data[i].currCd.split('T')[1];
         data[i].localAmt = data[i].currAmt * data[i].currRate;
+        this.genAcctEnt = true;
       }
     }
     this.passData.tableData = data;
@@ -202,6 +219,18 @@ export class ArOthersComponent implements OnInit {
     }else{
       this.emitCreateUpdate.emit(null);
     }
+  }
+
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.currAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
   }
 }
 

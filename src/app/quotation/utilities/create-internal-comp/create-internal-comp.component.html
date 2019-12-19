@@ -64,7 +64,7 @@
                 <app-modal class="d-none" #copyIntCompModal>
                     <div header>Internal Competition</div>
                     <div *ngIf="copyStatus == 0" body>
-                        <fieldset class="scheduler-border" style="padding-bottom: 24px !important; padding-top: 20px !important; height: 80px !important;">
+                        <fieldset class="scheduler-border" > <!-- style="padding-bottom: 24px !important; padding-top: 20px !important; height: 80px !important;" -->
                                 <div class="custom-row-inline-inset" style="text-align: center">
                                     <div class="input-group" style="margin-bottom: -14px !important;">
                                         <label class="form-control-sm col-sm-3" style="padding-left: 0;">Ceding Company</label>
@@ -72,7 +72,21 @@
                                         <div class="text-search-ico" (click)="showCedingCompanyIntCompLOV()"><a><i class="fa fa-search"></i></a></div>
                                         &nbsp;&nbsp;
                                         <input type="text" class="form-control form-control-sm" [(ngModel)]="copyCedingName" readonly>
-                                    </div>                   
+                                    </div>     
+                                    <div class="input-group" style="margin-top: -12px">
+                                        <label class="form-control-sm col-sm-3">Type of Cession</label>
+                                        <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="typeOfCessionId" (change)="checkCode($event, 'typeOfCession')" maxlength="4" numbers-only appRequired>
+                                        <div class="text-search-ico" (click)="showTypeOfCessionLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        &nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="typeOfCession" readonly tabindex="-1">
+                                    </div>
+                                    <div class="input-group" style="margin-top: -12px" *ngIf="typeOfCessionId==2">
+                                        <label class="form-control-sm col-sm-3">Reinsurance From</label>
+                                        <input type="text" id="typeOfCessionId" class="form-control form-control-sm col-sm-2" style="margin-right: -1px !important" [(ngModel)]="reinsurerId" (change)="checkCode($event, 'RI')" maxlength="4" numbers-only appRequired>
+                                        <div class="text-search-ico" (click)="showCedingCompanyNotMemberLOV()"><a><i class="fa fa-search"></i></a></div>
+                                        &nbsp;&nbsp;
+                                        <input type="text" class="form-control form-control-sm" [(ngModel)]="reinsurerName" readonly tabindex="-1">
+                                    </div>                    
                                 </div>
                         </fieldset>
                     </div>
@@ -100,6 +114,9 @@
                 </div>
 
                 <app-sucess-dialog id="quoProcessing" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+                <app-mtn-type-of-cession id="typeOfCessionLOV" (selectedData)="setTypeOfCession($event)"></app-mtn-type-of-cession>
+                <app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [membershipTag]="''"></app-mtn-ceding-company>
 
 
             </ng-template>

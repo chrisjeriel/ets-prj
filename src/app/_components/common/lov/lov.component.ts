@@ -454,7 +454,74 @@ export class LovComponent implements OnInit {
          });
       }
      
-    } 
+    } else if(selector == 'payee'){
+      if(this.passData.payeeNo == null || this.passData.payeeNo.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'payee'
+        });
+      }else{
+        console.log(this.passData.payeeClassCd);
+         this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe((data:any) => {
+           if(data.payeeList.length == 1){
+             data.payeeList[0]['ev'] = ev;
+             data.payeeList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['payeeList'][0], ev : ev, selector: 'payee'});
+           }else if(data.payeeList.length == 0){
+             this.passData.payeeNo = '';
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'payee'
+             });
+
+             this.passData.selector = 'payee';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'payee'
+             });
+
+             this.passData.selector = 'payee';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+         });
+      }
+     
+    } else if (selector == 'bankLov') {
+
+      if(this.passData.bank == null || this.passData.bank.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'bankLov'
+        });
+      } else {
+        this.mtnService.getBankLov(this.passData.bank,'','Y','Y',this.passData.glDepFor).subscribe((data:any)=>{
+          if(data.bankLovList.length > 0){
+             data.bankLovList[0]['ev'] = ev;
+             data.bankLovList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['bankLovList'][0], ev : ev});
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev
+             });
+
+             this.passData.selector = 'bankLov';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+        });
+      }
+
+      
+    }
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -847,10 +914,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'payee'){
-      this.passTable.tHeader = ['Payee Name','Payee Class'];
-      this.passTable.widths =[500,500]
-      this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'payeeName','payeeClassName'];
+      this.passTable.tHeader = ['Payee Class', 'Payee No' ,'Payee Name',];
+      this.passTable.widths =[500,500,500]
+      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.keys = ['payeeClassName', 'payeeNo', 'payeeName',];
       this.mtnService.getMtnPayee(this.passData.payeeNo, this.passData.payeeClassCd).subscribe(a=>{
         this.passTable.tableData = a["payeeList"];
         this.table.refreshTable();
@@ -1015,10 +1082,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitInvt'){
-      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
-      this.passTable.widths     = [150,200,150,1,1,120,1,1,1,120,150];
-      this.passTable.dataTypes  = ['text','text','text','number','text','percent','date','date','text','percent','currency'];
-      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
+      this.passTable.tHeader    = ['Investment Code', 'Investment Type', 'Security', 'Maturity Period', 'Maturity Value', 'Duration Unit', 'Interest Rate', 'Date Purchased', 'Maturity Date', 'Curr', 'Curr Rate', 'Investment'];
+      this.passTable.widths     = [150,200,150,1,1,1,120,1,1,1,120,150];
+      this.passTable.dataTypes  = ['text','text','text','number','currency','text','percent','date','date','text','percent','currency'];
+      this.passTable.keys       = ['invtCd','invtTypeDesc','securityDesc','matPeriod','matVal','durUnit','intRt','purDate','matDate','currCd','currRate','invtAmt'];
       this.passTable.checkFlag  = true;
       this.accountingService.getAccInvestments([])
       .subscribe((data:any)=>{
@@ -1050,10 +1117,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitArInvPullout'){
-      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax'];
-      this.passTable.widths =[300,300,300,300,300,300]
-      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency',];
-      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt'];
+      this.passTable.tHeader = ['Investment Code','Certificate No.', 'Investment', 'Investment Income', 'Bank Charge', 'Withholding Tax', 'Maturity Value'];
+      this.passTable.widths =[300,300,300,300,300,300, 300]
+      this.passTable.dataTypes = [ 'text','text', 'currency', 'currency', 'currency', 'currency', 'currency'];
+      this.passTable.keys = [ 'invtCd','certNo', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt', 'matVal'];
       this.passTable.checkFlag = true;
       this.accountingService.getAccInvestments(this.passData.searchParams).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -1428,6 +1495,20 @@ export class LovComponent implements OnInit {
 
       this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
         this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+        this.table.refreshTable();
+      });
+    } else if(this.passData.selector == 'acitTranType') {
+
+      this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
+      this.passTable.minColSize = ['1px', '120px'];
+      this.passTable.dataTypes  = ['number','text'];
+      this.passTable.keys       = ['tranTypeCd','tranTypeName'];
+      // this.passTable.checkFlag  = true;
+      // getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
+
+      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
+        this.passTable.tableData = data.tranTypeList;
+
         this.table.refreshTable();
       });
     }

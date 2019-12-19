@@ -112,6 +112,7 @@ refreshModal(isDisable : boolean){
         if(this.passData.cessionDesc.toUpperCase() === 'RETROCESSION'){
 
           this.reportsList = [];
+          this.reportsList.push({val:"QUOTER009A", desc:"Quotation Letter" });
           this.reportsList.push({val:"QUOTER009B", desc:"RI Preparedness to Support Letter" });
           this.reportsList.push({val:"QUOTER009C", desc:"RI Confirmation of Acceptance Letter" });
           if (this.passData.status === '10'){

@@ -346,6 +346,7 @@ export class PolCoverageComponent implements OnInit {
   showCatPerilBtn:boolean = false;
 
   othersCoverCd:number = 999;
+  premDepTag:boolean = false;
 
   constructor(private underwritingservice: UnderwritingService, private titleService: Title, public modalService: NgbModal,
                 private route: ActivatedRoute, private ns: NotesService,  private router: Router, private decimal : DecimalPipe,
@@ -366,6 +367,10 @@ export class PolCoverageComponent implements OnInit {
 
             this.ms.getLineLOV(this.line).subscribe(a=>{
               this.showCatPerilBtn = a['line'][0].catTag == 'Y';
+            });
+
+            this.ms.getLineLOV(this.line).subscribe(a=>{
+              this.premDepTag = a['line'][0].premDepTag == 'Y';
             });
 
             // this.ms.getMtnParameters('N',this.line+'_OTHERS').subscribe(a=>{
@@ -796,6 +801,7 @@ export class PolCoverageComponent implements OnInit {
        this.policyId = this.policyInfo.lastAffectingPolId
      }
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
+          console.log(data)
           this.passDataSectionCover.tableData = [];
           this.projId = data.policy.project.projId;
           this.riskId = data.policy.project.riskId;
@@ -1319,7 +1325,14 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableCov();
 
     if(this.coverageData.totalSi > parseFloat(this.coverageData.totalValue.toString().split(',').join(''))){
-      this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";
+      if(this.line in ['EEI', 'MBI' , 'BPV']){
+        this.promptMessage = "Max sum insured of the policy exceeded the new replacement value of the project.";
+      }else if(this.line in ['EEI', 'MBI' , 'BPV']){
+        this.promptMessage = "Max sum insured of the policy exceeded the annual sum insured of the project.";
+      }else{
+        this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";  
+      }
+      
       this.promptType = "totalval";
       this.modal.open();
     }
@@ -1568,11 +1581,11 @@ export class PolCoverageComponent implements OnInit {
   }
 
   focusBlur(){
-    setTimeout(() => {$('.req').focus();$('.req').blur()},0)
+    // setTimeout(() => {$('.req').focus();$('.req').blur()},0)
   }
 
   focusCalc(){
-    setTimeout(() => {$('.calc').focus();$('.calc').blur()},0)
+    // setTimeout(() => {$('.calc').focus();$('.calc').blur()},0)
   }
 
   onClickSave(){
@@ -1984,6 +1997,9 @@ export class PolCoverageComponent implements OnInit {
     this.altCoverageData.saveDeductibleList = this.editedDedt;
   }
 
+
+  @ViewChild('premDepForm') premDepForm: any;
+
   alterationSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareAlterationSave();
@@ -2000,6 +2016,9 @@ export class PolCoverageComponent implements OnInit {
           this.getPolCoverageAlt();
           this.form.control.markAsPristine();
           this.table.markAsPristine();
+          if(this.premDepForm != undefined){
+            this.premDepForm.control.markAsPristine();
+          }
           //this.getCoverageInfo();
         }
     });
@@ -2167,12 +2186,15 @@ export class PolCoverageComponent implements OnInit {
   getAlopCd(){
     var params = this.line+'_ALOP';
     this.ms.getMtnParameters(null,params).subscribe((data:any)=>{
-        this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
-        if(!this.alteration){
-          this.getPolCoverage();
-        }else{
-          this.getPolCoverageAlt();
+      if(data.parameters[0] !== undefined){
+          this.alopCoverCd = parseInt(data.parameters[0].paramValueN);
+          
         }
+        if(!this.alteration){
+            this.getPolCoverage();
+          }else{
+            this.getPolCoverageAlt();
+          }
     });
   }
 }

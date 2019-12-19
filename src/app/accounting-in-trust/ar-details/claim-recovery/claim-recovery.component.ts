@@ -6,7 +6,7 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 @Component({
   selector: 'app-claim-recovery',
   templateUrl: './claim-recovery.component.html',
@@ -19,7 +19,7 @@ export class ClaimRecoveryComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-
+  @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Input() record: any = {};
 
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
@@ -88,10 +88,15 @@ export class ClaimRecoveryComponent implements OnInit {
   savedData: any[] = [];
   deletedData: any[] = [];
 
+  isReopen: boolean = false;
+  originalNet: number = 0;
+  newAlteredAmt: number = 0;
+
   constructor(private titleService: Title, private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
+    this.isReopen = this.record.reopenTag == 'Y';
     console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -125,6 +130,9 @@ export class ClaimRecoveryComponent implements OnInit {
             i.uneditable = ['paytType', 'claimNo'];
             this.passData.tableData.push(i);
           }*/
+          for(var i of data.arClmRecover){
+            this.originalNet += i.recOverAmt;
+          }
           this.passData.tableData = data.arClmRecover;
           this.table.refreshTable();
         }
@@ -162,11 +170,13 @@ export class ClaimRecoveryComponent implements OnInit {
     this.table.refreshTable();
   }
 
-  onClickSave(){
+  onClickSave(cancel?){
     if(this.reserveCheck()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not exceed the Hist Amount';
       this.successDiag.open();
+    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      this.netMdl.openNoClose();
     }/*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
@@ -176,7 +186,11 @@ export class ClaimRecoveryComponent implements OnInit {
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
     }*/else{
-      this.confirm.confirmModal();
+      if(cancel != undefined){
+        this.save(cancel);
+      }else{
+        this.confirm.confirmModal();
+      }
     }
   }
 
@@ -278,6 +292,18 @@ export class ClaimRecoveryComponent implements OnInit {
 
   //ALL VALIDATIONS STARTS HERE
 
+  checkOriginalAmtvsAlteredAmt(): boolean{
+    this.newAlteredAmt = 0;
+    for(var i of this.passData.tableData){
+      if(!i.deleted){
+        this.newAlteredAmt += i.currAmt;
+      }
+    }
+    console.log('originalAmt => ' + this.originalNet );
+    console.log('newAlterAmt => ' + this.newAlteredAmt);
+    return this.newAlteredAmt != this.originalNet;
+  }
+
   reserveCheck(): boolean{
     for(var i of this.passData.tableData){
       if(i.edited && !i.deleted && 
@@ -314,6 +340,75 @@ export class ClaimRecoveryComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xlsx'
+    var rowLength: number = this.passData.tableData.length + 6;
+    console.log("Row Length >>>" + rowLength);
+    var mystyle = {
+        headers:false, 
+        column: {style:{Font:{Bold:"1"}}},
+        rows: {0:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               2:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
+      };
+    console.log(mystyle);
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+      alasql.fn.rate = function(rate) {
+            var parts = parseFloat(rate).toFixed(10).split(".");
+            var num = parts[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return num
+      };
+     var reserveAmt    = 0;
+     var cumulativeAmt = 0;
+     var recOverAmt    = 0;
+     var localAmt      = 0;
+
+    alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2, row7 VARCHAR2, row8 VARCHAR2, row9 VARCHAR2, row10 VARCHAR2,'+
+                                'row11 VARCHAR2, row12 VARCHAR2, row13 VARCHAR2)');
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?),?,?,?,?,?,?,?)', [this.record.formattedArNo, this.record.arDate, this.record.dcbNo, this.record.tranTypeName, this.record.currCd, this.record.arAmt, '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', [this.record.payor, '','', this.record.arStatDesc, 'PHP', this.record.currRate * this.record.arAmt, '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', ['Claim No', 'Hist No', 'Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex Gratia', 'Curr', 'Curr Rate', 'Hist Amount', 'Cumulative Payment', 'Payment Amount', 'Payment Amount Local']);
+    for(var i of this.passData.tableData){
+      //totalCredit += i.creditAmt;
+      //totalDebit += i.debitAmt;
+    reserveAmt    += i.reserveAmt;
+    cumulativeAmt += i.cumulativeAmt;
+    recOverAmt    += i.recOverAmt;
+    localAmt      += i.localAmt;
+      alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?,?,?, currency(?), currency(?), currency(?), currency(?), currency(?))', [i.claimNo, i.histNo, i.histCategoryDesc, i.histTypeDesc, i.paymentFor == null ? '' : i.paymentFor, i.insuredDesc, i.exGratia == null ? 'N' : i.exGratia, i.currCd, i.currRate, i.reserveAmt, i.cumulativeAmt, i.recOverAmt, i.localAmt]);
+    }
+    //alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?, currency(?), currency(?), currency(?), currency(?))', ['','','','','','','','', 'Total', reserveAmt, cumulativeAmt, recOverAmt, localAmt]);
+    alasql('SELECT row1, row2, row3, row4, row5, row6, row7, row8, row9, row10, row11, row12, row13 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
+    alasql('DROP TABLE sample');  
   }
 
 }

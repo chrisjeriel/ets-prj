@@ -503,6 +503,8 @@ import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/g
 import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
 import { JvUnappliedInwpolComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-unapplied-inwpol/jv-unapplied-inwpol.component';
 import { JvUnappliedTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-unapplied-treaty/jv-unapplied-treaty.component';
+import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/mtn-acse-check-series/mtn-acse-check-series.component';
+import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 
 @NgModule({
     imports: [
@@ -1010,6 +1012,8 @@ import { JvUnappliedTreatyComponent } from './accounting-in-trust/journal-vouche
         InvoiceSeriesComponent,
         JvUnappliedInwpolComponent,
         JvUnappliedTreatyComponent,
+        MtnAcseCheckSeriesComponent,
+        ClaimReportsComponent,
     ],
 
   	providers: [

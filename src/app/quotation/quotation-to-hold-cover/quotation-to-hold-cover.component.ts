@@ -54,6 +54,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
         statusArr:['3','6'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
+        openCoverTag: 'N'
     };
 
 	passDataOptionsLOV : any = {
@@ -671,8 +672,10 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.searchParams = {
 	        statusArr:['3','6'],
 	        'paginationRequest.count':10,
-	        'paginationRequest.position':1,   
+	        'paginationRequest.position':1, 
+        	openCoverTag: 'N'
 	    };
+
 		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 		$('.warn').find('input').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 	}

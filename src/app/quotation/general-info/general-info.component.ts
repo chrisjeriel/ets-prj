@@ -959,6 +959,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
 	setPreparedBy(data) {
 		this.genInfoData.preparedBy = data.userId;
+		this.form.control.markAsDirty();
 		this.ns.lovLoader(data.ev, 0);
 	}
 

@@ -18,14 +18,15 @@ export class CurrencyRateDirective implements OnInit, AfterViewInit{
       this.model.valueChanges.subscribe(a=>
       {
         if(!this.model.touched){
-          this.onBlur(this.el.nativeElement);
           this.model.control.markAsPristine();
+          this.onBlur(this.el.nativeElement);
         }
+
       })
     }
   	
     @HostListener("blur", ["$event.target"]) onBlur(target) {
-    	if(target.value !=''){
+    	if(target.value !='' && target.value != undefined){
   	  	let sNum = target.value.split('.');
   	  	sNum[0] = sNum[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   	    if(!/^(?:[- (])?\d{1,3}(,\d{3})*(\.\d+)?(?:[)])?$/.test(sNum.join('.'))){
