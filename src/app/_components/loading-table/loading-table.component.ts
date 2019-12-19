@@ -109,7 +109,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     unliFlag: boolean = false;
     sortBy:boolean = true;
     sortIndex:number;
-    searchString: string;
+    searchString: string = '';
     displayLength: number;
     p:number = 1;
     checked:boolean;
