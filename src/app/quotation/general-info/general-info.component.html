@@ -334,9 +334,9 @@
 									</div>
 									<div class="input-group">
 										<label  class="form-control-sm col-sm-2">Lat</label>
-										<input name="input52"  type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
+										<input name="input52"  type="text" class="form-control form-control-sm" [(ngModel)]="project.latitude" [readonly]="savingType == 'modification' || inquiryFlag || intCompTag" maxlength="10">
 										<label  class="form-control-sm col-sm-2">Long</label>
-										<input name="input53"  type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification' || inquiryFlag" maxlength="10">
+										<input name="input53"  type="text" class="form-control form-control-sm" [(ngModel)]="project.longitude" [readonly]="savingType == 'modification' || inquiryFlag || intCompTag" maxlength="10">
 									</div>
 								</div>
 							</div>

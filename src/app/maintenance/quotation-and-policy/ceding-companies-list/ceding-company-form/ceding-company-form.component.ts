@@ -44,6 +44,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 	dialogIcon: string = '';
 	dialogMessage: string = '';
 	defaultTagCounter: number = 0;
+  polSignatoryCounter: number = 0;
   cedingId: string = '';
 
 	selected: any;
@@ -81,9 +82,9 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
 	repData: any = {
 		tableData: [],
-		tHeader: ['Default', 'Designation', 'First Name', 'M.I.', 'Last Name', 'Position', 'Department', 'Contact No', 'E-Signature'],
-		dataTypes: ['checkbox', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'file'],
-		keys: ['defaultTag', 'designation', 'firstName', 'middleInitial', 'lastName', 'position', 'department', 'contactNo', 'eSignature'],
+		tHeader: ['Default','Policy Signatory', 'Designation', 'First Name', 'M.I.', 'Last Name', 'Position', 'Department', 'Contact No', 'E-Signature'],
+		dataTypes: ['checkbox','checkbox', 'text', 'text', 'text', 'text', 'text', 'text', 'text', 'file'],
+		keys: ['defaultTag','polSignatory', 'designation', 'firstName', 'middleInitial', 'lastName', 'position', 'department', 'contactNo', 'eSignature'],
 		nData: {
 			cedingId: '',
 			cedingRepId: '',
@@ -96,7 +97,8 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 			department: '',
 			contactNo: '',
 			emailAdd: '',
-			eSignature: ''
+			eSignature: '',
+      polSignatory: 'N'
 		},
 		searchFlag: true,
 		addFlag: true,
@@ -173,14 +175,22 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		//this.dialogMessage = 'Please fill all required fields.';
   		this.successDiag.open();
   	}else if(!this.checkDefaultTag()){
-  		this.dialogIcon = 'info';
-  		if(this.defaultTagCounter > 1){
+      this.dialogIcon = 'info';
+      if(this.defaultTagCounter > 1){
         this.dialogMessage = 'Unable to save the record, Only one default company representative is allowed.';
       }else if(this.defaultTagCounter === 0){
         this.dialogMessage = 'Please enter one default company representative.';
       }
-  		this.successDiag.open();
-  	}else if(this.checkFileSize().length !== 0){
+      this.successDiag.open();
+    }else if(!this.checkPolSignatory()){
+      this.dialogIcon = 'info';
+      if(this.polSignatoryCounter > 1){
+        this.dialogMessage = 'Unable to save the record, Only one policy signatory company representative is allowed.';
+      }else if(this.polSignatoryCounter === 0){
+        this.dialogMessage = 'Please enter one policy signatory company representative.';
+      }
+      this.successDiag.open();
+    }else if(this.checkFileSize().length !== 0){
       this.dialogMessage= this.checkFileSize()+" exceeded the maximum file upload size.";
       this.dialogIcon = "error-message";
       this.successDiag.open();
@@ -216,6 +226,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   checkParams(){
   	//check if mandatory fields are filled on table
   	this.defaultTagCounter = 0;
+    this.polSignatoryCounter = 0;
   	for(var i of this.repData.tableData){
       console.log(i.deleted);
   		if((i.firstName === '' || i.lastName === '') && (i.deleted !== undefined && !i.deleted)){
@@ -225,6 +236,10 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   		else if(i.defaultTag === 'Y'){
   			this.defaultTagCounter += 1;
   		}
+
+      if(i.polSignatory == 'Y'){
+        this.polSignatoryCounter += 1;
+      }
   	}
 
   	//check if mandatory fields are filled on form
@@ -241,11 +256,20 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
   checkDefaultTag(){
   	//results of checking if theres only 1 default tag
-  	if(this.defaultTagCounter !== 1){
+  	if(this.defaultTagCounter != 1){
   		return false;
   	}else{
   		return true;
   	}
+  }
+
+  checkPolSignatory(){
+    //results of checking if theres only 1 default tag
+    if(this.polSignatoryCounter !== 1){
+      return false;
+    }else{
+      return true;
+    }
   }
 
   /*checkToUploadFiles(){
