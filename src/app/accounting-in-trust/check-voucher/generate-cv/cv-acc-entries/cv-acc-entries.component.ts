@@ -217,6 +217,8 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     this.cancelFlag = cancelFlag !== undefined;
     this.dialogIcon = '';
     this.dialogMessage = '';
+    this.params.saveList = [];
+    this.params.delList  = [];
     var isEmpty = 0;
 
     this.cvAcctEntData.tableData.forEach(e => {

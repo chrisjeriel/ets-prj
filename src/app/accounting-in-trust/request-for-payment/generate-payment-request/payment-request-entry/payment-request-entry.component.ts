@@ -106,8 +106,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   printData : any = {
     selPrinter  : '',
     printers    : [],
-    destination : '',
-    reportType  : 0
+    destination : ''
   };
 
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,
@@ -392,7 +391,8 @@ export class PaymentRequestEntryComponent implements OnInit {
   setDefPar(){
     this.saveAcitPaytReq.particulars = String(this.tranTypeList.filter(e => e.tranTypeCd == this.saveAcitPaytReq.tranTypeCd).map(e => e.defaultParticulars));
     this.removeRedBackShad('particulars');
-    this.saveAcitPaytReq.payee = '';
+    this.saveAcitPaytReq.payee   = '';
+    this.saveAcitPaytReq.payeeCd = '';
   }
 
   cancelledStats(){

@@ -120,10 +120,10 @@ export class CvEntryComponent implements OnInit {
   printData : any = {
     selPrinter  : '',
     printers    : [],
-    destination : '',
-    reportType  : 0,
+    destination : 'screen',
+    reportType  : 2,
     copyNo      : null,
-    printCv     : '',
+    printCv     : true,
     printCheck  : ''
   };
 
@@ -402,6 +402,7 @@ export class CvEntryComponent implements OnInit {
       this.spoiled = true;
       
       if(data['returnCode'] == -1){
+        this.saveAcitCv.checkNo = '';
         this.saveAcitCv.tranId = data['tranIdOut'];
         this.saveAcitCv.mainTranId = data['mainTranIdOut'];
         this.getAcitCv();
@@ -428,6 +429,7 @@ export class CvEntryComponent implements OnInit {
     console.log(this.saveAcitCv.paytReqType);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
+      this.passDataLov.payeeNo = '';
       if(this.saveAcitCv.paytReqType == 'S'){
         this.passDataLov.payeeClassCd = 2;
       }else if(this.saveAcitCv.paytReqType == 'I'){
@@ -680,7 +682,8 @@ export class CvEntryComponent implements OnInit {
       checkId      : this.saveAcitCv.checkId,
       cvStatus     : stat,
       printType    : (this.printData.printCv && this.printData.printCheck)?'ALL':(this.printData.printCv)?'PCV':'PCK',
-      updateUser   : this.ns.getCurrentUser()
+      updateUser   : this.ns.getCurrentUser(),
+      cancelReason : this.saveAcitCv.cancelReason
     };
     console.log(updateAcitCvStat);
     this.accountingService.updateAcitCvStat(JSON.stringify(updateAcitCvStat))
@@ -704,7 +707,13 @@ export class CvEntryComponent implements OnInit {
     if(this.fromBtn.toLowerCase() == 'print'){
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
-      this.onClickYesConfirmed('X');
+      if(this.saveAcitCv.cancelReason == '' || this.saveAcitCv.cancelReason == null){
+        this.dialogIcon = 'error';
+        this.success.open();
+        $('.warn').focus().blur();
+      }else{
+        this.onClickYesConfirmed('X');
+      }
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
     }else if(this.fromBtn.toLowerCase() == 'spoil'){
