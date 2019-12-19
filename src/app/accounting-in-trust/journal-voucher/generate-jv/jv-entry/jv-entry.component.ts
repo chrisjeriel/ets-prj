@@ -31,6 +31,7 @@ export class JvEntryComponent implements OnInit {
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild('Alloc') allocJV: ModalComponent;
+  //@ViewChild('printJVDetailed') printJVDetailed: ModalComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('printableNames') printableNames: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
@@ -537,6 +538,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    //this.printJVDetailed.openNoClose();
     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
                       this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
     this.printEntries.openNoClose();

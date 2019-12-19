@@ -327,6 +327,40 @@
     </div>
 </app-modal>
 
+<!-- <app-modal class="d-none" id="allocation" #printJVDetailed>
+    <div header>Print</div>  
+    <div body style=" max-width: 450px;">
+        <div class="row">
+            <fieldset class="scheduler-border" style="margin-right: -8px !important; padding-top: 4px !important;">
+                <legend class="scheduler-border">Report Type</legend>
+                <div style="padding-left: 18px">
+                    <div class="row">
+                        <div class="col-sm" style="margin-bottom: -8px !important;">
+                            <input type="radio" style="vertical-align: middle;" name="typeRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Summary</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm" style="margin-top: -8px !important;">
+                            <input type="radio" style="vertical-align: middle;" name="typeRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Detailed</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <div class="form-row" style="margin-top: 13px !important;">
+            <div class="form-group col-sm">
+                <div class="col-md-12 text-center">
+                    <div class="cust-btn-container">
+                        <button type="button" class="cust-btn" (click)="printJVDetailed.closeModal();"><a>Return</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-modal> -->
+
 <app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="entryData.jvDate"></app-mtn-currency>
 <app-jv-type-lov #jvTypeLov (selectedData)="setTranType($event)"></app-jv-type-lov>
 <app-mtn-printable-names #printableNames (selectedData)="setPrintable($event)"></app-mtn-printable-names>
