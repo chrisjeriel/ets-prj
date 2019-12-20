@@ -85,6 +85,7 @@ export class GenerateJvComponent implements OnInit {
      this.jvData.tranType = data.tranType;
      this.jvData.from = 'jv';
      this.jvData.exitLink = 'journal-voucher';
+     this.jvData.tranData = data.tranData;
   }
 
   cedingOutput(data){
