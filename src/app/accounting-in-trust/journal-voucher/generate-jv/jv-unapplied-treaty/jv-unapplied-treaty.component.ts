@@ -97,6 +97,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  readOnly: boolean = false;
 
   constructor(private ns: NotesService, private accountingService:AccountingService, private maintenanceService: MaintenanceService, private dp: DatePipe) { }
 
@@ -133,7 +134,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
   	});
   }
 
-  showCedingCompanyLOV() {
+  showCedingCompanyLOV(ev) {
     $('#cedingCompany #modalBtn').trigger('click');
   }
 

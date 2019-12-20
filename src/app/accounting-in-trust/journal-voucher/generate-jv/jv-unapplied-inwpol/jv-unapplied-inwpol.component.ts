@@ -95,6 +95,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
   dialogIcon : any;
   dialogMessage : any;
   cancelFlag: boolean = false;
+  readOnly: boolean = false;
 
   constructor(private ns:NotesService, private accountingService: AccountingService) { }
 
@@ -127,7 +128,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
     });
   }
 
-  showCedingCompanyLOV() {
+  showCedingCompanyLOV(ev) {
     $('#cedingCompany #modalBtn').trigger('click');
   }
 
