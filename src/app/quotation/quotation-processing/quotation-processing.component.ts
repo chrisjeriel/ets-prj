@@ -256,6 +256,7 @@ export class QuotationProcessingComponent implements OnInit {
         this.first = true;
         this.titleService.setTitle("Quo | List Of Quotations");
         this.userService.emitModuleId("QUOTE001");
+        this.searchParams.recount = 'Y';
         this.retrieveQuoteListingMethod();
         this.getAccessibleModules();
         this.tabset.tabChange
@@ -279,11 +280,11 @@ export class QuotationProcessingComponent implements OnInit {
     retrieveQuoteListingMethod(){
         this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
-            this.passData.count = data['length'];
+            console.log(data);
+            this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
             this.fetchedData = records;
 
-            this.validationList = records.filter(a => ['REQUESTED','IN PROGRESS','RELEASED','CONCLUDED','CONCLUDED (THRU ANOTHER CEDANT)',
-                                                       'ON HOLD COVER','CONCLUDED (EXPIRED HOLD COVER)'].includes(a.status.toUpperCase()));
+            this.validationList = records;
 
             
             //this.table.refreshTable();

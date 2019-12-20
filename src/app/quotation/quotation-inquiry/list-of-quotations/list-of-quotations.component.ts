@@ -36,6 +36,7 @@ export class ListOfQuotationsComponent implements OnInit {
     searchParams: any = {
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
+        recount : 'Y'
     };
     records: any[] = [];
     line: string = "";
@@ -189,7 +190,7 @@ export class ListOfQuotationsComponent implements OnInit {
     retrieveQuoteListingMethod(){
         this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            this.passData.count = data['length'];
+            this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
             let recs: any[] = [];
             for(let rec of this.records){
                 recs.push({
