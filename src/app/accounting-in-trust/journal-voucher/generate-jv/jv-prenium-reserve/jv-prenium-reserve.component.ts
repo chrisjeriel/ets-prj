@@ -178,7 +178,7 @@ export class JvPreniumReserveComponent implements OnInit {
 
 	quarterEndModal(data){
 		if(data.key === 'quarterEnding'){
-			$('#quarterEnd #modalBtn').trigger('click');
+			$('#quarterEnd > #modalBtn').trigger('click');
 			this.dataIndex = data.index;
 		}else if(data.key == 'currCd'){
 			this.currLov.modal.openNoClose();

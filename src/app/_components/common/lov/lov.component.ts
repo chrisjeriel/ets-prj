@@ -100,6 +100,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'osQsoa'){
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'unappliedColl'){
+            this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
           }
@@ -1484,6 +1487,17 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'unappliedColl'){
+      this.passTable.tHeader = ['Item','Type','Reference No','Amount'];
+      this.passTable.widths = [125, 125, 100, 120];
+      this.passTable.dataTypes = ['text','text','text','currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'currAmt'];
+      this.passTable.checkFlag = true;
+
+      this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
+        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+        this.table.refreshTable();
+      });
     } else if(this.passData.selector == 'acitTranType') {
 
       this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
@@ -1498,7 +1512,6 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
-
     }
 
     this.modalOpen = true;

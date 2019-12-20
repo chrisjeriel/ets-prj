@@ -3406,4 +3406,66 @@ export class AccountingService {
 			.set('sFeeQtr', sFeeQtr);
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveOrSFeeDtlDist',{params});	
     }
+
+    getAcitUnappliedColl(cedingId){
+		const params = new HttpParams()
+			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveUnappliedCollection',{params});	
+	}
+
+	getJvUnappliedColl(tranId){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveJvUnappliedCollection',{params});	
+	}
+
+	getJvInwUnappliedColl(tranId,policyId?,instNo?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+			.set('instNo', (instNo == null || instNo == undefined ? '' : instNo));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveInwUnappliedCollection',{params});	
+	}
+
+	saveJvUnappliedColl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVUnappliedColl',params,header);
+    }
+
+    saveJvInwUnappliedColl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVInwUnappliedColl',params,header);
+    }
+    
+    getJvTrtyUnappliedColl(tranId,qsoaId?){
+		const params = new HttpParams()
+			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
+			.set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveTrtyUnappliedCollection',{params});	
+	}
+
+	saveJvTrtyUnappliedColl(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVTrtyUnappliedColl',params,header);
+    } 
+
 }

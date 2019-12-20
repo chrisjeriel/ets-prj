@@ -1,7 +1,7 @@
 import { Component, OnInit ,OnChanges,Input,Output,EventEmitter , ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services' 
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services' 
 import { DecimalPipe } from '@angular/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -31,6 +31,7 @@ export class JvEntryComponent implements OnInit {
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild('Alloc') allocJV: ModalComponent;
+  @ViewChild('printJVDetailed') printJVDetailed: ModalComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('printableNames') printableNames: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
@@ -104,6 +105,10 @@ export class JvEntryComponent implements OnInit {
     updateDate: null
   }
 
+  printData:any = {
+    reportType : 0
+  };
+
   tranId:any;
   jvDate: any;
   saveJVBut: boolean = false;
@@ -126,7 +131,7 @@ export class JvEntryComponent implements OnInit {
   fileName: string = '';
   emitMessage: string = '';
 
-  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService) { }
+  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Journal Voucher");
@@ -166,6 +171,7 @@ export class JvEntryComponent implements OnInit {
     this.allocBut    = true;
     this.dcBut       = true;
     this.retrieveJVEntry();
+    this.getPrinters();
   }
 
   retrieveJVEntry(){
@@ -289,6 +295,8 @@ export class JvEntryComponent implements OnInit {
         this.saveJVBut    = false;
         this.disableBut   = false;
         this.approvedStat = false;
+        this.disableBut   = false;
+
         this.entryData.currRate  = this.decimal.transform(this.entryData.currRate,'1.6-6');
         this.entryData.jvAmt     = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt  = this.decimal.transform(this.entryData.localAmt,'1.2-2');
@@ -536,8 +544,12 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    this.printJVDetailed.openNoClose();
+  }
+
+  printJVDetails(){
     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&reportType=' + this.printData.reportType, '_blank');
     this.printEntries.openNoClose();
   }
 
@@ -692,4 +704,9 @@ uploadAcctEntries(){
     );
   }
 
+  getPrinters(){
+    this.ps.getPrinters().subscribe(data => {
+      this.printData.printers = data;
+    });
+  }
 }
