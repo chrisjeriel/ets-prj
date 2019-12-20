@@ -401,13 +401,15 @@ export class JvEntryComponent implements OnInit {
   }
 
   setCurrency(data){
+    console.log('here setCurrency()');
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
-    this.form.control.markAsDirty();
+    
     setTimeout(()=>{
+      this.form.control.markAsDirty();
       $('.currCd').focus().blur();
     }, 0);
   }
