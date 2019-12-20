@@ -230,12 +230,18 @@ export class ArPreviewComponent implements OnInit {
   }
 
   onClickSave(){
+    var slCheck = this.accEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
     if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
       this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
       this.successDiag.open();
-    }else {
+    } else if(slCheck.length > 0) {
+        this.dialogMessage = "SL Name required for entries with SL Type";
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
+    } else {
       this.confirm.confirmModal();
     }
   }

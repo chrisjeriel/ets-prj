@@ -171,6 +171,17 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+
+    var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
+    if(slCheck.length > 0) {
+      this.dialogMessage = "SL Name required for entries with SL Type";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+
+      return;
+    }
+
     if(this.jvDetails.forApproval === 'Y'){
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal += this.passData.tableData[i].foreignDebitAmt;

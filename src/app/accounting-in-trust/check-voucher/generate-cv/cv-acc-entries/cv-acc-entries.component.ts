@@ -169,11 +169,13 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = '';
       this.lovRow.slCd = '';
+      this.lovRow.edited = true;
     }else if(data.selector == 'sl') {
       this.lovRow.slTypeName = data.data.slTypeName; 
       this.lovRow.slTypeCd = data.data.slTypeCd;
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
+      this.lovRow.edited = true;
     } else if(data.selector == 'acitChartAcct') {
 
       let firstRow = data.data.pop();
@@ -190,6 +192,8 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
       }
       this.table.refreshTable();
     }
+
+    this.table.markAsDirty();
   }
 
   computeTotals() {   
@@ -220,6 +224,16 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     this.params.saveList = [];
     this.params.delList  = [];
     var isEmpty = 0;
+
+    var slCheck = this.cvAcctEntData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
+    if(slCheck.length > 0) {
+      this.dialogMessage = "SL Name required for entries with SL Type";
+      this.dialogIcon = "error-message";
+      this.suc.open();
+
+      return;
+    }
 
     this.cvAcctEntData.tableData.forEach(e => {
       e.tranId = this.cvData.tranId;
@@ -277,6 +291,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         this.dialogIcon = 'error';
       }else{
         this.getAcctEntries();
+        this.table.markAsPristine();
       }
       this.suc.open();
       this.params.saveList  = [];
@@ -288,7 +303,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     if(this.cancelFlag){
       this.can.onNo();
     }else{
-      this.suc.modal.closeModal();
+      this.suc.modal.modalRef.close();
     }
   }
 
