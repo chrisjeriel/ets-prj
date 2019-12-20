@@ -255,14 +255,14 @@
 
     #leftPane {
         float:left;
-        width:60%;
+        width:58%;
         overflow:hidden;
         border-right: 1px solid #8080803b;
     }
     
     #rightPane {
         float:left;
-        width:40%;
+        width:42%;
         overflow:hidden;
     }
 
@@ -306,11 +306,20 @@
             <p style="font-size: 11px;">&copy; Phil Machinery Management Services Corporation 2019.</p>
     </div>
     <div id="rightPane">
-        <ngb-carousel #carousel interval="2000" [pauseOnHover]="pauseOnHover">
+        <ngb-carousel #carousel interval="1500" [pauseOnHover]="pauseOnHover">
           <ng-template ngbSlide *ngFor="let img of images; index as i">
-            <!-- <div class="carousel-caption">
-              <h3>My slide {{i + 1}} title</h3>
-            </div> -->
+            <div class="carousel-caption" *ngIf="i==1">
+              <p style="font-size: 14; font-weight: 400; margin: 0;">New opportunities for cooperation</p>
+              <p style="font-size: 12px;">An easy way to manage your files, sample text here.</p>
+            </div>
+            <div class="carousel-caption" *ngIf="i==2">
+              <p style="font-size: 14; font-weight: 400; margin: 0;">Ease up processing</p>
+              <p style="font-size: 12px;">Another text here.</p>
+            </div>
+            <div class="carousel-caption" *ngIf="i==1">
+              <p style="font-size: 14; font-weight: 400; margin: 0;">Advanced reporting tool</p>
+              <p style="font-size: 12px;">Sample text here.</p>
+            </div>
             <a target="_blank" rel="nofollow noopener noreferrer">
               <div class="picsum-img-wrapper">
                 <img [src]="img" alt="My image {{i + 1}} description">
