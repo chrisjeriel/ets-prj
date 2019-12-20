@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
 
-    images = [1, 2, 3].map((n) => `app/resources/images/${n}.jpg`);
+    images = [4].map((n) => `app/resources/images/${n}.gif`);
     /*, 965, 982, 1043, 738*/
 
       paused = false;
