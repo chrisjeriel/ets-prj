@@ -43,10 +43,24 @@ export class ChecksRegisterComponent implements OnInit {
     selector     : ''
   };
 
+  printerList: string[] = [];
+  selectedPrinter: string = '';
+
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
 
   ngOnInit() {
+     this.getPrinters();
+  }
+
+  getPrinters(){
+    this.printService.getPrinters().subscribe(
+      (data:any)=>{
+        if(data.length != 0){
+          this.printerList = data;
+        }
+      }
+    );
   }
 
   tickBox(event) {
@@ -83,11 +97,33 @@ export class ChecksRegisterComponent implements OnInit {
       "acitr061Params.sortBy" : this.params.sortBy,
       "acitr061Params.bank" : this.params.bank,
       "acitr061Params.bankAcct" : this.params.bankAcct,
+      "printerName": this.selectedPrinter,
+      "pageOrientation": 'LANDSCAPE',
+      "paperSize": 'LEGAL'
     }
 
     console.log(params);
 
-    this.printService.print(this.params.destination,this.params.reportId, params);
+    if(this.params.destination.toUpperCase() == 'SCREEN'){
+          this.printService.print(this.params.destination,this.params.reportId, params);
+    }else{
+      this.printService.directPrint(params).subscribe(
+        (data:any)=>{
+          console.log(data);
+          if(data.errorList.length == 0 && data.messageList.length != 0){
+            /*if(isReprint == undefined){
+              this.successPrintMdl.openNoClose();
+              
+            }else{
+              this.reprintMdl.closeModal();  
+               this.printLoading = false;
+            }*/
+          }else{
+            console.log('error');
+          }
+        }
+      );
+    }
   }
 
   showLov(fromUser){
