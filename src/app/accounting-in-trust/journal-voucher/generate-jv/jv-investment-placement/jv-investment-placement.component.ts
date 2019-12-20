@@ -62,7 +62,7 @@ export class JvInvestmentPlacementComponent implements OnInit {
       showMG: 1
     },
     keys: ['invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 'invtAmt' ],
-    uneditable: [true, true, true, true, true, true,true, true, true, true, true, false],
+    uneditable: [true, true, true, true, true, true,true, true, true, true, true, true],
     checkFlag: true,
     pageID: 6,
     widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120]
