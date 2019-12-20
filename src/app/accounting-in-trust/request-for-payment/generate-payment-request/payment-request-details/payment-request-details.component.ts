@@ -16,7 +16,6 @@ import { DatePipe } from '@angular/common';
 import { DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-payment-request-details',
   templateUrl: './payment-request-details.component.html',
@@ -1568,29 +1567,120 @@ export class PaymentRequestDetailsComponent implements OnInit {
   }
 
   onClickExport() {
-    var name = 'InwardPolicyBalances_PolicyList_' + this.requestData.paytReqNo;
-    var query = 'SELECT policyNo AS [Policy No], ' +
-                       'CASE WHEN coRefNo IS NULL THEN \'\' ELSE coRefNo END AS [Co. Ref. No.], ' +
-                       'instNo AS [Inst No.], ' +
-                       'datetime(dueDate) AS [Due Date], ' +
-                       'currCd AS [Curr], ' +
-                       'currRate AS [Curr Rate], ' +
-                       'currency(prevPremAmt) AS [Premium], ' +
-                       'currency(prevRiComm) AS [RI Comm], ' +
-                       'currency(prevRiCommVat) AS [RI Comm Vat], ' +
-                       'currency(prevCharges) AS [Charges], ' +
-                       'currency(prevNetDue) AS [Net Due], ' +
-                       'currency(cumPayment) AS [Cumulative Payments], ' +
-                       'currency(prevBalance) AS [Balance], ' +
-                       'currency(returnAmt) AS [Payment Amount], ' +
-                       'currency(premAmt) AS [Premium], ' +
-                       'currency(riComm) AS [RI Comm], ' +
-                       'currency(riCommVat) AS [RI Comm Vat], ' +
-                       'currency(charges) AS [Charges], ' +
-                       'currency(totalPayt) AS [Total Payments], ' +
-                       'currency(remainingBal) AS [Remaining Balance]';
+    var name  = '';
+    var query = '';
+    var tblData = [];
 
-    this.ns.export(name, query, this.inwardPolBalData.tableData);
+    if(this.activeUnColTab){
+      tblData = this.unappliedColData.tableData;
+      name    = ((this.requestData.reqPrefix == 'TBD')?'TrtyBal':'InwPolBalAdv')
+                + '_Unapplied_' + this.requestData.paytReqNo;
+      query   = 'SELECT transdtlTypeDesc AS [Type], '+
+                        'itemName AS [Item Name], ' +
+                        'CASE WHEN refNo IS NULL THEN \'\' ELSE refNo END AS [Reference No.],'+
+                        'remarks AS [Description],'+
+                        'currCd AS [Curr],'+
+                        'currRate AS [Curr Rate],'+
+                        'currency(currAmt) AS [Payment Amount],'+
+                        'currency(localAmt) AS [Payment Amount (PHP)]';
+    }else if(this.activeOthTab){
+      tblData = this.othersData.tableData;
+      name    = ((this.requestData.reqPrefix == 'TBD')?'TrtyBal':(this.requestData.reqPrefix == 'INV')?'InvtPlcmnt':'InwPolBalAdv')
+                + '_Others_' + this.requestData.paytReqNo;
+      query   = 'SELECT itemName AS [Item Name], '+
+                        'CASE WHEN refNo IS NULL THEN \'\' ELSE refNo END AS [Reference No.],'+
+                        'remarks AS [Description],'+
+                        'currCd AS [Curr],'+
+                        'currRate AS [Curr Rate],'+
+                        'currency(currAmt) AS [Payment Amount],'+
+                        'currency(localAmt) AS [Payment Amount (PHP)]';
+    }else{
+      if(this.requestData.tranTypeCd == 1 || this.requestData.tranTypeCd == 2 || this.requestData.tranTypeCd == 3){
+        tblData = this.cedingCompanyData.tableData;
+        name    = 'Clm_' + ((this.requestData.tranTypeCd == 1)?'Loss'
+                           : (this.requestData.tranTypeCd == 2)?'AdjustersExpense'
+                           : (this.requestData.tranTypeCd == 3)?'OtherExpense':'')
+                + '_PaytToCedant_' +this.requestData.paytReqNo;
+        query   = 'SELECT claimNo AS [Claim No], ' +
+                          'histNo AS [Hist No], ' +
+                          'histCatDesc AS [Hist Category],'+
+                          'histTypeDesc AS [Hist Type],'+
+                          'paymentFor AS [Payment For],'+
+                          'insuredDesc AS [Insured],'+
+                          'CASE WHEN exGratia = \'Y\' THEN \'Yes\' ELSE \'No\' END  AS [Ex-Gratia],'+
+                          'currCd AS [Curr],'+
+                          'currRate AS [Curr Rate],'+
+                          'currency(reserveAmt) AS [Reserve Amount],'+
+                          'currency(approvedAmt) AS [Approved Amount],'+
+                          'currency(currAmt) AS [Payment Amount],'+
+                          'currency(localAmt) AS [Payment Amount (PHP)]';
+      }else if(this.requestData.tranTypeCd == 4){
+        tblData = this.inwardPolBalData.tableData;
+        name    = 'InwPolBalAdv_' + this.requestData.paytReqNo;
+        query   = 'SELECT policyNo AS [Policy No], ' +
+                           'CASE WHEN coRefNo IS NULL THEN \'\' ELSE coRefNo END AS [Co. Ref. No.], ' +
+                           'instNo AS [Inst No.], ' +
+                           'datetime(dueDate) AS [Due Date], ' +
+                           'currCd AS [Curr], ' +
+                           'currRate AS [Curr Rate], ' +
+                           'currency(prevPremAmt) AS [Premium], ' +
+                           'currency(prevRiComm) AS [RI Comm], ' +
+                           'currency(prevRiCommVat) AS [RI Comm Vat], ' +
+                           'currency(prevCharges) AS [Charges], ' +
+                           'currency(prevNetDue) AS [Net Due], ' +
+                           'currency(cumPayment) AS [Cumulative Payments], ' +
+                           'currency(prevBalance) AS [Balance], ' +
+                           'currency(returnAmt) AS [Payment Amount], ' +
+                           'currency(premAmt) AS [Premium], ' +
+                           'currency(riComm) AS [RI Comm], ' +
+                           'currency(riCommVat) AS [RI Comm Vat], ' +
+                           'currency(charges) AS [Charges], ' +
+                           'currency(totalPayt) AS [Total Payments], ' +
+                           'currency(remainingBal) AS [Remaining Balance]';
+      }else if(this.requestData.tranTypeCd == 5){
+        //tblData = this.serviceFeeMainData.tableData; this.serviceFeeSubData.tableData;
+      }else if(this.requestData.tranTypeCd == 6){
+        tblData = this.treatyBalanceData.tableData;
+        name    = 'TrtyBal_' + this.requestData.paytReqNo;
+        query   = 'SELECT quarterEnding AS [Quarter Ending], '+
+                          'currCd AS [Curr],'+
+                          'currRate AS [Curr Rate],'+
+                          'currency(netQsoaAmt) AS [Net Due],'+
+                          'currency(prevPaytAmt) AS [Cumulative Payments],'+
+                          'currency(prevBalance) AS [Balance],'+
+                          'currency(currAmt) AS [Payment Amount],'+
+                          'currency(localAmt) AS [Payment Amount (PHP)],'+
+                          'currency(newPaytAmt) AS [Total Payments],'+
+                          'currency(newBalance) AS [Remaining Balance]';
+      }else if(this.requestData.tranTypeCd == 7){
+        tblData = this.investmentData.tableData;
+        name    = 'InvtPlcmnt_' + this.requestData.paytReqNo;
+        query   = 'SELECT invtCd AS [Investment Code], '+
+                          'invtTypeDesc AS [Investment Type],'+
+                          'securityDesc AS [Security Type],'+
+                          'matPeriod AS [Maturity Period],'+
+                          'durUnit AS [Duration Unit],'+
+                          'intRt AS [Interest Rate],'+
+                          'datetime(purDate) AS [Date Purchased],'+
+                          'datetime(matDate) AS [Date Purchased],'+
+                          'currCd AS [Curr],'+
+                          'currRate AS [Curr Rate],'+
+                          'currency(invtAmt) AS [Investment Amount]';
+      }else if(this.requestData.tranTypeCd == 8){
+        tblData = this.othersData.tableData;
+        name    = 'Others_' + this.requestData.paytReqNo;
+        query   = 'SELECT itemName AS [Item Name], '+
+                          'CASE WHEN refNo IS NULL THEN \'\' ELSE refNo END AS [Reference No.],'+
+                          'remarks AS [Description],'+
+                          'currCd AS [Curr],'+
+                          'currRate AS [Curr Rate],'+
+                          'currency(currAmt) AS [Payment Amount],'+
+                          'currency(localAmt) AS [Payment Amount (PHP)]';
+      }
+    }  
+   
+    this.ns.export(name, query, tblData); 
+    
   }
 
 }

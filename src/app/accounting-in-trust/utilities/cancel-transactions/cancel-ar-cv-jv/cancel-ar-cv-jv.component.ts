@@ -67,6 +67,7 @@ export class CancelArCvJvComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle('Acct-IT | Cancel Transactions');
 		this.getAcitList();
+		console.log(this.tranClass);
 	}
 
 	getAcitList(){
