@@ -24,7 +24,7 @@ export class MtnAcctIntDurationComponent implements OnInit {
     pageStatus: true,
     pagination: true,
     fixedCol: false,
-    pageID: 5,
+    pageID: 'durationTbl',
     keys:[
       'code']
   };
@@ -95,17 +95,23 @@ export class MtnAcctIntDurationComponent implements OnInit {
         ev: ev
       });
     } else {
-    	this.arrayCode = [];
+        var result : boolean;
         this.maintenanceService.getRefCode('ACIT_INVESTMENTS.DURATION_UNIT').pipe(
-           finalize(() => this.checkCodeFinal(code, ev) )
+           finalize(() => this.checkCodeFinal(code, ev, result) )
            ).subscribe(data => {
-          if(data['refCodeList'].length > 0) {
+            
           	for (var i = 0; i < data['refCodeList'].length; i++) {
-			  		if( data['refCodeList'][i].code === code){
-			  			this.arrayCode = data['refCodeList'][i];
-			  		} 
-			}
-          } 
+    			  		if( data['refCodeList'][i].code === code){
+                  this.selectedData.emit({
+                      code : data['refCodeList'][i].code,
+                      ev   : ev
+                  });
+                  result = false; 
+                  break
+    			  		}else {
+                  result = true; 
+                } 
+			      }
         });
 
 /*
@@ -124,20 +130,14 @@ export class MtnAcctIntDurationComponent implements OnInit {
 
   }
 
-  checkCodeFinal(code, ev){
-	if(this.arrayCode.length === 0) {
-		    this.selectedData.emit({
+  checkCodeFinal(code, ev, result){
+    if(result){
+  		    this.selectedData.emit({
               code: '',
-        	  ev: ev
-            });
-            this.modal.openNoClose();
-          } else {
-            this.arrayCode[0]['ev'] = ev;
-            console.log(this.arrayCode[0].code);
-            console.log(this.arrayCode[0].ev);
-            this.selectedData.emit({
-            	code : this.arrayCode[0].code,
-            	ev   : this.arrayCode[0].ev});
-          }
-    }
+          	  ev: ev
+          });
+        this.modal.openNoClose();
+    } 
   }
+
+}
