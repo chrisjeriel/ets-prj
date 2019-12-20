@@ -308,15 +308,15 @@
     <div id="rightPane">
         <ngb-carousel #carousel interval="1500" [pauseOnHover]="pauseOnHover">
           <ng-template ngbSlide *ngFor="let img of images; index as i">
-            <div class="carousel-caption" *ngIf="i==1">
+            <div class="carousel-caption" *ngIf="i==0">
               <p style="font-size: 14; font-weight: 400; margin: 0;">New opportunities for cooperation</p>
               <p style="font-size: 12px;">An easy way to manage your files, sample text here.</p>
             </div>
-            <div class="carousel-caption" *ngIf="i==2">
+            <div class="carousel-caption" *ngIf="i==1">
               <p style="font-size: 14; font-weight: 400; margin: 0;">Ease up processing</p>
               <p style="font-size: 12px;">Another text here.</p>
             </div>
-            <div class="carousel-caption" *ngIf="i==1">
+            <div class="carousel-caption" *ngIf="i==2">
               <p style="font-size: 14; font-weight: 400; margin: 0;">Advanced reporting tool</p>
               <p style="font-size: 12px;">Sample text here.</p>
             </div>
