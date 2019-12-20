@@ -73,7 +73,8 @@ export class JvEntryComponent implements OnInit {
     preparedBy:'',
     preparedDate:'',
     approvedBy:'',
-    approvedDate:''
+    approvedDate:'',
+    tranData: {}
   }
 
   jvDatas: any = {
@@ -148,20 +149,52 @@ export class JvEntryComponent implements OnInit {
       if(params.from == 'add' && this.jvData.tranId == undefined){
         this.newJV();
       }else{
-        this.tranId = this.jvData.tranId == undefined ? params.tranId : this.jvData.tranId;
-        this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
-        this.jvDatas.createUser  = params.createUserTran, 
-        this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.tranClass   = params.tranClassTran, 
-        this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran), 
-        this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
-        this.jvDatas.tranId      = parseInt(params.tranIdTran), 
-        this.jvDatas.tranStat    = params.tranStatTran, 
-        this.jvDatas.tranYear    = parseInt(params.tranYearTran), 
-        this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
-        this.jvDatas.updateUser  = params.updateUserTran;
+        // this.tranId = this.jvData.tranId == undefined ? params.tranId : this.jvData.tranId;
+        // this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
+        // this.jvDatas.createUser  = params.createUserTran, 
+        // this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.tranClass   = params.tranClassTran, 
+        // this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran), 
+        // this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
+        // this.jvDatas.tranId      = parseInt(params.tranIdTran), 
+        // this.jvDatas.tranStat    = params.tranStatTran, 
+        // this.jvDatas.tranYear    = parseInt(params.tranYearTran), 
+        // this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
+        // this.jvDatas.updateUser  = params.updateUserTran;
+
+        if(this.jvData.tranId == undefined) {
+          this.tranId = params.tranId;
+          this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran));
+          this.jvDatas.createUser  = params.createUserTran;
+          this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.tranClass   = params.tranClassTran;
+          this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran);
+          this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran));
+          this.jvDatas.tranId      = parseInt(params.tranIdTran);
+          this.jvDatas.tranStat    = params.tranStatTran;
+          this.jvDatas.tranYear    = parseInt(params.tranYearTran);
+          this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran));
+          this.jvDatas.updateUser  = params.updateUserTran;
+        } else {
+          this.tranId = this.jvData.tranId;
+          this.jvDatas.closeDate   = this.ns.toDateTimeString(this.jvData.tranData.closeDate);
+          this.jvDatas.createDate  = this.ns.toDateTimeString(this.jvData.tranData.createDate);
+          this.jvDatas.createUser  = this.jvData.tranData.createUser;
+          this.jvDatas.deleteDate  = this.ns.toDateTimeString(this.jvData.tranData.deleteDate);
+          this.jvDatas.postDate    = this.ns.toDateTimeString(this.jvData.tranData.postDate);
+          this.jvDatas.tranClass   = this.jvData.tranData.tranClass;
+          this.jvDatas.tranClassNo = this.jvData.tranData.tranClassNo;
+          this.jvDatas.tranDate    = this.ns.toDateTimeString(this.jvData.tranData.tranDate);
+          this.jvDatas.tranId      = this.jvData.tranData.tranId;
+          this.jvDatas.tranStat    = this.jvData.tranData.tranStat;
+          this.jvDatas.tranYear    = this.jvData.tranData.tranYear;
+          this.jvDatas.updateDate  = this.ns.toDateTimeString(this.jvData.tranData.updateDate);
+          this.jvDatas.updateUser  = this.jvData.tranData.updateUser;
+        }
       }
     });
     this.cancelJVBut = true;
@@ -222,6 +255,25 @@ export class JvEntryComponent implements OnInit {
           this.approveBut   = true;
           this.cancelJVBut = true;
         }
+
+        this.entryData.tranData = {};
+
+        this.entryData.tranData.tranDate = this.ns.toDateTimeString(data.transactions.tranDate);
+        this.entryData.tranData.tranClass = data.transactions.tranClass;
+        this.entryData.tranData.tranTypeCd = data.transactions.tranTypeCd;
+        this.entryData.tranData.tranYear = data.transactions.tranYear;
+        this.entryData.tranData.tranClassNo = data.transactions.tranClassNo;
+        this.entryData.tranData.tranStat = data.transactions.tranStat;
+        this.entryData.tranData.tranStatDesc = data.transactions.tranStatDesc;
+        this.entryData.tranData.closeDate = this.ns.toDateTimeString(data.transactions.closeDate);
+        this.entryData.tranData.deleteDate = this.ns.toDateTimeString(data.transactions.deleteDate);
+        this.entryData.tranData.postDate = this.ns.toDateTimeString(data.transactions.postDate);
+        this.entryData.tranData.createUser = data.transactions.createUser;
+        this.entryData.tranData.createDate = this.ns.toDateTimeString(data.transactions.createDate);
+        this.entryData.tranData.updateUser = data.transactions.updateUser;
+        this.entryData.tranData.updateDate = this.ns.toDateTimeString(data.transactions.updateDate);
+        this.entryData.tranData.adjEntryTag = data.transactions.adjEntryTag;
+        this.entryData.tranData.acctEntDate = this.ns.toDateTimeString(data.transactions.acctEntDate);
 
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
@@ -325,7 +377,8 @@ export class JvEntryComponent implements OnInit {
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
                          localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
                          jvType: ev.tranTypeName,
-                         tranType: ev.tranTypeCd
+                         tranType: ev.tranTypeCd,
+                         tranData: ev.tranData
                        });
   }
 
@@ -348,18 +401,21 @@ export class JvEntryComponent implements OnInit {
   }
 
   setCurrency(data){
+    console.log('here setCurrency()');
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
     this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
     this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     this.ns.lovLoader(data.ev, 0);
-    this.form.control.markAsDirty();
+    
     setTimeout(()=>{
+      this.form.control.markAsDirty();
       $('.currCd').focus().blur();
     }, 0);
   }
 
   prepareData(){
+    console.log(this.jvDatas);
     this.jvDatas.tranIdJv       = this.tranId;
     this.jvDatas.jvYear         = this.entryData.jvYear;
     this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);

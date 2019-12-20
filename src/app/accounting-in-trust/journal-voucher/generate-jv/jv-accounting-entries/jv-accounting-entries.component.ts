@@ -134,8 +134,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   retrieveAcctEntries(){
-    console.log(this.jvDetails);
-    console.log('here retrieveAcctEntries()');
     this.accountingService.getAcitAcctEntries(this.jvData.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.debitTotal = 0;
@@ -170,10 +168,20 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   onClickSave(){
-    console.log('here onClickSave()');
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+
+    var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
+    if(slCheck.length > 0) {
+      this.dialogMessage = "SL Name required for entries with SL Type";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+
+      return;
+    }
+
     if(this.jvDetails.forApproval === 'Y'){
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal += this.passData.tableData[i].foreignDebitAmt;
@@ -240,7 +248,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   saveAcctEntries(){
-    console.log('here saveAcctEntries()');
     this.prepareData();
     this.accountingService.saveAcitAcctEntries(this.accEntries).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
@@ -654,12 +661,12 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   retrieveJVEntry(){
-    console.log('here retrieveJVEntry()');
     this.accountingService.getJVEntry(this.jvDetails.tranId).subscribe((data:any) => {
       console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.statusType = 'F'
+        this.statusType = 'F';
+        this.jvDetails.statusType = 'F';
         this.passData.disableAdd = false;  
         this.passData.btnDisabled = false;
         // this.passData.uneditable = [true,true,true,true,true,true,true,true]
@@ -667,7 +674,8 @@ export class JvAccountingEntriesComponent implements OnInit {
         this
       }else if(data.transactions.jvListings.jvStatus == 'N'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.statusType = 'N'
+        this.statusType = 'N';
+        this.jvDetails.statusType = 'F';
         this.passData.disableAdd = false;  
         this.passData.btnDisabled = false;
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
