@@ -1084,7 +1084,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
       {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
       {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
       {key: 'riskName',title: 'Risk',dataType: 'text'},
-    ]
+    ],
+    pageID: 'genInfoQuoteTable'
   };
 
   searchParams: any = {

@@ -815,9 +815,9 @@ a.carousel-control-prev {
     display: none !important;
 }
 
-ol.carousel-indicators {
+/*ol.carousel-indicators {
     display: none !important;
-}
+}*/
 
 #notif-progress .progress {
     height: 12px;
