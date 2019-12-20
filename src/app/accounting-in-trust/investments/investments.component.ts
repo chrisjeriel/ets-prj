@@ -162,7 +162,8 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
-     widths: [130,130,150,150,150,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
+     exportFlag: true,
+     widths: [110,250,140,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
             'invtSecCd','invtStatus','matPeriod','durUnit','intRt','purDate',
             'matDate','currCd','currRate','invtAmt','incomeAmt','bankCharge',
@@ -194,6 +195,7 @@ export class InvestmentsComponent implements OnInit {
     oldData:any[] =[];
     currencyData: any[] = [];
     wtaxRate: any;
+    wtaxRateUSD: any;
     cancelFlag: boolean;
     acitInvtReq  : any = { 
                 "delAcitInvestments": [],
@@ -218,9 +220,9 @@ export class InvestmentsComponent implements OnInit {
     this.userService.emitModuleId("ACIT048");
     this.selectedData = [];
     this.retrieveInvestmentsList(this.searchParams);
-    this.getWTaxRate();
     this.oldData = this.passData.tableData;
-
+    this.getWTaxRate('PHP');
+    this.getWTaxRate('USD');
     this.passData.tHeaderWithColspan.push({ header: "", span: 18 },
          { header: "Pre-Termination", span: 2 },
          { header: "Partial Pull-Out", span: 3 },
@@ -279,11 +281,14 @@ export class InvestmentsComponent implements OnInit {
                                         }
 
                                         
-                                      } */else if(a.invtStatus === 'O'){
+                                      } */else if(a.invtStatus === 'O' || a.invtStatus === 'M' || a.invtStatus === '' ){
 
                                           if (a.preTerminatedTag === 'N' && a.partialPullOutTag === 'N'){
                                              if (a.amortized === null || a.amortized === ""){
-                                               a.uneditable = ['invtCd','invtStatus','matVal','currRate','invtAmt','amortized','amortEff','priceCost'];
+                                              a.uneditable = ['invtCd','bank','invtType',
+                                                        'invtSecCd','invtStatus','amortized','matPeriod','durUnit','purDate',
+                                                        'matDate','currCd','currRate','invtAmt',
+                                                        'matVal', 'amortEff','priceCost'];
                                              }else {
                                                a.uneditable = ['invtCd','invtStatus','matPeriod','durUnit','intRt','purDate',
                                                         'matDate','currCd','matVal','currRate','invtAmt','amortized','amortEff','priceCost','preTerminatedTag','termDate',
@@ -363,7 +368,7 @@ export class InvestmentsComponent implements OnInit {
         this.passData.opts[4].prev = data['currency']['currency'].map(a => a.currencyCd);
 
         this.passData.opts[5].vals = data['bank']['bankList'].map(a => a.bankCd);
-        this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.shortName);
+        this.passData.opts[5].prev = data['bank']['bankList'].map(a => a.officialName);
 
         this.passData.opts[6].vals = data['amortized']['refCodeList'].map(a => a.code);
         this.passData.opts[6].prev = data['amortized']['refCodeList'].map(a => a.description);
@@ -568,12 +573,12 @@ uneditableItems(array, item, mode){
      var  currRate,
           currSeq,
           invtCd;
-                    
+                    console.log(data.invtCd);
                     if (data.currCd === 'PHP'){
                        var currRt = this.getCurrencyRt('PHP');
                         currRate = currRt;
                        
-                       if (data.invtCd === null){
+                       if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                        } else {
@@ -589,8 +594,8 @@ uneditableItems(array, item, mode){
                      } else if (data.currCd === 'UKP'){
                        var currRt = this.getCurrencyRt('UKP');
                         currRate = currRt;
-                      
-                        if (data.invtCd === null){
+            
+                        if (data.invtCd === null || data.invtCd === undefined ){
                            currSeq = null;
                            invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                         } else {
@@ -607,7 +612,7 @@ uneditableItems(array, item, mode){
                        var currRt = this.getCurrencyRt('USD');
                         currRate = currRt;
      
-                       if (data.invtCd === null){
+                       if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
                        } else {
@@ -728,10 +733,16 @@ update(data){
           //LOGIC-FUNCTIONALITIES
            if (data.key === 'durUnit'){
              
-              if(this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== ''   ||
-                this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== ''){
-
-                  this.passData.tableData[i].matPeriod = null;
+              if( (this.passData.tableData[i].matDate !== null || this.passData.tableData[i].matDate !== '' || this.passData.tableData[i].matDate !== undefined)   ||
+                (this.passData.tableData[i].purDate !== null || this.passData.tableData[i].purDate !== '' || this.passData.tableData[i].purDate !== undefined)){
+                  var resultPurDate = this.changePurDate(this.passData.tableData[i]);
+                  
+                  if (this.passData.tableData[i].matPeriod === null){
+                  }else {
+                     this.passData.tableData[i].matPeriod = resultPurDate.matPeriod;
+                     this.passData.tableData[i].purDate = resultPurDate.purDate;
+                     this.passData.tableData[i].matDate = resultPurDate.matDate;
+                  }
                }
 
               if(this.passData.tableData[i].invtStatus === 'F'){
@@ -829,7 +840,8 @@ update(data){
              }
            }
 
-
+           //console.log(this.computation(data,this.passData.tableData[i].invtAmt,this.passData.tableData[i].intRt,this.passData.tableData[i].durUnit,this.passData.tableData[i].matPeriod,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge))
+          
            //LOGIC-COMPUTATION
                if (this.passData.tableData[i].durUnit !== null || this.passData.tableData[i].durUnit !== ''   && 
                    this.passData.tableData[i].intRt !== null || this.passData.tableData[i].intRt !== '' &&
@@ -838,7 +850,24 @@ update(data){
                    ){
 
 
-                  var principal = parseFloat(this.passData.tableData[i].invtAmt),
+                if(data.key === 'invtAmt' || data.key === 'intRt' || data.key === 'matPeriod' || data.key === 'durUnit' ||  data.key === 'purDate' ||  data.key === 'matDate' || data.key === 'currCd' ){
+                  var resultInvt = this.computation(data,this.passData.tableData[i].invtAmt,this.passData.tableData[i].intRt,this.passData.tableData[i].durUnit,this.passData.tableData[i].matPeriod,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge);
+                  this.passData.tableData[i].invtAmt = resultInvt.invtAmt;
+                  this.passData.tableData[i].incomeAmt = resultInvt.incomeAmt;
+                  this.passData.tableData[i].whtaxAmt = resultInvt.whtaxAmt;
+                  this.passData.tableData[i].matVal = resultInvt.matVal;
+                }else if(data.key === 'incomeAmt'){
+                  var resultInvtAmt = this.computationWthax(this.passData.tableData[i].invtAmt,this.passData.tableData[i].incomeAmt,this.passData.tableData[i].currCd,this.passData.tableData[i].bankCharge);
+                  this.passData.tableData[i].incomeAmt = resultInvtAmt.incomeAmt;
+                  this.passData.tableData[i].whtaxAmt = resultInvtAmt.whtaxAmt;
+                  this.passData.tableData[i].matVal = resultInvtAmt.matVal; 
+                  this.passData.tableData[i].bankCharge = resultInvtAmt.bankCharge;
+                }else if(data.key === 'bankCharge' || data.key === 'whtaxAmt' ){
+                   this.passData.tableData[i].matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
+                }
+
+
+/*                  var principal = parseFloat(this.passData.tableData[i].invtAmt),
                      rate = parseFloat(this.passData.tableData[i].intRt)/100,
                      time,
                      matPeriod;
@@ -875,23 +904,23 @@ update(data){
 
                  if(invtIncome === null){
                  }else {
-                   console.log(this.wtaxRate);
-                   var taxRate = parseFloat(this.wtaxRate) / 100,
-                       
-                       withHTaxAmt = invtIncome * taxRate,
+
+                  if(this.passData.tableData[i].currCd === 'PHP'){
+                    var taxRate = parseFloat(this.wtaxRate) / 100;
+                   }else if (this.passData.tableData[i].currCd === 'USD') {
+                     var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+                   };
+
+                   console.log(taxRate);
+                   
+                       var withHTaxAmt = invtIncome * taxRate,
                        bankCharges = this.passData.tableData[i].bankCharge,
                        matVal;
 
-                       /*if(Number.isNaN(bankCharges)){
-                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].whtaxAmt;
-                       } else {
-                         matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
-                       }
-*/
                        this.passData.tableData[i].whtaxAmt = Math.round(withHTaxAmt * 100)/100;
                        matVal = this.passData.tableData[i].invtAmt + this.passData.tableData[i].incomeAmt - this.passData.tableData[i].bankCharge - this.passData.tableData[i].whtaxAmt;
                        this.passData.tableData[i].matVal = matVal;
-                 }
+                 }*/
                } 
 
            //LOGIC - DATES
@@ -906,11 +935,12 @@ update(data){
                   this.passData.tableData[i].matDate = array[1];
 
                  }else if(data.key === 'currCd'){
+
                    var result = this.changeCurr(this.passData.tableData[i]);
-                   console.log(result);
                    this.passData.tableData[i].currRate = result.currRate;
                    this.passData.tableData[i].currSeq = result.currSeq;
                    this.passData.tableData[i].invtCd = result.invtCd;
+                 
                  } else if (data.key === 'invtType'){
                    if (this.passData.tableData[i].invtCd !== null){
                      var res = this.passData.tableData[i].invtCd.split("-");
@@ -955,14 +985,94 @@ update(data){
     }
   }
 
-  getWTaxRate(){
+  computation(data,invtAmt,intRt,durUnit,matPeriod,currCd,bankCharge){
+     var principal = parseFloat(invtAmt),
+                     rate = parseFloat(intRt)/100,
+                     time,
+                     matPeriod;
+
+                       if(durUnit === 'Days'){
+                          time = parseFloat(matPeriod)/360;
+                       } else if (durUnit === 'Months'){
+                         time = parseFloat(matPeriod)/12;
+                       } else if (durUnit === 'Years'){
+                         time = parseFloat(matPeriod);
+                       }
+
+                       console.log(time);
+
+                 var invtIncome = principal * rate * time;
+                 var incomeAmt = Math.round(invtIncome * 100)/100;
+
+                 if(invtIncome === null){
+                 }else {
+                  if(currCd === 'PHP'){
+                    var taxRate = parseFloat(this.wtaxRate) / 100;
+                   }else if (currCd === 'USD') {
+                     var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+                   };
+
+                   console.log(taxRate);
+                   
+                       var withHTaxAmt = invtIncome * taxRate,
+                       matVal;
+
+                       var whtaxAmt = Math.round(withHTaxAmt * 100)/100;
+                       matVal = invtAmt + incomeAmt - bankCharge - whtaxAmt;
+                       var matVal = matVal;
+                 }
+    return {
+        matVal: matVal, 
+        incomeAmt: incomeAmt,
+        invtAmt : invtAmt,
+        whtaxAmt : whtaxAmt,
+        bankCharge : bankCharge
+    }; 
+
+   } 
+
+   computationWthax(invtAmt,incomeAmt,currCd,bankCharge){
+     if(currCd === 'PHP'){
+        var taxRate = parseFloat(this.wtaxRate) / 100;
+     }else if (currCd === 'USD') {
+        var taxRate = parseFloat(this.wtaxRateUSD) / 100;
+     };
+
+     console.log(taxRate);
+                   
+     var withHTaxAmt = incomeAmt * taxRate,
+     matVal;
+
+     var whtaxAmt = Math.round(withHTaxAmt * 100)/100;
+     matVal = invtAmt + incomeAmt - bankCharge - whtaxAmt;
+     var matVal = matVal;
+
+     return {
+        matVal: matVal, 
+        incomeAmt: incomeAmt,
+        whtaxAmt : whtaxAmt,
+        bankCharge : bankCharge
+    }; 
+
+   }
+
+ 
+  getWTaxRate(currCd?){
     var wtaxRt;
-    this.mtnService.getMtnParameters('N','INVT_WHTAX_RT').pipe(
+    if (currCd === 'USD'){
+      this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_USD').pipe(
+           finalize(() => this.wtaxRateUSD = wtaxRt)
+           ).subscribe(data => {
+       wtaxRt = data['parameters'][0].paramValueN;
+      });
+    }else if (currCd === 'PHP') {
+       this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_PHP').pipe(
            finalize(() => this.wtaxRate = wtaxRt)
            ).subscribe(data => {
-      wtaxRt = data['parameters'][0].paramValueN;
+       wtaxRt = data['parameters'][0].paramValueN;
     });
-
+    }
+   
   }
 
  
@@ -1069,16 +1179,8 @@ update(data){
       this.errorAmort = '';
       console.log(this.checkFields());
       if(this.checkFields()){
-         //this.confirmSave.confirmModal();
-        let invtCds:string[] = this.passData.tableData.map(a=>a.invtCd);
-          if(invtCds.some((a,i)=>invtCds.indexOf(a)!=i)){
-            this.dialogMessage = 'Unable to save the record. Investment Code must be unique.';
-            this.dialogIcon = 'error-message';
-            this.successDialog.open();
-            return;
-          } else {
-             this.confirmSave.confirmModal();
-          }
+         //this.confirmSave.confirmModal()
+         this.confirmSave.confirmModal();
       }else{
         if (this.errorAmort === 'Error Amort'){
           this.dialogMessage='Maturity period must be at least a year';
@@ -1563,6 +1665,65 @@ update(data){
       result = 'Yearly';
     }
     return result;
+  }
+
+  export(){
+        //do something
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        var hr = String(today.getHours()).padStart(2,'0');
+        var min = String(today.getMinutes()).padStart(2,'0');
+        var sec = String(today.getSeconds()).padStart(2,'0');
+        var ms = today.getMilliseconds()
+        var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+        var filename = 'Investments'+currDate+'.xlsx'
+        var mystyle = {
+            headers:true, 
+            column: {style:{Font:{Bold:"1"}}}
+          };
+
+        alasql.fn.datetime = function(dateStr) {
+              if (dateStr === '' || dateStr === null) {
+                return '';
+              }else {
+               var date = new Date(dateStr);
+               return date.toLocaleString().split(',')[0];
+              }
+        };
+
+        alasql.fn.currency = function(currency) {
+           if (currency === '' || currency === null) {
+                return '';
+           }else {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                      (parts[1] ? "." + parts[1] : "");
+              return num;
+          }
+        };
+
+     this.accountingService.getAccInvestments(this.searchParams).subscribe(data => {
+            var records = data['invtList'];
+            //this.table.refreshTable();
+            records = records.map(i => {
+                                      i.matDate = this.ns.toDateTimeString(i.matDate);
+                                      i.purDate = this.ns.toDateTimeString(i.purDate);
+                                      i.createDate = this.ns.toDateTimeString(i.createDate);
+                                      i.updateDate = this.ns.toDateTimeString(i.updateDate);
+                                      i.termDate = this.ns.toDateTimeString(i.termDate);
+                                      i.partialPullOutDate = this.ns.toDateTimeString(i.partialPullOutDate);
+
+                                     for(let key of Object.keys(i)){
+                                         i[key] = i[key]==null ? '' : i[key];
+                                     }
+
+                                     return i;
+                                 });
+            console.log(records);
+            alasql('SELECT invtCd AS [Investment Code], bankName AS [Bank], certNo AS [Certificate No], invtTypeDesc AS [Investment Type], invtSecDesc AS [Security], matPeriod AS [Maturity Period], durUnit AS [Duration Unit], intRt AS [Interesr Rate],datetime(purDate) AS [Purchased Date],  datetime(matDate) AS [Maturity Date], currCd AS [Currency], currRate AS [Currenct Rate],currency(invtAmt) AS Investment, currency(incomeAmt) AS [Investment Income], currency(bankCharge) AS [Bank Charge], currency(whtaxAmt) AS [Withholding Tax], matVal AS [Maturity Value],amortized AS [Amortized Unit], amortEff AS [Amort Eff%], currency(priceCost) AS [Price (Cost)], partialPullOutTag AS [Partial Pullout Tag], datetime(partialPullOutDate) AS [Partial Pullout Date], currency(partialPullOutAmt) AS [Partial Pullout Amount],preTerminatedTag AS [Pre-Terminated Tag], datetime(termDate) AS [Term Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,records]);
+        });
   }
 
  

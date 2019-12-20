@@ -50,7 +50,7 @@
             <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)" (newClick)="onRowclick($event)">
                 <ng-container controls-l>
                     <label class="form-control-sm">For Approval</label> 
-                    <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="jvDetails.forApproval = (jvDetails.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
+                    <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="onClickApproval()" [disabled]="notBalanced">
                 </ng-container>
                 <ng-container controls-r>
                     <button class="cust-btn" style="margin-right: 0px !important;" (click)="onClickPrintAe()">Print AE</button>
