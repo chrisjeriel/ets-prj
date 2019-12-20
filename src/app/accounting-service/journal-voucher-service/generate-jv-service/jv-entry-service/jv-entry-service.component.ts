@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services'; 
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services'; 
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { Router } from '@angular/router';
@@ -32,6 +32,7 @@ export class JvEntryServiceComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
   @ViewChild('PrintEntries') printEntries: ModalComponent;
+  @ViewChild('printJVDetailed') printJVDetailed: ModalComponent;
   @ViewChild(UploaderComponent) up: UploaderComponent;
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
 
@@ -82,6 +83,11 @@ export class JvEntryServiceComponent implements OnInit {
     updateDate: null
   };
 
+  printData:any = {
+    reportType : 0,
+    destination:'screen'
+  };
+
   approvedStat: boolean = false;
   tranId: any;
   dialogIcon : any;
@@ -102,7 +108,7 @@ export class JvEntryServiceComponent implements OnInit {
   fileName: string = '';
   emitMessage: string = '';
 
-  constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute, private mtnService: MaintenanceService) { }
+  constructor(private titleService: Title, private ns: NotesService, private decimal : DecimalPipe, private accountingService: AccountingService, private route: ActivatedRoute, private mtnService: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acc-Service | Journal Voucher");
@@ -128,6 +134,7 @@ export class JvEntryServiceComponent implements OnInit {
     this.allocBut    = true;
     this.dcBut       = true;
     this.retrieveJVEntry();
+    this.getPrinters();
   }
 
   tabController(event) {
@@ -331,6 +338,38 @@ export class JvEntryServiceComponent implements OnInit {
     
   }
 
+  onClickPrint(){
+    this.printJVDetailed.openNoClose();
+  }
+
+
+  printJVDetails(){
+    let params = {
+      reportName: 'ACSER_JV',
+      tranId: this.tranId,
+      printerName: this.printData.selPrinter,
+      pageOrientation: 'PORTRAIT',
+      paperSize: 'LETTER'
+    }
+
+    if(this.printData.destination == 'screen'){
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_JV' + '&userId=' + 
+                          this.ns.getCurrentUser() + '&tranId=' + this.tranId + '&reportType=' + this.printData.reportType, '_blank');
+        this.printEntries.openNoClose();
+    }else if(this.printData.destination == 'printer'){
+      this.ps.directPrint(params).subscribe((data:any) => {
+        console.log(data);
+        if(data.errorList.length == 0 && data.messageList.length != 0){
+          this.printEntries.openNoClose();
+        }else{
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'An error has occured. JV was not printed.';
+          this.successDiag.open();
+        }
+      });
+    }
+  }
+
   onClickPrintable(){
     $('#printableNames #modalBtn').trigger('click');
   }
@@ -502,12 +541,6 @@ export class JvEntryServiceComponent implements OnInit {
     this.entryData.approver   = data.printableName;
   }
 
-  onClickPrint(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_JV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.tranId, '_blank');
-    this.printEntries.openNoClose();
-  }
-
   printJV(){
     this.sendData.tranId = this.tranId;
     this.sendData.jvNo = this.entryData.jvNo;
@@ -620,6 +653,16 @@ uploadAcctEntries(){
          }
        }
     );
+  }
+
+  getPrinters(){
+    this.ps.getPrinters().subscribe(data => {
+      this.printData.printers = data;
+    });
+  }
+
+  clearPrinterName(){
+    (this.printData.destination != 'printer')?this.printData.selPrinter='':''
   }
 
   /*getAcctEnt(){

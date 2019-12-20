@@ -338,14 +338,14 @@
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName()">
                         <option value="screen">Screen</option>
                         <option value="printer">Printer</option>
                     </select>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Printer Name</label>
-                    <select class="form-control form-control-sm cust-sm col-sm-8">
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printer'">
                         <ng-container *ngFor="let printer of printData.printers">
                             <option [value]="printer">{{ printer }}</option>    
                         </ng-container>
