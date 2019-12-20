@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService,PrintService } from '@app/_services';
 import { CVListing } from '@app/_models'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
@@ -116,11 +116,21 @@ export class CvEntryServiceComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  printData : any = {
+    selPrinter  : '',
+    printers    : [],
+    destination : 'screen',
+    reportType  : 2,
+    copyNo      : null,
+    printCv     : true,
+    printCheck  : ''
+  };
+
   lovCheckBox:boolean = true;
  
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
-              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe) { }
+              private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Acct-Serv | CV Entry");
@@ -311,6 +321,7 @@ export class CvEntryServiceComponent implements OnInit {
       particulars   : '',
       paytReqType   : '',
       payee         : '',
+      payeeCd       : '',
       payeeNo       : '',
       postDate      : '',
       preparedBy    : '',
@@ -328,7 +339,7 @@ export class CvEntryServiceComponent implements OnInit {
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
 
-    if(this.saveAcseCv.cvDate == null || this.saveAcseCv.cvDate == '' || this.saveAcseCv.payee == '' ||  this.saveAcseCv.payee == null || this.saveAcseCv.particulars == '' || 
+    if(this.saveAcseCv.cvDate == null || this.saveAcseCv.cvDate == '' || this.saveAcseCv.payee == '' ||  this.saveAcseCv.payee == null || this.saveAcseCv.payeeCd == '' ||  this.saveAcseCv.payeeCd == null || this.saveAcseCv.particulars == '' || 
        this.saveAcseCv.particulars == null || this.saveAcseCv.bank == '' || this.saveAcseCv.bank == null || this.saveAcseCv.bankAcct == '' || this.saveAcseCv.bankAcct == null ||
        this.saveAcseCv.cvAmt == '' || this.saveAcseCv.cvAmt == null || this.saveAcseCv.cvAmt < 0 ||  this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null || this.saveAcseCv.currCd == '' || 
        this.saveAcseCv.currCd == null || this.saveAcseCv.currRate == '' || this.saveAcseCv.currRate == null || this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null ||
@@ -422,13 +433,7 @@ export class CvEntryServiceComponent implements OnInit {
     console.log(fromUser);
     if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
-      // if(this.saveAcseCv.paytReqType == 'S'){
-      //   this.passDataLov.payeeClassCd = 2;
-      // }else if(this.saveAcseCv.paytReqType == 'I'){
-      //   this.passDataLov.payeeClassCd = 3;
-      // }else{
-      //   this.passDataLov.payeeClassCd = (this.saveAcseCv.paytReqType == '' || this.saveAcseCv.paytReqType == null)?'':1;
-      // }
+      this.passDataLov.payeeNo = '';
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
       this.passDataLov.selector = 'bankLov';
@@ -464,9 +469,15 @@ export class CvEntryServiceComponent implements OnInit {
     },0);
     
     if(from.toLowerCase() == 'payee'){
-      this.saveAcseCv.payee   = data.data.payeeName;
-      this.saveAcseCv.payeeCd = data.data.payeeNo;
-      this.saveAcseCv.payeeClassCd = data.data.payeeClassCd;
+      if(data.data == null){
+        this.saveAcseCv.payee   = '';
+        this.saveAcseCv.payeeCd = '';
+        this.saveAcseCv.payeeClassCd = '';
+      }else{
+        this.saveAcseCv.payee   = data.data.payeeName;
+        this.saveAcseCv.payeeCd = data.data.payeeNo;
+        this.saveAcseCv.payeeClassCd = data.data.payeeClassCd;
+      }
     }else if(from.toLowerCase() == 'bank'){
       this.saveAcseCv.bankDesc   = data.data.officialName;
       this.saveAcseCv.bank = data.data.bankCd;
@@ -544,11 +555,15 @@ export class CvEntryServiceComponent implements OnInit {
   }
 
   checkCode(event,from){
-    this.ns.lovLoader(event.ev, 1);
+    this.ns.lovLoader(event, 1);
     if(from.toLowerCase() == 'curr'){
-      this.currLov.checkCode(this.saveAcseCv.currCd.toUpperCase(),event.ev);
+      this.currLov.checkCode(this.saveAcseCv.currCd.toUpperCase(),event);
     }else if(from.toLowerCase() == 'prep-user'){
-      this.prepUserLov.checkCode(this.saveAcseCv.preparedBy.toUpperCase(),event.ev);
+      this.prepUserLov.checkCode(this.saveAcseCv.preparedBy.toUpperCase(),event);
+    }else if(from.toLowerCase() == 'payee'){
+      this.passDataLov.selector = 'payee';
+      this.passDataLov.payeeNo = this.saveAcseCv.payeeCd;
+      this.payeeLov.checkCode('payee',null,null,null,null,null,event,null,this.passDataLov.payeeClassCd);
     }
   }
 

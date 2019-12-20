@@ -22,36 +22,13 @@ export class CheckVoucherComponent implements OnInit {
         tHeader: ["CV No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"],
         dataTypes: ['text','text','text','date','text','text','currency',],
         filters: [
-        {
-          key: 'cvGenNo',
-          title: 'C.V. No.',
-          dataType: 'text'
-        },
-        {
-          key: 'payee',
-          title: 'Payee',
-          dataType: 'text'
-        },
-        {
-          key: 'cvDate',
-          title: 'CV Date',
-          dataType: 'date'
-        },
-        /*{
-          key: 'cvStatusDesc',
-          title: 'Status',
-          dataType: 'text'
-        },*/
-        {
-          key: 'particulars',
-          title: 'Particulars',
-          dataType: 'text'
-        },
-        {
-          key: 'cvAmt',
-          title: 'Amount',
-          dataType: 'text'
-        }
+          { key: 'cvGenNo', title: 'C.V. No.', dataType: 'text'},
+          { key: 'payee',   title: 'Payee',    dataType: 'text'},
+          { keys: {
+             from : 'cvDateFrom', to: 'cvDateTo'
+          }, title: 'CV Date', dataType: 'datespan' },
+          { key: 'particulars', title: 'Particulars', dataType: 'text'},
+          { key: 'cvAmt',       title: 'Amount',      dataType: 'text'}
         ],
         btnDisabled  : true,
         pagination   : true,
