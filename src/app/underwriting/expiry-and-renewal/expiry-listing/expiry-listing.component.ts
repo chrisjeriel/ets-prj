@@ -447,21 +447,23 @@ export class ExpiryListingComponent implements OnInit {
 
   onClickPrint() {
       if(this.currentTab == 'renew'){
-        if(this.passDataRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
+        /*if(this.passDataRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
           $('#printPolicyModal > #modalBtn').trigger('click');
         }else{
           this.dialogMessage = "Ceding Company of the selected policies must be the same to print a report.";
           this.dialogIcon = "error-message";
           this.successDiagRN.open();
-        }
+        }*/
+        $('#printPolicyModal > #modalBtn').trigger('click');
       }else{
-        if(this.passDataNonRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
+        /*if(this.passDataNonRenewalPolicies.tableData.filter(a=>a.printTag=='Y').map(a=>a.cedingId).every((a,i,s)=>s.indexOf(a)==0)){
           $('#printPolicyModal > #modalBtn').trigger('click');
         }else{
           this.dialogMessage = "Ceding Company of the selected policies must be the same to print a report.";
           this.dialogIcon = "error-message";
           this.successDiagRN.open();
-        }
+        }*/
+        $('#printPolicyModal > #modalBtn').trigger('click');
       }
       
   }
