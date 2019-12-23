@@ -401,11 +401,11 @@ export class JvEntryComponent implements OnInit {
   }
 
   setCurrency(data){
-    console.log('here setCurrency()');
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
-    this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
-    this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+    // this.entryData.localAmt = isNaN((parseFloat(this.entryData.jvAmt.toString().split(',').join('')))) ? 0 : this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
+    // this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+    this.validateCurr();
     this.ns.lovLoader(data.ev, 0);
     
     setTimeout(()=>{
@@ -643,8 +643,8 @@ export class JvEntryComponent implements OnInit {
     this.entryData.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join('')));
     this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
-      this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
-      this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.localAmt = this.decimal.transform(this.entryData.jvAmt * this.entryData.currRate,'1.2-2');
+      // this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
       this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
     }else{
       this.entryData.localAmt = null;
