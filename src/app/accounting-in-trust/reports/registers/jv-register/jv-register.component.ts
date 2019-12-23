@@ -132,16 +132,32 @@ export class JvRegisterComponent implements OnInit {
     }
   }
 
+  changePaytType(event){
+    this.ns.lovLoader(event, 1);
+    this.passDataLov.selector = 'acitTranType';
+    this.passDataLov.from = 'acit';
+    this.passDataLov.params = {
+      tranClass: 'JV',
+      tranTypeCd: this.params.jvType
+    }
+    this.paytTypeLov.checkCode('acitTranType',null,null,null,null,null,event);
+  }
+
   setData(data,from){
-    setTimeout(() => {
-      this.ns.lovLoader(data.ev, 0);
-    },0);
+    this.ns.lovLoader(data.ev, 0);
 
     console.log(data.data);
 
-    if(from == 'acitTranType'){
-      this.params.jvType   = data.data.tranTypeCd;
-      this.tranName = data.data.tranTypeName;
+    if(data.data == null){
+      if(from == 'acitTranType'){
+        this.params.jvType   = '';
+        this.tranName = '';
+      }
+    }else{
+      if(from == 'acitTranType'){
+        this.params.jvType   = data.data.tranTypeCd;
+        this.tranName = data.data.tranTypeName;
+      }
     }
 
   }
