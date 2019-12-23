@@ -284,4 +284,26 @@ export class CvPaymentRequestListComponent implements OnInit {
       this.router.navigate(['/generate-payt-req', { tranId : this.passData.tranId ,reqId : this.paytData.reqId , from: 'cv-paytreqlist' }], { skipLocationChange: true });
     },100);
   }
+
+  onClickExport() {
+    var tblData   = this.passDataPaytReqList.tableData;
+    var name      = 'CV_PaytReqList' + 
+                  ((this.cvInfo.paytReqType == 'C')?'_Clm_':
+                   (this.cvInfo.paytReqType == 'P')?'_Inw_':
+                   (this.cvInfo.paytReqType == 'I')?'_Inv_':
+                   (this.cvInfo.paytReqType == 'S')?'_SrvFee_':
+                   (this.cvInfo.paytReqType == 'Q')?'_Trty_':
+                   (this.cvInfo.paytReqType == 'O')?'_Oth_':'')
+                   + this.cvInfo.cvGenNo;
+    var query     = 'SELECT paytReqNo AS [Payment Request No], '+
+                        'tranTypeDesc AS [Payment Type], ' +
+                        'datetime(reqDate) AS [Request Date],'+
+                        'particulars AS [Particulars],'+
+                        'requestedBy AS [Requested By],'+
+                        'currCd AS [Curr],'+
+                        'currency(reqAmt) AS [Amount]';
+     
+    this.ns.export(name, query, tblData); 
+    
+  }
 }
