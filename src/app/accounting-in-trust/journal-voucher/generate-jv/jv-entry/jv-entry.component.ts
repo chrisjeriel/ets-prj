@@ -131,6 +131,7 @@ export class JvEntryComponent implements OnInit {
   acctEntryFile: any;
   fileName: string = '';
   emitMessage: string = '';
+  loading: boolean = false;
 
   constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService, private ps : PrintService) { }
 
@@ -208,7 +209,9 @@ export class JvEntryComponent implements OnInit {
   }
 
   retrieveJVEntry(){
+    this.loading = true;
     this.accService.getJVEntry(this.tranId).subscribe((data:any) => {
+      this.loading = false;
       console.log(data)
       if(data.transactions != null){
         this.entryData              = data.transactions.jvListings;
@@ -644,8 +647,8 @@ export class JvEntryComponent implements OnInit {
     this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
       this.entryData.localAmt = this.decimal.transform(this.entryData.jvAmt * this.entryData.currRate,'1.2-2');
-      // this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
       this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+      this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
     }else{
       this.entryData.localAmt = null;
     }

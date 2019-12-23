@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { NotesService } from '@app/_services'
 import { NgForm } from '@angular/forms';
 import { Calendar } from 'primeng/calendar';
+// import { Cleave } from 'cleave.js/dist/cleave-esm.min';
 
 @Component({
   selector: 'datepicker',
@@ -17,8 +18,13 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   private maximumDate: any = null;
   private defaultDate: any = null;
   private ev: any = null;
-  private inputStyleClass: string = 'form-control form-control-sm';
+  private inputStyleClass: string = 'form-control form-control-sm testDate';
   private icon: string = 'fa fa-calendar';
+  // private cleave = new Cleave('.testDate', {
+  //   date: true,
+  //   delimeter: '*',
+  //   datePattern: ['m', 'd', 'Y']
+  // });
   
   private spanStyle: any = {
   	width: '100%',
