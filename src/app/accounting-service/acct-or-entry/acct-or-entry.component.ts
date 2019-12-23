@@ -1105,7 +1105,7 @@ export class AcctOrEntryComponent implements OnInit {
             this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
           }
 
-          this.loading = !this.loading;
+          this.loading = false;
         }
       }
     );
