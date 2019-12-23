@@ -190,11 +190,12 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100
 
-      if(this.variance != 0){
+      /*if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
         this.dialogIcon = "error-message";
         this.successDiag.open();
-      }else if(!this.validDetailPayment()){
+      }else */
+      if(!this.validDetailPayment()){
         this.dialogMessage = this.errorMessage;
         this.dialogIcon = "error-message";
         this.successDiag.open();
