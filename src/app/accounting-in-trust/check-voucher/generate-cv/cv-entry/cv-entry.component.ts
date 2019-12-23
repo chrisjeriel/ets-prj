@@ -488,6 +488,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bankAcctDesc = '';
       this.saveAcitCv.bankAcct = '';
       this.saveAcitCv.checkNo = '';
+      this.suggestCheckNo = '';
       // var ba = this.bankAcctList;
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
@@ -510,6 +511,7 @@ export class CvEntryComponent implements OnInit {
       var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
       if(chkNo.length == 0){
         this.saveAcitCv.checkNo = '';
+        this.suggestCheckNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }else{
@@ -533,6 +535,7 @@ export class CvEntryComponent implements OnInit {
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(chkNo.length == 0){
           this.saveAcitCv.checkNo = '';
+          this.suggestCheckNo = '';
           this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
           this.warnMdl.openNoClose();
         }else{
