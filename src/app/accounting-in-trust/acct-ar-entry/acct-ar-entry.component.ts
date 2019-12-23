@@ -1555,6 +1555,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   setDefaultValues(){
     this.banks = [];
     this.bankAccts = [];
+    this.paymentTypes = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
                         this.ms.getMtnBankAcct(),
