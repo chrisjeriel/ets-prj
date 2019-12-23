@@ -220,7 +220,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
     this.getPrinters();
-    this.retrievePaymentType();
+    //this.retrievePaymentType();
     this.canUploadAcctEntry();
     this.canReprintMethod();
     //this.retrieveCurrency();
@@ -583,7 +583,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
                         this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.arDate.date),
+                        this.ms.getMtnAcitTranType('AR',null,null,null,null,'Y')).pipe(map(([ar, bank, bankAcct, curr, paymentType]) => { return { ar, bank, bankAcct, curr, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         this.genAcctEnt = false;
@@ -592,6 +593,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        let paymentType = forkData.paymentType;
+        if(paymentType.tranTypeList.length !== 0){
+          paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+          this.paymentTypes = paymentType.tranTypeList;
+          this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+        }
         console.log(data);
         //ar
         if(data.ar !== null){
@@ -1551,9 +1558,18 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS')).pipe(map(([dcb, bank, bankAcct, arNoDigits]) => { return { dcb, bank, bankAcct, arNoDigits }; }));
+                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS'),
+                        this.ms.getAcitTranType('AR',null,null,null,null,'Y')).pipe(map(([dcb, bank, bankAcct, arNoDigits, paymentType]) => { return { dcb, bank, bankAcct, arNoDigits, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
+           let paymentType = data.paymentType;
+           if(paymentType.tranTypeList.length !== 0){
+             paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+             this.paymentTypes = paymentType.tranTypeList;
+             this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+             console.log('TRAN_TYPE_CD => ' + this.arInfo.tranTypeCd);
+           }
+
            this.arInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
            this.arInfo.arNoDigits = parseInt(data.arNoDigits.parameters[0].paramValueN);
         //set default dcb bank
