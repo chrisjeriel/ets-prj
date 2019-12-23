@@ -53,6 +53,7 @@ export class GenerateJvComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
+        $event.preventDefault();
     		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
   		} 
   }

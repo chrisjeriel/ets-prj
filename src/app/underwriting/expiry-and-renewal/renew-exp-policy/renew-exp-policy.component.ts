@@ -255,6 +255,7 @@ export class RenewExpPolicyComponent implements OnInit {
       console.log(data);
 
       if (data.errorList.length > 0) {
+        console.log(data.errorList);
         alert("Error during renewal.");
       } else {
         this.renewedPolicy = data.renewedPolicy;
