@@ -45,6 +45,8 @@ export class ChecksRegisterComponent implements OnInit {
 
   printerList: string[] = [];
   selectedPrinter: string = '';
+  dialogIcon: string = '';
+  dialogMessage: string = '';
 
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
