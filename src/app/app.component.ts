@@ -240,7 +240,7 @@ export class AppComponent implements OnDestroy {
 
 
               
-              if ($(e.target).parents("#notif-context").length == 0 && ($(e.target).not("i.fa.fa-bell").length != 0 && $(e.target).not("#bell-btns").length != 0) ) {
+              if ($(e.target).parents("#notif-context").length == 0 && ($(e.target).not("i.fa.fa-bell").length != 0 && $(e.target).not("#bell-btns").length != 0 && $(e.target).not("span#bell-span").length != 0) ) {
                 $("#notif-context").removeClass("show").hide();
               }
             })
