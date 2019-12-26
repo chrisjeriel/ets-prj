@@ -233,7 +233,16 @@ export class AppComponent implements OnDestroy {
             });
 
             $(document).on("click", function(e:any) {
+
+              console.log($(e.target));
+              console.log($("i.fa.fa-bell"));
+              console.log($(e.target).not("i.fa.fa-bell"));
+
+
               
+              if ($(e.target).parents("#notif-context").length == 0 && ($(e.target).not("i.fa.fa-bell").length != 0 && $(e.target).not("#bell-btns").length != 0) ) {
+                $("#notif-context").removeClass("show").hide();
+              }
             })
         });
 

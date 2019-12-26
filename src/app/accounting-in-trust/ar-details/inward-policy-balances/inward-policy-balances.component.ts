@@ -238,7 +238,12 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   onClickSave(cancel?){
     console.log(this.isReopen);
     console.log(this.checkOriginalAmtvsAlteredAmt());
-    if(this.checkBalance()){
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else if(this.checkBalance()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment must not be greater than the Balance.';
       this.successDiag.open();

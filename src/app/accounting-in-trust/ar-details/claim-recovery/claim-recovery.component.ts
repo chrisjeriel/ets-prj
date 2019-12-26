@@ -171,7 +171,12 @@ export class ClaimRecoveryComponent implements OnInit {
   }
 
   onClickSave(cancel?){
-    if(this.reserveCheck()){
+    if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else if(this.reserveCheck()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not exceed the Hist Amount';
       this.successDiag.open();

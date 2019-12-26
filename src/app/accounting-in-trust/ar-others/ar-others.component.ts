@@ -118,7 +118,12 @@ export class ArOthersComponent implements OnInit {
   }
 
   onClickSave(cancel?){
-    if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+    if(this.arDetails.dcbStatus == 'C' || this.arDetails.dcbStatus == 'T'){
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+      this.dialogMessage += this.arDetails.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+      this.successDiag.open();
+    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
     }else{
       if(cancel != undefined){

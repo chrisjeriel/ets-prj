@@ -100,6 +100,9 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'osQsoa'){
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
+          }else if(this.passData.selector == 'unappliedColl'){
+            this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
           }
@@ -452,6 +455,7 @@ export class LovComponent implements OnInit {
       }
      
     } else if(selector == 'payee'){
+      console.log(this.passData);
       if(this.passData.payeeNo == null || this.passData.payeeNo.length == 0){
         this.selectedData.emit({
           data: null,
@@ -490,7 +494,124 @@ export class LovComponent implements OnInit {
          });
       }
      
-    } 
+    } else if (selector == 'bankLov') {
+      if(this.passData.bank == null || this.passData.bank.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'bankLov'
+        });
+      } else {
+        this.mtnService.getBankLov(this.passData.bank,'','Y','Y',this.passData.glDepFor).subscribe((data:any)=>{
+          if(data.bankLovList.length > 0){
+             data.bankLovList[0]['ev'] = ev;
+             data.bankLovList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['bankLovList'][0], ev : ev});
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'bankLov'
+             });
+
+             this.passData.selector = 'bankLov';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+        });
+      }
+    }else if (selector == 'bankAcct') {
+      if(this.passData.bankAcct == null || this.passData.bankAcct.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'bankLov'
+        });
+      } else {
+        this.mtnService.getMtnBankAcct(this.passData.bank, this.passData.bankAcct).subscribe((data:any)=>{
+          data.bankAcctList = (this.passData.from == 'acit')
+                  ?data.bankAcctList.filter(e => ((this.passData.currCd == '' || this.passData.currCd == null || this.passData.currCd == undefined)?true:e.currCd == this.passData.currCd) && e.acItGlDepNo != null)
+                  :data.bankAcctList.filter(e => ((this.passData.currCd == '' || this.passData.currCd == null || this.passData.currCd == undefined)?true:e.currCd == this.passData.currCd) && e.acSeGlDepNo != null);
+          if(data.bankAcctList.length > 0){
+             data.bankAcctList[0]['ev'] = ev;
+             data.bankAcctList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['bankAcctList'][0], ev : ev});
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'bankAcct'
+             });
+
+             this.passData.selector = 'bankAcct';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+        });
+      }
+    }else if(selector == 'acitTranType'){
+      console.log(this.passData);
+      if(this.passData.params.tranTypeCd == null || this.passData.params.tranTypeCd.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'payee'
+        });
+      }else{
+        console.log(this.passData.payeeClassCd);
+        this.mtnService.getAcitTranType(this.passData.params.tranClass, this.passData.params.tranTypeCd, '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
+           if(data.tranTypeList.length == 1){
+             data.tranTypeList[0]['ev'] = ev;
+             data.tranTypeList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['tranTypeList'][0], ev : ev, selector: 'acitTranType'});
+           }else if(data.tranTypeList.length == 0){
+             this.passData.payeeNo = '';
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acitTranType'
+             });
+
+             this.passData.selector = 'acitTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acitTranType'
+             });
+
+             this.passData.selector = 'acitTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+         });
+      }
+     
+    }else if(selector == 'acctPaytMode'){
+      this.passTable.tableData = [{paytModeName: 'Bank Transfer', paytMode: 'BT'}, {paytModeName: 'Cash', paytMode: 'CA'}, {paytModeName: 'Check', paytMode: 'CK'}];
+      if(this.passData.paytMode == null || this.passData.paytMode.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'acctPaytMode'
+        });
+      }else{
+        if(this.passTable.tableData.map(a=>{return a.paytMode}).includes(this.passData.paytMode)){
+          this.selectedData.emit({data: this.passTable.tableData[this.passTable.tableData.map(b=>{return b.paytMode}).indexOf(this.passData.paytMode)], ev : ev, selector: 'acitTranType'});
+        }else{
+          this.selectedData.emit({
+            data: null,
+            ev: ev,
+            selector: 'acctPaytMode'
+          });
+          this.modal.openNoClose();
+        }
+        this.ns.lovLoader(ev,0);
+      }
+     
+    }
     /*if(districtCd === ''){
       this.selectedData.emit({
         data: null,
@@ -1455,21 +1576,55 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'unappliedColl'){
+      this.passTable.tHeader = ['Item','Type','Reference No','Amount'];
+      this.passTable.widths = [125, 125, 100, 120];
+      this.passTable.dataTypes = ['text','text','text','currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'currAmt'];
+      this.passTable.checkFlag = true;
+
+      this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
+        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+        this.table.refreshTable();
+      });
     } else if(this.passData.selector == 'acitTranType') {
-      console.log("within lov component");
 
       this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
       this.passTable.minColSize = ['1px', '120px'];
       this.passTable.dataTypes  = ['number','text'];
       this.passTable.keys       = ['tranTypeCd','tranTypeName'];
       // this.passTable.checkFlag  = true;
+      // getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
 
-      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', '', '', 'Y').subscribe((data:any) => {
+      this.mtnService.getAcitTranType(this.passData.params.tranClass, '', '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
         this.passTable.tableData = data.tranTypeList;
 
         this.table.refreshTable();
       });
+    } else if(this.passData.selector == 'acseTranType') {
 
+      this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
+      this.passTable.minColSize = ['1px', '120px'];
+      this.passTable.dataTypes  = ['number','text'];
+      this.passTable.keys       = ['tranTypeCd','tranTypeName'];
+      // this.passTable.checkFlag  = true;
+      // getAcitTranType(tranClass, tranTypeCd, typePrefix, autoTag, baeTag, activeTag){
+
+      this.mtnService.getMtnAcseTranType(this.passData.params.tranClass, '', '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
+        this.passTable.tableData = data.tranTypeList;
+
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'acctPaytMode') {
+
+      this.passTable.tHeader    = ['Mode'];
+      this.passTable.minColSize = ['100px'];
+      this.passTable.dataTypes  = ['text'];
+      this.passTable.keys       = ['paytModeName'];
+      setTimeout(()=>{
+        this.passTable.tableData = [{paytModeName: 'Bank Transfer', paytMode: 'BT'}, {paytModeName: 'Cash', paytMode: 'CA'}, {paytModeName: 'Check', paytMode: 'CK'}];
+        this.table.refreshTable();
+      },0);
     }
 
     this.modalOpen = true;

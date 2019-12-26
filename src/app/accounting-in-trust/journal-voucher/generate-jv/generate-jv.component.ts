@@ -41,7 +41,7 @@ export class GenerateJvComponent implements OnInit {
   };
 
   disabledTypes: any = [
-      1,2,3,4,5,6,7,8,9,10,11
+      1,2,3,4,5,6,7,8,9,10,11,67,68
   ];
 
   ngOnInit() {
@@ -53,6 +53,7 @@ export class GenerateJvComponent implements OnInit {
 
   onTabChange($event: NgbTabChangeEvent) {
   		if ($event.nextId === 'Exit') {
+        $event.preventDefault();
     		this.router.navigate([this.exitLink,{tabID:this.exitTab}],{ skipLocationChange: true });
   		} 
   }
@@ -85,6 +86,7 @@ export class GenerateJvComponent implements OnInit {
      this.jvData.tranType = data.tranType;
      this.jvData.from = 'jv';
      this.jvData.exitLink = 'journal-voucher';
+     this.jvData.tranData = data.tranData;
   }
 
   cedingOutput(data){

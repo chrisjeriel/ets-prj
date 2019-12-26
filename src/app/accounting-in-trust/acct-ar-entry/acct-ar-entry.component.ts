@@ -220,54 +220,63 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.loading = true;
     setTimeout(()=>{this.disableTab.emit(true);},0);
     this.getPrinters();
-    this.retrievePaymentType();
+    //this.retrievePaymentType();
     this.canUploadAcctEntry();
     this.canReprintMethod();
     //this.retrieveCurrency();
     var tranId;
     var arNo;
     this.onChange.emit({ type: this.arInfo.tranTypeCd });
-    this.sub = this.route.params.subscribe(
-       data=>{
-         if(data.from === 'CancelledTran'){
-           tranId = data.tranId;
-           arNo = '';
-           this.isCancelled = true;
-           this.passData.addFlag = false;
-           this.passData.genericBtn = undefined;
-           this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-           this.paytDtlTbl.refreshTable();
-         }else{
-           if('add' === data['action'].trim()){
-             this.isAdd = true;
+    if(this.emittedValue == undefined){
+      this.sub = this.route.params.subscribe(
+         data=>{
+           if(data.from === 'CancelledTran'){
+             
+             tranId = data.tranId;
+             arNo = '';
+             this.isCancelled = true;
+             this.passData.addFlag = false;
+             this.passData.genericBtn = undefined;
+             this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+             this.paytDtlTbl.refreshTable();
            }else{
-             this.isAdd = false;
-             let params = JSON.parse(data['slctd']);
-             tranId = params.tranId;
-             arNo = params.arNo;
-             if(params.status === 'Cancelled' || params.status === 'Deleted'){
-               this.isCancelled = true;
-               this.passData.addFlag = false;
-               this.passData.genericBtn = undefined;
-               this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
-               this.paytDtlTbl.refreshTable();
-             }         
+             if('add' === data['action'].trim()){
+               
+               this.isAdd = true;
+             }else{
+               
+               this.isAdd = false;
+               let params = JSON.parse(data['slctd']);
+               tranId = params.tranId;
+               arNo = params.arNo;
+               if(params.status === 'Cancelled' || params.status === 'Deleted'){
+                 
+                 this.isCancelled = true;
+                 this.passData.addFlag = false;
+                 this.passData.genericBtn = undefined;
+                 this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+                 this.paytDtlTbl.refreshTable();
+               }         
+             }
            }
          }
-       }
-    );
+      );
+    }
     //NECO PLEASE OPTIMIZE THIS, THIS IS NOT OPTIMIZED -neco also
     //Aug 8, 2019 Thank you for optimizing 
     if(!this.isAdd && this.emittedValue === undefined){
+      
       this.retrieveArEntry(tranId, arNo);
     }else{  //edit
       if(this.emittedValue !== undefined){
         this.retrieveArEntry(this.emittedValue.tranId, this.emittedValue.arNo);
         this.isAdd = false;
+        
       }else{ //add
         //this.retrieveMtnBank();
         this.retrieveMtnAcitDCBNo(new Date().getFullYear(), this.ns.toDateTimeString(0));
         //this.retrieveMtnDCBUser();
+        
         this.retrieveCurrency();
         this.setDefaultValues();
         this.arDate.date = this.ns.toDateTimeString(0).split('T')[0];
@@ -275,6 +284,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     }
     if(this.emittedValue !== undefined && this.emittedValue.arStatus === 'X'){
+      
       this.isCancelled = true;
       this.passData.addFlag = false;
       this.passData.genericBtn = undefined;
@@ -371,7 +381,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     this.ns.clearFormGroup();
-    this.sub.unsubscribe();
+    if(this.sub != undefined){
+      this.sub.unsubscribe();
+    }
     if(this.forkSub !== undefined){
       this.forkSub.unsubscribe();
     }
@@ -571,7 +583,8 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     var sub$ = forkJoin(this.as.getArEntry(tranId, arNo),
                         this.ms.getMtnBank(null,null,'Y',null),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnCurrency('', 'Y', this.arDate.date)).pipe(map(([ar, bank, bankAcct, curr]) => { return { ar, bank, bankAcct, curr }; }));
+                        this.ms.getMtnCurrency('', 'Y', this.arDate.date),
+                        this.ms.getMtnAcitTranType('AR',null,null,null,null,'Y')).pipe(map(([ar, bank, bankAcct, curr, paymentType]) => { return { ar, bank, bankAcct, curr, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         this.genAcctEnt = false;
@@ -580,6 +593,12 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
         let curr = forkData.curr;
+        let paymentType = forkData.paymentType;
+        if(paymentType.tranTypeList.length !== 0){
+          paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+          this.paymentTypes = paymentType.tranTypeList;
+          this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+        }
         console.log(data);
         //ar
         if(data.ar !== null){
@@ -640,16 +659,19 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){
             //this.passData.dataTypes = ['select','select','percent','currency','select','text','text','date','select'];
+            
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isCancelled = true;
           }else if(this.arInfo.arStatDesc.toUpperCase() === 'PRINTED' || this.arInfo.arStatDesc.toUpperCase() === 'POSTED'){
+            
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
             this.isPrinted = true;
           }else if(this.isReopen){
+            
             this.passData.addFlag = false;
             this.passData.genericBtn = undefined;
             this.passData.uneditable = [true,true,true,true,true,true,true,true,true, true];
@@ -721,6 +743,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             arStatDesc: this.arInfo.arStatDesc,
             arDate: this.arInfo.arDate,
             dcbNo: this.arInfo.dcbYear+/*'-'+this.arInfo.dcbUserCd+*/'-'+this.pad(this.arInfo.dcbNo, 'dcbSeqNo'),
+            dcbStatus: this.arInfo.dcbStatus,
             tranTypeCd: this.arInfo.tranTypeCd,
             tranTypeName: this.arInfo.tranTypeName,
             currCd: this.arInfo.currCd,
@@ -1532,12 +1555,22 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   setDefaultValues(){
     this.banks = [];
     this.bankAccts = [];
+    this.paymentTypes = [];
     var sub$ = forkJoin(this.ms.getMtnDCBUser(this.ns.getCurrentUser()),
                         this.ms.getMtnBank(null,null, 'Y'),
                         this.ms.getMtnBankAcct(),
-                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS')).pipe(map(([dcb, bank, bankAcct, arNoDigits]) => { return { dcb, bank, bankAcct, arNoDigits }; }));
+                        this.ms.getMtnParameters('N', 'AR_NO_DIGITS'),
+                        this.ms.getAcitTranType('AR',null,null,null,null,'Y')).pipe(map(([dcb, bank, bankAcct, arNoDigits, paymentType]) => { return { dcb, bank, bankAcct, arNoDigits, paymentType }; }));
     this.forkSub = sub$.subscribe(
       (data:any)=>{
+           let paymentType = data.paymentType;
+           if(paymentType.tranTypeList.length !== 0){
+             paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
+             this.paymentTypes = paymentType.tranTypeList;
+             this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
+             console.log('TRAN_TYPE_CD => ' + this.arInfo.tranTypeCd);
+           }
+
            this.arInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
            this.arInfo.arNoDigits = parseInt(data.arNoDigits.parameters[0].paramValueN);
         //set default dcb bank

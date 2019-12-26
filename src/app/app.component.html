@@ -387,6 +387,10 @@
                                             accessibleModules.indexOf('POL042') > -1)" title="Generate Documents">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
+                                                <button [routerLink]="['/pol-reports']" class="button btn btn-link">Policy Reports</button>
+                                                <br/>
+                                            </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
                                                 <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
                                                 <br/>
                                             </ng-container>
@@ -475,6 +479,10 @@
                                 <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
                                     <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
                                         Claim Status</button>
+                                        <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
+                                    <button [routerLink]="['clm-reports']" class="button btn btn-link">Claim Reports</button>
                                         <br />
                                 </ng-container>
                                 <!-- <button [routerLink]="['']" class="button btn btn-link">Claim

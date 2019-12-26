@@ -22,15 +22,20 @@
                           <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
                           <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcitCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off">
                           <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytreqtype')"><i class="fa fa-search"></i></a></div>
-                      </div>
-                      <div class="input-group" style="margin-top: -5px">
+                    </div>
+                    <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
-                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn payee" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off">
+                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcitCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only>
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcitCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;">
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
                         <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn particulars" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.particulars" appRequired autoComplete="off"></textarea>
+                    </div>
+                    <div *ngIf="saveAcitCv.cvStatus == 'X'" class="input-group" style="margin-top: 8px !important">
+                        <label class="form-control-sm col-sm-1">Cancellation Reason</label>
+                        <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" autoComplete="off" readonly></textarea>
                     </div>
                 </div>
 
@@ -95,7 +100,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired>
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired autocomplete="off">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -197,6 +202,8 @@
         </div>
         <div *ngIf="fromBtn == 'cancel-req'" class="input-group">
             <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
+            <label class="form-control-sm col-sm-1 text-right labels">Reason</label>
+            <textarea name="textarea2" class="form-control form-control-sm cust-sm col-sm text-area-font warn particulars" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" appRequired autoComplete="off"></textarea> 
         </div>
         <div *ngIf="fromBtn == 'print'" class="input-group">
             <ng-container *ngIf="printData.printCv && printData.printCheck; else elseMsg">

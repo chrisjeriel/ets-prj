@@ -84,7 +84,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     addFlag: true,
     deleteFlag: true,
     editFlag: false,
-    pageLength: 10,
+    pageLength: 'unli',
     paginateFlag:true,
     infoFlag:true,
     widths: [105,240,125,170,120,120,120,120],
@@ -482,6 +482,16 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
+    var slCheck = this.acctEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
+    if(slCheck.length > 0) {
+      this.dialogMessage = "SL Name required for entries with SL Type";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+
+      return;
+    }
+
     if(this.record.from.toLowerCase() == 'jv'){
       var debitTotal = 0;
       var creditTotal = 0;
@@ -506,6 +516,15 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       }else{
         this.confirm.confirmModal();
       }
+    }else if(this.record.from.toLowerCase() == 'or'){
+      if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+            this.dialogIcon = 'error-message';
+            this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
+            this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+            this.successDiag.open();
+      }else {
+        this.confirm.confirmModal();
+      } 
     }else{
       this.confirm.confirmModal();
     }

@@ -70,7 +70,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
       colMG:[]
     },
     keys: ['srcInvtCode', 'srcCertNo', 'srcInvtTypeDesc', 'srcSecurityDesc', 'srcMaturityPeriod', 'srcDurationUnit', 'srcInterestRate', 'srcPurchasedDate', 'srcMaturityDate', 'srcCurrCd', 'srcCurrencyRt', 'srcInvtAmt', 'srcIncomeAmt', 'srcBankCharge', 'srcWhtaxAmt', 'srcMaturityValue', 'invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 'invtAmt', 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue'],
-    //uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true, false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true  ],
+    uneditable: [true, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true],
     checkFlag: true,
     pageID: 6,
     widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 140, 140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120]
@@ -116,12 +116,12 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   invstLOV(data){
   	if(data.key === 'srcInvtCode'){
-  		this.passLov.searchParams = [{key:'invtStatus', search: 'M%'}];
+  		this.passLov.searchParams = [{key:'invtStatus', search: 'M%'}, {key:'currCd', search: this.jvDetail.currCd}];
   		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.lovMdl.openLOV();
   	}else if(data.key === 'invtCode'){
-  		this.passLov.searchParams = [{key:'invtStatus', search: 'F%'}];
+  		this.passLov.searchParams = [{key:'invtStatus', search: 'F%'}, {key:'currCd', search: this.jvDetail.currCd}];
   		this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.srcInvtCode});
   		this.invIndex = data.index;
   		this.newlovMdl.openLOV();
@@ -153,6 +153,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
       this.passData.tableData[this.invIndex].srcMaturityValue 	= selected[0].matVal;
 
       this.table.refreshTable();
+
+      this.table.markAsDirty();
   }
 
   setSelectedDataInv(data){
@@ -180,6 +182,8 @@ export class JvInvestmentRollOverComponent implements OnInit {
       this.passData.tableData[this.invIndex].maturityValue 		= selected[0].matVal;
       this.passData.tableData[this.invIndex].pulloutType		  = 'F';
     this.table.refreshTable();
+
+    this.table.markAsDirty();
   }
 
   getInvRollOut(){
@@ -224,11 +228,11 @@ export class JvInvestmentRollOverComponent implements OnInit {
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].tranId = this.jvDetail.tranId;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].destInvtId = this.passData.tableData[i].invtId;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].invtId = this.passData.tableData[i].srcInvtId
-        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].invtAmt = this.passData.tableData[i].srcInvtAmt;
-        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].incomeAmt = this.passData.tableData[i].srcIncomeAmt;
-        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].bankCharge = this.passData.tableData[i].srcBankCharge;
-        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].whtaxAmt = this.passData.tableData[i].srcWhtaxAmt;
-        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].maturityValue = this.passData.tableData[i].srcMaturityValue;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].invtAmt = this.passData.tableData[i].invtAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].incomeAmt = this.passData.tableData[i].incomeAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].bankCharge = this.passData.tableData[i].bankCharge;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].whtaxAmt = this.passData.tableData[i].whtaxAmt;
+        this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].maturityValue = this.passData.tableData[i].maturityValue;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].localAmt = this.passData.tableData[i].maturityValue * this.jvDetail.currRate;
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].createDate = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
   			this.jvDetails.saveRollOver[this.jvDetails.saveRollOver.length - 1].updateDate = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
@@ -254,6 +258,7 @@ export class JvInvestmentRollOverComponent implements OnInit {
   		  this.dialogMessage = "";
   		  this.dialogIcon = "success";
   		  this.successDiag.open();
+        this.table.markAsPristine();
   		  this.getInvRollOut();
   		}
   	});

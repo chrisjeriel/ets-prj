@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService,PrintService } from '@app/_services';
 import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnPrintableNamesComponent } from '@app/maintenance/mtn-printable-names/mtn-printable-names.component';
@@ -104,9 +104,15 @@ export class AccSRequestEntryComponent implements OnInit {
     payeeClassCd : ''
   };
 
+  printData : any = {
+    selPrinter  : '',
+    printers    : [],
+    destination : ''
+  };
+
 
   constructor(private titleService: Title,  private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService,
-              private activatedRoute: ActivatedRoute,  private router: Router,private decPipe: DecimalPipe) { }
+              private activatedRoute: ActivatedRoute,  private router: Router,private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle('Acct-Serv | Request Entry');
@@ -254,6 +260,8 @@ export class AccSRequestEntryComponent implements OnInit {
       }else{
         this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;  
       }
+
+      (this.saveAcsePaytReq.reqStatus != 'X' && this.saveAcsePaytReq.reqId != '')?this.getPrinters():'';
     });
   }
 
@@ -277,6 +285,7 @@ export class AccSRequestEntryComponent implements OnInit {
       localAmt        : '',
       particulars     : '',
       payee           : '',
+      payeeCd         : '',
       payeeNo         : '',
       preparedName    : '',
       preparedBy      : '',
@@ -357,7 +366,7 @@ export class AccSRequestEntryComponent implements OnInit {
     this.dialogMessage = '';
     
     if(this.reqDateDate == '' || this.reqDateDate == null || this.reqDateTime == '' || this.reqDateTime == null || this.saveAcsePaytReq.payee == '' || 
-      this.saveAcsePaytReq.payee == null || this.saveAcsePaytReq.currCd == '' || this.saveAcsePaytReq.currCd == null || this.saveAcsePaytReq.particulars == '' ||
+      this.saveAcsePaytReq.payee == null || this.saveAcsePaytReq.payeeCd == '' || this.saveAcsePaytReq.payeeCd == null || this.saveAcsePaytReq.currCd == '' || this.saveAcsePaytReq.currCd == null || this.saveAcsePaytReq.particulars == '' ||
       this.saveAcsePaytReq.particulars == null || this.saveAcsePaytReq.preparedBy == '' || this.saveAcsePaytReq.preparedBy == null || 
       this.saveAcsePaytReq.requestedBy == '' || this.saveAcsePaytReq.requestedBy == null || this.saveAcsePaytReq.tranTypeCd == '' || this.saveAcsePaytReq.tranTypeCd == null ||
       this.saveAcsePaytReq.currRate == '' || this.saveAcsePaytReq.currRate == null  || this.saveAcsePaytReq.reqAmt == '' || this.saveAcsePaytReq.reqAmt == null){
@@ -395,7 +404,8 @@ export class AccSRequestEntryComponent implements OnInit {
   setDefPar(){
     this.saveAcsePaytReq.particulars = String(this.tranTypeList.filter(e => e.tranTypeCd == this.saveAcsePaytReq.tranTypeCd).map(e => e.defaultParticulars));
     this.removeRedBackShad('particulars');
-    this.saveAcsePaytReq.payee = '';
+    this.saveAcsePaytReq.payee   = '';
+    this.saveAcsePaytReq.payeeCd = '';
   }
 
   cancelledStats(){
@@ -433,6 +443,7 @@ export class AccSRequestEntryComponent implements OnInit {
     this.removeRedBackShad(from);
     this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
+
     if(from.toLowerCase() == 'curr'){
       this.saveAcsePaytReq.currCd = data.currencyCd;
       this.saveAcsePaytReq.currRate =  data.currencyRt;
@@ -450,22 +461,32 @@ export class AccSRequestEntryComponent implements OnInit {
       this.saveAcsePaytReq.approvedBy  = data.userId;
       this.saveAcsePaytReq.approvedDes  = data.designation;
     }else if(from.toLowerCase() == 'payee'){
-      this.saveAcsePaytReq.payee   = data.data.payeeName;
-      this.saveAcsePaytReq.payeeCd = data.data.payeeNo;
-      this.saveAcsePaytReq.payeeClassCd = data.data.payeeClassCd;
+      if(data.data == null){
+        this.saveAcsePaytReq.payee   = '';
+        this.saveAcsePaytReq.payeeCd = '';
+        this.saveAcsePaytReq.payeeClassCd = '';
+      }else{
+        this.saveAcsePaytReq.payee   = data.data.payeeName;
+        this.saveAcsePaytReq.payeeCd = data.data.payeeNo;
+        this.saveAcsePaytReq.payeeClassCd = data.data.payeeClassCd;
+      }
     }
   }
 
   checkCode(event,from){
-    this.ns.lovLoader(event.ev, 1);
+    this.ns.lovLoader(event, 1);
     if(from.toLowerCase() == 'curr'){
-      this.currLov.checkCode(this.saveAcsePaytReq.currCd.toUpperCase(),event.ev);
+      this.currLov.checkCode(this.saveAcsePaytReq.currCd.toUpperCase(),event);
     }else if(from.toLowerCase() == 'prep-user'){
-      this.prepUserLov.checkCode(this.saveAcsePaytReq.preparedBy.toUpperCase(),event.ev);
+      this.prepUserLov.checkCode(this.saveAcsePaytReq.preparedBy.toUpperCase(),event);
     }else if(from.toLowerCase() == 'req-user'){
-      this.reqUserLov.checkCode(this.saveAcsePaytReq.requestedBy.toUpperCase(),event.ev);
+      this.reqUserLov.checkCode(this.saveAcsePaytReq.requestedBy.toUpperCase(),event);
     }else if(from.toLowerCase() == 'app-user'){
-      this.appUserLov.checkCode(this.saveAcsePaytReq.approvedBy.toUpperCase(),event.ev);
+      this.appUserLov.checkCode(this.saveAcsePaytReq.approvedBy.toUpperCase(),event);
+    } else if(from.toLowerCase() == 'payee'){
+      this.passDataLov.selector = 'payee';
+      this.passDataLov.payeeNo = this.saveAcsePaytReq.payeeCd;
+      this.mainLov.checkCode('payee',null,null,null,null,null,event,null,this.passDataLov.payeeClassCd);
     }
   }
 
@@ -480,13 +501,7 @@ export class AccSRequestEntryComponent implements OnInit {
       this.appUserLov.modal.openNoClose();
     }else if(fromUser.toLowerCase() == 'payee'){
       this.passDataLov.selector = 'payee';
-      // if(this.saveAcsePaytReq.tranTypeCd == 5){
-      //   this.passDataLov.payeeClassCd = 2;
-      // }else if(this.saveAcsePaytReq.tranTypeCd == 7){
-      //   this.passDataLov.payeeClassCd = 3;
-      // }else{
-      //   this.passDataLov.payeeClassCd = (this.saveAcsePaytReq.tranTypeCd == '' || this.saveAcsePaytReq.tranTypeCd == null)?'':1;
-      // }
+      this.passDataLov.payeeNo = '';
       this.mainLov.openLOV();
     }
   }
@@ -579,12 +594,32 @@ export class AccSRequestEntryComponent implements OnInit {
     $('.globalLoading').css('display',str);
   }
 
-   //added by Neco 09/04/2019
+   // //added by Neco 09/04/2019
+   // onClickPrint(){
+   //   window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_PAYT_REQ_MAIN' + '&userId=' + 
+   //                    this.ns.getCurrentUser() + '&reqId=' + this.saveAcsePaytReq.reqId, '_blank');
+   // }
+   // //end
+
    onClickPrint(){
-     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACseR_PAYT_REQ' + '&userId=' + 
+     if(this.printData.destination == 'screen'){
+       //added by Neco 09/04/2019
+       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_PAYT_REQ_MAIN' + '&userId=' + 
                       this.ns.getCurrentUser() + '&reqId=' + this.saveAcsePaytReq.reqId, '_blank');
+       //end
+     }else if(this.printData.destination == 'printer'){
+       let params = {
+          reportName : 'ACSER_PAYT_REQ_MAIN',
+          reqId: this.saveAcsePaytReq.reqId,
+          printerName: this.printData.selPrinter,
+          pageOrientation: 'LANDSCAPE',
+          paperSize: 'LETTER'
+        };
+        this.ps.directPrint(params).subscribe(data => {
+            console.log(data);
+        });
+     }
    }
-   //end
 
   overrideFunc(approvalCd){
     this.loadingFunc(true);
@@ -604,5 +639,16 @@ export class AccSRequestEntryComponent implements OnInit {
     if(result){
       this.confirmMdl.openNoClose();
     }
+  }
+
+  getPrinters(){
+    this.ps.getPrinters()
+    .subscribe(data => {
+      this.printData.printers = data;
+    });
+  }
+
+  clearPrinterName(){
+    (this.printData.destination != 'printer')?this.printData.selPrinter='':''
   }
 }

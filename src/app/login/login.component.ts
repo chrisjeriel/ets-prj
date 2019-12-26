@@ -14,13 +14,13 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
 
-    images = [1, 2, 3].map((n) => `app/resources/images/${n}.jpg`);
+    images = [1, 2, 3].map((n) => `app/resources/images/${n}.gif`);
     /*, 965, 982, 1043, 738*/
 
       paused = false;
       unpauseOnArrow = false;
       pauseOnIndicator = false;
-      pauseOnHover = true;
+      pauseOnHover = false;
 
     constructor(
         private formBuilder: FormBuilder,

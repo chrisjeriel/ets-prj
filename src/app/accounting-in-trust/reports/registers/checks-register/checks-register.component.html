@@ -1,3 +1,10 @@
+<style type="text/css">
+	.text-search-ico {
+		z-index: 20 !important;
+	}
+
+</style>
+
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
@@ -11,34 +18,35 @@
 						<div class="row">
 							<div class="col-sm-3"></div>
 							<div class="col-sm-4">
-								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="tDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;" checked>Transaction Date</label>
+								<input id="rdoT" type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="tDate" (click)="tickBox($event);"><label for="rdoT" class="form-control-sm" style="margin-bottom: 0px !important;" checked>Transaction Date</label>
 							</div>
 							<div class="col-sm-4">
-								<input type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="pDate" (click)="tickBox($event);"><label class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
+								<input id="rdoP" type="checkbox" style="vertical-align: middle;" class="rdo" [(ngModel)]="pDate" (click)="tickBox($event);"><label for="rdoP" class="form-control-sm" style="margin-bottom: 0px !important;">Posting Date</label>
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
 						<div class="row">
 							<div class="col-sm-2"></div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">CV Date</label>
+								<input id="chkCV" type="radio" style="vertical-align: middle;" value="CV" [(ngModel)]="params.chkDate" name="dateRadio" [disabled]="pDate"><label for="chkCV" class="form-control-sm" style="margin-bottom: 0px !important;">CV Date</label>
 							</div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate"><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Date</label>
+								<input id="chkCH" type="radio" style="vertical-align: middle;" value="CH" [(ngModel)]="params.chkDate" name="dateRadio" [disabled]="pDate"><label for="chkCH" class="form-control-sm" style="margin-bottom: 0px !important;">Check Date</label>
 							</div>
 							<div class="col-sm-3">
-								<input type="radio" style="vertical-align: middle;" name="dateRadio" [disabled]="pDate" checked><label class="form-control-sm" style="margin-bottom: 0px !important;">Check Print Date</label>
+								<input id="chkNV" type="radio" style="vertical-align: middle;" value="NV" [(ngModel)]="params.chkDate" name="dateRadio" [disabled]="pDate" checked><label for="chkNV" class="form-control-sm" style="margin-bottom: 0px !important;">Check Print Date</label>
 							</div>
 							<div class="col-sm-1"></div>
 						</div>
 						<div class="input-group" style="margin-left: 16px !important; margin-top: 3px !important;">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-1">From</label>
-							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-01">
-							<div class="col-sm-1"></div>
-							<label class="form-control-sm col-sm-1">To</label>
-							<input type="date" class="form-control form-control-sm col-sm-3" value="2018-12-31">
-							<div class="col-sm-1"></div>
+							<label class="form-control-sm col-sm-2">From</label>
+							<div class="col-sm-3 dp-cont">
+								<datepicker [type]="'date'" [showIcon]="true" [value]="params.fromDate?.split('T')[0]" (valueChange)="params.fromDate=$event;"></datepicker>
+							</div>
+							<label class="form-control-sm col-sm-2">To</label>
+							<div class="col-sm-3 dp-cont">
+								<datepicker [type]="'date'" [showIcon]="true" [value]="params.toDate?.split('T')[0]" (valueChange)="params.toDate=$event;"></datepicker>
+							</div>
 						</div>
 					</fieldset>
 				</div>
@@ -50,23 +58,23 @@
 					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 10px !important;">
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-2">Bank</label>
-							<input type="text" class="form-control form-control-sm col-sm-2">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL BANKS">
+							<input type="text" [(ngModel)]="params.bank" (change)="checkCode($event, 'bank')" class="form-control form-control-sm col-sm-2">
+							<div class="text-search-ico"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
+							<input type="text" [(ngModel)]="bankName" readonly class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" placeholder="ALL BANKS">
 						</div>
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-2">Bank Account</label>
-							<input type="text" class="form-control form-control-sm col-sm-2">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" value="ALL BANK ACCOUNTS">
+							<input type="text" [(ngModel)]="params.bankAcct" class="form-control form-control-sm col-sm-2" (change)="checkCode($event, 'bank-acct')">
+							<div class="text-search-ico"><a (click)="showLov('bank-acct')"><i class="fa fa-search"></i></a></div>
+							<input type="text" [(ngModel)]="bankAcctName" readonly class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" placeholder="ALL BANK ACCOUNTS">
 						</div>
 						<div class="input-group cust-ig">
-							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked [disabled]="pDate"></div>
-							<label class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Closed Transactions</label>
+							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" id="iClo" [(ngModel)]="iCloTag" [ngModelOptions]="{standalone: true}" style="vertical-align: baseline;" checked [disabled]="pDate"></div>
+							<label for="iClo" class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Closed Transactions</label>
 						</div>
 						<div class="input-group">
-							<div class="form-control-sm col-sm-2 text-right"><input type="checkbox" style="vertical-align: baseline;" checked></div>
-							<label class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Cancelled Transactions</label>
+							<div class="form-control-sm col-sm-2 text-right"><input id="iCan" type="checkbox" [(ngModel)]="iCanTag" [ngModelOptions]="{standalone: true}" style="vertical-align: baseline;" checked></div>
+							<label for="iCan" class="form-control-sm" style="margin-bottom: 0px !important; text-align: left !important; padding-left: 0px; margin-top: 1px;">Include Cancelled Transactions</label>
 						</div>
 					</fieldset>
 				</div>
@@ -80,60 +88,63 @@
 						<div style="padding-left: 18px">
 							<div class="row">
 								<div class="col-sm" style="margin-bottom: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="sortRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Date</label>
+									<input id="radStd" type="radio" [(ngModel)]="params.sortBy" value="TRAN_DATE" style="vertical-align: middle;" name="sortRadio" checked><label for="radStd" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Date</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm" style="margin-top: -8px !important; margin-bottom: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="sortRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Check No.</label>
+									<input id="radScn" type="radio" [(ngModel)]="params.sortBy" value="CHECK_NO" style="vertical-align: middle;" name="sortRadio"><label for="radScn" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">Check No.</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm" style="margin-top: -8px !important;">
-									<input type="radio" style="vertical-align: middle;" name="sortRadio"><label class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">CV No.</label>
+									<input id="radScv" type="radio" [(ngModel)]="params.sortBy" value="CV_NO" style="vertical-align: middle;" name="sortRadio"><label for="radScv" class="form-control-sm" style="margin-bottom: 0px !important; padding-top: 0px !important; padding-bottom: 0px !important;">CV No.</label>
 								</div>
 							</div>
 						</div>
 					</fieldset>
 				</div>
 				<div class="col-sm-5">
-					<fieldset class="scheduler-border" style="margin-left: -8px !important; padding-top: 11px !important;">
+					<fieldset class="scheduler-border" style="margin-left: -8px !important; padding-top: 40px !important; padding-bottom: 35px !important;">
 						<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-4">Destination</label>
-							<select class="form-control form-control-sm cust-sm" >
-								<option selected>Printer</option>
-								<option>Option 2</option>
-								<option>Option 3</option>
+							<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+								<option value="screen">Screen</option>
+		    					<!-- <option value="dlPdf">PDF</option> -->
+		    					<option value="printPdf">Printer</option>
 							</select>
 						</div>
-						<div class="input-group cust-ig" style="padding-top: 8px !important; margin-bottom: -16px !important;">
+						<!-- <div class="input-group cust-ig" style="padding-top: 8px !important; margin-bottom: -16px !important;">
 							<label class="form-control-sm col-sm-5"></label>
-							<input type="radio" style="vertical-align: middle;" name="outputRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">PDF</label>
-							<input type="radio" style="vertical-align: middle; margin-left: 18px;" name="outputRadio" ><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">Excel</label>
-						</div>
+							<input type="radio" style="vertical-align: middle;" name="desRadio" value="1" [(ngModel)]="desRadio" checked><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">PDF</label>
+							<input type="radio" style="vertical-align: middle; margin-left: 18px;" name="desRadio" value="2" [(ngModel)]="desRadio" ><label class="form-control-sm" style="margin-bottom: 0px !important; margin-top: -5px;">Excel</label>
+						</div> -->
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-4">Printer Name</label>
-							<select class="form-control form-control-sm cust-sm" >
-								<option selected>EPSON 3600i</option>
-								<option>Option 2</option>
-								<option>Option 3</option>
+							<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="params.destination != 'printPdf'" >
+								<option *ngFor="let printer of printerList" [value]="printer">{{printer}}</option>
 							</select>
 						</div>
-						<div class="input-group">
+						<!-- <div class="input-group">
 							<label class="form-control-sm col-sm-4">No. Of Copies</label>
 							<input type="text" class="form-control form-control-sm col-sm text-right" value="1" >
-						</div>
+						</div> -->
 					</fieldset>
 				</div>
 				<div class="col-sm-1"></div>
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center" style="margin-top: 18px !important;">
-					<button class="cust-btn">Print</button>
+					<button class="cust-btn" (click)="onClickPrint();">Print</button>
 				</div>
 			</div>
 		</fieldset>
 	</div>
 	<div class="col-sm-2"></div>
 </div>
+
+
+<app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event,'bank')" ></app-lov>
+<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,'bank-acct')" ></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

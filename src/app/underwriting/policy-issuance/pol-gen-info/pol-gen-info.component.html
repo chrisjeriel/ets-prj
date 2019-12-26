@@ -710,8 +710,8 @@
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1">Risk</label>
-							<input name="input133" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
+							<input name="input133" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.project.riskId" (change)="checkCode($event,'risk')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED' || fromInq"><a><i class="fa fa-search" (click)="showRiskLOV()"></i></a></div>
 							<input name="input134" type="text" class="form-control form-control-sm" [(ngModel)]="policyInfo.project.riskName" readonly tabindex="-1">
 						</div>
 						<div class="input-group" style="margin-bottom: 0px !important;">

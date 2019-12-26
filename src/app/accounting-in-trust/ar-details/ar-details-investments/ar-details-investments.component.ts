@@ -170,7 +170,8 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].bankCharge = selected[i].bankCharge;
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
-      this.passData.tableData[this.passData.tableData.length - 1].localAmt = selected[i].matVal * selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].localAmt = Math.round((selected[i].matVal * selected[i].currRate)*100) / 100;
+      console.log(Math.round((selected[i].matVal * selected[i].currRate)*100) / 100);
       this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
@@ -180,7 +181,12 @@ export class ArDetailsInvestmentsComponent implements OnInit {
   }
 
   onClickSave(cancel?){
-      if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+      if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
+        this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
+        this.successDiag.open();
+      }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
         this.netMdl.openNoClose();
       }else{
         if(cancel != undefined){

@@ -22,11 +22,17 @@
                           <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
                           <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl">
                           <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytreqtype')"><i class="fa fa-search"></i></a></div>
-                      </div>
-                      <div class="input-group" style="margin-top: -5px">
+                    </div>
+                    <!-- <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
                         <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn payee" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired [disabled]="existsInCvDtl">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                    </div> -->
+                    <div class="input-group" style="margin-top: -5px">
+                        <label class="form-control-sm col-sm-1">Payee</label>
+                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only>
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
+                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;">
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>

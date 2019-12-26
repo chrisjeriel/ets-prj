@@ -408,7 +408,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
       this.passDataOffsetting.tableData[i].totalPayt = this.passDataOffsetting.tableData[i].paytAmt + this.passDataOffsetting.tableData[i].cumPayment;
       this.passDataOffsetting.tableData[i].remainingBal = this.passDataOffsetting.tableData[i].prevNetDue - this.passDataOffsetting.tableData[i].totalPayt;
-      this.passDataOffsetting.tableData[i].localAmt = this.passDataOffsetting.tableData[i].paytAmt * 1;
+      this.passDataOffsetting.tableData[i].localAmt = this.passDataOffsetting.tableData[i].paytAmt * this.jvDetail.currRate;
     }
     this.trytytrans.refreshTable();
   }

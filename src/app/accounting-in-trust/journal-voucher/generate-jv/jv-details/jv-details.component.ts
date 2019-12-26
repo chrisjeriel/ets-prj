@@ -54,7 +54,6 @@ export class JvDetailsComponent implements OnInit {
   }
 
   infoData(data){
-    console.log(data)
     if(data !== null){
       this.jvDetails.createUser = data.createUser;
       this.jvDetails.createDate = this.ns.toDateTimeString(data.createDate);

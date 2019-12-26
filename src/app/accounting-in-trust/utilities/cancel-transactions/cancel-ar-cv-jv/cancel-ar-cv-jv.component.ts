@@ -25,6 +25,7 @@ export class CancelArCvJvComponent implements OnInit {
 	@ViewChild('con') con                 : ConfirmSaveComponent;
 	@ViewChild('suc') suc                 : SucessDialogComponent;
 	@ViewChild('mdl') mdl         	      : ModalComponent;
+	@ViewChild('specCancelMdl') specCancelMdl : ModalComponent; //Added by Neco 12/17/2019
 
 	@Input() tranClass : string = '';
 	passDataCancelTrans: any = {
@@ -66,6 +67,7 @@ export class CancelArCvJvComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle('Acct-IT | Cancel Transactions');
 		this.getAcitList();
+		console.log(this.tranClass);
 	}
 
 	getAcitList(){
@@ -160,35 +162,84 @@ export class CancelArCvJvComponent implements OnInit {
 		this.dialogIcon 	= '';
     	this.dialogMessage  = '';
     	this.params.updateAcitStatusList = [];
+    	//ADDED BY NECO 12/17/2019
+    	var reopen: boolean = false;
 
-    	this.passDataCancelTrans.tableData.forEach(e => {
-    		if(e.checked){
-    			this.params.updateAcitStatusList.push({
-    				status		 : 'X',
-			        tranClass	 : this.tranClass,
-			        tranId		 : e.tranId,
-			      	updateUser	 : this.ns.getCurrentUser(),
-			      	cancelReason : this.reason
-    			});
-    		}
-    	});
-
-    	console.log(this.passDataCancelTrans.tableData);
-    	console.log(this.params.updateAcitStatusList);
-    	if(this.params.updateAcitStatusList.length == 0){
-    		this.mdlType = 1;
-    		this.msg = 'Please select transaction/s to cancel';
-    	}else if(this.reason.trim() == '' || this.reason == null){
-    		this.mdlType = 1;
-    		this.msg = 'Unable to cancel the selected transaction/s.\n Please provide Reason for Cancellation.';
+    	if(this.tranClass == 'ar'){
+    		this.passDataCancelTrans.tableData.forEach(e => {
+	    		if(e.checked){
+	    			this.params.updateAcitStatusList.push({
+	    				status		 : 'X',
+				        tranClass	 : this.tranClass,
+				        tranId		 : e.tranId,
+				      	updateUser	 : this.ns.getCurrentUser(),
+				      	cancelReason : this.reason,
+				      	reopen       : [1,2,3,5].includes(e.tranTypeCd) ? 'Y' : 'N'
+	    			});
+	    			if(!reopen && [1,2,3,5].includes(e.tranTypeCd)){
+	    				reopen = true;
+	    			}
+	    		}
+	    	});
+    		console.log(reopen);
+	    	console.log(this.passDataCancelTrans.tableData);
+	    	console.log(this.params.updateAcitStatusList);
+	    	if(this.params.updateAcitStatusList.length == 0){
+	    		this.mdlType = 1;
+	    		this.msg = 'Please select transaction/s to cancel';
+	    		this.mdl.openNoClose();
+	    	}else if(this.reason.trim() == '' || this.reason == null){
+	    		this.mdlType = 1;
+	    		this.msg = 'Unable to cancel the selected transaction/s.\n Please provide Reason for Cancellation.';
+	    		this.mdl.openNoClose();
+	    	}else{
+	    		if(!reopen){
+	    			this.mdlType = 2;
+	    			this.msg = 'Are you sure you want to cancel the selected transaction/s ?';
+	    			this.mdl.openNoClose();
+	    		}else{
+	    			this.specCancelMdl.openNoClose();
+	    		}
+	    	}
+	     //END 12/17/2019
     	}else{
-    		this.mdlType = 2;
-    		this.msg = 'Are you sure you want to cancel the selected transaction/s ?';
+    		this.passDataCancelTrans.tableData.forEach(e => {
+	    		if(e.checked){
+	    			this.params.updateAcitStatusList.push({
+	    				status		 : 'X',
+				        tranClass	 : this.tranClass,
+				        tranId		 : e.tranId,
+				      	updateUser	 : this.ns.getCurrentUser(),
+				      	cancelReason : this.reason
+	    			});
+	    		}
+	    	});
+
+	    	console.log(this.passDataCancelTrans.tableData);
+	    	console.log(this.params.updateAcitStatusList);
+	    	if(this.params.updateAcitStatusList.length == 0){
+	    		this.mdlType = 1;
+	    		this.msg = 'Please select transaction/s to cancel';
+	    	}else if(this.reason.trim() == '' || this.reason == null){
+	    		this.mdlType = 1;
+	    		this.msg = 'Unable to cancel the selected transaction/s.\n Please provide Reason for Cancellation.';
+	    	}else{
+	    		this.mdlType = 2;
+	    		this.msg = 'Are you sure you want to cancel the selected transaction/s ?';
+	    	}
+	    	this.mdl.openNoClose();
     	}
-    	this.mdl.openNoClose();
 	}
 
-	onClickYes(){
+	onClickYes(reopen?){
+		if(reopen !== undefined){ //only applies to AR
+			//IF FULL CANCEL IS SELECTED, CHANGE REOPEN TO 'N'
+			this.params.updateAcitStatusList.map(a=>{
+				a.reopen = 'N';
+				return a;
+			})
+		}
+		console.log(this.params.updateAcitStatusList);
 		this.loadingFunc(true);
 		this.acctService.updateAcitStatus(this.params)
 		.subscribe(data => {

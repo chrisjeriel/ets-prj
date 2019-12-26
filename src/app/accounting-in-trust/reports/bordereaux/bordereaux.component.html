@@ -11,89 +11,89 @@
 								<div class="input-group pl-4 ">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="O" [(ngModel)]="extnType" (change)="setExtnSubType()">
+											<input type="radio" id="osX" name="reportDetail" value="O" [(ngModel)]="params.osPaidTag">
 										</div>
-										<label class="form-control-sm col-sm text-left">Outstanding</label>
+										<label for="osX" class="form-control-sm col-sm text-left">Outstanding</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osLossDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
+											<input type="radio" id="os1" name="Outstanding" value="4" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'O'">
 										</div>
-										<label class="form-control-sm col-sm text-left">Loss Date</label>
+										<label for="os1" class="form-control-sm col-sm text-left">Loss Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osClmFileDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
+											<input type="radio" id="os2" name="Outstanding" value="9" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'O'">
 										</div>
-										<label class="form-control-sm col-sm text-left">Claim File Date</label>
+										<label for="os2" class="form-control-sm col-sm text-left">Claim File Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="Outstanding" value="osBookingMonth" [(ngModel)]="extnSubType" [disabled]="extnType != 'O'">
+											<input type="radio" id="os3" name="Outstanding" value="10" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'O'">
 										</div>
-										<label class="form-control-sm col-sm text-left">Booking Month</label>
+										<label for="os3" class="form-control-sm col-sm text-left">Booking Month</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt-2">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="reportDetail" value="P" [(ngModel)]="extnType" (change)="setExtnSubType()">
+											<input type="radio" id="lpX" name="reportDetail" value="P" [(ngModel)]="params.osPaidTag">
 										</div>
-										<label class="form-control-sm col-sm text-left">Losses Paid</label>
+										<label for="lpX" class="form-control-sm col-sm text-left">Losses Paid</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" value="lpTranDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'P'">
+											<input type="radio" id="lp1" name="lossPaid" value="7" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'P'">
 										</div>
-										<label class="form-control-sm col-sm text-left">Tran Date</label>
+										<label for="lp1" class="form-control-sm col-sm text-left">Tran Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-8">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="lossPaid" value="lpPostingDate" [(ngModel)]="extnSubType" [disabled]="extnType != 'P'">
+											<input type="radio" id="lp2" name="lossPaid" value="8" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'P'">
 										</div>
-										<label class="form-control-sm col-sm text-left">Posting Date</label>
+										<label for="lp2" class="form-control-sm col-sm text-left">Posting Date</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt">
 									<div class="col-sm d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="last" value="loss" [(ngModel)]="clmHistType">
+											<input type="radio" id="extType1" name="last" value="L" [(ngModel)]="params.extTypeTag">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0">Loss</label>
+										<label for="extType1" class="form-control-sm col-sm text-left pl-0">Loss</label>
 										<div class="col-sm-1">
-											<input type="radio" name="last" value="exp" [(ngModel)]="clmHistType">
+											<input type="radio" id="extType2" name="last" value="E" [(ngModel)]="params.extTypeTag">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0">Expense</label>
+										<label for="extType2" class="form-control-sm col-sm text-left pl-0">Expense</label>
 										<div class="col-sm-1">
-											<input type="radio" name="last" value="lossExp" [(ngModel)]="clmHistType">
+											<input type="radio" id="extType3" name="last" value="LE" [(ngModel)]="params.extTypeTag">
 										</div>
-										<label class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
+										<label for="extType3" class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 mt-3">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="checkbox" [(ngModel)]="perLine">
+											<input type="checkbox" id="per1" [(ngModel)]="params.perLine">
 										</div>
-										<label class="form-control-sm col-sm text-left">Per Line</label>
+										<label for="per1" class="form-control-sm col-sm text-left">Per Line</label>
 									</div>
 								</div>
 								<div class="input-group pl-4 ">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="checkbox" [(ngModel)]="perTypeOfCession">
+											<input type="checkbox" id="per2" [(ngModel)]="params.perCession">
 										</div>
-										<label class="form-control-sm col-sm text-left">Per Type of Cession</label>
+										<label for="per2" class="form-control-sm col-sm text-left">Per Type of Cession</label>
 									</div>
 								</div>
 							</div>
@@ -106,49 +106,73 @@
 								<div class="input-group">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" name="dateParam" value="period" [(ngModel)]="dateParam">
+											<input type="radio" id="dp1" name="dateParam" value="D" [(ngModel)]="params.dateRange">
 										</div>
-										<label class="form-control-sm col-sm text-left">By Period</label>
+										<label for="dp1" class="form-control-sm col-sm text-left">By Period</label>
 									</div>
 								</div>
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2">From</label>
 									<div class="dp-cont col-sm-3">
-										<datepicker [type]="'date'" [disabled]="dateParam != 'period'" [value]="periodFrom" (valueChange)="periodFrom=$event; periodTo=$event;"></datepicker>
+										<datepicker [type]="'date'" [disabled]="params.dateRange != 'D'" [value]="params.dateFrom?.split('T')[0]" (valueChange)="params.dateFrom=$event;"></datepicker>
 									</div>
 									<label class="form-control-sm col-sm-1">To</label>
 									<div class="dp-cont col-sm-3">
-										<datepicker [type]="'date'" [disabled]="dateParam != 'period'" [(value)]="periodTo" [minDate]="periodFrom"></datepicker>
+										<datepicker [type]="'date'" [disabled]="params.dateRange != 'D'" [value]="params.dateTo?.split('T')[0]" (valueChange)="params.dateTo=$event;"></datepicker>
 									</div>
 								</div>
 								<div class="input-group mt-3">
 									<div class="col-sm-2 d-flex pr-0">
 										<div class="col-sm-1">
-											<input type="radio" name="dateParam" value="asOf" [(ngModel)]="dateParam">
+											<input type="radio" id="dp2" name="dateParam" value="A" [(ngModel)]="params.dateRange">
 										</div>
-										<label class="form-control-sm col-sm text-left">As of</label>
+										<label for="dp2" class="form-control-sm col-sm text-left">As of</label>
 									</div>
 									<div class="dp-cont col-sm-3">
-										<datepicker [type]="'date'" [disabled]="dateParam != 'asOf'" [(value)]="asOf"></datepicker>
+										<datepicker [type]="'date'" [disabled]="params.dateRange != 'A'" [value]="params.dateToAsOf?.split('T')[0]" (valueChange)="params.dateToAsOf=$event;"></datepicker>
 									</div>
 								</div>
 								<div class="input-group mt-4">
 									<label class="form-control-sm col-sm-2">Line</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="lineCd" (ngModelChange)="lineCd = $event.toUpperCase()" (change)="checkCode($event, 'line')" mask="SSS">
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()" (change)="checkCode($event, 'line')" mask="SSS">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly placeholder="ALL LINES">
 								</div>
 								<div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Type of Cession</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="cessionId" (change)="checkCode($event, 'cession')" mask="9">
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cessionId" (change)="checkCode($event, 'cession')" mask="9">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCessionLOV()"></i></a></div>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly placeholder="ALL TYPES OF CESSION">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Report Name</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
+									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
+									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-1"></div>
+								<div class="col-sm">
+									<div class="input-group" style="margin-bottom: 0px !important;">
+										<label class="form-control-sm col-sm-3" style="margin-bottom: -6px !important;">Destination</label>
+										<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+											<option value="screen">Screen</option>
+					    					<option value="dlPdf">PDF</option>
+					    					<option value="printPdf">Printer</option>
+										</select>
+										<div class="col-sm-2"></div>
+									</div>
+								</div>
+								<div class="col-sm-1">
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-sm-12 text-center cust-btn-container" style="margin-bottom: 7px !important; z-index: 3 !important;">
-									<button class="cust-btn">Extract</button>
-									<button class="cust-btn">Print</button>
+									<button class="cust-btn" (click)="extract();">Extract</button>
+									<button class="cust-btn" (click)="print();">Print</button>
 								</div>
 							</div>
 						</fieldset>
@@ -167,3 +191,21 @@
 
 <app-mtn-line (selectedData)="setLine($event)" #lineLov></app-mtn-line>
 <app-mtn-type-of-cession (selectedData)="setCession($event)" #cessionLov></app-mtn-type-of-cession>
+
+<app-modal class="d-none" id="extract" #acitReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();forceExtract();extract();"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-cancel-button (onYes)="extract(true)"></app-cancel-button>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-lov [passData]="passLov" (selectedData)="setReport($event)">

@@ -501,7 +501,10 @@ import { CancelArCvJvServiceComponent } from './accounting-service/utilities/can
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 import { MtnAcitCheckSeriesComponent } from './maintenance/accounting-in-trust/generate-number-series/mtn-acit-check-series/mtn-acit-check-series.component';
 import { InvoiceSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/invoice-series/invoice-series.component';
+import { JvUnappliedInwpolComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-unapplied-inwpol/jv-unapplied-inwpol.component';
+import { JvUnappliedTreatyComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-unapplied-treaty/jv-unapplied-treaty.component';
 import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/mtn-acse-check-series/mtn-acse-check-series.component';
+import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
 
 @NgModule({
@@ -1008,7 +1011,10 @@ import { PolDistributionCumComponent } from './underwriting/policy-distribution/
         UpdatePolAttachmentComponent,
         MtnAcitCheckSeriesComponent,
         InvoiceSeriesComponent,
+        JvUnappliedInwpolComponent,
+        JvUnappliedTreatyComponent,
         MtnAcseCheckSeriesComponent,
+        ClaimReportsComponent,
         PolDistributionCumComponent,
     ],
 

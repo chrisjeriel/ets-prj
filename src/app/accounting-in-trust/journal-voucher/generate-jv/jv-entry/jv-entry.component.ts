@@ -1,7 +1,7 @@
 import { Component, OnInit ,OnChanges,Input,Output,EventEmitter , ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services' 
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services' 
 import { DecimalPipe } from '@angular/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -31,6 +31,7 @@ export class JvEntryComponent implements OnInit {
   @ViewChild('AcctEntries') acctEntryMdl: ModalComponent;
   @ViewChild('ApproveJV') approveJV: ModalComponent;
   @ViewChild('Alloc') allocJV: ModalComponent;
+  @ViewChild('printJVDetailed') printJVDetailed: ModalComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('printableNames') printableNames: MtnPrintableNamesComponent;
   @ViewChild('CancelEntries') cancelEntries: ModalComponent;
@@ -72,7 +73,8 @@ export class JvEntryComponent implements OnInit {
     preparedBy:'',
     preparedDate:'',
     approvedBy:'',
-    approvedDate:''
+    approvedDate:'',
+    tranData: {}
   }
 
   jvDatas: any = {
@@ -104,6 +106,10 @@ export class JvEntryComponent implements OnInit {
     updateDate: null
   }
 
+  printData:any = {
+    reportType : 0
+  };
+
   tranId:any;
   jvDate: any;
   saveJVBut: boolean = false;
@@ -126,7 +132,7 @@ export class JvEntryComponent implements OnInit {
   fileName: string = '';
   emitMessage: string = '';
 
-  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService) { }
+  constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Journal Voucher");
@@ -140,23 +146,55 @@ export class JvEntryComponent implements OnInit {
         this.tranId = this.jvData.tranId;
       }
 
-      if(params.from == 'add'){
+      if(params.from == 'add' && this.jvData.tranId == undefined){
         this.newJV();
       }else{
-        this.tranId = params.tranId;
-        this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
-        this.jvDatas.createUser  = params.createUserTran, 
-        this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
-        this.jvDatas.tranClass   = params.tranClassTran, 
-        this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran), 
-        this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
-        this.jvDatas.tranId      = parseInt(params.tranIdTran), 
-        this.jvDatas.tranStat    = params.tranStatTran, 
-        this.jvDatas.tranYear    = parseInt(params.tranYearTran), 
-        this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
-        this.jvDatas.updateUser  = params.updateUserTran;
+        // this.tranId = this.jvData.tranId == undefined ? params.tranId : this.jvData.tranId;
+        // this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran)), 
+        // this.jvDatas.createUser  = params.createUserTran, 
+        // this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran)), 
+        // this.jvDatas.tranClass   = params.tranClassTran, 
+        // this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran), 
+        // this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran)), 
+        // this.jvDatas.tranId      = parseInt(params.tranIdTran), 
+        // this.jvDatas.tranStat    = params.tranStatTran, 
+        // this.jvDatas.tranYear    = parseInt(params.tranYearTran), 
+        // this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran)), 
+        // this.jvDatas.updateUser  = params.updateUserTran;
+
+        if(this.jvData.tranId == undefined) {
+          this.tranId = params.tranId;
+          this.jvDatas.closeDate   = params.closeDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.createDate  = this.ns.toDateTimeString(parseInt(params.createDateTran));
+          this.jvDatas.createUser  = params.createUserTran;
+          this.jvDatas.deleteDate  = params.deleteDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.postDate    = params.postDateTran == "null" ? null:this.ns.toDateTimeString(parseInt(params.deleteDateTran));
+          this.jvDatas.tranClass   = params.tranClassTran;
+          this.jvDatas.tranClassNo = parseInt(params.tranClassNoTran);
+          this.jvDatas.tranDate    = this.ns.toDateTimeString(parseInt(params.tranDateTran));
+          this.jvDatas.tranId      = parseInt(params.tranIdTran);
+          this.jvDatas.tranStat    = params.tranStatTran;
+          this.jvDatas.tranYear    = parseInt(params.tranYearTran);
+          this.jvDatas.updateDate  = this.ns.toDateTimeString(parseInt(params.updateDateTran));
+          this.jvDatas.updateUser  = params.updateUserTran;
+        } else {
+          this.tranId = this.jvData.tranId;
+          this.jvDatas.closeDate   = this.ns.toDateTimeString(this.jvData.tranData.closeDate);
+          this.jvDatas.createDate  = this.ns.toDateTimeString(this.jvData.tranData.createDate);
+          this.jvDatas.createUser  = this.jvData.tranData.createUser;
+          this.jvDatas.deleteDate  = this.ns.toDateTimeString(this.jvData.tranData.deleteDate);
+          this.jvDatas.postDate    = this.ns.toDateTimeString(this.jvData.tranData.postDate);
+          this.jvDatas.tranClass   = this.jvData.tranData.tranClass;
+          this.jvDatas.tranClassNo = this.jvData.tranData.tranClassNo;
+          this.jvDatas.tranDate    = this.ns.toDateTimeString(this.jvData.tranData.tranDate);
+          this.jvDatas.tranId      = this.jvData.tranData.tranId;
+          this.jvDatas.tranStat    = this.jvData.tranData.tranStat;
+          this.jvDatas.tranYear    = this.jvData.tranData.tranYear;
+          this.jvDatas.updateDate  = this.ns.toDateTimeString(this.jvData.tranData.updateDate);
+          this.jvDatas.updateUser  = this.jvData.tranData.updateUser;
+        }
       }
     });
     this.cancelJVBut = true;
@@ -166,6 +204,7 @@ export class JvEntryComponent implements OnInit {
     this.allocBut    = true;
     this.dcBut       = true;
     this.retrieveJVEntry();
+    this.getPrinters();
   }
 
   retrieveJVEntry(){
@@ -216,6 +255,25 @@ export class JvEntryComponent implements OnInit {
           this.approveBut   = true;
           this.cancelJVBut = true;
         }
+
+        this.entryData.tranData = {};
+
+        this.entryData.tranData.tranDate = this.ns.toDateTimeString(data.transactions.tranDate);
+        this.entryData.tranData.tranClass = data.transactions.tranClass;
+        this.entryData.tranData.tranTypeCd = data.transactions.tranTypeCd;
+        this.entryData.tranData.tranYear = data.transactions.tranYear;
+        this.entryData.tranData.tranClassNo = data.transactions.tranClassNo;
+        this.entryData.tranData.tranStat = data.transactions.tranStat;
+        this.entryData.tranData.tranStatDesc = data.transactions.tranStatDesc;
+        this.entryData.tranData.closeDate = this.ns.toDateTimeString(data.transactions.closeDate);
+        this.entryData.tranData.deleteDate = this.ns.toDateTimeString(data.transactions.deleteDate);
+        this.entryData.tranData.postDate = this.ns.toDateTimeString(data.transactions.postDate);
+        this.entryData.tranData.createUser = data.transactions.createUser;
+        this.entryData.tranData.createDate = this.ns.toDateTimeString(data.transactions.createDate);
+        this.entryData.tranData.updateUser = data.transactions.updateUser;
+        this.entryData.tranData.updateDate = this.ns.toDateTimeString(data.transactions.updateDate);
+        this.entryData.tranData.adjEntryTag = data.transactions.adjEntryTag;
+        this.entryData.tranData.acctEntDate = this.ns.toDateTimeString(data.transactions.acctEntDate);
 
         this.check(this.entryData)
         this.tabController(this.entryData.tranTypeCd);
@@ -289,6 +347,8 @@ export class JvEntryComponent implements OnInit {
         this.saveJVBut    = false;
         this.disableBut   = false;
         this.approvedStat = false;
+        this.disableBut   = false;
+
         this.entryData.currRate  = this.decimal.transform(this.entryData.currRate,'1.6-6');
         this.entryData.jvAmt     = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
         this.entryData.localAmt  = this.decimal.transform(this.entryData.localAmt,'1.2-2');
@@ -317,7 +377,8 @@ export class JvEntryComponent implements OnInit {
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
                          localAmt: parseFloat(ev.localAmt.toString().split(',').join('')),
                          jvType: ev.tranTypeName,
-                         tranType: ev.tranTypeCd
+                         tranType: ev.tranTypeCd,
+                         tranData: ev.tranData
                        });
   }
 
@@ -342,16 +403,19 @@ export class JvEntryComponent implements OnInit {
   setCurrency(data){
     this.entryData.currCd = data.currencyCd;
     this.entryData.currRate = data.currencyRt;
-    this.entryData.localAmt = isNaN(this.entryData.jvAmt) ? 0:this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
-    this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+    // this.entryData.localAmt = isNaN((parseFloat(this.entryData.jvAmt.toString().split(',').join('')))) ? 0 : this.decimal.transform(this.entryData.jvAmt * data.currencyRt,'1.2-2');
+    // this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+    this.validateCurr();
     this.ns.lovLoader(data.ev, 0);
-    this.form.control.markAsDirty();
+    
     setTimeout(()=>{
+      this.form.control.markAsDirty();
       $('.currCd').focus().blur();
     }, 0);
   }
 
   prepareData(){
+    console.log(this.jvDatas);
     this.jvDatas.tranIdJv       = this.tranId;
     this.jvDatas.jvYear         = this.entryData.jvYear;
     this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);
@@ -536,8 +600,12 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickPrint(){
+    this.printJVDetailed.openNoClose();
+  }
+
+  printJVDetails(){
     window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId, '_blank');
+                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&reportType=' + this.printData.reportType, '_blank');
     this.printEntries.openNoClose();
   }
 
@@ -575,9 +643,9 @@ export class JvEntryComponent implements OnInit {
     this.entryData.jvAmt = (parseFloat(this.entryData.jvAmt.toString().split(',').join('')));
     this.entryData.currRate = (parseFloat(this.entryData.currRate.toString().split(',').join('')));
     if(this.entryData.jvAmt !== '' && this.entryData.currRate !== ''){
-      this.entryData.localAmt = this.entryData.jvAmt * this.entryData.currRate;
-      this.entryData.localAmt = this.decimal.transform(this.entryData.localAmt,'1.2-2');
+      this.entryData.localAmt = this.decimal.transform(this.entryData.jvAmt * this.entryData.currRate,'1.2-2');
       this.entryData.currRate = this.decimal.transform(this.entryData.currRate,'1.6-6');
+      this.entryData.jvAmt = this.decimal.transform(this.entryData.jvAmt,'1.2-2');
     }else{
       this.entryData.localAmt = null;
     }
@@ -692,4 +760,9 @@ uploadAcctEntries(){
     );
   }
 
+  getPrinters(){
+    this.ps.getPrinters().subscribe(data => {
+      this.printData.printers = data;
+    });
+  }
 }

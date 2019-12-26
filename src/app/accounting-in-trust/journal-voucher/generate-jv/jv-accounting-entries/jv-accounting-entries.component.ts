@@ -101,6 +101,7 @@ export class JvAccountingEntriesComponent implements OnInit {
   cancelFlag: boolean = false;
   rowData:any;
   detailDatas :any;
+  unappliedData: any;
   errorMessage: any;
   statusType:any;
 
@@ -133,7 +134,6 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   retrieveAcctEntries(){
-    console.log(this.jvDetails)
     this.accountingService.getAcitAcctEntries(this.jvData.tranId).subscribe((data:any) => {
       this.passData.tableData = [];
       this.debitTotal = 0;
@@ -171,6 +171,17 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+
+    var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+
+    if(slCheck.length > 0) {
+      this.dialogMessage = "SL Name required for entries with SL Type";
+      this.dialogIcon = "error-message";
+      this.successDiag.open();
+
+      return;
+    }
+
     if(this.jvDetails.forApproval === 'Y'){
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal += this.passData.tableData[i].foreignDebitAmt;
@@ -179,11 +190,12 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100
 
-      if(this.variance != 0){
+      /*if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
         this.dialogIcon = "error-message";
         this.successDiag.open();
-      }else if(!this.validDetailPayment()){
+      }else */
+      if(!this.validDetailPayment()){
         this.dialogMessage = this.errorMessage;
         this.dialogIcon = "error-message";
         this.successDiag.open();
@@ -214,6 +226,9 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   prepareData(){
+    this.accEntries.saveList = [];
+    this.accEntries.delList = [];
+
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
         this.accEntries.saveList.push(this.passData.tableData[i]);
@@ -246,11 +261,13 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.successDiag.open();
         this.retrieveJVEntry();
         this.form.control.markAsPristine();
+        this.table.markAsPristine();
       }
     });
   }
 
   onClickApproval(){
+    this.jvDetails.forApproval = (this.statusType === 'N') ? 'Y' : 'N';
     this.form.control.markAsDirty();
   }
 
@@ -325,6 +342,23 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
       this.errorMessage = 'Payment for selected claim is not proportional to payment for Treaty Balance.';
       return false;
+    }else if(this.jvType === 67){
+      var total = 0;
+      var inwTotal = 0;
+      for (var i = 0; i < this.detailDatas.length; ++i) {
+        total += this.detailDatas[i].actualBalPaid;
+      }
+
+      for (var j = 0; j < this.unappliedData.length; j++) {
+         inwTotal += this.unappliedData[j].paytAmt;
+      }
+
+      if(total - inwTotal == 0){
+        return true;
+      }
+
+      this.errorMessage = 'Payment for selected policy is not proportional to payment for Unapplied Collection.';
+      return false;
     }
     return true;
   }
@@ -369,22 +403,6 @@ export class JvAccountingEntriesComponent implements OnInit {
         }
       }
     }else if(this.jvType === 6){
-
-      /*for (var i = 0; i < this.detailDatas.length; i++) {
-        for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
-          if(!this.detailDatas[i].acctOffset[j].deleted){
-            if((this.detailDatas[i].acctOffset[j].prevNetDue > 0 &&  this.detailDatas[i].acctOffset[j].paytAmt < 0 &&
-                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment < 0)  ||
-               
-               (this.detailDatas[i].acctOffset[j].prevNetDue < 0 && this.detailDatas[i].acctOffset[j].paytAmt > 0 &&
-                this.detailDatas[i].acctOffset[j].paytAmt + this.detailDatas[i].acctOffset[j].cumPayment > 0)
-              ){
-                errorFlag = true;
-                break;
-            }
-          }
-        }
-      }*/
 
       for (var i = 0; i < this.detailDatas.length; i++) {
         for (var j = 0; j < this.detailDatas[i].acctOffset.length; j++) {
@@ -537,6 +555,38 @@ export class JvAccountingEntriesComponent implements OnInit {
             this.errorFlag = true;
           }
       });
+    }else if(this.jvType === 67){
+      this.accountingService.getJvUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.unappliedColl;
+        this.detailDatas = data.unappliedColl;;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].actualBalPaid;
+
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+        }
+
+        this.accountingService.getJvInwUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+          this.unappliedData = data.inwUnappColl;
+        });
+      });
+    }else if(this.jvType === 68){
+      this.accountingService.getJvUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+        var datas = data.unappliedColl;
+        this.detailDatas = data.unappliedColl;;
+        for (var i = 0; i < datas.length; i++) {
+          total += datas[i].actualBalPaid;
+
+          if(total != this.jvDetails.jvAmt){
+            this.errorFlag = true;
+          }
+        }
+
+        this.accountingService.getJvTrtyUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {
+          this.unappliedData = data.trtyUnappColl;
+        });
+      });
     }
   }
 
@@ -616,15 +666,17 @@ export class JvAccountingEntriesComponent implements OnInit {
       console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.statusType = 'F'
-        this.passData.disableAdd = true;  
-        this.passData.btnDisabled = true;
-        this.passData.uneditable = [true,true,true,true,true,true,true,true]
+        this.statusType = 'F';
+        this.jvDetails.statusType = 'F';
+        this.passData.disableAdd = false;  
+        this.passData.btnDisabled = false;
+        // this.passData.uneditable = [true,true,true,true,true,true,true,true]
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
         this
       }else if(data.transactions.jvListings.jvStatus == 'N'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
-        this.statusType = 'N'
+        this.statusType = 'N';
+        this.jvDetails.statusType = 'F';
         this.passData.disableAdd = false;  
         this.passData.btnDisabled = false;
         this.emitData.emit({ statusType: data.transactions.jvListings.jvStatus});
@@ -632,6 +684,10 @@ export class JvAccountingEntriesComponent implements OnInit {
       }
       this.retrieveAcctEntries();
     });
+  }
+
+  onClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 
   onClickPrintAe() {
