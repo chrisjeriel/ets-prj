@@ -93,6 +93,7 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   getReports(){
+    this.passLov.reportId = 'POLR044%';
   	this.lovMdl.openLOV();
   }
 
@@ -225,6 +226,9 @@ export class PolicyReportsComponent implements OnInit {
     } else if(field === 'company') {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
+      if(this.params.reportId.indexOf('POLR044') == -1){
+        this.passLov.code = '';
+      }
       this.passLov.code = this.params.reportId;
       this.lovMdl.checkCode('reportId');
     }

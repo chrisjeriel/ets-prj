@@ -17,7 +17,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 })
 export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   @ViewChild('mainTable') table : LoadingTableComponent;
-  @ViewChild('polListTbl') polListTbl : CustNonDatatableComponent;
+  @ViewChild('polListTbl') polListTbl : LoadingTableComponent;
   @ViewChild('add') addModal : ModalComponent;
   @ViewChild('polList') polListModal : ModalComponent;
   @ViewChild('riskLOV') riskLOV: MtnRiskComponent;
@@ -259,40 +259,48 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     this.riskLOV.modal.openNoClose();
   }
 
+  searchParamsPol:any={
+    statusArr: ['3','2'],
+    altNo: 0,
+    'paginationRequest.count':10,
+    'paginationRequest.position':1,   
+  }
+
   retrievePolList(lovBtn?){
     console.log(this.noDataFound);
     console.log(this.tempPolNo);
     console.log(this.policyDetails.riskName);
+
+
+    this.searchParamsPol.policyNo= (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%');
+    this.searchParamsPol.riskName= !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase();
+
     this.polListTbl.overlayLoader = true;
-    this.policyListingData.tableData = [];
-    this.us.getParListing([/*{key: 'statusDesc', search: 'IN FORCE'},*/ 
-                           {key: 'statusArr' , search : ['3','2']},
-                           {key: 'altNo' , search:'0'},
-                           {key: 'policyNo', search: (this.noDataFound || this.isFromRisk) && lovBtn === undefined ? '' : this.tempPolNo.join('%-%')},
-                           {key: 'riskName', search: !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase()}]).subscribe((data: any)=>{
+    this.us.newGetParListing(this.searchParamsPol).subscribe((data: any)=>{
       //this.clearAddFields();
-      console.log(data.policyList.length);
-      if(data.policyList.length !== 0){
+
+      this.policyListingData.count = data['length'] == null ? this.policyListingData.count : data['length'];
+      if(this.policyListingData.count !== 0){
         this.noDataFound = false;
         for(var i of data.policyList){
           i.riskName = i.project.riskName;
-          this.policyListingData.tableData.push(i);        
         }
+        this.polListTbl.placeData(data.policyList)
         //this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return a.distStatDesc === 'P'}); //retrieve pol no with dist status of P (posted)
-        this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return 'IN FORCE' === a.statusDesc.toUpperCase() || 'EXPIRED' === a.statusDesc.toUpperCase() }); //retrieve pol no with status of In Force and Expired
-        this.polListTbl.refreshTable();
-        this.polListTbl.overlayLoader = false;
+        //this.policyListingData.tableData = this.policyListingData.tableData.filter(a=>{return 'IN FORCE' === a.statusDesc.toUpperCase() || 'EXPIRED' === a.statusDesc.toUpperCase() }); //retrieve pol no with status of In Force and Expired
+        // this.polListTbl.refreshTable();
+        // this.polListTbl.overlayLoader = false;
         this.loading = false;
-        if(this.isType && this.policyListingData.tableData.length === 0){
+        if(this.isType && this.policyListingData.count === 0){
           this.noDataFound = true;
           this.openPolLOV();
           console.log(1);
           //this.polListTbl.overlayLoader = false;
-        }else if(this.isType && this.policyListingData.tableData.length > 0){
-          if(this.isFromRisk && this.policyListingData.tableData.length > 1){
+        }else if(this.isType && this.policyListingData.count > 0){
+          if(this.isFromRisk && this.policyListingData.count > 1){
             this.openPolLOV();
             console.log(2);
-          }else if(this.isFromRisk && this.policyListingData.tableData.length === 1){
+          }else if(this.isFromRisk && this.policyListingData.count === 1){
             this.setPolicyDetails(this.policyListingData.tableData[0].policyId, this.policyListingData.tableData[0].policyNo);
             this.isFromRisk = false;
             console.log(3);
@@ -458,6 +466,11 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
 
    policyNoChecker(event, key){
      this.isType = true;
+     this.policyListingData.tableData = [];
+     
+    this.searchParamsPol['paginationRequest.count'] =10;
+    this.searchParamsPol['paginationRequest.position'] =1; 
+    this.searchParamsPol.recount = 'Y';  
      if(event.target.value.length === 0){
          this.isIncomplete = true;
          this.disableRisk = false;
@@ -576,4 +589,13 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
           this.LOVTbl.refreshTable();
         });
    }
+
+   searchQueryPol(searchParams){
+        for(let key of Object.keys(searchParams)){
+            this.searchParamsPol[key] = searchParams[key]
+        }
+        this.retrievePolList();
+    }
+
+
 }
