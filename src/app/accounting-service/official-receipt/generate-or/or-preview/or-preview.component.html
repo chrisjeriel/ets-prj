@@ -139,7 +139,7 @@
             </div>
           </ng-template>
         </ngb-tab> -->
-        <ngb-tab id="taxDtl">
+        <ngb-tab id="taxDtl" *ngIf="record?.from.toLowerCase() != 'jv'">
             <ng-template ngbTabTitle>
                 <div>Tax Details</div>
             </ng-template>

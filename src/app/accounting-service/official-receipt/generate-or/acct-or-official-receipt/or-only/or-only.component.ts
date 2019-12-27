@@ -67,8 +67,8 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 
 	  passDataGenTax : any = {
 	  	tableData: [],
-	    tHeader : ["Tax Code","Description","Rate","Amount"],
-	    dataTypes: ["text","text","percent","currency"],
+	    tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+	    dataTypes: ["text","text","currency","percent","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
 	    checkFlag: true,
@@ -85,15 +85,16 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 	        taxName: '',
 	        taxRate: '',
 	        taxAmt: 0,
+          taxBaseAmt: 0,
 	        createUser: '',
 	        createDate: '',
 	        updateUser: '',
 	        updateDate: '',
 	        showMG: 1
 	    },
-	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-	    widths: [1,150,120,120],
-      uneditable: [true,true,true,true],
+	    keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+	    widths: [1,150,120,120, 120],
+      uneditable: [true,true,true,true,true],
 	    pageID: 'genTaxTbl'
 	  }
 
@@ -101,8 +102,8 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 
 	  passDataWhTax : any = {
 	  	tableData: [],
-	    tHeader : ["Tax Code","Description","Rate","Amount"],
-	    dataTypes: ["text","text","percent","currency"],
+	    tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+	    dataTypes: ["text","text","currency","percent","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
 	    checkFlag: true,
@@ -119,15 +120,16 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 	        taxName: '',
 	        taxRate: '',
 	        taxAmt: 0,
+          taxBaseAmt: 0,
 	        createUser: '',
 	        createDate: '',
 	        updateUser: '',
 	        updateDate: '',
 	        showMG: 1
 	    },
-	    keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-	    widths: [1,150,120,120],
-      uneditable: [true,true,true,true],
+	    keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+	    widths: [1,150,120,120, 120],
+      uneditable: [true,true,true,true,true],
 	    pageID: 'whTaxTbl'
 	  }
 
