@@ -438,7 +438,7 @@ export class LovComponent implements OnInit {
         });
       }else{
          this.mtnService.getMtnReports(this.passData.code).subscribe((data:any) => {
-           if(data.reports.length > 0){
+           if(data.reports.length == 1){
              data.reports[0]['ev'] = ev;
              data.reports[0]['selector'] = selector;
              this.selectedData.emit({data: data['reports'][0], ev : ev});
@@ -448,9 +448,11 @@ export class LovComponent implements OnInit {
                ev: ev
              });
 
-             this.passData.selector = 'reportId';
+             this.passData.selector = 'mtnReport';
+             this.passData.reportId = null;
              this.modal.openNoClose();
            }
+           this.ns.lovLoader(regionCd,0);
          });
       }
      
@@ -1502,9 +1504,11 @@ export class LovComponent implements OnInit {
       //this.passTable.widths = [250,500]
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = ['reportId', 'reportTitle'];
+      this.passData.reportId = this.passData.modReportId == undefined ? this.passData.reportId : this.passData.modReportId;
       this.mtnService.getMtnReports(this.passData.reportId).subscribe((data:any) => {
         this.passTable.tableData = data.reports;
         this.table.refreshTable();
+        console.log(data)
       })
     }else if(this.passData.selector == 'acseJvList'){
       this.passTable.tHeader = ["JV No", "JV Date","Particulars","JV Type","Status","Amount"];

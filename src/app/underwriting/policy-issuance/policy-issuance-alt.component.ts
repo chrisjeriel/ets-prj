@@ -262,7 +262,6 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
                         inclEndt : this.inclEndt ? 'Y' : 'N'
                       };
     params.reportId=this.printReport;
-    params.user
     this.ps.print(this.printDestination,this.printReport,params)
   }
   

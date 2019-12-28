@@ -234,9 +234,9 @@ export class AppComponent implements OnDestroy {
 
             $(document).on("click", function(e:any) {
 
-              console.log($(e.target));
-              console.log($("i.fa.fa-bell"));
-              console.log($(e.target).not("i.fa.fa-bell"));
+              // console.log($(e.target));
+              // console.log($("i.fa.fa-bell"));
+              // console.log($(e.target).not("i.fa.fa-bell"));
 
 
               
