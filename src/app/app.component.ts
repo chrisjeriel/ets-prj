@@ -212,6 +212,7 @@ export class AppComponent implements OnDestroy {
             this.accessibleModules = value;
         });
 
+        const _this = this;
         $(document).ready(function(){
             $('.app-active-table').on('contextmenu', function(e) {
               var parentOffset = $(this).parent().offset(); 
@@ -241,6 +242,7 @@ export class AppComponent implements OnDestroy {
 
               
               if ($(e.target).parents("#notif-context").length == 0 && ($(e.target).not("i.fa.fa-bell").length != 0 && $(e.target).not("#bell-btns").length != 0 && $(e.target).not("span#bell-span").length != 0) ) {
+                _this.notifToggle = false;
                 $("#notif-context").removeClass("show").hide();
               }
             })
