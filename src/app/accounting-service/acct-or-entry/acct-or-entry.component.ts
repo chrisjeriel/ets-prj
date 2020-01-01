@@ -1094,7 +1094,7 @@ export class AcctOrEntryComponent implements OnInit {
   retrievePaymentType(){
     var groupTag = this.orInfo.orType == 'VAT' ? 'V' : 'N';
     this.paymentTypes = [];
-    this.ms.getMtnAcseTranType('OR',null,null,null,null,'Y').subscribe(
+    this.ms.getMtnAcseTranType('OR',null,null,'N',null,'Y').subscribe(
       (data:any)=>{
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
@@ -1331,6 +1331,9 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   orAmtEqualsOrDtlPayt(): boolean{
+    console.log(this.orInfo.orDtlSum);
+    console.log(this.orInfo.orAmt);
+    console.log(Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100);
     if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
       return true;
     }

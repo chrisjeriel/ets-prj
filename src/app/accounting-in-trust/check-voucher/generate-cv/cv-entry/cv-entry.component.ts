@@ -221,13 +221,23 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
         this.saveAcitCv.checkDate = this.ns.toDateTimeString(0);
 
-        recPn.forEach(e => {
+        /*recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitCv.preparedByName  = e.printableName;
             this.saveAcitCv.preparedBy   = e.userId;
             this.saveAcitCv.preparedDes = e.designation;
           }
-        });
+        });*/
+
+        for(let x of recPn) {
+          if(x.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
+            this.saveAcitCv.preparedByName = x.printableName;
+            this.saveAcitCv.preparedBy = x.userId;
+            this.saveAcitCv.preparedDes = x.designation;
+
+            break;
+          }
+        }
       }else{
         var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
         var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
