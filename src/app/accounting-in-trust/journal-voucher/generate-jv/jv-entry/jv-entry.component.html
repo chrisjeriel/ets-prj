@@ -325,16 +325,16 @@
         <div class="container-fluid">
             <div class="custom-row-inline-inset">
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
-                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
+                    <input type="radio" name="rad1" id="rad1" style="margin-left: 70px !important" [value]="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" for="rad1" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
-                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
+                    <input type="radio" name="rad2" id="rad2"style="margin-left: 70px !important" [value]="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" for="rad2"style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
                 </div>
                 <div class="input-group" style="margin-bottom: -14px !important">
-                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
-                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
+                    <input type="radio" name="rad3" id="rad3"for="rad3" style="margin-left: 70px !important" [value]="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" for="rad3" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
                 </div>
                 <div class="input-group">
                     <label class="form-control-sm col-sm-4 labels">Destination</label>
