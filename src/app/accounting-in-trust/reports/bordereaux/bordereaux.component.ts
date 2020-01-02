@@ -145,10 +145,11 @@ export class BordereauxComponent implements OnInit {
 		} else if(str == 'cession') {
 			this.cessionLOV.checkCode(this.params.cessionId, ev);
 		} if(str === 'report'){
-	      if(this.passLov.reportId.indexOf('ACITR052') == -1){
-	        this.passLov.code = '';
+	      if(this.params.reportId.indexOf('ACITR052') == -1){
+	        this.passLov.code = 'ACITR052%';
+	      }else{
+	      	this.passLov.code = this.params.reportId;
 	      }
-	      this.passLov.code = this.params.reportId;
 	      this.lovMdl.checkCode('reportId',ev);
 	  }
 	}
