@@ -68,6 +68,7 @@ export class BordereauxComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
+		this.passLov.modReportId = 'ACITR052%';
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
@@ -78,13 +79,19 @@ export class BordereauxComponent implements OnInit {
 	}
 
 	getReports(){
+		this.passLov.reportId = 'ACITR052%';
 	  	this.lovMdl.openLOV();
 	}
 
 	setReport(data){
 	    // this.paramsToggle = [];
-	  	this.params.reportId = data.data.reportId;
-	  	this.params.reportName = data.data.reportTitle;
+	    if(data.data != null){
+		  	this.params.reportId = data.data.reportId;
+		  	this.params.reportName = data.data.reportTitle;
+		}else{
+			this.params.reportId = null;
+		  	this.params.reportName = null;
+		}
 
 
 	    /*if (this.repExtractions.indexOf(this.params.reportId) > -1) {
@@ -137,7 +144,13 @@ export class BordereauxComponent implements OnInit {
 			this.lineLOV.checkCode(this.params.lineCd, ev);
 		} else if(str == 'cession') {
 			this.cessionLOV.checkCode(this.params.cessionId, ev);
-		}
+		} if(str === 'report'){
+	      if(this.passLov.reportId.indexOf('ACITR052') == -1){
+	        this.passLov.code = '';
+	      }
+	      this.passLov.code = this.params.reportId;
+	      this.lovMdl.checkCode('reportId',ev);
+	  }
 	}
 
 	prepareData(){

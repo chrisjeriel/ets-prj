@@ -85,6 +85,8 @@ export class JvUnappliedInwpolComponent implements OnInit {
   };
 
   params:any = {
+    tranId: null,
+    tranType: null,
     saveUnappliedColl: [],
     delUnappliedColl: [],
     saveInwCollection: [],
@@ -320,6 +322,9 @@ export class JvUnappliedInwpolComponent implements OnInit {
         this.params.delInwCollection[this.params.delInwCollection.length - 1].tranId     = this.jvDetail.tranId;
       }
     }
+
+    this.params.tranId = this.jvDetail.tranId;
+    this.params.tranType = this.jvDetail.tranType;
   }
 
   saveData(cancel?){

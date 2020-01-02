@@ -98,9 +98,11 @@ export class PolicyReportsComponent implements OnInit {
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal) { }
 
   ngOnInit() {
+      this.passLov.modReportId = 'POLR044%';
   }
 
   getReports(){
+    this.passLov.reportId = 'POLR044%';
   	this.lovMdl.openLOV();
   }
 
@@ -108,8 +110,10 @@ export class PolicyReportsComponent implements OnInit {
     this.paramsToggle = [];
     this.params = [];
   	console.log(data.data);
-  	this.params.reportId = data.data.reportId;
-  	this.params.reportName = data.data.reportTitle;
+    if(data.data != null){
+    	this.params.reportId = data.data.reportId;
+    	this.params.reportName = data.data.reportTitle;
+    }
 
     if (this.repExtractions.indexOf(this.params.reportId) > -1) {
       this.extractDisabled = false;
@@ -341,8 +345,12 @@ export class PolicyReportsComponent implements OnInit {
     } else if(field === 'company') {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
+      if(this.params.reportId.indexOf('POLR044') == -1){
+        this.passLov.code = '';
+      }
       this.passLov.code = this.params.reportId;
-      this.lovMdl.checkCode('reportId');
+      console.log(ev);
+      this.lovMdl.checkCode('reportId',ev);
     }
   }
 

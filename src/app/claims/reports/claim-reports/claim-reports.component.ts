@@ -65,7 +65,7 @@ export class ClaimReportsComponent implements OnInit {
                         'CLMR010A',
                         ];
 
-  paramsToggle: Array<string> = [];
+paramsToggle: Array<string> = [];
 
   extractDisabled: boolean = true;
   modalHeader: string = "";
@@ -78,9 +78,11 @@ export class ClaimReportsComponent implements OnInit {
 
 
   ngOnInit() {
+    this.passLov.modReportId = 'CLMR010%';
   }
 
   getReports(){
+    this.passLov.reportId = 'CLMR010%';
   	this.lovMdl.openLOV();
   }
 
@@ -225,8 +227,11 @@ export class ClaimReportsComponent implements OnInit {
     } else if(field === 'company') {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
+      if(this.passLov.reportId.indexOf('CLMR010') == -1){
+        this.passLov.code = '';
+      }
       this.passLov.code = this.params.reportId;
-      this.lovMdl.checkCode('reportId');
+      this.lovMdl.checkCode('reportId',ev);
       setTimeout(()=> {
 	    	this.ns.lovLoader(ev, 0);
 	  }, 500)

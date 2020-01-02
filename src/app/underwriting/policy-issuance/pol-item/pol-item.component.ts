@@ -52,8 +52,8 @@ export class PolItemComponent implements OnInit {
         },
         opts: [{
             selector: 'section',
-            prev: ['I','I','III'],
-            vals: ['I','I','III'],
+            prev: ['I','II','III'],
+            vals: ['I','II','III'],
         }],
 
     }

@@ -218,7 +218,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     }
 
     placeData(items){
-    	if(this.passData.count != this.prevLength){
+    	if(this.passData.count != undefined && this.passData.count != this.prevLength){
     		this.addFiller();
             this.p = 1;
     		this.prevLength = this.passData.count;
@@ -484,7 +484,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
         this.searchQuery['sortRequest.order'] = !sortBy ? 'DESC' : 'ASC';
         //this.searchQuery['paginationRequest.position'] = 1;
         //this.p = 1;
-        this.dbQuery();
+        this.dbQuery(null,"N");
     }
 
     showSort(sortBy,i){
@@ -507,7 +507,7 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
         $('#okFilter').trigger('click');
     }
 
-    dbQuery(filterObj?){
+    dbQuery(filterObj?,recount?){
         
         
         //this.searchQuery = [];
@@ -542,7 +542,9 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
 	    	}
 	    }
     	this.btnDisabled = true;
-
+        this.searchQuery.recount = recount == undefined ? 'Y' : 'N';
+        this.searchQuery.length = recount == undefined ? null : this.passData.count;
+        this.searchQuery['paginationRequest.position'] =recount == undefined ? 1 : this.p;   
         this.searchToDb.emit(this.searchQuery);
         this.overlayLoader = true;
     }
@@ -660,11 +662,10 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
 
     changePage(page){
         this.p = page;
-    	if(this.passData.tableData[((page-1)*this.passData.pageLength)].filler){
+    	if(this.passData.tableData[((this.p-1)*this.passData.pageLength)].filler){
     		this.searchQuery['paginationRequest.count'] = this.passData.pageLength;
-    		this.searchQuery['paginationRequest.position'] = page;   
-    		this.dbQuery(this.passData.filters)
+    		this.searchQuery['paginationRequest.position'] = this.p;   
+    		this.dbQuery(this.passData.filters,'N')
     	}
-
     }
 }

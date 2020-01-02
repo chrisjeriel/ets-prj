@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap.css";
 
 button{
     cursor: pointer;
@@ -815,9 +816,9 @@ a.carousel-control-prev {
     display: none !important;
 }
 
-ol.carousel-indicators {
+/*ol.carousel-indicators {
     display: none !important;
-}
+}*/
 
 #notif-progress .progress {
     height: 12px;

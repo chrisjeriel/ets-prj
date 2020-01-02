@@ -186,6 +186,10 @@ export class ModuleTransactionsComponent implements OnInit {
     this.params.delTranList = [];
     for (var i = 0; i < this.PassDataTransactions.tableData.length; i++) {
       if(this.PassDataTransactions.tableData[i].edited && !this.PassDataTransactions.tableData[i].deleted){
+
+        this.PassDataTransactions.tableData[i].createUser = this.ns.getCurrentUser();
+        this.PassDataTransactions.tableData[i].updateUser = this.ns.getCurrentUser();
+
         this.params.transactionList.push(this.PassDataTransactions.tableData[i]);
       }
 

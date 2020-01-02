@@ -177,7 +177,7 @@
 				</app-modal>
 
 				
-				<button type="button" class="cust-btn"><a>Print</a></button>
+				<button type="button" class="cust-btn" (click)="printModal.openNoClose();"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true' || inquiryFlag == true"><a>Post Distribution</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
@@ -246,7 +246,7 @@
 		was sucessfully posted. 
 	</div>
 	<div footer class="w-100 text-center">
-		<button type="button" class="cust-btn" (click)="sucessMdl.closeModal();"><a>Print</a></button>
+		<button type="button" class="cust-btn" (click)="sucessMdl.closeModal();printModal.openNoClose();"><a>Print</a></button>
 		<button type="button" class="cust-btn" (click)="goToDistList();sucessMdl.closeModal();"><a>Ok</a></button>
 	</div>
 </app-modal>
@@ -278,3 +278,36 @@
 		<button type="button" class="cust-btn" (click)="sucessNegWCoMdl.closeModal();goToNegateScreen();"><a>Ok</a></button>
 	</div>
 </app-modal>
+
+<app-modal #printModal class="d-none">
+	<div header>Print</div>
+	<div body>
+		<fieldset class="scheduler-border">
+			<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+				<div class="input-group" style="margin-bottom:3px !important;">
+					<label class="form-control-sm col-sm-3 labels">Report</label>
+					<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+						<option value="POLR038A" *ngIf="acctDetails.cession?.cessionId == 1">Acceptance Slip</option>
+						<option value="POLR038B" *ngIf="acctDetails.cession?.cessionId == 2">Acceptance Slip</option>
+						<option value="POLR038C">Distribution Slip</option>
+					</select>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="input-group" style="margin-bottom:3px !important;">
+					<label class="form-control-sm col-sm-3 labels">Destination</label>
+					<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+						<option value="screen">Screen</option>
+						<option value="dlPdf">PDF</option>
+						<option value="printPdf">Printer</option>
+					</select>
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div footer class="cust-btn-container">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="print();modalService.dismissAll();"><a>Print</a></button>
+	</div>
+</app-modal>
+
