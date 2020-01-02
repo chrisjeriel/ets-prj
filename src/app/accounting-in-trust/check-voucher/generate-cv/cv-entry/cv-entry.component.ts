@@ -153,31 +153,34 @@ export class CvEntryComponent implements OnInit {
 
   getAcitCv(){
     this.loadingFunc(true);
-    const subResKey = ['pn','cl','stat','prt'];
-    const subResKey2 = ['ba','cn'];
+    const subResKey = ['pn'];
+    // const subResKey = ['pn','ba','cn'];
+    //const subResKey2 = ['ba','cn'];
 
     const arrSubRes = {
       'pn'  :this.mtnService.getMtnPrintableName(''),
-      'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
-      'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
-      'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
+      //'ba'  : this.mtnService.getMtnBankAcct(),
+      //'cn'  : this.mtnService.getMtnAcitCheckSeries()
+      //'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
+      //'stat':this.mtnService.getRefCode('ACIT_CHECK_VOUCHER.CV_STATUS'),
+      //'prt' :this.mtnService.getRefCode('MTN_ACIT_TRAN_TYPE.GROUP_TAG')
     };
 
-    const arrSubRes2 = {
-      'ba'  : this.mtnService.getMtnBankAcct(),
-      'cn'  : this.mtnService.getMtnAcitCheckSeries()
-    };
+    // const arrSubRes2 = {
+    //   'ba'  : this.mtnService.getMtnBankAcct(),
+    //   'cn'  : this.mtnService.getMtnAcitCheckSeries()
+    // };
 
     if(this.saveAcitCv.tranId != '' && this.saveAcitCv.tranId != null && this.saveAcitCv.tranId != undefined){
       $.extend(arrSubRes,{
         'cv'  :this.accountingService.getAcitCv(this.saveAcitCv.tranId)
       });
-      $.extend(arrSubRes2,{
-        'ae'  : this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
-        'prl' : this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId)
-      });
+      // $.extend(arrSubRes2,{
+      //   'ae'  : this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),
+      //   'prl' : this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId)
+      // });
       subResKey.push('cv');
-      subResKey2.push('ae','prl');
+      //subResKey2.push('ae','prl');
     }
 
     var subRes  = forkJoin(Object.values(arrSubRes)).pipe(map((a) => { 
@@ -186,38 +189,41 @@ export class CvEntryComponent implements OnInit {
       return obj;
     }));
     
-    var subRes2 = forkJoin(Object.values(arrSubRes2)).pipe(map((b) => { 
-      var obj = {};
-      subResKey2.forEach((e,i) => {obj[e] = b[i];});
-      return obj;
-    }));
+    // var subRes2 = forkJoin(Object.values(arrSubRes2)).pipe(map((b) => { 
+    //   var obj = {};
+    //   subResKey2.forEach((e,i) => {obj[e] = b[i];});
+    //   return obj;
+    // }));
 
-    var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
-    subRes3.subscribe(data => {
+    //var subRes3 = forkJoin(subRes,subRes2).pipe((map(([sub1,sub2]) => { return { sub1, sub2 }; })));
+
+    subRes.subscribe(data => {
       console.log(data);
       this.loadingFunc(false);
-      var recPn   = data['sub1']['pn']['printableNames'];
-      var recCl   = data['sub1']['cl']['refCodeList'];
-      var recStat = data['sub1']['stat']['refCodeList'];
-      var recPrt  = data['sub1']['prt']['refCodeList'];
-      var recCn   = data['sub2']['cn']['checkSeriesList'];
+      var recPn   = data['pn']['printableNames'];
+      //var recCl   = data['sub1']['cl']['refCodeList'];
+      //var recStat = data['sub1']['stat']['refCodeList'];
+      //var recPrt  = data['sub1']['prt']['refCodeList'];
+      //var recCn   = data['cn']['checkSeriesList'];
 
-      this.cvStatList      = recStat;
-      this.checkSeriesList = recCn;
+      //this.cvStatList      = recStat;
+     // this.checkSeriesList = recCn;
 
-      this.bankAcctList = data['sub2']['ba']['bankAcctList'];
-      var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
+      //this.bankAcctList = data['ba']['bankAcctList'];
+      //var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
       
       if(this.saveAcitCv.tranId == '' || this.saveAcitCv.tranId == null){
         this.loadingFunc(false);
         this.saveAcitCv.cvStatus = 'N';
-        this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
+        //this.saveAcitCv.cvStatusDesc = recStat.filter(e => e.code == this.saveAcitCv.cvStatus).map(e => e.description);
+        this.saveAcitCv.cvStatusDesc = 'New';
         this.saveAcitCv.cvDate = this.ns.toDateTimeString(0);
         this.saveAcitCv.cvAmt = 0;
         this.saveAcitCv.currCd = 'PHP';
         this.saveAcitCv.currRate = 1;
         this.saveAcitCv.checkClass = 'LC';
-        this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
+        this.saveAcitCv.checkClassDesc = 'Local Clearing';
+        //this.saveAcitCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcitCv.checkClass).map(e => e.description);
         this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
         this.saveAcitCv.checkDate = this.ns.toDateTimeString(0);
 
@@ -229,10 +235,10 @@ export class CvEntryComponent implements OnInit {
           }
         });
       }else{
-        var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
-        var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
-        var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
-        var recCv = data['sub1']['cv']['acitCvList'].map(e => {
+        // var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
+        // var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
+        // var totalDebit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignDebitAmt));
+        var recCv = data['cv']['acitCvList'].map(e => {
           e.createDate = this.ns.toDateTimeString(e.createDate);
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
           e.cvDate     = this.ns.toDateTimeString(e.cvDate);
@@ -257,21 +263,22 @@ export class CvEntryComponent implements OnInit {
 
         this.saveAcitCv = Object.assign(this.saveAcitCv,recCv[0]);
         console.log(this.saveAcitCv);
-        this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
+        // this.existsInCvDtl = ((data['sub2']['prl']['acitCvPaytReqList']).length == 0)?false:true;
+        this.existsInCvDtl = (this.saveAcitCv.prlExist == 'Y')?true:false;
 
-        console.log(totalCredit);
-        console.log(totalDebit);
-        this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
-        this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
+        // console.log(totalCredit);
+        // console.log(totalDebit);
+        // this.isTotPrlEqualCvAmt = (totalPrl==0)?false:((Number(totalPrl) == Number(recCv[0].cvAmt))?true:false);
+        // this.isTotDebCredBalanced = (Number(totalCredit) == Number(totalDebit))?true:false;
 
         (this.saveAcitCv.cvStatus == 'A' || this.saveAcitCv.cvStatus == 'P') ? this.getPrinters() : '';
 
-        if(this.fromSave){
-          this.dialogIcon = '';
-          this.dialogMessage = '';
-          this.success.open();
-          this.fromSave = false;
-        }
+        // if(this.fromSave){
+        //   this.dialogIcon = '';
+        //   this.dialogMessage = '';
+        //   this.success.open();
+        //   this.fromSave = false;
+        // }
 
         this.saveAcitCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcitCv.checkNo:this.suggestCheckNo;
       }
@@ -405,9 +412,15 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.checkNo = '';
         this.saveAcitCv.tranId = data['tranIdOut'];
         this.saveAcitCv.mainTranId = data['mainTranIdOut'];
+
         this.getAcitCv();
         this.spoiled = false;
         this.form.control.markAsPristine();
+
+        this.loadingFunc(false);
+        this.dialogIcon = '';
+        this.dialogMessage = '';
+        this.success.open();
       }else if(data['returnCode'] == 0){
         this.dialogIcon = 'error';
         this.success.open();
@@ -465,6 +478,44 @@ export class CvEntryComponent implements OnInit {
     }
   }
 
+  getAcitCheckSeries(bank,bankAcct){
+    this.mtnService.getMtnAcitCheckSeries(bank,bankAcct)
+    .subscribe(data => {
+      this.loadingFunc(false);
+      console.log(data);
+      var chckNo = data['checkSeriesList'].filter(e => e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      if(chckNo.length == 0){
+        this.saveAcitCv.checkNo = '';
+        this.suggestCheckNo = '';
+        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+        this.warnMdl.openNoClose();
+      }else{
+        this.saveAcitCv.checkNo = chckNo[0].checkNo;
+      }
+    });
+  }
+
+  getBankAcct(bankCd,currCd){
+    this.loadingFunc(true);
+    this.mtnService.getMtnBankAcct(bankCd)
+    .subscribe(data => {
+      console.log(data);
+      var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acItGlDepNo != null);
+      if(ba.length == 1){
+        this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
+        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+        this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+      }else if(ba.length == 0){
+        this.saveAcitCv.bankAcctDesc   = '';
+        this.saveAcitCv.bankAcct = '';
+        this.saveAcitCv.checkNo = '';
+        this.suggestCheckNo = '';
+        this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
+        this.warnMdl.openNoClose();
+      }
+    });
+  }
+
   setData(data,from){
     setTimeout(() => {
       this.removeRedBackShad(from);
@@ -489,34 +540,37 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bankAcct = '';
       this.saveAcitCv.checkNo = '';
       this.suggestCheckNo = '';
+      this.getBankAcct(data.data.bankCd,this.saveAcitCv.currCd);
       // var ba = this.bankAcctList;
-      var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
-      if(ba.length == 1){
-        this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
-        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(chkNo.length == 0){
-          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
-          this.warnMdl.openNoClose();
-        }else{
-          this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        }
-      }else if(ba.length == 0){
-        this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
-        this.warnMdl.openNoClose();
-      }
+      // var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
+      // if(ba.length == 1){
+      //   this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
+      //   this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+      //   this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+      //   // var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      //   // if(chkNo.length == 0){
+      //   //   this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+      //   //   this.warnMdl.openNoClose();
+      //   // }else{
+      //   //   this.saveAcitCv.checkNo = chkNo[0].checkNo;
+      //   // }
+      // }else if(ba.length == 0){
+      //   this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
+      //   this.warnMdl.openNoClose();
+      // }
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
-      var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(chkNo.length == 0){
-        this.saveAcitCv.checkNo = '';
-        this.suggestCheckNo = '';
-        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
-        this.warnMdl.openNoClose();
-      }else{
-        this.saveAcitCv.checkNo = chkNo[0].checkNo;
-      }
+      this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+      // var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      // if(chkNo.length == 0){
+      //   this.saveAcitCv.checkNo = '';
+      //   this.suggestCheckNo = '';
+      //   this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+      //   this.warnMdl.openNoClose();
+      // }else{
+      //   this.saveAcitCv.checkNo = chkNo[0].checkNo;
+      // }
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
@@ -527,21 +581,26 @@ export class CvEntryComponent implements OnInit {
     }else  if(from.toLowerCase() == 'curr'){
       this.saveAcitCv.currCd = data.currencyCd;
       this.saveAcitCv.currRate =  data.currencyRt;
-      var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcitCv.bank && e.currCd == data.currencyCd && e.acItGlDepNo != null);
-      console.log(ba);
-      if(ba.length == 1){
-        this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
-        this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
-        var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-        if(chkNo.length == 0){
-          this.saveAcitCv.checkNo = '';
-          this.suggestCheckNo = '';
-          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
-          this.warnMdl.openNoClose();
-        }else{
-          this.saveAcitCv.checkNo = chkNo[0].checkNo;
-        }
-      }
+      this.getBankAcct(this.saveAcitCv.bank,data.currencyCd);
+      // var ba = this.bankAcctList.filter(e => e.bankCd == this.saveAcitCv.bank && e.currCd == data.currencyCd && e.acItGlDepNo != null);
+      // console.log(ba);
+      // if(ba.length == 1){
+      //   this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
+      //   this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
+      //   this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+      //   // var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+      //   // if(chkNo.length == 0){
+      //   //   this.saveAcitCv.checkNo = '';
+      //   //   this.suggestCheckNo = '';
+      //   //   this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+      //   //   this.warnMdl.openNoClose();
+      //   // }else{
+      //   //   this.saveAcitCv.checkNo = chkNo[0].checkNo;
+      //   // }
+      // }else if(ba.length == 0){
+      //   this.warnMsg = 'There is no Bank Account No available for this Bank.\nPlease proceed to maintenance module to generate Bank Account No.';
+      //   this.warnMdl.openNoClose();
+      // }
       this.setLocalAmt();
     }else if(from.toLowerCase() == 'prep-user'){
       this.saveAcitCv.preparedByName = data.printableName;
@@ -558,7 +617,7 @@ export class CvEntryComponent implements OnInit {
     this.saveAcitCv.localAmt = Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')) * Number(String(this.saveAcitCv.currRate).replace(/\,/g,''));
     this.saveAcitCv.cvAmt =  this.decPipe.transform(Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')),'0.2-2');
     this.saveAcitCv.localAmt = this.decPipe.transform(Number(String(this.saveAcitCv.localAmt).replace(/\,/g,'')),'0.2-2');
-    this.saveAcitCv.currRate = (this.saveAcitCv.currRate == 0)?'':this.decPipe.transform(Number(String(this.saveAcitCv.currRate).replace(/\,/g,'')),'0.9-9');
+    this.saveAcitCv.currRate = (this.saveAcitCv.currRate == 0)?'':this.decPipe.transform(Number(String(this.saveAcitCv.currRate).replace(/\,/g,'')),'0.6-6');
   }
 
   checkCode(event,from){
@@ -614,20 +673,59 @@ export class CvEntryComponent implements OnInit {
 
   onClickOkPrint(){
     console.log('PRL=cvAmt? : ' + this.isTotPrlEqualCvAmt + ' AND ' + 'Credit=Debit? : ' + this.isTotDebCredBalanced);
-    if(!this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
-      this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
-      this.warnMdl.openNoClose();
-    }else if(this.isTotPrlEqualCvAmt && !this.isTotDebCredBalanced){
-      this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
-      this.warnMdl.openNoClose();
-    }else if(!this.isTotPrlEqualCvAmt && this.isTotDebCredBalanced){
-      this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
-      this.warnMdl.openNoClose();
-    }else{
-      this.fromBtn = 'approve-req';
-      this.approvalCd = 'AC003';
-      this.overrideFunc('AC003');
-    }
+    console.log(this.saveAcitCv.totalAmtPrl);
+    console.log(Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')));
+
+    var arrSum = function(arr){return parseFloat(arr.reduce((a,b) => a+b,0).toFixed(2));};
+   
+    var forkRes = forkJoin(this.accountingService.getAcitAcctEntries(this.saveAcitCv.tranId),this.accountingService.getAcitCvPaytReqList(this.saveAcitCv.tranId),this.accountingService.getAcitCv(this.saveAcitCv.tranId)).
+                        pipe(map(([ae,prl,cv]) => { return { ae, prl, cv};}));
+
+    forkRes.subscribe(data => {
+      console.log(data);
+      var totalPrl = arrSum(data['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
+      var totalCredit = arrSum(data['ae']['list'].map(e => e.foreignCreditAmt));
+      var totalDebit = arrSum(data['ae']['list'].map(e => e.foreignDebitAmt));
+      var cvAmt = data['cv']['acitCvList'][0].cvAmt;
+
+      if((cvAmt != totalPrl) && (totalCredit != totalDebit)){
+        this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
+        this.warnMdl.openNoClose();
+      }else if((cvAmt == totalPrl) && (totalCredit != totalDebit)){
+        this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+        this.warnMdl.openNoClose();
+      }else if((cvAmt != totalPrl) && (totalCredit == totalDebit)){
+        this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
+        this.warnMdl.openNoClose();
+      }else{
+        this.fromBtn = 'approve-req';
+        this.approvalCd = 'AC003';
+        this.overrideFunc('AC003');
+      }
+    });
+
+
+    // if((this.saveAcitCv.totalAmtPrl != Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')))
+    //   && !this.isTotDebCredBalanced){
+    //   this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
+    //   this.warnMdl.openNoClose();
+    // }else if(
+    //   // this.isTotPrlEqualCvAmt
+    //   (this.saveAcitCv.totalAmtPrl == Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')))
+    //   && !this.isTotDebCredBalanced){
+    //   this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
+    //   this.warnMdl.openNoClose();
+    // }else if(
+    //   // !this.isTotPrlEqualCvAmt
+    //   (this.saveAcitCv.totalAmtPrl != Number(String(this.saveAcitCv.cvAmt).replace(/\,/g,'')))
+    //    && this.isTotDebCredBalanced){
+    //   this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
+    //   this.warnMdl.openNoClose();
+    // }else{
+    //   this.fromBtn = 'approve-req';
+    //   this.approvalCd = 'AC003';
+    //   this.overrideFunc('AC003');
+    // }
   }
 
   print(){
@@ -884,5 +982,6 @@ uploadAcctEntries(){
   clearPrinterName(){
     (this.printData.destination != 'printer')?this.printData.selPrinter='':''
   }
+
 
 }
