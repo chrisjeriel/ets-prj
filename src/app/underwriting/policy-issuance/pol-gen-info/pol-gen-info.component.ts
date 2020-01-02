@@ -390,7 +390,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       $('.globalLoading').css('display','block');
     }
 
-    this.underwritingService.getPolGenInfo(this.policyId, this.policyNo).subscribe((data:any) => {
+    this.underwritingService.getPolGenInfo(this.policyId).subscribe((data:any) => {
       $('.globalLoading').css('display','none');
       this.openTabs.emit(true);
       if(data.policy != null) {

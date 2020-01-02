@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MaintenanceService, NotesService, PrintService } from '@app/_services';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
-
+import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 @Component({
   selector: 'app-checks-register',
   templateUrl: './checks-register.component.html',
@@ -11,7 +11,7 @@ export class ChecksRegisterComponent implements OnInit {
 
   @ViewChild('bankLov') bankLov               : LovComponent;
   @ViewChild('bankAcctLov') bankAcctLov       : LovComponent;
-
+  @ViewChild(SucessDialogComponent) successDiag : SucessDialogComponent;
   tDate: boolean = true;
   pDate: boolean = false;
   dateRadio: string = "1";
@@ -45,6 +45,8 @@ export class ChecksRegisterComponent implements OnInit {
 
   printerList: string[] = [];
   selectedPrinter: string = '';
+  dialogIcon: string = '';
+  dialogMessage: string = '';
 
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
@@ -147,40 +149,53 @@ export class ChecksRegisterComponent implements OnInit {
       this.passDataLov.bank = this.params.bank;
       this.passDataLov.glDepFor = 'acit';
       this.bankName = '';
-      this.bankLov.checkCode('bankLov', ev);
-
-      setTimeout(() => {
-        this.ns.lovLoader(ev, 0);
-      },500);
+      this.bankLov.checkCode('bankLov', null, null, null, null, null, ev);
       
     } else if(str == 'bank-acct') {
-      this.bankAcctLov.checkCode(this.params.bankAcct, ev);
+      console.log('yeet');
+      this.passDataLov.bank = this.params.bank;
+      this.passDataLov.bankAcct = this.params.bankAcct;
+      this.passDataLov.from = 'acit';
+      this.bankName = '';
+      this.bankAcctLov.checkCode('bankAcct', null, null, null, null, null, ev);
     }
   }
 
   setData(data,from){
-    
+    this.ns.lovLoader(data.ev, 0);
 
-    if(from.toLowerCase() == 'bank'){
-      if (data.data != null) {
+    if(data.data == null){
+      if(from.toLowerCase() == 'bank'){
+        this.bankName   = '';
+        this.params.bank = '';
+        this.bankAcctName = '';
+        this.params.bankAcct = '';
+      }else if(from.toLowerCase() == 'bank-acct'){
+        this.bankName   = '';
+        this.params.bank = '';
+        this.bankAcctName   = '';
+        this.params.bankAcct = '';
+      }
+    }else{
+      if(from.toLowerCase() == 'bank'){
         this.bankName   = data.data.officialName;
         this.params.bank = data.data.bankCd;
         this.bankAcctName = '';
         this.params.bankAcct = '';
+      }else if(from.toLowerCase() == 'bank-acct'){
+        this.bankName   = data.data.bankName;
+        this.params.bank = data.data.bankCd;
+        this.bankAcctName   = data.data.accountName + " | " + data.data.accountNo;
+        this.params.bankAcct = data.data.bankAcctCd;
+        /*var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
+        if(chkNo.length == 0){
+          this.saveAcitCv.checkNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();
+        }else{
+          this.saveAcitCv.checkNo = chkNo[0].checkNo;
+        }*/
       }
-    }else if(from.toLowerCase() == 'bank-acct'){
-      this.bankName   = data.data.bankName;
-      this.params.bank = data.data.bankCd;
-      this.bankAcctName   = data.data.accountName + " | " + data.data.accountNo;
-      this.params.bankAcct = data.data.bankAcctCd;
-      /*var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(chkNo.length == 0){
-        this.saveAcitCv.checkNo = '';
-        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
-        this.warnMdl.openNoClose();
-      }else{
-        this.saveAcitCv.checkNo = chkNo[0].checkNo;
-      }*/
     }
   }
 

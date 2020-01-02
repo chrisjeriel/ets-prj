@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { DistributionByRiskInfo } from '@app/_models';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -136,7 +136,9 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   @Input() inquiryFlag: boolean = false;
   @Input() acctDetails:any = {};
 
-  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router, private ns: NotesService) { }
+
+  constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, 
+             private route: ActivatedRoute, private router: Router, private ns: NotesService, private ps: PrintService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Distribution");
@@ -148,6 +150,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
                 });
     //END
   }
+
+
   getSums(){
     this.treatyDistData.tableData.forEach(a=>{
       if(a.section == 'I'){
@@ -464,5 +468,24 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
      alasql('SELECT section AS Section, treatyAbbr AS TreatyName, cedingName AS CedingName, retOneLines AS RetentionOneLines, retOneTsiAmt AS RetentionOneTsiAmt, retOnePremAmt AS RetentionOnePremAmt, retTwoLines AS RetentionTwoLines, retTwoTsiAmt AS RetentionTwoTsiAmt, retTwoPremAmt AS RetentionTwoPremAmt, commRt AS CommRt, totalCommAmt AS TotalCommAmt, totalVatRiComm AS TotalVatRiComm, totalNetDue AS TotalNetDue ' +
             'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.poolDistributionData.tableData]);
   }
-}
 
+  printReport:any = 'POLR038C';
+  printDestination:any = 'screen';
+  @ViewChild('printModal') printModal: ModalComponent;
+   print(){
+    let params:any = {
+                        policyId:this.params.policyId,
+                        userId:this.ns.getCurrentUser(),
+                        instNo: 1,
+                        distId: this.polDistributionData.distNo,
+                        histNo: this.polDistributionData.histNo,
+                        draftTag: this.polDistributionData.status == 'Posted' ? 'N' : 'Y'
+                      };
+    if(params.histNo == null){
+      delete params.histNo
+    }
+    params.reportId=this.printReport;
+    params.fileName = this.polDistributionData.policyNo;
+    this.ps.print(this.printDestination,this.printReport,params)
+  }
+}

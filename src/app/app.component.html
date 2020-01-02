@@ -692,7 +692,30 @@
                                 </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('ACSE001') > -1 ||
+                                            accessibleModules.indexOf('ACSE002') > -1 ||
+                                            accessibleModules.indexOf('ACSE003') > -1 ||
+                                            accessibleModules.indexOf('ACSE004') > -1 ||
+                                            accessibleModules.indexOf('ACSE005') > -1 ||
+                                            accessibleModules.indexOf('ACSE006') > -1 ||
+                                            accessibleModules.indexOf('ACSE007') > -1 ||
+                                            accessibleModules.indexOf('ACSE008') > -1 ||
+                                            accessibleModules.indexOf('ACSE009') > -1 ||
+                                            accessibleModules.indexOf('ACSE010') > -1 ||
+                                            accessibleModules.indexOf('ACSE011') > -1 ||
+                                            accessibleModules.indexOf('ACSE012') > -1 ||
+                                            accessibleModules.indexOf('ACSE013') > -1 ||
+                                            accessibleModules.indexOf('ACSE014') > -1 ||
+                                            accessibleModules.indexOf('ACSE015') > -1 ||
+                                            accessibleModules.indexOf('ACSE016') > -1 ||
+                                            accessibleModules.indexOf('ACSE017') > -1 ||
+                                            accessibleModules.indexOf('ACSE018') > -1 ||
+                                            accessibleModules.indexOf('ACSE019') > -1 ||
+                                            accessibleModules.indexOf('ACSE020') > -1 ||
+                                            accessibleModules.indexOf('ACSE021') > -1 ||
+                                            accessibleModules.indexOf('ACSE022') > -1 ||
+                                            accessibleModules.indexOf('ACSE023') > -1 ||
+                                            accessibleModules.indexOf('ACSE024') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="calculator"></fa>&nbsp;Accounting Service
                             </ng-template>
@@ -801,7 +824,59 @@
                                 </ngb-accordion>
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('MTN100') > -1 ||
+                                            accessibleModules.indexOf('MTN101') > -1 ||
+                                            accessibleModules.indexOf('MTN102') > -1 ||
+                                            accessibleModules.indexOf('MTN103') > -1 ||
+                                            accessibleModules.indexOf('MTN104') > -1 ||
+                                            accessibleModules.indexOf('MTN105') > -1 ||
+                                            accessibleModules.indexOf('MTN106') > -1 ||
+                                            accessibleModules.indexOf('MTN107') > -1 ||
+                                            accessibleModules.indexOf('MTN108') > -1 ||
+                                            accessibleModules.indexOf('MTN109') > -1 ||
+                                            accessibleModules.indexOf('MTN110') > -1 ||
+                                            accessibleModules.indexOf('MTN111') > -1 ||
+                                            accessibleModules.indexOf('MTN112') > -1 ||
+                                            accessibleModules.indexOf('MTN113') > -1 ||
+                                            accessibleModules.indexOf('MTN114') > -1 ||
+                                            accessibleModules.indexOf('MTN115') > -1 ||
+                                            accessibleModules.indexOf('MTN116') > -1 ||
+                                            accessibleModules.indexOf('MTN117') > -1 ||
+                                            accessibleModules.indexOf('MTN118') > -1 ||
+                                            accessibleModules.indexOf('MTN119') > -1 ||
+                                            accessibleModules.indexOf('MTN120') > -1 ||
+                                            accessibleModules.indexOf('MTN121') > -1 ||
+                                            accessibleModules.indexOf('MTN122') > -1 ||
+                                            accessibleModules.indexOf('MTN123') > -1 ||
+                                            accessibleModules.indexOf('MTN124') > -1 ||
+                                            accessibleModules.indexOf('MTN125') > -1 ||
+                                            accessibleModules.indexOf('MTN126') > -1 ||
+                                            accessibleModules.indexOf('MTN127') > -1 ||
+                                            accessibleModules.indexOf('MTN128') > -1 ||
+                                            accessibleModules.indexOf('MTN129') > -1 ||
+                                            accessibleModules.indexOf('MTN130') > -1 ||
+                                            accessibleModules.indexOf('MTN131') > -1 ||
+                                            accessibleModules.indexOf('MTN132') > -1 ||
+                                            accessibleModules.indexOf('MTN133') > -1 ||
+                                            accessibleModules.indexOf('MTN134') > -1 ||
+                                            accessibleModules.indexOf('MTN135') > -1 ||
+                                            accessibleModules.indexOf('MTN136') > -1 ||
+                                            accessibleModules.indexOf('MTN137') > -1 ||
+                                            accessibleModules.indexOf('MTN138') > -1 ||
+                                            accessibleModules.indexOf('MTN139') > -1 ||
+                                            accessibleModules.indexOf('MTN140') > -1 ||
+                                            accessibleModules.indexOf('MTN200') > -1 ||
+                                            accessibleModules.indexOf('MTN201') > -1 ||
+                                            accessibleModules.indexOf('MTN202') > -1 ||
+                                            accessibleModules.indexOf('MTN203') > -1 ||
+                                            accessibleModules.indexOf('MTN204') > -1 ||
+                                            accessibleModules.indexOf('MTN205') > -1 ||
+                                            accessibleModules.indexOf('MTN206') > -1 ||
+                                            accessibleModules.indexOf('MTN207') > -1 ||
+                                            accessibleModules.indexOf('MTN208') > -1 ||
+                                            accessibleModules.indexOf('MTN400') > -1 ||
+                                            accessibleModules.indexOf('MTN401') > -1 ||
+                                            accessibleModules.indexOf('MTN402') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="wrench"></fa>&nbsp;Maintenance
                             </ng-template>
@@ -815,7 +890,10 @@
                                 <button [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
                             </ng-template>
                         </ngb-panel>
-                        <ngb-panel>
+                        <ngb-panel *ngIf="(accessibleModules.indexOf('SEC001') > -1 ||
+                                            accessibleModules.indexOf('SEC002') > -1 ||
+                                            accessibleModules.indexOf('SEC003') > -1 ||
+                                            accessibleModules.indexOf('SEC004') > -1)">
                             <ng-template ngbPanelTitle>
                                 <fa name="user-secret"></fa>&nbsp;Security
                             </ng-template>
@@ -1052,13 +1130,13 @@
             </p>
             <p class="col-sm text-right" style="padding: 0px; margin-right: 0px;">
                 <a href="#" (click)="onClickAllMAC();">Mark All as Completed</a>
-            </p>
+            </p>    
         </div>
         <div class="notif-div-scrollable">
             <div *ngFor="let notif of notifs" class="notif-div">
                 <div>
                     <div class="notif-left">
-                        <img src="app/resources/images/avatars/totzavatar.jpg" style="width: 100%;">
+                        <img src="app/resources/images/avatars/totzavatar.png" style="width: 100%;" title="Created by {{notif.assignee}}">
                     </div>
                     <div class="notif-right">
                         <p class="notif-tstmp">{{ notif.createDate | timeago:live }}</p>
