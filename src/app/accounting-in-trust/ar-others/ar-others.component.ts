@@ -149,7 +149,7 @@ export class ArOthersComponent implements OnInit {
       }
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
-          /*this.savedData[this.savedData.length-1].tranId = this.record.tranId;
+          /*this.savedData[this.savedData.length-1].tranId = this.arDetails.tranId;
           this.savedData[this.savedData.length-1].billId = 1; //1 for Inward Policy balances Transaction Type*/
           this.savedData[this.savedData.length-1].currCd = this.savedData[this.savedData.length-1].currCd.split('T')[0];
           this.savedData[this.savedData.length-1].createDate = this.ns.toDateTimeString(0);
@@ -159,7 +159,7 @@ export class ArOthersComponent implements OnInit {
       }
       else if(this.passData.tableData[i].edited && this.passData.tableData[i].deleted){
          this.deletedData.push(this.passData.tableData[i]);
-         /*this.deletedData[this.deletedData.length-1].tranId = this.record.tranId;
+         /*this.deletedData[this.deletedData.length-1].tranId = this.arDetails.tranId;
          this.deletedData[this.deletedData.length-1].billId = 1; //1 for Inward Policy balances Transaction Type*/
          this.deletedData[this.deletedData.length-1].createDate = this.ns.toDateTimeString(0);
          this.deletedData[this.deletedData.length-1].updateDate = this.ns.toDateTimeString(0);
@@ -236,6 +236,72 @@ export class ArOthersComponent implements OnInit {
     console.log('originalAmt => ' + this.originalNet );
     console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
+  }
+
+  export(){
+        //do something
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ARDetails_#'+this.arDetails.formattedArNo+'_'+currDate+'.xls'
+    var rowLength: number = this.passData.tableData.length + 6;
+    console.log("Row Length >>>" + rowLength);
+    var mystyle = {
+        headers:false, 
+        column: {style:{Font:{Bold:"1"}}},
+        rows: {0:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               2:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
+               [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
+      };
+    console.log(mystyle);
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            return num
+      };
+
+      alasql.fn.rate = function(rate) {
+            var parts = parseFloat(rate).toFixed(10).split(".");
+            var num = parts[0].replace(new RegExp(",", "g"),'').replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return num
+      };
+    var currAmt = 0;
+    var localAmt = 0;
+
+    //'itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'
+
+    alasql('CREATE TABLE sample(row1 VARCHAR2, row2 VARCHAR2, row3 VARCHAR2, row4 VARCHAR2, row5 VARCHAR2, row6 VARCHAR2, row7 VARCHAR2)');
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?)', ['AR No', 'AR Date', 'DCB No.', 'Payment Type', 'Amount', '', '']);
+    alasql('INSERT INTO sample VALUES (?,datetime(?),?,?,?,currency(?),?)', [this.arDetails.formattedArNo, this.arDetails.arDate, this.arDetails.dcbNo, this.arDetails.tranTypeName, this.arDetails.currCd, this.arDetails.arAmt, '']);
+    alasql('INSERT INTO sample VALUES(?,?,?,?,?,?,?)', ['Payor', '', '', 'Status', 'Local Amount', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?),?)', [this.arDetails.payor, '','', this.arDetails.arStatDesc, 'PHP', this.arDetails.currRate * this.arDetails.arAmt, '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?)', ['', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?)', ['Item', 'Reference No.', 'Description', 'Currency', 'Curr Rate', 'Amount', 'Local Amount']);
+    for(var i of this.passData.tableData){
+      //totalCredit += i.creditAmt;
+      //totalDebit += i.debitAmt;
+      currAmt       += i.currAmt;
+      localAmt      += i.localAmt;
+      alasql('INSERT INTO sample VALUES(?,?,?,?,rate(?), currency(?), currency(?))', [i.itemName, i.refNo, i.remarks, i.currCd, i.currRate, i.currAmt, i.localAmt]);
+    }
+    //alasql('INSERT INTO sample VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']);
+    alasql('INSERT INTO sample VALUES (?,?,?,?,?,currency(?), currency(?))', ["","", "", "", "TOTAL", currAmt, localAmt]);
+    alasql('SELECT row1, row2, row3, row4, row5, row6, row7 INTO XLSXML("'+filename+'",?) FROM sample', [mystyle]);
+    alasql('DROP TABLE sample');  
   }
 }
 

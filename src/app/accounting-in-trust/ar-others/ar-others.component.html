@@ -5,7 +5,11 @@
 </div> -->
 
 
-<app-cust-editable-non-datatable (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)" [passData]="passData"> </app-cust-editable-non-datatable>
+<app-cust-editable-non-datatable (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)" [passData]="passData">
+  <ng-container controls-r>
+      <button class="cust-btn" style="margin-right: 0px !important;" (click)="export()">Export to Excel</button>
+    </ng-container>
+ </app-cust-editable-non-datatable>
 
 <div class="form-row" *ngIf="passData.checkFlag">
     <div class="form-group col-sm">
