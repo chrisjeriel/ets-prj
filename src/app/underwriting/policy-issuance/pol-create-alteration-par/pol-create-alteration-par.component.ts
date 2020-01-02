@@ -136,8 +136,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
           var pNo = this.selected.policyNo.split('-');
           pNo[pNo.length-1] = '%';
-          this.cs.getClaimsListing([{ key: 'policyNo', search: pNo.join('-') }]).subscribe(data => {
-            if(data['claimsList'].length > 0) {
+          this.cs.checkExistingClaim(this.selected.policyId).subscribe(data => {
+            if(data =='Y') {
               this.warningMsg = 3;
               this.showWarningMdl();
             }
