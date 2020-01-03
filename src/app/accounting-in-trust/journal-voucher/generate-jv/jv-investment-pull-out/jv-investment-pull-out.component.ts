@@ -106,9 +106,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
     //this.getInvPullout();
     if(this.jvDetail.statusType == 'N'){
       this.disable = false;
-      console.log('here 1');
     }else {
-      console.log('here 2');
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag =  false;
@@ -134,7 +132,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
                         this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
 
     this.forkSub = join.subscribe((data: any) => {
-      console.log(data);
       this.banks = data.bank.bankList;
       this.bankAccts = data.bankAcct.bankAcctList;
       this.getInvPullout();
@@ -167,7 +164,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
   getInvPullout(){
     this.accService.getJvInvPullout(this.jvDetail.tranId).subscribe((data:any) => {
-      console.log(data)
       var bank;
       var bankAcct;
       this.passData.tableData = [];
@@ -195,7 +191,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
   openInvPulloutLOV(data){
     this.passLov.searchParams = [{key:'invtStatus', search: 'M%'}];
-    console.log(this.passLov.searchParams)
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }
@@ -283,7 +278,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   onTableDataChange(data){
-    console.log(data)
   }
 
   onRowClick(data){

@@ -155,7 +155,6 @@ export class JvInvestmentPlacementComponent implements OnInit {
 
   retrieveInvPlacement(){
     this.accService.getInvPlacement(this.jvDetail.tranId).subscribe((data:any) => {
-      console.log(data);
       var bank, bankAcct;
       this.passData.tableData = [];
       if(data.invPlacement.length !== 0){

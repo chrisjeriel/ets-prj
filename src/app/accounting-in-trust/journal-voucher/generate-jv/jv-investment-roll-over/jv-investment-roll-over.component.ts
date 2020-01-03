@@ -188,7 +188,6 @@ export class JvInvestmentRollOverComponent implements OnInit {
 
   getInvRollOut(){
   	this.accountingService.getJvInvRollOver(this.jvDetail.tranId).subscribe((data:any) => {
-  		console.log(data);
   		this.passData.tableData = [];
   		for (var i = 0; i < data.invtRollOver.length; i++) {
   			this.passData.tableData.push(data.invtRollOver[i]);

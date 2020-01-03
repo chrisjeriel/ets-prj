@@ -210,7 +210,6 @@ export class JvEntryComponent implements OnInit {
 
   retrieveJVEntry(){
     this.accService.getJVEntry(this.tranId).subscribe((data:any) => {
-      console.log(data)
       if(data.transactions != null){
         this.entryData              = data.transactions.jvListings;
         this.tranId                 = this.entryData.tranId;
@@ -416,7 +415,6 @@ export class JvEntryComponent implements OnInit {
   }
 
   prepareData(){
-    console.log(this.jvDatas);
     this.jvDatas.tranIdJv       = this.tranId;
     this.jvDatas.jvYear         = this.entryData.jvYear;
     this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);
@@ -447,7 +445,6 @@ export class JvEntryComponent implements OnInit {
   saveJV(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDatas);
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -619,7 +616,6 @@ export class JvEntryComponent implements OnInit {
       this.printEntries.openNoClose();
     }else if(this.printData.destination == 'printer'){
       this.ps.directPrint(params).subscribe((data:any) => {
-        console.log(data);
         if(data.errorList.length == 0 && data.messageList.length != 0){
           this.printEntries.openNoClose();
         }else{
@@ -701,7 +697,6 @@ export class JvEntryComponent implements OnInit {
 
 //validate file to be uploaded
   validateFile(event){
-    console.log(event.target.files);
     var validate = '';
     validate = this.up.validateFiles(event);
 
@@ -726,7 +721,6 @@ uploadAcctEntries(){
      this.dialogMessage = 'No file selected.';
      this.successDiag.open();
    }else{
-     console.log(this.entryData.tranId);
      this.uploadLoading = true;
      this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACIT', 'JV', this.entryData.tranId);
      /*setTimeout(()=>{
@@ -748,7 +742,6 @@ uploadAcctEntries(){
   }
 
   uploaderActivity(event){
-    console.log(event);
     if(event instanceof Object){ //If theres an error regarding the upload
       this.dialogIcon = 'error-message';
      this.dialogMessage = event.message;

@@ -202,7 +202,6 @@ export class JvInwardPolBalanceComponent implements OnInit {
 
   retrieveInwPol(){
     this.accountingService.getJVInwPolBal(this.jvDetail.tranId,'').subscribe((data:any) => {
-      console.log(data)
       var datas = data.inwPolBal;
       this.passData.tableData = [];
       this.totalBalance = 0;
