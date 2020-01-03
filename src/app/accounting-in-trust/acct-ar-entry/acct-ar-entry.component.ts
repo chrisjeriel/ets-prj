@@ -470,7 +470,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
       this.passLov.payeeClassCd = 3;
     }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
-      console.log('test')
       this.passLov.payeeClassCd = '';
     }else{
       this.passLov.payeeClassCd = 1; //get only cedants
@@ -529,17 +528,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.arInfo.dcbBankAcct = data.bankAcctCd;
     this.arInfo.dcbBankAcctNo = data.accountNo;
     this.dcbBankAcctCurrCd = data.currCd;
-    console.log(data.currCd);
   }
 
   changeArAmt(data){
-    console.log(data);
     this.genAcctEnt = true;
     this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) / 100;
   }
 
   setLov(data){
-    console.log(data);
     if(data.selector === 'payee'){
       if(data.ev != undefined){
         this.ns.lovLoader(data.ev, 0);
@@ -588,7 +584,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         this.genAcctEnt = false;
-        console.log('arEntry first');
         let data = forkData.ar;
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
@@ -599,7 +594,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.paymentTypes = paymentType.tranTypeList;
           this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
         }
-        console.log(data);
         //ar
         if(data.ar !== null){
           this.arInfo.acctEntDate    = data.ar.acctEntDate;
@@ -699,7 +693,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
               this.passData.opts[1].prev.push(l.currencyCd);
             }
           }
-          console.log(data.ar.paytDtl);
           //this.passData.tableData          = data.ar.paytDtl;
           //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
           //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
@@ -924,8 +917,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
             this.dialogIcon = 'error-message';
             this.dialogIcon = 'An error has occured when updating AR status';
           }else{
-            console.log(data);
-            console.log('printed');
             this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
             this.printMdl.closeModal();
           }
@@ -1034,7 +1025,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         }
         this.ps.directPrint(params).subscribe(
           (data:any)=>{
-            console.log(data);
             if(data.errorList.length == 0 && data.messageList.length != 0){
               if(isReprint == undefined){
                 this.successPrintMdl.openNoClose();
@@ -1085,7 +1075,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       //Save Ar Entry first
       //if(this.arInfo.arNo === null || (this.arInfo.arNo !== null && this.arInfo.arNo.length === 0)){
         this.arInfo.arNo = parseInt(this.generatedArNo);
-        console.log(this.arInfo.arNo);
       //}
       this.save(undefined, true);
       /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
@@ -1114,7 +1103,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.passData.opts[1].prev = [];
     this.ms.getMtnCurrency('','Y', this.arDate.date).subscribe(
       (data:any)=>{
-        console.log('currencies first');
         if(data.currency.length !== 0){
           for(var i of data.currency){
             if(this.isAdd && 'PHP' === i.currencyCd){
@@ -1338,8 +1326,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       }
     }
     if(this.arInfo.arAmt * this.arInfo.currRate !== totalPayts){
-      console.log(this.arInfo.arAmt * this.arInfo.currRate);
-      console.log(totalPayts);
       return true;
     }else{
       return false;
@@ -1347,8 +1333,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   arAmtEqualsArDtlPayt(): boolean{
-    console.log(Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100);
-    console.log(this.arInfo.arDtlSum);
     if(this.arInfo.arDtlSum != Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100){
       return true;
     }
@@ -1374,7 +1358,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   getPrinters(){
     this.ps.getPrinters().subscribe(
       (data:any)=>{
-        console.log(data);
         this.printers = data;
       }
     );
@@ -1408,7 +1391,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       (data:any)=>{
         if(data.parameters.length !== 0){
             this.canReprint = data.parameters[0].paramValueV == 'Y';
-            console.log(this.canReprint);
          }
          else{
            this.canReprint = false;
@@ -1483,7 +1465,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-    console.log(data);
     if(data !== null){
       this.passData.disableGeneric = false;
     }else{
@@ -1495,7 +1476,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     if(data.key !== 'remarks'){
       this.genAcctEnt = true;
     }
-    console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
         /*data[i].uneditable = [];
@@ -1543,8 +1523,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           data[i].checkClass = '';
           console.log('condition2');
         }*/
-        console.log(data[i].uneditable);
-        console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
       }
     }
@@ -1568,7 +1546,6 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
              paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0});
              this.paymentTypes = paymentType.tranTypeList;
              this.arInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
-             console.log('TRAN_TYPE_CD => ' + this.arInfo.tranTypeCd);
            }
 
            this.arInfo.dcbUserCd = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].dcbUserCd;
@@ -1631,7 +1608,6 @@ upload(){
 
 //validate file to be uploaded
   validateFile(event){
-    console.log(event.target.files);
     var validate = '';
     validate = this.up.validateFiles(event);
 
@@ -1677,7 +1653,6 @@ uploadAcctEntries(){
   }
 
   uploaderActivity(event){
-    console.log(event);
     if(event instanceof Object){ //If theres an error regarding the upload
       this.dialogIcon = 'error-message';
      this.dialogMessage = event.message;

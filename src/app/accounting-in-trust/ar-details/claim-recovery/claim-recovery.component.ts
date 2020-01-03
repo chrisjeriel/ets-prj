@@ -97,7 +97,6 @@ export class ClaimRecoveryComponent implements OnInit {
   ngOnInit() {
     this.titleService.setTitle("Acct-IT | Claim Recovery / Overpayment");
     this.isReopen = this.record.reopenTag == 'Y';
-    console.log(this.record.payeeNo);
     this.passLov.payeeNo = this.record.payeeNo;
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.passData.uneditable = [true,true,true,true,true,true,true,true, true, true,true,true, true];
@@ -114,7 +113,6 @@ export class ClaimRecoveryComponent implements OnInit {
     this.passLov.payeeNo = this.record.payeeNo;
     this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return JSON.stringify({claimId: a.claimId, histNo: a.histNo})});
-    console.log(this.passLov.hide);
     this.clmCashCallIndex = data.index;
     this.lovMdl.openLOV();
   }
@@ -240,7 +238,6 @@ export class ClaimRecoveryComponent implements OnInit {
       saveClmRecover: this.savedData,
       delClmRecover: this.deletedData
     }
-    console.log(params);
 
     //this.accountingService.saveAcitArClmCashCall(params).subscribe(
     this.accountingService.saveAcitArClmRecover(params).subscribe(
@@ -304,8 +301,6 @@ export class ClaimRecoveryComponent implements OnInit {
         this.newAlteredAmt += i.currAmt;
       }
     }
-    console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
   }
 
@@ -327,7 +322,6 @@ export class ClaimRecoveryComponent implements OnInit {
       if(i.edited && !i.deleted &&
         (i.reserveAmt < 0 && i.localAmt + i.cumulativeAmt > 0) ||
          (i.reserveAmt > -1 && i.localAmt + i.cumulativeAmt < 0)){
-        console.log(i);
         return true;
       }
     }
@@ -360,7 +354,6 @@ export class ClaimRecoveryComponent implements OnInit {
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
-    console.log("Row Length >>>" + rowLength);
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
@@ -369,7 +362,6 @@ export class ClaimRecoveryComponent implements OnInit {
                5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
                [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
       };
-    console.log(mystyle);
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);

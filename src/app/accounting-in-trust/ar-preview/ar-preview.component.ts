@@ -160,7 +160,6 @@ export class ArPreviewComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.currRate);
     this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
@@ -318,8 +317,6 @@ export class ArPreviewComponent implements OnInit {
                                                                                                b.updateDate = this.ns.toDateTimeString(0);
                                                                                                return b;});
       this.deletedData = this.accEntriesData.tableData.filter(a=>a.deleted);
-      console.log(this.savedData);
-      console.log(this.deletedData);
 
       this.savedData.forEach(a=>{
         if(!a.add){
@@ -342,7 +339,6 @@ export class ArPreviewComponent implements OnInit {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.acctEntryTbl.markAsPristine();
-          console.log('marked as pristine');
           this.retrieveAcctEntry();
         }
       });
@@ -462,17 +458,14 @@ export class ArPreviewComponent implements OnInit {
   }
 
   tickChckbx(data){
-    console.log(data)
     if(data.checked && data.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')){
       this.warnDeleteAuto.openNoClose();
         this.acctEntryTbl.selected = this.acctEntryTbl.selected.filter(a=>(data.updateLevel != 'L' && data.updateLevel != 'N'));
-        console.log(this.acctEntryTbl.selected);
     }
     this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')).length > 0;
   }
 
   computeTotals(){   
-    console.log(this.accEntriesData.tableData)
     this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
     this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat( b.foreignDebitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;

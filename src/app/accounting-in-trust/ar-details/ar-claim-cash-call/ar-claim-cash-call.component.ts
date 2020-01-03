@@ -110,7 +110,6 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
         data.cedingCompany[0].cedingRepresentative = data.cedingCompany[0].cedingRepresentative.filter(a=>{return a.defaultTag === 'Y'});
         this.payorData = data.cedingCompany[0];
         this.payorData.business = this.record.bussTypeName;
-        console.log(data);
       }
     );
   }
@@ -145,7 +144,6 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
     this.passLov.payeeNo = this.record.payeeNo;
     this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.claimId});
-    console.log(this.passLov.hide);
     this.clmRecoverIndex = data.index;
     this.lovMdl.openLOV();
   }
@@ -231,7 +229,6 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
       saveClmCashCall: this.savedData,
       delClmCashCall: this.deletedData
     }
-    console.log(params);
 
     this.accountingService.saveAcitArClmCashCall(params).subscribe(
       (data:any)=>{
@@ -294,9 +291,6 @@ export class ArClaimCashCallComponent implements OnInit, AfterViewInit {
 
   checkBalance(){
     for(var i of this.passData.tableData){
-      console.log(i.netDue);
-      console.log(i.totalPayments);
-      console.log(i.balPaytAmt)
       if(i.balPaytAmt > i.netDue - i.totalPayments){
         return true;
       }

@@ -94,7 +94,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
-    console.log(this.record.tranId);
     this.passData.nData.tranId = this.record.tranId;
     this.isReopen = this.record.reopenTag == 'Y';
     this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M%'}];
@@ -130,12 +129,10 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
   }
 
   openInvPulloutLOV(data){
-      console.log(this.invData);
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     for(var i of this.invData){
       this.passLov.hide.push(i);
     }
-    console.log(this.passLov.hide);
     this.invtPulloutIndex = data.index;
     this.lovMdl.openLOV();
   }
@@ -232,7 +229,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
       saveInvPullout: this.savedData,
       delInvPullout: this.deletedData
     }
-    console.log(params);
 
     this.accountingService.saveAcitArInvPullout(params).subscribe(
       (data:any)=>{
@@ -278,7 +274,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     }
   }
   onTableDataChange(data){
-    console.log(data);
   }
 
   checkOriginalAmtvsAlteredAmt(): boolean{
@@ -288,8 +283,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
         this.newAlteredAmt += i.currAmt;
       }
     }
-    console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
   }
 
@@ -306,7 +299,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 7;
-    console.log("Row Length >>>" + rowLength);
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
@@ -316,7 +308,6 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
                6:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
                [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
       };
-    console.log(mystyle);
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);

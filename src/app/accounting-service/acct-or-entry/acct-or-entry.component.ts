@@ -229,7 +229,6 @@ export class AcctOrEntryComponent implements OnInit {
     if(this.emittedValue == undefined){
       this.sub = this.route.params.subscribe(
          data=>{
-           console.log(data)
            if(data.from === 'CancelledTran'){
              tranId = data.tranId;
              orNo = '';
@@ -503,7 +502,6 @@ export class AcctOrEntryComponent implements OnInit {
     this.orInfo.dcbBankAcct = data.bankAcctCd;
     this.orInfo.dcbBankAcctNo = data.accountNo;
     this.dcbBankAcctCurrCd = data.currCd;
-    console.log(data.currCd);
   }
 
   changeOrAmt(data){
@@ -512,7 +510,6 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   setLov(data){
-    console.log(data);
     if(data.selector === 'payee'){
       this.genAcctEnt = true;
       if(data.ev != undefined){
@@ -561,7 +558,6 @@ export class AcctOrEntryComponent implements OnInit {
     this.forkSub = sub$.subscribe(
       (forkData:any)=>{
         this.genAcctEnt = false;
-        console.log('arEntry first');
         let data = forkData.or;
         let bankData = forkData.bank;
         let bankAcctData = forkData.bankAcct;
@@ -573,12 +569,10 @@ export class AcctOrEntryComponent implements OnInit {
         //payment type
         paymentType.tranTypeList = paymentType.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
         this.paymentTypes = paymentType.tranTypeList;
-        console.log(this.paymentTypes);
         this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
         if(this.paymentTypes.length == 1){
           this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
         }
-        console.log(data);
 
         //ar
         if(data.or !== null){
@@ -671,7 +665,6 @@ export class AcctOrEntryComponent implements OnInit {
               this.passData.opts[1].prev.push(l.currencyCd);
             }
           }
-          console.log(data.orEntry.paytDtl);
           //this.passData.tableData          = data.orEntry.paytDtl;
           //tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
           //dataTypes: ['reqSelect','reqSelect','reqPercent','reqCurrency','reqSelect','reqTxt','reqTxt','reqDate','reqSelect', 'text'],
@@ -1012,7 +1005,6 @@ export class AcctOrEntryComponent implements OnInit {
         }
         this.ps.directPrint(params).subscribe(
           (data:any)=>{
-            console.log(data);
             if(data.errorList.length == 0 && data.messageList.length != 0){
               if(isReprint == undefined){
                 this.successPrintMdl.openNoClose();
@@ -1099,7 +1091,6 @@ export class AcctOrEntryComponent implements OnInit {
         if(data.tranTypeList.length !== 0){
           data.tranTypeList = data.tranTypeList.filter(a=>{return a.tranTypeCd !== 0 && a.groupTag == groupTag});
           this.paymentTypes = data.tranTypeList;
-          console.log(this.paymentTypes);
           this.orInfo.tranTypeCd = this.paymentTypes.filter(a=>{return a.autoTag == 'Y'}).length == 0 ? '' : this.paymentTypes.filter(a=>{return a.autoTag == 'Y'})[0].tranTypeCd;
           if(this.paymentTypes.length == 1){
             this.orInfo.tranTypeCd = this.paymentTypes[0].tranTypeCd;
@@ -1117,7 +1108,6 @@ export class AcctOrEntryComponent implements OnInit {
     this.passData.opts[1].prev = [];
     this.ms.getMtnCurrency('','Y', this.orDate.date).subscribe(
       (data:any)=>{
-        console.log('currencies first');
         if(data.currency.length !== 0){
           for(var i of data.currency){
             if(this.isAdd && 'PHP' === i.currencyCd){
@@ -1322,8 +1312,6 @@ export class AcctOrEntryComponent implements OnInit {
       }
     }
     if(this.orInfo.orAmt * this.orInfo.currRate !== totalPayts){
-      console.log(this.orInfo.orAmt * this.orInfo.currRate);
-      console.log(totalPayts);
       return true;
     }else{
       return false;
@@ -1331,9 +1319,6 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   orAmtEqualsOrDtlPayt(): boolean{
-    console.log(this.orInfo.orDtlSum);
-    console.log(this.orInfo.orAmt);
-    console.log(Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100);
     if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
       return true;
     }
@@ -1359,7 +1344,6 @@ export class AcctOrEntryComponent implements OnInit {
   getPrinters(){
     this.ps.getPrinters().subscribe(
       (data:any)=>{
-        console.log(data);
         this.printers = data;
       }
     );
@@ -1393,7 +1377,6 @@ export class AcctOrEntryComponent implements OnInit {
       (data:any)=>{
         if(data.parameters.length !== 0){
             this.canReprint = data.parameters[0].paramValueV == 'Y';
-            console.log(this.canReprint);
          }
          else{
            this.canReprint = false;
@@ -1563,7 +1546,6 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
     if(data !== null){
       this.passData.disableGeneric = false;
     }else{
@@ -1575,7 +1557,6 @@ export class AcctOrEntryComponent implements OnInit {
     if(data.key !== 'remarks'){
       this.genAcctEnt = true;
     }
-    console.log(data);
     if(data.key === 'paytMode'){
       for(var i = 0; i < data.length; i++){
         /*data[i].uneditable = [];
@@ -1623,8 +1604,6 @@ export class AcctOrEntryComponent implements OnInit {
           data[i].checkClass = '';
           console.log('condition2');
         }*/
-        console.log(data[i].uneditable);
-        console.log(data[i].required);
         this.paytDtlTbl.refreshTable();
       }
     }
@@ -1701,7 +1680,6 @@ upload(){
 
 //validate file to be uploaded
   validateFile(event){
-    console.log(event.target.files);
     var validate = '';
     validate = this.up.validateFiles(event);
 
@@ -1747,7 +1725,6 @@ uploadAcctEntries(){
   }
 
   uploaderActivity(event){
-    console.log(event);
     if(event instanceof Object){ //If theres an error regarding the upload
       this.dialogIcon = 'error-message';
      this.dialogMessage = event.message;

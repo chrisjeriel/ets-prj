@@ -202,7 +202,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.acctEntriesData.nData.tranId = this.record.tranId;
     this.acctEntriesData.nData.autoTag = 'N';
-    console.log(this.record);
     if(this.paymentType == null){
           this.paymentType = "";
     }
@@ -246,7 +245,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-    console.log(data);
     if(data === null){
       //this.emitCreateUpdate.emit(null);
       this.createUpdate = null;
@@ -266,7 +264,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     if(this.record.vatTag !== undefined && this.record.vatTag == 1 && !this.passLov.hide.includes('VAT') || (this.record.orType != undefined && this.record.orType == 'NON-VAT') ){ //if Payee is VAT EXEMPT, hide VAT in LOV
       this.passLov.hide.push('VAT')
     }
-    console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
@@ -276,7 +273,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     this.passLov.selector = 'mtnWhTax';
     this.lovCheckbox = true;
     this.passLov.hide = this.whTaxData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    console.log(this.passLov.hide);
     this.whTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
@@ -304,8 +300,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
   setSelectedData(data){
     let selected = data.data;
-    console.log(this.lovRow);
-    console.log(selected);
     if(data.selector == 'mtnGenTax'){ //set values to general taxes table
       this.lovRow = undefined;
       this.genTaxData.tableData = this.genTaxData.tableData.filter(a=>a.showMG!=1);
@@ -372,7 +366,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   acctEntriesTableDataChange(data){
-    console.log('yeet');
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
       for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
         this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
@@ -385,7 +378,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   computeTotals(){   
-    console.log(this.acctEntriesData.tableData)
     this.totals.credit = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
     this.totals.debit  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
@@ -405,8 +397,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         (data:any)=>{
           let genTax = data.genTax.taxDetails;
           let whTax = data.whTax.taxDetails;
-          console.log(genTax);
-          console.log(whTax);
           this.genTaxData.tableData = [];
           this.whTaxData.tableData = [];
           for(var i of genTax){
@@ -581,9 +571,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
                                                                                                b.updateDate = this.ns.toDateTimeString(0);
                                                                                                return b;});
       this.deletedData = this.acctEntriesData.tableData.filter(a=>a.deleted);
-      console.log(this.savedData);
-      console.log(this.deletedData);
-
       this.savedData.forEach(a=>{
         if(!a.add){
           a.updateUser = this.ns.getCurrentUser();
@@ -606,7 +593,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           this.dialogIcon = 'success';
           this.successDiag.open();
           this.acctEntriesTbl.markAsPristine();
-          console.log('marked as pristine');
           this.retrieveAcseOrPreview();
         }
       });

@@ -106,8 +106,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.passData = this.as.getInwardPolicyKeys('AR');
     //this.passData.pageLength = 'unli';
     //end
-    console.log(this.record.payeeNo);
-    console.log(this.record.reopenTag);
     this.passLov.payeeNo = this.record.payeeNo;
     this.isReopen = this.record.reopenTag == 'Y';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
@@ -129,7 +127,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   openSoaLOV(data){
     this.passLov.currCd = this.record.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
-    console.log(this.passLov.hide);
     this.soaIndex = data.index;
     this.lovMdl.openLOV();
   }
@@ -162,7 +159,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
           }, 0);
         }
         this.computeTotalBalAndVariance();
-        console.log(this.originalValues);
       },
       (error)=>{
         console.log(error);
@@ -173,7 +169,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   retrieveAgingSoaDtl(){
     this.as.getAcitSoaDtl('','','',this.record.payeeNo).subscribe(
       (data: any)=>{
-        data.soaDtlList = data.soaDtlList.filter(a=>{console.log(a);return a.balance > -1;});
+        data.soaDtlList = data.soaDtlList.filter(a=>{return a.balance > -1;});
         this.passData.tableData = data.soaDtlList;
         this.table.refreshTable();
       }
@@ -182,7 +178,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
   setSelectedData(data){
     let selected = data.data;
-    console.log(selected);
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -236,8 +231,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(cancel?){
-    console.log(this.isReopen);
-    console.log(this.checkOriginalAmtvsAlteredAmt());
     if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
@@ -326,7 +319,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       saveInwPolBal: this.savedData,
       delInwPolBal: this.deletedData
     }
-    console.log(params);
 
     this.as.saveAcitArInwPolBal(params).subscribe(
       (data:any)=>{
@@ -365,8 +357,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data){
-    console.log(data);
-    console.log(this.originalValues);
     //let index = 0;
     if(data.key === 'balPaytAmt'){
       /*for(var i = 0; i < this.passData.tableData.length; i++){
@@ -398,7 +388,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
       data[index].totalPayments = data[index].balPaytAmt + data[index].cumPayment;
       data[index].netDue = data[index].prevNetDue - data[index].totalPayments;*/
-      console.log(data);
       /*if(this.selected.add){
         this.as.getAcitSoaDtlNew(this.record.currCd,data[index].policyId, data[index].instNo, null, this.record.payeeNo).subscribe(
           (soaDtl: any)=>{
@@ -463,7 +452,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
 
     //this.passData.tableData = data;
     this.computeTotalBalAndVariance();
-    console.log(this.originalValues);
   }
 
   parseCurrency(data){
@@ -490,8 +478,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
         this.newAlteredAmt += i.balPaytAmt;
       }
     }
-    console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
   }
 
@@ -504,8 +490,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       if(i.edited && !i.deleted &&
         ((i.prevNetDue < 0 && i.balPaytAmt < 0 && i.balPaytAmt < i.prevBalance) ||
           (i.prevNetDue > 0 && i.balPaytAmt > 0 && i.balPaytAmt > i.prevBalance))){  
-        console.log(i.prevBalance);
-        console.log(i.balPaytAmt)
         return true;
       }
     }
@@ -521,7 +505,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   }
 
   allotedVsArAmt(){
-    console.log(this.record.arAmt);
     if(this.allotedAmt > this.record.arAmt){
       return true;
     }
@@ -553,8 +536,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
          (i.prevNetDue > 0 && i.balPaytAmt < 0 && i.balPaytAmt + i.cumPayment < 0)){
         /*(i.prevBalance < 0 && i.balPaytAmt + i.cumPayment > 0) ||
          (i.prevBalance > -1 && i.balPaytAmt + i.cumPayment > 0)){*/
-        console.log(i.cumPayment);
-        console.log(i.balPaytAmt)
         return true;
       }
     }
@@ -574,7 +555,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
-    console.log("Row Length >>>" + rowLength);
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
@@ -583,7 +563,6 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
                5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
                [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
       };
-    console.log(mystyle);
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);

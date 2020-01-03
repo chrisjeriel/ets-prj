@@ -126,7 +126,6 @@ export class ArDetailsQsoaComponent implements OnInit {
           this.passData.tableData.push(i);
         }
         this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
-        console.log(this.quarterEndingDates);
         //this.passData.tableData = data.negTrtyBalList;
         this.table.refreshTable();
       }
@@ -134,7 +133,6 @@ export class ArDetailsQsoaComponent implements OnInit {
   }
 
   openLOV(event){
-    console.log(event);
     this.quarterEndingIndex = event.index;
     this.passLov.params.cedingId = this.record.payeeNo;
     this.passLov.params.currCd = this.record.currCd;
@@ -142,9 +140,7 @@ export class ArDetailsQsoaComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(this.record.payeeNo);
     let selected = data.data;
-    console.log(selected);
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -233,7 +229,6 @@ export class ArDetailsQsoaComponent implements OnInit {
       saveNegTrtyBal: this.savedData,
       delNegTrtyBal: this.deletedData
     }
-    console.log(params);
 
     this.accountingService.saveAcitArNegTrtyBal(params).subscribe(
       (data:any)=>{
@@ -299,7 +294,6 @@ export class ArDetailsQsoaComponent implements OnInit {
     }else if(data.key === 'quarterEnding'){
       //validation about non duplicate quarter ending here
       this.quarterEndingDates = this.passData.tableData.map(a=>{ return this.ns.toDateTimeString(a.quarterEnding);});
-      console.log(this.quarterEndingDates);
     }
   }
 
@@ -349,8 +343,6 @@ export class ArDetailsQsoaComponent implements OnInit {
         this.newAlteredAmt += i.balPaytAmt;
       }
     }
-    console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
   }
 
@@ -367,7 +359,6 @@ export class ArDetailsQsoaComponent implements OnInit {
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'ARDetails_#'+this.record.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
-    console.log("Row Length >>>" + rowLength);
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
@@ -376,7 +367,6 @@ export class ArDetailsQsoaComponent implements OnInit {
                5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
                [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
       };
-    console.log(mystyle);
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);

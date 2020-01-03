@@ -193,10 +193,8 @@ export class UnappliedCollectionComponent implements OnInit {
       delTransDtl: this.deletedData,
       genAcctEnt: this.genAcctEnt ? 'Y' : 'N'
     }
-    console.log(params);
     this.accountingService.saveAcitArTransDtl(params).subscribe(
       (data:any)=>{
-        console.log(data);
         if(data.returnCode === -1){
           this.dialogIcon = '';
           this.successDiag.open();
@@ -248,8 +246,6 @@ export class UnappliedCollectionComponent implements OnInit {
         this.newAlteredAmt += i.currAmt;
       }
     }
-    console.log('originalAmt => ' + this.originalNet );
-    console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
   }
 
@@ -266,7 +262,6 @@ export class UnappliedCollectionComponent implements OnInit {
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
     var filename = 'ARDetails_#'+this.arDetails.formattedArNo+'_'+currDate+'.xls'
     var rowLength: number = this.passData.tableData.length + 6;
-    console.log("Row Length >>>" + rowLength);
     var mystyle = {
         headers:false, 
         column: {style:{Font:{Bold:"1"}}},
@@ -275,7 +270,6 @@ export class UnappliedCollectionComponent implements OnInit {
                5:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}},
                [rowLength]:{style:{Font:{Bold:"1"},Interior:{Color:"#C9D9D9", Pattern: "Solid"}}}}
       };
-    console.log(mystyle);
 
       alasql.fn.datetime = function(dateStr) {
             var date = new Date(dateStr);

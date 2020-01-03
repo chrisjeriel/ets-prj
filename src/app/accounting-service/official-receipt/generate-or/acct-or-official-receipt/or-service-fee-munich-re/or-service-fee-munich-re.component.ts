@@ -185,11 +185,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
        (forkData:any)=>{
          let defTax = forkData.defTax;
          let defWhTax = forkData.defWhTax;
-         console.log(defTax);
-         console.log(defWhTax);
          for(var i of defTax.defTax){
-           console.log(i.taxCd);
-           console.log(this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd));
            if(!this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd)){
              this.passData.nData.taxAllocation.push({
                tranId: this.record.tranId,
@@ -243,7 +239,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 
   checkPayeeVsVat(){
     if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
-      console.log('pasok boi');
       this.ms.getMtnGenTax('VAT').subscribe(
          (data: any)=>{
            var vatDetails: any = {
@@ -264,7 +259,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
              edited: true
            }
            this.passData.nData.taxAllocation.push(vatDetails);
-           console.log(this.passData.nData);
          },
          (error)=>{
            console.log('An error occured when fetching maintenance gentax');
@@ -284,7 +278,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
       this.passLov.hide.push('VAT')
     }
-    console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.taxLovMdl.openLOV();
   }
@@ -293,7 +286,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnWhTax';
     this.passLov.hide = this.passDataWhTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    console.log(this.passLov.hide);
     this.whTaxIndex = event.index;
     this.taxLovMdl.openLOV();
   }
@@ -310,7 +302,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
             this.table.onRowClick(null, this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding}).length == 0 ? null :
                               this.passData.tableData.filter(a=>{return a.quarterEnding == this.selectedItem.quarterEnding})[0] );
           }
-          console.log(this.quarterEndingDates);
   			}else{
           this.quarterEndingDates = [];
         }
@@ -319,7 +310,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-  	console.log(data);
   	if(data === null){
       this.disableTaxBtn = true;
       this.selectedItem = null;
@@ -344,14 +334,12 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   }
 
   openLOV(event){
-  	console.log(event.index);
     this.quarterEndingIndex = event.index;
     this.lovMdl.modal.openNoClose();
   }
 
   setSelectedData(data){
     this.loading = true;
-    console.log(data);
     let qtrMonth: string = data.substr(5,5).split('-').join('');
     let qtrYear: number = parseInt(data.substr(0,4));
 
@@ -421,7 +409,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   setSelectedDataTax(data){
     let selected = data.data;
     if(selected[0].taxId !== undefined){ //set values to general taxes table
-      console.log(selected);
       this.passDataGenTax.tableData = this.passDataGenTax.tableData.filter(a=>a.showMG!=1);
       for(var i = 0; i < selected.length; i++){
         this.passDataGenTax.tableData.push(JSON.parse(JSON.stringify(this.passDataGenTax.nData)));
@@ -442,7 +429,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       }
       this.genTaxTbl.refreshTable();
     }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
-      console.log(selected);
       this.passDataWhTax.tableData = this.passDataWhTax.tableData.filter(a=>a.showMG!=1);
       for(var i = 0; i < selected.length; i++){
         this.passDataWhTax.tableData.push(JSON.parse(JSON.stringify(this.passDataWhTax.nData)));
@@ -540,8 +526,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       delServFee: this.deletedData,
       delOrItemTaxes: this.deletedTaxData.flat()
     }
-
-    console.log(params);
 
     this.as.saveAcseOrServFee(params).subscribe(
       (data:any)=>{

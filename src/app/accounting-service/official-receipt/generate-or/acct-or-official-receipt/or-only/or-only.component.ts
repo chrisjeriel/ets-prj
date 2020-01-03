@@ -154,7 +154,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
-    console.log(this.record.vatTag);
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
     this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
@@ -189,11 +188,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
        (forkData:any)=>{
          let defTax = forkData.defTax;
          let defWhTax = forkData.defWhTax;
-         console.log(defTax);
-         console.log(defWhTax);
          for(var i of defTax.defTax){
-           console.log(i.taxCd);
-           console.log(this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd));
            if(!this.passData.nData.taxAllocation.map(a=>{return a.taxCd}).includes(i.taxCd)){
              this.passData.nData.taxAllocation.push({
                tranId: this.record.tranId,
@@ -247,7 +242,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 
   checkPayeeVsVat(){
     if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
-      console.log('pasok boi');
       this.ms.getMtnGenTax('VAT').subscribe(
          (data: any)=>{
            var vatDetails: any = {
@@ -268,7 +262,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
              edited: true
            }
            this.passData.nData.taxAllocation.push(vatDetails);
-           console.log(this.passData.nData);
          },
          (error)=>{
            console.log('An error occured when fetching maintenance gentax');
@@ -285,7 +278,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   	//this.passData.tableData = [];
   	this.as.getAcseOrTransDtl(this.record.tranId, 1).subscribe(
   		(data:any)=>{
-  			console.log(data.orDtlList);
   			if(data.orDtlList.length !== 0){
   				this.passData.tableData = data.orDtlList;
   				/*for(var i  of data.orDtlList){
@@ -300,15 +292,12 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   			
   		},
   		(error)=>{
-  			console.log('An error occured');
-  			console.log(error);
   			this.mainTbl.refreshTable();
   		}
     );
   }
 
   onRowClick(data){
-  	console.log(data);
   	if(data === null){
   		this.disableTaxBtn = true;
   		this.selectedItem = {};
@@ -339,7 +328,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
     if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
       this.passLov.hide.push('VAT')
     }
-    console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
@@ -348,7 +336,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   	this.passLov.activeTag = 'Y';
   	this.passLov.selector = 'mtnWhTax';
     this.passLov.hide = this.passDataWhTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    console.log(this.passLov.hide);
     this.whTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
@@ -356,7 +343,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   setSelectedData(data){
   	let selected = data.data;
     if(selected[0].taxId !== undefined){ //set values to general taxes table
-    	console.log(selected);
 	    this.passDataGenTax.tableData = this.passDataGenTax.tableData.filter(a=>a.showMG!=1);
 	    for(var i = 0; i < selected.length; i++){
 	      this.passDataGenTax.tableData.push(JSON.parse(JSON.stringify(this.passDataGenTax.nData)));
@@ -377,7 +363,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
     	}
     	this.genTaxTbl.refreshTable();
     }else if(selected[0].whTaxId !== undefined){ //set values to withholding taxes table
-    	console.log(selected);
     	this.passDataWhTax.tableData = this.passDataWhTax.tableData.filter(a=>a.showMG!=1);
     	for(var i = 0; i < selected.length; i++){
     	  this.passDataWhTax.tableData.push(JSON.parse(JSON.stringify(this.passDataWhTax.nData)));
@@ -398,7 +383,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data){
-    console.log(data);
     if(data.key == 'currAmt'){
       for(var i of this.passData.tableData){
         i.localAmt = i.currAmt * i.currRate;
@@ -433,7 +417,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   }
 
   test(event){
-    console.log(event);
   }
 
   save(cancelFlag?){
@@ -479,7 +462,6 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
       delOrTransDtl: this.deletedData,
       delOrItemTaxes: this.deletedTaxData.flat()
     }
-    console.log(params);
 
     this.as.saveAcseOrTransDtl(params).subscribe(
       (data:any)=>{

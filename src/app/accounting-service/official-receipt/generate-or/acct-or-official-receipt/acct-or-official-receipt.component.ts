@@ -120,7 +120,6 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
   	if(this.paymentType == null){
       this.paymentType = "";
     }
-    console.log(this.inquiryFlag);
   }
   
  openTaxAllocation(){
@@ -130,7 +129,6 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
  onTabChange($event: NgbTabChangeEvent) {
 
    if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
-     console.log('here 3');
      $event.preventDefault();
      const subject = new Subject<boolean>();
      const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -142,7 +140,6 @@ export class AcctOrOfficialReceiptComponent implements OnInit {
 
      subject.subscribe(a=>{
        if(a){
-         console.log('here 4');
          $('.ng-dirty').removeClass('ng-dirty');
          this.tabset.select($event.nextId);
        }
