@@ -228,16 +228,16 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
       //     this.policyInfo[i] = event[i]
       // }
 
-      this.policyInfo.policyId = event.policyId;
-      this.policyInfo.policyNo = event.policyNo;
+      this.policyInfo.policyId = event.policyId != undefined ? event.policyId : this.policyInfo.policyId;
+      this.policyInfo.policyNo = event.policyNo != undefined ? event.policyNo : this.policyInfo.policyNo;
       this.policyInfo.insuredDesc =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
-      this.policyInfo.riskId =  event.riskId;
-      this.policyInfo.riskName =  event.riskName;
-      this.policyInfo.showPolAlop = event.showPolAlop;
-      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag;
-      this.policyInfo.cedingName = event.cedingName;
-      this.policyInfo.extensionTag = event.extensionTag;
-      this.policyInfo.principalId = event.principalId;
+      this.policyInfo.riskId =  event.riskId != undefined ? event.riskId : this.policyInfo.riskId;
+      this.policyInfo.riskName =  event.riskName != undefined ? event.riskName : this.policyInfo.riskName;
+      this.policyInfo.showPolAlop = event.showPolAlop != undefined ? event.showPolAlop : this.policyInfo.showPolAlop;
+      this.policyInfo.coInsuranceFlag = event.coInsuranceFlag != undefined ? event.coInsuranceFlag : this.policyInfo.coInsuranceFlag;
+      this.policyInfo.cedingName = event.cedingName != undefined ? event.cedingName : this.policyInfo.cedingName;
+      this.policyInfo.extensionTag = event.extensionTag != undefined ? event.extensionTag : this.policyInfo.extensionTag;
+      this.policyInfo.principalId = event.principalId != undefined ? event.principalId : this.policyInfo.principalId;
       this.policyInfo.insured =  event.insuredDesc != undefined ? event.insuredDesc : this.policyInfo.insuredDesc;
       this.line = this.policyInfo.policyNo.split('-')[0];
       console.log(this.us.fromCreateAlt);
@@ -245,6 +245,7 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
         this.policyInfo.prevPolicyId = event.refPolicyId;
       }
       this.policyInfo.holdCoverTag = event.holdCoverTag != undefined ? event.holdCoverTag : this.policyInfo.holdCoverTag;
+      console.log(event.extensionTag)
     }
 
    returnOnModal(){

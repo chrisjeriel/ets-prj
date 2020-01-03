@@ -14,22 +14,23 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 export class ClmClaimsInquiryComponent implements OnInit {
 	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 	passData: any = {
-	    tHeader: ["Claim No", "Status", "Policy No", "Co Claim No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
-	    		  "Co Ref No", "Adjuster", "Adjuster Ref No", "Risk", "Loss Date", "Report Date", "Reported By", "Creation Date", 
+	    tHeader: ["Claim No", "Co Claim No","Loss Date", "Report Date", "Status", "Policy No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
+	    		  "Co Ref No", "Adjuster", "Adjuster Ref No", "Risk",  "Reported By", "Creation Date", 
 	    		  "Processed By", "Loss Cause", "Loss Period", "Event Type", "Event", "Loss Details", "Remarks", "Section I",
 	    		  "Section II", "Section III", 'Currency', 'Total Reserved', 'Total Payment'],
 
-		sortKeys : ['CLAIM_NO','CLM_STATUS','POLICY_NO','CO_CLM_NO','CESSION_DESC','LINE_CLASS_DESC','CEDING_NAME','INSURED_DESC',
-					'CO_REF_NO','ADJ_NAME','ADJ_REF_NO','RISK_NAME','LOSS_DATE','REPORT_DATE','REPORTED_BY','CREATE_DATE',
+		sortKeys : ['CLAIM_NO','CO_CLM_NO','LOSS_DATE','REPORT_DATE','CLM_STATUS','POLICY_NO','CESSION_DESC','LINE_CLASS_DESC','CEDING_NAME','INSURED_DESC',
+					'CO_REF_NO','ADJ_NAME','ADJ_REF_NO','RISK_NAME','REPORTED_BY','CREATE_DATE',
 					'PROCESSED_BY','LOSS_ABBR','LOSS_PD_ABBR','EVENT_TYPE_DESC','EVENT_DESC','LOSS_DTL','REMARKS','SECI_SI_TAG','SECII_SI_TAG','SECIII_SI_TAG',
 					'CURRENCY_CD','T_LOSS_EXP_RES','T_LOSS_EXP_PD'],
 
-		dataTypes: ["text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "text", "date", 
-					"date", "text", "date", "text", "text", "text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
+		dataTypes: ["text", "text","date", "date", "text", "text", "text", "text", "text", 
+					"text", "text", "text", "text", "text",  "text", "date", "text", "text", 
+					"text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
 					"text", "currency", "currency"],
 
-	    keys: ['claimNo','clmStatus','policyNo', 'coClaimNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
-	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'lossDate', 'reportDate', 'reportedBy', 'createDate', 'processedBy', 
+	    keys: ['claimNo', 'coClaimNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
+	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'reportedBy', 'createDate', 'processedBy', 
 	    	   'lossAbbr', 'lossPdAbbr', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
 	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
 	    infoFlag: true,
@@ -46,6 +47,27 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	            dataType: 'text'
 	        },
 	        {
+	            key: 'coClaimNo',
+	            title:'Co Claim No',
+	            dataType: 'text'
+	        },
+	        {
+	             keys: {
+	                  from: 'lossDateFrom',
+	                  to: 'lossDateTo'
+	              },
+	              title: 'Loss Date',
+	              dataType: 'datespan'
+	        },
+	        {
+	             keys: {
+	                  from: 'reportDateFrom',
+	                  to: 'reportDateTo'
+	              },
+	              title: 'Report Date',
+	              dataType: 'textspan'
+	        },
+	        {
 	            key: 'clmStatus',
 	            title:'Status',
 	            dataType: 'text'
@@ -53,11 +75,6 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	        {
 	            key: 'policyNo',
 	            title:'Policy No.',
-	            dataType: 'text'
-	        },
-	        {
-	            key: 'coClaimNo',
-	            title:'Co Claim No',
 	            dataType: 'text'
 	        },
 	        {
@@ -99,22 +116,6 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	            key: 'riskName',
 	            title:'Risk',
 	            dataType: 'text'
-	        },
-	        {
-	             keys: {
-	                  from: 'lossDateFrom',
-	                  to: 'lossDateTo'
-	              },
-	              title: 'Loss Date',
-	              dataType: 'datespan'
-	        },
-	        {
-	             keys: {
-	                  from: 'reportDateFrom',
-	                  to: 'reportDateTo'
-	              },
-	              title: 'Report Date',
-	              dataType: 'textspan'
 	        },
 	        {
 	            key: 'reportedBy',

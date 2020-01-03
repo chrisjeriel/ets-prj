@@ -569,6 +569,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.dps.forEach(a=>a.markAsPristine());
         this.ns.formGroup.markAsPristine();
         this.updateMinBookingDate();
+        this.emitPolicyInfoId.emit({extensionTag : this.policyInfo.extensionTag});
       }
 
       
@@ -1031,7 +1032,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                                      insuredDesc: this.policyInfo.insuredDesc,
                                      policyNo: this.policyNo,
                                      riskName: this.policyInfo.project.riskName,
-                                     holdCoverTag: this.policyInfo.holdCoverTag})
+                                     holdCoverTag: this.policyInfo.holdCoverTag,
+                                     extensionTag: this.policyInfo.extensionTag})
 
          // this.checkAlopInfo();
          this.getPolGenInfo('noLoading');
