@@ -95,7 +95,7 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   ngAfterViewInit() {
     if(!this.table) {
-      this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
+      // this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
     }
   }
 
@@ -174,7 +174,6 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   valueUpdated() {
   	var dateString = this.ns.toDateTimeString(this.type == 'datetime' && this.datepickerVal != null ? this.datepickerVal : this.datepickerVal == null ? '' : this.datepickerVal.setSeconds(0));
-
   	switch (this.type) {
   		case "datetime":  	
   			dateString = this.datepickerVal == null ? '' : dateString;
