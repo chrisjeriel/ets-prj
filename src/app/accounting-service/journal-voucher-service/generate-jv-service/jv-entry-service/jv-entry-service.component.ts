@@ -143,7 +143,7 @@ export class JvEntryServiceComponent implements OnInit {
 
   retrieveJVEntry(){
     this.accountingService.getACSEJvEntry(this.tranId).subscribe((data:any) => {
-      console.log(data);
+
       if(data.jvEntry !== null){
         this.entryData = data.jvEntry; 
         this.entryData.jvDate       = this.entryData.jvDate == null ? '':this.ns.toDateTimeString(this.entryData.jvDate);
@@ -358,7 +358,6 @@ export class JvEntryServiceComponent implements OnInit {
         this.printEntries.openNoClose();
     }else if(this.printData.destination == 'printer'){
       this.ps.directPrint(params).subscribe((data:any) => {
-        console.log(data);
         if(data.errorList.length == 0 && data.messageList.length != 0){
           this.printEntries.openNoClose();
         }else{
@@ -574,7 +573,6 @@ upload(){
 
 //validate file to be uploaded
   validateFile(event){
-    console.log(event.target.files);
     var validate = '';
     validate = this.up.validateFiles(event);
 
@@ -599,7 +597,6 @@ uploadAcctEntries(){
      this.dialogMessage = 'No file selected.';
      this.successDiag.open();
    }else{
-     console.log(this.entryData.tranId);
      this.uploadLoading = true;
      this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACSE', 'JV', this.entryData.tranId);
      /*setTimeout(()=>{
@@ -621,7 +618,6 @@ uploadAcctEntries(){
   }
 
   uploaderActivity(event){
-    console.log(event);
     if(event instanceof Object){ //If theres an error regarding the upload
       this.dialogIcon = 'error-message';
      this.dialogMessage = event.message;
