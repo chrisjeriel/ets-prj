@@ -232,7 +232,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
            });
          }
          this.passData.nData.taxAllocation = this.passData.nData.taxAllocation.filter(a=>{
-                                                 if((this.record.vatTag == 3 || this.record.vatTag == 2) && this.record.orType == 'VAT'){
+                                                 if((this.record.vatTag == 3 || this.record.vatTag == 2 || this.record.vatTag == null) && this.record.orType == 'VAT'){
                                                     return a;
                                                  }else{
                                                    return a.taxCd !== 'VAT';
