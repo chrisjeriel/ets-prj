@@ -58,7 +58,9 @@
                                 </app-cust-editable-non-datatable>
                             </ng-container>
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6 || requestData?.tranTypeCd == 7">
-                                <app-cust-editable-non-datatable id="diemInsDataTbl" (clickLOV)="showLOV($event,'diemInsData')" (newClick)="onRowClick($event)" [passData]="diemInsData" (tableDataChange)="diemInsData.tableData=$event;onDataChange('diemins');" #dieminsTbl></app-cust-editable-non-datatable>
+                                <app-cust-editable-non-datatable id="diemInsDataTbl" (clickLOV)="showLOV($event,'diemInsData')" (newClick)="onRowClick($event)" [passData]="diemInsData" (tableDataChange)="diemInsData.tableData=$event;onDataChange('diemins');" #dieminsTbl>
+                                    <button controls-r class="cust-btn" [disabled]="dieminsTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                </app-cust-editable-non-datatable>
                             </ng-container>
                         </ng-container>
                         <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="(requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
@@ -66,7 +68,7 @@
                                 <div class="text-center">
                                     <div class="cust-btn-container">
                                         <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
-                                        <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                                        <button type="button" class="cust-btn" (click)="frmMainSaveBtn=true;onClickSave()"><a>Save</a></button>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +115,7 @@
   <div footer class="w-100">
     <div class="col-md-13 text-center">
         <div class="cust-btn-container" >
-            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="cvData.checkFlag && pcvData.checkFlag"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="frmMainSaveBtn=false;onClickSave();" *ngIf="cvData.checkFlag && pcvData.checkFlag"><a>Save</a></button>
             <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
         </div>
     </div>
