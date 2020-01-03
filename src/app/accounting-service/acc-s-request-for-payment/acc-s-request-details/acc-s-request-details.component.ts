@@ -115,8 +115,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   //Added by NECO 11/19/2019
   passDataGenTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -132,22 +132,23 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'genTaxTbl'
       }
 
   passDataWhTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -163,15 +164,16 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'whTaxTbl'
       }
 
@@ -862,7 +864,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.directorId   = e.slCd;
             e.createDate = '';
             e.createUser = ''; 
-            e.updateUser = ''; 
+            e.updateUser = '';
+            e.taxAllocation = this.diemInsData.nData.taxAllocation.map(a => { a.edited = true; return a; });
           }
           e.checked = false;
           return e;
