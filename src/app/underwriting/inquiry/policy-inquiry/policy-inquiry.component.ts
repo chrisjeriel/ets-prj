@@ -179,7 +179,8 @@ export class PolicyInquiryComponent implements OnInit {
 
   searchParams: any = {
         'paginationRequest.count':10,
-        'paginationRequest.position':1
+        'paginationRequest.position':1,
+        mode:'inquiry'
     };
 
   constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
