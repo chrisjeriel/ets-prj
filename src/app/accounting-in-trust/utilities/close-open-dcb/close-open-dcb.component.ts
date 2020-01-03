@@ -108,6 +108,9 @@ export class CloseOpenDcbComponent implements OnInit {
   retrieveDCB(){
   	setTimeout(() => {this.table.loadingFlag = true}); 
     this.viewFlag = true;
+    this.closeTag = true;
+    this.tempTag = true;
+    this.openTag = true;
   	this.maintenanceService.getMtnAcitDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
   		console.log(data)
   		this.passData.tableData = [];
