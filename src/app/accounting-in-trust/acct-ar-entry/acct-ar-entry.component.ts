@@ -1571,17 +1571,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
              console.log('TRAN_TYPE_CD => ' + this.arInfo.tranTypeCd);
            }
 
-           this.arInfo.dcbUserCd = data.dcb.dcbUserList[0].dcbUserCd;
+           this.arInfo.dcbUserCd = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].dcbUserCd;
            this.arInfo.arNoDigits = parseInt(data.arNoDigits.parameters[0].paramValueN);
         //set default dcb bank
-           this.selectedBank.bankCd = data.dcb.dcbUserList[0].defaultArBank;
-           this.selectedBank.officialName = data.dcb.dcbUserList[0].arBankName;
+           this.selectedBank.bankCd = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].defaultArBank;
+           this.selectedBank.officialName = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].arBankName;
            this.arInfo.dcbBank = this.selectedBank.bankCd;
            this.arInfo.dcbBankName = this.selectedBank.officialName;
         //set default dcb bank account
-           this.selectedBankAcct.bankCd = data.dcb.dcbUserList[0].defaultArBank;
-           this.selectedBankAcct.bankAcctCd = data.dcb.dcbUserList[0].defaultArBankAcct;
-           this.selectedBankAcct.accountNo = data.dcb.dcbUserList[0].arBankAcctNo;
+           this.selectedBankAcct.bankCd = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].defaultArBank;
+           this.selectedBankAcct.bankAcctCd = data.dcb.dcbUserList[0] === undefined ? '' : data.dcb.dcbUserList[0].defaultArBankAcct;
+           this.selectedBankAcct.accountNo =data.dcb.dcbUserList[0] === undefined ? '' :  data.dcb.dcbUserList[0].arBankAcctNo;
            this.arInfo.dcbBankAcct = this.selectedBankAcct.bankAcctCd;
            this.arInfo.dcbBankAcctNo = this.selectedBankAcct.accountNo;
 
