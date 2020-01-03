@@ -136,8 +136,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
           var pNo = this.selected.policyNo.split('-');
           pNo[pNo.length-1] = '%';
-          this.cs.getClaimsListing([{ key: 'policyNo', search: pNo.join('-') }]).subscribe(data => {
-            if(data['claimsList'].length > 0) {
+          this.cs.checkExistingClaim(this.selected.policyId).subscribe(data => {
+            if(data =='Y') {
               this.warningMsg = 3;
               this.showWarningMdl();
             }
@@ -219,6 +219,10 @@ export class PolCreateAlterationPARComponent implements OnInit {
     if(this.searchArr.includes('')) {
       this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
     }
+    this.searchParams['paginationRequest.count'] =10;
+    this.searchParams['paginationRequest.position'] =1; 
+    this.searchParams.recount = 'Y'; 
+    this.passDataLOV.tableData = [];
     
     this.getPolListing([{ key: 'policyNo', search: this.searchArr.join('-') }]);
   }

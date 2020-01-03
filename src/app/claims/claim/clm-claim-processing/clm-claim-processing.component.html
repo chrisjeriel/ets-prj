@@ -95,13 +95,12 @@
 <app-modal hidden [btnTitle]="" style="margin-bottom: 2px;" #polList>
   <div header style="width: 1000px !important;">List of Values</div>
   <div body style="width: 1000 !important;">
-      <app-cust-non-datatable [passData]="policyListingData" (rowClick)="polListRowClick($event)" #polListTbl></app-cust-non-datatable>
+      <app-loading-table [passData]="policyListingData" (rowClick)="polListRowClick($event)" (searchToDb)="searchQueryPol($event)" #polListTbl></app-loading-table>
   </div>
   <div footer class="text-center" style="width:100% !important;">
     <button type="button" class="cust-btn" (click)="polListModal.closeModal();"><a>Cancel</a></button>
     <button type="button" class="cust-btn" (click)="polListModal.closeModal();setPolicyDetails(selectedPolicyRow.policyId, selectedPolicyRow.policyNo);"><a>Ok</a></button>
   </div>
-
 </app-modal>
 
 <app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)" (cancelBtn)="clearAddFields(); tempPolNo = ['','','','','','000']"></app-mtn-risk>

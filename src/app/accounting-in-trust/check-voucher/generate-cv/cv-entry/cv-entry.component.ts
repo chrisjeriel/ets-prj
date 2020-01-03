@@ -221,13 +221,23 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.preparedDate = this.ns.toDateTimeString(0);
         this.saveAcitCv.checkDate = this.ns.toDateTimeString(0);
 
-        recPn.forEach(e => {
+        /*recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
             this.saveAcitCv.preparedByName  = e.printableName;
             this.saveAcitCv.preparedBy   = e.userId;
             this.saveAcitCv.preparedDes = e.designation;
           }
-        });
+        });*/
+
+        for(let x of recPn) {
+          if(x.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
+            this.saveAcitCv.preparedByName = x.printableName;
+            this.saveAcitCv.preparedBy = x.userId;
+            this.saveAcitCv.preparedDes = x.designation;
+
+            break;
+          }
+        }
       }else{
         var totalPrl = arrSum(data['sub2']['prl']['acitCvPaytReqList'].map(e => e.reqAmt));
         var totalCredit = arrSum(data['sub2']['ae']['list'].map(e => e.foreignCreditAmt));
@@ -488,6 +498,7 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bankAcctDesc = '';
       this.saveAcitCv.bankAcct = '';
       this.saveAcitCv.checkNo = '';
+      this.suggestCheckNo = '';
       // var ba = this.bankAcctList;
       var ba = this.bankAcctList.filter(e => e.bankCd == data.data.bankCd && e.currCd == this.saveAcitCv.currCd && e.acItGlDepNo != null);
       if(ba.length == 1){
@@ -510,6 +521,7 @@ export class CvEntryComponent implements OnInit {
       var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
       if(chkNo.length == 0){
         this.saveAcitCv.checkNo = '';
+        this.suggestCheckNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }else{
@@ -533,6 +545,7 @@ export class CvEntryComponent implements OnInit {
         var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
         if(chkNo.length == 0){
           this.saveAcitCv.checkNo = '';
+          this.suggestCheckNo = '';
           this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
           this.warnMdl.openNoClose();
         }else{

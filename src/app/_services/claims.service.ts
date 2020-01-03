@@ -284,4 +284,10 @@ export class ClaimsService {
     getClaimPaytReqInq(searchParams:any){
         return this.http.get(environment.prodApiUrl + '/claims-service/retrieveClmPaytReqInq',{params:searchParams});
     }
+
+    checkExistingClaim(policyId:any){
+        const params = new HttpParams()
+            .set('policyId', policyId);
+        return this.http.get(environment.prodApiUrl + '/claims-service/checkExistingClaim',{params,'responseType': 'text'});  
+    }
 }

@@ -118,9 +118,10 @@ export class ExtractExpiringPoliciesComponent implements OnInit {
 
     this.extractedPolicies = 0;
     console.log("this.expiryParameters : " + JSON.stringify(this.expiryParameters));
-
+    $('.globalLoading').css('display','block');
     this.underWritingService.extractExpiringPolicies(this.expiryParameters).subscribe((data:any) => {
         console.log("extractExpiringPolicies: " + JSON.stringify(data));
+        $('.globalLoading').css('display','none');
         if (data.errorList.length > 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
           this.dialogIcon = "error";

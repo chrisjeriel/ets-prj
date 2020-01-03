@@ -636,110 +636,110 @@ const appRoutes: Routes = [
 
     { path: 'acct-or-listings', component: AcctOrListingsComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Official Receipt'} 
+    		data: { moduleId: 'ACSE001', title : 'Acct-Srvc | Official Receipt'} 
     },
     { path: 'check-voucher-service', component: CheckVoucherServiceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Check Voucher'} 
+    		data: { moduleId: 'ACSE002', title : 'Acct-Srvc | Check Voucher'} 
     },
     { path: 'journal-voucher-service', component: JournalVoucherServiceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Journal Voucher'} 
+    		data: { moduleId: 'ACSE003', title : 'Acct-Srvc | Journal Voucher'} 
     },
     { path: 'accounting-service-expense-budget', component: ExpenseBudgetComponent, canDeactivate: [UnsavedChangesGuard],
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Expense Budget'} 
+    		data: { moduleId: 'ACSE004', title : 'Acct-Srvc | Expense Budget'} 
     },
     { path: 'acc-s-request-for-payment', component: AccSRequestForPaymentComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Expense for Payment'} 
+    		data: { moduleId: 'ACSE005', title : 'Acct-Srvc | Expense for Payment'} 
     },
     { path: 'credit-debit-memo', component: CreditDebitMemoComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Credit Debit Memo'} 
+    		data: { moduleId: 'ACSE006', title : 'Acct-Srvc | Credit Debit Memo'} 
     },
     { path: 'accounting-service-extract', component: AccountingServiceExtractComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Extract Accounting Entries'} 
+    		data: { moduleId: 'ACSE007', title : 'Acct-Srvc | Extract Accounting Entries'} 
     },
     { path: 'accounting-service-trial-bal', component: AcctTrialBalComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Trial Balance'} 
+    		data: { moduleId: 'ACSE008', title : 'Acct-Srvc | Trial Balance'} 
     },
     { path: 'extract-bir-taxes', component: ExtractBirTaxComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | BIR Taxes'} 
+    		data: { moduleId: 'ACSE009', title : 'Acct-Srvc | BIR Taxes'} 
     },
     { path: 'acc-s-edited-acct-entries', component: AccSEditedAccountingEntriesComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Edited Accounting Entries'} 
+    		data: { moduleId: 'ACSE010', title : 'Acct-Srvc | Edited Accounting Entries'} 
     },
     { path: 'accounting-service-inquiry', component: AccSrvInquiryComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Edited Tax Details'} 
+    		data: { moduleId: 'ACSE011', title : 'Acct-Srvc | Edited Tax Details'} 
     },
     { path: 'acct-srvc-inquiry-cncld-trans', component: AcctSrvcCancelledTransactionsComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Cancelled Transactions'} 
+    		data: { moduleId: 'ACSE012', title : 'Acct-Srvc | Cancelled Transactions'} 
     },
     { path: 'print-registers-service', component: RegistersServiceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Register Reports'} 
+    		data: { moduleId: 'ACSE013', title : 'Acct-Srvc | Register Reports'} 
     },
     { path: 'accounting-service-utilities', component: UtilitiesComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Edit Tax Details'} 
+    		data: { moduleId: 'ACSE014', title : 'Acct-Srvc | Edit Tax Details'} 
     },
     { path: 'acc-s-edit-acct-entries', component: AccSEditAccountingEntriesComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Edit Acct Entries'} 
+    		data: { moduleId: 'ACSE015', title : 'Acct-Srvc | Edit Acct Entries'} 
     },
     { path: 'acct-srvc-util-catw', component: ConsolidateAnnualTaxesWithheldComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Conso Annual Taxes Withheld'} 
+    		data: { moduleId: 'ACSE016', title : 'Acct-Srvc | Conso Annual Taxes Withheld'} 
     },
     { path: 'acc-s-change-tran-stat-new', component: AccSChangeTranStatNewComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Change Transaction Status to New'} 
+    		data: { moduleId: 'ACSE017', title : 'Acct-Srvc | Change Transaction Status to New'} 
     },
     { path: 'cancel-transaction-service', component: CancelTransactionsServiceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Cancel Transactions'} 
+    		data: { moduleId: 'ACSE018', title : 'Acct-Srvc | Cancel Transactions'} 
     },
     { path: 'batch-or-printing', component: BatchOrPrintingComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Batch OR Printing'} 
+    		data: { moduleId: 'ACSE019', title : 'Acct-Srvc | Batch OR Printing'} 
     },
     { path: 'batch-invoice-printing', component: BatchInvoiceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Batch Invoice Printing'} 
+    		data: { moduleId: 'ACSE020', title : 'Acct-Srvc | Batch Invoice Printing'} 
     },
     { path: 'acse-close-open-dcb', component: AcseCloseOpenDcbComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Close/Open DCB'} 
+    		data: { moduleId: 'ACSE021', title : 'Acct-Srvc | Close/Open DCB'} 
     },
     { path: 'month-end-data-checking', component: MeDataCheckingComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Data Checking'} 
+    		data: { moduleId: 'ACSE022', title : 'Acct-Srvc | Data Checking'} 
     },
     { path: 'month-end-batch-processing', component: MeBatchProcComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Batch Processing'} 
+    		data: { moduleId: 'ACSE023', title : 'Acct-Srvc | Batch Processing'} 
     },
     { path: 'month-end-trial-bal-proc', component: MeTrialBalProcComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Acct-Srvc | Trial Balance Processing'} 
+    		data: { moduleId: 'ACSE024', title : 'Acct-Srvc | Trial Balance Processing'} 
     },
 
     
 
     { path: 'users-maintenance', component: UsersMaintenanceComponent,
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Security | Users'} 
+    		data: { moduleId: 'SEC001', title : 'Security | Users'} 
     },
     { path: 'modules-maintenance', component: ModulesMaintenanceComponent, canDeactivate: [UnsavedChangesGuard],
    			canActivate: [AuthGuard, ModuleAccessGuard], 
-    		data: { moduleId: 'QUOTE001', title : 'Security | Modules'} 
+    		data: { moduleId: 'SEC003', title : 'Security | Modules'} 
     },
 
     

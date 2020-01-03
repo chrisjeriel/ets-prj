@@ -67,6 +67,7 @@ export class CancelArCvJvComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle('Acct-IT | Cancel Transactions');
 		this.getAcitList();
+		console.log(this.tranClass);
 	}
 
 	getAcitList(){
@@ -164,7 +165,7 @@ export class CancelArCvJvComponent implements OnInit {
     	//ADDED BY NECO 12/17/2019
     	var reopen: boolean = false;
 
-    	if(this.tranClass = 'ar'){
+    	if(this.tranClass == 'ar'){
     		this.passDataCancelTrans.tableData.forEach(e => {
 	    		if(e.checked){
 	    			this.params.updateAcitStatusList.push({
