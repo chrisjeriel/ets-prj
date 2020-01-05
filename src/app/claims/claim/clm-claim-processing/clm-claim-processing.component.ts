@@ -227,9 +227,14 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   }
 
   retrieveClaimsList(){
+    this.cs.newGetClaimsListingLength(this.searchParams).subscribe(data=>{
+      this.passData.count = data;
+      this.table.setLength(1);
+    })
+
     this.cs.newGetClaimsListing(this.searchParams).subscribe((data : any)=>{
       if(data != null){
-        this.passData.count = data['length'];
+        // this.passData.count = data['length'];
         //data.claimsList = data.claimsList.filter(a=>{return a.clmStatCd !== 'TC' && a.clmStatCd !== 'CD' && (a.lossStatCd !== 'CD')});
         for(var i of data.claimsList){
           for(var j of i.clmAdjusterList){
@@ -240,7 +245,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
             }
           }
         }
-        this.table.placeData(data.claimsList);
+        this.table.placeData(data.claimsList,1);
       }
     },
     (error)=>{
@@ -276,6 +281,14 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     this.searchParamsPol.riskName= !this.isFromRisk ? '' : String(this.policyDetails.riskName).toUpperCase();
 
     this.polListTbl.overlayLoader = true;
+    // if(this.searchParams.recount != 'N'){
+    //       this.us.getPolicyListingLength(this.searchParams).subscribe(data=>{
+    //         this.altParListData.count = data;
+    //         this.table.setLength(1);
+    //       })
+    //       this.searchParams.recount = 'N';
+    //   }
+    
     this.us.newGetParListing(this.searchParamsPol).subscribe((data: any)=>{
       //this.clearAddFields();
 

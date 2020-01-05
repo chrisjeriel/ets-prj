@@ -1242,6 +1242,10 @@ export class UnderwritingService {
         }
         return this.http.post(environment.prodApiUrl + '/underwriting-service/extGenRenExpPolicy',JSON.stringify(params),header);
     }
+
+    getPolicyListingLength(params){
+        return this.http.get(environment.prodApiUrl+'/underwriting-service/retrievePolicyListingLength',{params:params,responseType:'text'});
+    }
 }            
 
             

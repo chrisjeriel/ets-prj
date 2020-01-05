@@ -268,35 +268,29 @@ export class ClmClaimsInquiryComponent implements OnInit {
 
 
 	retrieveClaimlist() {
+		this.claimsService.newGetClaimsListingLength(this.searchParams).subscribe(data=>{
+		  this.passData.count = data;
+		  this.table.setLength(1);
+		})
+
 		this.claimsService.newGetClaimsListing(this.searchParams).subscribe((data:any)=>{
-         /*	this.passData.tableData = data.policyList.filter(a=>{
-           
-             a.lineCd = a.policyNo.substring(0,3);
-             a.totalSi = a.project.coverage.totalSi;
-             a.riskName = a.project.riskName;
-             a.objectDesc = a.project.objectDesc;
-             a.site = a.project.site;
-             a.totalPrem = a.project.coverage.totalPrem;
-             return true;
-         	}
-         	
-         );*/
-       	 if(data != null){
-        	this.passData.count = data['length'];
-	         for(var i of data.claimsList){
-	           for(var j of i.clmAdjusterList){
-	             if(i.adjName === null){
-	               i.adjName = j.adjName;
-	               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
-	             }else{
-	               i.adjName = i.adjName + '/' + j.adjName;
-	               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
-	             }
-	           }
-	         }
-	         this.table.placeData(data.claimsList);
-	       }
-       });
+         
+	       	 if(data != null){
+	        	// this.passData.count = data['length'];
+		         for(var i of data.claimsList){
+		           for(var j of i.clmAdjusterList){
+		             if(i.adjName === null){
+		               i.adjName = j.adjName;
+		               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
+		             }else{
+		               i.adjName = i.adjName + '/' + j.adjName;
+		               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
+		             }
+		           }
+		         }
+		         this.table.placeData(data.claimsList,1);
+		       }
+	       });
 	}
 
 	searchQuery(searchParams){
