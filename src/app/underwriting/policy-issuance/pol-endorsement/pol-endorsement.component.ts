@@ -231,11 +231,25 @@ export class PolEndorsementComponent implements OnInit {
     retrieveDeductibles(data){
         if(data !== null && data.deductibles !== undefined){
             this.deductiblesData.nData.endtCd = data.endtCd;
-            this.deductiblesData.tableData = data.deductibles
+            this.dedTable.overlayLoader = true;
+            if(data.deductibles.length == 0){
+                this.underwritingService.getPolEndtDed(data.policyId, data.endtCd).subscribe(
+                    (dedData:any)=>{
+                        console.log(dedData);
+                        this.deductiblesData.tableData = dedData.deductibles;
+                        data.deductibles = this.deductiblesData.tableData;
+                        this.dedTable.refreshTable();
+                        this.dedTable.overlayLoader = false;
+                    }
+                );
+            }else{
+                this.deductiblesData.tableData = data.deductibles;
+                this.dedTable.refreshTable();
+            }
         }else{
             this.deductiblesData.tableData = [];
+            this.dedTable.refreshTable();
         }
-        this.dedTable.refreshTable();
     }
 
     retrieveDeductiblesOc(data){
