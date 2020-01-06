@@ -1413,7 +1413,7 @@
 										<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
 											<input name="input245" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId">
-											<input name="input246" type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;">
+											<input name="input246" type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.reinsurerName" style="margin-left: 5px;">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>

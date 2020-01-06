@@ -180,6 +180,7 @@ export class PolicyInquiryComponent implements OnInit {
   searchParams: any = {
         'paginationRequest.count':10,
         'paginationRequest.position':1,
+        'altNo':0,
         mode:'inquiry'
     };
 

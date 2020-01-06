@@ -358,7 +358,7 @@ export class PolEndorsementComponent implements OnInit {
         }
         for(let endt of this.passData.tableData){
             
-            let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+            let endtTextSplit = endt.text.match(/(.|[\r\n]){1,1500}/g);
             if(endtTextSplit!== null)
                 for (var i = 0; i < endtTextSplit.length; ++i) {
                     endt.endtText[this.endtTextKeys[i]] = endtTextSplit[i];
