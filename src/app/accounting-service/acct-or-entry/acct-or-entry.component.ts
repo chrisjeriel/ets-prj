@@ -36,7 +36,7 @@ export class AcctOrEntryComponent implements OnInit {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','currencyRate','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
@@ -192,6 +192,7 @@ export class AcctOrEntryComponent implements OnInit {
   savedData: any[] = [];
   deletedData: any[] = [];
   printers: string[] = [];
+  localAmt: number = 0;
 
   selectedCurrency: string = 'PHP';
   selectedPrinter: string = "";
@@ -460,8 +461,10 @@ export class AcctOrEntryComponent implements OnInit {
     this.orInfo.currCd = data;
     for(var i of this.currencies){
       if(i.currencyCd == data){
-        this.orInfo.currRate = i.currencyRt;
-        this.passData.nData.currRate = i.currencyRt;
+        //this.orInfo.currRate = i.currencyRt;
+        //this.passData.nData.currRate = i.currencyRt;
+        this.orInfo.currRate = Math.round(parseFloat(i.currencyRt)*1000000)/1000000;
+        this.passData.nData.currRate = Math.round(parseFloat(i.currencyRt)*1000000)/1000000;
         setTimeout(()=>{
           $('.rate').focus().blur();
         },0);
@@ -507,6 +510,7 @@ export class AcctOrEntryComponent implements OnInit {
   changeOrAmt(data){
     this.genAcctEnt = true;
     this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round(parseFloat(this.orInfo.orAmt.toString().split(',').join(''))*100) / 100;
+    this.localAmt = this.orInfo.orAmt * Math.round(parseFloat(this.orInfo.currRate)*1000000)/1000000;
   }
 
   setLov(data){
@@ -615,8 +619,11 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.currCd         = data.orEntry.currCd;
           this.passData.nData.currCd = data.orEntry.currCd;
           this.orInfo.orAmt          = data.orEntry.orAmt;
-          this.orInfo.currRate       = data.orEntry.currRate;
-          this.passData.nData.currRate = data.orEntry.currRate;
+          //this.orInfo.currRate       = data.orEntry.currRate;
+          //this.passData.nData.currRate = data.orEntry.currRate;
+          this.orInfo.currRate       = Math.round(parseFloat(data.orEntry.currRate)*1000000)/1000000;
+          this.passData.nData.currRate = Math.round(parseFloat(data.orEntry.currRate)*1000000)/1000000;
+          this.localAmt = this.orInfo.orAmt * Math.round(parseFloat(this.orInfo.currRate)*1000000)/1000000;
           this.orInfo.particulars    = data.orEntry.particulars;
           this.orInfo.createUser     = data.orEntry.createUser;
           this.orInfo.createDate     = this.ns.toDateTimeString(data.orEntry.createDate);
@@ -658,7 +665,9 @@ export class AcctOrEntryComponent implements OnInit {
               if(this.isAdd && 'PHP' === l.currencyCd){
                 this.selectedCurrency = l.currencyCd;
                 this.orInfo.currCd = l.currencyCd;
-                this.orInfo.currRate = l.currencyRt;
+                //this.orInfo.currRate = l.currencyRt;
+                this.orInfo.currRate = Math.round(parseFloat(l.currencyRt)*1000000)/1000000;
+                this.passData.nData.currRate = Math.round(parseFloat(l.currencyRt)*1000000)/1000000;
               }
               this.currencies.push({currencyCd: l.currencyCd, currencyRt: l.currencyRt});
               this.passData.opts[1].vals.push(l.currencyCd);

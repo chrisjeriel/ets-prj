@@ -37,7 +37,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','currencyRate','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
@@ -197,6 +197,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   selectedCurrency: string = 'PHP';
   selectedPrinter: string = "";
+  localAmt: number = 0;
 
   selectedBank: any = {
     bankCd: '',
@@ -484,10 +485,13 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     this.selectedCurrency = data;
     this.passData.nData.currCd = data;
     this.arInfo.currCd = data;
+    //Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) 
     for(var i of this.currencies){
       if(i.currencyCd == data){
-        this.arInfo.currRate = i.currencyRt;
-        this.passData.nData.currRate = i.currencyRt;
+        //this.arInfo.currRate = i.currencyRt;
+        //this.passData.nData.currRate = i.currencyRt;
+        this.arInfo.currRate = Math.round(parseFloat(i.currencyRt)*1000000)/1000000;
+        this.passData.nData.currRate = Math.round(parseFloat(i.currencyRt)*1000000)/1000000;
         setTimeout(()=>{
           $('.rate').focus().blur();
         },0);
@@ -533,6 +537,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   changeArAmt(data){
     this.genAcctEnt = true;
     this.arInfo.arAmt = this.arInfo.arAmt.length == 0 || this.arInfo.arAmt == null ? '' : Math.round(parseFloat(this.arInfo.arAmt.split(',').join(''))*100) / 100;
+    this.localAmt = this.arInfo.arAmt * Math.round(parseFloat(this.arInfo.currRate)*1000000)/1000000;
   }
 
   setLov(data){
@@ -634,8 +639,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.currCd         = data.ar.currCd;
           this.passData.nData.currCd = data.ar.currCd;
           this.arInfo.arAmt          = data.ar.arAmt;
-          this.arInfo.currRate       = data.ar.currRate;
-          this.passData.nData.currRate = data.ar.currRate;
+          this.arInfo.currRate       = Math.round(parseFloat(data.ar.currRate)*1000000)/1000000;
+          this.passData.nData.currRate = Math.round(parseFloat(data.ar.currRate)*1000000)/1000000;
+          this.localAmt = this.arInfo.arAmt * Math.round(parseFloat(this.arInfo.currRate)*1000000)/1000000;
           this.arInfo.particulars    = data.ar.particulars;
           this.arInfo.createUser     = data.ar.createUser;
           this.arInfo.createDate     = this.ns.toDateTimeString(data.ar.createDate);
@@ -686,7 +692,9 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
               if(this.isAdd && 'PHP' === l.currencyCd){
                 this.selectedCurrency = l.currencyCd;
                 this.arInfo.currCd = l.currencyCd;
-                this.arInfo.currRate = l.currencyRt;
+                //this.arInfo.currRate = l.currencyRt;
+                this.arInfo.currRate = Math.round(parseFloat(l.currencyRt)*1000000)/1000000;
+                this.passData.nData.currRate = Math.round(parseFloat(l.currencyRt)*1000000)/1000000;
               }
               this.currencies.push({currencyCd: l.currencyCd, currencyRt: l.currencyRt});
               this.passData.opts[1].vals.push(l.currencyCd);
