@@ -32,7 +32,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   style: any = {
     height: '100%',
     width: '100%',
-    font: '11px arial',
+    font: '10px arial',
     padding: '5px 10px',
     color: 'black'
   };
@@ -83,8 +83,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   closeTextEditorModal(event) {
-  	this.emitValue();
-  	this.modalService.dismissAll();
+    this.emitValue();
+    this.modalService.dismissAll();
     this.edtrMdlForm.form.markAsPristine();
 
     if(this.oldValue !== this.editorContent) {
