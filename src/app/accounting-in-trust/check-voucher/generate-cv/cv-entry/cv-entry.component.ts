@@ -723,6 +723,9 @@ export class CvEntryComponent implements OnInit {
       var approverList = data['approverFn'].map(e => e.userId);
       if(approverList.includes(this.ns.getCurrentUser())){
         if(this.fromBtn == 'print'){
+          this.printData.destination = 'screen';
+          this.printData.reportType  = 2;
+          this.printData.printCv     = true;
           this.printMdl.openNoClose();
         }else{
           this.confirmMdl.openNoClose();

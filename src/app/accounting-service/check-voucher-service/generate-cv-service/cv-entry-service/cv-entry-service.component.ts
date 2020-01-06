@@ -624,7 +624,9 @@ export class CvEntryServiceComponent implements OnInit {
       tranId       : this.saveAcseCv.tranId,
       checkId      : this.saveAcseCv.checkId,
       cvStatus     : stat,
-      updateUser  : this.ns.getCurrentUser()
+      printType    : (this.printData.printCv && this.printData.printCheck)?'ALL':(this.printData.printCv)?'PCV':'PCK',
+      updateUser   : this.ns.getCurrentUser(),
+      cancelReason : this.saveAcseCv.cancelReason
     };
     console.log(updateAcseCvStat);
     this.accountingService.updateAcseCvStat(JSON.stringify(updateAcseCvStat))
@@ -643,7 +645,13 @@ export class CvEntryServiceComponent implements OnInit {
     if(this.fromBtn.toLowerCase() == 'print'){
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
-      this.onClickYesConfirmed('X');
+      if(this.saveAcseCv.cancelReason == '' || this.saveAcseCv.cancelReason == null){
+        this.dialogIcon = 'error';
+        this.success.open();
+        $('.warn').focus().blur();
+      }else{
+        this.onClickYesConfirmed('X');
+      }
     }else if(this.fromBtn.toLowerCase() == 'approve-req'){
       this.onClickYesConfirmed('A');
     }else if(this.fromBtn.toLowerCase() == 'spoil'){

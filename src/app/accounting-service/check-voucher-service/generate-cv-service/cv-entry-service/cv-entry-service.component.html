@@ -38,6 +38,10 @@
                         <label class="form-control-sm col-sm-1">Particulars</label>
                         <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired></textarea>
                     </div>
+                    <div *ngIf="saveAcseCv.cvStatus == 'X'" class="input-group" style="margin-top: 8px !important">
+                        <label class="form-control-sm col-sm-1">Cancellation Reason</label>
+                        <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" autoComplete="off" readonly></textarea>
+                    </div>
                 </div>
 
             </div>
@@ -205,6 +209,8 @@
         </div>
         <div *ngIf="fromBtn == 'cancel-req'" class="input-group">
             <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
+            <label class="form-control-sm col-sm-1 text-right labels">Reason</label>
+            <textarea name="textarea2" class="form-control form-control-sm cust-sm col-sm text-area-font warn particulars" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" appRequired autoComplete="off"></textarea> 
         </div>
         <div *ngIf="fromBtn == 'print'" class="input-group">
             <p class="col-sm-12">Was the printing of Check Voucher successful?</p>

@@ -590,8 +590,6 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           }
         }
       }else{
-        console.log('hereeeeeee');
-
         e.fromCancel = true;
         if(e.edited && !e.deleted){
           e.createUser    = (e.createUser == '' || e.createUser == undefined)?this.ns.getCurrentUser():e.createUser;
@@ -599,11 +597,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
-          console.log('hereeeeeee2');
 
           if(this.requestData.tranTypeCd == 6){
-            console.log('hereeeeeee3');
-
             e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
             if(e.taxAllocation == undefined){
               this.params.delCvItemTaxes = [];
@@ -615,6 +610,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             this.params.savePerDiem.push(e);
           }else if(this.requestData.tranTypeCd == 7){
             e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
+            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
             if(e.taxAllocation == undefined){
               this.params.delCvItemTaxes = [];
               e.taxAllocation = [];
