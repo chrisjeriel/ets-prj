@@ -183,7 +183,7 @@ export class PolEndorsementComponent implements OnInit {
                        a.endtText = {};
                     }
                 });
-                this.endtTable.onRowClick(null,this.passData.tableData[0])
+                //this.endtTable.onRowClick(null,this.passData.tableData[0])
             } 
             
             this.endtTable.refreshTable();
