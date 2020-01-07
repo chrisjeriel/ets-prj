@@ -20,7 +20,7 @@
                           <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1">Status</label>
                           <input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcseCv.cvStatusDesc" readonly>
                           <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
-                          <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                          <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off">
                           <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytreqtype')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <!-- <div class="input-group" style="margin-top: -5px">
@@ -30,13 +30,13 @@
                     </div> -->
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
-                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only>
+                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only autoComplete="off">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
-                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;">
+                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;" autoComplete="off">
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
-                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired></textarea>
+                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired autoComplete="off"></textarea>
                     </div>
                     <div *ngIf="saveAcseCv.cvStatus == 'X'" class="input-group" style="margin-top: 8px !important">
                         <label class="form-control-sm col-sm-1">Cancellation Reason</label>
@@ -58,7 +58,7 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.bankDesc" maxlength="100" appRequired>
+                        <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.bankDesc" maxlength="100" appRequired autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <!-- <div class="input-group">
@@ -125,7 +125,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcseCv.checkClassDesc" appRequired>
+                        <input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcseCv.checkClassDesc" appRequired autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>

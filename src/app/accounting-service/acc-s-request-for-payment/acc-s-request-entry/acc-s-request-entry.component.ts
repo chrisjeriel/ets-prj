@@ -357,6 +357,12 @@ export class AccSRequestEntryComponent implements OnInit {
       this.initDisabled = false;
       this.getAcsePaytReq();
       this.form.control.markAsPristine();
+
+      if(this.fromBtn.toLowerCase() == 'new-req'){
+        this.onClickNewReq();
+        this.rowData.reqId = '';
+        this.fromBtn = '';
+      }
     });
   }
 
@@ -538,6 +544,10 @@ export class AccSRequestEntryComponent implements OnInit {
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'new-req'){
+      this.confirmMdl.closeModal();
+      this.form.control.markAsPristine();
+      this.onClickSave();
     }
   }
 
