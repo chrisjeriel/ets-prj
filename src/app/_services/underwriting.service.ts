@@ -1243,10 +1243,10 @@ export class UnderwritingService {
         return this.http.post(environment.prodApiUrl + '/underwriting-service/extGenRenExpPolicy',JSON.stringify(params),header);
     }
 
-    getPolEndtDed(policyId, endtCd){
+    getPolEndtDed(policyId, lineCd){
         const params = new HttpParams()
             .set('policyId', policyId)
-            .set('endtCd', endtCd);
+            .set('lineCd', lineCd);
         return this.http.get(environment.prodApiUrl + '/underwriting-service/retrievePolEndtDed', {params});
     }
 }            
