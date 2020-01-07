@@ -432,7 +432,6 @@ export class CvEntryServiceComponent implements OnInit {
         this.warnMdl.openNoClose();  
       }else{
         this.saveAcseCv.checkNo = chckNo[0].checkNo;
-       
       }
     });
   }
@@ -442,7 +441,8 @@ export class CvEntryServiceComponent implements OnInit {
     this.mtnService.getMtnBankAcct(bankCd)
     .subscribe(data => {
       console.log(data);
-      var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acItGlDepNo != null);
+      this.loadingFunc(false);
+      var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acSeGlDepNo != null && e.acctStatus == 'A');
       if(ba.length == 1){
         this.saveAcseCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcseCv.bankAcct = ba[0].bankAcctCd;
@@ -690,10 +690,16 @@ export class CvEntryServiceComponent implements OnInit {
 
   spoiledFunc(){
     this.suggestCheckNo = '';
-    $('.cl-spoil').prop('readonly',false);
-    this.spoiled = true;
     this.saveAcseCv.checkId = '';
-    this.getAcseCheckSeries(this.saveAcseCv.bank,this.saveAcseCv.bankAcct);
+
+    if(this.saveAcseCv.cvStatus == 'X'){
+      this.spoiled = false;
+      $('.cl-spoil').prop('readonly',true);
+    }else{
+      this.spoiled = true;
+      $('.cl-spoil').prop('readonly',false);
+      this.getAcseCheckSeries(this.saveAcseCv.bank,this.saveAcseCv.bankAcct);
+    }
   }
 
   overrideFunc(approvalCd){
