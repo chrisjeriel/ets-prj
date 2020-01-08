@@ -29,7 +29,7 @@ export class PolEndorsementComponent implements OnInit {
         tHeader: ['C', 'Endt Code', 'Endt Title','Endt Wordings', 'Remarks'],
         tooltip:['Change Tag',null,null,null,null],
         magnifyingGlass: ['endtCd'],
-        dataTypes: ['checkbox', 'text', 'text','text-editor', 'text'],
+        dataTypes: ['checkbox', 'text', 'text','text-editor-h', 'text'],
         nData: {
             changeTag: 'N',
             endtCd: '',

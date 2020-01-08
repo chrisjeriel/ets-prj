@@ -17,7 +17,7 @@
 </div>
 
 <form #edtrPrevForm="ngForm" style="height: 100%;">
-	<quill-editor #frontEditor name="textEditorPrev" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event; emitValue();" [style]="style" [modules]="{toolbar: false}" [readOnly]="readonly || !editablePrev" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'html'" (onSelectionChanged)="emitValue($event)"></quill-editor>
+	<quill-editor #frontEditor name="textEditorPrev" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent = $event; emitValue();" [style]="style" [modules]="{toolbar: false}" [readOnly]="readonly || !editablePrev" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="format" (onSelectionChanged)="emitValue($event)"></quill-editor>
 </form>
 
 <!-- <ng-template #content>
@@ -40,7 +40,7 @@
 	<app-modal class="d-none" #edtrMdl>
 		<div header>Text Editor</div>
 	    <div body class="text-editor-container">
-	        <quill-editor #modalEditor name="textEditor" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent=$event" [style]="{height: '300px', width: '900px', font: '10px arial', padding: '5px 10px'}" [modules]="{toolbar: !readonly}" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="'html'" [readOnly]="readonly"></quill-editor>
+	        <quill-editor #modalEditor name="textEditor" class="txt-edtr" [ngModel]="editorContent" (ngModelChange)="editorContent=$event" [style]="{height: '300px', width: '900px', font: '10px arial', padding: '5px 10px'}" [modules]="{toolbar: !readonly && format == 'html'}" [placeholder]="(editorPlaceholder == null) ? '' : editorPlaceholder" [format]="format" [readOnly]="readonly"></quill-editor>
 	    </div>
 	    <div footer class="text-center w-100">
 	        <div class="cust-btn-container">

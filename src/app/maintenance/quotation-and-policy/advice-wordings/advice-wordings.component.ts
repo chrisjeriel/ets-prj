@@ -35,7 +35,7 @@ export class AdviceWordingsComponent implements OnInit {
   adviceWordingsData: any = {
   	tableData: [],
   	tHeader: ['Adv Word No', 'Description', 'Advice Wordings', 'Active', 'Remarks'],
-  	dataTypes: ['sequence-3', 'text', 'text-editor', 'checkbox', 'text'],
+  	dataTypes: ['sequence-3', 'text', 'text-editor-h', 'checkbox', 'text'],
   	keys: ['adviceWordId', 'description', 'wordings', 'activeTag', 'remarks'],
   	widths: [1,'auto','auto',1,'auto'],
   	uneditable: [true,false,false,false,false],

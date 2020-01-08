@@ -42,7 +42,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
   	tableData:[],
   	widths:[1,'auto','auto','auto',1,1,'auto'],
   	tHeader:['Endt Code','Endt Name','Description','Wordings','Active','Default','Remarks'],
-  	dataTypes:['sequence-3','text','text-editor','text-editor','checkbox','checkbox','text'],
+  	dataTypes:['sequence-3','text','text-editor-h','text-editor-h','checkbox','checkbox','text'],
   	keys:['endtCd','endtTitle','description','text','activeTag','defaultTag','remarks'],
   	addFlag: true,
   	genericBtn:'Delete',
