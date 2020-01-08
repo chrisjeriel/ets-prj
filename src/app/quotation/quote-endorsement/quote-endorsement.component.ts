@@ -405,7 +405,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                            );
                                                           this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
                                                           this.saveEndt.optionId = data.endorsements[lineCount].optionId;
-                                                          this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                                                          // this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
                                                           this.saveEndt.createUser = this.ns.getCurrentUser();
                                                           this.saveEndt.updateUser = this.ns.getCurrentUser();          
             }
@@ -539,8 +539,8 @@ export class QuoteEndorsementComponent implements OnInit {
               }
               for(let ded of this.endorsementData.tableData[i].deductiblesList){
                   console.log(ded);
-                  ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
-                  ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
+                  // ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
+                  // ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
                   ded.endtCd = this.endorsementData.tableData[i].endtCd;
                   ded.updateUser = this.ns.getCurrentUser();
                   if(ded.edited && !ded.deleted){
@@ -755,6 +755,8 @@ export class QuoteEndorsementComponent implements OnInit {
             a.deductibleRt = a.deductibleRate;
             a.endtCd = this.table.indvSelect.endtCode;
             a.edited = true;
+            a.createDate = null;
+            a.updateDate = null;
             return true;
           })
           this.deductiblesData.tableData = this.table.indvSelect.deductiblesList
