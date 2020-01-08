@@ -20,7 +20,7 @@
                           <label class="form-control-sm col-sm-1" style="margin-left: -30px !important; z-index: -1">Status</label>
                           <input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="saveAcseCv.cvStatusDesc" readonly>
                           <label class="form-control-sm col-sm-2" style="margin-left: -40px !important;">Payment Request Type</label>
-                          <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl">
+                          <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm warn paytreqtype" [(ngModel)]="saveAcseCv.paytReqTypeDesc" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off">
                           <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('paytreqtype')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <!-- <div class="input-group" style="margin-top: -5px">
@@ -30,13 +30,17 @@
                     </div> -->
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Payee</label>
-                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only>
+                        <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only autoComplete="off">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
-                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;">
+                        <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;" autoComplete="off">
                     </div>
                     <div class="input-group" style="margin-top: -5px">
                         <label class="form-control-sm col-sm-1">Particulars</label>
-                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired></textarea>
+                        <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired autoComplete="off"></textarea>
+                    </div>
+                    <div *ngIf="saveAcseCv.cvStatus == 'X'" class="input-group" style="margin-top: 8px !important">
+                        <label class="form-control-sm col-sm-1">Cancellation Reason</label>
+                        <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" autoComplete="off" readonly></textarea>
                     </div>
                 </div>
 
@@ -54,10 +58,10 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Bank</label>
-                        <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.bankDesc" maxlength="100" appRequired>
+                        <input name="input6" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.bankDesc" maxlength="100" appRequired autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank')"><i class="fa fa-search"></i></a></div>
                     </div>
-                    <div class="input-group">
+                    <!-- <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Amount</label>
                         <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-2 warn curr" [(ngModel)]="saveAcseCv.currCd" maxlength="3" appRequired [disabled]="existsInCvDtl">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
@@ -66,6 +70,16 @@
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
                         <input name="input9" type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcseCv.currRate" (change)="setLocalAmt();" numbers-only appRequired [disabled]="existsInCvDtl">
+                    </div> -->
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels">Check Amount</label>
+                        <input name="input7" type="text" class="form-control form-control-sm cust-sm col-sm-2 warn curr" [ngModel]="saveAcseCv.currCd" (ngModelChange)="saveAcseCv.currCd=$event.toUpperCase()" maxlength="3" appRequired [disabled]="existsInCvDtl" (change)="checkCode($event, 'curr')" autoComplete="off">
+                        <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('curr')"><i class="fa fa-search"></i></a></div>
+                        <input name="input8" type="text" class="form-control form-control-sm cust-sm col-sm text-right warn" maxlength="24" [(ngModel)]="saveAcseCv.cvAmt" (change)="setLocalAmt();" numbers-only appRequired style="margin-left: 3px;" autoComplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-3 labels">Currency Rate</label>
+                        <input name="input9" type="text" class="form-control form-control-sm cust-sm col-sm-10 text-right warn" maxlength="32" [(ngModel)]="saveAcseCv.currRate" (change)="setLocalAmt();" numbers-only appRequired [disabled]="existsInCvDtl" autoComplete="off">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Local Amount</label>
@@ -75,7 +89,7 @@
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Prepared By</label>
-                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcseCv.preparedByName" appRequired>
+                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcseCv.preparedByName" (change)="checkCode($event, 'prep-user')" appRequired autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('prep-user')"><i class="fa fa-search"></i></a></div>
                     </div>
 
@@ -101,7 +115,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcseCv.bankAcctDesc == '' || saveAcseCv.bankAcctDesc == null" [(ngModel)]="saveAcseCv.checkNo" appRequired>
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcseCv.bankAcctDesc == '' || saveAcseCv.bankAcctDesc == null" [(ngModel)]="saveAcseCv.checkNo" numbers-only appRequired>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
@@ -111,13 +125,13 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check Class</label>
-                        <input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcseCv.checkClassDesc" appRequired>
+                        <input name="input16" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcseCv.checkClassDesc" appRequired autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Certified Correct</label>
-                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [(ngModel)]="saveAcseCv.certifiedByName">
+                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [(ngModel)]="saveAcseCv.certifiedByName" (change)="checkCode($event, 'cert-user')" autoComplete="off">
                         <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('cert-user')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
@@ -142,10 +156,10 @@
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'P' && saveAcseCv.mainAcctEntDate != null)?true:(saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == '')?true:false" (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'X')?true:(saveAcseCv.checkStatus != 'P' || saveAcseCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
-                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A'" (click)="fromBtn='approve-req';confirmMdl.openNoClose()" [disabled]="saveAcseCv.cvStatus != 'F'">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="onClickPrint()">Print</button> -->
-                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
-                            <button type="button" class="cust-btn" [disabled]="(saveAcseCv.checkStatus == 'P' || saveAcseCv.checkStatus == null || spoiled)?true:(saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button>
+                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'N' || saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
+                            <!-- <button type="button" class="cust-btn" [disabled]="(saveAcseCv.checkStatus == 'P' || saveAcseCv.checkStatus == null || spoiled)?true:(saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button> -->
+                            <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004');">Print</button>
                             <button *ngIf="canUploadAcctEnt" type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="upload()"><a>Upload Acct. Ent</a></button>
                         </div>
                     </div>
@@ -205,9 +219,18 @@
         </div>
         <div *ngIf="fromBtn == 'cancel-req'" class="input-group">
             <p class="col-sm-12">Are you sure you want to cancel this Check Voucher?</p>
+            <label class="form-control-sm col-sm-1 text-right labels">Reason</label>
+            <textarea name="textarea2" class="form-control form-control-sm cust-sm col-sm text-area-font warn particulars" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" appRequired autoComplete="off"></textarea> 
         </div>
         <div *ngIf="fromBtn == 'print'" class="input-group">
-            <p class="col-sm-12">Was the printing of Check Voucher successful?</p>
+            <ng-container *ngIf="printData.printCv && printData.printCheck; else elseMsg">
+                <p class="col-sm-12">Was the printing of Check Voucher and Check successful?</p>    
+            </ng-container>
+            
+            <ng-template #elseMsg>
+                <p *ngIf="printData.printCv" class="col-sm-12">Was the printing of Check Voucher successful?</p>
+                <p *ngIf="printData.printCheck" class="col-sm-12">Was the printing of Check successful?</p>
+            </ng-template>
         </div>
         <div *ngIf="fromBtn == 'spoil'" class="input-group">
             <p class="col-sm-12">Are you sure you want to spoil this Check?</p>
@@ -231,7 +254,7 @@
     </div>
 </app-modal>
 
-<app-modal class="d-none" #printMdl>
+<!-- <app-modal class="d-none" #printMdl>
     <div header>Print Check/DV</div>
     <div body>
         <div class="container-fluid">
@@ -270,6 +293,58 @@
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();"><a>Print</a></button>
+    </div>
+</app-modal> -->
+
+<app-modal class="d-none" #printMdl>
+    <div header>Print Check/DV</div>
+    <div body>
+        <div class="container-fluid">
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <div class="col-sm-4"></div>
+                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" [ngModel]="printData.printCv" (ngModelChange)="printData.printCv=$event;">
+                        <label class="form-control-sm">CV</label>
+                    </div>
+                    <div class="input-group col-sm-3 labels" style="padding: 0px;">
+                        <input name="cb1" type="checkbox" style="margin-top: 6px;" id="checkCbId" [ngModel]="printData.printCheck" (ngModelChange)="printData.printCheck=$event;validateCheck();">
+                        <label class="form-control-sm">Check</label>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="0" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Summary</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="1" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detailed</label>
+                </div>
+                <div class="input-group" style="margin-bottom: -14px !important">
+                    <input type="radio" name="rad" style="margin-left: 70px !important" [value]="2" [ngModel]="printData.reportType" (ngModelChange)="printData.reportType=$event;">
+                    <label class="form-control-sm" style="padding: 0px !important;margin-top: -1px !important;margin-left: 5px !important;">Detail per SL</label>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Destination</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName();">
+                        <option value="screen">Screen</option>
+                        <option value="printer">Printer</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-4 labels">Printer Name</label>
+                    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printer'">
+                        <ng-container *ngFor="let printer of printData.printers">
+                            <option [value]="printer">{{ printer }}</option>    
+                        </ng-container>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal()"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="printMdl.closeModal();fromBtn='print';confirmMdl.openNoClose();print();" [disabled]="(!printData.printCv && !printData.printCheck) || printData.destination == '' || (printData.destination == 'printer')?(printData.selPrinter == '')?true:false:false">Print</button>
     </div>
 </app-modal>
 

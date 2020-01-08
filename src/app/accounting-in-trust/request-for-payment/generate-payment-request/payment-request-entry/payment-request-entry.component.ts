@@ -342,6 +342,12 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.getAcitPaytReq();
       this.form.control.markAsPristine();
 
+      if(this.fromBtn.toLowerCase() == 'new-req'){
+        this.onClickNewReq();
+        this.rowData.reqId = '';
+        this.fromBtn = '';
+      }
+
     });
   }
 
@@ -542,7 +548,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     }else if(this.fromBtn.toLowerCase() == 'new-req'){
       this.confirmMdl.closeModal();
       this.form.control.markAsPristine();
-      this.onClickNewReq();
+      this.onClickSave();
     }
   }
 

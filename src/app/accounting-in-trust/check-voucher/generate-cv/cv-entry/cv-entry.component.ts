@@ -241,17 +241,19 @@ export class CvEntryComponent implements OnInit {
 
         (this.saveAcitCv.cvStatus == 'A' || this.saveAcitCv.cvStatus == 'P') ? this.getPrinters() : '';
 
-        this.saveAcitCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcitCv.checkNo:this.suggestCheckNo;
+        this.saveAcitCv.checkNo = (this.suggestCheckNo == '' || this.suggestCheckNo == undefined || this.suggestCheckNo == null)?this.saveAcitCv.checkNo:this.suggestCheckNo;  
+        
       }
 
       this.saveAcitCv['from'] = 'cv';
       this.saveAcitCv['exitLink'] = 'check-voucher';
       this.cvData.emit(this.saveAcitCv);
       (this.spoiled)?'':((this.saveAcitCv.cvStatus == 'N' || this.saveAcitCv.cvStatus == 'F')?this.disableFlds(false):this.disableFlds(true));
+      console.log(this.spoiled);
       this.setLocalAmt();
-      if(this.saveAcitCv.checkStatus == 'S'){
+        if(this.saveAcitCv.checkStatus == 'S'){
           this.spoiledFunc();
-      }
+        }
     });
   }
 
@@ -460,7 +462,8 @@ export class CvEntryComponent implements OnInit {
     this.mtnService.getMtnBankAcct(bankCd)
     .subscribe(data => {
       console.log(data);
-      var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acItGlDepNo != null);
+      this.loadingFunc(false);
+      var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acItGlDepNo != null && e.acctStatus == 'A');
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
         this.saveAcitCv.bankAcct = ba[0].bankAcctCd;
@@ -477,6 +480,7 @@ export class CvEntryComponent implements OnInit {
   }
 
   setData(data,from){
+    this.form.control.markAsDirty();
     setTimeout(() => {
       this.removeRedBackShad(from);
       this.ns.lovLoader(data.ev, 0);
@@ -537,7 +541,6 @@ export class CvEntryComponent implements OnInit {
 
   checkCode(event,from){
     this.ns.lovLoader(event, 1);
-    
     if(from.toLowerCase() == 'curr'){
       this.currLov.checkCode(this.saveAcitCv.currCd.toUpperCase(), event);
     }else if(from.toLowerCase() == 'prep-user'){
@@ -719,11 +722,16 @@ export class CvEntryComponent implements OnInit {
 
   spoiledFunc(){
     this.suggestCheckNo = '';
-    $('.cl-spoil').prop('readonly',false);
-    this.spoiled = true;
     this.saveAcitCv.checkId = '';
-    var chkNo = this.checkSeriesList.filter(e => e.bank == this.saveAcitCv.bank && e.bankAcct == this.saveAcitCv.bankAcct && e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-    (chkNo.length == 0)?'':this.suggestCheckNo = chkNo[0].checkNo;
+
+    if(this.saveAcitCv.cvStatus == 'X'){
+      this.spoiled = false;
+      $('.cl-spoil').prop('readonly',true);
+    }else{
+      this.spoiled = true;
+      $('.cl-spoil').prop('readonly',false);
+      this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+    }
   }
 
   overrideFunc(approvalCd){
@@ -733,6 +741,9 @@ export class CvEntryComponent implements OnInit {
       var approverList = data['approverFn'].map(e => e.userId);
       if(approverList.includes(this.ns.getCurrentUser())){
         if(this.fromBtn == 'print'){
+          this.printData.destination = 'screen';
+          this.printData.reportType  = 2;
+          this.printData.printCv     = true;
           this.printMdl.openNoClose();
         }else{
           this.confirmMdl.openNoClose();

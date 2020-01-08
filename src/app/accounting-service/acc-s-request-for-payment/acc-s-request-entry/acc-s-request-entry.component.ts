@@ -357,6 +357,12 @@ export class AccSRequestEntryComponent implements OnInit {
       this.initDisabled = false;
       this.getAcsePaytReq();
       this.form.control.markAsPristine();
+
+      if(this.fromBtn.toLowerCase() == 'new-req'){
+        this.onClickNewReq();
+        this.rowData.reqId = '';
+        this.fromBtn = '';
+      }
     });
   }
 
@@ -538,6 +544,10 @@ export class AccSRequestEntryComponent implements OnInit {
       this.onClickYesConfirmed('X');
     }else if(this.fromBtn.toLowerCase() == 'approve'){
       this.onClickYesConfirmed('A');
+    }else if(this.fromBtn.toLowerCase() == 'new-req'){
+      this.confirmMdl.closeModal();
+      this.form.control.markAsPristine();
+      this.onClickSave();
     }
   }
 
@@ -571,8 +581,8 @@ export class AccSRequestEntryComponent implements OnInit {
         this.fromBtn = from;
         this.overrideFunc(this.approvalCd);
       }else{
-        this.warnMsg = 'This Payment Request is being processed in another transaction.\nPlease delete or cancel the transaction with Check Voucher No. ' 
-                        + this.saveAcsePaytReq.processing + ' \nbefore cancelling this payment request.';
+        this.warnMsg = 'Please delete or cancel the transaction with Check Voucher No. ' + this.saveAcsePaytReq.processing + 
+                       ' \nbefore cancelling this payment request.';
         this.warnMdl.openNoClose();
       }
       
