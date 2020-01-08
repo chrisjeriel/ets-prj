@@ -95,8 +95,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
    genTaxData: any = {
     tableData: [],
-    tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'BIR RLF Purchase Type', 'Tax Rate', 'Payor', 'Base Amount', 'Tax Amount'],
-    dataTypes: ['number', 'text', 'text', 'text', 'text', 'percent', 'text', 'currency', 'currency'],
+    tHeader: ['#', 'Gen Type', 'Tax Code', 'Description', 'Tax Rate', 'Base Amount', 'Tax Amount'],
+    dataTypes: ['number', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
     //opts: [{ selector: "vatType", vals: ["Output", "Input"] }],
 	  nData: {
             tranId: '',
@@ -105,9 +105,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             taxCd: '',
             genType: 'M',
             taxName: '',
-            genBirRlf: '',
             taxRate: '',
-            payor: '',
             baseAmt: 0,
             taxAmt: 0,
             createUser: '',
@@ -116,24 +114,24 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             updateDate: '',
             showMG: 1
     },
-    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'genBirRlf', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'taxRate', 'baseAmt', 'taxAmt'],
     pageID: 'genTax',
     addFlag: false,
     deleteFlag: false,
-    total: [null,null,null,null, null, null, null, 'Total', 'taxAmt'],
+    total: [null,null,null,null, null, 'Total', 'taxAmt'],
     pageLength:5,
-    widths: [1,1,50,150,'auto',100,200,150,150],
+    widths: [1,1,50,150,100,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,true,true,true,true],
+    uneditable: [true,true,true,true,true,true,true],
     magnifyingGlass: ['taxCd']
   }
 
   whTaxData: any = {
    tableData: [],
-    tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate', 'Payor','Base Amount', 'WTax Amount'],
-    dataTypes: ['text', 'text', 'text', 'text', 'percent','text', 'currency', 'currency'],
+    tHeader: ['#', 'Gen Type', 'BIR Tax Code', 'Description', 'WTax Rate','Base Amount', 'WTax Amount'],
+    dataTypes: ['text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
     // opts:[
     //   {
     //     selector: 'birTaxCode',
@@ -149,7 +147,6 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             taxName: '',
             purchaseType: '',
             taxRate: '',
-            payor: '',
             baseAmt: 0,
             taxAmt: 0,
             createUser: '',
@@ -158,17 +155,17 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             updateDate: '',
             showMG: 1
     },
-    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'taxRate', 'payor', 'baseAmt', 'taxAmt'],
+    keys: ['taxSeqno', 'genType', 'taxCd', 'taxName', 'taxRate', 'baseAmt', 'taxAmt'],
     pageID: 'whTax',
     addFlag: false,
     deleteFlag: false,
     pageLength:5,
-    total: [null,null,null,null, null, null, 'Total', 'taxAmt'],
-    widths: [1,1,50,200,100,200,150,150],
+    total: [null,null,null,null, null, 'Total', 'taxAmt'],
+    widths: [1,1,50,200,100,150,150],
     paginateFlag:true,
     infoFlag:true,
     checkFlag: true,
-    uneditable: [true,true,true,true,true,true,true,true],
+    uneditable: [true,true,true,true,true,true,true],
     magnifyingGlass: ['taxCd']
   }
 
