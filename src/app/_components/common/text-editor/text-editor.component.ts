@@ -85,9 +85,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showTextEditorModal(content) {
-    // console.log(this.editorContent);
     this.oldValue = this.editorContent;
-    // console.log(this.oldValue);
     this.edtrMdl.openNoClose();
   }
 

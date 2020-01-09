@@ -342,6 +342,12 @@ export class PaymentRequestEntryComponent implements OnInit {
       this.getAcitPaytReq();
       this.form.control.markAsPristine();
 
+      if(this.fromBtn.toLowerCase() == 'new-req'){
+        this.onClickNewReq();
+        this.rowData.reqId = '';
+        this.fromBtn = '';
+      }
+
     });
   }
 
@@ -415,7 +421,7 @@ export class PaymentRequestEntryComponent implements OnInit {
   setLocalAmt(){
     this.saveAcitPaytReq.localAmt = Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) * Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,''));
     var reqAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')),'0.2-2');
-    var currRate = this.decPipe.transform(Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),'0.9-9');
+    var currRate = this.decPipe.transform(Number(String(this.saveAcitPaytReq.currRate).replace(/\,/g,'')),'0.6-6');
     this.saveAcitPaytReq.localAmt = this.decPipe.transform(Number(String(this.saveAcitPaytReq.localAmt).replace(/\,/g,'')),'0.2-2');
 
     this.saveAcitPaytReq.reqAmt = reqAmt;
@@ -542,7 +548,7 @@ export class PaymentRequestEntryComponent implements OnInit {
     }else if(this.fromBtn.toLowerCase() == 'new-req'){
       this.confirmMdl.closeModal();
       this.form.control.markAsPristine();
-      this.onClickNewReq();
+      this.onClickSave();
     }
   }
 

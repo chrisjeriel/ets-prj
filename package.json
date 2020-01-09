@@ -35,6 +35,7 @@
     "angular-resizable": "^1.2.0",
     "angular-resizable-element": "^3.2.6",
     "bootstrap": "^4.4.1",
+    "cleave.js": "^1.5.3",
     "colresizable": "^1.6.0",
     "core-js": "^2.6.11",
     "datatables.net": "^1.10.20",

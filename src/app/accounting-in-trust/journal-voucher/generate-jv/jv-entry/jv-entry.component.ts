@@ -131,6 +131,7 @@ export class JvEntryComponent implements OnInit {
   acctEntryFile: any;
   fileName: string = '';
   emitMessage: string = '';
+  loading: boolean = false;
 
   constructor(private titleService: Title, private route: ActivatedRoute,private accService:AccountingService, private ns: NotesService, private decimal : DecimalPipe, private router: Router, private mtnService: MaintenanceService, private ps : PrintService) { }
 
@@ -208,7 +209,9 @@ export class JvEntryComponent implements OnInit {
   }
 
   retrieveJVEntry(){
+    this.loading = true;
     this.accService.getJVEntry(this.tranId).subscribe((data:any) => {
+      this.loading = false;
       console.log(data)
       if(data.transactions != null){
         this.entryData              = data.transactions.jvListings;

@@ -384,4 +384,5 @@ export class DummyComponent implements OnInit {
       }
 
       edtr: any = 'test\nme\ndaddy';
+      testDate2: any = new Date('2019-01-03');
 }

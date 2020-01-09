@@ -1,3 +1,5 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="jvLoading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
 <form #myForm="ngForm">
 <div class="row">
     <div class="col-sm-12">
@@ -185,7 +187,7 @@
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="saveJVBut || disableBut" [class.cust-btn-disabled]="saveJVBut || disableBut" (click)="onClickSave()"><a>Save</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="cancelJVBut" [class.cust-btn-disabled]="cancelJVBut " (click)="onClickCancelJV()"><a>Cancel JV</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="approveBut" [class.cust-btn-disabled]="approveBut" (click)="onClickApprove()"><a>Approve</a></button>
-                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" (click)="onClickPrint()"><a>Print</a></button>
+                            <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="printBut" (click)="onClickPrint()"><a>Print</a></button>
                             <button *ngIf="canUploadAcctEnt" type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="UploadBut || disableBut" [class.cust-btn-disabled]="UploadBut || disableBut " (click)="upload()"><a>Upload Acct. Ent</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="allocBut" [class.cust-btn-disabled]="allocBut" (click)="onClickAlloc()"><a>Alloc. Trans.</a></button>
                             <button type="button" class="cust" style="margin-right: 5px !important; width: 10%" [disabled]="dcBut" [class.cust-btn-disabled]="dcBut" (click)="onClickCMDM()"><a>Debit/Credit Memo</a></button>
