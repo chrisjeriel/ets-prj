@@ -393,9 +393,9 @@ export class CvEntryComponent implements OnInit {
         this.dialogIcon = 'error';
         this.success.open();
       }else if(data['returnCode'] == 2){
-        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ String(data['checkNo']).padStart(this.chkNoDigits, '0') +'.';
         this.warnMdl.openNoClose();
-        this.saveAcitCv.checkNo = Number(data['checkNo']);
+        this.saveAcitCv.checkNo = String(Number(data['checkNo'])).padStart(this.chkNoDigits, '0');
       }else if(data['returnCode'] == -100){
         this.saveAcitCv.checkNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
@@ -889,7 +889,8 @@ uploadAcctEntries(){
   }
 
   padCheckNo() {
-
-    this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padStart(this.chkNoDigits, '0');
+    if(this.saveAcitCv.checkNo !== null && this.saveAcitCv.checkNo !== '') {
+      this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padStart(this.chkNoDigits, '0');
+    }
   }
 }
