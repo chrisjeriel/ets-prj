@@ -278,10 +278,22 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
+        if(this.table != undefined)
+            this.table.lengthFirst = false;
+        if(this.searchParams.recount != 'N'){
+          this.quotationService.newGetQuoProcessingDataLength(this.searchParams).subscribe(data=>{
+            this.passData.count = data;
+            console.log(data)
+            this.table.setLength(1);
+          })
+          this.searchParams.recount = 'N';
+        }
+
+
         this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             var records = data['quotationList'];
             console.log(data);
-            this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
+            // this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
             this.fetchedData = records;
 
             this.validationList = records;
@@ -299,7 +311,7 @@ export class QuotationProcessingComponent implements OnInit {
                                                  i.issueDate = this.ns.toDateTimeString(i.issueDate);
                                                  i.expiryDate = this.ns.toDateTimeString(i.expiryDate);
                                                  return i;
-                                             }));
+                                             }),1);
         });
     }
 

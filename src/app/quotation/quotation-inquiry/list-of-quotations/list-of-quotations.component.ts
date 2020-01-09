@@ -188,9 +188,20 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
+        if(this.table != undefined)
+            this.table.lengthFirst = false;
+        if(this.searchParams.recount != 'N'){
+          this.quotationService.newGetQuoProcessingDataLength(this.searchParams).subscribe(data=>{
+            this.passData.count = data;
+            console.log(data)
+            this.table.setLength(1);
+          })
+          this.searchParams.recount = 'N';
+        }
+
         this.quotationService.newGetQuoProcessingData(this.searchParams).subscribe(data => {
             this.records = data['quotationList'];
-            this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
+            // this.passData.count = data['length'] == null ? this.passData.count : data['length']  ;
             let recs: any[] = [];
             for(let rec of this.records){
                 recs.push({
@@ -222,7 +233,7 @@ export class ListOfQuotationsComponent implements OnInit {
                         });
             }
 
-            this.table.placeData(recs);
+            this.table.placeData(recs,1);
                //this.table.forEach(table => { table.refreshTable() });
         });
     }

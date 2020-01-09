@@ -26,6 +26,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
   @Input() formName: string = 'te' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
+  @Input() format: string = 'text';
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
@@ -67,6 +68,12 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     if(changes.readonly && this.renderer != undefined && this.afterInit) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }
+
+    if(changes.editorContent && changes.editorContent.currentValue) {
+      // console.log(changes);
+      // console.log(changes.editorContent);
+      this.editorContent = changes.editorContent.currentValue;
+    }
   }
 
   ngAfterViewInit() {
@@ -78,7 +85,9 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showTextEditorModal(content) {
+    // console.log(this.editorContent);
     this.oldValue = this.editorContent;
+    // console.log(this.oldValue);
     this.edtrMdl.openNoClose();
   }
 

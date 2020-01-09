@@ -29,7 +29,7 @@ export class PolEndorsementComponent implements OnInit {
         tHeader: ['C', 'Endt Code', 'Endt Title','Endt Wordings', 'Remarks'],
         tooltip:['Change Tag',null,null,null,null],
         magnifyingGlass: ['endtCd'],
-        dataTypes: ['checkbox', 'text', 'text','text-editor', 'text'],
+        dataTypes: ['checkbox', 'text', 'text','text-editor-h', 'text'],
         nData: {
             changeTag: 'N',
             endtCd: '',
@@ -339,7 +339,7 @@ export class PolEndorsementComponent implements OnInit {
            this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
            this.passData.tableData[this.passData.tableData.length - 1].endtCd = data[k].endtCd;
            this.passData.tableData[this.passData.tableData.length - 1].endtTitle = data[k].endtTitle;
-           this.passData.tableData[this.passData.tableData.length - 1].remarks = data[k].remarks === null ? '' : data[k].remarks;
+           // this.passData.tableData[this.passData.tableData.length - 1].remarks = data[k].remarks === null ? '' : data[k].remarks;
            this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
            this.passData.tableData[this.passData.tableData.length - 1].edited = true;
            this.passData.tableData[this.passData.tableData.length - 1].add = true;
@@ -401,8 +401,8 @@ export class PolEndorsementComponent implements OnInit {
             
             let endtTextSplit = endt.text.match(/(.|[\r\n]){1,1500}/g);
             if(endtTextSplit!== null)
-                for (var i = 0; i < endtTextSplit.length; ++i) {
-                    endt.endtText[this.endtTextKeys[i]] = endtTextSplit[i];
+                for (var i = 0; i < this.endtTextKeys.length; ++i) {
+                    endt.endtText[this.endtTextKeys[i]] = endtTextSplit[i]==undefined ? null : endtTextSplit[i];
                 }
             
             if(endt.edited && !endt.deleted){

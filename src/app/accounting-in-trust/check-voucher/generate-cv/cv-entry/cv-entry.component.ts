@@ -247,6 +247,8 @@ export class CvEntryComponent implements OnInit {
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
           e.cvDate     = this.ns.toDateTimeString(e.cvDate);
           e.checkDate  = this.ns.toDateTimeString(e.checkDate);
+
+          e.checkNo = String(e.checkNo).padStart(10, '0');
           e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
           e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
           e.cvNo = e.cvNo.toString().padStart(6,'0');
@@ -893,6 +895,10 @@ uploadAcctEntries(){
 
   clearPrinterName(){
     (this.printData.destination != 'printer')?this.printData.selPrinter='':''
+  }
+
+  padCheckNo() {
+    this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padStart(10, '0');
   }
 
 }
