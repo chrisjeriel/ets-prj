@@ -434,6 +434,7 @@ export class CvEntryComponent implements OnInit {
   }
 
   getAcitCheckSeries(bank,bankAcct){
+    this.loadingFunc(true);
     this.mtnService.getMtnAcitCheckSeries(bank,bankAcct)
     .subscribe(data => {
       this.loadingFunc(false);
@@ -456,6 +457,7 @@ export class CvEntryComponent implements OnInit {
     this.mtnService.getMtnBankAcct(bankCd)
     .subscribe(data => {
       console.log(data);
+      this.loadingFunc(false);
       var ba = data['bankAcctList'].filter(e => e.currCd == currCd && e.acItGlDepNo != null && e.acctStatus == 'A');
       if(ba.length == 1){
         this.saveAcitCv.bankAcctDesc   = ba[0].accountNo;
