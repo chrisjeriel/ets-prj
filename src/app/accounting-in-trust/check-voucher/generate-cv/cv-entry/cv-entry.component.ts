@@ -898,7 +898,7 @@ uploadAcctEntries(){
   }
 
   padCheckNo() {
-    this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padStart(10, '0');
+    this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padEnd(10, '0');
   }
 
 }
