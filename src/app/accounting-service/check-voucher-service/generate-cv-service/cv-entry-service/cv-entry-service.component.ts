@@ -127,12 +127,16 @@ export class CvEntryServiceComponent implements OnInit {
   };
 
   lovCheckBox:boolean = true;
+  chkNoDigits: number = null;
  
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
               private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
+    this.mtnService.getMtnParameters('N', 'CHK_NO_DIGITS').subscribe(data => {
+      this.chkNoDigits = Number(data['parameters'][0].paramValueN);
+    });
     this.titleService.setTitle("Acct-Serv | CV Entry");
 
     this.canUploadAcctEntMethod();
@@ -208,6 +212,7 @@ export class CvEntryServiceComponent implements OnInit {
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
           e.cvDate     = this.ns.toDateTimeString(e.cvDate);
           e.checkDate  = this.ns.toDateTimeString(e.checkDate);
+          e.checkNo = String(e.checkNo).padStart(this.chkNoDigits, '0');
           e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
           e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
           e.cvNo = e.cvNo.toString().padStart(6,'0');
@@ -431,7 +436,7 @@ export class CvEntryServiceComponent implements OnInit {
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();  
       }else{
-        this.saveAcseCv.checkNo = chckNo[0].checkNo;
+        this.saveAcseCv.checkNo = String(chckNo[0].checkNo).padStart(this.chkNoDigits, '0');
       }
     });
   }
@@ -844,6 +849,10 @@ uploadAcctEntries(){
 
   clearPrinterName(){
     (this.printData.destination != 'printer')?this.printData.selPrinter='':''
+  }
+
+  padCheckNo() {
+    this.saveAcseCv.checkNo = String(this.saveAcseCv.checkNo).padStart(this.chkNoDigits, '0');
   }
 
 }

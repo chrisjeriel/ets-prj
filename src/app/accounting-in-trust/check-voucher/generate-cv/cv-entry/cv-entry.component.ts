@@ -128,11 +128,15 @@ export class CvEntryComponent implements OnInit {
   };
 
   lovCheckBox:boolean = true;
+  chkNoDigits: number = null;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
               private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
 
   ngOnInit() {
+    this.mtnService.getMtnParameters('N', 'CHK_NO_DIGITS').subscribe(data => {
+      this.chkNoDigits = Number(data['parameters'][0].paramValueN);
+    });
     this.titleService.setTitle("Acct-IT | CV Entry");
 
     this.canUploadAcctEntMethod();
@@ -217,6 +221,7 @@ export class CvEntryComponent implements OnInit {
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
           e.cvDate     = this.ns.toDateTimeString(e.cvDate);
           e.checkDate  = this.ns.toDateTimeString(e.checkDate);
+          e.checkNo = String(e.checkNo).padStart(this.chkNoDigits, '0');
           e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
           e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
           e.cvNo = e.cvNo.toString().padStart(6,'0');
@@ -334,7 +339,7 @@ export class CvEntryComponent implements OnInit {
       checkClass       : this.saveAcitCv.checkClass,
       checkDate        : (this.saveAcitCv.checkDate == '' || this.saveAcitCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.checkDate,
       checkId          : this.saveAcitCv.checkId,
-      checkNo          : this.saveAcitCv.checkNo,
+      checkNo          : Number(this.saveAcitCv.checkNo),
       closeDate        : this.ns.toDateTimeString(this.saveAcitCv.mainCloseDate),
       createDate       : (this.saveAcitCv.createDate == '' || this.saveAcitCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcitCv.createDate,
       createUser       : (this.saveAcitCv.createUser == '' || this.saveAcitCv.createUser == null)?this.ns.getCurrentUser():this.saveAcitCv.createUser,
@@ -452,7 +457,7 @@ export class CvEntryComponent implements OnInit {
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
       }else{
-        this.saveAcitCv.checkNo = chckNo[0].checkNo;
+        this.saveAcitCv.checkNo = String(chckNo[0].checkNo).padStart(this.chkNoDigits, '0');
       }
     });
   }
@@ -883,5 +888,10 @@ uploadAcctEntries(){
     (this.printData.destination != 'printer')?this.printData.selPrinter='':''
   }
 
+  padCheckNo() {
+    this.saveAcitCv.checkNo = String(this.saveAcitCv.checkNo).padStart(this.chkNoDigits, '0');
+  }
+
+  // CONFLICT
 
 }

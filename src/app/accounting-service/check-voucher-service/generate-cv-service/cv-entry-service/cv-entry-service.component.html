@@ -115,7 +115,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 labels">Check No.</label>
-                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcseCv.bankAcctDesc == '' || saveAcseCv.bankAcctDesc == null" [(ngModel)]="saveAcseCv.checkNo" numbers-only appRequired>
+                        <input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcseCv.bankAcctDesc == '' || saveAcseCv.bankAcctDesc == null" [(ngModel)]="saveAcseCv.checkNo" numbers-only appRequired (blur)="padCheckNo()">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-3 no-margin" style="margin-bottom: 0px !important">Check Date</label>
