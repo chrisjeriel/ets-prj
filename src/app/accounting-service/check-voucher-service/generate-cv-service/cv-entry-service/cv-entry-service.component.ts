@@ -329,7 +329,7 @@ export class CvEntryServiceComponent implements OnInit {
       checkClass       : this.saveAcseCv.checkClass,
       checkDate        : (this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.checkDate,
       checkId          : this.saveAcseCv.checkId,
-      checkNo          : this.saveAcseCv.checkNo,
+      checkNo          : Number(this.saveAcseCv.checkNo),
       closeDate        : this.ns.toDateTimeString(this.saveAcseCv.mainCloseDate),
       createDate       : (this.saveAcseCv.createDate == '' || this.saveAcseCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.createDate,
       createUser       : (this.saveAcseCv.createUser == '' || this.saveAcseCv.createUser == null)?this.ns.getCurrentUser():this.saveAcseCv.createUser,
