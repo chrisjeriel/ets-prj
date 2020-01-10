@@ -398,33 +398,34 @@ export class QuotationProcessingComponent implements OnInit {
             statusArr: [1,2,3,4,5,'P','A','R'],
             riskName: this.riskName,
             //cessionDesc: this.typeOfCession,
-            quotationNo: this.line + '%'
+            quotationNo: this.line + '%',
+            recount : 'N'
         }
 
         this.loading = true;
-        this.quotationService.newGetQuoProcessingData(params).subscribe(a=>{
-            //neco was overthrown by paul
-            this.loading = false;
-            if(a['quotationList']!= null && a['quotationList'].length != 0){
-                this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
-                console.log(a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i));
-                this.exclude = a['quotationList'].map(a=>a.cedingId);
-                this.riskIdList = a['quotationList']
-                this.tempQuoteId = a['quotationList'][0].quoteId;
-                this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status in (['Requested','In Progress','Pending Approval','Approved','Rejected']));
-                
-                this.multiCompTag = a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i).length > 1;
-            }
+        if(Number(this.riskCd) != 0 ){
+            this.quotationService.newGetQuoProcessingData(params).subscribe(a=>{
+                //neco was overthrown by paul
+                this.loading = false;
+                if(a['quotationList']!= null && a['quotationList'].length != 0){
+                    this.existingQuotationNo = a['quotationList'].map(a=>a.quotationNo);
+                    console.log(a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i));
+                    this.exclude = a['quotationList'].map(a=>a.cedingId);
+                    this.riskIdList = a['quotationList']
+                    this.tempQuoteId = a['quotationList'][0].quoteId;
+                    this.disableModBtn = (this.existingQuotationNo.length > 1 || a['quotationList'][0].status in (['Requested','In Progress','Pending Approval','Approved','Rejected']));
+                    
+                    this.multiCompTag = a['quotationList'].map(a=>a.intCompId).filter((a,i,s)=>s.indexOf(a)==i).length > 1;
+                }
 
-            if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
-                $('#modIntModal > #modalBtn').trigger('click');
+                if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
+                    $('#modIntModal > #modalBtn').trigger('click');
 
-            }else{
-                this.newQuote();
-            //neco was overthrown until here
-            //neco's influence ends here
-            }
-        })
+                }
+            })
+        }else{
+            this.newQuote();
+        }
 
         // console.log(this.validationList)
         // for(let i of this.validationList) {
