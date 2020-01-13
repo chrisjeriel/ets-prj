@@ -38,10 +38,10 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     color: 'black'
   };
 
-  oldValue: any = '';
   modalRef: NgbModalRef;
 
   afterInit: boolean = false;
+  editorContentMdl: any = '';
 
   constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
@@ -70,8 +70,6 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     if(changes.editorContent && changes.editorContent.currentValue) {
-      // console.log(changes);
-      // console.log(changes.editorContent);
       this.editorContent = changes.editorContent.currentValue;
     }
   }
@@ -85,18 +83,19 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showTextEditorModal(content) {
-    this.oldValue = this.editorContent;
+    this.editorContentMdl = this.editorContent;
     this.edtrMdl.openNoClose();
   }
 
   closeTextEditorModal(event) {
-    this.emitValue();
-    this.modalService.dismissAll();
-    this.edtrMdlForm.form.markAsPristine();
-
-    if(this.oldValue !== this.editorContent) {
+    if(this.editorContent !== this.editorContentMdl && !this.table) {
       this.ns.formGroup.get(this.formName).markAsDirty();
     }
+
+    this.editorContent = this.editorContentMdl;
+    this.emitValue();
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   checkStyle() {
@@ -111,7 +110,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   onClickCancel(confirm) {
     setTimeout(() => {
-      if(this.edtrMdlForm.dirty) {  
+      if(this.edtrMdlForm.dirty) {
         this.modalRef = this.modalService.open(confirm, { centered: true, backdrop: 'static', windowClass: "modal-size" });
       } else {
         this.modalService.dismissAll();
@@ -120,8 +119,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onClickYes() {
-    this.editorContent = this.oldValue;
-    this.closeTextEditorModal(1);
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   onClickNo() {
