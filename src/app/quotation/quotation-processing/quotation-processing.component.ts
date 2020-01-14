@@ -420,7 +420,8 @@ export class QuotationProcessingComponent implements OnInit {
 
                 if(this.existingQuotationNo.length > 0 && Number(this.riskCd) > 0){
                     $('#modIntModal > #modalBtn').trigger('click');
-
+                }else{
+                    this.newQuote();
                 }
             })
         }else{
