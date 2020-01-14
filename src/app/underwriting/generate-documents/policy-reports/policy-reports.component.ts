@@ -313,6 +313,13 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   print() {
+    if(this.params.destination === '' || this.params.destination === undefined){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Please select a print destination";
+      this.appDialog.open();
+      return;
+    }
+
     this.prepareData();
 
     let params :any = {
@@ -327,8 +334,6 @@ export class PolicyReportsComponent implements OnInit {
       "polr044Params.incRecTag" :   this.sendData.incRecTag,
       "polr044Params.reportId"  :   this.sendData.reportId,
     }
-
-    console.log(this.sendData);
 
     this.printService.print(this.params.destination,this.params.reportId, params);
   }

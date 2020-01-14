@@ -61,11 +61,9 @@ export class ClaimReportsComponent implements OnInit {
     forceExtract: 'N',
   };
 
-  repExtractions: Array<string> = [
-                        'CLMR010A',
-                        ];
+  repExtractions: Array<string> = ['CLMR010A', 'CLMR010B', 'CLMR010C', 'CLMR010D', 'CLMR010E', 'CLMR010F', 'CLMR010G'];
 
-paramsToggle: Array<string> = [];
+  paramsToggle: Array<string> = [];
 
   extractDisabled: boolean = true;
   modalHeader: string = "";
@@ -104,10 +102,14 @@ paramsToggle: Array<string> = [];
                              'byDate', 'byMonthYear', 'asOf');
     } else if (this.params.reportId == 'CLMR010B') {
       this.paramsToggle.push('line', 'company',
+                             'byDate', 'byMonthYear', 'asOf', 'claimId');
+    } else if (this.params.reportId == 'CLMR010C') {
+      this.paramsToggle.push('line', 'company',
+                             'byDate', 'byMonthYear', 'asOf');
+    } else if (this.params.reportId == 'CLMR010D') {
+      this.paramsToggle.push('line', 'company',
                              'byDate', 'byMonthYear', 'asOf');
     }
-
-    
 
     setTimeout(()=> {
     	this.ns.lovLoader(data.ev, 0);
@@ -196,6 +198,13 @@ paramsToggle: Array<string> = [];
   }
 
   print() {
+    if(this.params.destination === '' || this.params.destination === undefined){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Please select a print destination";
+      this.appDialog.open();
+      return;
+    }
+
     this.prepareData();
 
     let params :any = {
