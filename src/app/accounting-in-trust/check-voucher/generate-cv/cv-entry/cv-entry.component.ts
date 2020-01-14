@@ -410,6 +410,9 @@ export class CvEntryComponent implements OnInit {
         this.saveAcitCv.checkNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
         this.warnMdl.openNoClose();
+      }else if(data['returnCode'] == -300){
+        this.warnMsg = 'There is no Check Voucher No available as of the moment.\nPlease proceed to maintenance module to generate Check Voucher No.';
+        this.warnMdl.openNoClose();
       }
       
     });
@@ -458,9 +461,11 @@ export class CvEntryComponent implements OnInit {
   }
 
   getAcitCheckSeries(bank,bankAcct){
+    this.loadingFunc(true);
     this.mtnService.getMtnAcitCheckSeries(bank,bankAcct)
     .subscribe(data => {
       this.loadingFunc(false);
+      this.form.control.markAsDirty();
       console.log(data);
       var chckNo = data['checkSeriesList'].filter(e => e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
       if(chckNo.length == 0){
@@ -701,7 +706,6 @@ export class CvEntryComponent implements OnInit {
       }
     }
   }
-
   
   onClickYesConfirmed(stat){
     this.loadingFunc(true);
