@@ -71,12 +71,14 @@ export class ClaimReportsComponent implements OnInit {
   dialogIcon: string = "";
   dialogMessage: string = "";
   modalMode: string = "";
+  loading : boolean = true;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal) { }
 
 
   ngOnInit() {
     this.passLov.modReportId = 'CLMR010%';
+    this.loading = false;
   }
 
   getReports(){
@@ -107,7 +109,7 @@ export class ClaimReportsComponent implements OnInit {
       this.paramsToggle.push('line', 'company',
                              'byDate', 'byMonthYear', 'asOf');
     } else if (this.params.reportId == 'CLMR010D') {
-      this.paramsToggle.push('line', 'company',
+      this.paramsToggle.push('line', 'company', 
                              'byDate', 'byMonthYear', 'asOf');
     }
 
@@ -158,9 +160,11 @@ export class ClaimReportsComponent implements OnInit {
   }
 
   extract(cancel?){
+    this.loading = true;
     this.prepareData();
 
     this.printService.extractReport({ reportId: this.params.reportId, clmr010Params:this.sendData }).subscribe((data:any)=>{
+        this.loading = false;
         console.log("extractReport return data");
         console.log(data);
         if (data.errorList.length > 0) {

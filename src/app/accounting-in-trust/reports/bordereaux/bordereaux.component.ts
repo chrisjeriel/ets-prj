@@ -36,6 +36,7 @@ export class BordereauxComponent implements OnInit {
 	dialogIcon: string = "";
 	dialogMessage: string = "";
 	modalMode: string = "";
+	loading: boolean = true;
 
 	params :any = {
 		extractUser: JSON.parse(window.localStorage.currentUser).username,
@@ -69,6 +70,7 @@ export class BordereauxComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
 		this.passLov.modReportId = 'ACITR052%';
+		this.loading = false;
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
@@ -178,11 +180,12 @@ export class BordereauxComponent implements OnInit {
 	  }
 
 	extract(cancel?){
-    
+    	this.loading = true;
     	this.prepareData();
     	console.log(this.params);
 
 	    this.printService.extractReport({ reportId: this.params.reportId, acitr052Params:this.params }).subscribe((data:any)=>{
+	        this.loading = false;
 	        console.log("extractReport return data");
 	        console.log(data);
 	        if (data.errorList.length > 0) {
