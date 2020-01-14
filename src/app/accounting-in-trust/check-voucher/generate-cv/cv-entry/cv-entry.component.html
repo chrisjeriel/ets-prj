@@ -84,7 +84,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Transfer Reference No.</label>
-                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.preparedByName" (change)="checkCode($event, 'prep-user')" autoComplete="off">
+                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.btRefNo" autoComplete="off">
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -135,13 +135,13 @@
                         <label class="form-control-sm col-sm-4 labels">Destination Acct. No.</label>
                         <input name="input19" type="text" [disabled]="saveAcitCv.destBankDesc == '' || saveAcitCv.destBankDesc == null" class="form-control form-control-sm cust-sm col-sm-10 warn bank-acct cl-spoil" [(ngModel)]="saveAcitCv.destAcctNoDesc" autoComplete="off">
                         <ng-container *ngIf="!removeIcon || (removeIcon && spoiled)">
-                            <div *ngIf="saveAcitCv.destBankDesc != '' && saveAcitCv.destBankDesc != null" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank-acct')"><i class="fa fa-search"></i></a>
+                            <div *ngIf="saveAcitCv.destBankDesc != '' && saveAcitCv.destBankDesc != null" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('dest-bank-acct')"><i class="fa fa-search"></i></a>
                             </div>
                         </ng-container>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Destination Acct. Name</label>
-                        <input name="input20" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.preparedByName" (change)="checkCode($event, 'prep-user')" autoComplete="off">
+                        <input name="input20" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.destAcctName" autoComplete="off">
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -325,7 +325,7 @@
 
 <app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event, fromBankLov)" ></app-lov>
-<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,'bank-acct')" ></app-lov>
+<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,fromBankAcctLov)" ></app-lov>
 <app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" ></app-lov>
 <app-lov #paytReqTypeLov [passData]="passDataLov" (selectedData)="setData($event,'paytreqtype')" ></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>

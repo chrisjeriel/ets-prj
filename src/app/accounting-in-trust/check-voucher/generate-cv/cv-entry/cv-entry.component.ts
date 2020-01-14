@@ -136,6 +136,7 @@ export class CvEntryComponent implements OnInit {
   chkNoDigits: number = null;
   disbTypeList: any[] = [];
   fromBankLov: any = '';
+  fromBankAcctLov: any = '';
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
               private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
@@ -433,10 +434,11 @@ export class CvEntryComponent implements OnInit {
       this.passDataLov.selector = 'bankLov';
       this.passDataLov.glDepFor = 'acit';
       this.bankLov.openLOV();
-    }else if(fromUser.toLowerCase() == 'bank-acct'){
+    }else if(fromUser.toLowerCase() == 'bank-acct' || fromUser.toLowerCase() == 'dest-bank-acct'){
+      this.fromBankAcctLov = fromUser;
       this.passDataLov.selector = 'bankAcct';
       this.passDataLov.currCd = this.saveAcitCv.currCd;
-      this.passDataLov.bankCd = this.saveAcitCv.bank;
+      this.passDataLov.bankCd = fromUser == 'bank-acct' ? this.saveAcitCv.bank : this.saveAcitCv.destBank;
       this.passDataLov.from = 'acit';
       this.bankAcctLov.openLOV();
     }else if(fromUser.toLowerCase() == 'class'){
@@ -540,6 +542,9 @@ export class CvEntryComponent implements OnInit {
       this.saveAcitCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcitCv.bankAcct = data.data.bankAcctCd;
       this.getAcitCheckSeries(this.saveAcitCv.bank,this.saveAcitCv.bankAcct);
+    }else if(from.toLowerCase() == 'dest-bank-acct'){
+      this.saveAcitCv.destAcctNoDesc = data.data.accountNo;
+      this.saveAcitCv.destAcctNo = data.data.bankAcctCd;
     }else if(from.toLowerCase() == 'class'){
       this.saveAcitCv.checkClassDesc   = data.data.description;
       this.saveAcitCv.checkClass = data.data.code;
