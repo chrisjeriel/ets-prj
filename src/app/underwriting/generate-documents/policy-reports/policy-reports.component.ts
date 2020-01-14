@@ -351,9 +351,10 @@ export class PolicyReportsComponent implements OnInit {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
       if(this.params.reportId.indexOf('POLR044') == -1){
-        this.passLov.code = '';
+        this.passLov.code = 'POLR044%';
+      }else{
+        this.passLov.code = this.params.reportId;
       }
-      this.passLov.code = this.params.reportId;
       console.log(ev);
       this.lovMdl.checkCode('reportId',ev);
     }
