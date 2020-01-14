@@ -42,7 +42,7 @@ export class BordereauxComponent implements OnInit {
 		osPaidTag: 'O',
 		extTypeTag: 'LE',
 	    dateParam: '4',
-	    dateRange: 'D',
+	    dateRange: 'A',
 	  	reportName : '',
 	    dateFrom: '',
 	    dateTo: '',
@@ -219,7 +219,19 @@ export class BordereauxComponent implements OnInit {
     this.params.forceExtract = 'Y';
   }
 
+  resetDateParams(){
+  	this.params.dateFrom = '';
+  	this.params.dateTo = '';
+  	this.params.dateToAsOf = '';
+  }
+
   print() {
+  	if(this.params.destination === '' || this.params.destination === undefined){
+  	  this.dialogIcon = "warning-message";
+  	  this.dialogMessage = "Please select a print destination";
+  	  this.appDialog.open();
+  	  return;
+  	}
     this.prepareData();
 
     let params :any = {

@@ -5,13 +5,13 @@
 			<ng-template ngbTabContent>
 				<div class="p-0 d-flex">
 					<div class="col-sm-6 pl-0 pr-1">
-						<fieldset class="scheduler-border report">
+						<fieldset class="scheduler-border report" style="padding: 11px 0px 27px 0px !important;">
 							<legend class="scheduler-border">Report Details</legend>
 							<div class="form-row custom-row-inline-inset pt-1" style="margin-top: -2px !important;">
 								<div class="input-group pl-4 ">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" id="osX" name="reportDetail" value="O" [(ngModel)]="params.osPaidTag">
+											<input type="radio" id="osX" name="reportDetail" value="O" [ngModel]="params.osPaidTag" (ngModelChange)="params.osPaidTag = $event; params.dateRange = 'A';">
 										</div>
 										<label for="osX" class="form-control-sm col-sm text-left">Outstanding</label>
 									</div>
@@ -43,7 +43,7 @@
 								<div class="input-group pl-4 mt-2">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" id="lpX" name="reportDetail" value="P" [(ngModel)]="params.osPaidTag">
+											<input type="radio" id="lpX" name="reportDetail" value="P" [ngModel]="params.osPaidTag" (ngModelChange)="params.osPaidTag = $event; params.dateRange = 'D';">
 										</div>
 										<label for="lpX" class="form-control-sm col-sm text-left">Losses Paid</label>
 									</div>
@@ -56,7 +56,7 @@
 										<label for="lp1" class="form-control-sm col-sm text-left">Tran Date</label>
 									</div>
 								</div>
-								<div class="input-group pl-8">
+								<div class="input-group pl-8" style="padding-bottom: 11px">
 									<div class="col-sm-6 d-flex">
 										<div class="col-sm-1">
 											<input type="radio" id="lp2" name="lossPaid" value="8" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'P'">
@@ -64,7 +64,7 @@
 										<label for="lp2" class="form-control-sm col-sm text-left">Posting Date</label>
 									</div>
 								</div>
-								<div class="input-group pl-4 mt">
+								<div class="input-group pl-4 mt" style="padding-bottom: 11px">
 									<div class="col-sm d-flex">
 										<div class="col-sm-1">
 											<input type="radio" id="extType1" name="last" value="L" [(ngModel)]="params.extTypeTag">
@@ -80,7 +80,7 @@
 										<label for="extType3" class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
 									</div>
 								</div>
-								<div class="input-group pl-4 mt-3">
+								<!-- <div class="input-group pl-4 mt-3">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
 											<input type="checkbox" id="per1" [(ngModel)]="params.perLine">
@@ -95,7 +95,39 @@
 										</div>
 										<label for="per2" class="form-control-sm col-sm text-left">Per Type of Cession</label>
 									</div>
+								</div> -->
+								<div class="input-group pl-4 mt">
+									<div class="col-sm d-flex">
+										<div class="col-sm-1">
+											<input type="radio" id="per1" name="perOrder" value="1" [(ngModel)]="params.perOrder">
+										</div>
+										<label for="per1" class="form-control-sm col-sm text-left" style="padding-left: 0px !important">Per Line</label>
+										<div class="col-sm-1">
+											<input type="radio" id="per2" name="perOrder" value="2" [(ngModel)]="params.perOrder">
+										</div>
+										<label for="per2" class="form-control-sm col-sm text-left" style="padding-left: 0px !important">Per Type of Cession</label>
+										<div class="col-sm-1">
+											<input type="radio" id="per3" name="perOrder" value="3" [(ngModel)]="params.perOrder">
+										</div>
+										<label for="per3" class="form-control-sm col-sm text-left" style="padding-left: 0px !important">Per Company</label>
+									</div>
 								</div>
+								<!-- <div class="input-group pl-4 ">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" id="per2" name="perOrder" value="2" [(ngModel)]="params.perOrder">
+										</div>
+										<label for="per2" class="form-control-sm col-sm text-left">Per Type of Cession</label>
+									</div>
+								</div>
+								<div class="input-group pl-4 ">
+									<div class="col-sm-4 d-flex">
+										<div class="col-sm-1">
+											<input type="radio" id="per3" name="perOrder" value="3" [(ngModel)]="params.perOrder">
+										</div>
+										<label for="per2" class="form-control-sm col-sm text-left">Per Company</label>
+									</div>
+								</div> -->
 							</div>
 						</fieldset>
 					</div>
@@ -106,13 +138,13 @@
 								<div class="input-group">
 									<div class="col-sm-4 d-flex">
 										<div class="col-sm-1">
-											<input type="radio" id="dp1" name="dateParam" value="D" [(ngModel)]="params.dateRange">
+											<input type="radio" id="dp1" name="dateParam" value="D" [(ngModel)]="params.dateRange" (ngModelChange)="resetDateParams();" [disabled]="params.osPaidTag == 'O'">
 										</div>
 										<label for="dp1" class="form-control-sm col-sm text-left">By Period</label>
 									</div>
 								</div>
 								<div class="input-group">
-									<label class="form-control-sm col-sm-2">From</label>
+									<label class="form-control-sm col-sm-3">From</label>
 									<div class="dp-cont col-sm-3">
 										<datepicker [type]="'date'" [disabled]="params.dateRange != 'D'" [value]="params.dateFrom?.split('T')[0]" (valueChange)="params.dateFrom=$event;"></datepicker>
 									</div>
@@ -122,9 +154,9 @@
 									</div>
 								</div>
 								<div class="input-group mt-3">
-									<div class="col-sm-2 d-flex pr-0">
+									<div class="col-sm-3 d-flex pr-0">
 										<div class="col-sm-1">
-											<input type="radio" id="dp2" name="dateParam" value="A" [(ngModel)]="params.dateRange">
+											<input type="radio" id="dp2" name="dateParam" value="A" [(ngModel)]="params.dateRange" (ngModelChange)="resetDateParams();" [disabled]="params.osPaidTag == 'P'">
 										</div>
 										<label for="dp2" class="form-control-sm col-sm text-left">As of</label>
 									</div>
@@ -144,21 +176,21 @@
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCessionLOV()"></i></a></div>
 									<input type="text" class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" [(ngModel)]="cessionDesc" readonly placeholder="ALL TYPES OF CESSION">
 								</div>
-								<div class="input-group cust-ig">
+								<!-- <div class="input-group cust-ig">
 									<label class="form-control-sm col-sm-2">Report Name</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
 									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
-								</div>
+								</div> -->
 							</div>
 							<div class="row">
 								<div class="col-sm-1"></div>
 								<div class="col-sm">
 									<div class="input-group" style="margin-bottom: 0px !important;">
 										<label class="form-control-sm col-sm-3" style="margin-bottom: -6px !important;">Destination</label>
-										<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+										<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination" appRequired>
 											<option value="screen">Screen</option>
 					    					<option value="dlPdf">PDF</option>
 					    					<option value="printPdf">Printer</option>
