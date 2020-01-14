@@ -99,7 +99,7 @@ export class QuoteEndorsementComponent implements OnInit {
         dataTypes: ['text', 'text', 'text'],
         magnifyingGlass: ['endtCd'],
         nData:  {
-          createDate: [0, 0, 0, 0, 0, 0, 0],
+          //createDate: [0, 0, 0, 0, 0, 0, 0],
           createUser: this.ns.getCurrentUser(),
           deductiblesList: [],
           defaultTag: "Y",
@@ -126,7 +126,7 @@ export class QuoteEndorsementComponent implements OnInit {
           lineCd: "",
           lineDesc: "",
           remarks: null,
-          updateDate: [0, 0, 0, 0, 0, 0, 0],
+          //updateDate: [0, 0, 0, 0, 0, 0, 0],
           updateUser: this.ns.getCurrentUser(),
           showMG : 1
         },
@@ -185,7 +185,7 @@ export class QuoteEndorsementComponent implements OnInit {
         tHeader: ['Deductible Code','Deductible Title', 'Deductible Text', 'Deductible (%)', 'Deductible Amount'],
         dataTypes: ['text','text', 'text', 'percent', 'currency','currency'],
         nData:{
-            createDate: [2019, 2, 21, 0, 0, 0, 0],
+            //createDate: [2019, 2, 21, 0, 0, 0, 0],
             createUser: this.ns.getCurrentUser(),
             deductibleAmt: null,
             deductibleCd: null,
@@ -193,7 +193,7 @@ export class QuoteEndorsementComponent implements OnInit {
             deductibleTitle: null,
             deductibleTxt: null,
             optionId: null,
-            updateDate: [2019, 2, 21, 0, 0, 0, 0],
+            //updateDate: [2019, 2, 21, 0, 0, 0, 0],
             updateUser: this.ns.getCurrentUser(),
             sumInsured: 0,
             endtCd: 0,
@@ -405,7 +405,7 @@ export class QuoteEndorsementComponent implements OnInit {
                                                            );
                                                           this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
                                                           this.saveEndt.optionId = data.endorsements[lineCount].optionId;
-                                                          this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                                                          // this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
                                                           this.saveEndt.createUser = this.ns.getCurrentUser();
                                                           this.saveEndt.updateUser = this.ns.getCurrentUser();          
             }
@@ -453,7 +453,7 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementData.tableData.push(JSON.parse(JSON.stringify(this.endorsementData.nData)));
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtTitle = data[i].endtTitle; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtDescription = data[i].description; 
-          this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtWording  = data[i].remarks; 
+          // this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtWording  = data[i].remarks; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited  = true; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCd = data[i].endtCd; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].showMG = 0; 
@@ -539,8 +539,8 @@ export class QuoteEndorsementComponent implements OnInit {
               }
               for(let ded of this.endorsementData.tableData[i].deductiblesList){
                   console.log(ded);
-                  ded.createDate = new Date(ded.createDate[0],ded.createDate[1]-1,ded.createDate[2]).toISOString();
-                  ded.updateDate = new Date(ded.updateDate[0],ded.updateDate[1]-1,ded.updateDate[2]).toISOString();
+                  ded.createDate = null;
+                  ded.updateDate = null;
                   ded.endtCd = this.endorsementData.tableData[i].endtCd;
                   ded.updateUser = this.ns.getCurrentUser();
                   if(ded.edited && !ded.deleted){
@@ -755,6 +755,8 @@ export class QuoteEndorsementComponent implements OnInit {
             a.deductibleRt = a.deductibleRate;
             a.endtCd = this.table.indvSelect.endtCode;
             a.edited = true;
+            a.createDate = null;
+            a.updateDate = null;
             return true;
           })
           this.deductiblesData.tableData = this.table.indvSelect.deductiblesList

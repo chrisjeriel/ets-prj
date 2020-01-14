@@ -31,7 +31,7 @@ export class PolicyWordingComponent implements OnInit, OnDestroy, AfterViewInit 
 	policyWordingData: any = {
 	  	tableData: [],
 	  	tHeader: ['Policy Word Code', 'Wording Title', 'Wordings', 'Paragraph Type', 'Active', 'Default', 'Open Cover', 'Remarks'],
-	  	dataTypes: ['pk-cap', 'text', 'text-editor', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
+	  	dataTypes: ['pk-cap', 'text', 'text-editor-h', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
 	  	keys: ['wordingCd', 'wordingTitle', 'wordings', 'wordType', 'activeTag', 'defaultTag', 'ocTag', 'remarks'],
 	  	widths: [1,'180','auto','155',1,1,1,'175'],
 	  	uneditable: [false,false,false,false,false,false,false,false],

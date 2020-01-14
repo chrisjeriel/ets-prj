@@ -31,7 +31,7 @@ export class QuoteWordingComponent implements OnInit, OnDestroy,AfterViewInit {
   	quoteWordingData: any = {
 	  	tableData: [],
 	  	tHeader: ['Quote Word No', 'Wordings', 'Paragraph Type', 'Active', 'Default', 'Open Cover', 'Remarks'],
-	  	dataTypes: ['sequence-3', 'text-editor', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
+	  	dataTypes: ['sequence-3', 'text-editor-h', 'select', 'checkbox', 'checkbox','checkbox', 'text'],
 	  	keys: ['wordingId', 'wording', 'wordType', 'activeTag', 'defaultTag', 'ocTag', 'remarks'],
 	  	widths: [1,'auto','100',1,1,1,'275'],
 	  	uneditable: [true,false,false,false,false,false,false],

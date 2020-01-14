@@ -26,21 +26,22 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
   @Input() formName: string = 'te' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
+  @Input() format: string = 'text';
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
   style: any = {
     height: '100%',
     width: '100%',
-    font: '11px arial',
+    font: '10px arial',
     padding: '5px 10px',
     color: 'black'
   };
 
-  oldValue: any = '';
   modalRef: NgbModalRef;
 
   afterInit: boolean = false;
+  editorContentMdl: any = '';
 
   constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
@@ -67,6 +68,10 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
     if(changes.readonly && this.renderer != undefined && this.afterInit) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
     }
+
+    if(changes.editorContent && changes.editorContent.currentValue) {
+      this.editorContent = changes.editorContent.currentValue;
+    }
   }
 
   ngAfterViewInit() {
@@ -78,18 +83,19 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   showTextEditorModal(content) {
-    this.oldValue = this.editorContent;
+    this.editorContentMdl = this.editorContent;
     this.edtrMdl.openNoClose();
   }
 
   closeTextEditorModal(event) {
-  	this.emitValue();
-  	this.modalService.dismissAll();
-    this.edtrMdlForm.form.markAsPristine();
-
-    if(this.oldValue !== this.editorContent) {
+    if(this.editorContent !== this.editorContentMdl && !this.table) {
       this.ns.formGroup.get(this.formName).markAsDirty();
     }
+
+    this.editorContent = this.editorContentMdl;
+    this.emitValue();
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   checkStyle() {
@@ -104,7 +110,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   onClickCancel(confirm) {
     setTimeout(() => {
-      if(this.edtrMdlForm.dirty) {  
+      if(this.edtrMdlForm.dirty) {
         this.modalRef = this.modalService.open(confirm, { centered: true, backdrop: 'static', windowClass: "modal-size" });
       } else {
         this.modalService.dismissAll();
@@ -113,8 +119,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onClickYes() {
-    this.editorContent = this.oldValue;
-    this.closeTextEditorModal(1);
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   onClickNo() {

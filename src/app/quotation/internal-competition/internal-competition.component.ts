@@ -31,7 +31,7 @@ export class InternalCompetitionComponent implements OnInit {
     intCompData: any = {
         tableData: [],
         tHeader: ["Advice No.", "Company", "Attention", "Position", "Advice Option", "Advice Wordings", "Created By", "Date Created", "Last Update By", "Last Update"],
-        dataTypes: ["text", "text", "text", "text", "select", "text-editor", "text", "date", "text", "date"],
+        dataTypes: ["text", "text", "text", "text", "select", "text-editor-h", "text", "date", "text", "date"],
         magnifyingGlass: ["cedingRepName", "wordings"],
         nData: new IntCompAdvInfo(null, null, null, null, null, null, null, new Date(), null, new Date()),
         opts: [{

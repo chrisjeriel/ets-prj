@@ -163,11 +163,19 @@ export class AltParListingComponent implements OnInit {
     }
 
     retrievePolAltListing(){
+
+       if(this.searchParams.recount != 'N'){
+             this.uwService.getPolicyListingLength(this.searchParams).subscribe(data=>{
+               this.altParListData.count = data;
+               this.table.setLength(1);
+             })
+             this.searchParams.recount = 'N';
+         }
        this.uwService.newGetParListing(this.searchParams).subscribe(data => {
           var records = data['policyList'];
           let recs:any[] = [];
           this.fetchedData = records;
-          this.altParListData.count = data['length'];
+          // this.altParListData.count = data['length'];
           for(let rec of records){
                  recs.push(
                             {
@@ -190,7 +198,7 @@ export class AltParListingComponent implements OnInit {
                             }
                         );  
              } 
-             this.table.placeData(recs);
+             this.table.placeData(recs,1);
        });
     }
 

@@ -12,6 +12,7 @@ import { map } from 'rxjs/operators';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { Subject } from 'rxjs';
+import { SucessDialogComponent } from '@app/_components/common';
 
 @Component({
     selector: 'app-deductible',
@@ -24,11 +25,12 @@ export class DeductibleComponent implements OnInit {
     @ViewChild(MtnLineComponent) lineLov : MtnLineComponent;
     @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
     @ViewChild(ConfirmSaveComponent) cs : ConfirmSaveComponent;
+    @ViewChild(SucessDialogComponent) successBtn: SucessDialogComponent;
 
     passData: any = {
         tableData            : [],
         tHeader              : ['Deductible', 'Title', 'Deductible Type','Deductible Amount','Rate','Minimum Amount','Maximum Amount','Deductible Text','Section Cover','Endorsement','Active','Default','Remarks'],
-        dataTypes            : ['pk-cap','text','select','currency','percent','currency','currency','text','text','text','checkbox','checkbox','text'],
+        dataTypes            : ['text','text','select','currency','percent','currency','currency','text','text','text','checkbox','checkbox','text'],
         nData:
         {
             newRec            : 1,
@@ -245,16 +247,16 @@ export class DeductibleComponent implements OnInit {
         
         for(let record of this.passData.tableData){
             record.lineCd  = this.line.toUpperCase();
-            if(record.deductibleCd == '' || record.deductibleCd == null ||  record.deductibleTitle == '' || record.deductibleType == '' || record.deductibleType == null ||
-              (record.deductibleType == 'F' && (record.deductibleAmt == '' ||  record.deductibleAmt == null || isNaN(record.deductibleAmt))) || 
-              (record.deductibleType != 'F' && (record.deductibleRate == '' || record.deductibleRate == null || isNaN(record.deductibleRate)) )){
-                if(!record.deleted){
-                    isEmpty = 1;
-                    record.fromCancel = false;
-                }else{
-                    this.params.deleteDeductibles.push(record);
-                }
-            }else{
+            // if(record.deductibleCd == '' || record.deductibleCd == null ||  record.deductibleTitle == '' || record.deductibleType == '' || record.deductibleType == null ||
+            //   (record.deductibleType == 'F' && (record.deductibleAmt == '' ||  record.deductibleAmt == null || isNaN(record.deductibleAmt))) || 
+            //   (record.deductibleType != 'F' && (record.deductibleRate == '' || record.deductibleRate == null || isNaN(record.deductibleRate)) )){
+            //     if(!record.deleted){
+            //         isEmpty = 1;
+            //         record.fromCancel = false;
+            //     }else{
+            //         this.params.deleteDeductibles.push(record);
+            //     }
+            // }else{
                 record.fromCancel = true;
                 if(record.edited && !record.deleted){
                     record.createUser = (record.createUser == '' || record.createUser == undefined)?this.ns.getCurrentUser():record.createUser;
@@ -267,7 +269,7 @@ export class DeductibleComponent implements OnInit {
                 }else if(record.edited && record.deleted){
                     this.params.deleteDeductibles.push(record);
                 }
-            }
+            // }
         }
         
 
@@ -285,9 +287,11 @@ export class DeductibleComponent implements OnInit {
 
         if(isEmpty == 1){
             this.dialogIcon = 'error';
-            $('app-sucess-dialog #modalBtn').trigger('click');
+            // $('app-sucess-dialog #modalBtn').trigger('click');
+            this.successBtn.open();
             this.params.saveDeductibles = [];
             this.line = (this.changeLine == true)?this.tempLineCd:this.line;
+            console.log('proc');
         }else{
             if(isNotUnique == true){
                 this.warnMsg = 'Unable to save the record. Deductible must be unique per Line.';

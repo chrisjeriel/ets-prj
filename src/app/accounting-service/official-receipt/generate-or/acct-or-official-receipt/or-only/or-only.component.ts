@@ -67,7 +67,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 
 	  passDataGenTax : any = {
 	  	tableData: [],
-	    tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+	    tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
 	    dataTypes: ["text","text","currency","percent","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
@@ -102,7 +102,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 
 	  passDataWhTax : any = {
 	  	tableData: [],
-	    tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+	    tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
 	    dataTypes: ["text","text","currency","percent","currency"],
 	    addFlag: true,
 	    deleteFlag: true,
