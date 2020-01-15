@@ -1,17 +1,20 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+</div>
 <div class="cust-tabs-container">
 	<h4>Policy / Generate Documents</h4>
 	<ngb-tabset>
 		<ngb-tab class="ngb-tab" title="Policy Reports">
 			<ng-template ngbTabContent>
 				<div class="row top-row">
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
 						<div class="row">
 							<div class="col-sm">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
-									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
+									<input type="text" class="form-control form-control-sm col-sm-2 reports" [ngModel]="params.reportId"
+									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
@@ -22,13 +25,13 @@
 						</div>
 
 					</fieldset>
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 				</div>
 				<div class="row" style="margin-top: 10px;">
-					<div class="col-sm-2"></div>
-					<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
+					<div class="col-sm-1"></div>
+					<fieldset class="scheduler-border col-sm-3" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
-							<div class="input-group">
+							<div class="input-group" style="    margin-top: 10px;">
 								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" 
 									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
 								<label class="form-control-sm" for="radio">Issue Date</label>
@@ -39,22 +42,32 @@
 								<label class="form-control-sm" for="radio6">Effective Date</label>
 							</div>
 							<div class="input-group" >
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
+									[disabled]="paramsToggle.indexOf('createDate') == -1">
+								<label class="form-control-sm" for="radio9">Create Date</label>
+							</div>
+							<div class="input-group" >
 								<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="5" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
 									[disabled]="paramsToggle.indexOf('accountingDate') == -1">
 								<label class="form-control-sm" for="radio7">Accounting Date</label>
 							</div>
 							<div class="input-group" >
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="10" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
+									[disabled]="paramsToggle.indexOf('bookingDate') == -1">
+								<label class="form-control-sm" for="radio8">Booking Date</label>
+							</div>
+							<!-- <div class="input-group" >
 								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
 									[disabled]="paramsToggle.indexOf('lossDate') == -1">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
-							</div>
-							<div class="input-group" >
+							</div> -->
+							<!-- <div class="input-group" >
 								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="6" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
 									[disabled]="paramsToggle.indexOf('distributionDate') == -1">
 								<label class="form-control-sm" for="radio8">Distribution Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="7" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
+							</div> -->
+							<!-- <div class="input-group" >
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDat	e" value="7" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
 									[disabled]="paramsToggle.indexOf('tranDate') == -1">
 								<label class="form-control-sm" for="radio8">Tran Date</label>
 							</div>
@@ -62,19 +75,14 @@
 								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="8" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
 									[disabled]="paramsToggle.indexOf('postingDate') == -1">
 								<label class="form-control-sm" for="radio8">Posting Date</label>
-							</div>
-							<div class="input-group" >
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam"
-									[disabled]="paramsToggle.indexOf('createDate') == -1">
-								<label class="form-control-sm" for="radio9">Create Date</label>
-							</div>
+							</div> -->
 						</div>
 					</fieldset>
 					<fieldset class="scheduler-border col-sm">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
-								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byDate') == -1">
+								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange" (click)="removeDates()"
+									[disabled]="paramsToggle.indexOf('byDate') == -1" >
 								<label class="form-control-sm" for="radio2">By Date</label>
 							</div>
 							<div class="input-group">
@@ -88,7 +96,7 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
+								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange" (click)="removeDates()"
 									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
@@ -127,7 +135,7 @@
 								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [(ngModel)]="params.byMonthToYear" [disabled]="params.dateRange != 2">
 							</div>
 							<div class="input-group">
-								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
+								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"  (click)="removeDates()"
 									[disabled]="paramsToggle.indexOf('asOf') == -1">
 								<label class="form-control-sm" for="radio4">As of</label>
 							</div>
@@ -141,17 +149,17 @@
 							</div>
 						</div>
 					</fieldset>
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 				</div>
 				<div class="row top-row" style="margin-top: 10px;">
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
 						<div class="row">
 							<div class="col-sm-1">
 
 							</div>
 							<div class="col-sm">
-								<div class="input-group" style="margin-bottom: 0px !important;">
+								<div class="input-group" style="margin-bottom: 0px !important;padding-top: 10px;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Line</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
 									[disabled]="paramsToggle.indexOf('line') == -1">
@@ -183,7 +191,7 @@
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
-								<div class="input-group align-rad">
+								<div class="input-group align-rad" style="padding-top: 10px;">
 									<!-- <div class="col-sm-2"></div>
 									<input name="input197" type="checkbox" class="col-sm-1" style="margin-top: 5px;" [checked]="params.alteration == 'Y'" (change)="params.alteration = (params.alteration == 'Y' ? 'N':'Y')">
 									<label class="form-control-sm col-sm" >Include Alteration</label> -->
@@ -198,20 +206,20 @@
 									<label class="form-control-sm" for="radirt3">Policy & Alteration</label>
 									<input id="radirt4" class="form-control-sm" type="radio" name="incRecTag" value="D" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
 										[disabled]="paramsToggle.indexOf('distributed') == -1">
-									<label class="form-control-sm" for="radirt4">Distributed</label>
+									<label class="form-control-sm" for="radirt4">Distributed Only</label>
 									<input id="radirt5" class="form-control-sm" type="radio" name="incRecTag" value="U" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
 										[disabled]="paramsToggle.indexOf('undistributed') == -1">
-									<label class="form-control-sm" for="radirt5">Undistributed</label>
+									<label class="form-control-sm" for="radirt5">Include Undistributed</label>
 								</div>
 							</div>
 							<div class="col-sm-1">
 							</div>
 						</div>
 					</fieldset>
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 				</div>
 				<div class="row top-row" style="margin-top: 10px;">
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
 						<div class="row">
 							<div class="col-sm-1"></div>
@@ -230,7 +238,7 @@
 							</div>
 						</div>
 					</fieldset>
-					<div class="col-sm-2"></div>
+					<div class="col-sm-1"></div>
 				</div>
 				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
 					<div class="cust-btn-container">

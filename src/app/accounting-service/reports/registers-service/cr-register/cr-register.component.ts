@@ -41,7 +41,7 @@ export class CrRegisterComponent implements OnInit {
 
   printerList: string[] = [];
   selectedPrinter: string = '';
-
+  from: string = '';
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
 
@@ -69,7 +69,31 @@ export class CrRegisterComponent implements OnInit {
         tranClass: 'OR'
       }
       this.paytTypeLov.openLOV();
+    }else{
+      this.passDataLov.selector = 'acctPaytMode';
+      this.passDataLov.from = 'acse';
+      this.paytTypeLov.openLOV();
     }
+  }
+
+  changePaytType(event){
+    this.ns.lovLoader(event, 1);
+    this.passDataLov.selector = 'acseTranType';
+    this.passDataLov.from = 'acse';
+    this.from = 'paytType';
+    this.passDataLov.params = {
+      tranClass: 'OR',
+      tranTypeCd: this.params.paytType
+    }
+    this.paytTypeLov.checkCode('acseTranType',null,null,null,null,null,event);
+  }
+
+  changePaytMode(event){
+    this.ns.lovLoader(event, 1);
+    this.passDataLov.selector = 'acctPaytMode';
+    this.from = 'paytMode';
+    this.passDataLov.paytMode = this.params.paytMode;
+    this.paytTypeLov.checkCode('acctPaytMode',null,null,null,null,null,event);
   }
 
   setData(data,from){
@@ -79,9 +103,27 @@ export class CrRegisterComponent implements OnInit {
 
     console.log(data.data);
 
-    if(from == 'acseTranType'){
+    /*if(from == 'acseTranType'){
       this.selPaytType   = data.data.tranTypeName;
       this.params.paytType = data.data.tranTypeCd;
+    }*/
+
+    if(data.data == null){
+      if(this.from == 'paytType'){
+        this.selPaytType = '';
+        this.params.paytType = '';
+      }else if(this.from == 'paytMode'){
+        this.selPaytMode = '';
+        this.params.paytMode = '';
+      }
+    }else{
+      if(this.from == 'paytType'){
+        this.selPaytType   = data.data.tranTypeName;
+        this.params.paytType = data.data.tranTypeCd;
+      }else if(this.from == 'paytMode'){
+        this.selPaytMode   = data.data.paytModeName;
+        this.params.paytMode = data.data.paytMode;
+      }
     }
 
   }

@@ -64,7 +64,7 @@
 						</div>
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-2">Bank Account</label>
-							<input type="text" [(ngModel)]="params.bankAcct" class="form-control form-control-sm col-sm-2">
+							<input type="text" [(ngModel)]="params.bankAcct" class="form-control form-control-sm col-sm-2" (change)="checkCode($event, 'bank-acct')">
 							<div class="text-search-ico"><a (click)="showLov('bank-acct')"><i class="fa fa-search"></i></a></div>
 							<input type="text" [(ngModel)]="bankAcctName" readonly class="form-control form-control-sm col-sm" style="margin-left: 2px !important;" placeholder="ALL BANK ACCOUNTS">
 						</div>
