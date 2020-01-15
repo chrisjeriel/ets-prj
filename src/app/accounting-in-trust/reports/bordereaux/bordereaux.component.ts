@@ -95,6 +95,7 @@ export class BordereauxComponent implements OnInit {
 
 	setReport(data){
 	    // this.paramsToggle = [];
+	    this.clearFields();
 	    if(data.data != null){
 		  	this.params.reportId = data.data.reportId;
 		  	this.params.reportName = data.data.reportTitle;
@@ -424,6 +425,7 @@ export class BordereauxComponent implements OnInit {
   	    this.params.dateToAsOf	= '';
   	  	this.params.reportId 	= '';
   	    this.params.lineCd		= '';
+  	    this.lineDesc			= '';
   	    this.params.cessionId	= '';
   	    this.params.cedingId	= '';
   	    this.params.cedingName	= '';

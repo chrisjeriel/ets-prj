@@ -12,13 +12,12 @@
 							<div class="col-sm-12">
 								<fieldset class="scheduler-border">
 									<div class="custom-row-inline-inset">
-										<div class="input-group cust-ig">
+										<div class="input-group cust-ig" style="padding-top: 4px">
 											<label class="form-control-sm col-sm-2">Report Name</label>
 											<input type="text" class="form-control form-control-sm col-sm-2 report" [ngModel]="params.reportId"
 											 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); clearFields(); paramChange();" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
-											<span>&nbsp;</span>
-											<input id=line type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.reportName" readonly>
+											<input id=line type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.reportName" readonly style="margin-left:2px">
 										</div>
 									</div>
 								</fieldset>
@@ -156,7 +155,7 @@
 										<div class="text-search-ico" [ngStyle]="{'visibility': params.reportId != null && params.reportId.length != 0 ? 'visible' : 'hidden'}"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
 										<input type="text" class="form-control form-control-sm col-sm-7" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly placeholder="ALL LINES">
 									</div>
-									<div class="input-group cust-ig">
+									<div class="input-group cust-ig" style="padding-bottom: 12px !important;">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company'); paramChange();"
 										[disabled]="params.reportId == null || disableCompany">
