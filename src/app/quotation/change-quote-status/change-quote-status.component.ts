@@ -236,7 +236,8 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                                             {key: 'quotationNo', search: this.tempQuoteNo.join('%-%')},
                                             {key: 'cessionDesc', search: this.searchParams.cessionDesc.toUpperCase()},
                                             {key: 'cedingName', search: this.searchParams.cedingName.toUpperCase()},
-                                            {key: 'riskName', search: this.searchParams.riskName.toUpperCase()}
+                                            {key: 'riskName', search: this.searchParams.riskName.toUpperCase(),
+                                        }
                                          ]).subscribe((data:any) => {
                 this.passData.tableData = [];
                 this.records = data.quotationList;
@@ -258,6 +259,7 @@ export class ChangeQuoteStatusComponent implements OnInit, AfterViewInit {
                 if(this.statusCd == 2){
                     this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'DID NOT MATERIALIZE' || 
                                                             a.status.toUpperCase() === 'RISK NOT COMMENSURATE' || 
+                                                            a.status.toUpperCase() === 'RELEASED' ||
                                                             a.status.toUpperCase() === 'SPOILED' });
                 }else{
                     this.passData.tableData = this.passData.tableData.filter(a => {return a.status.toUpperCase() === 'REQUESTED' || 

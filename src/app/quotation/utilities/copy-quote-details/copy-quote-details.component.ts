@@ -142,8 +142,20 @@ export class CopyQuoteDetailsComponent implements OnInit {
   	}
 
 	getQuoteList(){
+    if(this.quoteTable != undefined)
+            this.quoteTable.lengthFirst = false;
+        if(this.searchParams.recount != 'N'){
+          this.qs.newGetQuoProcessingDataLength(this.searchParams).subscribe(data=>{
+            this.passDataQuoteLOV.count = data;
+            console.log(data)
+            this.quoteTable.setLength(1);
+          })
+          this.searchParams.recount = 'N';
+        }
+
+
 		this.qs.newGetQuoProcessingData(this.searchParams).subscribe(a=>{
-			this.passDataQuoteLOV.count = a['length'];
+			// this.passDataQuoteLOV.count = a['length'];
 			this.quoteTable.placeData(a['quotationList'].map(i => 
 					{ 
 						i.riskName = (i.project == null || i.project == undefined)?'':i.project.riskName;
