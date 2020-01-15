@@ -13,7 +13,7 @@
 							<div class="col-sm">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
+									<input type="text" class="form-control form-control-sm col-sm-2 reports" [ngModel]="params.reportId"
 									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>

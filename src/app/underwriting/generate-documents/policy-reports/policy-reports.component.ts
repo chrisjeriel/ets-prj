@@ -109,6 +109,9 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   setReport(data){
+    setTimeout(()=>{
+      $('.reports').focus().blur();
+    },0);
     this.paramsToggle = [];
     this.params = [];
   	console.log(data.data);
