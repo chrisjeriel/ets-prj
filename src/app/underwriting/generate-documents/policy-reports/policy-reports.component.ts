@@ -265,6 +265,16 @@ export class PolicyReportsComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
   }
 
+  removeDates(){
+    this.params.byDateFrom = '';
+    this.params.byDateTo = '';
+    this.params.byMonthFrom = '';
+    this.params.byMonthTo = '';
+    this.params.byMonthToYear = '';
+    this.params.byMonthFromYear = '';
+    this.params.byAsOf = '';
+  }
+
   getLine(){
     this.lineLov.modal.openNoClose();
   }

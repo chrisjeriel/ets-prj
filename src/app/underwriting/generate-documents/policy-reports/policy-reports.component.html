@@ -14,7 +14,7 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
-									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
+									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
@@ -31,7 +31,7 @@
 					<div class="col-sm-1"></div>
 					<fieldset class="scheduler-border col-sm-3" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
-							<div class="input-group">
+							<div class="input-group" style="    margin-top: 10px;">
 								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" 
 									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
 								<label class="form-control-sm" for="radio">Issue Date</label>
@@ -81,8 +81,8 @@
 					<fieldset class="scheduler-border col-sm">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
-								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byDate') == -1">
+								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange" (click)="removeDates()"
+									[disabled]="paramsToggle.indexOf('byDate') == -1" >
 								<label class="form-control-sm" for="radio2">By Date</label>
 							</div>
 							<div class="input-group">
@@ -96,7 +96,7 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
+								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange" (click)="removeDates()"
 									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
@@ -135,7 +135,7 @@
 								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [(ngModel)]="params.byMonthToYear" [disabled]="params.dateRange != 2">
 							</div>
 							<div class="input-group">
-								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
+								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"  (click)="removeDates()"
 									[disabled]="paramsToggle.indexOf('asOf') == -1">
 								<label class="form-control-sm" for="radio4">As of</label>
 							</div>
@@ -159,7 +159,7 @@
 
 							</div>
 							<div class="col-sm">
-								<div class="input-group" style="margin-bottom: 0px !important;">
+								<div class="input-group" style="margin-bottom: 0px !important;padding-top: 10px;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Line</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
 									[disabled]="paramsToggle.indexOf('line') == -1">
@@ -191,7 +191,7 @@
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
-								<div class="input-group align-rad">
+								<div class="input-group align-rad" style="padding-top: 10px;">
 									<!-- <div class="col-sm-2"></div>
 									<input name="input197" type="checkbox" class="col-sm-1" style="margin-top: 5px;" [checked]="params.alteration == 'Y'" (change)="params.alteration = (params.alteration == 'Y' ? 'N':'Y')">
 									<label class="form-control-sm col-sm" >Include Alteration</label> -->
