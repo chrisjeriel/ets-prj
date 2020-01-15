@@ -15,7 +15,7 @@
 										<div class="input-group cust-ig">
 											<label class="form-control-sm col-sm-2">Report Name</label>
 											<input type="text" class="form-control form-control-sm col-sm-2 report" [ngModel]="params.reportId"
-											 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); clearFields();" appRequired>
+											 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); clearFields(); paramChange();" appRequired>
 											<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 											<span>&nbsp;</span>
 											<input id=line type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.reportName" readonly>
