@@ -4,7 +4,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
 import { NotesService } from '@app/_services/notes.service';
 import { QuillEditorComponent } from 'ngx-quill';
-
+import * as Quill from 'quill';
 
 @Component({
   selector: 'text-editor',
@@ -43,6 +43,9 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   afterInit: boolean = false;
   editorContentMdl: any = '';
 
+  bold: any = null;
+  italic: any = null;
+
   constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
   ngOnInit() {
@@ -80,6 +83,17 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
       this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
     }
     this.afterInit = true;
+
+    if(this.format == 'html') {
+      this.bold = Quill.import('formats/bold');
+      this.bold.tagName = 'b';
+      Quill.register(this.bold, true);
+
+      this.italic = Quill.import('formats/italic');
+      this.italic.tagName = 'i';
+      Quill.register(this.italic, true);
+    }
+    
   }
 
   showTextEditorModal(content) {
