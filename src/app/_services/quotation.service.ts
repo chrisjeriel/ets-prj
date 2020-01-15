@@ -1034,7 +1034,7 @@ export class QuotationService {
         let header: any = {
             headers: new HttpHeaders({
                 'Content-Type': 'application/json'
-            })
+            })    
         }
         let params: any = {
             quoteId : quoteId,
@@ -1052,6 +1052,10 @@ export class QuotationService {
                     throw e;
                 })
             );
+    }
+
+    newGetQuoProcessingDataLength(params) {   
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuoteListingLength', {params:params,responseType:'text'});
     }
        
     getItemInfoData(quoteId) {

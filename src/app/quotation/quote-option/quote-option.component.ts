@@ -515,8 +515,6 @@ saveQuoteOptionAll(cancelFlag?){
 
     for(let ded of params.saveDeductibleList){
       if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
-        console.log(ded)
-        alert("huli ka boi")
         this.dialogIcon = "error";
         setTimeout(a=>$('#quote-option #successModalBtn').trigger('click'),0);
         return null;

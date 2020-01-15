@@ -121,14 +121,22 @@ export class PolCreateAlterationPARComponent implements OnInit {
       this.searchParams['paginationRequest.position']=1;  
     }
 
+    if(this.searchParams.recount != 'N'){
+         this.underwritingService.getPolicyListingLength(this.searchParams).subscribe(data=>{
+           this.passDataLOV.count = data;
+           this.lovTable.setLength(1);
+         })
+         this.searchParams.recount = 'N';
+     }
+
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       var polList = data['policyList'];
 
       polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
                        .map(p => { p.riskName = p.project.riskName; return p; });
 
-      this.passDataLOV.count = data['length'];                 
-      this.lovTable.placeData(polList);
+                      
+      this.lovTable.placeData(polList,1);
 
       if(param !== undefined) {
         if(polList.length === 1 && this.polNo.length == 6 && !this.searchArr.includes('%%')) {  

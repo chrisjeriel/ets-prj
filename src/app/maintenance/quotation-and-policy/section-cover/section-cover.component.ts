@@ -372,11 +372,11 @@ export class SectionCoverComponent implements OnInit,AfterViewInit {
     let dedCds : string[];
     for(let sec of this.passSecTable.tableData){
       dedCds = sec.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
-      if(sec.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
-          this.dialogIcon = "error";
-          this.successDialog.open();
-          return false;
-      }
+      // if(sec.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+      //     this.dialogIcon = "error";
+      //     this.successDialog.open();
+      //     return false;
+      // }
 
       if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
         this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Section Cover';
