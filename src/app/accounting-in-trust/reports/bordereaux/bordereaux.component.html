@@ -71,9 +71,9 @@
 												<!-- <div class="col-sm-1">
 													<input type="radio" id="dp2" name="dateParam" value="A" [(ngModel)]="params.dateRange" (ngModelChange)="resetDateParams();" [disabled]="params.osPaidTag == 'P'">
 												</div> -->
-												<label for="dp2" class="form-control-sm col-sm text-left">As of</label>
+												<label for="dp2" class="form-control-sm col-sm text-right">As of</label>
 											</div>
-											<div class="dp-cont col-sm-3">
+											<div class="dp-cont col-sm-4">
 												<datepicker [type]="'date'" [disabled]="params.reportId == null || disableOutstanding" [value]="params.dateToAsOf?.split('T')[0]" (valueChange)="params.dateToAsOf=$event; paramChange();"></datepicker>
 											</div>
 										</div>
@@ -81,7 +81,7 @@
 								</fieldset>
 							</div>
 							<div class="col-sm-6" style="padding-left: 4px">
-								<fieldset class="scheduler-border">
+								<fieldset class="scheduler-border" style="padding-bottom: 16px !important;">
 									<div class="custom-row-inline-inset">
 										<div class="input-group pl-4 mt-2">
 											<div class="col-sm-5 d-flex">
