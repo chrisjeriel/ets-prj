@@ -79,6 +79,7 @@ export class BordereauxComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
 		this.passLov.modReportId = 'ACITR052%';
+		this.loading = false;
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
