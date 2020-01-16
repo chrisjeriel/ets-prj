@@ -269,6 +269,6 @@
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-cancel-button (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
-<app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)" [filters]="clmEventFilter"></app-mtn-clm-event-type>
+<app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>
