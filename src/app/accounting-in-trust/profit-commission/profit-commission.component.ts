@@ -369,6 +369,10 @@ export class ProfitCommissionComponent implements OnInit {
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Journal Voucher was already generated. Ref. No.: ' + data['tranNo'];
         this.successDialog.open();
+      } else if(data['returnCode'] == 100) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'JV No Series unavailable';
+        this.successDialog.open();
       }
     });
   }
