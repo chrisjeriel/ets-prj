@@ -438,6 +438,9 @@ export class CvEntryServiceComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'dest-bank'){
       this.fromBankLov = fromUser;
       this.passDataLov.selector = 'mtnBank';
+      this.passDataLov.params = {
+        dcbTag: 'N'
+      };
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
@@ -603,9 +606,13 @@ export class CvEntryServiceComponent implements OnInit {
     $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
   }
 
-  setBankAcctData(){
-    this.saveAcseCv.bankAcctDesc = '';
-    this.saveAcseCv.bankAcct = '';
+  setBankAcctData(type?){
+    if(type == undefined) {
+      this.saveAcseCv.bankAcctDesc = '';
+      this.saveAcseCv.bankAcct = '';
+    } else {
+      this.saveAcseCv.destAcctNo = '';
+    }
   }
 
   onClickOkPrint(){

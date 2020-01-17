@@ -459,6 +459,9 @@ export class CvEntryComponent implements OnInit {
     }else if(fromUser.toLowerCase() == 'dest-bank'){
       this.fromBankLov = fromUser;
       this.passDataLov.selector = 'mtnBank';
+      this.passDataLov.params = {
+        dcbTag: 'N'
+      };
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';

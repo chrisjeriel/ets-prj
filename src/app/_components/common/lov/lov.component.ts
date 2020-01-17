@@ -1280,8 +1280,11 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = ['Bank', 'Official Name'];
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'shortName','officialName']; 
-      this.mtnService.getMtnBank('','','Y','Y').subscribe((a:any)=>{
+      this.passTable.keys = [ 'shortName','officialName'];
+
+      var dcbTag = this.passData.params == undefined || this.passData.params.dcbTag == undefined ? 'Y' : this.passData.params.dcbTag;
+
+      this.mtnService.getMtnBank('','','Y',dcbTag).subscribe((a:any)=>{
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
       });
