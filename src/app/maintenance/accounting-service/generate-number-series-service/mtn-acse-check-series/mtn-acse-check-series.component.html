@@ -19,8 +19,8 @@
                         <label class="form-control-sm labels">To</label>
                         <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn" [(ngModel)]="otherData.to" appRequired autoComplete="off" [disabled]="otherData.bankAcctDesc == '' || otherData.bankAcctDesc == null" numbers-only onkeypress="return event.keyCode != 13;">
                         <div class="cust-btn-container col-sm-3" style="z-index: 0 !important;">
-                            <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from == '' || otherData.to == ''">Generate</button>
-                            <button type="button" class="cust-btn" (click)="onClickSearch()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == ''">Search</button>
+                            <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from == '' || otherData.to == '' || otherData.from == '' || otherData.to == '' || otherData.from < 0 || otherData.to < 0">Generate</button>
+                            <button type="button" class="cust-btn" (click)="onClickSearch()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from < 0 || otherData.to < 0">Search</button>
                         </div>
                     </div>
                 </div>

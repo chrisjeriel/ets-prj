@@ -467,7 +467,7 @@ export class CvEntryServiceComponent implements OnInit {
   getAcseCheckSeries(bank,bankAcct){
     if(this.saveAcseCv.disbType == 'CK') {
       this.loadingFunc(true);
-      this.mtnService.getMtnAcseCheckSeries(bank,bankAcct)
+      this.mtnService.getMtnAcseCheckSeries(bank,bankAcct,null,null,null,'T')
       .subscribe(data => {
         this.loadingFunc(false);
         this.form.control.markAsDirty();
