@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange
 import { NotesService } from '@app/_services'
 import { NgForm } from '@angular/forms';
 import { Calendar } from 'primeng/calendar';
-// import { Cleave } from 'cleave.js/dist/cleave-esm.min';
+// import Cleave from 'cleave.js';
 
 @Component({
   selector: 'datepicker',
@@ -18,13 +18,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   private maximumDate: any = null;
   private defaultDate: any = null;
   private ev: any = null;
-  private inputStyleClass: string = 'form-control form-control-sm testDate';
+  private inputStyleClass: string = 'form-control form-control-sm dp-mask';
   private icon: string = 'fa fa-calendar';
-  // private cleave = new Cleave('.testDate', {
-  //   date: true,
-  //   delimeter: '*',
-  //   datePattern: ['m', 'd', 'Y']
-  // });
+  // private mask: any = null;
   
   private spanStyle: any = {
   	width: '100%',
@@ -95,8 +91,16 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   ngAfterViewInit() {
     if(!this.table) {
-      // this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
+      this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
     }
+
+    /*if(this.type == 'date') {
+      this.mask = new Cleave(this.cal.el.nativeElement.children[0].firstElementChild, {
+        date: true,
+        delimeter: '/',
+        datePattern: ['m', 'd', 'Y']
+      });
+    }*/
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -1084,16 +1084,24 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'sl'){
-      this.passTable.tHeader = ['SL Name'];
-      this.passTable.widths =['auto']
-      this.passTable.dataTypes = [ 'text'];
-      this.passTable.keys = ['slName'];
+      (this.passData.from == undefined)?this.passData.from='':'';
+      if(this.passData.from.toLowerCase() == 'prq-ins'){
+        this.passTable.tHeader = ['Class Type','Name'];
+        this.passTable.widths =['auto','auto']
+        this.passTable.dataTypes = ['text','text'];
+        this.passTable.keys = ['slTypeName','slName'];
+      }else{
+        this.passTable.tHeader = ['SL Name'];
+        this.passTable.widths =['auto']
+        this.passTable.dataTypes = [ 'text'];
+        this.passTable.keys = ['slName'];  
+      }
       this.passData.params.activeTag = 'Y';
       console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-        (this.passData.from == undefined)?this.passData.from='':'';
+        
         if(this.passData.from.toLowerCase() == 'prq-ins'){
-          this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
         }else{
           this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
         }
@@ -1320,8 +1328,11 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = ['Bank', 'Official Name'];
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'shortName','officialName']; 
-      this.mtnService.getMtnBank('','','Y','Y').subscribe((a:any)=>{
+      this.passTable.keys = [ 'shortName','officialName'];
+
+      var dcbTag = this.passData.params == undefined || this.passData.params.dcbTag == undefined ? 'Y' : this.passData.params.dcbTag;
+
+      this.mtnService.getMtnBank('','','Y',dcbTag).subscribe((a:any)=>{
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
       });

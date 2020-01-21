@@ -83,7 +83,13 @@ export class CvEntryServiceComponent implements OnInit {
     tranId        : '',
     tranStat      : '',
     updateDate    : '',
-    updateUser    : ''
+    updateUser    : '',
+    disbType: '',
+    destBank: '',
+    destAcctNo: '',
+    destAcctName: '',
+    btRefNo: '',
+    swiftCd: ''
   };
 
   dialogMessage        : string = '';
@@ -128,7 +134,9 @@ export class CvEntryServiceComponent implements OnInit {
 
   lovCheckBox:boolean = true;
   chkNoDigits: number = null;
- 
+  disbTypeList: any[] = [];
+  fromBankLov: any = '';
+  checkClassList: any[] = [];
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
               private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
@@ -158,12 +166,13 @@ export class CvEntryServiceComponent implements OnInit {
 
   getAcseCv(){
     this.loadingFunc(true);
-    const subResKey = ['pn','cl','stat'];
+    const subResKey = ['pn','cl','stat','dt'];
 
     const arrSubRes = {
       'pn'  :this.mtnService.getMtnPrintableName(''),
       'cl'  :this.mtnService.getRefCode('CHECK_CLASS'),
       'stat':this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.CV_STATUS'),
+      'dt'  :this.mtnService.getRefCode('ACSE_CHECK_VOUCHER.DISB_TYPE')
     };
 
     if(this.saveAcseCv.tranId != '' && this.saveAcseCv.tranId != null && this.saveAcseCv.tranId != undefined){
@@ -184,7 +193,9 @@ export class CvEntryServiceComponent implements OnInit {
       this.loadingFunc(false);
       var recPn   = data['pn']['printableNames'];
       var recCl   = data['cl']['refCodeList'];
+      this.checkClassList = data['cl']['refCodeList'];
       var recStat = data['stat']['refCodeList'];
+      this.disbTypeList = data['dt']['refCodeList'];
 
       if(this.saveAcseCv.tranId == '' || this.saveAcseCv.tranId == null){
         this.loadingFunc(false);
@@ -198,6 +209,7 @@ export class CvEntryServiceComponent implements OnInit {
         this.saveAcseCv.checkClassDesc = recCl.filter(e => e.code == this.saveAcseCv.checkClass).map(e => e.description);
         this.saveAcseCv.preparedDate = this.ns.toDateTimeString(0);
         this.saveAcseCv.checkDate = this.ns.toDateTimeString(0);
+        this.saveAcseCv.disbType = 'CK';
 
         recPn.forEach(e => {
           if(e.userId.toUpperCase() == this.ns.getCurrentUser().toUpperCase()){
@@ -212,7 +224,7 @@ export class CvEntryServiceComponent implements OnInit {
           e.updateDate = this.ns.toDateTimeString(e.updateDate);
           e.cvDate     = this.ns.toDateTimeString(e.cvDate);
           e.checkDate  = this.ns.toDateTimeString(e.checkDate);
-          e.checkNo = String(e.checkNo).padStart(this.chkNoDigits, '0');
+          e.checkNo = e.checkNo !== null ? String(e.checkNo).padStart(this.chkNoDigits, '0') : '';
           e.preparedDate = this.ns.toDateTimeString(e.preparedDate);
           e.certifiedDate = this.ns.toDateTimeString(e.certifiedDate);
           e.cvNo = e.cvNo.toString().padStart(6,'0');
@@ -286,7 +298,14 @@ export class CvEntryServiceComponent implements OnInit {
       tranId        : '',
       tranStat      : '',
       updateDate    : '',
-      updateUser    : ''
+      updateUser    : '',
+      disbType: 'CK',
+      destBank: '',
+      destBankDesc: '',
+      destAcctNo: '',
+      destAcctName: '',
+      btRefNo: '',
+      swiftCd: ''
     };
     this.getAcseCv();
     this.disableFlds(false);
@@ -298,13 +317,16 @@ export class CvEntryServiceComponent implements OnInit {
 
     if(this.saveAcseCv.cvDate == null || this.saveAcseCv.cvDate == '' || this.saveAcseCv.payee == '' ||  this.saveAcseCv.payee == null || this.saveAcseCv.payeeCd == '' ||  this.saveAcseCv.payeeCd == null || this.saveAcseCv.particulars == '' || 
        this.saveAcseCv.particulars == null || this.saveAcseCv.bank == '' || this.saveAcseCv.bank == null || this.saveAcseCv.bankAcct == '' || this.saveAcseCv.bankAcct == null ||
-       this.saveAcseCv.cvAmt == '' || this.saveAcseCv.cvAmt == null || this.saveAcseCv.cvAmt < 0 ||  this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null || this.saveAcseCv.currCd == '' || 
-       this.saveAcseCv.currCd == null || this.saveAcseCv.currRate == '' || this.saveAcseCv.currRate == null || this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null ||
-       this.saveAcseCv.preparedBy == '' || this.saveAcseCv.preparedBy == null || this.saveAcseCv.preparedDate == '' || this.saveAcseCv.preparedDate == null || 
-       this.saveAcseCv.checkClass == '' || this.saveAcseCv.checkClass == null || this.saveAcseCv.paytReqType == '' || this.saveAcseCv.paytReqType == null ){
+       this.saveAcseCv.cvAmt == '' || this.saveAcseCv.cvAmt == null || this.saveAcseCv.cvAmt < 0 || this.saveAcseCv.currCd == '' || 
+       this.saveAcseCv.currCd == null || this.saveAcseCv.currRate == '' || this.saveAcseCv.currRate == null ||
+       this.saveAcseCv.preparedBy == '' || this.saveAcseCv.preparedBy == null || this.saveAcseCv.preparedDate == '' || this.saveAcseCv.preparedDate == null ||
+       this.saveAcseCv.paytReqType == '' || this.saveAcseCv.paytReqType == null ||
+       (this.saveAcseCv.disbType == 'CK' && (this.saveAcseCv.checkClass == '' || this.saveAcseCv.checkClass == null)) ||
+       (this.saveAcseCv.disbType == 'CK' && (this.saveAcseCv.checkNo == '' || this.saveAcseCv.checkNo == null)) ||
+       (this.saveAcseCv.disbType == 'CK' && (this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null))){
         this.dialogIcon = 'error';
         this.success.open();
-        this.saveAcseCv.checkDate == '' ? $('.checkDateWarn').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
+        this.saveAcseCv.checkDate == '' && this.saveAcseCv.disbType == 'CK'     ? $('.checkDateWarn').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
         $('.warn').focus();
         $('.warn').blur();
         this.fromCancel = false;
@@ -327,9 +349,9 @@ export class CvEntryServiceComponent implements OnInit {
       certifiedBy      : this.saveAcseCv.certifiedBy,
       certifiedDate    : (this.saveAcseCv.certifiedDate == '' || this.saveAcseCv.certifiedDate == null)?'':this.ns.toDateTimeString(this.saveAcseCv.certifiedDate),
       checkClass       : this.saveAcseCv.checkClass,
-      checkDate        : (this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.checkDate,
-      checkId          : this.saveAcseCv.checkId,
-      checkNo          : Number(this.saveAcseCv.checkNo),
+      checkDate        : (this.saveAcseCv.checkDate == '' || this.saveAcseCv.checkDate == null) && this.saveAcseCv.disbType == 'CK'?this.ns.toDateTimeString(0):this.saveAcseCv.checkDate,
+      checkId          : this.saveAcseCv.disbType == 'CK' ? this.saveAcseCv.checkId : '',
+      checkNo          : this.saveAcseCv.disbType == 'CK' ? Number(this.saveAcseCv.checkNo) : '',
       closeDate        : this.ns.toDateTimeString(this.saveAcseCv.mainCloseDate),
       createDate       : (this.saveAcseCv.createDate == '' || this.saveAcseCv.createDate == null)?this.ns.toDateTimeString(0):this.saveAcseCv.createDate,
       createUser       : (this.saveAcseCv.createUser == '' || this.saveAcseCv.createUser == null)?this.ns.getCurrentUser():this.saveAcseCv.createUser,
@@ -354,7 +376,14 @@ export class CvEntryServiceComponent implements OnInit {
       tranId           : this.saveAcseCv.tranId,
       tranStat         : this.saveAcseCv.mainTranStat,
       updateDate       : this.ns.toDateTimeString(0),
-      updateUser       : this.ns.getCurrentUser()
+      updateUser       : this.ns.getCurrentUser(),
+      disbType: this.saveAcseCv.disbType,
+      destBank: this.saveAcseCv.destBank,
+      destBankDesc: this.saveAcseCv.destBankDesc,
+      destAcctNo: this.saveAcseCv.destAcctNo,
+      destAcctName: this.saveAcseCv.destAcctName,
+      btRefNo: this.saveAcseCv.btRefNo,
+      swiftCd: this.saveAcseCv.swiftCd
     };
 
     console.log(saveCv);
@@ -381,12 +410,15 @@ export class CvEntryServiceComponent implements OnInit {
         this.dialogIcon = 'error';
         this.success.open();
       }else if(data['returnCode'] == 2){
-        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ data['checkNo'] +'.';
+        this.warnMsg = 'Unable to proceed. Check No is already been used or does not exist.\nThe lowest available Check No. is '+ String(data['checkNo']).padStart(this.chkNoDigits, '0') +'.';
         this.warnMdl.openNoClose();
-        this.saveAcseCv.checkNo = Number(data['checkNo']);
+        this.saveAcseCv.checkNo = String(Number(data['checkNo'])).padStart(this.chkNoDigits, '0');
       }else if(data['returnCode'] == -100){
         this.saveAcseCv.checkNo = '';
         this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+        this.warnMdl.openNoClose();
+      }else if(data['returnCode'] == -300){
+        this.warnMsg = 'There is no Check Voucher No available as of the moment.\nPlease proceed to maintenance module to generate Check Voucher No.';
         this.warnMdl.openNoClose();
       }
     });
@@ -399,8 +431,16 @@ export class CvEntryServiceComponent implements OnInit {
       this.passDataLov.payeeNo = '';
       this.payeeLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank'){
+      this.fromBankLov = fromUser;
       this.passDataLov.selector = 'bankLov';
       this.passDataLov.glDepFor = 'acse';
+      this.bankLov.openLOV();
+    }else if(fromUser.toLowerCase() == 'dest-bank'){
+      this.fromBankLov = fromUser;
+      this.passDataLov.selector = 'mtnBank';
+      this.passDataLov.params = {
+        dcbTag: 'N'
+      };
       this.bankLov.openLOV();
     }else if(fromUser.toLowerCase() == 'bank-acct'){
       this.passDataLov.selector = 'bankAcct';
@@ -425,20 +465,23 @@ export class CvEntryServiceComponent implements OnInit {
   }
 
   getAcseCheckSeries(bank,bankAcct){
-    this.mtnService.getMtnAcseCheckSeries(bank,bankAcct)
-    .subscribe(data => {
-      this.loadingFunc(false);
-      console.log(data);
-      var chckNo = data['checkSeriesList'].filter(e => e.usedTag == 'N').sort((a,b) => a.checkNo - b.checkNo);
-      if(chckNo.length == 0){
-        this.saveAcseCv.checkNo = '';
-        this.suggestCheckNo = '';
-        this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
-        this.warnMdl.openNoClose();  
-      }else{
-        this.saveAcseCv.checkNo = String(chckNo[0].checkNo).padStart(this.chkNoDigits, '0');
-      }
-    });
+    if(this.saveAcseCv.disbType == 'CK') {
+      this.loadingFunc(true);
+      this.mtnService.getMtnAcseCheckSeries(bank,bankAcct,null,null,null,'T')
+      .subscribe(data => {
+        this.loadingFunc(false);
+        this.form.control.markAsDirty();
+        var chckNo = data['checkSeriesList'];
+        if(chckNo[0] == null){
+          this.saveAcseCv.checkNo = '';
+          this.suggestCheckNo = '';
+          this.warnMsg = 'There is no Check No available for this Account No.\nPlease proceed to maintenance module to generate Check No.';
+          this.warnMdl.openNoClose();  
+        }else{
+          this.saveAcseCv.checkNo = String(chckNo[0].checkNo).padStart(this.chkNoDigits, '0');
+        }
+      });
+    }
   }
 
   getBankAcct(bankCd,currCd){
@@ -488,6 +531,11 @@ export class CvEntryServiceComponent implements OnInit {
       this.saveAcseCv.checkNo = '';
       this.suggestCheckNo = '';
       this.getBankAcct(data.data.bankCd,this.saveAcseCv.currCd);
+    }else if(from.toLowerCase() == 'dest-bank'){
+      this.saveAcseCv.destBankDesc   = data.data.officialName;
+      this.saveAcseCv.destBank = data.data.bankCd;
+      this.saveAcseCv.destAcctNo = '';
+      this.saveAcseCv.checkNo = '';
     }else if(from.toLowerCase() == 'bank-acct'){
       this.saveAcseCv.bankAcctDesc   = data.data.accountNo;
       this.saveAcseCv.bankAcct = data.data.bankAcctCd;
@@ -558,9 +606,13 @@ export class CvEntryServiceComponent implements OnInit {
     $('.'+fromClass).css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
   }
 
-  setBankAcctData(){
-    this.saveAcseCv.bankAcctDesc = '';
-    this.saveAcseCv.bankAcct = '';
+  setBankAcctData(type?){
+    if(type == undefined) {
+      this.saveAcseCv.bankAcctDesc = '';
+      this.saveAcseCv.bankAcct = '';
+    } else {
+      this.saveAcseCv.destAcctNo = '';
+    }
   }
 
   onClickOkPrint(){
@@ -838,9 +890,14 @@ uploadAcctEntries(){
   }
 
   validateCheck(){
-    if(this.saveAcseCv.checkStatus == 'P' || this.saveAcseCv.checkStatus == 'S'){
+    if((this.saveAcseCv.checkStatus == 'P' || this.saveAcseCv.checkStatus == 'S') && this.saveAcseCv.disbType == 'CK') {
       this.warnMsg = (this.saveAcseCv.checkStatus == 'P')?'This check has already been printed.\nPlease Spoil Check to generate new Check No.'
                                                          :'This check has been spoiled. \nPlease save your changes first before printing this check.';
+      this.warnMdl.openNoClose();
+      this.printData.printCheck = false;
+      $('#checkCbId').prop('checked',false);
+    } else if(this.saveAcseCv.disbType == 'BT') {
+      this.warnMsg = 'Printing of check unavailable for Bank Transfer.';
       this.warnMdl.openNoClose();
       this.printData.printCheck = false;
       $('#checkCbId').prop('checked',false);
@@ -852,7 +909,40 @@ uploadAcctEntries(){
   }
 
   padCheckNo() {
-    this.saveAcseCv.checkNo = String(this.saveAcseCv.checkNo).padStart(this.chkNoDigits, '0');
+    if(this.saveAcseCv.checkNo !== null && this.saveAcseCv.checkNo !== '') {
+      this.saveAcseCv.checkNo = String(this.saveAcseCv.checkNo).padStart(this.chkNoDigits, '0');
+    }
+  }
+
+  onChangeDisbType() {
+    if(this.saveAcseCv.disbType == 'BT') {
+      this.saveAcseCv.checkNo = '';
+      this.saveAcseCv.checkDate = '';
+      this.saveAcseCv.checkClass = '';
+      this.saveAcseCv.checkClassDesc = '';
+    } else if(this.saveAcseCv.disbType == 'CK') {
+      this.saveAcseCv.destBank = '';
+      this.saveAcseCv.destBankDesc = '';
+      this.saveAcseCv.destAcctNo = '';
+      this.saveAcseCv.btRefNo = '';
+      this.saveAcseCv.destAcctName = '';
+      this.saveAcseCv.swiftCd = '';
+      this.saveAcseCv.checkDate = this.ns.toDateTimeString(0);
+
+      if(this.saveAcseCv.bank !== null && this.saveAcseCv.bank !== ''
+          && this.saveAcseCv.bankAcct !== null && this.saveAcseCv.bankAcct !== '') {
+        this.getAcseCheckSeries(this.saveAcseCv.bank, this.saveAcseCv.bankAcct);
+      }
+
+      for(let x of this.checkClassList) {
+        if(x.code == 'LC') {
+          this.saveAcseCv.checkClass = x.code;
+          this.saveAcseCv.checkClassDesc = x.description;
+
+          break;
+        }
+      }
+    }
   }
 
 }
