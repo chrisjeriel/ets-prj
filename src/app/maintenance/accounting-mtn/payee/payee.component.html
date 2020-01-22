@@ -8,7 +8,7 @@
             		<div class="input-group" style="margin-top: 10px !important;">
             			<label class="form-control-sm col-sm-2"></label>
                         <label class="form-control-sm col-sm-2">Payee Class</label>
-                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee'); lovType = 'payeeClass'" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee'); lovType = 'payeeClass'" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' style="z-index: 1;">
                         <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov()"></i></a></div>
                         <input name="payeeClassName" type="text" class="form-control form-control-sm col-sm ml-2" [(ngModel)]="payeeClassName" readonly>
             			<label class="form-control-sm col-sm-2"></label>
