@@ -22,6 +22,7 @@ export class BankComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cnclBtn: CancelButtonComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(PrintModalMtnAcctComponent) printModal: PrintModalMtnAcctComponent;
+  @ViewChild('myForm') form:any;
 
   dialogIcon:string = '';
   dialogMessage: string = '';
@@ -48,7 +49,7 @@ export class BankComponent implements OnInit {
   	  bankCd:'',
   	  shortName:'',
   	  officialName:'',
-      activeTag: "Y",
+      activeTag: 'Y',
       remarks: '',
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
@@ -95,6 +96,7 @@ export class BankComponent implements OnInit {
   		this.table.indvSelect.deleted = true;
   		this.table.selected  = [this.table.indvSelect]
   		this.table.confirmDelete();
+      $('#cust-table-container').addClass('ng-dirty');
   	}
   }
 
@@ -115,6 +117,8 @@ export class BankComponent implements OnInit {
             this.dialogIcon = "success";
             this.successDialog.open();
             this.getBank();
+            $('.ng-dirty').removeClass('ng-dirty');
+            //this.form.control.markAsPristine();
         }else{
             this.dialogIcon = "error";
             this.successDialog.open();
@@ -139,6 +143,7 @@ export class BankComponent implements OnInit {
     this.info = data;
     this.boolBankMain = data == null;
     this.passTable.disableGeneric = data == null;
+    console.log(data);
   }
 
   print(){
