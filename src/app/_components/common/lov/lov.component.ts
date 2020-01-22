@@ -557,7 +557,7 @@ export class LovComponent implements OnInit {
         this.selectedData.emit({
           data: null,
           ev: ev,
-          selector: 'payee'
+          selector: 'acitTranType'
         });
       }else{
         console.log(this.passData.payeeClassCd);
@@ -585,6 +585,46 @@ export class LovComponent implements OnInit {
              });
 
              this.passData.selector = 'acitTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+         });
+      }
+     
+    }else if(selector == 'acseTranType'){
+      console.log(this.passData);
+      if(this.passData.params.tranTypeCd == null || this.passData.params.tranTypeCd.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'acseTranType'
+        });
+      }else{
+        console.log(this.passData.payeeClassCd);
+        this.mtnService.getMtnAcseTranType(this.passData.params.tranClass, this.passData.params.tranTypeCd, '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
+           if(data.tranTypeList.length == 1){
+             data.tranTypeList[0]['ev'] = ev;
+             data.tranTypeList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['tranTypeList'][0], ev : ev, selector: 'acseTranType'});
+           }else if(data.tranTypeList.length == 0){
+             this.passData.payeeNo = '';
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acseTranType'
+             });
+
+             this.passData.selector = 'acseTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acseTranType'
+             });
+
+             this.passData.selector = 'acseTranType';
              this.modal.openNoClose();
              this.ns.lovLoader(ev,0);
            }

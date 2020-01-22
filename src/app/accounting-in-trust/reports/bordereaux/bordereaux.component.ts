@@ -9,6 +9,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-bordereaux',
@@ -22,6 +23,7 @@ export class BordereauxComponent implements OnInit {
 	@ViewChild('appDialog') appDialog: SucessDialogComponent;
 	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 	@ViewChild(LovComponent) lovMdl: LovComponent;
+	@ViewChild(CedingCompanyComponent) cedingLov: CedingCompanyComponent;
 
 	dateParam: string = '1';
 	extnType: string = 'O';
@@ -39,10 +41,10 @@ export class BordereauxComponent implements OnInit {
 
 	params :any = {
 		extractUser: JSON.parse(window.localStorage.currentUser).username,
-		osPaidTag: 'O',
+		osPaidTag: '',
 		extTypeTag: 'LE',
-	    dateParam: '4',
-	    dateRange: 'D',
+	    dateParam: '',
+	    dateRange: '',
 	  	reportName : '',
 	    dateFrom: '',
 	    dateTo: '',
@@ -50,6 +52,8 @@ export class BordereauxComponent implements OnInit {
 	  	reportId : '',
 	    lineCd: '',
 	    cessionId: '',
+	    cedingId: '',
+	    cedingName: '',
 	    destination: '',
 	    forceExtract: 'N',
 	    perLine: true,
@@ -62,6 +66,12 @@ export class BordereauxComponent implements OnInit {
 	    hide: []
 	}
 
+	disableOutstanding: boolean = true;
+	disableLosses: boolean = true;
+	disableCompany: boolean = true;
+	disablePrint: boolean = true;
+	loading: boolean = false;
+
 	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService,
 		        private printService: PrintService, public modalService: NgbModal) { }
 
@@ -69,6 +79,7 @@ export class BordereauxComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
 		this.passLov.modReportId = 'ACITR052%';
+		this.loading = false;
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
@@ -85,13 +96,144 @@ export class BordereauxComponent implements OnInit {
 
 	setReport(data){
 	    // this.paramsToggle = [];
+	    this.clearFields();
 	    if(data.data != null){
 		  	this.params.reportId = data.data.reportId;
 		  	this.params.reportName = data.data.reportTitle;
+		  	switch(data.data.reportId){
+		  		case 'ACITR052A':
+		  			this.disableLosses = true;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = true;
+		  			this.disableOutstanding = false;
+		  			this.params.osPaidTag = 'O';
+		  			this.params.dateParam = '4';
+		  			break;
+				case 'ACITR052B':
+					this.disableCompany = true;
+					this.disableLosses = false;
+					this.disableOutstanding = true;
+					this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					break;
+				case 'ACITR052C':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052D':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052E':
+					this.disableCompany = true;
+					this.disableOutstanding = false;
+					this.disableLosses = true;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052F':
+					this.disableCompany = true;
+					this.disableOutstanding = false;
+					this.disableLosses = true;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052G':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052H':
+					this.disableOutstanding = true;
+					this.disableCompany = false;
+					this.disableLosses = false;
+					this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					break;
+				case 'ACITR052I':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.osPaidTag = 'O';
+					this.params.dateRange = 'A';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052J':
+					this.disableOutstanding = true;
+					this.disableLosses = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					break;
+				case 'ACITR052K':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'A';
+					this.params.osPaidTag = 'O';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052L':
+					this.disableOutstanding = true;
+					this.disableLosses = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					break;
+				case 'ACITR052M':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'A';
+					this.params.osPaidTag = 'O';
+					this.params.dateParam = '4';
+					break;
+				case 'ACITR052N':
+					this.disableOutstanding = true;
+					this.disableLosses = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					break;
+				case 'ACITR052O':
+					this.disableLosses = true;
+					this.disableOutstanding = false;
+					this.disableCompany = false;
+					this.params.dateRange = 'A';
+					this.params.osPaidTag = 'O';
+					this.params.dateParam = '4';
+					break;
+				default:
+					this.disableOutstanding = true;
+					this.disableLosses = true;
+					this.disableCompany = true;
+		  	}
 		}else{
 			this.params.reportId = null;
 		  	this.params.reportName = null;
 		}
+
+		setTimeout(()=>{
+			$('.report').focus().blur();
+		},0);
 
 
 	    /*if (this.repExtractions.indexOf(this.params.reportId) > -1) {
@@ -130,6 +272,10 @@ export class BordereauxComponent implements OnInit {
 		this.cessionLOV.modal.openNoClose();
 	}
 
+	showCedingCompanyLOV() {
+	  this.cedingLov.modal.openNoClose();
+	}
+
 	setCession(ev) {
 		this.ns.lovLoader(ev.ev, 0);
 
@@ -137,18 +283,27 @@ export class BordereauxComponent implements OnInit {
 		this.cessionDesc = ev.description;
 	}
 
+	setCedingcompany(data){
+	  this.params.cedingId = data.cedingId;
+	  this.params.cedingName = data.cedingName; 
+	  this.ns.lovLoader(data.ev, 0);
+	}
+
 	checkCode(ev, str) {
 		this.ns.lovLoader(ev, 1);
 
 		if(str == 'line') {
 			this.lineLOV.checkCode(this.params.lineCd, ev);
-		} else if(str == 'cession') {
+		}else if(str === 'company') {
+	        this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
+	    } else if(str == 'cession') {
 			this.cessionLOV.checkCode(this.params.cessionId, ev);
 		} if(str === 'report'){
-	      if(this.passLov.reportId.indexOf('ACITR052') == -1){
-	        this.passLov.code = '';
+	      if(this.params.reportId.indexOf('ACITR052') == -1){
+	        this.passLov.code = 'ACITR052%';
+	      }else{
+	      	this.passLov.code = this.params.reportId;
 	      }
-	      this.passLov.code = this.params.reportId;
 	      this.lovMdl.checkCode('reportId',ev);
 	  }
 	}
@@ -161,7 +316,7 @@ export class BordereauxComponent implements OnInit {
 		      this.params.dateFrom = this.ns.toDateTimeString(this.params.dateFrom);
 		      this.params.dateTo = this.ns.toDateTimeString(this.params.dateTo);
 		    }else if(this.params.dateRange == "A"){
-		      this.params.dateTo = this.ns.toDateTimeString(this.params.dateToAsOf);
+		      this.params.dateToAsOf = this.ns.toDateTimeString(this.params.dateToAsOf);
 		    }
 	    } catch (ex) {
 	    	console.log(ex);
@@ -178,13 +333,10 @@ export class BordereauxComponent implements OnInit {
 	  }
 
 	extract(cancel?){
-    
+    	this.loading = true;
     	this.prepareData();
-    	console.log(this.params);
 
 	    this.printService.extractReport({ reportId: this.params.reportId, acitr052Params:this.params }).subscribe((data:any)=>{
-	        console.log("extractReport return data");
-	        console.log(data);
 	        if (data.errorList.length > 0) {
 	          
 	          if (data.errorList[0].errorMessage.includes("parameters already exists.")) {
@@ -192,7 +344,8 @@ export class BordereauxComponent implements OnInit {
 	            this.modalHeader = "Confirmation";
 	            this.acitReportsModal.openNoClose();
 	          } else {
-	            this.dialogIcon = 'error';
+	            this.dialogIcon = 'error-message';
+	            this.dialogMessage = 'An error occurred during extraction.';
 	            this.appDialog.open();
 	          }
 	          
@@ -201,12 +354,14 @@ export class BordereauxComponent implements OnInit {
 	            this.modalHeader = "Extraction Completed";
 	            this.modalBody = "Successfully extracted " + data.params.extractCount + " record/s.";
 	            this.acitReportsModal.openNoClose();
+	            this.disablePrint = false;
 	          } else {
 	            this.modalHeader = "Extraction Completed";
 	            this.modalBody = "No record/s extracted.";
 	            this.acitReportsModal.openNoClose();
 	          }
 	        }
+	        this.loading = false;
 	    },
 	    (err) => {
 	      alert("Exception when calling services.");
@@ -219,7 +374,19 @@ export class BordereauxComponent implements OnInit {
     this.params.forceExtract = 'Y';
   }
 
+  resetDateParams(){
+  	this.params.dateFrom = '';
+  	this.params.dateTo = '';
+  	this.params.dateToAsOf = '';
+  }
+
   print() {
+  	if(this.params.destination === '' || this.params.destination === undefined){
+  	  this.dialogIcon = "warning-message";
+  	  this.dialogMessage = "Please select a print destination";
+  	  this.appDialog.open();
+  	  return;
+  	}
     this.prepareData();
 
     let params :any = {
@@ -237,10 +404,35 @@ export class BordereauxComponent implements OnInit {
 		"acitr052Params.cessionId" : this.params.cessionId,
 		"acitr052Params.destination" : this.params.destination,
 		"acitr052Params.forceExtract" : this.params.forceExtract,
+		"acitr052Params.cedingId" : this.params.cedingId
     }
 
-    console.log(this.params);
-
     this.printService.print(this.params.destination,this.params.reportId, params);
+  }
+
+  paramChange(){
+  	this.disablePrint = true;
+  }
+
+  clearFields(){
+  		this.params.extractUser	= JSON.parse(window.localStorage.currentUser).username;
+  		this.params.osPaidTag	= '';
+  		this.params.extTypeTag	= 'LE';
+  	    this.params.dateParam	= '';
+  	    this.params.dateRange	= '';
+  	  	this.params.reportName 	= '';
+  	    this.params.dateFrom	= '';
+  	    this.params.dateTo		= '';
+  	    this.params.dateToAsOf	= '';
+  	  	this.params.reportId 	= '';
+  	    this.params.lineCd		= '';
+  	    this.lineDesc			= '';
+  	    this.params.cessionId	= '';
+  	    this.params.cedingId	= '';
+  	    this.params.cedingName	= '';
+  	    this.params.destination	= '';
+  	    this.params.forceExtract= 'N';
+  	    this.params.perLine		= true;
+  	    this.params.perCession	= true;
   }
 }

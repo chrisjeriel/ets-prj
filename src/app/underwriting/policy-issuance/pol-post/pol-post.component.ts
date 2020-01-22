@@ -108,7 +108,7 @@ export class PolPostComponent implements OnInit {
       sub$.subscribe(data=>{
         let a = data['uwCoverage'];
         let coverCd = data['mtnParameter']['parameters'][0] == undefined ? null : data['mtnParameter']['parameters'][0].paramValueN;
-        if(a['policy'] == null || a['policy'].project.coverage.totalPrem == 0){
+        if(a['policy'] == null || ( a['policy'].project.coverage.totalPrem == 0  && a['policy'].project.coverage.totalSi == 0)){
           this.progress +=50;
           this.affectingTag = false;
           this.post();

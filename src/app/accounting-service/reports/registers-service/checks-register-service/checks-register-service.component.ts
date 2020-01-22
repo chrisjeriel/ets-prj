@@ -154,7 +154,12 @@ export class ChecksRegisterServiceComponent implements OnInit {
       },500);
       
     } else if(str == 'bank-acct') {
-      this.bankAcctLov.checkCode(this.params.bankAcct, ev);
+      console.log('yeet');
+      this.passDataLov.bank = this.params.bank;
+      this.passDataLov.bankAcct = this.params.bankAcct;
+      this.passDataLov.from = 'acit';
+      this.bankName = '';
+      this.bankAcctLov.checkCode('bankAcct', null, null, null, null, null, ev);
     }
   }
 

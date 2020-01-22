@@ -132,6 +132,17 @@ export class JvRegisterServiceComponent implements OnInit {
     }
   }
 
+  changePaytType(event){
+    this.ns.lovLoader(event, 1);
+    this.passDataLov.selector = 'acseTranType';
+    this.passDataLov.from = 'acse';
+    this.passDataLov.params = {
+      tranClass: 'JV',
+      tranTypeCd: this.params.jvType
+    }
+    this.paytTypeLov.checkCode('acseTranType',null,null,null,null,null,event);
+  }
+
   setData(data,from){
     setTimeout(() => {
       this.ns.lovLoader(data.ev, 0);
