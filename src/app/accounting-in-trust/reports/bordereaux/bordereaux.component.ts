@@ -335,8 +335,12 @@ export class BordereauxComponent implements OnInit {
 	extract(cancel?){
     	this.loading = true;
     	this.prepareData();
+    	let paramsJson = JSON.stringify(this.params);
+    	let acit052Params = JSON.parse(paramsJson);
 
-	    this.printService.extractReport({ reportId: this.params.reportId, acitr052Params:this.params }).subscribe((data:any)=>{
+    	acit052Params['dateTo'] = acit052Params['dateTo'] == null || acit052Params['dateTo'].length == 0 ? acit052Params['dateToAsOf'] : acit052Params['dateTo'];
+
+	    this.printService.extractReport({ reportId: this.params.reportId, acitr052Params:acit052Params }).subscribe((data:any)=>{
 	        if (data.errorList.length > 0) {
 	          
 	          if (data.errorList[0].errorMessage.includes("parameters already exists.")) {
@@ -398,7 +402,7 @@ export class BordereauxComponent implements OnInit {
 		"acitr052Params.dateRange" : this.params.dateRange,
 		"acitr052Params.reportName" :  this.params.reportName,
 		"acitr052Params.dateFrom" : this.params.dateFrom,
-		"acitr052Params.dateTo" : this.params.dateTo,
+		"acitr052Params.dateTo" : this.params.dateTo == null || this.params.dateTo.length == 0 ? this.params.dateToAsOf : this.params.dateTo,
 		"acitr052Params.reportId" : this.params.reportId,
 		"acitr052Params.lineCd" : this.params.lineCd,
 		"acitr052Params.cessionId" : this.params.cessionId,
@@ -424,7 +428,7 @@ export class BordereauxComponent implements OnInit {
   	    this.params.dateFrom	= '';
   	    this.params.dateTo		= '';
   	    this.params.dateToAsOf	= '';
-  	  	this.params.reportId 	= '';
+  	  	//this.params.reportId 	= '';
   	    this.params.lineCd		= '';
   	    this.lineDesc			= '';
   	    this.params.cessionId	= '';
