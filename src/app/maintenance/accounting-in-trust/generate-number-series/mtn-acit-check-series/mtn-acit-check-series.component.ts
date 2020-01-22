@@ -62,6 +62,7 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 	dialogMessage        : string = '';
     dialogIcon           : string = '';
     warnMsg              : string = '';
+    dsblBtn				 : boolean = false;
 
 
 	constructor(private titleService: Title,private mtnService : MaintenanceService, private ns : NotesService) {}
@@ -164,6 +165,11 @@ export class MtnAcitCheckSeriesComponent implements OnInit {
 
   	reset(){
   		(this.otherData.bankAcctDesc == '')?(this.otherData.from='',this.otherData.to=''):'';
+  	}
+
+  	disableFromTo(){
+  		this.dsblBtn = (this.otherData.from.includes('-') || this.otherData.from.includes('.') || this.otherData.from.includes(',') ||
+  						this.otherData.to.includes('-') || this.otherData.to.includes('.') || this.otherData.to.includes(',')) ?true:false;
   	}
 
 }

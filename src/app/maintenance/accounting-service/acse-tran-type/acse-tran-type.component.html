@@ -12,11 +12,12 @@
 										<div class="col-sm-2"></div>
 										<label class="form-control-sm col-sm-2 text-right labels">Transaction Class</label>
 										<select class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="params.tranClass" (ngModelChange)="params.tranClass=$event;retrieveTranType()">
-											<option value="OR">OR</option>
+											<!-- <option value="OR">OR</option>
 											<option value="PRQ">PR</option>
 											<option value="JV">JV</option>
 											<option value="CM">CM</option>
-											<option value="DM">DM</option>
+											<option value="DM">DM</option> -->
+											<option *ngFor="let i of tranTypeList" value="{{ i }}">{{ i }}</option>
 										</select>
 										<input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 4px;" readonly [(ngModel)]="params.tranName">
 										<div class="col-sm-3"></div>

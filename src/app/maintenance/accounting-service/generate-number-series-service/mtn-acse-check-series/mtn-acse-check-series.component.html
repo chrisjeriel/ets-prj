@@ -15,12 +15,12 @@
                         <input name="input2" type="text" class="form-control form-control-sm cust-sm col-sm-6 warn"  [(ngModel)]="otherData.bankAcctDesc" appRequired autoComplete="off" (change)="reset()" [disabled]="otherData.bankDesc == '' || otherData.bankDesc == null" onkeypress="return event.keyCode != 13;">
                         <div *ngIf="otherData.bankDesc != '' && otherData.bankDesc != null" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('bank-acct')"><i class="fa fa-search"></i></a></div>
                         <label class="form-control-sm labels">From</label>
-                        <input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn" [(ngModel)]="otherData.from" appRequired autoComplete="off" [disabled]="otherData.bankAcctDesc == '' || otherData.bankAcctDesc == null" numbers-only onkeypress="return event.keyCode != 13;">
+                        <input name="input3" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn" [ngModel]="otherData.from" (ngModelChange)="otherData.from=$event;disableFromTo()" appRequired autoComplete="off" [disabled]="otherData.bankAcctDesc == '' || otherData.bankAcctDesc == null" numbers-only onkeypress="return event.keyCode != 13;">
                         <label class="form-control-sm labels">To</label>
-                        <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn" [(ngModel)]="otherData.to" appRequired autoComplete="off" [disabled]="otherData.bankAcctDesc == '' || otherData.bankAcctDesc == null" numbers-only onkeypress="return event.keyCode != 13;">
+                        <input name="input4" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn" [ngModel]="otherData.to" (ngModelChange)="otherData.to=$event;disableFromTo()" appRequired autoComplete="off" [disabled]="otherData.bankAcctDesc == '' || otherData.bankAcctDesc == null" numbers-only onkeypress="return event.keyCode != 13;">
                         <div class="cust-btn-container col-sm-3" style="z-index: 0 !important;">
-                            <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from == '' || otherData.to == '' || otherData.from == '' || otherData.to == '' || otherData.from < 0 || otherData.to < 0">Generate</button>
-                            <button type="button" class="cust-btn" (click)="onClickSearch()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from < 0 || otherData.to < 0">Search</button>
+                            <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || otherData.from == '' || otherData.to == '' || dsblBtn">Generate</button>
+                            <button type="button" class="cust-btn" (click)="onClickSearch()" [disabled]="otherData.bankDesc == '' || otherData.bankAcctDesc == '' || dsblBtn">Search</button>
                         </div>
                     </div>
                 </div>

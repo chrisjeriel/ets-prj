@@ -274,11 +274,27 @@ export class AcseTranTypeComponent implements OnInit {
   genTaxIndex:any = '';
   lovCheckbox: boolean = false;
   subscription: Subscription = new Subscription();
+  tranTypeList : any[] = [];
 
   constructor(private maintenanceService: MaintenanceService, private ns: NotesService) { }
 
   ngOnInit() {
+    this.getMtnAcseTranType();
   }
+
+ getMtnAcseTranType(){
+   this.maintenanceService.getMtnAcseTranType('','','','','','Y')
+   .subscribe(data =>{
+     console.log(data);
+     this.tranTypeList = data['tranTypeList'].map(e => {return e.tranClass;}).reduce((a,b) => {
+                                                  if(a.indexOf(b) == -1){
+                                                      a.push(b);
+                                                  }
+                                                  return a;
+                                              },[]);
+     console.log(this.tranTypeList);
+   });
+ }
 
  retrieveTranType(){
  	this.table.loadingFlag = true;
@@ -286,6 +302,7 @@ export class AcseTranTypeComponent implements OnInit {
  	this.passData.disableGeneric = false;
  	this.maintenanceService.getMtnAcseTranType(this.params.tranClass).subscribe((data:any) => {
  		this.passData.tableData = [];
+    console.log(data);
  		this.params.tranName = data.tranTypeList[0].tranName;
  		for (var i = 0; i < data.tranTypeList.length; i++) {
  			this.passData.tableData.push(data.tranTypeList[i]);
