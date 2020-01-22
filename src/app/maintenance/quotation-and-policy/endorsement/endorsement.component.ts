@@ -393,7 +393,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
       if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            //this.getMtnEndorsements();
+            this.getMtnEndorsements();
             this.endtTable.markAsPristine();
             this.dedTable.markAsPristine();
             if(this.fromChng){
