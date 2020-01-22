@@ -46,6 +46,10 @@ export class PolicyReportsComponent implements OnInit {
     cedingName: '',
     alteration: '',
     incRecTag: '',
+    byMonthFrom: '',
+    byMonthFromYear: '',
+    byMonthTo : '',
+    byMonthToYear: ''
   }
 
   sendData: any = {
@@ -65,8 +69,10 @@ export class PolicyReportsComponent implements OnInit {
   repExtractions: Array<string> = [
                         'POLR044A',
                         'POLR044B',
+                        'POLR044C',
                         'POLR044D',
                         'POLR044E',
+                        'POLR044F',
                         'POLR044G',
                         'POLR044H',
                         'POLR044I',
@@ -78,9 +84,10 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044O',
                         'POLR044P',
                         'POLR044Q',
-                        'POLR044V',
-                        'POLR044W',
-                        'POLR044X',
+                        'POLR044R',
+                        'POLR044S',
+                        'POLR044T',
+                        'POLR044U',
                         'ACITR061F',
                         'ACITR061G',
                         'ACITR048A'
@@ -110,6 +117,9 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   setReport(data){
+    setTimeout(()=>{
+      $('.reports').focus().blur();
+    },0);
     this.paramsToggle = [];
     this.params = [];
   	console.log(data.data);
@@ -144,7 +154,7 @@ export class PolicyReportsComponent implements OnInit {
       // this.paramsToggle.push('asOf');
 
     if(this.params.reportId == 'POLR044A'){
-      this.paramsToggle.push('accountingDate', 'byDate', 'byMonthYear', 'line', 'company');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company');
       this.params.dateParam = '5';
     } 
     else if(this.params.reportId == 'POLR044B'){
@@ -301,6 +311,9 @@ export class PolicyReportsComponent implements OnInit {
         if(this.params.byMonthFrom !== '' && this.params.byMonthFromYear !== ''){
           this.params.byMonthTo = this.params.byMonthFrom;
           this.params.byMonthToYear = this.params.byMonthFromYear;
+        }else{
+          this.params.byMonthTo = '';
+          this.params.byMonthToYear = '';
         }
       }
     }else if(this.params.reportId == 'POLR044E'){
@@ -310,6 +323,9 @@ export class PolicyReportsComponent implements OnInit {
         if(this.params.byMonthFrom !== '' && this.params.byMonthFromYear !== ''){
           this.params.byMonthTo = this.params.byMonthFrom;
           this.params.byMonthToYear = this.params.byMonthFromYear;
+        }else{
+          this.params.byMonthTo = '';
+          this.params.byMonthToYear = '';
         }
       }
     }else if(this.params.reportId == 'POLR044F'){
@@ -319,6 +335,9 @@ export class PolicyReportsComponent implements OnInit {
         if(this.params.byMonthFrom !== '' && this.params.byMonthFromYear !== ''){
           this.params.byMonthTo = this.params.byMonthFrom;
           this.params.byMonthToYear = this.params.byMonthFromYear;
+        }else{
+          this.params.byMonthTo = '';
+          this.params.byMonthToYear = '';
         }
       }
     }else if(this.params.reportId == 'POLR044G'){
@@ -328,6 +347,9 @@ export class PolicyReportsComponent implements OnInit {
         if(this.params.byMonthFrom !== '' && this.params.byMonthFromYear !== ''){
           this.params.byMonthTo = this.params.byMonthFrom;
           this.params.byMonthToYear = this.params.byMonthFromYear;
+        }else{
+          this.params.byMonthTo = '';
+          this.params.byMonthToYear = '';
         }
       }
     }
@@ -386,6 +408,33 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   extract(cancel?){
+    if(this.params.dateRange !== ''){
+      if(this.params.dateRange == 1 && (this.params.byDateFrom == '' || this.params.byDateFrom == undefined) && 
+         (this.params.byDateTo == '' || this.params.byDateTo == undefined)){
+        this.dialogIcon = "warning-message";
+        this.dialogMessage = "Please select dates to be extracted";
+        this.appDialog.open();
+        return;
+      }else if(this.params.dateRange == 2 && ((this.params.byMonthFromYear == '' || this.params.byMonthFromYear == undefined) ||
+               (this.params.byMonthFrom == '' || this.params.byMonthFrom == undefined)) && ((this.params.byMonthToYear == '' ||this.params.byMonthToYear == undefined) ||
+               (this.params.byMonthTo == '' || this.params.byMonthTo == undefined))){
+        this.dialogIcon = "warning-message";
+        this.dialogMessage = "Please select dates to be extracted";
+        this.appDialog.open();
+        return;
+      }else if(this.params.dateRange == 3 && (this.params.byAsOf == '' || this.params.byAsOf == undefined)){
+        this.dialogIcon = "warning-message";
+        this.dialogMessage = "Please select dates to be extracted";
+        this.appDialog.open();
+        return;
+      }else if(this.params.dateRange == undefined){
+        this.dialogIcon = "warning-message";  
+        this.dialogMessage = "Please select dates to be extracted";
+        this.appDialog.open();
+        return;
+      }
+    }
+
     this.loading = true;
     this.prepareData();
 

@@ -68,11 +68,11 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2">From</label>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1"></datepicker>
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [required]="true"></datepicker>
 								</div>
 								<label class="form-control-sm col-sm-2">To</label>
 								<div class="col-sm-3 dp-cont">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateTo?.split('T')[0]" (valueChange)="params.byDateTo=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1"></datepicker>
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateTo?.split('T')[0]" (valueChange)="params.byDateTo=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [required]="true"></datepicker>
 								</div>
 							</div>
 							<div class="input-group">
@@ -82,7 +82,7 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2">From</label>
-								<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1">
+								<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
 									<option value="1"> January </option>
 									<option value="2"> February </option>
 									<option value="3"> March </option>
@@ -96,9 +96,9 @@
 									<option value="11"> November </option>
 									<option value="12"> December </option>
 								</select>
-								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2">
+								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2" appRequired>
 								<label class="form-control-sm col-sm-1">To</label>
-								<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.byMonthTo" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1 ||disableTo">
+								<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.byMonthTo" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1 ||disableTo" appRequired>
 									<option value="1"> January </option>
 									<option value="2"> February </option>
 									<option value="3"> March </option>
@@ -112,7 +112,7 @@
 									<option value="11"> November </option>
 									<option value="12"> December </option>
 								</select>
-								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [(ngModel)]="params.byMonthToYear" [disabled]="params.dateRange != 2 || disableTo">
+								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [(ngModel)]="params.byMonthToYear" [disabled]="params.dateRange != 2 || disableTo" appRequired>
 							</div>
 							<div class="input-group">
 								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"  (click)="removeDates()"
@@ -121,7 +121,7 @@
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2" for="radio4" style="text-align: left !important;text-indent: 30px !important;">As of</label>
 								<div class="col-sm-3 dp-cont" style="margin-top: 5px;">
-									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1" [required]="true">
 									</datepicker>
 								</div>
 							</div>
@@ -131,7 +131,7 @@
 				</div>
 				<div class="row top-row" style="margin-top: 10px;">
 					<div class="col-sm-1"></div>
-					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
+					<fieldset class="scheduler-border col-sm" style="padding: 0 0 0 0px !important;">
 						<div class="row">
 							<div class="col-sm-1">
 
@@ -168,12 +168,9 @@
 						<div class="row">
 							<div class="col-sm-1">
 							</div>
-							<div class="col-sm">
+							<div class="col-sm-10">
 								<div class="input-group align-rad" style="padding-top: 10px;">
-									<!-- <div class="col-sm-2"></div>
-									<input name="input197" type="checkbox" class="col-sm-1" style="margin-top: 5px;" [checked]="params.alteration == 'Y'" (change)="params.alteration = (params.alteration == 'Y' ? 'N':'Y')">
-									<label class="form-control-sm col-sm" >Include Alteration</label> -->
-									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" [(ngModel)]="params.incRecTag"
 										[disabled]="paramsToggle.indexOf('policy') == -1">
 									<label class="form-control-sm" for="radirt1">Policy</label>
 									<input id="radirt2" class="form-control-sm" type="radio" name="incRecTag" value="E" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
