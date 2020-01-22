@@ -185,7 +185,7 @@ export class LossCodeComponent implements OnInit {
   checkFields(){
   	this.lossCdArray = [];
       for(let check of this.passData.tableData){
-      	this.lossCdArray.push(check.lossCd);
+      	this.lossCdArray.push(parseInt(check.lossCd));
         if(check.lossCd === null || Number.isNaN(check.lossCd)  || check.lossAbbr === undefined || check.lossAbbr == '' || String(check.lossDesc).trim() == '' || check.lossCdType === null){
           return false;
         }
