@@ -653,9 +653,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       tbl.forEach(tblData => {
         if(tblData.newRec != 1){
           if(this.requestData.tranTypeCd == 6){
-            isUnique.push(this.params.savePerDiem.some(saveData => saveData.directorId == tblData.directorId && saveData.feeType == tblData.feeType)?false:true);
+            isUnique.push(this.params.savePerDiem.some(saveData => saveData.newRec == 1 && saveData.directorId == tblData.directorId && saveData.feeType == tblData.feeType)?false:true);
           }else{
-            isUnique.push(this.params.saveInsuranceExp.some(saveData => saveData.insuredCd == tblData.insuredCd && saveData.insuranceType == tblData.insuranceType)?false:true);
+            isUnique.push(this.params.saveInsuranceExp.some(saveData => saveData.newRec == 1 && saveData.insuredCd == tblData.insuredCd && saveData.insuranceType == tblData.insuranceType)?false:true);
           }
         }
       });  
@@ -720,6 +720,25 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   onSave(){
     console.log(this.params);
+
+    this.params.savePrqTrans.forEach(a => {
+      if(a.taxAllocation != undefined) {
+        a.taxAllocation = a.taxAllocation.filter(b => b.reqId != null);
+      }
+    });
+
+    this.params.savePerDiem.forEach(a => {
+      if(a.taxAllocation != undefined) {
+        a.taxAllocation = a.taxAllocation.filter(b => b.reqId != null);
+      }
+    });
+
+    this.params.saveInsuranceExp.forEach(a => {
+      if(a.taxAllocation != undefined) {
+        a.taxAllocation = a.taxAllocation.filter(b => b.reqId != null);
+      }
+    });
+
     if(this.requestData.tranTypeCd == 6){
       this.acctService.saveAcsePerDiem(JSON.stringify(this.params))
       .subscribe(data => {
