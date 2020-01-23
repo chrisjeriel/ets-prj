@@ -94,7 +94,7 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Destination Bank</label>
-                        <input name="inputDestBank" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData(1)" [(ngModel)]="saveAcseCv.destBankDesc" maxlength="100" autoComplete="off" [disabled]="saveAcseCv.disbType !== 'BT'">
+                        <input name="inputDestBank" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcseCv.destBankDesc" maxlength="100" autoComplete="off" [disabled]="saveAcseCv.disbType !== 'BT'">
                         <div *ngIf="(!removeIcon || (removeIcon && spoiled)) && saveAcseCv.disbType == 'BT'" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('dest-bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
