@@ -20,7 +20,7 @@ export class ClaimStatusComponent implements OnInit {
   passData: any = {
     tHeader: [ "Status Code","Description",'O/C',"Active","Remarks"],
     tableData:[],
-    dataTypes: ['text','text', 'select', 'checkbox','text'],
+    dataTypes: ['pk-cap','text', 'select', 'checkbox','text'],
     tooltip:[null,null,'Open / Close',null,null],
     opts: [{
             selector: 'openTag',
@@ -28,6 +28,7 @@ export class ClaimStatusComponent implements OnInit {
             vals: ['O','C'],
         }],
     nData: {
+      newRec      : 1,
       statusCode: null,
       description: null,
       remarks: null,
@@ -48,7 +49,10 @@ export class ClaimStatusComponent implements OnInit {
     infoFlag: true,
     uneditable:[false,false,false,false,false],
     widths:[1,'auto',73,1,'auto'],
-    keys:['statusCode','description','openTag','activeTag','remarks']
+    keys:['statusCode','description','openTag','activeTag','remarks'],
+    mask: {
+      statusCode   : 'AA',
+    }
   };
 
   cancelFlag:boolean;
@@ -161,6 +165,8 @@ export class ClaimStatusComponent implements OnInit {
         this.table.markAsPristine();
         this.getClaimStat();
         this.passData.disableGeneric = true;
+        this.saveData.saveClaimStatus = [];
+        this.saveData.delClaimStatus = [];
       }
     });
   }

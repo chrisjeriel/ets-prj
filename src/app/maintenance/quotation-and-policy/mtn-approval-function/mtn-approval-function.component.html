@@ -44,9 +44,9 @@
                 </fieldset>  
                 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 
-                <app-confirm-save id="approvalConfirm" (onYes)="saveData()"></app-confirm-save>
+                <app-confirm-save #appSave id="approvalConfirm" (onYes)="saveData()" ></app-confirm-save>
                 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-                <app-confirm-save id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
+                <app-confirm-save  #userSave id="userConfirm" (onYes)="saveUserModal()"></app-confirm-save>
                 <app-sucess-dialog #userSuccess [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
                 <app-cancel-button #cancelApprover (onYes)="saveData('cancel')" [url]="'/maintenance-qu-pol'" ></app-cancel-button>   
                 <app-cancel-button #cancelUser (onYes)="saveUserModal('cancel')" (no)="userModal.closeModal();"></app-cancel-button>          

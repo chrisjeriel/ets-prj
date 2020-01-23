@@ -7,6 +7,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnApproverComponent } from '@app/maintenance/mtn-approver/mtn-approver.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-mtn-approval-function',
@@ -23,6 +24,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('userSuccess') userSuccess: SucessDialogComponent;
   @ViewChild('mtnUser') mtnUser: MtnApproverComponent;
+  @ViewChild('appSave') appSave   : ConfirmSaveComponent;
+  @ViewChild('userSave') userSave : ConfirmSaveComponent;
   //@ViewChild('itemInfoModal') itmInfoMdl: ModalComponent;
   //@ViewChild('mtnUser') mtnUser: MtnUsersComponent;
   
@@ -191,7 +194,6 @@ export class MtnApprovalFunctionComponent implements OnInit {
   saveUserModal(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareSaveUser();
-
     if(this.userDetails.saveMtnApprovalFn.length === 0 && this.userDetails.deleteMtnApprovalFn.length === 0){
        setTimeout(()=> {
         this.dialogMessage = "Nothing to Save.";
@@ -210,9 +212,9 @@ export class MtnApprovalFunctionComponent implements OnInit {
            this.dialogMessage = "";
            this.dialogIcon = "success";
            this.userSuccess.open();
-           this.getUserModal();
-           this.getApprovalFunction();
            this.usertable.markAsPristine();
+           this.getUserModal();
+           //this.getApprovalFunction();
          }
        });
     }
@@ -268,6 +270,7 @@ export class MtnApprovalFunctionComponent implements OnInit {
           this.dialogIcon = "success";
           this.successDiag.open();
           console.log('success')
+          this.table.markAsPristine();
           this.getApprovalFunction();
         }
       });
@@ -294,7 +297,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
       this.dialogIcon = "error-message";
       this.successDiag.open();
     }else{
-      $('#approvalConfirm #confirm-save #modalBtn2').trigger('click');
+      //$('#approvalConfirm #confirm-save #modalBtn2').trigger('click');
+      this.appSave.confirmModal();
     }
     
   }
@@ -309,7 +313,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
   }
 
   onClickSaveUser(){
-    $('#userConfirm #confirm-save #modalBtn2').trigger('click');
+    //$('#userConfirm #confirm-save #modalBtn2').trigger('click');
+    this.userSave.confirmModal();
   }
 
   showUsersLOV(data) {
