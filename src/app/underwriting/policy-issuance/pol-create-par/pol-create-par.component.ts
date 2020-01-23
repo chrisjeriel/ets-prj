@@ -111,11 +111,14 @@ export class PolCreatePARComponent implements OnInit {
   getQuoteListing(param?) {
     this.lovTable.loadingFlag = true;
 /*<<<<<<< HEAD*/
-    let params = [{ key: 'statusArr', search: [3,5] },{key:'openCoverTag' , search:'N'}]
+    let params = {mode:'createPol'}
     if(param != undefined){
-      params = params.concat(param);
+      // params = params.concat(param);
+      for(let p of param){
+        params[p['key']] = p['search'];
+      }
     }
-    this.sub = this.quoteService.getQuoProcessingData(params).subscribe(data => {
+    this.sub = this.quoteService.getQuoteListLOV(params).subscribe(data => {
 /*=======
     
     this.sub = this.quoteService.getQuoProcessingData(param === undefined ? [] : param).subscribe(data => {
@@ -164,6 +167,7 @@ export class PolCreatePARComponent implements OnInit {
       this.passDataOptionLOV.tableData = options;
 
       this.lovOptTable.refreshTable();
+      this.noSelected = false;
 
       if(options.length === 1) {
         this.selectedOption = options[0];
@@ -620,10 +624,10 @@ export class PolCreatePARComponent implements OnInit {
   }
 
   focusBlur() {
-    setTimeout(() => {
-      $('.req').focus();
-      $('.req').blur();
-    },0);
+    // setTimeout(() => {
+    //   $('.req').focus();
+    //   $('.req').blur();
+    // },0);
   }
 
   pad(ev,num) {
@@ -642,7 +646,7 @@ export class PolCreatePARComponent implements OnInit {
         this.quoteService.getQuoteOptions(this.selected.quoteId).subscribe(data => {
           var options = data['quotation']['optionsList'];
 
-          
+            
           options = options.filter(opt => opt.optionId == this.optionId);
 
           if(options.length == 1) {

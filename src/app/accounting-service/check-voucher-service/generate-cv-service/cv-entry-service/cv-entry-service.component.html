@@ -7,7 +7,7 @@
                 <!-- <div class="col-sm-1"></div> -->
                 <div class="col-sm-12">
                     <div class="form-row" style="margin-top: 13.5px !important;margin-bottom: 13.5px !important;">
-                        <div class="input-group">
+                        <div class="input-group" style="margin-bottom: -14px !important;">
                             <label class="form-control-sm col-sm-1">CV. No</label>
                             <div class="input-group col-sm-2 no-padding">
                                 <input name="input1" type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="saveAcseCv.cvYear" readonly>
@@ -28,19 +28,19 @@
                         <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn payee" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired [disabled]="existsInCvDtl">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                     </div> -->
-                    <div class="input-group" style="margin-top: -5px">
+                    <div class="input-group" style="margin-bottom: -14px !important">
                         <label class="form-control-sm col-sm-1">Payee</label>
                         <input name="inputPayeeCd" type="text" class="form-control form-control-sm cust-sm col-sm-1 warn payee" [(ngModel)]="saveAcseCv.payeeCd" maxlength="500" appRequired [disabled]="existsInCvDtl" autoComplete="off" (change)="checkCode($event,'payee')" numbers-only autoComplete="off">
                         <div *ngIf="!removeIcon && !existsInCvDtl" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('payee')"><i class="fa fa-search"></i></a></div>
                         <input name="input5" type="text" class="form-control form-control-sm cust-sm col-sm warn" [(ngModel)]="saveAcseCv.payee" maxlength="500" appRequired  autoComplete="off" style="margin-left: 3px !important;" autoComplete="off">
                     </div>
-                    <div class="input-group" style="margin-top: -5px">
+                    <div class="input-group" style="margin-bottom: -1px !important;">
                         <label class="form-control-sm col-sm-1">Particulars</label>
                         <textarea name="textarea1" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.particulars" appRequired autoComplete="off"></textarea>
                     </div>
-                    <div *ngIf="saveAcseCv.cvStatus == 'X'" class="input-group" style="margin-top: 8px !important">
+                    <div *ngIf="saveAcseCv.cvStatus == 'X'" class="input-group">
                         <label class="form-control-sm col-sm-1">Cancellation Reason</label>
-                        <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" autoComplete="off" readonly></textarea>
+                        <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcseCv.cancelReason" autoComplete="off" readonly></textarea>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Disbursement Type</label>
-                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm" appRequired [ngModel]="saveAcseCv.disbType" (ngModelChange)="saveAcseCv.disbType=$event; onChangeDisbType();">
+                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm" appRequired [ngModel]="saveAcseCv.disbType" (ngModelChange)="saveAcseCv.disbType=$event; onChangeDisbType();" [disabled]="saveAcseCv.cvStatus !== 'N' && saveAcseCv.cvStatus !== 'F'">
                             <option *ngFor="let i of disbTypeList" value="{{ i.code }}">{{ i.description }}</option>
                         </select>
                     </div>
@@ -182,8 +182,7 @@
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcseCv.cvStatus != 'N' && saveAcseCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'P' && saveAcseCv.mainAcctEntDate != null)?true:(saveAcseCv.cvStatus == 'X' || saveAcseCv.cvNo == '')?true:false" (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
-                            <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'X')?true:(saveAcseCv.checkStatus != 'P' || saveAcseCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
-                            <!-- <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button> -->
+                            <button type="button" class="cust-btn" [disabled]="(saveAcseCv.cvStatus == 'X' || saveAcseCv.disbType !== 'CK')?true:(saveAcseCv.checkStatus != 'P' || saveAcseCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus == 'N' || saveAcseCv.cvStatus == 'X' || saveAcseCv.cvStatus == 'A' || saveAcseCv.cvStatus == 'P' || saveAcseCv.cvNo == '' || saveAcseCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="(saveAcseCv.checkStatus == 'P' || saveAcseCv.checkStatus == null || spoiled)?true:(saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button> -->
                             <button type="button" class="cust-btn" [disabled]="saveAcseCv.cvStatus != 'A' && saveAcseCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004');">Print</button>

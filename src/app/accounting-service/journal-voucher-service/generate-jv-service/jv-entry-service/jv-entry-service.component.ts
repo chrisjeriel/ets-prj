@@ -444,11 +444,11 @@ export class JvEntryServiceComponent implements OnInit {
   saveData(cancel?){
     this.prepareData();
     this.accountingService.saveAcseJVEntry(this.jvDatas).subscribe((data:any) =>{
-      if(data['returnCode'] != -1) {
+      if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
         this.successDiag.open();
-      }else{
+      } else if(data['returnCode'] == -1) {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
@@ -456,6 +456,10 @@ export class JvEntryServiceComponent implements OnInit {
         this.from = 'jv';
         this.retrieveJVEntry();
         this.form.control.markAsPristine();
+      } else if(data['returnCode'] == 100) {
+        this.dialogMessage = 'JV No Series unavailable';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
       }
     });
   }

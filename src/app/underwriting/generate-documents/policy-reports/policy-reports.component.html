@@ -32,8 +32,7 @@
 					<fieldset class="scheduler-border col-sm-3" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group" style="    margin-top: 10px;">
-								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" (click)="checkReport()"
-									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
+								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" (click)="checkReport()" [disabled]="paramsToggle.indexOf('issueDate') == -1">
 								<label class="form-control-sm" for="radio">Issue Date</label>
 							</div>
 							<div class="input-group">
@@ -76,8 +75,7 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [ngModel]="params.dateRange" (ngModelChange)="params.dateRange = $event;checkMonthYear()" (click)="removeDates()"
-									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
+								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [ngModel]="params.dateRange" (ngModelChange)="params.dateRange = $event;checkMonthYear()" (click)="removeDates()" [disabled]="paramsToggle.indexOf('byMonthYear') == -1">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
 							<div class="input-group">
@@ -170,8 +168,7 @@
 							</div>
 							<div class="col-sm-10">
 								<div class="input-group align-rad" style="padding-top: 10px;">
-									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" [(ngModel)]="params.incRecTag"
-										[disabled]="paramsToggle.indexOf('policy') == -1">
+									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" [(ngModel)]="params.incRecTag" [disabled]="paramsToggle.indexOf('policy') == -1">
 									<label class="form-control-sm" for="radirt1">Policy</label>
 									<input id="radirt2" class="form-control-sm" type="radio" name="incRecTag" value="E" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
 										[disabled]="paramsToggle.indexOf('alteration') == -1">

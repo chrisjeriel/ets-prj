@@ -35,7 +35,7 @@
                         </div>
                         <div class="input-group" *ngIf="saveAcitCv.cvStatus == 'X'">
                             <label class="form-control-sm col-sm-1">Cancellation Reason</label>
-                            <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" autoComplete="off" readonly></textarea>
+                            <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" autoComplete="off" readonly></textarea>
                         </div>
                     </div>
 
@@ -53,7 +53,7 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Disbursement Type</label>
-                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm" appRequired [ngModel]="saveAcitCv.disbType" (ngModelChange)="saveAcitCv.disbType=$event; onChangeDisbType();">
+                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm warn cl-spoil" appRequired [ngModel]="saveAcitCv.disbType" (ngModelChange)="saveAcitCv.disbType=$event; onChangeDisbType();" [disabled]="saveAcitCv.cvStatus !== 'N' && saveAcitCv.cvStatus !== 'F'">
                             <option *ngFor="let i of disbTypeList" value="{{ i.code }}">{{ i.description }}</option>
                         </select>
                     </div>

@@ -219,13 +219,15 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     lengthFirst:boolean = false;
 
     setLength(v2?){
-        if(this.passData.count != undefined && this.passData.count != this.prevLength && v2 == undefined){
+        if(this.passData.count != null && this.passData.count != undefined && this.passData.count != this.prevLength && v2 == undefined){
             this.addFiller();
             this.p = 1;
             this.prevLength = this.passData.count;
         }else if(v2!=undefined){
             this.lengthFirst = true;
             this.addFiller(v2);
+        }else {
+            this.passData.count = this.prevLength;
         }
     }
 

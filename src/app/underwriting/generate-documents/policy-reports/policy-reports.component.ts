@@ -261,14 +261,15 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   checkReport(){
-    this.paramsToggle = [];
     if(this.params.reportId == 'POLR044C'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company');
       }
     }else if(this.params.reportId == 'POLR044D'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
         this.params.dateParam = '10';
@@ -276,24 +277,28 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company');
       }
     }else if(this.params.reportId == 'POLR044E'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company');
       }
     }else if(this.params.reportId == 'POLR044F'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company');
       }
     }else if(this.params.reportId == 'POLR044G'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company');
       }
     }else if(this.params.reportId == 'POLR044H'){
+      this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'distributed', 'undistributed', 'alldistribution');
       }else{
