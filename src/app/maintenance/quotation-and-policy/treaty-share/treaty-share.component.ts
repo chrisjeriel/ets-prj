@@ -230,8 +230,10 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 	}
 
 	getMtnTreatyComm() {
-		this.treatyYearTable.overlayLoader = true;
+		//this.treatyYearTable.overlayLoader = true;
+		$('.globalLoading').css('display','block');
 		this.ms.getMtnTreatyComm(null,this.currencyCd).subscribe(data => {
+			$('.globalLoading').css('display','none');
 			this.mtnTreatyComm = data['treatyList'];
 			var td = data['treatyList'].map(a => a.treatyYear);
 			td = td.sort((a, b) => b - a)
@@ -352,6 +354,7 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 			this.treatyYearTable.indvSelect.deleted = true;
 			this.treatyYearData.disableGeneric = true;
 			this.treatyYearTable.refreshTable();
+			this.treatyYearTable.onClickDelete('force');
 		}
 	}
 
@@ -377,6 +380,7 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 			this.treatyCommTable.indvSelect.deleted = true;
 			this.treatyCommData.disableGeneric = true;
 			this.treatyCommTable.refreshTable();
+			this.treatyCommTable.onClickDelete('force');
 		}
 	}
 
@@ -400,6 +404,7 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 			this.treatyShareTable.indvSelect.deleted = true;
 			this.treatyShareData.disableGeneric = true;
 			this.treatyShareTable.refreshTable();
+			this.treatyShareTable.onClickDelete('force');
 		}
 	}
 
@@ -748,11 +753,12 @@ export class TreatyShareComponent implements OnInit,AfterViewInit {
 		this.params.currencyCd = this.currencyCd;
 		this.ms.saveMtnTreatyShare(this.params).subscribe(data => {
 			if(data['returnCode'] == -1) {
-				this.dialogIcon = "success";
-				this.successDialog.open();
 				this.getMtnTreatyComm();
 				this.formGroup.markAsPristine();
+				this.dialogIcon = "success";
+				this.successDialog.open();
 			} else {
+				$('.globalLoading').css('display','none');
 				this.dialogIcon = "error";
 				this.successDialog.open();
 			}

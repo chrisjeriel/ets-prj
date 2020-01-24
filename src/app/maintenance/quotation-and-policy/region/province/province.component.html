@@ -27,7 +27,7 @@
                     </div>
                 </div>
 </fieldset>
-<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+<!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
                         <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="provinceRecord.createUser" readonly>
@@ -38,7 +38,26 @@
                         <label class="form-control-sm col-sm-1">Last Update</label>
                         <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="provinceRecord.updateDate" readonly>
                     </div>
+</fieldset> -->
+
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+  <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+    <label class="form-control-sm col-sm-1">Created By</label>
+    <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="provinceRecord?.createUser" readonly>
+    <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+    <div class="col-sm dp-cont">
+      <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="provinceRecord?.createDate"></datepicker>
+    </div>
+    <label class="form-control-sm col-sm-1">Last Update By</label>
+    <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="provinceRecord?.updateUser" readonly>
+    <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+    <div class="col-sm dp-cont">
+      <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="provinceRecord?.updateDate"></datepicker>
+    </div>
+  </div>
 </fieldset>
+
+
 <app-mtn-region id="regionLOV" (selectedData)="setProvince($event)"></app-mtn-region>
 
 <app-confirm-save #confirmSave (onYes)="onClickSaveProvince()"></app-confirm-save>

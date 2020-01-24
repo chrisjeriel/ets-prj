@@ -314,11 +314,18 @@ export class PayeeComponent implements OnInit {
    }
 
    checkValidation(){
+     console.log(this.passTable.tableData);
       if(this.checkFields()){
         return true;
      }else{
-          this.dialogMessage="Please check field values.";
-          this.dialogIcon = "error";
+          console.log(this.passTable.tableData.some(e => e.edited == true));
+          if(this.passTable.tableData.some(e => e.edited == true)){
+            this.dialogMessage="Please check field values.";
+            this.dialogIcon = "error";
+          }else{
+            this.dialogMessage = "Nothing to save.";
+            this.dialogIcon = "info";
+          }
           return false;
        }
   }

@@ -435,6 +435,7 @@ export class CityComponent implements OnInit {
                   this.dialogIcon = "success";
                   this.successDialog.open();
                   this.getCity();
+                  this.cityTable.markAsPristine();
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();

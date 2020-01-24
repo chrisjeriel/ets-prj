@@ -19,7 +19,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-year-table" class="col-sm-6">
-									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear(true)" (onDelete)="treatyYearTable.onClickDelete('force'); onTreatyYearClickDelete();">
+									<app-cust-editable-non-datatable #treatyYearTable [passData]="treatyYearData" (tableDataChange)="treatyYearData.tableData=$event" (newClick)="onTreatyYearRowClick($event)" (genericBtn)="onTreatyYearClickDelete($event)" (add)="alignTreatyYear(true)" (onDelete)="onTreatyYearClickDelete();">
 										<ng-container controls-l>
 											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>
@@ -33,7 +33,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="treaty-comm-table" class="col-sm-6">
-									<app-cust-editable-non-datatable #treatyCommTable [passData]="treatyCommData" (tableDataChange)="treatyYearSelected.treatyCommList=$event; treatyCommTDataChange($event);" (newClick)="onTreatyCommRowClick($event)" (genericBtn)="onTreatyCommClickDelete($event)" (onDelete)="treatyCommTable.onClickDelete('force'); onTreatyCommClickDelete();" (clickLOV)="openTreatyCommLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #treatyCommTable [passData]="treatyCommData" (tableDataChange)="treatyYearSelected.treatyCommList=$event; treatyCommTDataChange($event);" (newClick)="onTreatyCommRowClick($event)" (genericBtn)="onTreatyCommClickDelete($event)" (onDelete)=" onTreatyCommClickDelete();" (clickLOV)="openTreatyCommLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
@@ -42,7 +42,7 @@
 							<legend class="scheduler-border">Treaty Share</legend>
 							<div class="row" style="margin-top: 12px;">
 								<div id="treaty-share-table" class="col-sm">
-									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyCommSelected.treatyShareList=$event; treatyShareTDataChange($event);" (newClick)="onTreatyShareRowClick($event)" (genericBtn)="onTreatyShareClickDelete($event)" (onDelete)="treatyShareTable.onClickDelete('force'); onTreatyShareClickDelete();" (clickLOV)="openCedingCoLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #treatyShareTable [passData]="treatyShareData" (tableDataChange)="treatyCommSelected.treatyShareList=$event; treatyShareTDataChange($event);" (newClick)="onTreatyShareRowClick($event)" (genericBtn)="onTreatyShareClickDelete($event)" (onDelete)=" onTreatyShareClickDelete();" (clickLOV)="openCedingCoLOV($event)" (add)="add()"></app-cust-editable-non-datatable>
 								</div>
 							</div>
 							<div class="form-row">

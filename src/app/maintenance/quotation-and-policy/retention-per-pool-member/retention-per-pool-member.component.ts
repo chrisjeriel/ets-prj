@@ -121,7 +121,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 	}
 
 	onCurrChange(data){
-		console.log(data)
+		//console.log(data)
 	}
 
 	changCurr(data){
@@ -139,11 +139,14 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 	}
 
 	getMtnPoolRetHist() {
-		this.historyTable.overlayLoader = true;
+		//this.historyTable.overlayLoader = true;
+		$('.globalLoading').css('display','block');
 		this.ms.getMtnPoolRetHist('',this.currencyCd).subscribe(data => {
+			console.log(data);
+			$('.globalLoading').css('display','none');
 			this.historyData.tableData = data['poolRetHistList'].sort((a, b) => b.effDateFrom - a.effDateFrom)
 																.map(i => {
-																	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom);
+																	i.effDateFrom = this.ns.toDateTimeString(i.effDateFrom).split('T')[0];
 																	i.createDate = this.ns.toDateTimeString(i.createDate);
 																	i.updateDate = this.ns.toDateTimeString(i.updateDate);
 																	i.retHistId = String(i.retHistId).padStart(3, '0');
@@ -151,6 +154,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 																});
 			this.historyTable.refreshTable();
 			this.historyTable.onRowClick(null, this.historyData.tableData[0]);
+			console.log(this.historyData.tableData);
 		});
 	}
 
@@ -197,6 +201,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 				this.poolMemberData.disableAdd = true;
 				this.poolMemberData.disableGeneric = true;
 				this.poolMemberTable.refreshTable();
+				this.historyTable.onClickDelete('force');
 			}
 		}
 		
@@ -218,6 +223,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 			this.poolMemberTable.indvSelect.deleted = true;
 			this.updateNumbers();
 			this.poolMemberTable.refreshTable();
+			this.poolMemberTable.onClickDelete('force');
 		}
 	}
 
@@ -421,11 +427,11 @@ export class RetentionPerPoolMemberComponent implements OnInit {
   		this.params.currencyCd = this.currencyCd;
   		this.ms.saveMtnPoolRetHist(this.params).subscribe(data => {
 			if(data['returnCode'] == -1) {
-				this.dialogIcon = "success";
-				this.successDialog.open();
 				this.getMtnPoolRetHist();
 				this.historyTable.markAsPristine();
 				this.poolMemberTable.markAsPristine();
+				this.dialogIcon = "success";
+				this.successDialog.open();
 			} else {
 				this.dialogIcon = "error";
 				this.successDialog.open();

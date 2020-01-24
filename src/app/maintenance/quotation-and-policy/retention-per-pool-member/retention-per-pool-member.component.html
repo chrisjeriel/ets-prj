@@ -19,7 +19,7 @@
 							<legend class="scheduler-border">History</legend>
 							<div class="row" style="margin-top: 12px;">
 								<div id="history-table" class="col-sm">
-									<app-cust-editable-non-datatable #historyTable [passData]="historyData" (tableDataChange)="historyData.tableData=$event" (newClick)="onHistoryRowClick($event)" (genericBtn)="onHistoryClickDelete($event)" (onDelete)="historyTable.onClickDelete('force'); onHistoryClickDelete();">
+									<app-cust-editable-non-datatable #historyTable [passData]="historyData" (tableDataChange)="historyData.tableData=$event" (newClick)="onHistoryRowClick($event)" (genericBtn)="onHistoryClickDelete($event)" (onDelete)="onHistoryClickDelete();">
 										<ng-container controls-l>
 											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>
@@ -32,7 +32,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="pool-member-table" class="col-sm">
-									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)="poolMemberTable.onClickDelete('force'); onPoolMemberClickDelete();" (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)=" onPoolMemberClickDelete();" (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
@@ -114,7 +114,7 @@
 				<input type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="historySelected?.retHistId" tabindex="-1" readonly>
 				<label class="form-control-sm col-sm-3">Effective From</label>
 				<div class="col-sm-3 dp-cont" style="margin-left: 0px !important;">
-					<datepicker [type]="'date'" [value]="historySelected?.effDateFrom.split('T')[0]" [disabled]="true"></datepicker>
+					<datepicker [type]="'date'" [value]="historySelected?.effDateFrom" [disabled]="true"></datepicker>
 				</div>
             </div>
             <div class="input-group" style="margin-bottom: -14px !important;">

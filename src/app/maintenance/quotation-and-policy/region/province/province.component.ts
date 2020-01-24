@@ -323,9 +323,10 @@ export class ProvinceComponent implements OnInit {
                 .subscribe(data => {
                   console.log(data);
               if(data['returnCode'] == -1){
+                  this.getMtnProvince();
                   this.dialogIcon = "success";
                   this.successDialog.open();
-                  this.getMtnProvince();
+                  this.provinceTable.markAsPristine();
               }else{
                   this.dialogIcon = "error";
                   this.successDialog.open();

@@ -34,7 +34,7 @@
                             </div>
                     </div>
                 </fieldset>
-                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                <!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                         <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                             <label class="form-control-sm col-sm-1">Created By</label>
                             <input type="text" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.createUser" readonly name="createUser">
@@ -45,7 +45,25 @@
                             <label class="form-control-sm col-sm-1">Last Update</label>
                             <input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.updateDate" readonly name="updateDate">
                         </div>
+                </fieldset> -->
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                  <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                    <label class="form-control-sm col-sm-1">Created By</label>
+                    <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.createUser" readonly>
+                    <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                    <div class="col-sm dp-cont">
+                      <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="currencyData?.createDate"></datepicker>
+                    </div>
+                    <label class="form-control-sm col-sm-1">Last Update By</label>
+                    <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="currencyData?.updateUser" readonly>
+                    <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+                    <div class="col-sm dp-cont">
+                      <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="currencyData?.updateDate"></datepicker>
+                    </div>
+                  </div>
                 </fieldset>
+
 
                 <app-mtn-currency-code  id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
                 <app-confirm-save (onYes)="saveCurrRt()"></app-confirm-save>

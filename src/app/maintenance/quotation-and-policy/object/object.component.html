@@ -35,7 +35,7 @@
                 <legend class="scheduler-border">CAT Peril per Object</legend>
                 <div class="row" style="padding-bottom: 8px;"></div>
                 <div style="padding-top: 5px;">
-                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (clickLOV)="showCATPerilLOV($event)" (tableDataChange)="onCatPerilChange()">
+                  <app-cust-editable-non-datatable #catPerilTable [passData]="catPerilData" (clickLOV)="showCATPerilLOV($event)" (tableDataChange)="onCatPerilChange()" (newClick)="catRowClick($event)">
                   </app-cust-editable-non-datatable>
                 </div>
               </fieldset>
@@ -54,7 +54,7 @@
           </div>
         </fieldset>
 
-        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+        <!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
             <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                 <label class="form-control-sm col-sm-1">Created By</label>
                 <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="userData.createUser" readonly>
@@ -65,6 +65,24 @@
                 <label class="form-control-sm col-sm-1">Last Update</label>
                 <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="userData.updateDate" readonly>
             </div>
+        </fieldset> -->
+
+        
+        <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+          <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+            <label class="form-control-sm col-sm-1">Created By</label>
+            <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="userData?.createUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+            <div class="col-sm dp-cont">
+              <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="userData?.createDate"></datepicker>
+            </div>
+            <label class="form-control-sm col-sm-1">Last Update By</label>
+            <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="userData?.updateUser" readonly>
+            <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+            <div class="col-sm dp-cont">
+              <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="userData?.updateDate"></datepicker>
+            </div>
+          </div>
         </fieldset>
 
       </ng-template>

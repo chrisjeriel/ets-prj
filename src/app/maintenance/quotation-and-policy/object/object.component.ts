@@ -236,10 +236,30 @@ export class ObjectComponent implements OnInit, AfterViewInit {
     }else{
       this.passData.disableGeneric = true;
       this.catPerilData.disableAdd = true;
+
+      this.userData.createUser = '';
+      this.userData.createDate = null;
+      this.userData.updateUser = '';
+      this.userData.updateDate = null;
     }
 
     this.selected = this.passData.tableData.indexOf(this.objTable.indvSelect);
     this.catPerilTable.refreshTable();
+  }
+
+  catRowClick(ev){
+    console.log(ev);
+    if(ev != null){
+      this.userData.createUser = ev.createUser;
+      this.userData.createDate = ev.createDate;
+      this.userData.updateUser = ev.updateUser;
+      this.userData.updateDate = ev.updateDate;
+    }else{
+      this.userData.createUser = '';
+      this.userData.createDate = null;
+      this.userData.updateUser = '';
+      this.userData.updateDate = null;
+    }
   }
 
   onClickSave() {

@@ -117,10 +117,15 @@ export class MtnCurrencyRateComponent implements OnInit, AfterViewInit {
 
   clickRow(data){
     this.currencyData = data;
-    if(data !== null && data.okDelete !== 'N'){
-      this.passData.disableGeneric = false
+    console.log(data);
+    if(data != null){
       this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
       this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
+    }
+    if(data !== null && data.okDelete !== 'N'){
+      this.passData.disableGeneric = false;
+      // this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
+      // this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
     }else{
       /*this.currencyData.createUser = null;
       this.currencyData.createDate = null;
