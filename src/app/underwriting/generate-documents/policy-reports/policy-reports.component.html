@@ -13,7 +13,7 @@
 							<div class="col-sm">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
+									<input type="text" class="form-control form-control-sm col-sm-2 reports" [ngModel]="params.reportId"
 									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
@@ -96,7 +96,7 @@
 									<option value="11"> November </option>
 									<option value="12"> December </option>
 								</select>
-								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2" appRequired>
+								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
 								<label class="form-control-sm col-sm-1">To</label>
 								<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.byMonthTo" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1 ||disableTo" appRequired>
 									<option value="1"> January </option>
@@ -123,6 +123,12 @@
 								<div class="col-sm-3 dp-cont" style="margin-top: 5px;">
 									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1" [required]="true">
 									</datepicker>
+								</div>
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2" style="padding-left: 0">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="rangeLOV.openNoClose();retrieveRange();" style="margin-top: 5px;" [disabled]="extractDisabled"  ><a>SI Range</a></button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -165,11 +171,27 @@
 							<div class="col-sm-1">
 							</div>
 						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Currency</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.currCd" (change)="checkCode($event, 'currCd')"
+									[disabled]="paramsToggle.indexOf('currCd') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('currCd') > -1"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currdesc" readonly placeholder="Currency">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
 						<div class="row">
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm-10">
-								<div class="input-group align-rad" style="padding-top: 10px;">
+								<div class="input-group align-rad" style="padding-top: 10px;padding-bottom: 10px;">
 									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" [(ngModel)]="params.incRecTag"
 										[disabled]="paramsToggle.indexOf('policy') == -1">
 									<label class="form-control-sm" for="radirt1">Policy</label>
@@ -244,10 +266,23 @@
     </div>
 </app-modal>
 
+<app-modal class="d-none" id="range" #Range>
+	<div header>SI Range</div>
+	<div body>
+		<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="rangeLOV.closeModal();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="onClickSave()"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
 
-
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="params.effDate"></app-mtn-currency>
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-confirm-save (onYes)="saveRange()"></app-confirm-save>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-cancel-button (onYes)="extract(true)"></app-cancel-button>
-<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null:modalService.dismissAll();"></app-sucess-dialog>

@@ -1916,4 +1916,19 @@ export class MaintenanceService{
          };
    		return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnAcseCheckSeries',params,header);
     }
+
+    retrieveReportRange(userId){
+    	const params = new HttpParams()
+    				.set('userId', (userId === null || userId === undefined ? '' : userId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnReportsRange", {params});
+    }
+
+    saveReportRange(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportsRange', JSON.stringify(params), header);
+    }
 }
