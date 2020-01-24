@@ -35,7 +35,7 @@
                         </div>
                         <div class="input-group" *ngIf="saveAcitCv.cvStatus == 'X'">
                             <label class="form-control-sm col-sm-1">Cancellation Reason</label>
-                            <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font warn" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" autoComplete="off" readonly></textarea>
+                            <textarea name="taCancelReason" class="form-control form-control-sm cust-sm col-sm text-area-font" style="min-height: 53px" maxlength="1000" [(ngModel)]="saveAcitCv.cancelReason" autoComplete="off" readonly></textarea>
                         </div>
                     </div>
 
@@ -53,8 +53,8 @@
                 <div class="col-sm-5">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Disbursement Type</label>
-                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm" appRequired [ngModel]="saveAcitCv.disbType" (ngModelChange)="saveAcitCv.disbType=$event;">
-                            <option *ngFor="let i of disbTypeList" value="i.code">{{ i.description }}</option>
+                        <select name="selectDt" class="form-control form-control-sm cust-sm col-sm warn cl-spoil" appRequired [ngModel]="saveAcitCv.disbType" (ngModelChange)="saveAcitCv.disbType=$event; onChangeDisbType();" [disabled]="saveAcitCv.cvStatus !== 'N' && saveAcitCv.cvStatus !== 'F'">
+                            <option *ngFor="let i of disbTypeList" value="{{ i.code }}">{{ i.description }}</option>
                         </select>
                     </div>
                     <div class="input-group">
@@ -79,12 +79,12 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Destination Bank</label>
-                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData()" [(ngModel)]="saveAcitCv.destBankDesc" maxlength="100" autoComplete="off">
-                        <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('dest-bank')"><i class="fa fa-search"></i></a></div>
+                        <input name="input12" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn bank cl-spoil" (change)="setBankAcctData(1)" [(ngModel)]="saveAcitCv.destBankDesc" maxlength="100" autoComplete="off" [disabled]="saveAcitCv.disbType !== 'BT'">
+                        <div *ngIf="(!removeIcon || (removeIcon && spoiled)) && saveAcitCv.disbType == 'BT'" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('dest-bank')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Transfer Reference No.</label>
-                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.btRefNo" autoComplete="off">
+                        <input name="input13" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.btRefNo" autoComplete="off" [disabled]="saveAcitCv.disbType !== 'BT'">
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -106,7 +106,8 @@
                 </div>
                 <div class="col-sm-5">
                     <div class="input-group">
-                        <label class="form-control-sm col-sm-4 labels"></label>
+                        <label class="form-control-sm col-sm-4 labels">Swift Code</label>
+                        <input name="input25" type="text" [disabled]="saveAcitCv.disbType !== 'BT'" class="form-control form-control-sm cust-sm col-sm-10 warn bank-acct cl-spoil" [(ngModel)]="saveAcitCv.swiftCd" autoComplete="off">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Source Acct. No.</label>
@@ -118,30 +119,26 @@
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Check No.</label>
-                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired autocomplete="off" (blur)="padCheckNo()">
+                        <input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn cl-spoil" [disabled]="saveAcitCv.bankAcctDesc == '' || saveAcitCv.bankAcctDesc == null || saveAcitCv.disbType !== 'CK'" [(ngModel)]="saveAcitCv.checkNo" numbers-only appRequired autocomplete="off" (blur)="padCheckNo()">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 no-margin" style="margin-bottom: 0px !important">Check Date</label>
                         <div class="col-sm dp-cont checkDateWarn" style="margin-left: 0px !important">
-                            <datepicker [type]="'datetime'" [disabled]="(spoiled)?false:saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" [required]="true" [(value)]="saveAcitCv.checkDate"></datepicker>
+                            <datepicker [type]="'datetime'" [disabled]="((spoiled)?false:saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F') || saveAcitCv.disbType !== 'CK'" [required]="true" [(value)]="saveAcitCv.checkDate"></datepicker>
                         </div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Check Class</label>
-                        <input name="input18" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcitCv.checkClassDesc" appRequired autoComplete="off">
-                        <div *ngIf="!removeIcon || (removeIcon && spoiled)" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
+                        <input name="input18" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn class cl-spoil" [(ngModel)]="saveAcitCv.checkClassDesc" appRequired autoComplete="off" [disabled]="saveAcitCv.disbType !== 'CK'">
+                        <div *ngIf="(!removeIcon || (removeIcon && spoiled)) && saveAcitCv.disbType == 'CK'" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('class')"><i class="fa fa-search"></i></a></div>
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Destination Acct. No.</label>
-                        <input name="input19" type="text" [disabled]="saveAcitCv.destBankDesc == '' || saveAcitCv.destBankDesc == null" class="form-control form-control-sm cust-sm col-sm-10 warn bank-acct cl-spoil" [(ngModel)]="saveAcitCv.destAcctNoDesc" autoComplete="off">
-                        <ng-container *ngIf="!removeIcon || (removeIcon && spoiled)">
-                            <div *ngIf="saveAcitCv.destBankDesc != '' && saveAcitCv.destBankDesc != null" style="margin-left: -18px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a (click)="showLov('dest-bank-acct')"><i class="fa fa-search"></i></a>
-                            </div>
-                        </ng-container>
+                        <input name="input19" type="text" [disabled]="saveAcitCv.destBankDesc == '' || saveAcitCv.destBankDesc == null || saveAcitCv.disbType !== 'BT'" class="form-control form-control-sm cust-sm col-sm-10 warn bank-acct cl-spoil" [(ngModel)]="saveAcitCv.destAcctNo" autoComplete="off">
                     </div>
                     <div class="input-group">
                         <label class="form-control-sm col-sm-4 labels">Destination Acct. Name</label>
-                        <input name="input20" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.destAcctName" autoComplete="off">
+                        <input name="input20" type="text" class="form-control form-control-sm cust-sm col-sm-10 warn prep-user cl-spoil" [(ngModel)]="saveAcitCv.destAcctName" autoComplete="off" [disabled]="saveAcitCv.disbType !== 'BT'">
                     </div>
                     <div class="input-group" style="margin-top: 20px !important;"></div>
                     <div class="input-group">
@@ -170,7 +167,7 @@
                             <button type="button" class="cust-btn" (click)="onClickNewCv()">New CV</button>
                             <button type="button" class="cust-btn" [disabled]="(spoiled)?false:saveAcitCv.cvStatus != 'N' && saveAcitCv.cvStatus != 'F'" (click)="onClickSave()">Save</button>
                             <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'P' && saveAcitCv.mainAcctEntDate != null)?true:(saveAcitCv.cvStatus == 'X' || saveAcitCv.cvNo == '')?true:false" (click)="fromBtn='cancel-req';approvalCd='AC009';overrideFunc('AC009')">Cancel CV</button>
-                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
+                            <button type="button" class="cust-btn" [disabled]="(saveAcitCv.cvStatus == 'X' || saveAcitCv.disbType !== 'CK')?true:(saveAcitCv.checkStatus != 'P' || saveAcitCv.tranId == '')?true:false" (click)="fromBtn='spoil';approvalCd='AC008';overrideFunc('AC008')">Spoil Check</button>
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus == 'N' || saveAcitCv.cvStatus == 'X' || saveAcitCv.cvStatus == 'A' || saveAcitCv.cvStatus == 'P' || saveAcitCv.cvNo == '' || saveAcitCv.cvNo == null " (click)="onClickOkPrint()">Ok For Printing</button>
                             <!-- <button type="button" class="cust-btn" [disabled]="(saveAcitCv.checkStatus == 'P' || saveAcitCv.checkStatus == null || spoiled)?true:(saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P')?true:false" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004')">Print</button> -->
                             <button type="button" class="cust-btn" [disabled]="saveAcitCv.cvStatus != 'A' && saveAcitCv.cvStatus != 'P'" (click)="fromBtn='print';approvalCd='AC004';overrideFunc('AC004');">Print</button>
@@ -325,7 +322,7 @@
 
 <app-lov #payeeLov [passData]="passDataLov" (selectedData)="setData($event,'payee')"></app-lov>
 <app-lov #bankLov [passData]="passDataLov" (selectedData)="setData($event, fromBankLov)" ></app-lov>
-<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,fromBankAcctLov)" ></app-lov>
+<app-lov #bankAcctLov [passData]="passDataLov" (selectedData)="setData($event,'bank-acct')" ></app-lov>
 <app-lov #classLov [passData]="passDataLov" (selectedData)="setData($event,'class')" ></app-lov>
 <app-lov #paytReqTypeLov [passData]="passDataLov" (selectedData)="setData($event,'paytreqtype')" ></app-lov>
 <app-mtn-currency #currLov (selectedData)="setData($event,'curr')"></app-mtn-currency>

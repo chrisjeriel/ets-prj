@@ -350,7 +350,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
 
     for(let endt of this.passEndtTable.tableData){
       if(endt.edited && !endt.deleted){
-        let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+        let endtTextSplit = endt.text.match(/(.|[\r\n]){1,1500}/g);
             if(endtTextSplit!== null)
                 for (var i = 0; i < endtTextSplit.length; ++i) {
                     endt[this.endtTextKeys[i]] = endtTextSplit[i];
@@ -393,7 +393,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
       if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            //this.getMtnEndorsements();
+            this.getMtnEndorsements();
             this.endtTable.markAsPristine();
             this.dedTable.markAsPristine();
             if(this.fromChng){

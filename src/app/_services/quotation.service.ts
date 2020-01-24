@@ -1091,4 +1091,8 @@ export class QuotationService {
         return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuReptext',{params:params});
     }
 
+    getQuoteListLOV(params){
+        return this.http.get(environment.prodApiUrl + '/quote-service/retrieveQuListingLOV',{params:params});
+    }
+
 }

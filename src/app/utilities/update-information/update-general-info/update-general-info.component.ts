@@ -3,7 +3,7 @@ import { Title } from '@angular/platform-browser';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { UnderwritingService, NotesService } from '../../../_services';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { finalize } from 'rxjs/operators';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
@@ -15,7 +15,7 @@ import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-
   styleUrls: ['./update-general-info.component.css']
 })
 export class UpdateGeneralInfoComponent implements OnInit {
-  @ViewChild('polLov') quListTable : CustNonDatatableComponent;
+  @ViewChild('polLov') quListTable : LoadingTableComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   typeOfCession:string='';
@@ -39,6 +39,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
       tableData: [],
       tHeader:["Policy No","Type of Cession","Ceding Company", "Insured", "Risk", "Status"],  
       dataTypes: ["text","text","text","text","text"],
+      sortKeys : ['POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','STATUS_DESC'],
       pageLength: 10,
       resizable: [false,false,false,false,false],
       tableOnly: false,
@@ -177,6 +178,13 @@ export class UpdateGeneralInfoComponent implements OnInit {
     }
   };
 
+  searchParamsLov:any = {
+    'paginationRequest.count':10,
+    'paginationRequest.position':1,  
+    statusArr : ['2'],
+    altNo : 0
+  }
+
 
 
   
@@ -189,13 +197,25 @@ export class UpdateGeneralInfoComponent implements OnInit {
   }
 
   getPolListing(obj) {
-      this.quListTable.loadingFlag = true;
-      obj.push({key: 'statusArr' , search : ['2']})
-      obj.push({key: 'altNo' , search : 0})
-      this.us.getParListing(obj).subscribe(data => {
+      // this.quListTable.loadingFlag = true;
+      // obj.push({key: 'statusArr' , search : ['2']})
+      // obj.push({key: 'altNo' , search : 0})
+      if(this.quListTable != undefined)
+          this.quListTable.lengthFirst = false;
+      if(this.searchParamsLov.recount != 'N'){
+        this.us.getPolicyListingLength(this.searchParams).subscribe(data=>{
+          this.passDataLOV.count = data;
+          this.quListTable.setLength(1);
+        })
+        this.searchParamsLov.recount = 'N';
+      }
+
+
+      this.us.newGetParListing(obj).subscribe(data => {
         var records = data['policyList'];
         this.fetchedData = records;
-        this.passDataLOV.tableData = records.map(rec=>{
+        // this.passDataLOV.count = data['length'];
+        this.quListTable.placeData(records.map(rec=>{
           rec.riskName = (rec.project == null) ? '' : rec.project.riskName;
           rec.object = (rec.project == null) ? '' : rec.project.objectDesc;
           rec.site = (rec.project == null) ? '' : rec.project.site;
@@ -208,9 +228,9 @@ export class UpdateGeneralInfoComponent implements OnInit {
           rec.longitude = (rec.project == null) ? '' : rec.project.longitude;
           rec.status = rec.statusDesc;
           return rec;
-        })
-        this.quListTable.refreshTable();
-        this.quListTable.loadingFlag = false;
+        }),1);
+        // this.quListTable.refreshTable();
+        // this.quListTable.loadingFlag = false;
 
           // for(let rec of records){
           //     if(rec.altNo === 0){
@@ -281,6 +301,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
          this.clearFields();
          this.unhighlight();
          this.removeNgDirty();
+         this.searchParamsLov.policyNo = null;
      }
    
   }
@@ -321,14 +342,16 @@ export class UpdateGeneralInfoComponent implements OnInit {
           }
         }
   
-         this.searchParams.push(
-                               {
-                                 key: 'policyNo' , search: this.temporaryPolNum.join('-') 
-                               }
-                               );
-          this.getPolListing(this.searchParams);
+         // this.searchParams.push(
+         //                       {
+         //                         key: 'policyNo' , search: this.temporaryPolNum.join('-') 
+         //                       }
+         //                       );
+
+          this.searchParamsLov.policyNo = this.temporaryPolNum.join('-') ;
+          this.getPolListing(this.searchParamsLov);
         } else {
-          this.getPolListing(this.searchParams);
+          this.getPolListing(this.searchParamsLov);
         }
   }
 
@@ -662,7 +685,12 @@ export class UpdateGeneralInfoComponent implements OnInit {
   }
 
   searchQuery(data){
-    this.getPolListing(data);
+
+    for(let key of Object.keys(data)){
+        this.searchParamsLov[key] = data[key]
+    }
+    // this.retrievePolListing();
+    this.getPolListing(this.searchParamsLov);
 
   }
 }

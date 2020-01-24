@@ -127,7 +127,7 @@
 									[disabled]="paramsToggle.indexOf('line') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
+									<input id="line" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -143,7 +143,7 @@
 									[disabled]="paramsToggle.indexOf('company') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+									<input id="company" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -155,11 +155,11 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Status</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmStat" (ngModelChange)="params.clmStat = $event.toUpperCase()"  (change)="checkCode($event, 'clmStat')"
 									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openStatusLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL STATUS">
+									<input id="status" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmStatName" readonly placeholder="ALL STATUS">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -171,11 +171,11 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Adjuster</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmAdj" (ngModelChange)="params.clmAdj = $event.toUpperCase()"  (change)="checkCode($event, 'clmAdj')"
 									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openAdjusterLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL ADJUSTERS">
+									<input id="adjuster" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmAdjName" readonly placeholder="ALL ADJUSTERS">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -187,11 +187,11 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Event</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmEvent" (ngModelChange)="params.clmEvent = $event.toUpperCase()"  (change)="checkCode($event, 'clmEvent')"
 									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL EVENTS">
+									<input id="event" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmEventName" readonly placeholder="ALL EVENTS">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -269,3 +269,6 @@
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-cancel-button (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
+<app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
+<app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>

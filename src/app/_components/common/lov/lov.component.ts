@@ -557,7 +557,7 @@ export class LovComponent implements OnInit {
         this.selectedData.emit({
           data: null,
           ev: ev,
-          selector: 'payee'
+          selector: 'acitTranType'
         });
       }else{
         console.log(this.passData.payeeClassCd);
@@ -585,6 +585,46 @@ export class LovComponent implements OnInit {
              });
 
              this.passData.selector = 'acitTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }
+         });
+      }
+     
+    }else if(selector == 'acseTranType'){
+      console.log(this.passData);
+      if(this.passData.params.tranTypeCd == null || this.passData.params.tranTypeCd.length == 0){
+        this.selectedData.emit({
+          data: null,
+          ev: ev,
+          selector: 'acseTranType'
+        });
+      }else{
+        console.log(this.passData.payeeClassCd);
+        this.mtnService.getMtnAcseTranType(this.passData.params.tranClass, this.passData.params.tranTypeCd, '', this.passData.params.autoTag, this.passData.params.baeTag, 'Y').subscribe((data:any) => {
+           if(data.tranTypeList.length == 1){
+             data.tranTypeList[0]['ev'] = ev;
+             data.tranTypeList[0]['selector'] = selector;
+             this.selectedData.emit({data: data['tranTypeList'][0], ev : ev, selector: 'acseTranType'});
+           }else if(data.tranTypeList.length == 0){
+             this.passData.payeeNo = '';
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acseTranType'
+             });
+
+             this.passData.selector = 'acseTranType';
+             this.modal.openNoClose();
+             this.ns.lovLoader(ev,0);
+           }else{
+             this.selectedData.emit({
+               data: null,
+               ev: ev,
+               selector: 'acseTranType'
+             });
+
+             this.passData.selector = 'acseTranType';
              this.modal.openNoClose();
              this.ns.lovLoader(ev,0);
            }
@@ -1044,16 +1084,24 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'sl'){
-      this.passTable.tHeader = ['SL Name'];
-      this.passTable.widths =['auto']
-      this.passTable.dataTypes = [ 'text'];
-      this.passTable.keys = ['slName'];
+      (this.passData.from == undefined)?this.passData.from='':'';
+      if(this.passData.from.toLowerCase() == 'prq-ins'){
+        this.passTable.tHeader = ['Class Type','Name'];
+        this.passTable.widths =['auto','auto']
+        this.passTable.dataTypes = ['text','text'];
+        this.passTable.keys = ['slTypeName','slName'];
+      }else{
+        this.passTable.tHeader = ['SL Name'];
+        this.passTable.widths =['auto']
+        this.passTable.dataTypes = [ 'text'];
+        this.passTable.keys = ['slName'];  
+      }
       this.passData.params.activeTag = 'Y';
       console.log(this.passData);
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
-        (this.passData.from == undefined)?this.passData.from='':'';
+        
         if(this.passData.from.toLowerCase() == 'prq-ins'){
-          this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
         }else{
           this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
         }
@@ -1280,8 +1328,11 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader = ['Bank', 'Official Name'];
       this.passTable.widths =['100','auto']
       this.passTable.dataTypes = [ 'text','text'];
-      this.passTable.keys = [ 'shortName','officialName']; 
-      this.mtnService.getMtnBank('','','Y','Y').subscribe((a:any)=>{
+      this.passTable.keys = [ 'shortName','officialName'];
+
+      var dcbTag = this.passData.params == undefined || this.passData.params.dcbTag == undefined ? 'Y' : this.passData.params.dcbTag;
+
+      this.mtnService.getMtnBank('','','Y',dcbTag).subscribe((a:any)=>{
         this.passTable.tableData = a.bankList;
         this.table.refreshTable();
       });

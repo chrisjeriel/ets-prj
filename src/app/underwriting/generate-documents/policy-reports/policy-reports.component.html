@@ -76,8 +76,7 @@
 								</div>
 							</div>
 							<div class="input-group">
-								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [ngModel]="params.dateRange" (ngModelChange)="params.dateRange = $event;checkMonthYear()" (click)="removeDates()"
-									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
+								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [ngModel]="params.dateRange" (ngModelChange)="params.dateRange = $event;checkMonthYear()" (click)="removeDates()" [disabled]="paramsToggle.indexOf('byMonthYear') == -1">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
 							<div class="input-group">

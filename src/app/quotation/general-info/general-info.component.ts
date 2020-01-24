@@ -1007,9 +1007,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	}
 
 	checkCoverage(){
-		this.quotationService.getCoverageInfo(null,this.genInfoData.quoteId).subscribe((data: any) => {
-			this.enblOptTab.emit(data.quotation.project!==null);
-		})
+		if(this.genInfoData.quoteId != null && this.genInfoData.quoteId != undefined)
+			this.quotationService.getCoverageInfo(null,this.genInfoData.quoteId).subscribe((data: any) => {
+				this.enblOptTab.emit(data.quotation.project!==null);
+			})
 	}
 
 	cbToggle(ev) {

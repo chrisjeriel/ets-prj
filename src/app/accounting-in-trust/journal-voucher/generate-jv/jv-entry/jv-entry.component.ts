@@ -450,17 +450,21 @@ export class JvEntryComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
-      if(data['returnCode'] != -1) {
+      if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
         this.successDiag.open();
-      }else{
+      }else if(data['returnCode'] == -1){
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.successDiag.open();
         this.tranId = data.tranIdOut;
         this.retrieveJVEntry();
         this.form.control.markAsPristine();
+      } else if(data['returnCode'] == 100) {
+        this.dialogMessage = 'JV No Series unavailable';
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
       }
     });
   }
