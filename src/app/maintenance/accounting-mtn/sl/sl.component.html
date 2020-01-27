@@ -8,8 +8,8 @@
             		<div class="input-group" style="margin-top: 10px !important;">
             			<label class="form-control-sm col-sm-2"></label>
                         <label class="form-control-sm col-sm-2">Subsidiary Ledger Type</label>
-                        <input name="slTypeCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="slTypeCd" (change)="checkCode($event,'SL')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov()"></i></a></div>
+                        <input name="slTypeCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="slTypeCd" (change)="checkCode($event,'SL')" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' autoComplete="off">
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov($event)"></i></a></div>
                         <input name="slTypeName" type="text" class="form-control form-control-sm col-sm ml-2" [(ngModel)]="slTypeName" readonly>
             			<label class="form-control-sm col-sm-2"></label>
                     </div>

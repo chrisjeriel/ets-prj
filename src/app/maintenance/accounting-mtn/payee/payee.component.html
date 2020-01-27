@@ -4,26 +4,26 @@
     <ngb-tabset>
         <ngb-tab title="Payee Maintenance">
             <ng-template ngbTabContent>
-            	<fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
-            		<div class="input-group" style="margin-top: 10px !important;">
-            			<label class="form-control-sm col-sm-2"></label>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2"></label>
                         <label class="form-control-sm col-sm-2">Payee Class</label>
-                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee'); lovType = 'payeeClass'" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
-                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov()"></i></a></div>
+                        <input name="payeeClassCode" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="payeeClassCd" (change)="checkCode($event,'Payee'); lovType = 'payeeClass'" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' autoComplete="off">
+                        <div class="text-search-ico"><a><i class="fa fa-search" (click)="clickLov($event)"></i></a></div>
                         <input name="payeeClassName" type="text" class="form-control form-control-sm col-sm ml-2" [(ngModel)]="payeeClassName" readonly>
-            			<label class="form-control-sm col-sm-2"></label>
+                        <label class="form-control-sm col-sm-2"></label>
                     </div>
-            	</fieldset>
+                </fieldset>
 
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
                     <div class="row">
                         <div class="col-sm" id="mtn-payee">
-	                	  <app-cust-editable-non-datatable #payee [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"  (clickLOV)="clickTblLOV($event);"></app-cust-editable-non-datatable>
+                          <app-cust-editable-non-datatable #payee [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"  (clickLOV)="clickTblLOV($event);"></app-cust-editable-non-datatable>
                         </div>
                     </div>
-	                <div class="w-100 text-center my-2">
-                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
-                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                    <div class="w-100 text-center my-2">
+                        <button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                        <button class="cust-btn" (click)="onClickSave()">Save</button>
                         <button class="cust-btn" (click)="onOtherDetails()" [disabled]="boolOtherDet">Other Details</button>
                         <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
                     </div>
@@ -152,5 +152,4 @@
         </div>
     </div>
 </app-modal>
-
 

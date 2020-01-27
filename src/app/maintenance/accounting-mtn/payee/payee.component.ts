@@ -12,6 +12,10 @@ import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { MtnBankComponent } from '@app/maintenance/mtn-bank/mtn-bank.component';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-payee',
@@ -63,28 +67,28 @@ export class PayeeComponent implements OnInit {
   }
 
   passTable:any={
-  	tableData:[],
-  	widths:[1,1,1,250,1,120,80,80,200,200],
-  	tHeader:['Auto','Active','Payee No','Payee Name','Reference Code','Business Type','Tin','Contact No','Mailing Address','Email Address'],
-  	dataTypes:['checkbox','checkbox','number','text','text','text','text','text','text','text'],
-  	tooltip:[],
-  	uneditable:[true,false,true,false,false,true,false,false,false,false],
-  	keys:['autoTag','activeTag','payeeNo','payeeName','refCd','bussTypeName','tin','contactNo','mailAddress','email'],
+    tableData:[],
+    widths:[1,1,1,250,1,120,80,80,200,200],
+    tHeader:['Auto','Active','Payee No','Payee Name','Reference Code','Business Type','Tin','Contact No','Mailing Address','Email Address'],
+    dataTypes:['checkbox','checkbox','number','text','text','text','text','text','text','text'],
+    tooltip:[],
+    uneditable:[true,false,true,false,false,true,false,false,false,false],
+    keys:['autoTag','activeTag','payeeNo','payeeName','refCd','bussTypeName','tin','contactNo','mailAddress','email'],
     magnifyingGlass: [ "bussTypeName"],
-  	addFlag: true,
-  	genericBtn:'Delete',
-  	paginateFlag:true, 
-  	pageLength: 10,
-  	infoFlag:true,
-  	searchFlag:true,
+    addFlag: true,
+    genericBtn:'Delete',
+    paginateFlag:true, 
+    pageLength: 10,
+    infoFlag:true,
+    searchFlag:true,
     pageID: 'mtnPayee',
-  	nData:{
+    nData:{
       showMG : 1,
       autoTag : 'N',
       activeTag : 'Y',
-      payeeNo		: null,
-      payeeName 	: null,
-      refCd 	: null,
+      payeeNo    : null,
+      payeeName   : null,
+      refCd   : null,
       bussTypeName : null,
       bussTypeCd : null,
       tin : null,
@@ -95,7 +99,7 @@ export class PayeeComponent implements OnInit {
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
       updateDate: this.ns.toDateTimeString(0),
-  	},
+    },
     disableGeneric: true,
     disableAdd:true
   }
@@ -111,9 +115,12 @@ export class PayeeComponent implements OnInit {
   bankAcctType: any[] = [];
   bank: any;
   lovType: any;
+  
+  prevClassCd : any;
+  vEvent : any;
 
 
-  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute, private modalService: NgbModal) { }
 
   ngOnInit() {
     this.form.control.markAsPristine();
@@ -142,29 +149,75 @@ export class PayeeComponent implements OnInit {
   }
 
   checkCode(ev){
-    $('.ng-dirty').removeClass('ng-dirty');
-    this.passTable.tableData = [];
-    this.info = [];
-    this.boolPrint = false;
-    this.boolOtherDet = true;
-    this.table.refreshTable();
-    this.ns.lovLoader(ev, 1);
-    this.table.overlayLoader = true;
-    if (this.payeeClassCd === null || this.payeeClassCd === ''){
-      this.ns.lovLoader(ev, 0);
-      this.clear();
+    this.vEvent = ev;
+    ev.preventDefault();
+    if($('#mtn-payee .ng-dirty').length != 0){
+      const subject = new Subject<boolean>();
+      const modal = this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+      modal.componentInstance.subject = subject;
+
+      subject.subscribe(a=>{
+         if(a){
+          this.passTable.tableData = [];
+          this.info = [];
+          this.boolPrint = false;
+          this.boolOtherDet = true;
+          this.table.refreshTable();
+          this.ns.lovLoader(ev, 1);
+          this.table.overlayLoader = true;
+          if (this.payeeClassCd === null || this.payeeClassCd === ''){
+            this.ns.lovLoader(ev, 0);
+            this.clear();
+          }else{
+             this.payeeLov.checkCode('payeeClass','','','','','',ev,'',this.payeeClassCd);
+          }
+          $('.ng-dirty').removeClass('ng-dirty');
+        } else {
+          this.payeeClassCd = this.prevClassCd;
+        }
+      })
     }else{
-       this.payeeLov.checkCode('payeeClass','','','','','',ev,'',this.payeeClassCd);
+      this.ns.lovLoader(ev, 1);
+      this.table.overlayLoader = true;
+      this.getMtnPayee(this.payeeClassCd);
     }
- 
+
     /*this.bankLov.checkCode(this.bank.bankCd,ev);*/
   }
 
-  clickLov(){
-    this.lovType = 'payeeClass';
-    this.passLov.selector = 'payeeClass';
-    this.passLov.params = {};
-    this.payeeLov.openLOV();
+  clickLov(ev){
+    ev.preventDefault();
+
+    if($('#mtn-payee .ng-dirty').length != 0){
+      const subject = new Subject<boolean>();
+      const modal = this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+      modal.componentInstance.subject = subject;
+
+      subject.subscribe(a=>{
+        if(a){
+          this.lovType = 'payeeClass';
+          this.passLov.selector = 'payeeClass';
+          this.passLov.params = {};
+          this.payeeLov.openLOV();
+          $('.ng-dirty').removeClass('ng-dirty');
+        } else {
+         
+        }
+      })
+    }else{
+      this.lovType = 'payeeClass';
+      this.passLov.selector = 'payeeClass';
+      this.passLov.params = {};
+      this.payeeLov.openLOV();
+    }
   }
 
   clickTblLOV(data){
@@ -244,6 +297,7 @@ export class PayeeComponent implements OnInit {
       this.passTable.disableAdd = true;
     }else{
       this.ms.getMtnPayee('',payeeClassCd).subscribe(a=>{
+        this.prevClassCd = payeeClassCd;
         this.passTable.tableData = a['payeeList'];
         this.passTable.tableData.forEach(a=>{
           a.createDate = this.ns.toDateTimeString(a.createDate);
@@ -256,6 +310,7 @@ export class PayeeComponent implements OnInit {
         })
         this.table.refreshTable();
         this.table.overlayLoader = false;
+        this.ns.lovLoader(this.vEvent, 0);
         this.passTable.distableGeneric = false;
         this.passTable.disableAdd = false;
         this.boolPrint = false;

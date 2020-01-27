@@ -10,6 +10,10 @@ import { LovComponent } from '@app/_components/common/lov/lov.component';
 import * as alasql from 'alasql';
 import { finalize } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
+import { Subject } from 'rxjs';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-sl',
@@ -76,9 +80,11 @@ export class SlComponent implements OnInit {
    	keys:['slCd','slName','slTypeCd','slTypeName','remarks','autoTag','activeTag']
    }
 
+   prevSlTypeCd : any;
+   vEvent       : any;
 
 
-  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute) { }
+  constructor(private titleService: Title,private ns:NotesService,private ms:MaintenanceService,private route: ActivatedRoute,private modalService: NgbModal) { }
 
   ngOnInit() {
   	this.form.control.markAsPristine();
@@ -139,6 +145,7 @@ export class SlComponent implements OnInit {
       slParams.slTypeCd = slTypeCd;
       console.log(slParams);
 	  	this.ms.getMtnSL(slParams).subscribe(a=>{
+        this.prevSlTypeCd = slTypeCd;
 	  		this.passTable.tableData = a['list'];
         console.log(a['list']);
 	  		this.passTable.tableData.forEach(a=>{
@@ -147,6 +154,7 @@ export class SlComponent implements OnInit {
 	  		})
 	  		this.table.refreshTable();
         this.table.overlayLoader = false;
+        this.ns.lovLoader(this.vEvent, 0);
 	  		this.passTable.disableGeneric = true;
     		this.passTable.disableAdd = false;
 	  	})
@@ -154,21 +162,71 @@ export class SlComponent implements OnInit {
  }
 
  checkCode(ev){
-    $('.ng-dirty').removeClass('ng-dirty');
-    this.passTable.tableData = [];
-    this.table.refreshTable();
-    this.ns.lovLoader(ev, 1);
-    this.table.overlayLoader = true;
-    this.slLov.checkCode('slType','','','','','',ev,this.slTypeCd);
+   console.log('here @ checkCode');
+   this.vEvent = ev;
+   ev.preventDefault();
+    if($('#mtn-sl .ng-dirty').length != 0){
+      const subject = new Subject<boolean>();
+      const modal = this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+      modal.componentInstance.subject = subject;
+
+      subject.subscribe(a=>{
+        if(a){
+          this.passTable.tableData = [];
+          this.table.refreshTable();
+          this.ns.lovLoader(ev, 1);
+          this.table.overlayLoader = true;
+          this.slLov.checkCode('slType','','','','','',ev,this.slTypeCd);
+          $('.ng-dirty').removeClass('ng-dirty');
+        } else {
+         this.slTypeCd = this.prevSlTypeCd;
+        }
+      })
+    }else{
+      this.ns.lovLoader(ev, 1);
+      this.table.overlayLoader = true;
+      this.getMtnSl(this.slTypeCd);
+    }
+
+    //$('.ng-dirty').removeClass('ng-dirty');
 }
 
-clickLov(){
-  this.passLov.selector = 'slType';
-  this.passLov.params = {};
-  this.slLov.openLOV();
+clickLov(ev){
+  console.log(ev);
+  ev.preventDefault();
+
+  if($('#mtn-sl .ng-dirty').length != 0){
+      const subject = new Subject<boolean>();
+      const modal = this.modalService.open(ConfirmLeaveComponent,{
+          centered: true, 
+          backdrop: 'static', 
+          windowClass : 'modal-size'
+      });
+      modal.componentInstance.subject = subject;
+
+      subject.subscribe(a=>{
+        if(a){
+          this.passLov.selector = 'slType';
+          this.passLov.params = {};
+          this.slLov.openLOV();
+          $('.ng-dirty').removeClass('ng-dirty');
+        } else {
+         
+        }
+      })
+    }else{
+      this.passLov.selector = 'slType';
+      this.passLov.params = {};
+      this.slLov.openLOV();
+    }
 }
 
 setSelectedSLType(data){
+  console.log('here @ setSelectedSLType');
   if(data.data === null){
     this.ns.lovLoader(data.ev, 0);
     this.slTypeCd = null;
@@ -185,7 +243,7 @@ setSelectedSLType(data){
     this.sl = selected;
     this.table.overlayLoader = true;
     this.passTable.disableGeneric = true;
-    this.getMtnSl(this.slTypeCd);
+    this.getMtnSl(this.slTypeCd);    
   }
   
 }

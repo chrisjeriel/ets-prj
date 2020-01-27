@@ -61,7 +61,9 @@ export class DistrictComponent implements OnInit {
 
   getDistrict(){
   	this.table.loadingFlag = true;
+    this.passTable.tableData = [];
   	this.ms.getMtnDistrict(this.locData.regionCd,this.locData.provinceCd,this.locData.cityCd).subscribe(a=>{
+      console.log(a);
       if(a['region'].length != 0){
     		this.passTable.tableData = a['region'][0]['provinceList'][0]['cityList'][0]['districtList'];
     		this.passTable.tableData.forEach(a=>{
@@ -214,6 +216,8 @@ export class DistrictComponent implements OnInit {
     }
 
     setLOVField(data){
+      console.log(data);
+      console.log(data.data);
         this.ns.lovLoader(data.ev, 0);
         var resetSucceedingFields = false;
 
