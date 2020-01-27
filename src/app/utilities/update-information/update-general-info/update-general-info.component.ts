@@ -182,7 +182,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
     'paginationRequest.count':10,
     'paginationRequest.position':1,  
     statusArr : ['2'],
-    altNo : 0
+    // altNo : 0
   }
 
 
