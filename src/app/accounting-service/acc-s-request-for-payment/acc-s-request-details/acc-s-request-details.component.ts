@@ -461,13 +461,15 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
         }else{
           var otherDataDiemIns: any = {
-            tHeader         : ['Insured','Insurance Type','Curr','Curr Rate','Amount','Amount(PHP)'],
-            dataTypes       : ['text','row-dropdown','text','percent','currency','currency'],
+            tHeader         : ['Insured','Insurance Type','Reimbursement','Accrued','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','row-dropdown','checkbox','checkbox','text','percent','currency','currency'],
             magnifyingGlass : ['insuredName'],
             nData: {
               insuredName        : '',
               insuranceType      : '',
               insuranceTypeDesc  : '',
+              reimburseTag: 'Y',
+              accruedTag: 'N',
               currCd             : '',
               currRate           : '',
               insuredAmt         : 0,
@@ -478,10 +480,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               taxAllocation      : []
             },
             pageID        : 'diemInsData',
-            uneditable    : [true,false,true,true,false,true],
-            total         : [null, null, null,'Total', 'insuredAmt', 'localAmt'],
-            widths        : ['auto','auto',1,'auto','auto','auto'],
-            keys          : ['insuredName','insuranceTypeDesc','currCd','currRate','insuredAmt','localAmt']
+            uneditable    : [true,false,false,false,true,true,false,true],
+            total         : [null, null,null,null, null,'Total', 'insuredAmt', 'localAmt'],
+            widths        : ['auto','auto',1,1,1,'auto','auto','auto'],
+            keys          : ['insuredName','insuranceTypeDesc','reimburseTag','accruedTag','currCd','currRate','insuredAmt','localAmt']
           };
 
           $.extend(this.diemInsData,otherDataDiemIns);
@@ -654,9 +656,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         if(tblData.newRec != 1){
           if(this.requestData.tranTypeCd == 6){
             isUnique.push(this.params.savePerDiem.some(saveData => saveData.newRec == 1 && saveData.directorId == tblData.directorId && saveData.feeType == tblData.feeType)?false:true);
-          }else{
-            isUnique.push(this.params.saveInsuranceExp.some(saveData => saveData.newRec == 1 && saveData.insuredCd == tblData.insuredCd && saveData.insuranceType == tblData.insuranceType)?false:true);
           }
+          // else{
+          //   isUnique.push(this.params.saveInsuranceExp.some(saveData => saveData.newRec == 1 && saveData.insuredCd == tblData.insuredCd && saveData.insuranceType == tblData.insuranceType)?false:true);
+          // }
         }
       });  
     }else{
@@ -896,6 +899,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.insuredName = e.slName;
             e.insuredCd   = e.slCd;
             e.insuredTypeCd = e.slTypeCd;
+            e.insuredAmt = 0;
+            e.reimburseTag = 'Y';
+            e.accruedTag = 'N';
             e.createDate = '';
             e.createUser = ''; 
             e.updateUser = ''; 
