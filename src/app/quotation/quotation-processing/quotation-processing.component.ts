@@ -397,6 +397,7 @@ export class QuotationProcessingComponent implements OnInit {
         let params:any = {
             statusArr: [1,2,3,4,5,'P','A','R'],
             riskName: this.riskName,
+            riskId: this.riskCd,
             //cessionDesc: this.typeOfCession,
             quotationNo: this.line + '%',
             recount : 'N'
