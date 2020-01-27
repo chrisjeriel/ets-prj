@@ -18,7 +18,7 @@ export class AccSRequestForPaymentComponent implements OnInit {
     tableData    : [],
     tHeader      : ['Payment Request No.', 'Payee', 'Payment Type', 'Reference No', 'Request Date', 'Particulars', 'Curr', 'Amount', 'Requested By'],
     dataTypes    : ['text', 'text', 'text', 'text', 'date', 'text', 'text', 'currency', 'text'],
-    colSize      : ['120px', '', '', '', '', '', '30px', '', ''],
+    colSize      : ['120px', '150px', '', '120px', '', '150px', '40px', '', ''],
     btnDisabled  : true,
     pagination   : true,
     pageStatus   : true,

@@ -256,7 +256,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
              this.cvData.nData.taxAllocation.push({
                reqId: this.rowData.reqId,
                itemNo: '',
-               taxSeqNo: '',
+               // taxSeqNo: '',
                genType: 'A',
                taxType: 'G', //for General Tax, Tax Type
                taxCd: i.taxCd,
@@ -272,7 +272,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
              this.pcvData.nData.taxAllocation.push({
                reqId: this.rowData.reqId,
                itemNo: '',
-               taxSeqNo: '',
+               // taxSeqNo: '',
                genType: 'A',
                taxType: 'G', //for General Tax, Tax Type
                taxCd: i.taxCd,
@@ -288,7 +288,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
              this.diemInsData.nData.taxAllocation.push({
                reqId: this.rowData.reqId,
                itemNo: '',
-               taxSeqNo: '',
+               // taxSeqNo: '',
                genType: 'A',
                taxType: 'G', //for General Tax, Tax Type
                taxCd: i.taxCd,
@@ -308,7 +308,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
            this.cvData.nData.taxAllocation.push({
              reqId: this.rowData.reqId,
              itemNo: '',
-             taxSeqNo: '',
+             // taxSeqNo: '',
              genType: 'A',
              taxType: 'W', //for Withholding Tax, Tax Type
              taxCd: j.taxCd,
@@ -324,7 +324,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
            this.pcvData.nData.taxAllocation.push({
              reqId: this.rowData.reqId,
              itemNo: '',
-             taxSeqNo: '',
+             // taxSeqNo: '',
              genType: 'A',
              taxType: 'W', //for Withholding Tax, Tax Type
              taxCd: j.taxCd,
@@ -340,7 +340,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
            this.diemInsData.nData.taxAllocation.push({
              reqId: this.rowData.reqId,
              itemNo: '',
-             taxSeqNo: '',
+             // taxSeqNo: '',
              genType: 'A',
              taxType: 'W', //for Withholding Tax, Tax Type
              taxCd: j.taxCd,

@@ -19,8 +19,9 @@ export class CheckVoucherComponent implements OnInit {
 
   passData: any = {
         tableData: [],
-        tHeader: ["CV No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['text','text','text','date','text','text','currency',],
+        tHeader: ["CV No", "Check No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"],
+        dataTypes: ['text','text','text','text','date','text','text','currency',],
+        colSize: ['','','150px','120px','','','150px',''],
         filters: [
           { key: 'cvGenNo', title: 'C.V. No.', dataType: 'text'},
           { key: 'payee',   title: 'Payee',    dataType: 'text'},
@@ -37,7 +38,7 @@ export class CheckVoucherComponent implements OnInit {
         editFlag     : true,
         pageLength   : 10,
         exportFlag   : true,
-        keys         : ['cvGenNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt']
+        keys         : ['cvGenNo','checkNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt']
     };
 
   searchParams: any[] = [];
