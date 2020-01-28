@@ -46,7 +46,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   passDataHistory: any = {
     tableData     : [],
     tHeader       : ['Hist. No.', 'Hist. Date','Booking Mth-Yr','Hist. Type', 'Type', 'Ex-Gratia', 'Curr', 'Curr Rt', 'Amount', 'Ref. No','Ref. Date', 'Payment Amount', 'Remarks'],
-    dataTypes     : ['sequence-3','date','select', 'req-select', 'req-select', 'checkbox', 'text', 'currencyRate', 'currency', 'text', 'text', 'currency', 'text-editor'],
+    dataTypes     : ['sequence-3','date','claimHistselect', 'req-select', 'req-select', 'checkbox', 'text', 'currencyRate', 'currency', 'text', 'text', 'currency', 'text-editor'],
     nData: {
       newRec       : 1,
       claimId      : '',
