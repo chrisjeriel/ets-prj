@@ -70,9 +70,9 @@
 										</div>
 										<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-2">Reinsurance From</label>
-											<input name="input9" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')" mask="999" appRequired>
-											<div class="text-search-ico" [class.d-none]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
-											<span [class.d-none]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'">&nbsp;</span>
+											<input name="input9" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')" mask="999" appRequired>
+											<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
+											<span [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'">&nbsp;</span>
 											<input name="input10" type="text" [(ngModel)]="genInfoData.reinsurerName" class="form-control form-control-sm col-sm ig-mrgn" style="margin-left: 5px;" readonly>
 										</div>
 										<div class="input-group">

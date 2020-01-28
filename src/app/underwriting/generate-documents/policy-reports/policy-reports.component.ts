@@ -96,9 +96,6 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044S',
                         'POLR044T',
                         'POLR044U',
-                        'POLR044V',
-                        'POLR044W',
-                        'POLR044X',
                         'ACITR061F',
                         'ACITR061G',
                         'ACITR048A'

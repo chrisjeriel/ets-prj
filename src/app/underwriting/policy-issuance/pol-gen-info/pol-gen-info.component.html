@@ -331,12 +331,12 @@
 							<input name="input51" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly tabindex="-1">
 							<input name="input52" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input name="input53" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input53"  type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input54" type="text" class="form-control form-control-sm" style="margin-left: 2px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input name="input55" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<input name="input55" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input name="input56" type="text" class="form-control form-control-sm" style="margin-left: 2px;" [(ngModel)]="policyInfo.contractorName" readonly tabindex="-1">
 						</div>
 						<div class="input-group">
@@ -457,12 +457,12 @@
 							<input name="input81" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" readonly tabindex="-1">
 							<input name="input82" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.contractorName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Principal</label>
-							<input name="input83" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input83" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input84" type="text" class="form-control form-control-sm" style="margin-left: 2px !important;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 							<label class="form-control-sm col-sm-1">Contractor</label>
-							<input name="input85" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
+							<input name="input85" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.contractorId" (change)="checkCode($event,'contractor')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showContractorLOV()"></i></a></div>
 							<input name="input86" type="text" class="form-control form-control-sm" style="margin-left: 2px !important;" [(ngModel)]="policyInfo.contractorName" readonly tabindex="-1">
 						</div>
 						<div class="input-group">
@@ -586,8 +586,8 @@
 							<input name="input107" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly tabindex="-1">
 							<input name="input108" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input name="input109" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input109" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input110" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 							
 						</div>
@@ -700,8 +700,8 @@
 							<input name="input129" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly tabindex="-1">
 							<input name="input130" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input name="input131" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input131" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input132" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 						</div>
 						<div class="input-group">
@@ -791,8 +791,8 @@
 							<input name="input149" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly tabindex="-1">
 							<input name="input150" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input name="input151" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input151" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input152" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 						</div>
 						<div class="input-group">
@@ -892,8 +892,8 @@
 							<input name="input171" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" readonly tabindex="-1">
 							<input name="input172" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1"> -->
 							<label class="form-control-sm col-sm-1">Insured</label>
-							<input name="input173" [readonly]="policyInfo.openCoverTag != 'Y'" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
-							<div class="text-search-ico" [class.d-none]="policyInfo.openCoverTag != 'Y' || policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
+							<input name="input173" type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="policyInfo.principalId" (change)="checkCode($event,'principal')" appRequired>
+							<div class="text-search-ico" [class.d-none]="policyInfo.statusDesc?.toUpperCase() === 'APPROVED'  || fromInq"><a><i class="fa fa-search" (click)="showPrincipalLOV()"></i></a></div>
 							<input name="input174" type="text" class="form-control form-control-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.principalName" readonly tabindex="-1">
 						</div>
 						<div class="input-group">
