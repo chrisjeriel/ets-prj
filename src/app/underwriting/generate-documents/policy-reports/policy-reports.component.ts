@@ -8,7 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 import { DecimalPipe } from '@angular/common';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
@@ -27,7 +27,7 @@ export class PolicyReportsComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
-  @ViewChild('currencyModal') currLov: MtnCurrencyComponent;
+  @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
   @ViewChild('Range') rangeLOV: ModalComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
@@ -115,7 +115,8 @@ export class PolicyReportsComponent implements OnInit {
     dataTypes: ['string', 'currency'],
     nData: {siRange: '', amount: ''},
     addFlag: true,
-    deleteFlag: true,
+    deleteFlag: false,
+    genericBtn:'Delete',
     checkFlag: true,
     infoFlag: true,
     paginateFlag: true,
@@ -595,10 +596,14 @@ export class PolicyReportsComponent implements OnInit {
     }
   }
 
+  showCurrencyModal(){
+    $('#currencyModal #modalBtn').trigger('click');
+  }
+  
   setCurrency(data){
     console.log(data)
     this.params.currCd = data.currencyCd;
-    this.params.currdesc = data.currencyDesc;
+    this.params.currdesc = data.description;
     this.ns.lovLoader(data.ev, 0);
     setTimeout(()=>{
           $('.currCd').focus().blur();
@@ -610,15 +615,56 @@ export class PolicyReportsComponent implements OnInit {
     this.ms.retrieveReportRange(this.ns.getCurrentUser()).subscribe((data:any) => {
       console.log(data)
       this.passData.tableData = [];
+      var nextSiRange;
       if(data.reportsRange.length !== 0){
         for (var i = 0; i < data.reportsRange.length; i++) {
           this.passData.tableData.push(data.reportsRange[i]);
           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['siRange'];
         }
       }
+
       this.table.refreshTable();
       this.table.loadingFlag = false;
+      nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].siRange + 1;
+      this.passData.nData = {siRange: nextSiRange, amount: ''};
     });
+  }
+
+  update(data){
+    console.log(this.passData.tableData)
+    var nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].siRange +1;
+    this.passData.nData = {siRange: nextSiRange, amount: ''};
+  }
+
+  onRowClick(data){
+    if( data !==null){
+      this.passData.disableGeneric = false;
+    }
+  }
+
+  deleteCurr(){
+    var notChecked = this.passData.tableData.filter(a=> !a.deleted && !a.checked);
+    var finalRange = notChecked[notChecked.length - 1].siRange;
+    var errorFlag = false;
+
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].checked ){
+        if(this.passData.tableData[i].siRange < finalRange){
+          errorFlag = true;
+          break;
+        }
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Range must be in a chronological order";
+      this.appDialog.open();
+    }else{
+      this.table.indvSelect.deleted = true;
+      this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
+    }
   }
 
   onClickSave(){
