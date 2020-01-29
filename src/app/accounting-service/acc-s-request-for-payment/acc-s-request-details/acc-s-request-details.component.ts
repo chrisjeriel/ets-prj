@@ -461,13 +461,14 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
         }else{
           var otherDataDiemIns: any = {
-            tHeader         : ['Insured','Insurance Type','Reimbursement','Accrued','Curr','Curr Rate','Amount','Amount(PHP)'],
-            dataTypes       : ['text','row-dropdown','checkbox','checkbox','text','percent','currency','currency'],
+            tHeader         : ['Insured','Insurance Type','Remarks','Reimbursement','Accrued','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','row-dropdown','text-editor','checkbox','checkbox','text','percent','currency','currency'],
             magnifyingGlass : ['insuredName'],
             nData: {
               insuredName        : '',
               insuranceType      : '',
               insuranceTypeDesc  : '',
+              remarks: '',
               reimburseTag: 'Y',
               accruedTag: 'N',
               currCd             : '',
@@ -480,10 +481,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               taxAllocation      : []
             },
             pageID        : 'diemInsData',
-            uneditable    : [true,false,false,false,true,true,false,true],
-            total         : [null, null,null,null, null,'Total', 'insuredAmt', 'localAmt'],
-            widths        : ['auto','auto',1,1,1,'auto','auto','auto'],
-            keys          : ['insuredName','insuranceTypeDesc','reimburseTag','accruedTag','currCd','currRate','insuredAmt','localAmt']
+            uneditable    : [true,false,false,false,false,true,true,false,true],
+            total         : [null,null,null,null,null, null,'Total', 'insuredAmt', 'localAmt'],
+            widths        : ['auto','auto',180,1,1,1,120,180,180],
+            keys          : ['insuredName','insuranceTypeDesc','remarks','reimburseTag','accruedTag','currCd','currRate','insuredAmt','localAmt']
           };
 
           $.extend(this.diemInsData,otherDataDiemIns);
@@ -900,6 +901,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.insuredCd   = e.slCd;
             e.insuredTypeCd = e.slTypeCd;
             e.insuredAmt = 0;
+            e.remarks = '';
             e.reimburseTag = 'Y';
             e.accruedTag = 'N';
             e.createDate = '';
