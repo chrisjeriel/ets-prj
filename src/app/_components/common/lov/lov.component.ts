@@ -1101,7 +1101,9 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
         
         if(this.passData.from.toLowerCase() == 'prq-ins'){
-           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+          this.passTable.tableData = a["list"].sort((a, b) => {
+            return a.slTypeName.localeCompare(b.slTypeName) || a.slName.localeCompare(b.slName);
+          });
         }else{
           this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
         }
