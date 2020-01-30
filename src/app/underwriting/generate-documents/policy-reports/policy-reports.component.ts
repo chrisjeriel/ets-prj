@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 import { DecimalPipe } from '@angular/common';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-policy-reports',
@@ -27,6 +28,7 @@ export class PolicyReportsComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
+  @ViewChild('success') openDialog: SucessDialogComponent;
   @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
   @ViewChild('Range') rangeLOV: ModalComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
@@ -136,8 +138,9 @@ export class PolicyReportsComponent implements OnInit {
   loading: boolean = true;
   disableTo: boolean = false;
   tableFlag: boolean = false;
+  cancelFlag: boolean = false;
 
-  constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe) { }
+  constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
   ngOnInit() {
       this.passLov.modReportId = 'POLR044%';
@@ -571,7 +574,7 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   onClickCancel(){
-    this.cancelBtn.clickCancel();
+    this.router.navigateByUrl('');
   }
 
   checkCode(ev, field){
@@ -618,19 +621,35 @@ export class PolicyReportsComponent implements OnInit {
           this.passData.tableData.push(data.reportsRange[i]);
           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['siRange'];
         }
+        nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].siRange + 1;
+        this.passData.nData = {siRange: nextSiRange, amount: ''};
+      }else{
+        this.passData.nData = {siRange: 1, amount: ''};
       }
 
       this.table.refreshTable();
       this.table.loadingFlag = false;
-      nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].siRange + 1;
-      this.passData.nData = {siRange: nextSiRange, amount: ''};
+      this.passData.disableGeneric = true
     });
   }
 
   update(data){
-    console.log(this.passData.tableData)
+    var checkFlag = false;
+    this.table.markAsDirty();
     var nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].siRange +1;
     this.passData.nData = {siRange: nextSiRange, amount: ''};
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].checked){
+        checkFlag = true;
+        break;
+      }
+    }
+    console.log(checkFlag)
+    if(checkFlag){
+      this.passData.disableGeneric = false;
+    }else{
+      this.passData.disableGeneric = true;
+    }
   }
 
   onRowClick(data){
@@ -656,7 +675,7 @@ export class PolicyReportsComponent implements OnInit {
     if(errorFlag){
       this.dialogIcon = "warning-message";
       this.dialogMessage = "Range must be in a chronological order";
-      this.appDialog.open();
+      this.openDialog.open();
     }else{
       this.table.indvSelect.deleted = true;
       this.table.selected  = [this.table.indvSelect]
@@ -665,10 +684,28 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   onClickSave(){
-    this.confirm.confirmModal();
+    var errorFlag = false;
+    for (var i = 0; i < this.passData.tableData.length - 1; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if(this.passData.tableData[i].amount >= this.passData.tableData[i+1].amount && !this.passData.tableData[i+1].deleted){
+          errorFlag = true;
+          break;
+        } 
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Amount must be in ascending order";
+      this.openDialog.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+    
   }
 
-  saveRange(){
+  saveRange(cancel?){
+    this.cancelFlag = cancel !== undefined;
     this.tableFlag = true;
     this.rangeParams.saveReportsRange = [];
     this.rangeParams.delReportsRange = [];
@@ -693,9 +730,14 @@ export class PolicyReportsComponent implements OnInit {
         this.dialogMessage = "";
         this.dialogIcon = "success";
         this.appDialog.open();
+        this.table.markAsPristine();
         this.retrieveRange();
       }
     });
+  }
+
+  siClickCancel(){
+    this.cancelBtn.clickCancel();
   }
 
 }
