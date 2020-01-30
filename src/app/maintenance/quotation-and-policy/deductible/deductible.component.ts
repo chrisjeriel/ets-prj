@@ -146,6 +146,7 @@ export class DeductibleComponent implements OnInit {
                     a.updateDate     = this.ns.toDateTimeString(a.updateDate);
                     a.endorsement    = (a.coverCd != 0 && a.endtCd == 0)?'':a.endorsement;
                     a.sectionCover   = (a.coverCd == 0 && a.endtCd != 0)?'':a.sectionCover;
+                    a.uneditable     = ['deductibleCd'];
                     return a;
                 });
                 this.passData.tableData  = dedRec;

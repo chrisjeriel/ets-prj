@@ -42,7 +42,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
     tableData:[],
     widths:[1,'auto','auto','auto',1,1,'auto'],
     tHeader:['Endt Code','Endt Name','Description','Wordings','Active','Default','Remarks'],
-    dataTypes:['sequence-3','text','text-editor-h','text-editor-h','checkbox','checkbox','text'],
+    dataTypes:['sequence-3','text','text-editor','text-editor-h','checkbox','checkbox','text'],
     keys:['endtCd','endtTitle','description','text','activeTag','defaultTag','remarks'],
     addFlag: true,
     genericBtn:'Delete',
@@ -292,7 +292,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
 
   endtClick(data){
     if(data != null){
-      this.passDedTable.tableData = data.deductibles;
+      this.passDedTable.tableData = data.deductibles.filter(a=>{a.uneditable = a.add ? []:['deductibleCd'];return true;});
       this.passDedTable.disableAdd = false;
       this.passDedTable.disableGeneric = true;
       this.passDedTable.nData.endtCd = data.endtCd;
