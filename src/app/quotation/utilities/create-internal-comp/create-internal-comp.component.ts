@@ -122,12 +122,22 @@ export class CreateInternalCompComponent implements OnInit {
   				status			: ''
   			};
   		}else{
+        this.quoteInfo  = {
+          quotationNo   : '',
+          quotationNoArr  : this.quoteInfo.quotationNoArr,
+          cedingName    : '',
+          insuredDesc    : '',
+          riskName    : '',
+          totalSi      : '',
+          status      : ''
+        };
   			this.completeSearch = true;
   			this.getQuoteList();
   		}
   	}
 
 	getQuoteList(){
+    this.searchParams.statusArr = [1,2,3,4,5,'P','A','R'];
 		this.qs.newGetQuoProcessingData(this.searchParams).subscribe(a=>{
 			this.passDataQuoteLOV.count = a['length'];
 			this.quoteTable.placeData(a['quotationList'].map(i => 
@@ -148,6 +158,15 @@ export class CreateInternalCompComponent implements OnInit {
 				        			};
     			this.completeSearch = false;
     			this.showQuoteLov();
+          this.quoteInfo  = {
+            quotationNo   : '',
+            quotationNoArr  : this.quoteInfo.quotationNoArr,
+            cedingName    : '',
+            insuredDesc    : '',
+            riskName    : '',
+            totalSi      : '',
+            status      : ''
+          };
 			}
 		});
 	}

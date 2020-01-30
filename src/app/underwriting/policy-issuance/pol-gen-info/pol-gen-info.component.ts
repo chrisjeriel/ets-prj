@@ -504,14 +504,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
           });
 
           polNo[polNo.length-1] = Number(polNo[polNo.length-1]) == 0 ? '000' : String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
-          // if (this.prevPolicyId !== '') {
-            this.underwritingService.getPolGenInfo(null, polNo.join('-')).subscribe((data:any) => {
+          if (this.prevPolicyId !== '') {
+            this.underwritingService.getPolGenInfo(this.prevPolicyId).subscribe((data:any) => {
               this.refPolicyId = data.policy.policyId;
               this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
               this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
               this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
             });
-          // }
+          }
         }
 
         setTimeout(() => {
@@ -963,7 +963,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       }
 
    if(this.validate(savePolGenInfoParam)){
-     if(this.alteration && new Date(this.prevExpiryDate) <= new Date(this.policyInfo.inceptDate) && this.policyInfo.inceptDate === this.policyInfo.effDate) {
+     if(this.alteration && new Date(this.prevExpiryDate) <= new Date(this.policyInfo.inceptDate)) {
        savePolGenInfoParam['extensionTag'] = 'Y';
        savePolGenInfoParam['savingType'] = 'alteration_ext';
      } else {
