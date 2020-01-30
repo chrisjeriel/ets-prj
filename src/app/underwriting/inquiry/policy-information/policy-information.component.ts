@@ -104,6 +104,9 @@ export class PolicyInformationComponent implements OnInit {
     if(this.selectedPol.policyNo.split('-')[5] == '000'){
       this.UwService.fromCreateAlt = false;
     }
+    let activePol:any[] = this.passData.tableData.filter(a=>a.status != 'Spoiled').map(a=>a.policyId);
+    let prevPolicyId : any = activePol[activePol.indexOf(this.selectedPol.policyId)-1];
+    console.log(prevPolicyId);
     this.router.navigate([link, {policyId:this.selectedPol.policyId,
                                               fromInq:true,
                                               policyNo: this.selectedPol.policyNo,
@@ -114,7 +117,8 @@ export class PolicyInformationComponent implements OnInit {
                                               editPol: true,
                                               status: this.selectedPol.status,
                                               exitLink: '/policy-information',
-                                              sumInsured: this.selectedPol.sumInsured
+                                              sumInsured: this.selectedPol.sumInsured,
+                                              prevPolicyId: prevPolicyId
                                               }], { skipLocationChange: true });
   }
 

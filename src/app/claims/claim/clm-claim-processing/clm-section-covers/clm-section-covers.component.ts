@@ -64,6 +64,8 @@ export class ClmSectionCoversComponent implements OnInit {
     riskName:'',
     insuredDesc:''
   }
+  lossResAmt: Number = 0;
+  lossPdAmt: Number = 0;
 
   @Output() disableClmHistory = new EventEmitter<any>();
   @Input() isInquiry: boolean = false;
@@ -113,7 +115,9 @@ export class ClmSectionCoversComponent implements OnInit {
 
   onClickSave(){
     this.form.control.markAsDirty();
-    $('#confirm-save #modalBtn2').trigger('click');
+    if(this.validate()){
+      $('#confirm-save #modalBtn2').trigger('click');
+    }
   }
 
   saveData(cancelFlag?){
@@ -146,34 +150,39 @@ export class ClmSectionCoversComponent implements OnInit {
   }
 
   validate(data?){
-    if(this.clmHistrory || this.parameters){
-      if(this.secTag == 'secISiTag'){
-        this.coverageData.secISiTag = (this.coverageData.secISiTag === 'Y') ? 'N' : 'Y';
+    if((this.coverageData.allowMaxSi<this.lossResAmt || this.coverageData.allowMaxSi<this.lossPdAmt) && this.parameters){
+      // if(this.secTag == 'secISiTag'){
+      //   this.coverageData.secISiTag = (this.coverageData.secISiTag === 'Y') ? 'N' : 'Y';
+      // }else if(this.secTag == 'secIISiTag'){
+      //   this.coverageData.secIISiTag = (this.coverageData.secIISiTag === 'Y') ? 'N' : 'Y';
+      //   this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
+      //   this.dialogIcon = "error-message";
+      //   this.successDiag.open();
+      // }else{
+      //   this.coverageData.secIIISiTag = (this.coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';
+      //   this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
+      //   this.dialogIcon = "error-message";
+      //   this.successDiag.open();
+      // }
+
         this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
         this.dialogIcon = "error-message";
         this.successDiag.open();
-      }else if(this.secTag == 'secIISiTag'){
-        this.coverageData.secIISiTag = (this.coverageData.secIISiTag === 'Y') ? 'N' : 'Y';
-        this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-      }else{
-        this.coverageData.secIIISiTag = (this.coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';
-        this.dialogMessage = 'Unable to change the tag. Allowable Maximum Claim will be less than the current reserve setup.';
-        this.dialogIcon = "error-message";
-        this.successDiag.open();
-      }
+        return false;
     }
+    return true;
   }
 
   check(){
     this.claimService.getClaimHistory(this.claimId,'',this.projId,'').subscribe((data:any) => {
       console.log(data)
       if(data.claimReserveList.length !== 0){
-        this.clmHistrory = true;
+        // this.clmHistrory = true;
+        this.lossResAmt = data.claimReserveList[0].lossResAmt;
+        this.lossPdAmt = data.claimReserveList[0].lossPdAmt;
       }
     });
-    this.maintenanceService.getMtnParameters('V').subscribe((data:any) => {
+    this.maintenanceService.getMtnParameters('V','ALLOW_MAX_SI').subscribe((data:any) => {
       console.log(data)
       for(var i = 0; i < data.parameters.length;i++){
         if(data.parameters[i].paramName == 'ALLOW_MAX_SI' && data.parameters[i].paramValueV == 'Y'){

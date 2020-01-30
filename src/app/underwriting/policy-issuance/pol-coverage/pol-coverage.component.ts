@@ -1325,9 +1325,9 @@ export class PolCoverageComponent implements OnInit {
     this.getEditableCov();
 
     if(this.coverageData.totalSi > parseFloat(this.coverageData.totalValue.toString().split(',').join(''))){
-      if(this.line in ['EEI', 'MBI' , 'BPV']){
+      if(['EEI', 'MBI' , 'BPV'].includes(this.line)){
         this.promptMessage = "Max sum insured of the policy exceeded the new replacement value of the project.";
-      }else if(this.line in ['DOS','MLP']){
+      }else if(['DOS','MLP'].includes(this.line)){
         this.promptMessage = "Max sum insured of the policy exceeded the annual sum insured of the project.";
       }else{
         this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";  

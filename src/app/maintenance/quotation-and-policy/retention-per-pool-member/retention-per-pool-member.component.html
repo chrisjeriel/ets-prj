@@ -19,7 +19,7 @@
 							<legend class="scheduler-border">History</legend>
 							<div class="row" style="margin-top: 12px;">
 								<div id="history-table" class="col-sm">
-									<app-cust-editable-non-datatable #historyTable [passData]="historyData" (tableDataChange)="historyData.tableData=$event" (newClick)="onHistoryRowClick($event)" (genericBtn)="onHistoryClickDelete($event)" (onDelete)="historyTable.onClickDelete('force'); onHistoryClickDelete();">
+									<app-cust-editable-non-datatable #historyTable [passData]="historyData" (tableDataChange)="historyData.tableData=$event" (newClick)="onHistoryRowClick($event)" (genericBtn)="onHistoryClickDelete($event)" (onDelete)="onHistoryClickDelete();historyTable.onClickDelete('force'); ">
 										<ng-container controls-l>
 											<button type="button" [disabled]="disableCopySetup" class="cust-btn" (click)="onCopySetupClick()"><a>Copy Setup</a></button>
 										</ng-container>
@@ -32,7 +32,7 @@
 							<div class="row" style="margin-top: 12px;">
 								<div class="col-sm-3"></div>
 								<div id="pool-member-table" class="col-sm">
-									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)="poolMemberTable.onClickDelete('force'); onPoolMemberClickDelete();" (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
+									<app-cust-editable-non-datatable #poolMemberTable [passData]="poolMemberData" (tableDataChange)="historySelected.poolMemberList=$event; poolMemberTDataChange($event);" (newClick)="onPoolMemberRowClick($event)" (genericBtn)="onPoolMemberClickDelete($event)" (onDelete)="onPoolMemberClickDelete();poolMemberTable.onClickDelete('force'); " (clickLOV)="openCedingCoLOV($event)"></app-cust-editable-non-datatable>
 								</div>
 								<div class="col-sm-3"></div>
 							</div>
