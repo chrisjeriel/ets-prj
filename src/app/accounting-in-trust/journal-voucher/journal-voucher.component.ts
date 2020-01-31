@@ -24,10 +24,18 @@ export class JournalVoucherComponent implements OnInit {
         title: 'J.V. No.',
         dataType: 'text'
       },
+      // {
+      //   key: 'jvDate',
+      //   title: 'JV Date',
+      //   dataType: 'date'
+      // },
       {
-        key: 'jvDate',
-        title: 'JV Date',
-        dataType: 'date'
+        keys: {
+            from: 'jvDateFrom',
+            to: 'jvDateTo'
+          },
+          title: 'JV Date',
+          dataType: 'datespan'
       },
       {
         key: 'particulars',
@@ -49,15 +57,18 @@ export class JournalVoucherComponent implements OnInit {
         title: 'Prepared By',
         dataType: 'text'
       },
-      /*{
-        key: 'jvStatus',
-        title: 'J.V Status',
-        dataType: 'text'
-      },*/
+      // {
+      //   key: 'amount',
+      //   title: 'Amount',
+      //   dataType: 'text'
+      // }
       {
-        key: 'amount',
-        title: 'Amount',
-        dataType: 'text'
+        keys: {
+            from: 'jvAmtFrom',
+            to: 'jvAmtTo'
+          },
+          title: 'Amount',
+          dataType: 'textspan'
       }
     ],
       addFlag:true,
@@ -82,6 +93,7 @@ export class JournalVoucherComponent implements OnInit {
     }
 
     tranStat: string = 'new';
+    searchParams: any = {};
 
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns : NotesService, private userService: UserService) { }
 
@@ -103,8 +115,44 @@ export class JournalVoucherComponent implements OnInit {
   }
 
   retrieveJVlist(){
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'N';
+
+        break;
+      case 'for approval':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'F';
+
+        break;
+      case 'approved':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'A';
+
+        break;
+      case 'closed':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'C';
+
+        break;
+      case 'printed':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'P';
+
+        break;
+      case 'posted':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'P';
+
+        break;
+      case 'deleted':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'D';
+    }
+
     this.table.overlayLoader = true;
-    this.accountingService.getJVListing(null).subscribe((data:any) => {
+    this.accountingService.getJVListing(this.searchParams).subscribe((data:any) => {
       this.passDataJVListing.tableData = [];
 
       for(var i=0; i< data.transactions.length;i++){
@@ -113,7 +161,7 @@ export class JournalVoucherComponent implements OnInit {
         this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].transactions = data.transactions[i];
       }
 
-      this.passDataJVListing.tableData.forEach(a => {
+      /*this.passDataJVListing.tableData.forEach(a => {
         if(a.transactions.tranStat != 'O' && a.transactions.tranStat != 'C') {
           a.jvStatus = a.transactions.tranStat;
           a.jvStatusName = a.transactions.tranStatDesc;
@@ -123,7 +171,7 @@ export class JournalVoucherComponent implements OnInit {
         this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.transactions.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase() && a.transactions.acctEntDate !== null);
       }else{
         this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.jvStatusName).toUpperCase() == this.tranStat.toUpperCase());
-      }
+      }*/
       
       this.table.refreshTable();
 
@@ -226,11 +274,13 @@ export class JournalVoucherComponent implements OnInit {
     alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
   }
 
-  /*searchQuery(data){
-    this.searchParams = searchParams;
-    this.passData.tableData = [];
-    console.log(this.searchParams);
+  searchQuery(data){
+    data.forEach(a =>{
+      this.searchParams[a.key] = a.search;
+    });
+
+    this.passDataJVListing.tableData = [];
     this.retrieveJVlist();
-  }*/
+  }
 
 }
