@@ -15,8 +15,8 @@ export class MtnAdjusterComponent implements OnInit {
 
 	adjuster: any = {
 		tableData: [],
-	    tHeader: ['Adjuster No','Adjuster Name'],
-	    dataTypes: ['sequence-3','text'],
+	    tHeader: ['Adjuster No','Adjuster Name', 'Accredited'],
+	    dataTypes: ['sequence-3','text','checkbox'],
 	    pageLength: 10,
 	    searchFlag: true,
 	    pageStatus: true,
@@ -25,7 +25,7 @@ export class MtnAdjusterComponent implements OnInit {
 	    pageID: 'adjuster'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
 	    keys:[
 	    	'adjId',
-	    	'adjName'
+	    	'adjName','accreditedTag'
 	    	]
 	};
 
