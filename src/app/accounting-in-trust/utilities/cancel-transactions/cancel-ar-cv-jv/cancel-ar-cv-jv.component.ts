@@ -95,10 +95,14 @@ export class CancelArCvJvComponent implements OnInit {
 				this.cancelTranTbl.refreshTable();
 			});
 		}else if(this.tranClass == 'jv'){
-			this.acctService.getJVListing('')
+			var param = {
+				jvStatus: 'A,F,N,P'
+			};
+
+			this.acctService.getJVListing(param)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['transactions'].filter(e => e.jvListings.jvStatus != 'X').map(e => {
+				this.passDataCancelTrans.tableData = data['transactions'].map(e => { //.filter(e => e.jvListings.jvStatus != 'X')
 					e.jvListings.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.jvListings.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e.jvListings;

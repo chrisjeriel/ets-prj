@@ -24,11 +24,6 @@ export class JournalVoucherComponent implements OnInit {
         title: 'J.V. No.',
         dataType: 'text'
       },
-      // {
-      //   key: 'jvDate',
-      //   title: 'JV Date',
-      //   dataType: 'date'
-      // },
       {
         keys: {
             from: 'jvDateFrom',
@@ -57,11 +52,6 @@ export class JournalVoucherComponent implements OnInit {
         title: 'Prepared By',
         dataType: 'text'
       },
-      // {
-      //   key: 'amount',
-      //   title: 'Amount',
-      //   dataType: 'text'
-      // }
       {
         keys: {
             from: 'jvAmtFrom',
