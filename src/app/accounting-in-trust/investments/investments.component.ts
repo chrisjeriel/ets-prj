@@ -162,6 +162,7 @@ export class InvestmentsComponent implements OnInit {
      genericBtn: 'Delete',
      disableGeneric : true,
      pageLength: 15,
+     pageID: 'investmentTable',
      exportFlag: true,
      widths: [110,250,140,170,170,130,1,1,100,100,85,90,80,110,110,110,110,110,1,100,1,100,110,120,90,110],
      keys: ['invtCd','bank','certNo','invtType',
@@ -401,7 +402,6 @@ export class InvestmentsComponent implements OnInit {
         this.passData.tableData = [];
         this.table.overlayLoader = true;
 
-        console.log(this.matDateTo);
        this.searchParams = [ {key: "bank", search: this.bankName },
                              {key: "durUnit", search: this.duration },
                              {key: "invtStatus", search: this.statusCd + '%'},
@@ -423,7 +423,6 @@ export class InvestmentsComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data);
     if(data !== null){
       this.selectedData = data;
       this.invtRecord.createUser  = data.createUser;
@@ -511,7 +510,6 @@ export class InvestmentsComponent implements OnInit {
                }
       } else if (this.passData.tableData[i].currCd === 'USD'){
           if (year === parseInt(res[0]) && this.passData.tableData[i].currCd === res[3]){
-               console.log(parseInt(res[4]) + ' ' + this.maxusd );
                 if(maxUSD < parseInt(res[4])){
                        maxUSD = parseInt(res[4]);
                 } else {
@@ -532,13 +530,10 @@ export class InvestmentsComponent implements OnInit {
   }
         if( currencyCd === 'PHP'){
            return maxPHP;
-           console.log(maxPHP);
         }else if ( currencyCd === 'USD'){
            return maxUSD;
-           console.log(maxUSD);
         } else if ( currencyCd === 'UKP'){
            return maxUKP;
-           console.log(maxUKP);
         }   
   }    
 
@@ -930,7 +925,6 @@ update(data){
                       this.passData.tableData[i].amortEff = null;
                     }
                   var array = this.getDuration(this.passData.tableData[i].purDate,this.passData.tableData[i].matDate,this.passData.tableData[i].matPeriod,this.passData.tableData[i].durUnit);
-                  console.log(array);
                   this.passData.tableData[i].purDate = array[0];
                   this.passData.tableData[i].matDate = array[1];
 
@@ -953,7 +947,6 @@ update(data){
                          this.passData.tableData[i].amortEff = null;
                     }
                     var resultPurDate = this.changePurDate(this.passData.tableData[i]);
-                    console.log(resultPurDate);
 
                     if (resultPurDate.error){
                        this.dialogMessage="Maturity Date must be greater than Date Purchased";
@@ -970,7 +963,6 @@ update(data){
                        }
 
                     var resultPurDate = this.changeMatDate(this.passData.tableData[i]);
-                    console.log(resultPurDate);
 
                     if (resultPurDate.error){
                        this.dialogMessage="Maturity Date must be greater than Date Purchased";
@@ -999,8 +991,6 @@ update(data){
                          time = parseFloat(matPeriod);
                        }
 
-                       console.log(time);
-
                  var invtIncome = principal * rate * time;
                  var incomeAmt = Math.round(invtIncome * 100)/100;
 
@@ -1012,8 +1002,6 @@ update(data){
                      var taxRate = parseFloat(this.wtaxRateUSD) / 100;
                    };
 
-                   console.log(taxRate);
-                   
                        var withHTaxAmt = invtIncome * taxRate,
                        matVal;
 
@@ -1038,7 +1026,6 @@ update(data){
         var taxRate = parseFloat(this.wtaxRateUSD) / 100;
      };
 
-     console.log(taxRate);
                    
      var withHTaxAmt = incomeAmt * taxRate,
      matVal;
@@ -1063,7 +1050,7 @@ update(data){
       this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_USD').pipe(
            finalize(() => this.wtaxRateUSD = wtaxRt)
            ).subscribe(data => {
-       wtaxRt = data['parameters'][0].paramValueN;
+      wtaxRt = data['parameters'][0].paramValueN;
       });
     }else if (currCd === 'PHP') {
        this.mtnService.getMtnParameters('N','INVT_WHTAX_RT_PHP').pipe(
@@ -1177,7 +1164,6 @@ update(data){
 
   onClickSave(){
       this.errorAmort = '';
-      console.log(this.checkFields());
       if(this.checkFields()){
          //this.confirmSave.confirmModal()
          this.confirmSave.confirmModal();
@@ -1197,7 +1183,6 @@ update(data){
  
   checkFields(){
     for(let check of this.passData.tableData){
-       console.log(check);
         if( check.bank === null || check.bank === '' ||
             check.invtType === null || check.invtType === '' ||
             check.invtSecCd === null || check.invtSecCd === '' ||
@@ -1235,14 +1220,12 @@ update(data){
 
       
         if ( !this.isEmptyObject(check.amortized)){
-           console.log(check.priceCost + '-' + check.amortEff);
            if ( Number.isNaN(check.amortEff) ||
                 check.amortEff === undefined ||
                 check.amortEff === null) {
                return false;
            } else {
              if (check.durUnit === 'Months' ){
-               console.log((check.matPeriod % 12));
                if ( (check.matPeriod % 12) !== 0) {
                 this.errorAmort = 'Error Amort';
                 return false;
@@ -1330,9 +1313,6 @@ update(data){
                                    principal = parseFloat(a.invtAmt);
                                    matPer = this.getMaturationPeriod('Days',a.purDate,a.termDate);                     
                                    time = parseFloat(matPer)/360;
-                                   console.log(principal);
-                                   console.log(matPer);
-                                   console.log(time);
                                  }else if (a.partialPullOutTag === 'Y') {
                                    principal = a.invtAmt - a.partialPullOutAmt;
                                    matPer = a.matPeriod;                    

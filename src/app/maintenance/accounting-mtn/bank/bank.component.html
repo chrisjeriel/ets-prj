@@ -1,3 +1,4 @@
+<form #myForm="ngForm">
 <div class="cust-tabs-container">
     <h4>Maintenance / Accounting / Bank</h4>
     <ngb-tabset>
@@ -20,13 +21,13 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
                     <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
                         <label class="form-control-sm col-sm-1">Created By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
                         <label class="form-control-sm col-sm-1">Created Date</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
                         <label class="form-control-sm col-sm-1">Last Update By</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
                         <label class="form-control-sm col-sm-1">Last Update</label>
-                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <input name="updateDAte" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
                     </div>
 
                 </fieldset>           
@@ -34,6 +35,7 @@
         </ngb-tab>
     </ngb-tabset>
 </div>
+</form>
 
 <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
