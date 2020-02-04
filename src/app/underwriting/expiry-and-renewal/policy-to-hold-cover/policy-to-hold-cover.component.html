@@ -279,10 +279,10 @@
                                 </div>
                                 <div class="input-group" style="text-align: center;">
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" [disabled]="statusDesc === 'Approved'" [class.cust-btn-disabled]="statusDesc === 'Approved'" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
+                                        <button type="button" class="cust-btn col-sm" [disabled]="statusDesc === 'Approved'  || statusDesc === 'Released'" [class.cust-btn-disabled]="statusDesc === 'Approved'" (click)="approve($event)" style="width: 100px"><a>{{authorization !== userName ? 'For Approval' : 'Approve'}}</a></button>
                                     </div>      
                                     <div class="cust-btn-container col-sm" style="padding: 0px !important">
-                                        <button type="button" class="cust-btn col-sm" (click)="approve($event);" [class.cust-btn-disabled]="authorization !== userName || statusDesc === 'Rejected'" [disabled]="authorization !== userName || statusDesc === 'Rejected'" style="width: 100px">Reject</button>
+                                        <button type="button" class="cust-btn col-sm" (click)="approve($event);" [disabled]="authorization !== userName || statusDesc === 'Rejected' || statusDesc === 'Released'" style="width: 100px">Reject</button>
                                     </div>
                                 </div>
                             </fieldset>

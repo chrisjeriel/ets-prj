@@ -141,7 +141,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	fromHcMonitoring: any;		// ARNEILLE DATE: Apr.10, 2019
 
 	cancelBtnDisabledStatus: string[] = ['3','4','5','6', ''];
-	approveBtnDisabledStatus: string[] = ['2','3','4','5','6', ''];
+	approveBtnDisabledStatus: string[] = ['3','4','5','6', ''];
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
 	fromFilter:boolean = false;
@@ -618,7 +618,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			//this.onClickSave();
 	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 	  			this.isForViewing = true;
-	  			this.ps.print(this.destination,'POLR010',{policyId:this.policyInfo.policyId});
+	  			this.ps.print(this.destination,'POLR029A',{policyId:this.policyInfo.policyId});
 	  			//this.isReleasing = false;
 	  		});
   		}else{
