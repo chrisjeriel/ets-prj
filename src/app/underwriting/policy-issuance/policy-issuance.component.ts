@@ -3,7 +3,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
-import { UnderwritingService, PrintService, NotesService } from '@app/_services';
+import { UnderwritingService, PrintService, NotesService, UserService } from '@app/_services';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from '@environments/environment';
@@ -64,9 +64,12 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   lockModalShown: boolean = false;
   lockUser: string = "";
   lockMessage: string = "";
+
+  accessibleModules:any[] = [];
   
   constructor(private route: ActivatedRoute,private modalService: NgbModal, private router: Router, 
-              private underwritingService: UnderwritingService, private ps: PrintService, private ns: NotesService) { }
+              private underwritingService: UnderwritingService, private ps: PrintService, private ns: NotesService,
+              private userService: UserService) { }
 
 
   ngOnDestroy() {
@@ -100,6 +103,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
             this.exitLink = params['exitLink'] == undefined? '/policy-listing' : params['exitLink'];
             this.checkAlop();
             this.checkCoins();
+            this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
         });
     if (!this.fromInq) {
       this.wsConnect();

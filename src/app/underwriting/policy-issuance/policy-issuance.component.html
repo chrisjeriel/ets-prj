@@ -99,7 +99,7 @@
 
 		</ngb-tab>
 
-		<ngb-tab title="Post Policy" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
+		<ngb-tab title="Post Policy" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs || accessibleModules.indexOf('POL011') == -1">
 			<ng-template ngbTabContent>
 				
 			</ng-template>
