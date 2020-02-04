@@ -282,7 +282,7 @@ export class PolPostComponent implements OnInit {
       let params:any = {
                         policyId:this.policyInfo.policyId,
                         updateUser:this.ns.getCurrentUser(),
-
+                        inclEndt : 'Y'
                       };
       params.reportId= 'POLR010';
       this.ps.print('screen','POLR010',params);

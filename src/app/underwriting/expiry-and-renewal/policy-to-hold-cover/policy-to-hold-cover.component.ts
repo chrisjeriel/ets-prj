@@ -624,8 +624,14 @@ export class PolicyToHoldCoverComponent implements OnInit {
   		}else{
 	  		//DO DRAFT PRINTING
 	  		console.log(this.destination);
-	  		this.ps.print(this.destination,'POLR029',{policyId:this.policyInfo.policyId});
-  		}
+	  		let params = {
+				policyId: this.policyInfo.policyId,
+				holdCovId: this.polHoldCoverParams.holdCovId,
+				updateUser: this.userName,
+				updateDate: this.noteService.toDateTimeString(0)
+			}
+	  		this.ps.print(this.destination.toLowerCase(),'POLR029',params);
+  		}	
   	}
 
   	policyNoChecker(event, key){

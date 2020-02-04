@@ -71,6 +71,12 @@
 								<input id=coRefNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" [(ngModel)]="policyInfo.coRefNo" (change)="addNgDirty('coRefNo');">
 								<label class="col-sm-1"></label>
 							</div>
+							<div class="input-group">
+								<label class="col-sm-1"></label>
+								<label class="form-control-sm col-sm-2" for="coRefNo">Company Alteration Ref No.</label>
+								<input id=coRefNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool || policyInfo.altNo == 0" [(ngModel)]="policyInfo.coAltRefNo" (change)="addNgDirty('coRefNo');">
+								<label class="col-sm-1"></label>
+							</div>
 							<div class="input-group" *ngIf="checkRetrocession()">
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="inputQuonum">Reinsurance From</label>  

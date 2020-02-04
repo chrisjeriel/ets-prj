@@ -203,7 +203,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
       if(this.quListTable != undefined)
           this.quListTable.lengthFirst = false;
       if(this.searchParamsLov.recount != 'N'){
-        this.us.getPolicyListingLength(this.searchParams).subscribe(data=>{
+        this.us.getPolicyListingLength(obj).subscribe(data=>{
           this.passDataLOV.count = data;
           this.quListTable.setLength(1);
         })
@@ -410,42 +410,43 @@ export class UpdateGeneralInfoComponent implements OnInit {
           if(this.isEmptyObject(records)){
             this.clear();
           } else {
-          this.policyInfo.policyId = records.policyId;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
-          this.policyInfo.policyNo = records.policyNo;
-          this.splitPolNo = records.policyNo.split('-');
-          this.tempPolNo = records.policyNo.split('-');
-          this.typeOfCession = records.cessionDesc;
-          this.policyInfo.lineClassDesc = records.lineClassDesc;
-          this.policyInfo.quotationNo = records.quotationNo;
-          this.policyInfo.statusDesc =records.statusDesc;
-          this.policyInfo.cedingId = records.cedingId;
-          this.policyInfo.cedingName = records.cedingName;
-          this.policyInfo.coRefNo = records.coRefNo;
-          this.policyInfo.intmId = this.pad(records.intmId,6);
-          this.policyInfo.intmName =records.intmName;
-          this.policyInfo.reinsurerId = records.reinsurerId;
-          this.policyInfo.reinsurerName = records.reinsurerName;
-          this.policyInfo.riBinderNo = records.riBinderNo;
-          this.policyInfo.principalId = this.pad(records.principalId,6);
-          this.policyInfo.principalName = records.principalName;
-          this.policyInfo.contractorId = this.pad(records.contractorId,6);
-          this.policyInfo.contractorName = records.contractorName;
-          this.policyInfo.insuredDesc = records.insuredDesc;
-          this.policyInfo.riskName = records.project.riskName;
-          this.policyInfo.projDesc = records.project.projDesc;
-          this.policyInfo.project.riskId = records.project.riskId;
-          this.policyInfo.project.object = records.project.objectDesc;
-          this.policyInfo.project.objectId = records.project.objectId;
-          this.policyInfo.project.site = records.project.site;
-          this.policyInfo.project.regionDesc =records.project.regionDesc;
-          this.policyInfo.project.projDesc = records.project.projectDesc;
-          this.policyInfo.project.provinceDesc = records.project.provinceDesc;
-          this.policyInfo.project.cityDesc = records.project.cityDesc;
-          this.policyInfo.project.districtDesc = records.project.districtDesc;
-          this.policyInfo.project.blockDesc = records.project.blockDesc;
-          this.policyInfo.project.latitude = records.project.latitude;
-          this.policyInfo.project.longitude = records.project.longitude;
-
+            this.policyInfo.policyId = records.policyId;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            this.policyInfo.policyNo = records.policyNo;
+            this.policyInfo.coAltRefNo = records.coAltRefNo;
+            this.splitPolNo = records.policyNo.split('-');
+            this.tempPolNo = records.policyNo.split('-');
+            this.typeOfCession = records.cessionDesc;
+            this.policyInfo.lineClassDesc = records.lineClassDesc;
+            this.policyInfo.quotationNo = records.quotationNo;
+            this.policyInfo.statusDesc =records.statusDesc;
+            this.policyInfo.cedingId = records.cedingId;
+            this.policyInfo.cedingName = records.cedingName;
+            this.policyInfo.coRefNo = records.coRefNo;
+            this.policyInfo.intmId = this.pad(records.intmId,6);
+            this.policyInfo.intmName =records.intmName;
+            this.policyInfo.reinsurerId = records.reinsurerId;
+            this.policyInfo.reinsurerName = records.reinsurerName;
+            this.policyInfo.riBinderNo = records.riBinderNo;
+            this.policyInfo.principalId = this.pad(records.principalId,6);
+            this.policyInfo.principalName = records.principalName;
+            this.policyInfo.contractorId = this.pad(records.contractorId,6);
+            this.policyInfo.contractorName = records.contractorName;
+            this.policyInfo.insuredDesc = records.insuredDesc;
+            this.policyInfo.riskName = records.project.riskName;
+            this.policyInfo.projDesc = records.project.projDesc;
+            this.policyInfo.project.riskId = records.project.riskId;
+            this.policyInfo.project.object = records.project.objectDesc;
+            this.policyInfo.project.objectId = records.project.objectId;
+            this.policyInfo.project.site = records.project.site;
+            this.policyInfo.project.regionDesc =records.project.regionDesc;
+            this.policyInfo.project.projDesc = records.project.projectDesc;
+            this.policyInfo.project.provinceDesc = records.project.provinceDesc;
+            this.policyInfo.project.cityDesc = records.project.cityDesc;
+            this.policyInfo.project.districtDesc = records.project.districtDesc;
+            this.policyInfo.project.blockDesc = records.project.blockDesc;
+            this.policyInfo.project.latitude = records.project.latitude;
+            this.policyInfo.project.longitude = records.project.longitude;
+            this.policyInfo.altNo             = records.altNo;
           }
 
          
@@ -615,7 +616,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
          "latitude"        : this.policyInfo.project.latitude,
          "longitude"       : this.policyInfo.project.longitude,
          "updateDate"      : this.ns.toDateTimeString(0),
-         "updateUser"      : JSON.parse(window.localStorage.currentUser).username
+         "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
+         "coAltRefNo"      : this.policyInfo.coAltRefNo
        }
 
        
