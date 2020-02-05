@@ -102,6 +102,10 @@ export class CancelArCvJvComponent implements OnInit {
 				'paginationRequest.position': 1
 			};
 
+			this.searchParams.forEach(a => {
+				param[a.key] = a.search;
+			});
+
 			this.acctService.getJVListing(param)
 			.subscribe(data => {
 				console.log(data);
