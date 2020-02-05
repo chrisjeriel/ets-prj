@@ -964,8 +964,10 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
    if(this.validate(savePolGenInfoParam)){
      if(this.alteration && new Date(this.prevExpiryDate) <= new Date(this.policyInfo.inceptDate)) {
-       savePolGenInfoParam['extensionTag'] = 'Y';
-       savePolGenInfoParam['savingType'] = 'alteration_ext';
+       if(savePolGenInfoParam['extensionTag'] != 'Y'){
+         savePolGenInfoParam['extensionTag'] = 'Y';
+         savePolGenInfoParam['savingType'] = 'alteration_ext';
+       }
      } else {
        savePolGenInfoParam['extensionTag'] = 'N';
        if(!this.newAlt) {

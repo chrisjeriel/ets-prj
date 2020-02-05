@@ -222,7 +222,7 @@ export class SectionCoverComponent implements OnInit,AfterViewInit {
 		//deza was here 7/5/2019 #8221 MTN112
 		this.passSecTable.disableGeneric = false;
 		//deza
-  		this.passDedTable.tableData = data.deductibles;
+  		this.passDedTable.tableData = data.deductibles.filter(a=>{a.uneditable = a.add ? []:['deductibleCd'];return true;});
   		this.passDedTable.disableAdd = false;
   		this.passDedTable.disableGeneric = true;
   		this.passDedTable.nData.coverCd = data.coverCd;

@@ -1,7 +1,7 @@
 import { Component, OnInit,ViewChild, OnDestroy } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UnderwritingService, NotesService, PrintService } from '@app/_services';
+import { UnderwritingService, NotesService, PrintService, UserService } from '@app/_services';
 import { ConfirmLeaveComponent } from '@app/_components/common/confirm-leave/confirm-leave.component';
 import { Subject } from 'rxjs';
 import * as Stomp from 'stompjs';
@@ -58,9 +58,10 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
     lockModalShown: boolean = false;
     lockUser: string = "";
     lockMessage: string = "";
+    accessibleModules: any[] = [];
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService,
-        private ps:PrintService, private ns: NotesService) {}
+        private ps:PrintService, private ns: NotesService, private userService: UserService) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
@@ -92,6 +93,8 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
             // if(this.us.fromCreateAlt) {
 
             // }
+
+            this.userService.accessibleModules.subscribe(data => this.accessibleModules = data);
         });
 
       if (this.policyInfo.fromInq != 'true') {
