@@ -170,38 +170,88 @@ export class ParListingComponent implements OnInit {
         this.retrievePolListing();
     }
 
-   retrievePolListing(){
-       this.uwService.newGetParListing(this.searchParams).subscribe(data => {
-          var records = data['policyList'];
-          let recs:any[] = [];
-          this.fetchedData = records;
-          this.passDataListing.count = data['length'];
-          for(let rec of records){
-            recs.push(
-                        {
-                            policyId: rec.policyId,
-                            policyNo: rec.policyNo,
-                            cessionDesc: rec.cessionDesc,
-                            cedComp: rec.cedingName, 
-                            insured: rec.insuredDesc,
-                            risk: (rec.project == null) ? '' : rec.project.riskName,
-                            object: (rec.project == null) ? '' : rec.project.objectDesc,
-                            site: (rec.project == null) ? '' : rec.project.site,
-                            currency: rec.currencyCd,
-                            sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
-                            premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
-                            issueDate: this.ns.toDateTimeString(rec.issueDate),
-                            inceptDate: this.ns.toDateTimeString(rec.inceptDate),
-                            expiryDate: this.ns.toDateTimeString(rec.expiryDate),
-                            accDate: this.ns.toDateTimeString(rec.acctDate),
-                            status: rec.statusDesc
-                        }
-                    );  
-           }
-           this.table.placeData(recs);
+   // retrievePolListing(){
+   //     this.uwService.newGetParListing(this.searchParams).subscribe(data => {
+          // var records = data['policyList'];
+          // let recs:any[] = [];
+          // this.fetchedData = records;
+          // this.passDataListing.count = data['length'];
+          // for(let rec of records){
+          //   recs.push(
+          //               {
+          //                   policyId: rec.policyId,
+          //                   policyNo: rec.policyNo,
+          //                   cessionDesc: rec.cessionDesc,
+          //                   cedComp: rec.cedingName, 
+          //                   insured: rec.insuredDesc,
+          //                   risk: (rec.project == null) ? '' : rec.project.riskName,
+          //                   object: (rec.project == null) ? '' : rec.project.objectDesc,
+          //                   site: (rec.project == null) ? '' : rec.project.site,
+          //                   currency: rec.currencyCd,
+          //                   sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+          //                   premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+          //                   issueDate: this.ns.toDateTimeString(rec.issueDate),
+          //                   inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+          //                   expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+          //                   accDate: this.ns.toDateTimeString(rec.acctDate),
+          //                   status: rec.statusDesc
+          //               }
+          //           );  
+          //  }
+   //         this.table.placeData(recs);
 
+   //     }
+   //     );
+   // }
+
+   retrievePolListing(){
+       if(this.table != undefined)
+           this.table.lengthFirst = false;
+       if(this.searchParams.recount != 'N'){
+         this.uwService.getPolicyListingLength(this.searchParams).subscribe(data=>{
+           this.passDataListing.count = data;
+           console.log(data)
+           this.table.setLength(1);
+         })
+         this.searchParams.recount = 'N';
        }
-       );
+
+       this.uwService.newGetParListing(this.searchParams).subscribe((data:any)=>{
+         
+             // a.lineCd = a.policyNo.substring(0,3);
+             // a.totalSi = a.project.coverage.totalSi;
+             // a.riskName = a.project.riskName;
+             // a.objectDesc = a.project.objectDesc;
+             // a.site = a.project.site;
+             // a.totalPrem = a.project.coverage.totalPrem;
+             var records = data['policyList'];
+             let recs:any[] = [];
+             this.fetchedData = records;
+             for(let rec of records){
+               recs.push(
+                           {
+                               policyId: rec.policyId,
+                               policyNo: rec.policyNo,
+                               cessionDesc: rec.cessionDesc,
+                               cedComp: rec.cedingName, 
+                               insured: rec.insuredDesc,
+                               risk: (rec.project == null) ? '' : rec.project.riskName,
+                               object: (rec.project == null) ? '' : rec.project.objectDesc,
+                               site: (rec.project == null) ? '' : rec.project.site,
+                               currency: rec.currencyCd,
+                               sumInsured: (rec.project.coverage == null) ? '' : rec.project.coverage.totalSi,
+                               premium: (rec.project.coverage == null) ? '' : rec.project.coverage.totalPrem,
+                               issueDate: this.ns.toDateTimeString(rec.issueDate),
+                               inceptDate: this.ns.toDateTimeString(rec.inceptDate),
+                               expiryDate: this.ns.toDateTimeString(rec.expiryDate),
+                               accDate: this.ns.toDateTimeString(rec.acctDate),
+                               status: rec.statusDesc
+                           }
+                       );  
+              }
+              this.table.placeData(recs,1);
+         
+       })
    }
     //Method for DB query
     searchQuery(searchParams){

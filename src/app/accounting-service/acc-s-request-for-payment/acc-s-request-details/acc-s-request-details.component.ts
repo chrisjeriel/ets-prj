@@ -107,13 +107,16 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
+    nData         : {
+      taxAllocation : []
+    }
   };
 
   //Added by NECO 11/19/2019
   passDataGenTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -129,22 +132,23 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'genTaxTbl'
       }
 
   passDataWhTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -160,15 +164,16 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'whTaxTbl'
       }
 
@@ -194,6 +199,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   insTypeC           : any;
   selectedTblData    : any = {};
   private sub        : any;
+  frmMainSaveBtn     : boolean = true;
 
   passData : any = {
     selector   : '',
@@ -279,8 +285,25 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
                updateDate: '',
                showMG: 0
              });
+             this.diemInsData.nData.taxAllocation.push({
+               reqId: this.rowData.reqId,
+               itemNo: '',
+               taxSeqNo: '',
+               genType: 'A',
+               taxType: 'G', //for General Tax, Tax Type
+               taxCd: i.taxCd,
+               taxName: i.taxDesc,
+               taxRate: i.taxRate,
+               taxAmt: i.fixedAmount !== null ? i.fixedAmount : 1,
+               createUser: '',
+               createDate: '',
+               updateUser: '',
+               updateDate: '',
+               showMG: 0
+             });
            }
          }
+
          for(var j of defWhTax.defWhTax){
            this.cvData.nData.taxAllocation.push({
              reqId: this.rowData.reqId,
@@ -314,7 +337,24 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
              updateDate: '',
              showMG: 0
            });
+           this.diemInsData.nData.taxAllocation.push({
+             reqId: this.rowData.reqId,
+             itemNo: '',
+             taxSeqNo: '',
+             genType: 'A',
+             taxType: 'W', //for Withholding Tax, Tax Type
+             taxCd: j.taxCd,
+             taxName: j.taxDesc,
+             taxRate: j.taxRate,
+             taxAmt: 0,
+             createUser: '',
+             createDate: '',
+             updateUser: '',
+             updateDate: '',
+             showMG: 0
+           });
          }
+         console.log(this.diemInsData.nData.taxAllocation);
          console.log(this.pcvData.nData.taxAllocation);
          this.cvData.nData.taxAllocation = this.cvData.nData.taxAllocation.filter(a=>{
                                                  if(this.rowData.vatTag == 3 || this.rowData.vatTag == 2){
@@ -330,6 +370,14 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
                                                    return a.taxCd !== 'VAT';
                                                  }
                                              });
+         this.diemInsData.nData.taxAllocation = this.diemInsData.nData.taxAllocation.filter(a=>{
+                                                 if(this.rowData.vatTag == 3 || this.rowData.vatTag == 2){
+                                                    return a;
+                                                 }else{
+                                                   return a.taxCd !== 'VAT';
+                                                 }
+                                             });
+         console.log(this.diemInsData.nData.taxAllocation);
          console.log(this.pcvData.nData.taxAllocation);
        }
      );
@@ -395,7 +443,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               feeAmt        : 0,
               localAmt      : 0,
               newRec        : 1,
-              showMG        : 1
+              showMG        : 1,
+              taxAllocation : []
             },
             opts: [
               {selector   : 'feeTypeDesc',  prev : [], vals: []},
@@ -425,7 +474,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               localAmt           : 0,
               newRec             : 1,
               showMG             : 1,
-              opts               : [{selector   :'insuranceTypeDesc',  prev : [], vals: []}]
+              opts               : [{selector   :'insuranceTypeDesc',  prev : [], vals: []}],
+              taxAllocation      : []
             },
             pageID        : 'diemInsData',
             uneditable    : [true,false,true,true,false,true],
@@ -437,7 +487,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           $.extend(this.diemInsData,otherDataDiemIns);
         }
         console.log(this.diemInsData);
-        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.diemInsData):'';
+        (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.diemInsData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
 
         ////
         (this.requestData.tranTypeCd == 7)?this.assignInsType():'';
@@ -458,6 +508,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           return e; 
         });
         console.log(this.diemInsData.tableData);
+
+
         if(this.requestData.tranTypeCd == 6){
           this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
           this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);  
@@ -530,8 +582,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         }else{
           if(this.requestData.tranTypeCd == 6){
             this.params.deletePerDiem.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
           }else if(this.requestData.tranTypeCd == 7){
             this.params.deleteInsuranceExp.push(e);
+            this.params.delCvItemTaxes.push(e.taxAllocation);
           }else{
             this.params.deletePrqTrans.push(e);
             this.params.delCvItemTaxes.push(e.taxAllocation);
@@ -545,11 +599,28 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           e.tranTypeCd    = (e.tranTypeCd == '' || e.tranTypeCd == null)?this.requestData.tranTypeCd:e.tranTypeCd;
           e.updateUser    = this.ns.getCurrentUser();
           e.updateDate    = this.ns.toDateTimeString(0);
+
           if(this.requestData.tranTypeCd == 6){
             e.feeType       = (e.newRec == 1)?e.feeTypeDesc:e.feeType;
+            if(e.taxAllocation == undefined){
+              this.params.delCvItemTaxes = [];
+              e.taxAllocation = [];
+            }else{
+              this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+              e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            }
             this.params.savePerDiem.push(e);
           }else if(this.requestData.tranTypeCd == 7){
             e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
+            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            if(e.taxAllocation == undefined){
+              this.params.delCvItemTaxes = [];
+              e.taxAllocation = [];
+            }else{
+              this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+              e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            }
             this.params.saveInsuranceExp.push(e);
           }else{
             this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
@@ -563,8 +634,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             this.params.deleteInsuranceExp.push(e);
           }else{
             this.params.deletePrqTrans.push(e);
-            this.params.delCvItemTaxes.push(e.taxAllocation);
           }
+          this.params.delCvItemTaxes.push(e.taxAllocation.filter(t => t.taxCd != null && t.taxCd != ''));
         }
 
       }
@@ -576,6 +647,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     console.log(this.params.saveInsuranceExp);
     console.log(this.params.savePerDiem);
     console.log(this.params.savePrqTrans);
+    console.log(this.params.deletePerDiem);
+    console.log(this.params.deletePrqTrans);
     if(this.requestData.tranTypeCd == 6 || this.requestData.tranTypeCd == 7){
       tbl.forEach(tblData => {
         if(tblData.newRec != 1){
@@ -595,9 +668,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.suc.open();
       this.params.savePrqTrans = [];
       this.params.savePerDiem  = [];
-    }else if(isUnique.some(s => s == false)){
+    }else if(isUnique.some(s => s == false) && (this.frmMainSaveBtn)){
       this.warnMsg = (this.requestData.tranTypeCd == 6)?'Directors\' Fee Type for every Board Member must be unique':'Insurance Type for every Insured must be unique';
-      this.warnMdl.openNoClose();
+      this.warnMdl.openNoClose();this.rowData.reqId
     }else{
       var emp = false;
       if(this.requestData.tranTypeCd == 6){
@@ -653,6 +726,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         console.log(data);
         if(data['returnCode'] == -1){
           this.getPaytReqPrqTrans();
+          this.genTaxTbl.markAsPristine();
+          this.whTaxTbl.markAsPristine();
           this.dieminsTbl.markAsPristine();
         }else{
           this.dialogIcon = 'error';
@@ -667,6 +742,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         console.log(data);
         if(data['returnCode'] == -1){
           this.getPaytReqPrqTrans();
+          this.genTaxTbl.markAsPristine();
+          this.whTaxTbl.markAsPristine();
           this.dieminsTbl.markAsPristine();
         }else{
           this.dialogIcon = 'error';
@@ -784,7 +861,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.directorId   = e.slCd;
             e.createDate = '';
             e.createUser = ''; 
-            e.updateUser = ''; 
+            e.updateUser = '';
+            e.taxAllocation = this.diemInsData.nData.taxAllocation.map(a => { a.edited = true; return a; });
           }
           e.checked = false;
           return e;
@@ -944,18 +1022,24 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     if(event != null){
       this.selectedTblData.createDate = this.ns.toDateTimeString(event.createDate);
       this.selectedTblData.updateDate = this.ns.toDateTimeString(event.updateDate);
-      if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
+      //if(this.requestData.tranTypeCd != 6 && this.requestData.tranTypeCd != 7){
         //Added by Neco 11/20/2019
         this.disableTaxBtn = false;
         this.passDataGenTax.nData.reqId = event.reqId;
         this.passDataGenTax.nData.itemNo = event.itemNo;
         this.passDataWhTax.nData.reqId = event.reqId;
         this.passDataWhTax.nData.itemNo = event.itemNo;
-        this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
-        this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
+        if(event.taxAllocation == undefined){
+          this.passDataGenTax.tableData = [];
+          this.passDataWhTax.tableData = [];
+          event.taxAllocation = [];
+        }else{
+          this.passDataGenTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'G'});
+          this.passDataWhTax.tableData = event.taxAllocation.filter(a=>{return a.taxType == 'W'});
+        }
         this.genTaxTbl.refreshTable();
         this.whTaxTbl.refreshTable();
-      }
+     // }
     }else{
       this.disableTaxBtn = true;
     }

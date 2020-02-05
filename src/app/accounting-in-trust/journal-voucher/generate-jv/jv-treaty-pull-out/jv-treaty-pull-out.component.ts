@@ -178,7 +178,6 @@ export class JvTreatyPullOutComponent implements OnInit {
 
   retrieveInvPullOut(){
     this.accountingService.getTrtyInv(this.jvDetail.tranId).subscribe((data:any) =>{
-      console.log(data)
       this.passData.tableData = [];
       this.cedingFlag = false;
       if(data.acctTreatyBal.length != 0){
@@ -321,7 +320,6 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   setSelectedData(data){
-    console.log(data.data)
     this.quarterTable.indvSelect.trtyInvmt = this.quarterTable.indvSelect.trtyInvmt.filter(a=>a.showMG!=1);
     for(var  i=0; i < data.data.length;i++){
       this.quarterTable.indvSelect.trtyInvmt.push(JSON.parse(JSON.stringify(this.invesmentData.nData)));
@@ -446,12 +444,10 @@ export class JvTreatyPullOutComponent implements OnInit {
     var netMaturity = 0;
     var errorFlag = false;
     for (var i = 0; i < this.passData.tableData.length; i++) {
-      console.log(this.passData.tableData[i]);
       netMaturity = 0;
       for (var j = 0; j < this.passData.tableData[i].trtyInvmt.length; j++) {
         netMaturity += this.passData.tableData[i].trtyInvmt[j].maturityValue;
       }
-      console.log(netMaturity)
       if(this.passData.tableData[i].balanceAmt < netMaturity){
         errorFlag = true;
       }

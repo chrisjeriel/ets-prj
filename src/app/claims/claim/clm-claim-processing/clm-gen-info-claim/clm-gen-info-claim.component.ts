@@ -18,7 +18,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { tap, mergeMap, map } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
 import { DatepickerComponent } from '@app/_components/datepicker/datepicker.component';
-
+ 
 @Component({
   selector: 'app-clm-gen-info-claim',
   templateUrl: './clm-gen-info-claim.component.html',
@@ -424,6 +424,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
       this.claimData.processedBy = this.ns.getCurrentUser();
 
       var d = this.ns.toDateTimeString(0).split('T');
+      d[1]= '00:00';
       this.claimData.reportDate = d.join('T');
 
       d[0] = '';

@@ -1919,10 +1919,17 @@ export class ExpiryListingComponent implements OnInit {
       this.ps.print(this.printDestination,reportName,params);
     }
 
-    if(forPrint.filter(a=>a.nonRenTag=='Y').length != 0){
+    if(forPrint.filter(a=>a.nonRenTag=='Y' && this.currentTab == 'renew').length != 0){
       params.policyId = forPrint.filter(a=>a.nonRenTag=='Y').map(a=>a.policyId).join(',');
       params.fileName = cedingAbbr +'_' + 'POLR027B';
       params.reportName = 'POLR027B';
+      this.ps.print(this.printDestination,reportName,params);
+    }
+
+    if(forPrint.filter(a=>a.nonRenTag=='Y' && this.currentTab != 'renew').length != 0){
+      params.policyId = forPrint.filter(a=>a.nonRenTag=='Y').map(a=>a.policyId).join(',');
+      params.fileName = cedingAbbr +'_' + 'POLR027E';
+      params.reportName = 'POLR027E';
       this.ps.print(this.printDestination,reportName,params);
     }
 

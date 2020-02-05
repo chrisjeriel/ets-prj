@@ -89,7 +89,7 @@ export class SpoilPolAltComponent implements OnInit {
 	rowRec				: any;
 	rowRecSpoil			: any;
 	searchParams: any = {
-        statusArr:['2'],
+        statusArr:['1','2'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,
     };
@@ -460,9 +460,10 @@ export class SpoilPolAltComponent implements OnInit {
 
 		if(this.searchArr.includes('')) {
 			this.searchArr = this.searchArr.map(a => { a = a === '' ? '%%' : a; return a; });
+		}else if(!this.searchArr.includes('%%')){
+			this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
 		}
 		
-		this.getPolicyList([{ key: 'policyNo', search: this.searchArr.join('-') }]);
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {

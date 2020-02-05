@@ -46,12 +46,10 @@ export class GenerateJvServiceComponent implements OnInit {
   }
 
   tabController(jvType){
-    console.log(this.jvType);
     this.jvType = jvType;
   }
 
   jvInfo(data){
-    console.log(data)
      this.jvData.tranId = data.jvTranId;
      this.jvData.type =  data.jvType;
      this.jvData.jvNo =  data.jvNo;

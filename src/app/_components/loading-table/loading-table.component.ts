@@ -216,13 +216,34 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
         $('#tableRow').focus();
 
     }
+    lengthFirst:boolean = false;
 
-    placeData(items){
-    	if(this.passData.count != undefined && this.passData.count != this.prevLength){
-    		this.addFiller();
+    setLength(v2?){
+        if(this.passData.count != null && this.passData.count != undefined && this.passData.count != this.prevLength && v2 == undefined){
+            this.addFiller();
             this.p = 1;
-    		this.prevLength = this.passData.count;
-    	}
+            this.prevLength = this.passData.count;
+        }else if(v2!=undefined){
+            this.lengthFirst = true;
+            this.addFiller(v2);
+        }else {
+            this.passData.count = this.prevLength;
+        }
+    }
+
+    placeData(items,v2?){
+        if(v2==undefined){
+            this.setLength();
+        }else if(v2!= undefined && this.searchQuery.recount != 'N'){
+            this.p = 1;
+            if(!this.lengthFirst){
+                this.passData.count = undefined;
+            }
+            else{
+                 this.lengthFirst = false;
+             }
+            this.addFiller();
+        }
 
         var start = (this.p - 1) * this.passData.pageLength;
         for(let itm of items){
@@ -245,6 +266,35 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
             }
         })
 
+    }
+
+    addFiller(v2?){
+        if(this.fillData == null || this.fillData == undefined){
+            this.fillData = {};
+        }
+        for(let key of this.passData.keys){
+            this.fillData[key] = null;
+        }
+        this.fillData.filler = true;
+        let total = this.passData.count == undefined ? 0 : parseInt(this.passData.count);
+        let c = 0;
+        if(this.passData.count == undefined || this.passData.count == null){
+            c = this.passData.pageLength
+        }else{
+            c = total + (total%this.passData.pageLength == 0 ? 0 : this.passData.pageLength) - (total%this.passData.pageLength);
+
+        }
+
+        if(v2==undefined){
+            this.passData.tableData = Array(c==0?this.passData.pageLength : c).fill(this.fillData);
+        }else{
+            c= c - this.passData.tableData.length;
+            console.log('eyyy')
+            console.log(c);
+            console.log(this.passData.tableData.length);
+           
+            this.passData.tableData = this.passData.tableData.concat(Array(c<0?0:c).fill(this.fillData));
+        }
     }
 
     ngAfterViewInit(){
@@ -545,26 +595,12 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
         this.searchQuery.recount = recount == undefined ? 'Y' : 'N';
         this.searchQuery.length = recount == undefined ? null : this.passData.count;
         this.searchQuery['paginationRequest.position'] =recount == undefined ? 1 : this.p;   
+        this.lengthFirst = false;
         this.searchToDb.emit(this.searchQuery);
         this.overlayLoader = true;
     }
 
-    addFiller(){
-        if(this.fillData == null || this.fillData == undefined){
-            this.fillData = {};
-        }
-        for(let key of this.passData.keys){
-            this.fillData[key] = null;
-        }
-        this.fillData.filler = true;
-        let c:Number = 0;
-        if(this.passData.count == undefined || this.passData.count == null){
-            c = this.passData.pageLength
-        }else{
-            c = this.passData.count + (this.passData.count%this.passData.pageLength == 0 ? 0 : this.passData.pageLength) - (this.passData.count%this.passData.pageLength);
-        }
-        this.passData.tableData = Array(c==0?this.passData.pageLength : c).fill(this.fillData);
-    }
+    
 
     addCheckFlag(cell){
         

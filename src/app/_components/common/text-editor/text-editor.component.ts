@@ -4,7 +4,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
 import { NotesService } from '@app/_services/notes.service';
 import { QuillEditorComponent } from 'ngx-quill';
-
+import * as Quill from 'quill';
 
 @Component({
   selector: 'text-editor',
@@ -26,21 +26,25 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() table: boolean = false;
   @Input() editablePrev: boolean = true;
   @Input() formName: string = 'te' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
+  @Input() format: string = 'text';
  
   @Output() fetchContent: EventEmitter<any> = new EventEmitter<any>();
 
   style: any = {
     height: '100%',
     width: '100%',
-    font: '11px arial',
+    font: '10px arial',
     padding: '5px 10px',
     color: 'black'
   };
 
-  oldValue: any = '';
   modalRef: NgbModalRef;
 
   afterInit: boolean = false;
+  editorContentMdl: any = '';
+
+  bold: any = null;
+  italic: any = null;
 
   constructor(private modalService: NgbModal, private ns: NotesService, private renderer: Renderer2) { }
 
@@ -57,15 +61,12 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    // if(changes.readonly && changes.required) {
-    //   if(changes.readonly.currentValue && !changes.required.currentValue) {
-    //     this.style['background'] = '#f5f5f5';
-    //   } else if(changes.required.currentValue && !changes.readonly.currentValue) {
-    //     this.style['background'] = '#fffacd85';
-    //   }
-    // }
     if(changes.readonly && this.renderer != undefined && this.afterInit) {
       this.renderer.setStyle(this.frontEditor.editorElem, 'backgroundColor', changes.readonly.currentValue ? '#f5f5f5' : this.required ? '#fffacd85' : '#ffffff');
+    }
+
+    if(changes.editorContent && changes.editorContent.currentValue) {
+      this.editorContent = changes.editorContent.currentValue;
     }
   }
 
@@ -75,21 +76,33 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
       this.ns.formGroup.addControl(this.formName, this.edtrPrevForm.form);
     }
     this.afterInit = true;
+
+    if(this.format == 'html') {
+      this.bold = Quill.import('formats/bold');
+      this.bold.tagName = 'b';
+      Quill.register(this.bold, true);
+
+      this.italic = Quill.import('formats/italic');
+      this.italic.tagName = 'i';
+      Quill.register(this.italic, true);
+    }
+    
   }
 
   showTextEditorModal(content) {
-    this.oldValue = this.editorContent;
+    this.editorContentMdl = this.editorContent;
     this.edtrMdl.openNoClose();
   }
 
   closeTextEditorModal(event) {
-  	this.emitValue();
-  	this.modalService.dismissAll();
-    this.edtrMdlForm.form.markAsPristine();
-
-    if(this.oldValue !== this.editorContent) {
+    if(this.editorContent !== this.editorContentMdl && !this.table) {
       this.ns.formGroup.get(this.formName).markAsDirty();
     }
+
+    this.editorContent = this.editorContentMdl;
+    this.emitValue();
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   checkStyle() {
@@ -104,7 +117,7 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
   onClickCancel(confirm) {
     setTimeout(() => {
-      if(this.edtrMdlForm.dirty) {  
+      if(this.edtrMdlForm.dirty) {
         this.modalRef = this.modalService.open(confirm, { centered: true, backdrop: 'static', windowClass: "modal-size" });
       } else {
         this.modalService.dismissAll();
@@ -113,8 +126,8 @@ export class TextEditorComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   onClickYes() {
-    this.editorContent = this.oldValue;
-    this.closeTextEditorModal(1);
+    this.edtrMdlForm.form.markAsPristine();
+    this.modalService.dismissAll();
   }
 
   onClickNo() {

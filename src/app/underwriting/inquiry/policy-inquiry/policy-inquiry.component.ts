@@ -179,7 +179,9 @@ export class PolicyInquiryComponent implements OnInit {
 
   searchParams: any = {
         'paginationRequest.count':10,
-        'paginationRequest.position':1
+        'paginationRequest.position':1,
+        'altNo':0,
+        mode:'inquiry'
     };
 
   constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
@@ -210,10 +212,17 @@ export class PolicyInquiryComponent implements OnInit {
    }
 
    retrievePolListing(){
+       if(this.searchParams.recount != 'N'){
+         this.underwritingService.getPolicyListingLength(this.searchParams).subscribe(data=>{
+           this.passData.count = data;
+           console.log(data)
+           this.listTable.setLength(1);
+         })
+         this.searchParams.recount = 'N';
+       }
+
        this.underwritingService.newGetParListing(this.searchParams).subscribe((data:any)=>{
-         this.passData.count = data['length'];
          this.listTable.placeData(data.policyList.filter(a=>{
-           
              a.lineCd = a.policyNo.substring(0,3);
              a.totalSi = a.project.coverage.totalSi;
              a.riskName = a.project.riskName;
@@ -221,7 +230,7 @@ export class PolicyInquiryComponent implements OnInit {
              a.site = a.project.site;
              a.totalPrem = a.project.coverage.totalPrem;
              return true;
-         }));
+         }),1);
        })
    }
 

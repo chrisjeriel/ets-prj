@@ -115,7 +115,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
                         this.accountingService.getJvTrtyUnappliedColl(this.jvDetail.tranId)).pipe(map(([collection, treaty]) => {return {collection, treaty}}));
 
   	this.forkSub = join.subscribe((data: any) => {
-  	  console.log(data);
   	  if(data.collection.unappliedColl.length !== 0 || data.treaty.trtyUnappColl.length !== 0){
   	    this.passDataUnapplied.tableData = data.collection.unappliedColl;
         this.passData.tableData = data.treaty.trtyUnappColl;
@@ -153,7 +152,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data)
     if(data !== null){
       this.passData.disableAdd = false;
       this.passDataUnapplied.disableAdd = false;
@@ -182,7 +180,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
   }
 
   setLOV(data){
-    console.log(data.data)
     this.passDataUnapplied.tableData = this.passDataUnapplied.tableData.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.passDataUnapplied.tableData.push(JSON.parse(JSON.stringify(this.passDataUnapplied.nData)));
@@ -224,7 +221,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
 	}		
 
     setQsoaLOV(data){
-      console.log(data.data)
       /*this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
       for (var i = 0; i < data.data.length; i++) {
         this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -374,6 +370,5 @@ export class JvUnappliedTreatyComponent implements OnInit {
     }
 
     onClickCancel(){
-      console.log(this.passData.tableData);
     }
 }

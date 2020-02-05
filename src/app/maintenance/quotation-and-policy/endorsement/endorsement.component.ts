@@ -27,32 +27,32 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
   dialogMessage: string = '';
 
   line:any = {
-	  lineCd:'',
-	  description:'',
+    lineCd:'',
+    description:'',
   }
 
   info:any = {
-  	createUser : '',
-  	createDate : '',
-  	updateUser : '',
-  	updateDate : '',
+    createUser : '',
+    createDate : '',
+    updateUser : '',
+    updateDate : '',
   }
 
   passEndtTable:any={
-  	tableData:[],
-  	widths:[1,'auto','auto','auto',1,1,'auto'],
-  	tHeader:['Endt Code','Endt Name','Description','Wordings','Active','Default','Remarks'],
-  	dataTypes:['sequence-3','text','text-editor','text-editor','checkbox','checkbox','text'],
-  	keys:['endtCd','endtTitle','description','text','activeTag','defaultTag','remarks'],
-  	addFlag: true,
-  	genericBtn:'Delete',
-  	paginateFlag:true,
-  	infoFlag:true,
-  	searchFlag:true,
-  	pageLength: 10,
-  	pageId: 'endt',
-  	nData:{
-  	  "lineCd": "",
+    tableData:[],
+    widths:[1,'auto','auto','auto',1,1,'auto'],
+    tHeader:['Endt Code','Endt Name','Description','Wordings','Active','Default','Remarks'],
+    dataTypes:['sequence-3','text','text-editor-h','text-editor-h','checkbox','checkbox','text'],
+    keys:['endtCd','endtTitle','description','text','activeTag','defaultTag','remarks'],
+    addFlag: true,
+    genericBtn:'Delete',
+    paginateFlag:true,
+    infoFlag:true,
+    searchFlag:true,
+    pageLength: 10,
+    pageId: 'endt',
+    nData:{
+      "lineCd": "",
       "lineDesc": "",
       "endtCd": "",
       "endtTitle": "",
@@ -83,9 +83,9 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
       "updateUser": this.ns.getCurrentUser(),
       "updateDate": 0,
       deductibles: []
-  	},
-  	disableGeneric : true,
-  	disableAdd : true
+    },
+    disableGeneric : true,
+    disableAdd : true
   }
 
   passDedTable: any = {
@@ -130,8 +130,8 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
         pageID              : 'mtn-deductibles',
         widths              : [1,'auto','auto','auto','auto','auto','auto','auto','auto','auto'],
         genericBtn: 'Delete',
-	  	disableGeneric : true,
-	  	disableAdd : true
+      disableGeneric : true,
+      disableAdd : true
 
 
     };
@@ -157,9 +157,9 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit() {
-  	//setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
+    //setTimeout(a=>{this.endtTable.refreshTable();this.dedTable.refreshTable();},0);
 
-  	this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
+    this.ms.getRefCode('MTN_DEDUCTIBLES.DEDUCTIBLE_TYPE')
             .subscribe(data =>{
                 this.passDedTable.opts[0].vals = [];
                 this.passDedTable.opts[0].prev = [];
@@ -230,127 +230,127 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
   }
 
   getMtnEndorsements(){
-  	this.endtTable.loadingFlag = true;
-    	this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
-    		this.passEndtTable.disableAdd = false;
-    		this.passEndtTable.tableData = a['endtCode'];
-    		this.passEndtTable.tableData.forEach(a=>{{
+    this.endtTable.loadingFlag = true;
+      this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
+        this.passEndtTable.disableAdd = false;
+        this.passEndtTable.tableData = a['endtCode'];
+        this.passEndtTable.tableData.forEach(a=>{{
           a.endtCd = String(a.endtCd).padStart(3,'0')
-    			a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
-  			                 (a.endtText02 === null ? '' :a.endtText02) +
-  			                 (a.endtText03 === null ? '' :a.endtText03) +
-  			                 (a.endtText04 === null ? '' :a.endtText04) +
-  			                 (a.endtText05 === null ? '' :a.endtText05) +
-  			                 (a.endtText06 === null ? '' :a.endtText06) +
-  			                 (a.endtText07 === null ? '' :a.endtText07) +
-  			                 (a.endtText08 === null ? '' :a.endtText08) +
-  			                 (a.endtText09 === null ? '' :a.endtText09) +
-  			                 (a.endtText10 === null ? '' :a.endtText10) +
-  			                 (a.endtText11 === null ? '' :a.endtText11) +
-  			                 (a.endtText12 === null ? '' :a.endtText12) +
-  			                 (a.endtText13 === null ? '' :a.endtText13) +
-  			                 (a.endtText14 === null ? '' :a.endtText14) +
-  			                 (a.endtText15 === null ? '' :a.endtText15) +
-  			                 (a.endtText16 === null ? '' :a.endtText16) +
-  			                 (a.endtText17 === null ? '' :a.endtText17) ;
-  			a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
-  			a.uneditable = ['endtCd']
-    		}})
-    		this.endtClick(null);
+          a['text'] = (a.endtText01 === null ? '' :a.endtText01) +
+                         (a.endtText02 === null ? '' :a.endtText02) +
+                         (a.endtText03 === null ? '' :a.endtText03) +
+                         (a.endtText04 === null ? '' :a.endtText04) +
+                         (a.endtText05 === null ? '' :a.endtText05) +
+                         (a.endtText06 === null ? '' :a.endtText06) +
+                         (a.endtText07 === null ? '' :a.endtText07) +
+                         (a.endtText08 === null ? '' :a.endtText08) +
+                         (a.endtText09 === null ? '' :a.endtText09) +
+                         (a.endtText10 === null ? '' :a.endtText10) +
+                         (a.endtText11 === null ? '' :a.endtText11) +
+                         (a.endtText12 === null ? '' :a.endtText12) +
+                         (a.endtText13 === null ? '' :a.endtText13) +
+                         (a.endtText14 === null ? '' :a.endtText14) +
+                         (a.endtText15 === null ? '' :a.endtText15) +
+                         (a.endtText16 === null ? '' :a.endtText16) +
+                         (a.endtText17 === null ? '' :a.endtText17) ;
+        a.deductibles = a.deductibles.filter(b=>b.deductibleCd != null)
+        a.uneditable = ['endtCd']
+        }})
+        this.endtClick(null);
         this.endtTable.markAsPristine();
-    		this.endtTable.refreshTable();
+        this.endtTable.refreshTable();
         this.dedTable.markAsPristine();
-    	})
+      })
   }
 
   deleteEndt(){
-  	if(this.endtTable.indvSelect.okDelete == 'N'){
-  		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
-  		this.successDialog.open();
-  	}else{
+    if(this.endtTable.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'You are not allowed to delete an Endorsement that is already used in quotation processing.';
+      this.successDialog.open();
+    }else{
       //this.passEndtTable.disableGeneric = true;
       this.passDedTable.disableGeneric = true;
       this.passDedTable.disableAdd = true;
       this.passDedTable.tableData = [];
       this.dedTable.refreshTable();
-  		this.endtTable.selected  = [this.endtTable.indvSelect]
-  		this.endtTable.confirmDelete();
-  	}
+      this.endtTable.selected  = [this.endtTable.indvSelect]
+      this.endtTable.confirmDelete();
+    }
   }
 
   deleteDed(){
-  	if(this.dedTable.indvSelect.okDelete == 'N'){
-  		this.dialogIcon = 'info';
-  		this.dialogMessage =  'You are not allowed to delete a Deductible that is already used in quotation processing.';
-  		this.successDialog.open();
-  	}else{
-  		this.dedTable.selected  = [this.dedTable.indvSelect]
-  		this.dedTable.confirmDelete();
-  	}
+    if(this.dedTable.indvSelect.okDelete == 'N'){
+      this.dialogIcon = 'info';
+      this.dialogMessage =  'You are not allowed to delete a Deductible that is already used in quotation processing.';
+      this.successDialog.open();
+    }else{
+      this.dedTable.selected  = [this.dedTable.indvSelect]
+      this.dedTable.confirmDelete();
+    }
   }
 
   endtClick(data){
-  	if(data != null){
-  		this.passDedTable.tableData = data.deductibles;
-  		this.passDedTable.disableAdd = false;
+    if(data != null){
+      this.passDedTable.tableData = data.deductibles;
+      this.passDedTable.disableAdd = false;
       this.passDedTable.disableGeneric = true;
-  		this.passDedTable.nData.endtCd = data.endtCd;
+      this.passDedTable.nData.endtCd = data.endtCd;
       this.passEndtTable.disableGeneric = false;
-  		this.disableFields();
-  		this.info = data;
-  	}else{
+      this.disableFields();
+      this.info = data;
+    }else{
       this.passEndtTable.disableGeneric = true;
-  		this.passDedTable.disableAdd = true;
-  		this.passDedTable.disableGeneric = true;
-  		this.passDedTable.tableData = [];
-  		this.info = {
-		  	createUser : '',
-		  	createDate : '',
-		  	updateUser : '',
-		  	updateDate : '',
-		  }
-  	}
-  	this.dedTable.refreshTable();
+      this.passDedTable.disableAdd = true;
+      this.passDedTable.disableGeneric = true;
+      this.passDedTable.tableData = [];
+      this.info = {
+        createUser : '',
+        createDate : '',
+        updateUser : '',
+        updateDate : '',
+      }
+    }
+    this.dedTable.refreshTable();
   }
 
   disableFields(){
-  	// 'deductibleAmt','deductibleRate','minAmt','maxAmt'
-  	this.passDedTable.tableData.forEach(a=>{
-  		if(a.deductibleType == 'F'){
-  			a.uneditable = ['deductibleRate','minAmt','maxAmt','deductibleCd'];
-  			a.uneditable.forEach((b,i)=>{
-  				if(i != a.uneditable.length-1)
-  					a[b] = '';
-  			})
-  		}else{
-  			a.uneditable = ['deductibleAmt','deductibleCd'];
-	  		a.uneditable.forEach((b,i)=>{
-	  			if(i != a.uneditable.length-1)
-	  				a[b] = '';
-	  		})
-  		}
+    // 'deductibleAmt','deductibleRate','minAmt','maxAmt'
+    this.passDedTable.tableData.forEach(a=>{
+      if(a.deductibleType == 'F'){
+        a.uneditable = ['deductibleRate','minAmt','maxAmt','deductibleCd'];
+        a.uneditable.forEach((b,i)=>{
+          if(i != a.uneditable.length-1)
+            a[b] = '';
+        })
+      }else{
+        a.uneditable = ['deductibleAmt','deductibleCd'];
+        a.uneditable.forEach((b,i)=>{
+          if(i != a.uneditable.length-1)
+            a[b] = '';
+        })
+      }
 
-  		if(a.add){
-  			a.uneditable.pop();
-  		}
-  	})
+      if(a.add){
+        a.uneditable.pop();
+      }
+    })
   }
 
   endtTextKeys:string[] = ['endtText01','endtText02','endtText03','endtText04','endtText05','endtText06','endtText07','endtText08','endtText09','endtText10','endtText11','endtText12','endtText13','endtText14','endtText15','endtText16','endtText17'];
   
   save(can?){
-  	this.cancelFlag = can !== undefined;
-  	let params : any = {
-  		saveEndorsement : [],
-  		delEndorsement :[],
-  		saveDeductibles:[],
-  		deleteDeductibles:[]
-  	}
+    this.cancelFlag = can !== undefined;
+    let params : any = {
+      saveEndorsement : [],
+      delEndorsement :[],
+      saveDeductibles:[],
+      deleteDeductibles:[]
+    }
 
-  	for(let endt of this.passEndtTable.tableData){
-  		if(endt.edited && !endt.deleted){
-  			let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+    for(let endt of this.passEndtTable.tableData){
+      if(endt.edited && !endt.deleted){
+        let endtTextSplit = endt.text.match(/(.|[\r\n]){1,1500}/g);
             if(endtTextSplit!== null)
                 for (var i = 0; i < endtTextSplit.length; ++i) {
                     endt[this.endtTextKeys[i]] = endtTextSplit[i];
@@ -359,10 +359,10 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
             endt.createDate = this.ns.toDateTimeString(endt.createDate);
             endt.updateUser = this.ns.getCurrentUser();
             params.saveEndorsement.push(endt);
-  		}
+      }
 
-  		// if(!endt.deleted){
-  		// 	let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
+      // if(!endt.deleted){
+      //   let endtTextSplit = endt.text.match(/(.|[\r\n]){1,2000}/g);
     //         if(endtTextSplit!== null)
     //             for (var i = 0; i < endtTextSplit.length; ++i) {
     //                 endt[this.endtTextKeys[i]] = endtTextSplit[i];
@@ -371,29 +371,29 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
     //         endt.createDate = this.ns.toDateTimeString(endt.createDate);
     //         endt.updateUser = this.ns.getCurrentUser();
     //         params.saveEndorsement.push(endt);
-  		// }
+      // }
 
-  		for(let ded of endt.deductibles){
-  			if(ded.edited && !ded.deleted){
-  				ded.updateDate = this.ns.toDateTimeString(0);
-	            ded.createDate = this.ns.toDateTimeString(ded.createDate);
-	            ded.updateUser = this.ns.getCurrentUser();
-	            ded.endtCd = endt.endtCd;
-	            params.saveDeductibles.push(ded);
-  			}else if(ded.deleted){
-  				params.deleteDeductibles.push(ded);
-  			}
-  		}
+      for(let ded of endt.deductibles){
+        if(ded.edited && !ded.deleted){
+          ded.updateDate = this.ns.toDateTimeString(0);
+              ded.createDate = this.ns.toDateTimeString(ded.createDate);
+              ded.updateUser = this.ns.getCurrentUser();
+              ded.endtCd = endt.endtCd;
+              params.saveDeductibles.push(ded);
+        }else if(ded.deleted){
+          params.deleteDeductibles.push(ded);
+        }
+      }
 
-  	}
-  	params.delEndorsement = this.passEndtTable.tableData.filter(a=>a.deleted);
+    }
+    params.delEndorsement = this.passEndtTable.tableData.filter(a=>a.deleted);
 
 
-  	this.ms.saveMtnEndt(params).subscribe(a=>{
-  		if(a['returnCode'] == -1){
+    this.ms.saveMtnEndt(params).subscribe(a=>{
+      if(a['returnCode'] == -1){
             this.dialogIcon = "success";
             this.successDialog.open();
-            //this.getMtnEndorsements();
+            this.getMtnEndorsements();
             this.endtTable.markAsPristine();
             this.dedTable.markAsPristine();
             if(this.fromChng){
@@ -407,52 +407,51 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
             this.line.lineCd = this.line.lineCd.trim();
             this.line.lineCd = this.line.lineCd.toString()+' '
         }
-  	})
+    })
 
   }
 
   onClickSave(){
 
-  	let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
+    let endtCds:string[] = this.passEndtTable.tableData.filter(a=>!a.deleted).map(a=>String(a.endtCd).padStart(3,'0'));
 
-  	if(endtCds.some((a,i)=>{
+    if(endtCds.some((a,i)=>{
       if(endtCds.indexOf(a) != i)
-        console.log(a)
       return endtCds.indexOf(a) != i;
     })){
-  		this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
-  		this.dialogIcon = 'error-message';
-  		this.successDialog.open();
-  		return;
-  	}
-  	let dedCds : string[];
-  	for(let endt of this.passEndtTable.tableData){
-  		dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
-		if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
-  			this.dialogIcon = "error";
-    		this.successDialog.open();
-    		return;
-		}
+      this.dialogMessage = 'Unable to save the record. Endt Code must be unique per Line';
+      this.dialogIcon = 'error-message';
+      this.successDialog.open();
+      return;
+    }
+    let dedCds : string[];
+    for(let endt of this.passEndtTable.tableData){
+      dedCds = endt.deductibles.filter(a=>!a.deleted).map(a=>a.deductibleCd);
+    // if(endt.deductibles.some(ded=>(ded.deductibleType == 'F' && !(parseFloat(ded.deductibleAmt)>0))|| ded.deductibleType != 'F' && !(parseFloat(ded.deductibleRate)>0))){
+    //     this.dialogIcon = "error";
+    //     this.successDialog.open();
+    //     return;
+    // }
 
-  		if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
-  			this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
-	  		this.dialogIcon = 'error-message';
-	  		this.successDialog.open();
-	  		this.endtTable.markAsPristine();
-	  		this.dedTable.markAsPristine();
-	  		return;
-  		}
-  	}
-  	this.conSave.confirmModal();
+      if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
+        this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Endorsement';
+        this.dialogIcon = 'error-message';
+        this.successDialog.open();
+        this.endtTable.markAsPristine();
+        this.dedTable.markAsPristine();
+        return;
+      }
+    }
+    this.conSave.confirmModal();
   }
 
   onClickCancel(){
-  	this.cnclBtn.clickCancel();
+    this.cnclBtn.clickCancel();
   }
 
   showLineLOV(){
     $('#lineLOV #modalBtn').trigger('click');
-	}
+  }
 
   dedClick(data){
     this.passDedTable.disableGeneric = data==null;

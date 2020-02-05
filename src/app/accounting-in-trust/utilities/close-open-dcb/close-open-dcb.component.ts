@@ -86,6 +86,12 @@ export class CloseOpenDcbComponent implements OnInit {
   dialogMessage : any;
   cancelFlag: boolean = false;
   viewFlag: boolean = true;
+  closeTag: boolean = true;
+  tempTag: boolean = true;
+  openTag: boolean = true;
+  enableTag: boolean = true;
+  checkedFlag: boolean = false;
+
   subscription: Subscription = new Subscription();
 
   constructor(private ns: NotesService, private maintenanceService: MaintenanceService, 
@@ -101,6 +107,10 @@ export class CloseOpenDcbComponent implements OnInit {
 
   retrieveDCB(){
   	setTimeout(() => {this.table.loadingFlag = true}); 
+    this.viewFlag = true;
+    this.closeTag = true;
+    this.tempTag = true;
+    this.openTag = true;
   	this.maintenanceService.getMtnAcitDCBNo(null,null,null,this.params.status).subscribe((data:any) => {
   		console.log(data)
   		this.passData.tableData = [];
@@ -115,7 +125,6 @@ export class CloseOpenDcbComponent implements OnInit {
   }
 
   onRowClick(data){
-  	console.log(data)
   	if(data!== null){
       this.viewFlag = false;
   		this.params.dcbYear = data.dcbYear;
@@ -133,6 +142,28 @@ export class CloseOpenDcbComponent implements OnInit {
       this.params.updateUser = '';
       this.params.updateDate = '';
   	}
+    this.update(this.passData.tableData);
+  }
+
+  update(data){
+    this.closeTag = true;
+    this.tempTag = true;
+    this.openTag = true;
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].checked){
+        if(this.params.status == 'O'){
+          this.closeTag = false;
+          this.tempTag = false;
+        }else if(this.params.status == 'T'){
+          this.openTag = false;
+          this.closeTag = false;
+        }else if(this.params.status == 'C'){
+          this.openTag = false;
+          this.tempTag = false;
+        }
+        return;
+      }
+    }
   }
 
   onClickSave(){
@@ -290,7 +321,7 @@ export class CloseOpenDcbComponent implements OnInit {
           return date.toLocaleString();
         }
       };
-    alasql('SELECT dcbDate AS [DCB Date], dcbYear AS [DCB Year], dcbNo AS [DCB No], dcbStatDesc AS [DCB Status], nvl(remarks) AS [Remarks], datetime(closeDate) AS [Close Date], autoTag AS [Auto] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+    alasql('SELECT datetime(dcbDate) AS [DCB Date], dcbYear AS [DCB Year], dcbNo AS [DCB No], dcbStatDesc AS [DCB Status], nvl(remarks) AS [Remarks], datetime(closeDate) AS [Close Date], autoTag AS [Auto] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 
   onTabChange($event: NgbTabChangeEvent) {

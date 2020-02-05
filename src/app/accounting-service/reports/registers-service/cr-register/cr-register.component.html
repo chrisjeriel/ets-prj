@@ -44,14 +44,14 @@
 					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 10px !important;">
 						<div class="input-group cust-ig">
 							<label class="form-control-sm col-sm-2">Payment Type</label>
-							<input type="text" [(ngModel)]="params.paytType" class="form-control form-control-sm col-sm-2">
+							<input type="text" [(ngModel)]="params.paytType" class="form-control form-control-sm col-sm-2" (change)="changePaytType($event)">
 							<div class="text-search-ico"><a (click)="showLov('acseTranType')"><i class="fa fa-search"></i></a></div>
 							<input type="text" class="form-control form-control-sm col-sm" readonly="true" style="margin-left: 2px !important;" [(ngModel)]="selPaytType">
 						</div>
 						<div class="input-group">
 							<label class="form-control-sm col-sm-2">Payment Mode</label>
-							<input type="text" [(ngModel)]="params.paytMode" class="form-control form-control-sm col-sm-2">
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+							<input type="text" [(ngModel)]="params.paytMode" class="form-control form-control-sm col-sm-2" (change)="changePaytMode($event)">
+							<div class="text-search-ico"><a (click)="from = 'paytMode'; showLov('acctPaytMode');"><i class="fa fa-search"></i></a></div>
 							<input type="text" class="form-control form-control-sm col-sm" readonly="true" style="margin-left: 2px !important;" [(ngModel)]="selPaytMode">
 						</div>
 					</fieldset>

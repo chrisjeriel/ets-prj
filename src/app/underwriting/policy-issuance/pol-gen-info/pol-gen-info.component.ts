@@ -569,6 +569,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         this.dps.forEach(a=>a.markAsPristine());
         this.ns.formGroup.markAsPristine();
         this.updateMinBookingDate();
+        this.emitPolicyInfoId.emit({extensionTag : this.policyInfo.extensionTag});
       }
 
       
@@ -938,7 +939,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       savePolGenInfoParam.maintenanceTo = mfTo[0];
     }
 
-    let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,2000}/g);
+    let wordingSplit = this.policyInfo.polWordings.text.match(/(.|[\r\n]){1,1800}/g);
     if(savePolGenInfoParam.polWordings.createUser == undefined){
       savePolGenInfoParam.polWordings.createUser = this.ns.getCurrentUser();
       savePolGenInfoParam.polWordings.createDate = this.ns.toDateTimeString(0);
@@ -953,7 +954,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         savePolGenInfoParam.polWordings[this.wordingsKeys[i]] = wordingSplit[i];
       }
 
-    let wordingSplitAlt = this.policyInfo.polWordings.altText.split('===================ENDORSEMENTS===================')[0].trim().match(/(.|[\r\n]){1,2000}/g);
+    let wordingSplitAlt = this.policyInfo.polWordings.altText.split('===================ENDORSEMENTS===================')[0].trim().match(/(.|[\r\n]){1,1800}/g);
     var x = this.wordingsKeys.length/2;
     if(wordingSplitAlt != null)
       for(let i=0;i<wordingSplitAlt.length;i++){
@@ -1031,7 +1032,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                                      insuredDesc: this.policyInfo.insuredDesc,
                                      policyNo: this.policyNo,
                                      riskName: this.policyInfo.project.riskName,
-                                     holdCoverTag: this.policyInfo.holdCoverTag})
+                                     holdCoverTag: this.policyInfo.holdCoverTag,
+                                     extensionTag: this.policyInfo.extensionTag})
 
          // this.checkAlopInfo();
          this.getPolGenInfo('noLoading');

@@ -1330,11 +1330,14 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnPayeeCeding', {params});
     }
 
-    getMtnAcitCheckSeries(bank?, bankAcct?, checkNo?){
+    getMtnAcitCheckSeries(bank?, bankAcct?, checkNo?, srchFrom?, srchTo?, from?){
     	const params = new HttpParams()
     		.set('bank', (bank === null || bank === undefined ? '' : bank))
     		.set('bankAcct', (bankAcct === null || bankAcct === undefined ? '' : bankAcct))
     		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
+    		.set('srchFrom', (srchFrom === null || srchFrom === undefined ? '' : srchFrom))
+    		.set('srchTo', (srchTo === null || srchTo === undefined ? '' : srchTo))
+    		.set('from', (from === null || from === undefined ? '' : from))
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcitCheckSeries', {params});
     }
 
@@ -1410,11 +1413,14 @@ export class MaintenanceService{
     }
 
 
-    getMtnAcseCheckSeries(bank?, bankAcct?, checkNo?){
+    getMtnAcseCheckSeries(bank?, bankAcct?, checkNo?, srchFrom?, srchTo?, from?){
     	const params = new HttpParams()
     		.set('bank', (bank === null || bank === undefined ? '' : bank))
     		.set('bankAcct', (bankAcct === null || bankAcct === undefined ? '' : bankAcct))
     		.set('checkNo', (checkNo === null || checkNo === undefined ? '' : checkNo))
+    		.set('srchFrom', (srchFrom === null || srchFrom === undefined ? '' : srchFrom))
+    		.set('srchTo', (srchTo === null || srchTo === undefined ? '' : srchTo))
+    		.set('from', (from === null || from === undefined ? '' : from))
     	return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAcseCheckSeries', {params});
     }
 
@@ -1916,4 +1922,22 @@ export class MaintenanceService{
          };
    		return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnAcseCheckSeries',params,header);
     }
+
+     generateBookingMth(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+         };
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnBookingMth', JSON.stringify(params), header);
+    }
+
+    saveMtnBookingMth(params) {
+    let header: any = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    };
+    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
+  }
 }

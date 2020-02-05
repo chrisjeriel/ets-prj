@@ -24,7 +24,7 @@ export class MtnAcseCheckSeriesComponent implements OnInit {
   	passDataCheckNoList: any = {
 	    tableData       : [],
 	    tHeader         : ['Check No','Tran ID','Used Tag','Status','Created By','Date Created','Last Update By','Last Update'],
-	    dataTypes       : ['number','number','checkbox','text','text','date','text','date'],
+	    dataTypes       : ['text','text','checkbox','text','text','date','text','date'],
 	    nData : {
 	    	checkNo 	: '',
 	    	tranId 		: '',
@@ -70,17 +70,14 @@ export class MtnAcseCheckSeriesComponent implements OnInit {
   	}
 
   	getMtnAcseCheckSeries(bank?,bankAcct?,from?,to?){
-  		from 	 = from == ''?undefined:from;
-  		to 		 = to == ''?undefined:to;
   		bank 	 = this.otherData.bankDesc == '' ? '': bank;
   		bankAcct = this.otherData.bankAcctDesc == ''?'':bankAcct;
 
   		this.checkNoTbl.overlayLoader = true;
-  		this.mtnService.getMtnAcseCheckSeries(bank,bankAcct)
+  		this.mtnService.getMtnAcseCheckSeries(bank,bankAcct,null,from,to,'M')
   		.subscribe(data => {
   			console.log(data);
-  			var rec = data['checkSeriesList'];
-  			this.passDataCheckNoList.tableData = rec.sort((a,b) => a.checkNo - b.checkNo).slice(from-1,to);
+  			this.passDataCheckNoList.tableData = data['checkSeriesList'];
   			this.checkNoTbl.refreshTable();
   		});
   	}

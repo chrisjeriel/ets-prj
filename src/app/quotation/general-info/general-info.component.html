@@ -786,7 +786,7 @@
 								<span>&nbsp;</span> -->
 
 								<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-right: 6px !important;">
-	             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag ||  genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [required]="!inquiryFlag &&  genInfoData.statusDesc.toUpperCase() != 'APPROVED'">
+	             					<text-editor [editorContent]="genInfoData.openingParag" (fetchContent)="genInfoData.openingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag ||  genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'" [format]="'html'">
 	             						<ng-container icon-1>
 	             							<a (click)="showOpeningWordingLov()" *ngIf="!inquiryFlag && genInfoData.statusDesc.toUpperCase() !== 'RELEASED'"><i class="fa fa-search"></i></a>
 	             						</ng-container>
@@ -794,7 +794,7 @@
 	          					</div>
 
 	          					<div class="form-control-sm col-sm-6 edtr-cont" style="height: 60px; padding-left: 6px !important;">
-	             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'">
+	             					<text-editor [editorContent]="genInfoData.closingParag" (fetchContent)="genInfoData.closingParag = $event" [edtrOpnrPos]="2" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" [required]="!inquiryFlag && genInfoData.statusDesc.toUpperCase() != 'APPROVED'" [format]="'html'">
 	             						<ng-container icon-1>
 	             							<a (click)="showClosingWordingLov()" *ngIf="!inquiryFlag  && genInfoData.statusDesc.toUpperCase() !== 'RELEASED'"><i class="fa fa-search"></i></a>
 	             						</ng-container>
