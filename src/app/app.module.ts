@@ -506,6 +506,7 @@ import { JvUnappliedTreatyComponent } from './accounting-in-trust/journal-vouche
 import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/generate-number-series-service/mtn-acse-check-series/mtn-acse-check-series.component';
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
+import { PolBordereauxComponent } from './accounting-in-trust/reports/pol-bordereaux/pol-bordereaux.component';
 
 @NgModule({
     imports: [
@@ -1016,6 +1017,7 @@ import { PolDistributionCumComponent } from './underwriting/policy-distribution/
         MtnAcseCheckSeriesComponent,
         ClaimReportsComponent,
         PolDistributionCumComponent,
+        PolBordereauxComponent,
     ],
 
   	providers: [
