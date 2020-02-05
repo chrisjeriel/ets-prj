@@ -104,12 +104,12 @@
   <div body>
     <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
       <legend class="scheduler-border">General Taxes</legend>
-      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'genTax')" [passData]="passDataGenTax" (tableDataChange)="selectedTblData.edited = true;" #genTaxTbl ></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'genTax')" [passData]="passDataGenTax" (tableDataChange)="selectedTblData.edited=true;" #genTaxTbl ></app-cust-editable-non-datatable>
     </fieldset>
 
     <fieldset class="scheduler-border" style="padding-top: 6px !important;"> 
       <legend class="scheduler-border">Withholding Taxes</legend>
-      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'whTax')" [passData]="passDataWhTax" (tableDataChange)="selectedTblData.edited = true;" #whTaxTbl></app-cust-editable-non-datatable>
+      <app-cust-editable-non-datatable (clickLOV)="showLOV($event,'whTax')" [passData]="passDataWhTax" (tableDataChange)="selectedTblData.edited=true;" #whTaxTbl></app-cust-editable-non-datatable>
     </fieldset>
   </div>
   <div footer class="w-100">

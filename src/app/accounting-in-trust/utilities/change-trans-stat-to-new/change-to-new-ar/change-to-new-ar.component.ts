@@ -273,6 +273,9 @@ export class ChangeToNewArComponent implements OnInit {
     });
 
     param['jvStat'] = 'A,F,P,X';
+    param['recount'] = 'Y';
+    param['paginationRequest.count'] = 10;
+    param['paginationRequest.position'] = 1;
 
     this.as.getJVListing(param).subscribe((data:any) => {
       for(var i=0; i< data.transactions.length;i++){

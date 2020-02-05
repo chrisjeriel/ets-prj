@@ -89,11 +89,7 @@ export class ProgramParameterComponent implements OnInit {
       for(var i = 0; i < data.parameters.length;i++ ){
         this.passData.tableData.push(data.parameters[i]);
         if(data.parameters[i].paramType == 'V'){
-<<<<<<< HEAD
           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueD','paramValueN'];
-=======
-          this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueN','paramValueD'];
->>>>>>> 9c0c723a9294a910fbaf252d5187b99c0773935c
         }else if(data.parameters[i].paramType == 'N'){
           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueV','paramValueD'];
         }else{

@@ -615,8 +615,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             this.params.savePerDiem.push(e);
           }else if(this.requestData.tranTypeCd == 7){
             e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
-            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
-            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            // this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            // e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
             if(e.taxAllocation == undefined){
               this.params.delCvItemTaxes = [];
               e.taxAllocation = [];
@@ -1093,7 +1093,5 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     // }
     this.getPaytReqPrqTrans();
   }
-
-
 
 }
