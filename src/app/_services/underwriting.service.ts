@@ -1253,6 +1253,10 @@ export class UnderwritingService {
     getPolicyListingLength(params){
         return this.http.get(environment.prodApiUrl+'/underwriting-service/retrievePolicyListingLength',{params:params,responseType:'text'});
     }
+
+    getPolOcListing(params){
+        return this.http.get(environment.prodApiUrl+'/underwriting-service/retrieveOpenCoverPolList',{params:params});    
+    }
 }            
 
             

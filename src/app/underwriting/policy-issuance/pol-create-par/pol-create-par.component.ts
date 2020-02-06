@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '../../../_services';
-import { CreateParInfo } from '../../../_models/CreatePolicy';
+import { UnderwritingService, QuotationService, NotesService, MaintenanceService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component'
+import { CustNonDatatableComponent, ModalComponent } from '@app/_components/common';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 
 @Component({
   selector: 'app-pol-create-par',
@@ -15,7 +16,6 @@ export class PolCreatePARComponent implements OnInit {
   @ViewChild('polLov') lovTable: CustNonDatatableComponent;
   @ViewChild('polOptionLov') lovOptTable: CustNonDatatableComponent;
 
-  private createParInfo: CreateParInfo
   tableData: any[] = [];
   tHeader: any[] = [];
   dataTypes: any[] = [];  
@@ -29,6 +29,7 @@ export class PolCreatePARComponent implements OnInit {
   quotationList: any[] = [];
   holCovList: any[] = [];
   polOcList: any[] = [];
+  polNo: any[] = [];
 
   passDataLOV: any = {
     tableData: [],
@@ -76,10 +77,12 @@ export class PolCreatePARComponent implements OnInit {
   cedingName: any = "";
   insuredDesc: any = "";
   riskName: any = "";
+  riskId: any = "";
   inceptionDate: any = "";
   inceptionTime: any = "";
   expiryDate: any = "";
   expiryTime: any = "";
+  coinsGrpId:any = "";
 
   dialogMessage: any = "";
   policyId: any = "";
@@ -337,6 +340,7 @@ export class PolCreatePARComponent implements OnInit {
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
+        this.riskId = this.selected.project.riskId;
 
         this.getOptionLOV(this.selected.quoteId);
         this.noSelected = false;
@@ -356,6 +360,7 @@ export class PolCreatePARComponent implements OnInit {
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
+        this.riskId = this.selected.project.riskId;
 
         if(this.selected.holdCover.status.toUpperCase() === 'EXPIRED') {
           this.inceptionDate = this.ns.toDateTimeString(this.selected.holdCover.periodFrom).split('T')[0];
@@ -382,7 +387,8 @@ export class PolCreatePARComponent implements OnInit {
         this.optionRt = this.selected.optionRt;
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
-        this.riskName = this.selected.project.riskName; //update
+        // this.riskName = this.selected.project.riskName; //update
+        // this.riskId = this.selected.project.riskId;
 
         this.getCutOffTime({ target: { value: this.ocNo[1] } });
 
@@ -424,7 +430,10 @@ export class PolCreatePARComponent implements OnInit {
       "createUser"    : this.ns.getCurrentUser(),
       "createDate"    : this.ns.toDateTimeString(0),
       "updateUser"    : this.ns.getCurrentUser(),
-      "updateDate"    : this.ns.toDateTimeString(0)
+      "updateDate"    : this.ns.toDateTimeString(0),
+      "riskId"        : this.riskId,
+      "coinsGrpId"    : this.coinsGrpId
+
     }
 
     return savePolicyDetailsParam;
@@ -470,9 +479,12 @@ export class PolCreatePARComponent implements OnInit {
     this.cedingName = "";
     this.insuredDesc = "";
     this.riskName = "";
+    this.riskId = "";
     this.inceptionTime = "";
     this.expiryTime = "";
     this.noSelected = true;
+    this.coinsGrpId = "";
+    this.polNo   = [];
   }
 
   toPolGenInfo() {
@@ -500,9 +512,14 @@ export class PolCreatePARComponent implements OnInit {
         }
       } else if (key === 'optionId' && val === '') {
         return false;
-      }
+      } 
     }
-
+    if(this.oc && !(this.riskId+'')){
+      console.log(this.riskId)
+      return false;
+    }else if(this.oc && !this.coinsGrpId && this.polNo.some(a=>!!a) ){
+      return false;
+    }
     return true;
   }
 
@@ -514,7 +531,7 @@ export class PolCreatePARComponent implements OnInit {
     if(this.validate(this.prepareParam())){
       this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
         this.loading = false;
-        if(data['returnCode'] === 0) {
+        if(data['returnCode'] == 0) {
           this.dialogMessage = data['errorList'][0].errorMessage;
 
           $('#createPol #successModalBtn').trigger('click');
@@ -663,5 +680,97 @@ export class PolCreatePARComponent implements OnInit {
           this.ns.lovLoader(ev, 0);
         });
       }
+  }
+
+  //EDIT BY PAUL 02/05/2020
+  //CO-INSURANCE FROM OPEN COVER POLICY
+
+  passDataPolOcLov: any = {
+    tableData: [],
+    tHeader:["Policy No.", "Open Policy No.", "Risk"],  
+    dataTypes: ["text","text","text"],
+    pageLength: 10,
+    //resizable: [false,false],
+    tableOnly: false,
+    keys: ['policyNo','policyNoOc','riskName'],
+    pageStatus: true,
+    pagination: true,
+    filters: [
+    /*{key: 'quotationNo', title: 'Quotation No.',dataType: 'seq'},
+    {key: 'cedingName',title: 'Ceding Co.',dataType: 'text'},
+    {key: 'insuredDesc',title: 'Insured',dataType: 'text'},
+    {key: 'riskName',title: 'Risk',dataType: 'text'}*/],
+    pageID: 'PolOcLov'
+  }
+  searchParamsPolOcLov:any = {
+    'paginationRequest.count':10,
+    'paginationRequest.position':1,   
+  }
+
+  @ViewChild('polOcLovTable') polOcLovTable : LoadingTableComponent;
+  @ViewChild('PolOcLov') polOcLov : ModalComponent;
+
+  showPolOcLOV(){
+    this.polOcLov.openNoClose();
+    this.searchParamsPolOcLov.lineCd = !this.polNo[0] ? '' : this.polNo[0];
+    this.searchParamsPolOcLov.polYear = !this.polNo[1] ? '' : this.polNo[1];
+    this.searchParamsPolOcLov.polSeqNo = !this.polNo[2] ? '' : this.polNo[2];
+    this.searchParamsPolOcLov.cedingId = !this.polNo[3] ? '' : this.polNo[3];
+    this.searchParamsPolOcLov.coSeriesNo = !this.polNo[4] ? '' : this.polNo[4];
+    this.searchParamsPolOcLov.altNo = !this.polNo[5] ? '' : this.polNo[5];
+    this.underwritingService.getPolOcListing(this.searchParamsPolOcLov).subscribe((a:any)=>{
+      this.passDataPolOcLov.count = a.polList.length;
+      this.polOcLovTable.placeData(a.polList);
+    })
+  }
+
+  @ViewChild('riskLOV') riskLOV : MtnRiskComponent;
+  showRiskLOV(){
+    if(!(this.coinsGrpId+''))
+      this.riskLOV.modal.openNoClose();
+  }
+
+  setRisks(data){
+    this.riskId = data.riskId;
+    this.riskName = data.riskName;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  checkCodeRisk(ev){
+    this.ns.lovLoader(ev, 1);
+    this.riskLOV.checkCode(this.riskId, '#riskLOV', ev);
+  }
+
+  setPolOcLov(){
+    if(this.polOcLovTable.indvSelect != null){
+      this.polNo = this.polOcLovTable.indvSelect.policyNo.split('-');
+      this.coinsGrpId = this.polOcLovTable.indvSelect.coinsGrpId;
+      this.riskName = this.polOcLovTable.indvSelect.riskName;
+      this.riskId = this.polOcLovTable.indvSelect.riskId;
+    }
+  }
+
+  filterPolOcLov(){
+    if(this.polNo.every(a=>!!a) && this.polNo.length == 6 ){
+      this.searchParamsPolOcLov.lineCd = !this.polNo[0] ? '' : this.polNo[0];
+      this.searchParamsPolOcLov.polYear = !this.polNo[1] ? '' : this.polNo[1];
+      this.searchParamsPolOcLov.polSeqNo = !this.polNo[2] ? '' : this.polNo[2];
+      this.searchParamsPolOcLov.cedingId = !this.polNo[3] ? '' : this.polNo[3];
+      this.searchParamsPolOcLov.coSeriesNo = !this.polNo[4] ? '' : this.polNo[4];
+      this.searchParamsPolOcLov.altNo = !this.polNo[5] ? '' : this.polNo[5];
+      this.underwritingService.getPolOcListing(this.searchParamsPolOcLov).subscribe((a:any)=>{
+        if(a.polList.length == 1){
+          this.coinsGrpId = a.polList[0].coinsGrpId;
+          this.riskName = a.polList[0].riskName;
+          this.riskId = a.polList[0].riskId;
+        }else{
+          this.polNo = [];
+          this.coinsGrpId = "";
+          this.showPolOcLOV();
+        }
+      })
+    }else{
+      this.coinsGrpId = "";
+    }
   }
 }
