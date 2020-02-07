@@ -1280,7 +1280,8 @@ export class MaintenanceService{
     				.set('slCd', (param.slCd === null || param.slCd === undefined ? '' : param.slCd))
     				.set('payeeNo', (param.payeeNo === null || param.payeeNo === undefined ? '' : param.payeeNo))
     				.set('autoTag', (param.autoTag === null || param.autoTag === undefined ? '' : param.autoTag))
-    				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag));
+    				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
+    				.set('slTypeCdArr', (param.slTypeCdArr === null || param.slTypeCdArr === undefined ? '' : param.slTypeCdArr));
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnSL", {params});
     }
 

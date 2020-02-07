@@ -98,9 +98,12 @@ export class ChangeToNewArComponent implements OnInit {
         dataType: 'text'
       },
       {
-        key: 'jvDate',
-        title: 'JV Date',
-        dataType: 'date'
+        keys: {
+            from: 'jvDateFrom',
+            to: 'jvDateTo'
+          },
+          title: 'JV Date',
+          dataType: 'datespan'
       },
       {
         key: 'particulars',
@@ -122,15 +125,13 @@ export class ChangeToNewArComponent implements OnInit {
         title: 'Prepared By',
         dataType: 'text'
       },
-      /*{
-        key: 'jvStatus',
-        title: 'J.V Status',
-        dataType: 'text'
-      },*/
       {
-        key: 'amount',
-        title: 'Amount',
-        dataType: 'text'
+        keys: {
+            from: 'jvAmtFrom',
+            to: 'jvAmtTo'
+          },
+          title: 'Amount',
+          dataType: 'textspan'
       }
     ],
       checkFlag : true,
@@ -263,15 +264,27 @@ export class ChangeToNewArComponent implements OnInit {
     )
   }
 
-  retrieveJVlist(){
-    this.as.getJVListing(this.searchParams).subscribe((data:any) => {
+  retrieveJVlist() {
+    console.log(this.searchParams);
+    var param = {};
+
+    this.searchParams.forEach(a => {
+      param[a.key] = a.search;
+    });
+
+    param['jvStat'] = 'A,F,P,X';
+    param['recount'] = 'Y';
+    param['paginationRequest.count'] = 10;
+    param['paginationRequest.position'] = 1;
+
+    this.as.getJVListing(param).subscribe((data:any) => {
       for(var i=0; i< data.transactions.length;i++){
-        if (data.transactions[i].jvListings.jvStatusName === 'For Approval' || data.transactions[i].jvListings.jvStatusName === 'Approved'
-           || data.transactions[i].jvListings.jvStatusName === 'Printed' || data.transactions[i].jvListings.jvStatusName === 'Cancelled'){
-            this.passDataJV.tableData.push(data.transactions[i].jvListings);
+        // if (data.transactions[i].jvListings.jvStatusName === 'For Approval' || data.transactions[i].jvListings.jvStatusName === 'Approved'
+        //    || data.transactions[i].jvListings.jvStatusName === 'Printed' || data.transactions[i].jvListings.jvStatusName === 'Cancelled'){
+          this.passDataJV.tableData.push(data.transactions[i].jvListings);
           this.passDataJV.tableData[this.passDataJV.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo).padStart(8,'0');
           this.passDataJV.tableData[this.passDataJV.tableData.length - 1].transactions = data.transactions[i];
-         }
+         // }
       }
       this.JVTable.refreshTable();
     });

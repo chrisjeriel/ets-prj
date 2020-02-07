@@ -19,7 +19,7 @@
                 <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
                     <div class="row">
                         <div class="col-sm" id="mtn-bankaccttable">
-	                	  <app-cust-editable-non-datatable #bankaccttable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+	                	  <app-cust-editable-non-datatable #bankaccttable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)" (tableDataChange)="dataChange($event)" ></app-cust-editable-non-datatable>
                         </div>
                     </div>
 	                <div class="w-100 d-flex" style="margin-top: 30px !important">

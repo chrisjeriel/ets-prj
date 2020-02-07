@@ -1101,7 +1101,9 @@ export class LovComponent implements OnInit {
       this.mtnService.getMtnSL(this.passData.params).subscribe(a=>{
         
         if(this.passData.from.toLowerCase() == 'prq-ins'){
-           this.passTable.tableData = a["list"].filter(el => el.slTypeCd == 4 || el.slTypeCd == 8 || el.slTypeCd == 9).sort((a, b) => a.slName.localeCompare(b.slName));
+          this.passTable.tableData = a["list"].sort((a, b) => {
+            return a.slTypeName.localeCompare(b.slTypeName) || a.slName.localeCompare(b.slName);
+          });
         }else{
           this.passTable.tableData = a["list"].sort((a, b) => a.slName.localeCompare(b.slName));
         }
@@ -1500,8 +1502,13 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = ['text','date','text','text','text','text','text','currency',];
       this.passTable.keys = ['jvNo','jvDate','particulars','tranTypeName','refNo','jvStatusName','preparedName','jvAmt'];
       this.passTable.checkFlag = false;
-      this.accountingService.getJVListing(null).subscribe((data:any)=>{
-        data.transactions = data.transactions.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
+
+      var param = {
+        tranStat: 'O,C'
+      };
+
+      this.accountingService.getJVListing(param).subscribe((data:any)=>{
+        // data.transactions = data.transactions.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
         for(var i=0; i< data.transactions.length;i++){
                 this.passTable.tableData.push(data.transactions[i].jvListings);
                 this.passTable.tableData[this.passTable.tableData.length - 1].jvNo = String(data.transactions[i].jvListings.jvYear) + '-' +  String(data.transactions[i].jvListings.jvNo);

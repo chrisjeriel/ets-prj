@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { ClaimsService,NotesService } from '@app/_services';
+import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 
 @Component({
   selector: 'app-pol-inq-claims',
@@ -22,7 +23,8 @@ export class PolInqClaimsComponent implements OnInit {
     pagination: true,
     pageStatus: true,
     searchFlag: true,
-    pageLength: 10,
+    infoFlag: true,
+    pageLength: 'unli-15',
     pageID: 'passDataLOVTbl',
     filters: [
        {
@@ -61,7 +63,7 @@ export class PolInqClaimsComponent implements OnInit {
         }
     ],
   };
-  @ViewChild('claim') table:any;
+  @ViewChild('claim') table: CustEditableNonDatatableComponent;
   policyNo:any;
 
   searchParamsLOVTbl:any[] = [];
@@ -69,7 +71,11 @@ export class PolInqClaimsComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.policyNo = params['showPolicyNo'];
         this.searchQueryLOVTbl(this.searchParamsLOVTbl);
-    }); 
+    });
+
+    setTimeout(() => {
+      this.table.refreshTable();
+    });
   }
 
 
@@ -79,6 +85,7 @@ export class PolInqClaimsComponent implements OnInit {
         this.searchParamsLOVTbl.push({ key: 'policyNo', search: this.policyNo });
         
         this.passData.tableData = [];
+        this.table.overlayLoader = true;
         this.cs.getClaimsListing(this.searchParamsLOVTbl).subscribe(data => {
           this.passData.tableData = data['claimsList'].map(a => {
                                     a.createDate = this.ns.toDateTimeString(a.createDate);
