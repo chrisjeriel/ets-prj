@@ -737,6 +737,7 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   siClickCancel(){
+    console.log(this.table.form);
     this.cancelBtn.clickCancel();
   }
 
