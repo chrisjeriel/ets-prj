@@ -273,10 +273,10 @@
 	<div footer>
         <div class="d-flex justify-content-center">
             <button class="cust-btn" type="button" (click)="siClickCancel();"><a>Cancel</a></button>
-            <button class="cust-btn" type="button" (click)="onClickSave()"><a>Save</a></button>
+            <button class="cust-btn" type="button" (click)="tableFlag=true; onClickSave();"><a>Save</a></button>
         </div>
     </div>
-    <app-cancel-button (onYes)="saveRange(true)" (no)="rangeLOV.closeModal();"></app-cancel-button>
+    <app-cancel-button (onYes)="tableFlag=false; fromSiRangeMdl=true; saveRange(true);" (no)="table.markAsPristine(); rangeLOV.closeModal();"></app-cancel-button>
     <app-sucess-dialog #success [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 </app-modal>
 
@@ -285,4 +285,4 @@
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="saveRange()"></app-confirm-save>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null:modalService.dismissAll();"></app-sucess-dialog>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null : fromSiRangeMdl ? afterCancelSave() : modalService.dismissAll();"></app-sucess-dialog>

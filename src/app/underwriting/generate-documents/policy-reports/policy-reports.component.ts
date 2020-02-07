@@ -139,6 +139,7 @@ export class PolicyReportsComponent implements OnInit {
   disableTo: boolean = false;
   tableFlag: boolean = false;
   cancelFlag: boolean = false;
+  fromSiRangeMdl: boolean = false;
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
@@ -660,12 +661,12 @@ export class PolicyReportsComponent implements OnInit {
 
   deleteCurr(){
     var notChecked = this.passData.tableData.filter(a=> !a.deleted && !a.checked);
-    var finalRange = notChecked[notChecked.length - 1].siRange;
+    var finalRange = notChecked.length > 0 ? notChecked[notChecked.length - 1].siRange : undefined;
     var errorFlag = false;
 
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].checked ){
-        if(this.passData.tableData[i].siRange < finalRange){
+        if(finalRange != undefined && this.passData.tableData[i].siRange < finalRange){
           errorFlag = true;
           break;
         }
@@ -677,8 +678,8 @@ export class PolicyReportsComponent implements OnInit {
       this.dialogMessage = "Range must be in a chronological order";
       this.openDialog.open();
     }else{
-      this.table.indvSelect.deleted = true;
-      this.table.selected  = [this.table.indvSelect]
+      // this.table.indvSelect.deleted = true;
+      // this.table.selected  = [this.table.indvSelect]
       this.table.confirmDelete();
     }
   }
@@ -706,7 +707,7 @@ export class PolicyReportsComponent implements OnInit {
 
   saveRange(cancel?){
     this.cancelFlag = cancel !== undefined;
-    this.tableFlag = true;
+    // this.tableFlag = true;
     this.rangeParams.saveReportsRange = [];
     this.rangeParams.delReportsRange = [];
     for (var i = 0; i < this.passData.tableData.length; i++) {
@@ -737,8 +738,16 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   siClickCancel(){
-    console.log(this.table.form);
-    this.cancelBtn.clickCancel();
+    if(this.table.form.first.dirty) {
+      this.cancelBtn.clickCancel();
+    } else {
+      this.rangeLOV.closeModal();
+    }
+  }
+
+  afterCancelSave() {
+    this.fromSiRangeMdl = false;
+    this.rangeLOV.closeModal();
   }
 
 }
