@@ -1257,6 +1257,10 @@ export class UnderwritingService {
     getPolOcListing(params){
         return this.http.get(environment.prodApiUrl+'/underwriting-service/retrieveOpenCoverPolList',{params:params});    
     }
+
+    getEditableDistListing(params){
+        return this.http.get(environment.prodApiUrl+'/underwriting-service/retrieveEditableDistList',{params:params});    
+    }
 }            
 
             

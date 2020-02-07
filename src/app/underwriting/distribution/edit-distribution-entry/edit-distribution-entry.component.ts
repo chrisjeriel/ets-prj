@@ -148,7 +148,6 @@ export class EditDistributionEntryComponent implements OnInit {
 	}
 
 	retrievePolListing(){
-		setTimeout(()=>{
 			if(!this.noDataFound){
 		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
 		      this.policyListingData.filters[0].enabled =true;
@@ -159,20 +158,18 @@ export class EditDistributionEntryComponent implements OnInit {
 		    	this.searchParams.policyNo = '';
 		    }
 
-			this.us.newGetParListing(this.searchParams).subscribe((data: any) =>{
-				data.policyList = data.policyList === null ? [] : data.policyList; //filter out all policies with alteration
+			this.us.getEditableDistListing(this.searchParams).subscribe((data: any) =>{
+				data.polList = data.polList === null ? [] : data.polList; //filter out all policies with alteration
 				let recs:any[] = [];
-				if(data.policyList.length !== 0){
+				if(data.polList.length !== 0){
 					this.noDataFound = false;
-					for(var rec of data.policyList){
+					for(var rec of data.polList){
 						recs.push({
 							policyId: rec.policyId,
 							policyNo: rec.policyNo,
 							cedingName: rec.cedingName,
 							insuredDesc: rec.insuredDesc,
-							riskName: rec.project.riskName,
-							statusDesc: rec.statusDesc,
-							totalSi: rec.project.coverage.totalSi
+							riskName: rec.riskName
 						});
 					}
 					if(this.isType && !this.isIncomplete){
@@ -196,11 +193,10 @@ export class EditDistributionEntryComponent implements OnInit {
 						}, 100);
 					}
 				}
-				this.policyListingData.count = data['length']; 
+				this.policyListingData.count = data.polList.length; 
 				this.table.placeData(recs);
 				this.modalOpen = true;
 			});
-		}, 100);
 		
 	}
 
@@ -300,7 +296,8 @@ export class EditDistributionEntryComponent implements OnInit {
                                               cedingName: this.selectedPolicy.cedingName,
                                               status: this.selectedPolicy.status,
                                               exitLink: '/pol-dist',
-                                              riskName: this.selectedPolicy.riskName
+                                              riskName: this.selectedPolicy.riskName,
+                                              fromEdit:true
                                               }], { skipLocationChange: true });
    }
 

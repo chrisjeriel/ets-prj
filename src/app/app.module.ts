@@ -507,6 +507,7 @@ import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/ge
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
 import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
+import { EditDistributionRiskComponent } from './underwriting/distribution/edit-distribution-risk/edit-distribution-risk.component';
 
 @NgModule({
     imports: [
@@ -1018,6 +1019,7 @@ import { EditDistributionEntryComponent } from './underwriting/distribution/edit
         ClaimReportsComponent,
         PolDistributionCumComponent,
         EditDistributionEntryComponent,
+        EditDistributionRiskComponent,
     ],
 
   	providers: [
