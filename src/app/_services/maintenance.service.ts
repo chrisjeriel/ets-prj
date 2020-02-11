@@ -1935,7 +1935,28 @@ export class MaintenanceService{
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
-         };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportsRange', JSON.stringify(params), header);
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportsRange', JSON.stringify(params), header);
     }
+
+    generateBookingMth(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnBookingMth', JSON.stringify(params), header);
+    }
+
+    saveMtnBookingMth(params) {
+	    let header: any = {
+	      headers: new HttpHeaders({
+	        'Content-Type': 'application/json'
+	      })
+	    };
+
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
+  }
+
 }

@@ -102,7 +102,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
   constructor(private ns:NotesService, private accountingService: AccountingService) { }
 
   ngOnInit() {
-    console.log(this.jvDetail)
     this.passData = this.accountingService.getInwardPolicyKeys('JV');
     this.passData.disableAdd = true;
     this.passDataUnapplied.disableAdd = true;
@@ -115,7 +114,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
                         this.accountingService.getJvInwUnappliedColl(this.jvDetail.tranId)).pipe(map(([collection,iwnPol]) => {return {collection,iwnPol}}));
 
     this.forkSub = join.subscribe((data: any) => {
-      console.log(data);
       if(data.collection.unappliedColl.length !== 0 || data.iwnPol.inwUnappColl.length !== 0){
         this.passDataUnapplied.tableData = data.collection.unappliedColl;
         this.passData.tableData = data.iwnPol.inwUnappColl;
@@ -158,7 +156,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
   }
 
   setLOV(data){
-    console.log(data.data)
     this.passDataUnapplied.tableData = this.passDataUnapplied.tableData.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.passDataUnapplied.tableData.push(JSON.parse(JSON.stringify(this.passDataUnapplied.nData)));
@@ -188,7 +185,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
   }
   
   onRowClick(data){
-    console.log(data)
     if(data !== null){
       this.passData.disableAdd = false;
       this.passDataUnapplied.disableAdd = false;
@@ -219,7 +215,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
   }
 
   setInwLOV(data){
-    console.log(data.data)
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -332,7 +327,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
     this.prepareData();
     if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0 ||
        this.params.saveInwCollection.length != 0 || this.params.delInwCollection.length != 0){
-      console.log(this.params)
       if(this.params.saveUnappliedColl.length != 0 || this.params.delUnappliedColl.length != 0){
         this.accountingService.saveJvUnappliedColl(this.params).subscribe((data:any) => {
           if(data['returnCode'] != -1) {

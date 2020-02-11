@@ -97,7 +97,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
 
   retrieveInwPolZeroBal(){
     this.accService.getAcitJVZeroBal(this.jvDetail.tranId,'').subscribe((data:any) => {
-      console.log(data)
       this.passData.tableData= [];
       this.totalOverpayment = 0;
       this.cedingFlag = false;
@@ -300,7 +299,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
   }
 
   onRowClick(data){
-    console.log(data)
     this.infoData.emit(data)
   }
 }

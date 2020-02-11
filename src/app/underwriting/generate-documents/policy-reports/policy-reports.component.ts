@@ -160,7 +160,7 @@ export class PolicyReportsComponent implements OnInit {
     this.paramsToggle = [];
     this.params = [];
     this.params.effDate = this.ns.toDateTimeString(0);
-    console.log(data.data);
+
     if(data.data != null){
       this.params.reportId = data.data.reportId;
       this.params.reportName = data.data.reportTitle;

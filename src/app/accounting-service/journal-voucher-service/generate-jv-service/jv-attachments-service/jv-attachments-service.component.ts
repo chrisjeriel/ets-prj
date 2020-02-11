@@ -74,7 +74,6 @@ export class JvAttachmentsServiceComponent implements OnInit {
 
   retrieveAttachements(){
     this.accountingService.getAcseAttachments(this.jvDetails.tranId).subscribe((data: any) =>{
-        console.log(data);
         this.passData.tableData = [];
         if(data.acseAttachmentsList !== null){
             for(var i of data.acseAttachmentsList){
@@ -134,7 +133,6 @@ export class JvAttachmentsServiceComponent implements OnInit {
     }
 
     this.accountingService.saveAcseAttachments(params).subscribe((data: any) => {
-      console.log(data);
       if(data.returnCode === 0){
           this.dialogMessage="The system has encountered an unspecified error.";
           this.dialogIcon = "error";

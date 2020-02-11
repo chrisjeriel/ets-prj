@@ -175,7 +175,6 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   }
 
   setSoa(data){
-    console.log(data.data)
     var overdueDate = new Date();
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0 ; i < data.data.length; i++){
