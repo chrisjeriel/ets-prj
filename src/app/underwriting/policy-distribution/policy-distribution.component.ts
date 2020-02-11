@@ -28,6 +28,8 @@ export class PolicyDistributionComponent implements OnInit {
 
   inquiryFlag:boolean = false;
 
+  fromEditDist: boolean = false;
+
   /*
   previousRecordIsNotPosted:boolean = true;
   previousRecordIsNotPostedMsg:string = 'Modifications are not allowed. The previous distribution record is not yet posted.';
@@ -59,10 +61,10 @@ export class PolicyDistributionComponent implements OnInit {
       if(this.params.fromInq=='true'){
         this.subtitle = 'Inquiry'
       }
+      console.log(data.fromEdit);
+      this.fromEditDist = data.fromEdit == 'true';
 
       this.inquiryFlag = this.params.fromInq=='true';
-      console.log(this.inquiryFlag);
-      console.log(this.params.fromInq=='true')
      this.getInstInfo();
       setTimeout(a=>this.tabset.select("risk"),0);
     });

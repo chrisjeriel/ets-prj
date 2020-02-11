@@ -127,7 +127,7 @@ export class EditDistributionRiskComponent implements OnInit {
     keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
     opts: [],
     total:[null, 'TOTAL', 'pctShare', 'siAmt', 'premAmt', null, 'commAmt', 'vatRiComm', 'netDue'],
-    uneditable:[true,true,true,true,true,true,true,true,true],
+    uneditable:[true,true,true,false,false,true,true,true,true],
     nData: {},
     checkFlag: false,
     selectFlag: false,
