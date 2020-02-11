@@ -507,6 +507,7 @@ import { MtnAcseCheckSeriesComponent } from './maintenance/accounting-service/ge
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
+import { PolBordereauxComponent } from './accounting-in-trust/reports/pol-bordereaux/pol-bordereaux.component';
 
 @NgModule({
     imports: [
@@ -1018,6 +1019,7 @@ import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/bo
         ClaimReportsComponent,
         PolDistributionCumComponent,
         BookingMthComponent,
+        PolBordereauxComponent,
     ],
 
   	providers: [

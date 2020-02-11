@@ -58,6 +58,13 @@ export class BordereauxComponent implements OnInit {
 	    forceExtract: 'N',
 	    perLine: true,
 	    perCession: true,
+	    byDateFrom : '',
+	    byDateTo : '',
+	    byMonthFrom: '',
+	    byMonthFromYear : '',
+	    byMonthTo: ''
+
+
 	}
 
 	passLov: any = {
@@ -71,6 +78,8 @@ export class BordereauxComponent implements OnInit {
 	disableCompany: boolean = true;
 	disablePrint: boolean = true;
 	loading: boolean = false;
+
+	paramsToggle: Array<string> = [];
 
 	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService,
 		        private printService: PrintService, public modalService: NgbModal) { }
