@@ -508,6 +508,8 @@ import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-repo
 import { PolDistributionCumComponent } from './underwriting/policy-distribution/pol-distribution-cum/pol-distribution-cum.component';
 import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
 import { EditDistributionRiskComponent } from './underwriting/distribution/edit-distribution-risk/edit-distribution-risk.component';
+import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
+import { PolBordereauxComponent } from './accounting-in-trust/reports/pol-bordereaux/pol-bordereaux.component';
 
 @NgModule({
     imports: [
@@ -1020,6 +1022,8 @@ import { EditDistributionRiskComponent } from './underwriting/distribution/edit-
         PolDistributionCumComponent,
         EditDistributionEntryComponent,
         EditDistributionRiskComponent,
+        BookingMthComponent,
+        PolBordereauxComponent,
     ],
 
   	providers: [

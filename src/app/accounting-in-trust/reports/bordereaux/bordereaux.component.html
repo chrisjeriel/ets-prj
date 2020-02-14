@@ -4,7 +4,12 @@
 <div class="cust-tabs-container">
 	<h4>Accounting In-Trust / Reports / Bordereaux</h4>
 	<ngb-tabset (tabChange)="onTabChange($event)">
-		<ngb-tab class="ngb-tab" title="Bordereaux">
+		<ngb-tab class="ngb-tab" title="Policy Bordereaux">
+    		<ng-template ngbTabContent>
+    			<app-pol-bordereaux></app-pol-bordereaux>
+    		</ng-template>
+  		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Claims Bordereaux">
 			<ng-template ngbTabContent>
 				<div class="row">
 					<div class="col-sm-1"></div>

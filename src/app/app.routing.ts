@@ -205,6 +205,7 @@ import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-c
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
+import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
 
 const appRoutes: Routes = [
 
@@ -847,6 +848,7 @@ const appRoutes: Routes = [
     { path: 'uploader', component: UploaderComponent},
     { path: 'update-pol-attachment', component: UpdatePolAttachmentComponent},
     { path: 'edit-distribution', component: EditDistributionEntryComponent},
+    { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
