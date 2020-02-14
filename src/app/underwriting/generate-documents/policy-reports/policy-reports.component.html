@@ -17,7 +17,7 @@
 									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -148,7 +148,7 @@
 									[disabled]="paramsToggle.indexOf('line') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -164,7 +164,7 @@
 									[disabled]="paramsToggle.indexOf('company') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -180,7 +180,7 @@
 									[disabled]="paramsToggle.indexOf('currCd') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('currCd') > -1"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
 									<span>&nbsp;</span>
-									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currdesc" readonly placeholder="ALL CURRENCIES">
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currdesc" readonly placeholder="ALL CURRENCIES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -282,7 +282,7 @@
 
 <app-mtn-currency-code  #currencyModal id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
-<app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-mtn-line id="lineCdLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-confirm-save (onYes)="saveRange()"></app-confirm-save>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null : fromSiRangeMdl ? afterCancelSave() : modalService.dismissAll();"></app-sucess-dialog>
