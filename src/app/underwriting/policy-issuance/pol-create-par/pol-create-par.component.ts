@@ -340,7 +340,6 @@ export class PolCreatePARComponent implements OnInit {
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
-        this.riskId = this.selected.project.riskId;
 
         this.getOptionLOV(this.selected.quoteId);
         this.noSelected = false;
@@ -360,7 +359,6 @@ export class PolCreatePARComponent implements OnInit {
         this.cedingName = this.selected.cedingName;
         this.insuredDesc = this.selected.insuredDesc;
         this.riskName = this.selected.riskName;
-        this.riskId = this.selected.project.riskId;
 
         if(this.selected.holdCover.status.toUpperCase() === 'EXPIRED') {
           this.inceptionDate = this.ns.toDateTimeString(this.selected.holdCover.periodFrom).split('T')[0];

@@ -148,7 +148,7 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   getReports(){
-    this.passLov.reportId = 'POLR044%';
+    this.passLov.reportId = 'POLR044_';
     this.lovMdl.openLOV();
   }
 
@@ -571,6 +571,11 @@ export class PolicyReportsComponent implements OnInit {
     }
 
     this.printService.print(this.params.destination,this.params.reportId, params);
+    if(this.params.reportId == 'POLR044B'){
+      params.reportId = 'POLR044B_LETTER';
+      params["polr044Params.reportId"]= 'POLR044B_LETTER';
+      this.printService.print(this.params.destination,'POLR044B_LETTER', params);
+    }
   }
 
   onClickCancel(){

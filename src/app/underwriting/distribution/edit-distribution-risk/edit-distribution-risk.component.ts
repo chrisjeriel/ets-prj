@@ -525,6 +525,8 @@ export class EditDistributionRiskComponent implements OnInit {
           policyId: this.params.policyId,
           seciiPremTag: this.riskDistributionData.seciiPremTag,
           trtyLimitSec2: this.riskDistributionData.trtyLimitSec2 == null ?'' : this.riskDistributionData.trtyLimitSec2.toString().replace(/[,]/g,''),
+          manualTag:'Y',
+          treatyList: this.treatyDistData.tableData.filter(a=>a.edited)
         };
         this.polService.saveDistRisk(params).subscribe((data: any)=>{
         if(data.returnCode === 0){
