@@ -13,7 +13,7 @@
 											<div class="input-group cust-ig" style="padding-top: 4px">
 												<label class="form-control-sm col-sm-2">Report Name</label>
 												<input type="text" class="form-control form-control-sm col-sm-2 report" [ngModel]="params.reportId"
-												 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); paramChange();" appRequired>
+												 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); " appRequired>
 												<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 												<input type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.reportName" readonly style="margin-left:2px">
 											</div>
@@ -286,6 +286,6 @@
 <app-mtn-currency-code  #currencyModal id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-<app-confirm-save (onYes)="saveRange()"></app-confirm-save>
+<!-- <app-confirm-save (onYes)="saveRange()"></app-confirm-save> -->
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null:modalService.dismissAll();"></app-sucess-dialog>

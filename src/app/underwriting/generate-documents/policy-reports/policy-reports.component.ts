@@ -144,7 +144,7 @@ export class PolicyReportsComponent implements OnInit {
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
   ngOnInit() {
-      this.passLov.modReportId = 'POLR044%';
+      this.passLov.modReportId = 'POLR044_';
       this.loading = false;
   }
 
@@ -592,7 +592,7 @@ export class PolicyReportsComponent implements OnInit {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
       if(this.params.reportId.indexOf('POLR044') == -1){
-        this.passLov.code = 'POLR044%';
+        this.passLov.code = 'POLR044_';
       }else{
         this.passLov.code = this.params.reportId;
       }
