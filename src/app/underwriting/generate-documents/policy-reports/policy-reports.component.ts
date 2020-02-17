@@ -144,12 +144,12 @@ export class PolicyReportsComponent implements OnInit {
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
   ngOnInit() {
-      this.passLov.modReportId = 'POLR044%';
+      this.passLov.modReportId = 'POLR044_';
       this.loading = false;
   }
 
   getReports(){
-    this.passLov.reportId = 'POLR044%';
+    this.passLov.reportId = 'POLR044_';
     this.lovMdl.openLOV();
   }
 
@@ -236,7 +236,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
     } 
     else if(this.params.reportId == 'POLR044J'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd', 'bookingDate', 'distributed', 'undistributed', 'alldistribution');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
@@ -254,7 +254,7 @@ export class PolicyReportsComponent implements OnInit {
       this.checkMonthYear();
     }
     else if(this.params.reportId == 'POLR044K'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd', 'bookingDate', 'distributed', 'undistributed', 'alldistribution');
       this.params.dateParam = '5';
     } 
     else if(this.params.reportId == 'POLR044L'){
@@ -586,8 +586,8 @@ export class PolicyReportsComponent implements OnInit {
     } else if(field === 'company') {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
-      if(this.params.reportId.indexOf('POLR044') == -1){
-        this.passLov.code = 'POLR044%';
+      if((this.params.reportId.indexOf('POLR044') == -1) || (this.params.reportId.length > 8)){
+        this.passLov.code = 'POLR044_';
       }else{
         this.passLov.code = this.params.reportId;
       }
