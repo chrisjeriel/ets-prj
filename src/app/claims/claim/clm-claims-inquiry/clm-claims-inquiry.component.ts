@@ -263,11 +263,15 @@ export class ClmClaimsInquiryComponent implements OnInit {
     	this.titleService.setTitle("Clm | Claim Inquiry");
     	this.userService.emitModuleId("CLM008");
 
+    	if(this.ns.listParams != null){
+    		this.searchParams = this.ns.listParams;
+    	}
     	this.retrieveClaimlist();
 	}
 
 
 	retrieveClaimlist() {
+		this.ns.setListParams(this.searchParams); 
 		this.claimsService.newGetClaimsListingLength(this.searchParams).subscribe(data=>{
 		  this.passData.count = data;
 		  this.table.setLength(1);

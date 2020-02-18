@@ -180,27 +180,27 @@
                             </ng-template>
                             <ng-template ngbPanelContent>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE012') > -1">
-                                    <button id="QUOTE012" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
+                                    <button id="QUOTE012" (click)="resetListParams()" [routerLink]="['/quotation-inquiry']" class="button btn btn-link">Quotation
                                         Inquiry</button>
                                     <br>
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE001') > -1">
-                                    <button id="QUOTE001" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
+                                    <button id="QUOTE001" (click)="resetListParams()" [routerLink]="['/quotation-processing']" class="button btn btn-link">Quotation
                                         Processing</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE013') > -1">
-                                    <button id="QUOTE013" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
+                                    <button id="QUOTE013" (click)="resetListParams()" [routerLink]="['/quotation-to-hold-cover']" class="button btn btn-link">Quotation
                                         to Hold Cover</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
-                                    <button id="QUOTE014" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
+                                    <button id="QUOTE014" (click)="resetListParams()" [routerLink]="['/hold-cover-monitoring']" class="button btn btn-link">Hold
                                         Cover Monitoring</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE015') > -1">
-                                    <button id="QUOTE015" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
+                                    <button id="QUOTE015" (click)="resetListParams()" [routerLink]="['/change-quote-status']" class="button btn btn-link">Change
                                         Quote Status</button>
                                     <br />
                                 </ng-container>
@@ -213,27 +213,27 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('QUOTE018') > -1">
-                                                <button [routerLink]="['/update-qu-attachment']" class="button btn btn-link">Update Quote Attachment</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/update-qu-attachment']" class="button btn btn-link">Update Quote Attachment</button>
                                                 <br/>
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('QUOTE020') > -1">
-                                                <button [routerLink]="['/create-int-comp']" class="button btn btn-link">Create Internal Competition</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/create-int-comp']" class="button btn btn-link">Create Internal Competition</button>
                                                 <br/>
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('QUOTE019') > -1">
-                                                <button [routerLink]="['/copy-quote-details']" class="button btn btn-link">Copy Quote Details</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/copy-quote-details']" class="button btn btn-link">Copy Quote Details</button>
                                                 <br/>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
                                 <!-- <ng-container *ngIf="accessibleModules.indexOf('QUOTE014') > -1">
-                                    <button id="QUOTE016" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
+                                    <button id="QUOTE016" (click)="resetListParams()" [routerLink]="['/open-cover-processing']" class="button btn btn-link"> Open
                                         Cover Processing</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('QUOTE017') > -1">
-                                    <button id="QUOTE017" [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
+                                    <button id="QUOTE017" (click)="resetListParams()" [routerLink]="['/open-cover-inquiry']" class="button btn btn-link"> Open
                                         Cover Inquiry</button>
                                 </ng-container> -->
                             </ng-template>
@@ -271,12 +271,12 @@
                                             accessibleModules.indexOf('POL024') > -1)" title="Inquiry">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL021') > -1">
-                                                <button [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
+                                                <button (click)="resetListParams()" [routerLink]="['/policy-inquiry']" class="button btn btn-link">Policy
                                                 Inquiry</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL024') > -1">
-                                                <button [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/pol-oc-inquiry']" class="button btn btn-link">Open Cover Inquiry</button>
                                                 <br />
                                             </ng-container>
                                         </ng-template>
@@ -289,31 +289,31 @@
                                                         accessibleModules.indexOf('POL016') > -1)" title="Issuance">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL001') > -1">
-                                            <button [routerLink]="['/create-policy']" class="button btn btn-link">Create
+                                            <button (click)="resetListParams()" [routerLink]="['/create-policy']" class="button btn btn-link">Create
                                                 Policy</button>
                                             <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL012') > -1">
-                                            <button [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
+                                            <button (click)="resetListParams()" [routerLink]="['/policy-listing']" class="button btn btn-link">Policy
                                                 List</button>
                                             <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL017') > -1">
-                                            <button [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
+                                            <button (click)="resetListParams()" [routerLink]="['/create-open-cover']" class="button btn btn-link">Create
                                                 Open Cover</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL020') > -1">
-                                            <button [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
+                                            <button (click)="resetListParams()" [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL013') > -1">
-                                            <button [routerLink]="['/create-alteration']" class="button btn btn-link">Create
+                                            <button (click)="resetListParams()" [routerLink]="['/create-alteration']" class="button btn btn-link">Create
                                                 Alteration</button>
                                             <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL016') > -1">
-                                            <button [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
+                                            <button (click)="resetListParams()" [routerLink]="['/alt-policy-listing']" class="button btn btn-link">Alteration
                                                 List</button>
                                             <br />
                                             </ng-container>
@@ -325,27 +325,27 @@
                                                     accessibleModules.indexOf('POL039') > -1)" title="Distribution">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL035') > -1">
-                                                <button [routerLink]="['/pol-dist']" class="button btn btn-link">Distribution Processing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/pol-dist']" class="button btn btn-link">Distribution Processing</button>
                                                 <br />    
                                             </ng-container>
 
                                             <ng-container *ngIf="accessibleModules.indexOf('POL036') > -1">
-                                                <button [routerLink]="['/pol-dist-list']" class="button btn btn-link">Distribution List</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/pol-dist-list']" class="button btn btn-link">Distribution List</button>
                                                 <br />
                                             </ng-container>
 
                                             <ng-container *ngIf="accessibleModules.indexOf('POL041') > -1">
-                                                <button [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
+                                                <button (click)="resetListParams()" [routerLink]="['/negate-distribution']" class="button btn btn-link">Negate
                                                 Distribution</button>
                                                 <br />   
                                             </ng-container>
 
                                             <ng-container *ngIf="accessibleModules.indexOf('POL039') > -1 || accessibleModules.indexOf('POL040') > -1">
-                                                <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
                                                 <br />  
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL051') > -1">
-                                                <button [routerLink]="['/edit-distribution']" class="button btn btn-link">Policy Distribution (Modification)</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/edit-distribution']" class="button btn btn-link">Policy Distribution (Modification)</button>
                                                 <br />  
                                             </ng-container>
                                             
@@ -359,31 +359,31 @@
                                                         accessibleModules.indexOf('POL026') > -1)" title="Expiry & Renewal">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL027') > -1 || accessibleModules.indexOf('POL028') > -1">
-                                                <button [routerLink]="['/renew-exp-pol']" class="button btn btn-link">Renew
+                                                <button (click)="resetListParams()" [routerLink]="['/renew-exp-pol']" class="button btn btn-link">Renew
                                                     Expiring Policy</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL025') > -1">
-                                                <button [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
+                                                <button (click)="resetListParams()" [routerLink]="['/extract-expiring-policies']" class="button btn btn-link">Extract
                                                     Expiring Policies</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL027') > -1 || accessibleModules.indexOf('POL028') > -1">
-                                                <button [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
+                                                <button (click)="resetListParams()" [routerLink]="['/expiry-listing']" class="button btn btn-link">Expiry
                                                     Listing</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL029') > -1">
-                                                <button [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
+                                                <button (click)="resetListParams()" [routerLink]="['/policy-holdcover']" class="button btn btn-link">Policy
                                                     To Hold Cover</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL030') > -1">
-                                                <button [routerLink]="['/pol-hold-cov-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/pol-hold-cov-monitoring']" class="button btn btn-link">Hold Cover Monitoring</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL026') > -1">
-                                                <button [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge Extracted Policies</button>    
+                                                <button (click)="resetListParams()" [routerLink]="['purge-extracted-policy']" class="button btn btn-link">Purge Extracted Policies</button>    
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
@@ -391,28 +391,28 @@
                                             accessibleModules.indexOf('POL042') > -1)" title="Generate Documents">
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
-                                                <button [routerLink]="['/pol-reports']" class="button btn btn-link">Policy Reports</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/pol-reports']" class="button btn btn-link">Policy Reports</button>
                                                 <br/>
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL031') > -1">
-                                                <button [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/policy-printing']" class="button btn btn-link">Policy Printing</button>
                                                 <br/>
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL042') > -1">
-                                                <button [routerLink]="['/total-val-pol-print']" class="button btn btn-link">100% Value Policy Printing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/total-val-pol-print']" class="button btn btn-link">100% Value Policy Printing</button>
                                                 <br/>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                     <!-- <ngb-panel title="Maintenance">
                                             <ng-template ngbPanelContent>
-                                                <button [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
                                                 <br />
-                                                <button [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/maintenance-ceding-co']" class="button btn btn-link">Ceding Companies</button>
                                                 <br />
-                                                <button [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
                                                 <br />
-                                                <button [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
                                                 <br />
                                             </ng-template>
                                         </ngb-panel> -->
@@ -425,22 +425,22 @@
                                                 <ngb-panel title="Update Information">
                                                     <ng-template ngbPanelContent>
                                                         <ng-container *ngIf="accessibleModules.indexOf('POL032') > -1">
-                                                            <button [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update General Info</button>
+                                                            <button (click)="resetListParams()" [routerLink]="['/pol-util-gen-info']" class="button btn btn-link">Update General Info</button>
                                                             <br />
                                                         </ng-container>
                                                         <ng-container *ngIf="accessibleModules.indexOf('POL033') > -1">
-                                                            <button [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update Installment</button>
+                                                            <button (click)="resetListParams()" [routerLink]="['/pol-util-installment']" class="button btn btn-link">Update Installment</button>
                                                             <br />
                                                         </ng-container>
                                                     </ng-template>
                                                 </ngb-panel>
                                             </ngb-accordion>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL034') > -1">
-                                                <button [routerLink]="['/spoil-pol-alt']" class="button btn btn-link" >Spoil Policy/Alteration</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/spoil-pol-alt']" class="button btn btn-link" >Spoil Policy/Alteration</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL046') > -1">
-                                                <button [routerLink]="['/update-pol-attachment']" class="button btn btn-link">Update Policy Attachment</button>
+                                                <button (click)="resetListParams()" [routerLink]="['/update-pol-attachment']" class="button btn btn-link">Update Policy Attachment</button>
                                                 <br />
                                             </ng-container>
                                         </ng-template>
@@ -464,32 +464,32 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('CLM008') > -1">
-                                                <button [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
+                                                <button (click)="resetListParams()" [routerLink]="['claims-inquiry']" class="button btn btn-link">Claims
                                                     Inquiry</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('CLM010') > -1">
-                                                <button [routerLink]="['payment-request']" class="button btn btn-link">Claim Payment Request Inquiry</button>
+                                                <button (click)="resetListParams()" [routerLink]="['payment-request']" class="button btn btn-link">Claim Payment Request Inquiry</button>
                                                 <br />
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
                                 <ng-container *ngIf="accessibleModules.indexOf('CLM001') > -1">
-                                    <button [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
+                                    <button (click)="resetListParams()" [routerLink]="['/clm-claim-processing']" class="button btn btn-link">Claims
                                         Processing</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
-                                    <button [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
+                                    <button (click)="resetListParams()" [routerLink]="['clm-change-claim-status']" class="button btn btn-link">Change
                                         Claim Status</button>
                                         <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('CLM009') > -1">
-                                    <button [routerLink]="['clm-reports']" class="button btn btn-link">Claim Reports</button>
+                                    <button (click)="resetListParams()" [routerLink]="['clm-reports']" class="button btn btn-link">Claim Reports</button>
                                         <br />
                                 </ng-container>
-                                <!-- <button [routerLink]="['']" class="button btn btn-link">Claim
+                                <!-- <button (click)="resetListParams()" [routerLink]="['']" class="button btn btn-link">Claim
                                     Recovery</button>
                                 <br />  wag na po ibalik sabi ni sir elmon 08/23/2019-->
                             </ng-template>
@@ -499,7 +499,7 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting In-Trust
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/accounting']" class="button btn btn-link"> Acknowledgement Receipt </button>
+                                <button (click)="resetListParams()" [routerLink]="['/accounting']" class="button btn btn-link"> Acknowledgement Receipt </button>
                                 <br />
                            </ng-template>
                         </ngb-panel>
@@ -539,40 +539,40 @@
                             </ng-template>
                             <ng-template ngbPanelContent>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT001') > -1">
-                                    <button [routerLink]="['/acct-ar-listings']" class="button btn btn-link">
+                                    <button (click)="resetListParams()" [routerLink]="['/acct-ar-listings']" class="button btn btn-link">
                                         Acknowledgement Receipt </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT028') > -1">
-                                    <button [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher
+                                    <button (click)="resetListParams()" [routerLink]="['/check-voucher']" class="button btn btn-link"> Check Voucher
                                     </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT031') > -1">
-                                    <button [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal
+                                    <button (click)="resetListParams()" [routerLink]="['/journal-voucher']" class="button btn btn-link"> Journal
                                         Voucher </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT016') > -1">
-                                    <button [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment
+                                    <button (click)="resetListParams()" [routerLink]="['/payt-req']" class="button btn btn-link"> Request for Payment
                                     </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT048') > -1">
-                                    <button [routerLink]="['/investments']" class="button btn btn-link"> Investments
+                                    <button (click)="resetListParams()" [routerLink]="['/investments']" class="button btn btn-link"> Investments
                                     </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT046') > -1">
-                                    <button [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
+                                    <button (click)="resetListParams()" [routerLink]="['acc-s-credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT050') > -1">
-                                    <button [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
+                                    <button (click)="resetListParams()" [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT049') > -1">
-                                    <button [routerLink]="['profit-commission']" class="button btn btn-link">Profit Commission</button>
+                                    <button (click)="resetListParams()" [routerLink]="['profit-commission']" class="button btn btn-link">Profit Commission</button>
                                     <br />
                                 </ng-container>
                                 <ngb-accordion *ngIf="(accessibleModules.indexOf('ACIT056') > -1 ||
@@ -583,12 +583,12 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT056') > -1">
-                                                <button [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled
+                                                <button (click)="resetListParams()" [routerLink]="['acct-it-cancelled-trans']" class="button btn btn-link">Cancelled
                                                     Transactions</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT057') > -1">
-                                                <button [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
+                                                <button (click)="resetListParams()" [routerLink]="['acct-it-edited-acct-entries']" class="button btn btn-link">Edited
                                                     Accounting Entries</button>
                                                 <br />
                                             </ng-container>
@@ -603,12 +603,12 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT058') > -1">
-                                                <button [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
+                                                <button (click)="resetListParams()" [routerLink]="['accounting-entries']" class="button btn btn-link">Accounting
                                                     Entries</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT059') > -1">
-                                                <button [routerLink]="['trial-balance']" class="button btn btn-link">Trial Balance</button>
+                                                <button (click)="resetListParams()" [routerLink]="['trial-balance']" class="button btn btn-link">Trial Balance</button>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
@@ -621,11 +621,11 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT060') > -1">
-                                                <button [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
+                                                <button (click)="resetListParams()" [routerLink]="['print-registers']" class="button btn btn-link">Registers</button>
                                                 <br/>
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT061') > -1">
-                                                <button [routerLink]="['bordereaux']" class="button btn btn-link">Bordereaux</button>
+                                                <button (click)="resetListParams()" [routerLink]="['bordereaux']" class="button btn btn-link">Bordereaux</button>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
@@ -641,26 +641,26 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT051') > -1">
-                                                <button [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change
+                                                <button (click)="resetListParams()" [routerLink]="['change-trans-stat-to-new']" class="button btn btn-link">Change
                                                     Transaction Status to New</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT053') > -1">
-                                                <button [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit
+                                                <button (click)="resetListParams()" [routerLink]="['edit-acct-entries']" class="button btn btn-link">Edit
                                                     Accounting Entries</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT052') > -1">
-                                                <button [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
+                                                <button (click)="resetListParams()" [routerLink]="['cancel-transaction']" class="button btn btn-link">Cancel
                                                     Transaction</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT054') > -1">
-                                                <button [routerLink]="['allocate-investment']" class="button btn btn-link">Allocate Investment Income</button>
+                                                <button (click)="resetListParams()" [routerLink]="['allocate-investment']" class="button btn btn-link">Allocate Investment Income</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT055') > -1">
-                                                <button [routerLink]="['acit-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
+                                                <button (click)="resetListParams()" [routerLink]="['acit-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
@@ -675,21 +675,21 @@
                                         </ng-template>
                                         <ng-template ngbPanelContent>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT062') > -1">
-                                                <button [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
+                                                <button (click)="resetListParams()" [routerLink]="['mon-end-data-chk-in-trust']" class="button btn btn-link">Data Checking</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT063') > -1">
-                                                <button [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['mon-end-batch-in-trust']" class="button btn btn-link">Batch Processing</button>
                                                 <br />
                                             </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT066') > -1">
-                                                <button [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
+                                                <button (click)="resetListParams()" [routerLink]="['mon-end-trial-bal-in-trust']" class="button btn btn-link">Trial Balance Processing</button>
                                                 <br />
                                             </ng-container>
-                                            <!-- <button [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
+                                            <!-- <button (click)="resetListParams()" [routerLink]="['funds-held']" class="button btn btn-link">Funds Held</button>
                                             <br /> -->
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT064') > -1">
-                                                <button [routerLink]="['batch-os-takeup']" class="button btn btn-link">Batch Outstanding Losses</button>
+                                                <button (click)="resetListParams()" [routerLink]="['batch-os-takeup']" class="button btn btn-link">Batch Outstanding Losses</button>
                                             </ng-container>
                                         </ng-template>
                                     </ngb-panel>
@@ -724,27 +724,27 @@
                                 <fa name="calculator"></fa>&nbsp;Accounting Service
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['acct-or-listings']" class="button btn btn-link">Official Receipt
+                                <button (click)="resetListParams()" [routerLink]="['acct-or-listings']" class="button btn btn-link">Official Receipt
                                 </button>
                                 <br />
-                                <button [routerLink]="['/check-voucher-service']" class="button btn btn-link"> Check Voucher
+                                <button (click)="resetListParams()" [routerLink]="['/check-voucher-service']" class="button btn btn-link"> Check Voucher
                                 </button>
                                 <br />
-                                <button [routerLink]="['/journal-voucher-service']" class="button btn btn-link"> Journal Voucher
+                                <button (click)="resetListParams()" [routerLink]="['/journal-voucher-service']" class="button btn btn-link"> Journal Voucher
                                 </button>
                                 <br />
-                                <!-- <button [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
+                                <!-- <button (click)="resetListParams()" [routerLink]="['fixed-assets']" class="button btn btn-link">Fixed Assets</button>
                                 <br /> -->
-                                <button [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
+                                <button (click)="resetListParams()" [routerLink]="['accounting-service-expense-budget']" class="button btn btn-link">Expense Budget</button>
                                 <br />
-                                <button [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>
+                                <button (click)="resetListParams()" [routerLink]="['acc-s-request-for-payment']" class="button btn btn-link">Request for Payment</button>
                                 <br />
-                               <!--  <button [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
+                               <!--  <button (click)="resetListParams()" [routerLink]="['accounting-service-pcv-listings']" class="button btn btn-link">Petty Cash Voucher</button>
                                 <br /> -->
-                                <!-- <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button> -->
-                                <button [routerLink]="['/credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
+                                <!-- <button (click)="resetListParams()" [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button> -->
+                                <button (click)="resetListParams()" [routerLink]="['/credit-debit-memo']" class="button btn btn-link">Credit/Debit Memo</button>
                                 <br />
-                                <!-- <button [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
+                                <!-- <button (click)="resetListParams()" [routerLink]="['accounting-service-exp-budget']" class="button btn btn-link">Expense Budget</button>
                                 <br /> -->
                                 <ngb-accordion #acc="ngbAccordion">
                                     <ngb-panel>
@@ -752,13 +752,13 @@
                                             Extract
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['accounting-service-extract']" class="button btn btn-link">Accounting
+                                            <button (click)="resetListParams()" [routerLink]="['accounting-service-extract']" class="button btn btn-link">Accounting
                                                 Entries</button>
                                             <br />
-                                            <button [routerLink]="['accounting-service-trial-bal']" class="button btn btn-link">Trial
+                                            <button (click)="resetListParams()" [routerLink]="['accounting-service-trial-bal']" class="button btn btn-link">Trial
                                                 Balance</button>
                                             <br />
-                                             <button [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
+                                             <button (click)="resetListParams()" [routerLink]="['extract-bir-taxes']" class="button btn btn-link">BIR Taxes</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -768,11 +768,11 @@
                                             Inquiry
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['acc-s-edited-acct-entries']" class="button btn btn-link">Edited Accounting Entries</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acc-s-edited-acct-entries']" class="button btn btn-link">Edited Accounting Entries</button>
                                             <br />
-                                            <button [routerLink]="['accounting-service-inquiry']" class="button btn btn-link">Edited Tax Details</button>
+                                            <button (click)="resetListParams()" [routerLink]="['accounting-service-inquiry']" class="button btn btn-link">Edited Tax Details</button>
                                             <br />
-                                            <button [routerLink]="['acct-srvc-inquiry-cncld-trans']" class="button btn btn-link">Cancelled Transactions</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acct-srvc-inquiry-cncld-trans']" class="button btn btn-link">Cancelled Transactions</button>
                                             <br />
                                         </ng-template>
                                     </ngb-panel>
@@ -783,7 +783,7 @@
                                             Reports
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['print-registers-service']" class="button btn btn-link">Registers</button>
+                                            <button (click)="resetListParams()" [routerLink]="['print-registers-service']" class="button btn btn-link">Registers</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -793,21 +793,21 @@
                                             Utilities
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['accounting-service-utilities']" class="button btn btn-link">Edit Tax Details</button>
+                                            <button (click)="resetListParams()" [routerLink]="['accounting-service-utilities']" class="button btn btn-link">Edit Tax Details</button>
                                             <br />
-                                            <button [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
                                             <br />
-                                            <button [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
                                             <br />
-                                            <button [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
                                             <br />
-                                            <button [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>
+                                            <button (click)="resetListParams()" [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>
                                             <br />
-                                            <button [routerLink]="['batch-or-printing']" class="button btn btn-link">Batch OR Printing</button>
+                                            <button (click)="resetListParams()" [routerLink]="['batch-or-printing']" class="button btn btn-link">Batch OR Printing</button>
                                             <br />
-                                            <button [routerLink]="['batch-invoice-printing']" class="button btn btn-link">Batch Invoice Printing</button>
+                                            <button (click)="resetListParams()" [routerLink]="['batch-invoice-printing']" class="button btn btn-link">Batch Invoice Printing</button>
                                             <br />
-                                            <button [routerLink]="['acse-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
+                                            <button (click)="resetListParams()" [routerLink]="['acse-close-open-dcb']" class="button btn btn-link">Close/Open DCB</button>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>
@@ -817,11 +817,11 @@
                                             Month End
                                         </ng-template>
                                         <ng-template ngbPanelContent>
-                                            <button [routerLink]="['month-end-data-checking']" class="button btn btn-link">Data Checking</button>
+                                            <button (click)="resetListParams()" [routerLink]="['month-end-data-checking']" class="button btn btn-link">Data Checking</button>
                                             <br />
-                                            <button [routerLink]="['month-end-batch-processing']" class="button btn btn-link">Batch Processing</button>
+                                            <button (click)="resetListParams()" [routerLink]="['month-end-batch-processing']" class="button btn btn-link">Batch Processing</button>
                                             <br />
-                                            <button [routerLink]="['month-end-trial-bal-proc']" class="button btn btn-link">Trial Balance Processing</button>
+                                            <button (click)="resetListParams()" [routerLink]="['month-end-trial-bal-proc']" class="button btn btn-link">Trial Balance Processing</button>
                                             <br />
                                         </ng-template>
                                     </ngb-panel>
@@ -885,13 +885,13 @@
                                 <fa name="wrench"></fa>&nbsp;Maintenance
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['/maintenance-qu-pol']" class="button btn btn-link">Quotation & Policy</button>
+                                <button (click)="resetListParams()" [routerLink]="['/maintenance-qu-pol']" class="button btn btn-link">Quotation & Policy</button>
                                 <br/>
-                                <button [routerLink]="['/maintenance-clm']" class="button btn btn-link">Claims</button>
+                                <button (click)="resetListParams()" [routerLink]="['/maintenance-clm']" class="button btn btn-link">Claims</button>
                                 <br/>
-                                <button [routerLink]="['/maintenance-acct']" class="button btn btn-link">Accounting</button>
+                                <button (click)="resetListParams()" [routerLink]="['/maintenance-acct']" class="button btn btn-link">Accounting</button>
                                 <br/>
-                                <button [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
+                                <button (click)="resetListParams()" [routerLink]="['/mtn-system']" class="button btn btn-link">System</button>
                             </ng-template>
                         </ngb-panel>
                         <ngb-panel *ngIf="(accessibleModules.indexOf('SEC001') > -1 ||
@@ -902,9 +902,9 @@
                                 <fa name="user-secret"></fa>&nbsp;Security
                             </ng-template>
                             <ng-template ngbPanelContent>
-                                <button [routerLink]="['users-maintenance']" class="button btn btn-link">Users Maintenance</button>
+                                <button (click)="resetListParams()" [routerLink]="['users-maintenance']" class="button btn btn-link">Users Maintenance</button>
                                 <br />
-                                <button [routerLink]="['modules-maintenance']" class="button btn btn-link">Modules Maintenance</button>
+                                <button (click)="resetListParams()" [routerLink]="['modules-maintenance']" class="button btn btn-link">Modules Maintenance</button>
                                 <br />
                             </ng-template>
                         </ngb-panel>

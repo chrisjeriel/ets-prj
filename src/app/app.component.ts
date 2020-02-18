@@ -487,5 +487,9 @@ export class AppComponent implements OnDestroy {
       });
     }
   }
+
+  resetListParams(){
+    this.ns.listParams = null;
+  }
 }
 
