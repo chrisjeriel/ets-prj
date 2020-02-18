@@ -344,6 +344,10 @@
                                                 <button [routerLink]="['/batch-processing']" class="button btn btn-link">Batch Processing</button>
                                                 <br />  
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL051') > -1">
+                                                <button [routerLink]="['/edit-distribution']" class="button btn btn-link">Policy Distribution (Modification)</button>
+                                                <br />  
+                                            </ng-container>
                                             
                                         </ng-template>
                                     </ngb-panel>

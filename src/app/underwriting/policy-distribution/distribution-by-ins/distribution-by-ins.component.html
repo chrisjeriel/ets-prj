@@ -116,5 +116,36 @@
 			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
 		</div>
 	</app-modal>
+	<button type="button" class="cust-btn" (click)="printModal.openNoClose();"><a>Print</a></button>
 	<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
 </div>
+
+<app-modal #printModal class="d-none">
+	<div header>Print</div>
+	<div body>
+		<fieldset class="scheduler-border">
+			<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+				<div class="input-group" style="margin-bottom:3px !important;">
+					<label class="form-control-sm col-sm-3 labels">Report</label>
+					<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+						<option value="POLR038C">Distribution Slip</option>
+					</select>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="input-group" style="margin-bottom:3px !important;">
+					<label class="form-control-sm col-sm-3 labels">Destination</label>
+					<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+						<option value="screen">Screen</option>
+						<option value="dlPdf">PDF</option>
+						<option value="printPdf">Printer</option>
+					</select>
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div footer class="cust-btn-container">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="print();modalService.dismissAll();"><a>Print</a></button>
+	</div>
+</app-modal>

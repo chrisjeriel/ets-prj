@@ -298,7 +298,7 @@ export class PolBordereauxComponent implements OnInit {
     console.log(this.params.reportId);
     console.log(this.sendData);
 
-    /*this.printService.extractReport({ reportId: this.params.reportId, polr044Params:this.sendData }).subscribe((data:any)=>{
+    this.printService.extractReport({ reportId: this.params.reportId, polr044Params:this.sendData }).subscribe((data:any)=>{
         console.log("extractReport return data");
         console.log(data);
         this.loading = false;
@@ -327,7 +327,7 @@ export class PolBordereauxComponent implements OnInit {
     },
     (err) => {
       alert("Exception when calling services.");
-    });*/
+    });
     
     this.sendData.forceExtract = 'N';
   }

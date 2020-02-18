@@ -1,6 +1,6 @@
 import { Component, OnInit,ViewChild } from '@angular/core';
 import { HoldCoverInfo } from '../../_models/HoldCover';
-import { QuotationService, NotesService, UserService } from '../../_services';
+import { QuotationService, NotesService, UserService, MaintenanceService } from '../../_services';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -15,6 +15,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { NgForm } from '@angular/forms';
 //import { SucessDialogComponent } from '@app/_components/common';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-quotation-to-hold-cover',
@@ -128,17 +129,19 @@ export class QuotationToHoldCoverComponent implements OnInit {
 	passEvent		: any;
 	tempHcNo		: string = '';
 	private sub		: any;
+	vatOnRi			: any;
 
 	renewFlag: boolean = false;
 
 
-  	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title,
-		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute) { 
+  	constructor(private quotationService: QuotationService, public modalService: NgbModal, private titleService: Title, private mtnService: MaintenanceService,
+		private ns : NotesService, private router: Router, private userService : UserService, private activatedRoute: ActivatedRoute, private decPipe: DecimalPipe) { 
 	}
 
   	ngOnInit() {
   		this.titleService.setTitle('Quo | Quotation to Hold Cover');
   		this.userService.emitModuleId("QUOTE013");
+  		this.getVatOnRIDefault();
   		this.sub = this.activatedRoute.params.subscribe(params => {
   			if(Object.keys(params).length != 0){
   				this.searchParams.quotationNo = this.splitQuoteNo(JSON.parse(params['tableInfo']).quotationNo).join('%-%');
@@ -185,8 +188,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
   					key :'holdCoverNo',
   					search : this.holdCoverNo == undefined ? '' : this.holdCoverNo
   				} 
-  			]))
-  								.pipe(map(([quo, hc]) => { return { quo, hc };}));
+  			])).pipe(map(([quo, hc]) => { return { quo, hc };}));
 
   		this.subs = subRes.subscribe(data => {
   			
@@ -198,14 +200,17 @@ export class QuotationToHoldCoverComponent implements OnInit {
   			this.passDataQuoteLOV.count = data['quo']['length'];
   			
 			this.table.placeData(quoList);
-			
+				
 				if((quoList.length == 1 && this.completeSearch)|| param=='manual'){
+					console.log(quoList);
 					this.quoteInfo.quotationNo 	= this.splitQuoteNo(quoList[0].quotationNo);
 					this.holdCover.quoteId		= quoList[0].quoteId;
 					this.quoteInfo.cedingName	= quoList[0].cedingName;
 					this.quoteInfo.insuredDesc	= quoList[0].insuredDesc;
 					this.quoteInfo.riskName		= quoList[0].riskName;
 					this.holdCover.lineCd		= quoList[0].lineCd;
+					this.holdCover.currCd		= quoList[0].currencyCd;
+					this.holdCover.currRt		= quoList[0].currencyRt;
 					this.quoteInfo.status		= quoList[0].status;
 					this.disableSave 			= false;
 					this.isModifClicked 		= false;
@@ -214,6 +219,7 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 					var selectedRow = hcList.filter(i => i.quotationNo == quoList[0].quotationNo && 
 						(!this.renewFlag || i.holdCover.status.toUpperCase() != 'CANCELLED'));
+					console.log(selectedRow);
 					if(selectedRow.length != 0 && (this.holdCoverNo != undefined ||  selectedRow[0].holdCover.status.toUpperCase() != 'REPLACED VIA HOLD COVER MODIFICATION') 
 						){
 						this.holdCoverNo 		 		 = selectedRow[0].holdCover.holdCoverNo;
@@ -237,6 +243,15 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				  		this.holdCover.reqDate			 = (selectedRow[0].holdCover.reqDate == null)?'':this.ns.toDateTimeString(selectedRow[0].holdCover.reqDate).split('T')[0];
 				  		this.holdCover.status			 = selectedRow[0].holdCover.status;
 				  		this.quoteInfo.totalSi			 = selectedRow[0].holdCover.totalSi;
+
+				  		this.holdCover.totalNoDays		 = selectedRow[0].holdCover.totalNoDays;
+				  		this.holdCover.premAmt			 = selectedRow[0].holdCover.premAmt;
+				  		this.holdCover.commAmt			 = selectedRow[0].holdCover.commAmt;
+				  		this.holdCover.vatRiComm		 = selectedRow[0].holdCover.vatRiComm;
+				  		this.holdCover.netDue			 = selectedRow[0].holdCover.netDue;
+				  		this.holdCover.currCd			 = selectedRow[0].holdCover.currCd;
+				  		this.holdCover.currRt			 = selectedRow[0].holdCover.currRt;
+				  		this.setAmtFmt();
 				  		$('.warn').css('box-shadow','rgb(255, 255, 255) 0px 0px 5px');
 				  		this.disableApproval = (this.holdCoverNo == '')?true:false;
 
@@ -282,13 +297,14 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		var periodFromArr = [this.periodFromDate,this.periodFromTime];
 		var periodToArr	  = [this.periodToDate,this.periodToTime];
 
-		if(this.quoteInfo.quotationNo.some(i => i == '') == true || this.holdCover.optionId == '' ||
+		if(this.quoteInfo.quotationNo.some(i => i == '') == true || this.holdCover.optionId == '' || this.holdCover.optionId == null || this.holdCover.optionId == undefined ||
 			periodFromArr.some(pf => pf == '') == true ||  periodFromArr.length == 0 ||
 			periodToArr.some(pt => pt == '') == true ||  periodToArr.length == 0){
 			setTimeout(()=>{
 				this.dialogIcon = 'error';
 				$('.globalLoading').css('display','none');
-				$('app-sucess-dialog #modalBtn').trigger('click');
+				//$('app-sucess-dialog #modalBtn').trigger('click');
+				this.successDiag.open();
 				$('.warn').focus();
 				$('.warn').blur();
 				this.periodFromDate == '' ? $('.pf0').find('input').css('box-shadow','rgb(255, 15, 15) 0px 0px 5px') : '';
@@ -305,6 +321,12 @@ export class QuotationToHoldCoverComponent implements OnInit {
 			this.holdCover.preparedBy		= (this.holdCover.preparedBy == '')?'':this.holdCover.createUser;
 	  		this.holdCover.updateDate		= this.ns.toDateTimeString(0);
 			this.holdCover.updateUser		= this.ns.getCurrentUser();
+
+			this.holdCover.premAmt			= this.getUnfmtdAmt(this.holdCover.premAmt);
+			this.holdCover.commAmt			= this.getUnfmtdAmt(this.holdCover.commAmt);
+			this.holdCover.vatRiComm		= this.getUnfmtdAmt(this.holdCover.vatRiComm);
+			this.holdCover.netDue			= this.getUnfmtdAmt(this.holdCover.netDue);
+
 
 			if(this.isModifClicked == true){
 				this.holdCover.status = 'Released';
@@ -607,6 +629,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 				status			: ''
 			};
 			this.clearHc();
+			this.holdCover.currCd = '';
+			this.holdCover.currRt = '';
 			this.disableFieldsHc(true);
 			this.disableSave				 = true;
 			console.log('pasok')
@@ -667,6 +691,11 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.periodFromTime				 = ''; 
 		this.periodToDate				 = '';
 		this.periodToTime				 = '';
+		this.holdCover.totalNoDays		 = '';
+		this.holdCover.premAmt			 = '';
+		this.holdCover.commAmt			 = '';
+		this.holdCover.vatRiComm		 = '';
+		this.holdCover.netDue			 = '';
 		this.disableCancelHc 			 = true;
 		this.disableApproval			 = true;
 		this.searchParams = {
@@ -684,6 +713,8 @@ export class QuotationToHoldCoverComponent implements OnInit {
 		this.quoteInfo.cedingName		 = '';
 		this.quoteInfo.insuredDesc		 = '';
 		this.quoteInfo.riskName			 = '';
+		this.holdCover.currCd			 = '';
+		this.holdCover.currRt			 = '';
 		this.clearHc();
 	}
 
@@ -761,6 +792,43 @@ export class QuotationToHoldCoverComponent implements OnInit {
 
 	showSampleMdl(){
 		$('app-modal #modalBtn').trigger('click');
+	}
+
+	getVatOnRIDefault(){
+		this.mtnService.getMtnParameters('N','VAT_ON_RI')
+		.subscribe(data => {
+			console.log(data);
+			this.vatOnRi = (data['parameters'][0].paramValueN)/100;
+		});
+	}
+
+	setTotalNoDays(){
+		var fromDate =  new Date(this.periodFromDate).getTime();
+		var toDate =  new Date(this.periodToDate).getTime();
+		this.holdCover.totalNoDays = Math.abs((fromDate - toDate)/(1000*60*60*24));
+	}
+
+	setDefVatRiComm(){
+		this.holdCover.vatRiComm = (this.holdCover.commAmt == '' || this.holdCover.commAmt == undefined || this.holdCover.commAmt == null)?'':Number(this.vatOnRi) * this.getUnfmtdAmt(this.holdCover.commAmt);
+	}
+
+	setNetDue(){
+		this.holdCover.netDue = (this.holdCover.premAmt == '' || this.holdCover.premAmt == null || this.holdCover.premAmt == undefined ||
+								this.holdCover.commAmt == '' || this.holdCover.commAmt == null || this.holdCover.commAmt == undefined ||
+								this.holdCover.vatRiComm == '' || this.holdCover.vatRiComm == null || this.holdCover.vatRiComm == undefined)
+								?'': this.getUnfmtdAmt(this.holdCover.premAmt) - this.getUnfmtdAmt(this.holdCover.commAmt) -this.getUnfmtdAmt(this.holdCover.vatRiComm);
+		this.setAmtFmt();
+	}
+
+	setAmtFmt(){
+		this.holdCover.premAmt 		= this.decPipe.transform(Number(String(this.holdCover.premAmt).replace(/\,/g,'')),'0.2-2');
+		this.holdCover.commAmt		= this.decPipe.transform(Number(String(this.holdCover.commAmt).replace(/\,/g,'')),'0.2-2');
+		this.holdCover.vatRiComm 	= this.decPipe.transform(Number(String(this.holdCover.vatRiComm).replace(/\,/g,'')),'0.2-2');
+		this.holdCover.netDue 		= this.decPipe.transform(Number(String(this.holdCover.netDue).replace(/\,/g,'')),'0.2-2');
+	}
+
+	getUnfmtdAmt(amt){
+		return 	(String(amt).includes(","))?Number(String(amt).replace(/\,/g,'')):amt;
 	}
 
 }

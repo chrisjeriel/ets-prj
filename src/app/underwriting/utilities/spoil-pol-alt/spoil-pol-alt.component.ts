@@ -3,7 +3,7 @@ import { UnderwritingService, NotesService, MaintenanceService } from '@app/_ser
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
-import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { CancelButtonComponent, SucessDialogComponent } from '@app/_components/common/';
 import { Router } from '@angular/router';
 import { ConfirmLeaveComponent, ModalComponent } from '@app/_components/common';
 import { Subject } from 'rxjs';
@@ -23,6 +23,7 @@ export class SpoilPolAltComponent implements OnInit {
 	@ViewChild('tabset') tabset: any;
 	@ViewChild(ConfirmLeaveComponent) conleave : ConfirmLeaveComponent;
 	@ViewChild('polLov') polLov: ModalComponent;
+	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
 
 	passData : any = {
 		tableData: [],
@@ -422,7 +423,8 @@ export class SpoilPolAltComponent implements OnInit {
 	        }else{
 	          this.dialogIcon="error";
 	        }
-			$('app-sucess-dialog #modalBtn').trigger('click');
+			// $('app-sucess-dialog #modalBtn').trigger('click');
+			this.successDialog.open();
 		});
 	}
 
