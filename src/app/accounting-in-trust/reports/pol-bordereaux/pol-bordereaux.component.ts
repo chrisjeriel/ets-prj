@@ -106,7 +106,9 @@ export class PolBordereauxComponent implements OnInit {
                         'POLR052A',
                         'POLR052B',
                         'POLR052C',
-                        'POLR052D'
+                        'POLR052D',
+                        'POLR052E',
+                        'POLR052F'
                         ];
 
   rangeParams :any = {
@@ -182,20 +184,23 @@ export class PolBordereauxComponent implements OnInit {
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
-    } 
-    else if(this.params.reportId == 'POLR052B'){
+    } else if(this.params.reportId == 'POLR052B'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
-    }
-    else if(this.params.reportId == 'POLR052C'){
+    } else if(this.params.reportId == 'POLR052C'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
-    }
-    else if(this.params.reportId == 'POLR052D'){
+    } else if(this.params.reportId == 'POLR052D'){
+      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052E'){
+      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052F'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     }

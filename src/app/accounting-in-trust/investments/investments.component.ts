@@ -575,15 +575,15 @@ uneditableItems(array, item, mode){
                        
                        if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
-                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq, data.purDate);
                        } else {
                          var res = data.invtCd.split("-");
                          if (data.currCd !== res[3]){
                             currSeq = null;
-                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null, data.purDate);
                          } else {
                             currSeq = parseInt(res[4]);
-                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                            invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]), data.purDate);
                          }
                        }  
                      } else if (data.currCd === 'UKP'){
@@ -592,15 +592,15 @@ uneditableItems(array, item, mode){
             
                         if (data.invtCd === null || data.invtCd === undefined ){
                            currSeq = null;
-                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                           invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq, data.purDate);
                         } else {
                           var res = data.invtCd.split("-");
                             if (data.currCd !== res[3]){
                                currSeq = null;
-                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null, data.purDate);
                             }else {
                                currSeq = parseInt(res[4]);
-                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                               invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]), data.purDate);
                             }
                         }  
                      } else if (data.currCd === 'USD'){
@@ -609,15 +609,15 @@ uneditableItems(array, item, mode){
      
                        if (data.invtCd === null || data.invtCd === undefined){
                           currSeq = null;
-                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq);
+                          invtCd = this.generateInvtCd(null,data.invtType, data.currCd, data.currSeq, data.purDate);
                        } else {
                          var res = data.invtCd.split("-");
                            if (data.currCd !== res[3]){
                               currSeq = null;
-                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null);
+                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, null, data.purDate);
                            } else { 
                               currSeq = parseInt(res[4]);
-                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]));
+                              invtCd = this.generateInvtCd(data.invtCd,data.invtType, data.currCd, parseInt(res[4]), data.purDate);
                            }
                        }  
                      }
@@ -634,6 +634,11 @@ changePurDate(data){
            purDate,
            matDate,
            error;
+
+        if(data.currCd != undefined && data.currCd != '' && data.currCd != null) {
+          data.invtCd = this.changeCurr(data).invtCd;
+        }
+        
         if(this.isEmptyObject(data.purDate) && data.matDate !== null && data.matDate !== ''){
                        matPeriod = data.matPeriod;
                        matDate = data.matDate;
@@ -938,7 +943,7 @@ update(data){
                  } else if (data.key === 'invtType'){
                    if (this.passData.tableData[i].invtCd !== null){
                      var res = this.passData.tableData[i].invtCd.split("-");
-                     this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].  invtType, this.passData.tableData[i].currCd, parseInt(res[4]));
+                     this.passData.tableData[i].invtCd = this.generateInvtCd(this.passData.tableData[i].invtCd,this.passData.tableData[i].  invtType, this.passData.tableData[i].currCd, parseInt(res[4]), this.passData.tableData[i].purDate);
                    }                   
                  }else if(data.key === 'purDate'){
                     
@@ -1250,8 +1255,8 @@ update(data){
   }
 
  
-  generateInvtCd(invtCd?,invtType?,currCd?,currSeqNo?){
-    var currentTime = new Date();
+  generateInvtCd(invtCd?,invtType?,currCd?,currSeqNo?,purDate?){
+    var currentTime = purDate !== null && purDate !== undefined && purDate !== '' ? new Date(purDate) : new Date();
     var invTtype;
     var invtCode;
 
@@ -1269,7 +1274,8 @@ update(data){
        var res = invtCd.split("-");
        var year = currentTime.getFullYear();
        var month = currentTime.getMonth() + 1;
-       var code = res[0] + '-' + res[1];
+       // var code = res[0] + '-' + res[1];
+       var code = year + '-' + month.toString().padStart(2,'0');
        var currSeq = parseInt(currSeqNo);
 
        if(currCd === res[3]){
