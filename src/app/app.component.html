@@ -303,6 +303,11 @@
                                                 Open Cover</button>
                                                 <br />
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL048') > -1">
+                                            <button (click)="resetListParams()" [routerLink]="['/pol-create-alt-oc']" class="button btn btn-link">Create
+                                                Open Cover Alteration</button>
+                                                <br />
+                                            </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('POL020') > -1">
                                             <button (click)="resetListParams()" [routerLink]="['/open-cover-list']" class="button btn btn-link">Open Cover List</button>
                                                 <br />
