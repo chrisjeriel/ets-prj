@@ -1120,7 +1120,7 @@ export class UnderwritingService {
     }
 
     createAltOc(params){
-        return this.http.post(environment.prodApiUrl + '/underwriting-service/extGenRenExpPolicy',JSON.stringify(params),this.header);
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/createOcAlt',JSON.stringify(params),this.header);
     }
 }            
 

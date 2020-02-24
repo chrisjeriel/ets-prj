@@ -97,7 +97,7 @@
         <div class="col-md-12 text-center">
             <div class="cust-btn-container" style="margin-top:10px">
                 <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
-                <button type="button" class="cust-btn" [disabled]="!policyIdOc"><a>Next</a></button>
+                <button type="button" class="cust-btn" (click)="createAltOc()" [disabled]="!policyIdOc"><a>Next</a></button>
             </div>
         </div>
     </div>
