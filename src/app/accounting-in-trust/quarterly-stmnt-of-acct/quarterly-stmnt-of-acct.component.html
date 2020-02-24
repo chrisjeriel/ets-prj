@@ -9,7 +9,7 @@
             			<div class="form-row custom-row-inline-inset">
             				<div class="input-group" style="margin-bottom: -14px ! important">
             					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
-								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All">
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All" (change)="onChangeCedingName()">
 								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
             					<label class="form-control-sm col-sm-1">Period:</label>
             					<label class="form-control-sm">From</label>
