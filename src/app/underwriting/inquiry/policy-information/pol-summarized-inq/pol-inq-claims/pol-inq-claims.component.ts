@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute,Router } from '@angular/router';
 import { ClaimsService,NotesService } from '@app/_services';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 
 @Component({
   selector: 'app-pol-inq-claims',
@@ -24,7 +24,7 @@ export class PolInqClaimsComponent implements OnInit {
     pageStatus: true,
     searchFlag: true,
     infoFlag: true,
-    pageLength: 'unli-15',
+    pageLength: '15',
     pageID: 'passDataLOVTbl',
     filters: [
        {
@@ -63,7 +63,7 @@ export class PolInqClaimsComponent implements OnInit {
         }
     ],
   };
-  @ViewChild('claim') table: CustEditableNonDatatableComponent;
+  @ViewChild('claim') table: LoadingTableComponent;
   policyNo:any;
 
   searchParamsLOVTbl:any[] = [];
@@ -71,10 +71,6 @@ export class PolInqClaimsComponent implements OnInit {
     this.route.params.subscribe(params => {
         this.policyNo = params['showPolicyNo'];
         this.searchQueryLOVTbl(this.searchParamsLOVTbl);
-    });
-
-    setTimeout(() => {
-      this.table.refreshTable();
     });
   }
 
@@ -87,12 +83,18 @@ export class PolInqClaimsComponent implements OnInit {
         this.passData.tableData = [];
         this.table.overlayLoader = true;
         this.cs.getClaimsListing(this.searchParamsLOVTbl).subscribe(data => {
-          this.passData.tableData = data['claimsList'].map(a => {
-                                    a.createDate = this.ns.toDateTimeString(a.createDate);
-                                    a.updateDate = this.ns.toDateTimeString(a.updateDate);
-                                    return a;
-                                  });
-          this.table.refreshTable();
+
+          this.passData.count = data['claimsList'].map(a => {
+                                      a.createDate = this.ns.toDateTimeString(a.createDate);
+                                      a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                      return a;
+                                    }).length;
+          this.table.placeData(data['claimsList'].map(a => {
+                                      a.createDate = this.ns.toDateTimeString(a.createDate);
+                                      a.updateDate = this.ns.toDateTimeString(a.updateDate);
+                                      return a;
+                                    }));
+          // this.table.refreshTable();
         });
    }
 
