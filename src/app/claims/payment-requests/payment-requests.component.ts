@@ -228,8 +228,11 @@ export class PaymentRequestsComponent implements OnInit {
 
       alasql.fn.datetime = function(dateStr) {
              var date = new Date(dateStr);
-             return date.toLocaleString().split(',')[0];
+             if(dateStr == null)
+                return '';
+             else
+               return date.toLocaleString().split(',')[0];
        };
-    alasql('SELECT  claimNo AS [Claim No],  histNo AS [Hist No.],  policyNo AS [Policy No],  paytReqNo AS [Payment Request No],  payee AS [Payee],  paymentType AS [Payment Type],  status AS [Status],  currCd AS [Curr],  reqAmount AS [Amount],  particulars AS [Particulars],  datetime(reqDate) AS [Request Date],  requestedBy AS [Requested By],  acctRefNo AS [Acct. Ref. No.],  datetime(tranDate) AS [Acct. Tran. Date],  insuredDesc AS [Insured],  riskName AS [Risk],  datetime(lossDate) AS [Loss Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+    alasql('SELECT  claimNo AS [Claim No],  histNo AS [Hist No.],  policyNo AS [Policy No],  paytReqNo AS [Payment Request No],  payee AS [Payee],  paymentType AS [Payment Type],  status AS [Status],  currCd AS [Curr],  reqAmount AS [Amount],  particulars AS [Particulars],  datetime(reqDate) AS [Request Date],  requestedBy AS [Requested By],  nvl(acctRefNo) AS [Acct. Ref. No.],  datetime(tranDate) AS [Acct. Tran. Date],  insuredDesc AS [Insured],  riskName AS [Risk],  datetime(lossDate) AS [Loss Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 }

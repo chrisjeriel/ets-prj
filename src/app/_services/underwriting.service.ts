@@ -1261,6 +1261,10 @@ export class UnderwritingService {
     getEditableDistListing(params){
         return this.http.get(environment.prodApiUrl+'/underwriting-service/retrieveEditableDistList',{params:params});    
     }
+
+    getCreateOcAltLov(params){
+        return this.http.get(environment.prodApiUrl+'/underwriting-service/retrieveCreateOcAltLov',{params:params});       
+    }
 }            
 
             

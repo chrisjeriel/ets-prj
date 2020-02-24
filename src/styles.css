@@ -829,3 +829,7 @@ a.carousel-control-prev {
     height: 12px;
     font-size: 10px;
 }
+
+.multi_lines_text { 
+    white-space: pre-line; 
+}

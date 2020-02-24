@@ -206,6 +206,7 @@ import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-po
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
 import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
+import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
 
 const appRoutes: Routes = [
 
@@ -849,6 +850,7 @@ const appRoutes: Routes = [
     { path: 'update-pol-attachment', component: UpdatePolAttachmentComponent},
     { path: 'edit-distribution', component: EditDistributionEntryComponent},
     { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
