@@ -11,6 +11,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
 import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
 @Component({
   selector: 'app-claim-reports',
@@ -29,6 +30,7 @@ export class ClaimReportsComponent implements OnInit {
   @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
   @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
+  @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
 
   passLov: any = {
     selector: 'mtnReport',
@@ -56,7 +58,10 @@ export class ClaimReportsComponent implements OnInit {
     clmAdj: '',
     clmAdjName: '',
     clmEvent: '',
-    clmEventName: ''
+    clmEventName: '',
+    currCd: '',
+    currency: '',
+    extTypeTag: '',
   }
 
   sendData: any = {
@@ -67,13 +72,15 @@ export class ClaimReportsComponent implements OnInit {
     toDate: '',
     cedingIdParam: '',
     lineCdParam: '',
+    currCdParam: '',
     incRecTag: '',
     reportId : '',
     destination: '',
     forceExtract: 'N',
+    extTypeTag: '',
   };
 
-  repExtractions: Array<string> = ['CLMR010A', 'CLMR010B', 'CLMR010C', 'CLMR010D', 'CLMR010E', 'CLMR010F', 'CLMR010G'];
+  repExtractions: Array<string> = ['CLMR010A', 'CLMR010B', 'CLMR010C', 'CLMR010D', 'CLMR010E', 'CLMR010F', 'CLMR010G', 'CLMR010H', 'CLMR010I', 'CLMR010J', 'CLMR010K'];
 
   paramsToggle: Array<string> = [];
 
@@ -113,18 +120,21 @@ export class ClaimReportsComponent implements OnInit {
         }
 
     if (this.params.reportId == 'CLMR010A') {
-      this.paramsToggle.push('line', 'company',
+      this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf');
     } else if (this.params.reportId == 'CLMR010B') {
-      this.paramsToggle.push('line', 'company',
+      this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf', 'claimId');
     } else if (this.params.reportId == 'CLMR010C') {
-      this.paramsToggle.push('line', 'company',
+      this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf');
     } else if (this.params.reportId == 'CLMR010D') {
-      this.paramsToggle.push('line', 'company', 
+      this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf');
-    }else{
+    } else if((String(this.params.reportId).substr(0, 7) == 'CLMR010') && (['H','I','J','K'].includes(String(this.params.reportId).charAt(this.params.reportId.length-1)))) {
+      this.paramsToggle.push('line', 'company', 'currency',
+                             'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag');
+    } else{
         this.params.reportId = '';
       }
 
@@ -223,6 +233,8 @@ export class ClaimReportsComponent implements OnInit {
     this.sendData.lineCdParam = this.params.lineCd;
     this.sendData.cedingIdParam = this.params.cedingId;
     this.sendData.destination = this.params.destination;
+    this.sendData.currCdParam = this.params.currCd;
+    this.sendData.extTypeTag = this.params.extTypeTag;
   }
 
   extract(cancel?){
@@ -287,6 +299,8 @@ export class ClaimReportsComponent implements OnInit {
       "clmr010Params.cedingIdParam" : this.sendData.cedingIdParam,
       "clmr010Params.lineCdParam" :   this.sendData.lineCdParam,
       "clmr010Params.reportId"  :   this.sendData.reportId,
+      "clmr010Params.currCdParam"  :   this.sendData.currCdParam,
+      "clmr010Params.extTypeTag"  :   this.sendData.extTypeTag
     }
 
     console.log(this.sendData);
@@ -321,7 +335,20 @@ export class ClaimReportsComponent implements OnInit {
         this.adjusterLOVMain.checkCode(this.params.clmAdj, ev);
     }else if(field === 'clmStat') {
         this.statusLOV.checkCode(this.params.clmStat, ev);
+    } else if(field === 'currency') {
+        this.currLov.checkCode(this.params.currCd, ev);
     }
+    
+  }
+
+  showCurrencyLOV() {
+    this.currLov.modal.openNoClose();
+  }
+
+  setCurr(data) {
+    this.params.currCd = data.currencyCd;
+    this.params.currency = data.description;
+    this.ns.lovLoader(data.ev, 0);
   }
 
 }
