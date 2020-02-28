@@ -146,6 +146,8 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   saveParams: any = {};
 
+  alterationFlag:boolean = false;
+
   constructor( private modalService: NgbModal, private underwritingService: UnderwritingService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -171,6 +173,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.cedingName         =  data.policyOc.cedingName;
           this.genInfoOcData.coSeriesNo         =  data.policyOc.coSeriesNo;
           this.genInfoOcData.altNo              =  data.policyOc.altNo;
+          this.alterationFlag                   = data.policyOc.altNo != 0;
           this.genInfoOcData.cessionId          =  data.policyOc.cessionId;
           this.genInfoOcData.cessionDesc        =  data.policyOc.cessionDesc;
           this.genInfoOcData.lineClassCd        =  data.policyOc.lineClassCd;
@@ -205,6 +208,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.genInfoOcData.createDate         =  this.ns.toDateTimeString(data.policyOc.createDate);
           this.genInfoOcData.updateUser         =  data.policyOc.updateUser;
           this.genInfoOcData.updateDate         =  this.ns.toDateTimeString(data.policyOc.updateDate);
+          this.genInfoOcData.remarks            = data.policyOc.remarks;
 
           this.projectOcData.projId             =  data.policyOc.project.projId;
           this.projectOcData.projDesc           =  data.policyOc.project.projDesc;
@@ -256,7 +260,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           setTimeout(a=>{
             this.form.control.markAsPristine();
             this.ns.formGroup.markAsPristine();
-            if(this.policyInfo.fromInq=='true'){
+            if(this.policyInfo.fromInq=='true' || this.genInfoOcData.status != 1){
               $('input').attr('readonly','readonly');
               $('input[type="checkbox"]').attr('disabled','disabled');
               $('textarea').attr('readonly','readonly');
@@ -353,6 +357,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
         "testing": this.projectOcData.testing,
         "updateDate": this.genInfoOcData.updateDate,
         "updateUser":this.genInfoOcData.updateUser,
+        "remarks":this.genInfoOcData.remarks,
 
         "regionCd":this.projectOcData.regionCd,
         "provinceCd":this.projectOcData.provinceCd,

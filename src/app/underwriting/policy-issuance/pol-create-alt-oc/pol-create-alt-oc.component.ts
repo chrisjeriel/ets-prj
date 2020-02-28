@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
-import { ModalComponent } from '@app/_components/common'
+import { ModalComponent, SucessDialogComponent } from '@app/_components/common'
 
 @Component({
   selector: 'app-pol-create-alt-oc',
@@ -116,6 +116,11 @@ export class PolCreateAltOcComponent implements OnInit {
     return str === '' ? '' : String(str).padStart(num, '0');
   }
 
+
+  @ViewChild(SucessDialogComponent) modal: SucessDialogComponent;
+  dialogMsg:any = "";
+  dialogIcon:any = "";
+
   createAltOc(){
     let params:any = {
       policyIdOc : this.policyIdOc,
@@ -133,7 +138,11 @@ export class PolCreateAltOcComponent implements OnInit {
                                                                   fromBtn: 'create'
                                                              }
                                ], { skipLocationChange: true });
-          }
+        }else{
+          this.dialogIcon = 'error-message';
+          this.dialogMsg = a.msg;
+          this.modal.open();
+        }
         })
   }
 

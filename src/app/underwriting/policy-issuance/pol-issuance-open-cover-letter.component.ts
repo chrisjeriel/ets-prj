@@ -34,7 +34,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
   lockMessage: string = "";
 
   ngOnInit() {
-  	this.route.params.subscribe(a=>{
+  	this.route.params.subscribe((a:any)=>{
   		this.policyInfo = a;
       console.log(this.policyInfo);
       this.inqFlag = a['inqFlag'] == 'true';
@@ -147,12 +147,26 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
        }
     }
 
+    disableDraft:boolean = false;
+    draftTag:boolean = true;
+    polOcFinalTag: boolean = false;
+
     showApprovalModal(content) {
+      this.uw.getPolGenInfoOc(this.policyInfo.policyIdOc,null).subscribe(a=>{
+        this.polOcFinalTag = a['policyOc'].status == '1';
+        if(a['policyOc'].status == '1'){
+          this.disableDraft = false;
+          this.draftTag = true;
+        }else{
+          this.disableDraft = true;
+          this.draftTag = false;
+        }
+      })
       this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
 
     printDestination:string = 'screen';
-    printReport:string = 'POLR010';
+    printReport:string = 'POLR010C';
 
     changeOpenCovStatus(){
       let params:any = {
@@ -160,9 +174,22 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
                           updateUser:this.ns.getCurrentUser(),
 
                         };
-      this.uw.updateOCStatus(params).subscribe(a=>console.log(a));
+
       params.reportId=this.printReport;
-      this.ps.print(this.printDestination,this.printReport,params)
+      console.log(this.draftTag);
+      console.log(this.polOcFinalTag);
+      if(this.draftTag || !this.polOcFinalTag){
+        this.ps.print(this.printDestination,this.printReport,params);
+      }else{ 
+        this.inqFlag = true;
+        console.log(this.policyInfo);
+        this.policyInfo.fromInq = 'true';
+        this.policyInfo.inqFlag = 'true';
+        this.uw.updateOCStatus(params).subscribe(a=>{
+          this.ps.print(this.printDestination,this.printReport,params);
+        });
+      }
     }
+
 
 }
