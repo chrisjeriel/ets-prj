@@ -173,7 +173,7 @@ export class PolOcInquiryComponent implements OnInit {
   }
 
   gotoInfo(data) {
-  	   this.router.navigate(['/create-open-cover-letter',{ line: data.openPolicyNo.split('-')[1],
+  	   this.router.navigate(['/pol-oc-information',{ line: data.openPolicyNo.split('-')[1],
                                 policyIdOc:data.policyIdOc,
                                 insured: data.insuredDesc,
                                 riskName: data.riskName,

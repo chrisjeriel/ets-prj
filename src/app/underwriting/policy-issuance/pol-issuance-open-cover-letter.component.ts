@@ -33,9 +33,11 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
   lockUser: string = "";
   lockMessage: string = "";
 
+  @ViewChild('activeComp') activeComp : any;
+
   ngOnInit() {
   	this.route.params.subscribe((a:any)=>{
-  		this.policyInfo = a;
+  		this.policyInfo = JSON.parse(JSON.stringify(a));
       console.log(this.policyInfo);
       this.inqFlag = a['inqFlag'] == 'true';
       if(this.inqFlag){
@@ -121,7 +123,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
    //   }                     
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl(this.exitLink);
+        this.router.navigate([this.exitLink,{policyIdOc:this.policyInfo.policyIdOc}]);
       }
       else if ($event.nextId === 'print-tab') {
           $event.preventDefault();
@@ -185,8 +187,12 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
         console.log(this.policyInfo);
         this.policyInfo.fromInq = 'true';
         this.policyInfo.inqFlag = 'true';
+        this.inqFlag = true;
         this.uw.updateOCStatus(params).subscribe(a=>{
           this.ps.print(this.printDestination,this.printReport,params);
+          if(this.activeComp != undefined){
+            this.activeComp.ngOnInit();
+          }
         });
       }
     }

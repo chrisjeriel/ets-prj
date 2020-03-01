@@ -207,6 +207,7 @@ import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-repo
 import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
+import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 
 const appRoutes: Routes = [
 
@@ -851,6 +852,7 @@ const appRoutes: Routes = [
     { path: 'edit-distribution', component: EditDistributionEntryComponent},
     { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
+    { path: 'pol-oc-information', component: PolOcInformationComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

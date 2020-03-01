@@ -1122,6 +1122,10 @@ export class UnderwritingService {
     createAltOc(params){
         return this.http.post(environment.prodApiUrl + '/underwriting-service/createOcAlt',JSON.stringify(params),this.header);
     }
+
+    getPolOcInfo(params){
+        return this.http.get(environment.prodApiUrl+'/underwriting-service/retrievePolOcInfo',{params:params});     
+    }
 }            
 
             
