@@ -33,9 +33,11 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
   lockUser: string = "";
   lockMessage: string = "";
 
+  @ViewChild('activeComp') activeComp : any;
+
   ngOnInit() {
-  	this.route.params.subscribe(a=>{
-  		this.policyInfo = a;
+  	this.route.params.subscribe((a:any)=>{
+  		this.policyInfo = JSON.parse(JSON.stringify(a));
       console.log(this.policyInfo);
       this.inqFlag = a['inqFlag'] == 'true';
       if(this.inqFlag){
@@ -121,7 +123,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
    //   }                     
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigateByUrl(this.exitLink);
+        this.router.navigate([this.exitLink,{policyIdOc:this.policyInfo.policyIdOc}]);
       }
       else if ($event.nextId === 'print-tab') {
           $event.preventDefault();
@@ -147,12 +149,26 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
        }
     }
 
+    disableDraft:boolean = false;
+    draftTag:boolean = true;
+    polOcFinalTag: boolean = false;
+
     showApprovalModal(content) {
+      this.uw.getPolGenInfoOc(this.policyInfo.policyIdOc,null).subscribe(a=>{
+        this.polOcFinalTag = a['policyOc'].status == '1';
+        if(a['policyOc'].status == '1'){
+          this.disableDraft = false;
+          this.draftTag = true;
+        }else{
+          this.disableDraft = true;
+          this.draftTag = false;
+        }
+      })
       this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
     }
 
     printDestination:string = 'screen';
-    printReport:string = 'POLR010';
+    printReport:string = 'POLR010C';
 
     changeOpenCovStatus(){
       let params:any = {
@@ -160,9 +176,26 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
                           updateUser:this.ns.getCurrentUser(),
 
                         };
-      this.uw.updateOCStatus(params).subscribe(a=>console.log(a));
+
       params.reportId=this.printReport;
-      this.ps.print(this.printDestination,this.printReport,params)
+      console.log(this.draftTag);
+      console.log(this.polOcFinalTag);
+      if(this.draftTag || !this.polOcFinalTag){
+        this.ps.print(this.printDestination,this.printReport,params);
+      }else{ 
+        this.inqFlag = true;
+        console.log(this.policyInfo);
+        this.policyInfo.fromInq = 'true';
+        this.policyInfo.inqFlag = 'true';
+        this.inqFlag = true;
+        this.uw.updateOCStatus(params).subscribe(a=>{
+          this.ps.print(this.printDestination,this.printReport,params);
+          if(this.activeComp != undefined){
+            this.activeComp.ngOnInit();
+          }
+        });
+      }
     }
+
 
 }

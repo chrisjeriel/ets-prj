@@ -487,5 +487,11 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     params.reportId=this.printReport;
     params.fileName = this.polDistributionData.policyNo;
     this.ps.print(this.printDestination,this.printReport,params)
+    if(params.reportId == 'POLR038C'){
+      let params1 = JSON.parse(JSON.stringify(params));
+      params1.reportId = 'POLR038CA';
+      params.filename = 'CMDM' + this.polDistributionData.policyNo;
+      this.ps.print(this.printDestination,'POLR038CA',params1)
+    }
   }
 }

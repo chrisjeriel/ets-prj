@@ -511,6 +511,7 @@ import { EditDistributionRiskComponent } from './underwriting/distribution/edit-
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
 import { PolBordereauxComponent } from './accounting-in-trust/reports/pol-bordereaux/pol-bordereaux.component';
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
+import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 
 @NgModule({
     imports: [
@@ -1026,6 +1027,7 @@ import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-crea
         BookingMthComponent,
         PolBordereauxComponent,
         PolCreateAltOcComponent,
+        PolOcInformationComponent,
     ],
 
   	providers: [

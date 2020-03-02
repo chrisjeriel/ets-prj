@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { UnderwritingService, ClaimsService } from '../../../_services';
+import { UnderwritingService, ClaimsService, NotesService } from '../../../_services';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
-import { ModalComponent } from '@app/_components/common'
+import { ModalComponent, SucessDialogComponent } from '@app/_components/common'
 
 @Component({
   selector: 'app-pol-create-alt-oc',
@@ -14,7 +14,8 @@ import { ModalComponent } from '@app/_components/common'
 export class PolCreateAltOcComponent implements OnInit {
 
   constructor(private underwritingService: UnderwritingService, private router: Router,
-   public modalService: NgbModal, private titleService: Title, private cs: ClaimsService) { }
+   public modalService: NgbModal, private titleService: Title, private cs: ClaimsService,
+   private ns: NotesService) { }
 
 
   ngOnInit() {
@@ -69,7 +70,7 @@ export class PolCreateAltOcComponent implements OnInit {
   setPolOcLov(){
     if(this.polOcLovTable.indvSelect != null){
       this.polNo = this.polOcLovTable.indvSelect.policyNoOc.substr(3).split('-');
-
+      this.policyIdOc = this.polOcLovTable.indvSelect.policyIdOc
       this.cedingName  = this.polOcLovTable.indvSelect.cedingName;
       this.insuredDesc  = this.polOcLovTable.indvSelect.insuredDesc;
       this.riskName  = this.polOcLovTable.indvSelect.riskName;
@@ -114,5 +115,37 @@ export class PolCreateAltOcComponent implements OnInit {
 
     return str === '' ? '' : String(str).padStart(num, '0');
   }
+
+
+  @ViewChild(SucessDialogComponent) modal: SucessDialogComponent;
+  dialogMsg:any = "";
+  dialogIcon:any = "";
+
+  createAltOc(){
+    let params:any = {
+      policyIdOc : this.policyIdOc,
+      user: this.ns.getCurrentUser(),
+    };
+    this.underwritingService.createAltOc(params).subscribe((a:any)=>{
+        if(a.policyIdOc != null){
+          this.router.navigate(['/create-open-cover-letter', { 
+                                                                  line: a.policyNoOc.split('-')[1],
+                                                                  policyIdOc: a.policyIdOc,
+                                                                  policyNo: a.policyNoOc,
+                                                                  inquiryFlag: false,
+                                                                  insured: this.insuredDesc,
+                                                                  riskName: this.riskName,
+                                                                  fromBtn: 'create'
+                                                             }
+                               ], { skipLocationChange: true });
+        }else{
+          this.dialogIcon = 'error-message';
+          this.dialogMsg = a.msg;
+          this.modal.open();
+        }
+        })
+  }
+
+
 
 }

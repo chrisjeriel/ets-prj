@@ -81,4 +81,8 @@ export class WorkFlowManagerService {
         return this.http.post(environment.prodApiUrl +'/work-flow-service/changeRNStatus',params,header);
     }
 
+    getDBName(){
+        return this.http.get(environment.prodApiUrl+'/work-flow-service/retrieveDBName',{responseType:'text'})
+    }
+
 }
