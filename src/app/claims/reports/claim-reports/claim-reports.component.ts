@@ -351,4 +351,14 @@ export class ClaimReportsComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
   }
 
+  resetDates() {
+    this.params.byDateFrom = '';
+    this.params.byDateTo = '';
+    this.params.byMonthFrom = '';
+    this.params.byMonthFromYear = '';
+    this.params.byMonthTo = '';
+    this.params.byMonthToYear = '';
+    this.params.byAsOf = '';
+  }
+
 }

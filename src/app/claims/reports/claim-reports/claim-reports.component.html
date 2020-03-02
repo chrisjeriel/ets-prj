@@ -55,7 +55,7 @@
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byDate') == -1">
+									[disabled]="paramsToggle.indexOf('byDate') == -1" (change)="resetDates()">
 								<label class="form-control-sm" for="radio2">By Date</label>
 							</div>
 							<div class="input-group">
@@ -70,7 +70,7 @@
 							</div>
 							<div class="input-group">
 								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
+									[disabled]="paramsToggle.indexOf('byMonthYear') == -1" (change)="resetDates()">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
 							<div class="input-group">
@@ -109,7 +109,7 @@
 							</div>
 							<div class="input-group">
 								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('asOf') == -1">
+									[disabled]="paramsToggle.indexOf('asOf') == -1" (change)="resetDates()">
 								<label class="form-control-sm" for="radio4">As of</label>
 							</div>
 							<div class="input-group">

@@ -44,8 +44,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   cvData: any = {
     tableData     : [],
-    tHeader       : ['Item', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes     : ['text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    tHeader       : ['Item', 'Reference No.', 'Description', 'VAT Tag', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes     : ['text', 'text', 'text', 'reqSelect', 'text', 'percent', 'currency', 'currency'],
     nData: {
       itemName  : '',
       refNo     : '',
@@ -55,6 +55,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       currAmt   : 0,
       localAmt  : 0,
       newRec    : 1,
+      vatTag    : '',
       taxAllocation: []
     },
     paginateFlag  : true,
@@ -63,10 +64,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [false,false,false,true,true,false,true],
-    total         : [null, null, null, null,'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto','auto','auto','auto','auto','auto','auto'],
-    keys          : ['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+    uneditable    : [false,false,false,false,true,true,false,true],
+    total         : [null, null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto','auto','auto','auto','auto','auto','auto','auto'],
+    keys          : ['itemName','refNo','remarks','vatTag','currCd','currRate','currAmt','localAmt']
   };
 
   pcvData: any = {
@@ -224,6 +225,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     //Added by Neco 11/20/2019
+    console.log(this.rowData);
     this.mtnService.getCedingCompany(this.rowData.payeeCd).subscribe((data:any)=>{ //Check if current payee is vatable
       if(data.cedingCompany.length == 0){
         this.rowData.vatTag = 3;

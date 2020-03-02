@@ -80,7 +80,7 @@ export class LovComponent implements OnInit {
           this.passTable.tableData[this.passTable.tableData.indexOf(el)].checked = false;
           this.dialogIcon = 'info';
           if(processingCount > 1){
-            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in another transactions.';
+            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in other transactions.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
             this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
