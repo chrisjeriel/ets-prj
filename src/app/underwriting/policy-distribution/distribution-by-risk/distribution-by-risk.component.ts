@@ -257,6 +257,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     sectionII :0,
     sectionIII :0,
   };
+  policyIdOc:any;
 
   constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, private route: ActivatedRoute, private router: Router,
               private ns: NotesService, private ms: MaintenanceService) { }
@@ -266,6 +267,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     this.titleService.setTitle("Pol | Risk Distribution");
 
     this.sub = this.route.params.subscribe((data: any)=>{
+                  this.policyIdOc = data.policyIdOc;
                   let polNo:string = '';
                   this.params = data;
                   if(this.params.fromInq == 'true'){
@@ -634,7 +636,7 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
-    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}]);
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId,policyIdOc:this.policyIdOc}]);
   }
 
   onClickSave(){

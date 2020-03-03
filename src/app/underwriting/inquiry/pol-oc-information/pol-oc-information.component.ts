@@ -3,6 +3,7 @@ import { UnderwritingService, NotesService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
+import { Location } from '@angular/common';
 
 
 @Component({
@@ -13,6 +14,7 @@ import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 export class PolOcInformationComponent implements OnInit {
 
   @ViewChild('alterationTable') alterationTable : CustEditableNonDatatableComponent;
+  @ViewChild('subPolTable') subPolTable : CustEditableNonDatatableComponent;
   policyInfo:any = {
   	policyId:null,
   	policyNo:null,
@@ -45,17 +47,31 @@ export class PolOcInformationComponent implements OnInit {
     };
 
   passData:any = {
-  	tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
+  	tHeader: ['Open Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
   	tableData:[],
   	dataTypes:['text','datetime','datetime','text','currency','currency','text'],
   	pageLength:10,
   	infoFlag:true,
   	paginateFlag:true,
   	uneditable:[true,true,true,true,true,true,true],
-  	keys:['policyNo','effDate','issueDate','quotationNo','totalSi','totalPrem','statusDesc']
+  	keys:['policyNo','effDate','issueDate','quotationNo','totalSi','totalPrem','statusDesc'],
+    pageID: 3
   }
+
+  passDataSubPol:any = {
+    tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
+    tableData:[],
+    dataTypes:['text','datetime','datetime','text','currency','currency','text'],
+    pageLength:10,
+    infoFlag:true,
+    paginateFlag:true,
+    uneditable:[true,true,true,true,true,true,true],
+    keys:['policyNo','effDate','issueDate','quotationNo','sumInsured','premAmt','status'],
+    pageID: 2
+  }
+
   policyId:string;
-  constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router, private location: Location) { }
   selectedPol:any = null;
   policyNo:string;
   fromClm: boolean = false;
@@ -96,22 +112,36 @@ export class PolOcInformationComponent implements OnInit {
       this.policyInfo.acctDate = this.ns.toDateTimeString(data.policy.acctDate);
       this.passData.tableData = data.policy.altList;
       this.alterationTable.refreshTable();
+      this.subPolTable.refreshTable();
     })
   }
 
-  goToPolicy(){    
-    this.router.navigate(['/create-open-cover-letter',{ line: this.policyInfo.lineCd,
-                                policyIdOc:this.selectedPol.policyId,
-                                insured: this.selectedPol.insured,
-                                riskName: this.policyInfo.riskName,
-                                policyNo: this.selectedPol.policyNo,
-                                inqFlag: true,
-                                fromInq:true,
-                                exitLink: '/pol-oc-information' }], { skipLocationChange: true });
+  goToPolicy(data?){    
+    this.selectedPol = !data ? this.selectedPol : data; 
+      this.router.navigate(['/create-open-cover-letter',{ 
+                                  line: this.policyInfo.lineCd,
+                                  policyIdOc:this.selectedPol.policyId,
+                                  insured: this.selectedPol.insured,
+                                  riskName: this.policyInfo.riskName,
+                                  policyNo: this.selectedPol.policyNo,
+                                  inqFlag: true,
+                                  fromInq:true,
+                                  exitLink: '/pol-oc-information' }], { skipLocationChange: true });
+  }
+
+  goToSubPolicy(data){
+    this.router.navigate(['/policy-information', {policyId:data.policyId, policyNo:data.policyNo,exitLink: '/pol-oc-information', policyIdOc: this.policyId}], { skipLocationChange: true });
   }
   
   rowLick(data){
     this.selectedPol = data;
+    if(data == null){
+      this.passDataSubPol.tableData = [];
+    }else{
+      this.passDataSubPol.tableData = this.selectedPol.subPolList;
+    }
+
+    this.subPolTable.refreshTable();
   }
 
   onTabChange($event:NgbTabChangeEvent) {

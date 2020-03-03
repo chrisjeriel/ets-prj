@@ -714,10 +714,10 @@
 					</div>
 				</fieldset>
 				<fieldset class="scheduler-border" *ngIf="alterationFlag" style="height: 162px">
-						<legend class="scheduler-border">Remarks</legend>
+						<legend class="scheduler-border">Alteration Wordings</legend>
 						<div class="input-group" style="margin-top: 26px !important;">
 							<div class="form-control-sm col-sm edtr-cont" style="height: 100px;">
-								<text-editor [editorContent]="genInfoOcData.remarks" (fetchContent)="genInfoOcData.remarks = $event" [edtrOpnrPos]="2" [readonly]="policyInfo.fromInq=='true'">
+								<text-editor [editorContent]="genInfoOcData.remarks" (fetchContent)="genInfoOcData.remarks = $event" [edtrOpnrPos]="2" [readonly]="policyInfo.fromInq=='true'" [required]="true">
 								</text-editor>
 							</div>
 						</div>

@@ -60,6 +60,7 @@ export class PolicyInformationComponent implements OnInit {
   clmInfo: any = null;
   clmInq: boolean = false;
   exitLink: string = '';
+  policyIdOc: any = '';
 
   ngOnInit() {
     this.route.params.subscribe(data=>{
@@ -68,6 +69,7 @@ export class PolicyInformationComponent implements OnInit {
       this.policyId = data.policyId;
       this.policyNo = data.policyNo;
       this.exitLink = data.exitLink !== undefined ? data.exitLink:'/policy-inquiry';
+      this.policyIdOc = data.policyIdOc;
 
       if(data['clmInfo']) {
         this.fromClm = true;
@@ -82,7 +84,6 @@ export class PolicyInformationComponent implements OnInit {
 
   fetchInfo(policyId, policyNo?){
     this.UwService.getPolicyInformation(policyId, policyNo).subscribe((data:any)=>{
-      console.log(data);
       this.policyInfo = data.policy;
       this.policyInfo.inceptDate = this.ns.toDateTimeString(data.policy.inceptDate);
       this.policyInfo.expiryDate = this.ns.toDateTimeString(data.policy.expiryDate);
@@ -118,7 +119,8 @@ export class PolicyInformationComponent implements OnInit {
                                               status: this.selectedPol.status,
                                               exitLink: '/policy-information',
                                               sumInsured: this.selectedPol.sumInsured,
-                                              prevPolicyId: prevPolicyId
+                                              prevPolicyId: prevPolicyId,
+                                              policyIdOc:this.policyIdOc,
                                               }], { skipLocationChange: true });
   }
 
@@ -134,7 +136,8 @@ export class PolicyInformationComponent implements OnInit {
                                               cedingName: this.policyInfo.cedingName,
                                               editPol: true,
                                               status: this.selectedPol.status,
-                                              exitLink: '/policy-information'
+                                              exitLink: '/policy-information',
+                                              policyIdOc: this.policyIdOc
                                               }], { skipLocationChange: true });
   }
   
@@ -147,7 +150,15 @@ export class PolicyInformationComponent implements OnInit {
         $event.preventDefault();
 
         if(!this.fromClm) {
-          this.router.navigate([this.exitLink],{ skipLocationChange: true });
+          console.log(this.policyIdOc);
+          console.log(!this.policyIdOc);
+          console.log(this.exitLink);
+          this.exitLink = !this.policyIdOc || this.policyIdOc =='undefined' ? this.exitLink : '/pol-oc-information';
+          console.log(this.exitLink);
+          let param = {
+           policyIdOc : this.policyIdOc
+          }
+          this.router.navigate([this.exitLink,param],{ skipLocationChange: true });
         } else {
 
           this.router.navigate(
@@ -191,7 +202,8 @@ export class PolicyInformationComponent implements OnInit {
      insured: this.policyInfo.insuredDesc,
      editPol: true,
      status: this.policyInfo.status,
-     lastAffectingPolId: this.policyInfo.lastAffectingPolId
+     lastAffectingPolId: this.policyInfo.lastAffectingPolId,
+     policyIdOc : this.policyIdOc
     }
 
     if(this.fromClm) {

@@ -145,6 +145,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
     //NECO 06/04/2019
     this.sub = this.route.params.subscribe((data: any)=>{
+
                   this.params = data;
                   this.retrievePolicyDistribution();
                 });
@@ -360,7 +361,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
-    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId,policyIdOc:this.params.policyIdOc}])
   }
 
 
