@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -8,6 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-or-preview',
@@ -40,6 +41,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild('printModal') printMdl: ModalComponent;
 
   @Output() emitCreateUpdate: any = new EventEmitter<any>();
   @Input() inquiryFlag: boolean; // added by ENGEL;
@@ -194,7 +196,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   deletedData: any = [];
   notBalanced: boolean = false;
 
-  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService) { }
+  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService, private ps: PrintService) { }
 
   ngOnInit() {
     this.acctEntriesData.nData.tranId = this.record.tranId;
@@ -204,6 +206,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           this.paymentType = "";
     }
     this.retrieveAcseOrPreview();
+    this.getPrinters();
   	/*this.passDataAmountDetails.tableData = this.accountingService.getORPrevAmountDetails();
   	this.passDataAccountingEntries.tableData = this.accountingService.getORPrevAccEntries();
   	this.passDataAccountingVATTaxDetails.tableData = this.accountingService.getORPrevTaxDetails();
@@ -612,6 +615,34 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
   onClickApproval(){
     this.acctEntriesTbl.markAsDirty();
+  }
+
+  printMethod: string = 'screen';
+  selectedPrinter: string = '';
+  printers: string[] = [];
+
+  onClick2307() {
+    this.printMdl.openNoClose();
+  }
+
+  getPrinters(){
+    this.ps.getPrinters().subscribe(
+      (data:any)=>{
+        this.printers = data;
+      }
+    );
+  }
+
+  print(reportId) {
+    this.ps.printLoader = true;
+
+    var params = {
+      "reportId": reportId,
+      "tranId": this.record.tranId,
+      "fileName": reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+    }
+
+    this.ps.print(this.printMethod, reportId, params);
   }
 
 }

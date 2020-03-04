@@ -13,6 +13,8 @@ export class PrintService {
   constructor(private http: HttpClient, private ns: NotesService) {
 
   }
+
+  printLoader: boolean = false;
     /*
       PARAMETERS or refer to GenerateReportRequest.java
         String reportName
@@ -69,6 +71,8 @@ export class PrintService {
   		let url = environment.prodApiUrl + '/util-service/generateReport?'
   				+ Object.keys(params).map(a=>a+'='+params[a]).join('&');
   		window.open(url);
+
+      this.printLoader = false;
   	}
 
   	downloadPDF(params:any){
@@ -79,6 +83,7 @@ export class PrintService {
               link.href = downloadURL;
               link.download = params.fileName;
               link.click();
+              this.printLoader = false;
        },
        error => {
             if (false) {
@@ -88,7 +93,9 @@ export class PrintService {
                // $('#quotation #successModalBtn').trigger('click');
                // setTimeout(()=>{$('.globalLoading').css('display','none');},0);
                alert("Error generating PDF file");
-            }        
+            }
+
+            this.printLoader = false;
        });;
     }
 
@@ -101,6 +108,7 @@ export class PrintService {
               iframe.src = downloadURL;
               document.body.appendChild(iframe);
               iframe.contentWindow.print();
+              this.printLoader = false;
        },
        error => {
             if (false) {
@@ -110,7 +118,9 @@ export class PrintService {
                // $('#quotation #successModalBtn').trigger('click');
                // setTimeout(()=>{$('.globalLoading').css('display','none');},0);
                alert("Error generating PDF file");
-            }        
+            }
+
+            this.printLoader = false;
        });;
     }
 
