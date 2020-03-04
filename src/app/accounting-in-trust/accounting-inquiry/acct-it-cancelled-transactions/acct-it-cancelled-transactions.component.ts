@@ -1,8 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AccountingService } from '../../../_services/accounting.service';
-import { UserService } from '@app/_services';
+import { UserService, AccountingService } from '@app/_services';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 
@@ -18,8 +17,8 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   	tableData: [],
   	tHeader: ['Tran Class', 'Ref. No.', 'Tran Date', 'Tran Type','Payee/Payor', 'Particulars', 'Cancelled By', 'Cancelled Date', 'Reason', 'Amount'],
   	keys: ['tranClass','refNo','tranDate','tranTypeDesc','payee','particulars','cancelledBy','cancelledDate','reason','amount'],
-    dataTypes: ['text', 'text', 'date','text', 'text', 'text', 'text', 'date', 'text', 'text'],
-  	widths:[63,67,115,245,90,152,80,115,100,100],
+    dataTypes: ['text', 'text', 'date','text', 'text', 'text', 'text', 'date', 'text', 'currency'],
+  	widths:[63,67,75,245,90,152,80,75,100,100],
     uneditable:[true,true,true,true,true,true,true,true,true,true],
     filters: [
   		{
@@ -92,7 +91,7 @@ export class AcctItCancelledTransactionsComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Cancelled Tran");
     this.userService.emitModuleId("ACIT056");
-    //this.retrieveCancelledTrans();
+    this.retrieveCancelledTrans();
   }
 
   retrieveCancelledTrans(){

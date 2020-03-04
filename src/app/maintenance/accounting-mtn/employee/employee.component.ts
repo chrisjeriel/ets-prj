@@ -228,21 +228,21 @@ export class EmployeeComponent implements OnInit {
      if (this.checkValidation()){
         this.conSave.confirmModal();
      }else {
+         console.log('')
          this.successDialog.open();
-         this.tblHighlightReq('#mtn-employee',this.passTable.dataTypes,[1,2,3,4,5,8]);
+         this.tblHighlightReq('#mtn-employee',this.passTable.dataTypes,[1,2,3,5,8]);
      }
   }
 
   checkFields(){
       for(let check of this.passTable.tableData){
          if( 
-             check.employeeNo === null || check.employeeNo === '' ||
-             check.lastName === null || check.lastName === '' ||
-             check.firstName === null || check.firstName === '' ||
-             check.middleName === null || check.middleName === '' ||
-             check.gender === null || check.gender === '' ||
-             check.department === null || check.department === '' ||
-             check.civilStatus === null || check.civilStatus === '' 
+            !check.deleted && (check.employeeNo === null || check.employeeNo === '' ||
+              check.lastName === null || check.lastName === '' ||
+              check.firstName === null || check.firstName === '' ||
+              check.gender === null || check.gender === '' ||
+              check.department === null || check.department === '' ||
+              check.civilStatus === null || check.civilStatus === '' )
           ) {   
             return false;
           }   

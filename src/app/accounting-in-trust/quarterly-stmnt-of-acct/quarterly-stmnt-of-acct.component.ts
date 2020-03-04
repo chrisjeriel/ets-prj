@@ -351,4 +351,12 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 		this.onClickSearch();
 	}
+
+	onChangeCedingName() {
+		if(this.filtCedingName == '') {
+			this.filtCedingId = '';
+		}
+
+		console.log(this.filtCedingId);
+	}
 }

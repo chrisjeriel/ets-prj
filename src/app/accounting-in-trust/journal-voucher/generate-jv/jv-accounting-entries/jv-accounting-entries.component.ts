@@ -663,7 +663,6 @@ export class JvAccountingEntriesComponent implements OnInit {
 
   retrieveJVEntry(){
     this.accountingService.getJVEntry(this.jvDetails.tranId).subscribe((data:any) => {
-      console.log(data)
       if(data.transactions.jvListings.jvStatus == 'F'){
         this.jvDetails.jvStatus = data.transactions.jvListings.jvStatusName;
         this.statusType = 'F';

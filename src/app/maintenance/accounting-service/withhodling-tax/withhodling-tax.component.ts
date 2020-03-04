@@ -57,7 +57,7 @@ export class WithhodlingTaxComponent implements OnInit {
               vals: ['C','I'],
              }
       ],
-      //uneditable: [true,true,true,true,true,true,true,true,true,true],
+      uneditable: [true,false,false,false,false,false,false,false,false,false],
       widths: [60,70,390,115,75,110,90,65,50,67],
       keys: ['whtaxId', 'taxCd', 'taxName', 'taxType', 'taxRate', 'defaultAcitGl','defaultAcseGl', 'creditableTag','fixedTag', 'activeTag'],
   }

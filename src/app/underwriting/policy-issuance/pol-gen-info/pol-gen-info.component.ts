@@ -299,6 +299,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
 
   @Output() emitPolicyInfoId = new EventEmitter<any>();
   @Output() openTabs = new EventEmitter<any>();
+  @Output() newAltWs = new EventEmitter<any>();
   forkSub: any;
 
   minBookingDate:any = '1970-01-01';
@@ -1022,6 +1023,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
          if(this.newAlt) {
            this.newAlt = false;
            this.underwritingService.fromCreateAlt = false;
+           this.newAltWs.emit();
          }
 
          this.dialogMessage = "";

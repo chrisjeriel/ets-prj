@@ -1,0 +1,63 @@
+<form #myForm="ngForm">
+<div class="cust-tabs-container">
+    <h4>Maintenance / Accounting / Booking Month</h4>
+    <ngb-tabset>
+        <ngb-tab title="Booking Month">
+            <ng-template ngbTabContent>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="row">
+                        <div class="col-sm" id="mtn-booking-mth">
+                          <app-cust-editable-non-datatable #bookingtable [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)"></app-cust-editable-non-datatable>
+                        </div>
+                    </div>
+	                	
+	                <div class="w-100 text-center my-2" style="margin-top: 30px !important">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                        <button class="cust-btn" style="max-width: 500px;" (click)="genBooking()" >Generate Booking Months</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input name="updateDAte" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+</form>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+
+<app-modal class="d-none" #genBookingMthModal>
+	<div header>Generate Booking Months</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<div class="input-group">
+	  		<p style="margin: 0px">Enter Booking Year:</p>
+	  		<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "bookingYr" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' style="margin-left: 8px">
+	  	</div>
+	  </div>
+	  <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "lastOrNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'> PROD#ERROR -->
+	 
+	</div>
+	<div footer class="text-center w-100">
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="genBookingMthModal.closeModal();"><a>Return</a></button> 
+          <button class="cust-btn" type="button" (click)="genBookingMthModal.closeModal();generateBookingMth();"><a>Generate</a></button> 
+        </div>
+      </div>
+  	</div>
+</app-modal>

@@ -107,7 +107,8 @@ export class JvEntryComponent implements OnInit {
   }
 
   printData:any = {
-    reportType : 0
+    reportType : 0,
+    destination:'screen'
   };
 
   tranId:any;
@@ -418,7 +419,6 @@ export class JvEntryComponent implements OnInit {
   }
 
   prepareData(){
-    console.log(this.jvDatas);
     this.jvDatas.tranIdJv       = this.tranId;
     this.jvDatas.jvYear         = this.entryData.jvYear;
     this.jvDatas.jvNo           = parseInt(this.entryData.jvNo);
@@ -449,7 +449,6 @@ export class JvEntryComponent implements OnInit {
   saveJV(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
-    console.log(this.jvDatas);
     this.accService.saveAccJVEntry(this.jvDatas).subscribe((data:any) => {
       if(data['returnCode'] == 0) {
         this.dialogMessage = data['errorList'][0].errorMessage;
@@ -611,9 +610,29 @@ export class JvEntryComponent implements OnInit {
   }
 
   printJVDetails(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&reportType=' + this.printData.reportType, '_blank');
-    this.printEntries.openNoClose();
+    let params = {
+      reportName: 'ACITR_JV',
+      tranId: this.entryData.tranId,
+      printerName: this.printData.selPrinter,
+      pageOrientation: 'PORTRAIT',
+      paperSize: 'LETTER'
+    }
+
+    if(this.printData.destination == 'screen'){
+      window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
+                        this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&reportType=' + this.printData.reportType, '_blank');
+      this.printEntries.openNoClose();
+    }else if(this.printData.destination == 'printer'){
+      this.ps.directPrint(params).subscribe((data:any) => {
+        if(data.errorList.length == 0 && data.messageList.length != 0){
+          this.printEntries.openNoClose();
+        }else{
+          this.dialogIcon = 'error-message';
+          this.dialogMessage = 'An error has occured. JV was not printed.';
+          this.successDiag.open();
+        }
+      });
+    }
   }
 
   onClickPrintable(){
@@ -686,7 +705,6 @@ export class JvEntryComponent implements OnInit {
 
 //validate file to be uploaded
   validateFile(event){
-    console.log(event.target.files);
     var validate = '';
     validate = this.up.validateFiles(event);
 
@@ -711,7 +729,6 @@ uploadAcctEntries(){
      this.dialogMessage = 'No file selected.';
      this.successDiag.open();
    }else{
-     console.log(this.entryData.tranId);
      this.uploadLoading = true;
      this.up.uploadMethod(this.acctEntryFile, 'acct_entries', 'ACIT', 'JV', this.entryData.tranId);
      /*setTimeout(()=>{
@@ -733,7 +750,6 @@ uploadAcctEntries(){
   }
 
   uploaderActivity(event){
-    console.log(event);
     if(event instanceof Object){ //If theres an error regarding the upload
       this.dialogIcon = 'error-message';
      this.dialogMessage = event.message;
@@ -771,5 +787,9 @@ uploadAcctEntries(){
     this.ps.getPrinters().subscribe(data => {
       this.printData.printers = data;
     });
+  }
+
+  clearPrinterName(){
+    (this.printData.destination != 'printer')?this.printData.selPrinter='':''
   }
 }

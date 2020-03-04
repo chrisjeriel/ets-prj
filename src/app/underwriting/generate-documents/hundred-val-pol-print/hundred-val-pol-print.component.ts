@@ -205,7 +205,7 @@ export class HundredValPolPrintComponent implements OnInit {
 			this.flawlessTransaction = true;
 			this.navigate();
 		}else if(this.generateFlag){
-			$('#confirm-save #modalBtn2').trigger('click');
+			this.generate();
 		}
 	}
 

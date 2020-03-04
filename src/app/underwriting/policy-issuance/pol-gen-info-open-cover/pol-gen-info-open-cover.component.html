@@ -1,10 +1,10 @@
-<style type="text/css">
-	.input-group {
+<!-- <style type="text/css">
+	.input-group:not(.disreg) {
         padding: 0px !important;
         margin: 0px !important;
     }
 
-    .input-group label {
+    .input-group:not(.disreg) label {
         padding: 0px !important;
         margin: 0px !important;
     }
@@ -19,7 +19,7 @@
     .ig-row label {
         margin-right: 5px !important;
     }
-</style>
+</style> -->
 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
 <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
 <form #myForm="ngForm">
@@ -682,7 +682,7 @@
 					</div>
 				</div>
 			</fieldset>
-				<fieldset class="scheduler-border">
+				<fieldset class="scheduler-border" *ngIf="!alterationFlag	">
 					<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 					<div class="custom-row-inline-inset" style="margin-top: 28.5px !important;margin-bottom: 28.8px !important;">
 						<div class="form-row" style="margin-top: 12px">
@@ -713,10 +713,43 @@
 						</div>
 					</div>
 				</fieldset>
+				<fieldset class="scheduler-border" *ngIf="alterationFlag" style="height: 162px">
+						<legend class="scheduler-border">Alteration Wordings</legend>
+						<div class="input-group" style="margin-top: 26px !important;">
+							<div class="form-control-sm col-sm edtr-cont" style="height: 100px;">
+								<text-editor [editorContent]="genInfoOcData.remarks" (fetchContent)="genInfoOcData.remarks = $event" [edtrOpnrPos]="2" [readonly]="policyInfo.fromInq=='true'" [required]="true">
+								</text-editor>
+							</div>
+						</div>
+				</fieldset>
 		</div>
 	</div>
 </div>
 </form>
+<ng-container *ngIf="alterationFlag">
+	<div class="row" style="margin-top: 16px">
+		<div class="col-sm-12">
+			<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+				<div class="custom-row-inline-inset">
+					<div class="input-group ig-row" style="margin-bottom: -8px !important;">
+						<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+						<input  type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.createUser" readonly>
+						<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+						<div class="col-sm-2 dp-cont">
+							<datepicker [value]="genInfoOcData.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						</div>
+						<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+						<input  type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoOcData.updateUser" readonly>
+						<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
+						<div class="col-sm-2 dp-cont">
+							<datepicker [value]="genInfoOcData.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</ng-container>
 <div class="form-row" *ngIf="policyInfo.fromInq!='true'">
 		<div class="form-group col-sm">
 			<div class="col-md-13 text-center">

@@ -430,5 +430,15 @@ export class BankAccountComponent implements OnInit {
 
     alasql('SELECT bankName AS Bank,bankAcctCd AS Code, accountNo AS [Account No], accountName AS [Account Name], acctStatusName AS [Account Status],currCd AS Currency, bankBranch AS [Bank Branch], acctTypeName AS [Account Type], datetime(openDate) AS [Open Date], datetime(closeDate) AS [Close Date], dcbTag AS [Dcb Tag] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);
   }
+
+  dataChange(data){
+     $('#cust-table-container').addClass('ng-dirty');
+     /*for (var i = 0; i < this.passTable.tableData.length; i++) {
+         console.log(data.key)
+         if (data.key === '"bankBranch"'){
+          this.form.control.markAsPristine();
+         }
+    }*/
+ }
 }
 

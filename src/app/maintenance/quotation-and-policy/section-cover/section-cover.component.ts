@@ -348,7 +348,7 @@ export class SectionCoverComponent implements OnInit,AfterViewInit {
   }
 
   validate():Boolean{
-    if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.bulletNo == b.bulletNo && a.section==b.section).length != 1)){
+    if(this.passSecTable.tableData.some((a,i)=> this.passSecTable.tableData.filter(b=>a.bulletNo == b.bulletNo && a.section==b.section && !b.deleted).length != 1)){
       this.dialogMessage = 'Unable to save the record. Bullet No must be unique per Section';
       this.dialogIcon = 'error-message';
       this.successDialog.open();
@@ -377,13 +377,23 @@ export class SectionCoverComponent implements OnInit,AfterViewInit {
       //     this.successDialog.open();
       //     return false;
       // }
-
       if(dedCds.some((a,i)=>dedCds.indexOf(a) != i)){
         this.dialogMessage = 'Unable to save the record. Deductible Code must be unique per Section Cover';
         this.dialogIcon = 'error-message';
         this.successDialog.open();
         this.secTable.markAsPristine();
         this.dedTable.markAsPristine();
+        return false;
+      }
+      if(sec.deductibles.some(a=>{return a.deductibleType !== 'F' && a.minAmt > a.maxAmt})){
+        this.dialogMessage = 'Unable to save the record. Deductible minimum amount must not be greater than the maximum amount.';
+        this.dialogIcon = 'error-message';
+        this.successDialog.open();
+        return false;
+      }else if(sec.deductibles.some(a=>{return (a.deductibleAmt !== null && a.deductibleAmt.length !== 0 && a.deductibleAmt < 1) || (a.minAmt !== null && a.minAmt.length !== 0 && a.minAmt < 1) || (a.maxAmt !== null && a.maxAmt.length !== 0 && a.maxAmt < 1)})){
+        this.dialogMessage = 'Unable to save the record. Deductible amount must be positive.';
+        this.dialogIcon = 'error-message';
+        this.successDialog.open();
         return false;
       }
     }

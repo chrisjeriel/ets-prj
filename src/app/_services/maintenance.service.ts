@@ -1280,7 +1280,8 @@ export class MaintenanceService{
     				.set('slCd', (param.slCd === null || param.slCd === undefined ? '' : param.slCd))
     				.set('payeeNo', (param.payeeNo === null || param.payeeNo === undefined ? '' : param.payeeNo))
     				.set('autoTag', (param.autoTag === null || param.autoTag === undefined ? '' : param.autoTag))
-    				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag));
+    				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
+    				.set('slTypeCdArr', (param.slTypeCdArr === null || param.slTypeCdArr === undefined ? '' : param.slTypeCdArr));
 		return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnSL", {params});
     }
 
@@ -1934,7 +1935,28 @@ export class MaintenanceService{
             headers: new HttpHeaders({
                  'Content-Type': 'application/json'
             })
-         };
-         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportsRange', JSON.stringify(params), header);
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnReportsRange', JSON.stringify(params), header);
     }
+
+    generateBookingMth(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+
+        return this.http.post(environment.prodApiUrl + '/maintenance-service/generateMtnBookingMth', JSON.stringify(params), header);
+    }
+
+    saveMtnBookingMth(params) {
+	    let header: any = {
+	      headers: new HttpHeaders({
+	        'Content-Type': 'application/json'
+	      })
+	    };
+
+	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
+  }
+
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustEditableNonDatatableComponent, ModalComponent } from '@app/_components/common/';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -124,7 +124,8 @@ export class DistributionByInsComponent implements OnInit {
 
   selected:any = null;
 
-  constructor(private uw:UnderwritingService, private route: ActivatedRoute , public modalService: NgbModal, private router: Router) { }
+  constructor(private uw:UnderwritingService, private route: ActivatedRoute , public modalService: NgbModal, private router: Router, 
+              private ns: NotesService, private ps: PrintService) { }
 
   ngOnInit() {
   	this.sub = this.route.params.subscribe((data: any)=>{
@@ -385,4 +386,29 @@ export class DistributionByInsComponent implements OnInit {
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
   }
 
+  printReport:any = 'POLR038C';
+  printDestination:any = 'screen';
+  @ViewChild('printModal') printModal: ModalComponent;
+   print(){
+    let params:any = {
+                        policyId:this.params.policyId,
+                        userId:this.ns.getCurrentUser(),
+                        instNo:this.instTable.indvSelect.instNo,
+                        distId: this.instTable.indvSelect.distId,
+                        histNo: this.instTable.indvSelect.histNo,
+                        draftTag: this.instTable.indvSelect.histNo == null ? 'Y' : 'N'
+                      };
+    if(params.histNo == null){
+      delete params.histNo
+    }
+    params.reportId=this.printReport;
+    params.fileName = this.instTable.indvSelect.policyNo;
+    this.ps.print(this.printDestination,this.printReport,params)
+    if(params.reportId == 'POLR038C'){
+      let params1 = JSON.parse(JSON.stringify(params));
+      params1.reportId = 'POLR038CA';
+      params.filename = 'CMDM' + this.instTable.indvSelect.policyNo;
+      this.ps.print(this.printDestination,'POLR038CA',params1)
+    }
+  }
 }

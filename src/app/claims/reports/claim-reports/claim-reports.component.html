@@ -39,6 +39,16 @@
 								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
 							</div>
+							<div class="input-group" >
+								<input id="radio98" class="form-control-sm" type="radio" name="basisDate" value="5" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;"
+									[disabled]="paramsToggle.indexOf('accountingDate') == -1">
+								<label class="form-control-sm" for="radio98">Accounting Date</label>
+							</div>
+							<div class="input-group" >
+								<input id="radio99" class="form-control-sm" type="radio" name="basisDate" value="10" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;"
+									[disabled]="paramsToggle.indexOf('bookingDate') == -1">
+								<label class="form-control-sm" for="radio99">Booking Date</label>
+							</div>
 						</div>
 					</fieldset>
 					<fieldset class="scheduler-border col-sm">
@@ -50,7 +60,7 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2">From</label>
-								<div class="col-sm-3 dp-cont">
+								<div class="col-sm-3 dp-cont" style="margin-left: 0 !important;">
 									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1"></datepicker>
 								</div>
 								<label class="form-control-sm col-sm-2">To</label>
@@ -118,6 +128,24 @@
 					<div class="col-sm-1"></div>
 					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
 						<div class="row">
+							<div class="col-sm-2"></div>
+							<div class="col-sm-8 d-flex">
+								<div class="col-sm-1">
+									<input type="radio" id="extType1" name="last" value="L" [(ngModel)]="params.extTypeTag" [disabled]="paramsToggle.indexOf('extTypeTag') == -1">
+								</div>
+								<label for="extType1" class="form-control-sm col-sm text-left pl-0">Loss</label>
+								<div class="col-sm-1">
+									<input type="radio" id="extType2" name="last" value="E" [(ngModel)]="params.extTypeTag" [disabled]="paramsToggle.indexOf('extTypeTag') == -1">
+								</div>
+								<label for="extType2" class="form-control-sm col-sm text-left pl-0">Expense</label>
+								<div class="col-sm-1">
+									<input type="radio" id="extType3" name="last" value="LE" [(ngModel)]="params.extTypeTag" [disabled]="paramsToggle.indexOf('extTypeTag') == -1">
+								</div>
+								<label for="extType3" class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
+							</div>
+							<div class="col-sm-2"></div>
+						</div>
+						<div class="row">
 							<div class="col-sm-1">
 							</div>
 							<div class="col-sm">
@@ -144,6 +172,22 @@
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="company" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Currency</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.currCd" (ngModelChange)="params.currCd=$event.toUpperCase()" (change)="checkCode($event, 'currency')"
+									[disabled]="paramsToggle.indexOf('currency') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('currency') > -1"><a><i class="fa fa-search" (click)="showCurrencyLOV()"></i></a></div>
+									<span>&nbsp;</span>
+									<input id="company" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currency" readonly placeholder="ALL CURRENCIES">
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -272,3 +316,4 @@
 <app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>
+<app-mtn-currency-code  #currencyModal id="currLOV" (selectedData)="setCurr($event)"></app-mtn-currency-code>

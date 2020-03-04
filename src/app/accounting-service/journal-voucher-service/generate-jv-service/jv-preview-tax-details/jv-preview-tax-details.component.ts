@@ -163,7 +163,6 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
   }
      
   setGenTax(data){
-    console.log(data.data);
     this.passData.tableData = this.passData.tableData.filter((a) => a.showMG != 1);
     for (var i = 0; i < data.data.length; i++) {
       this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
@@ -242,8 +241,6 @@ export class JvPreviewTaxDetailsComponent implements OnInit {
   }
 
   cancel(){
-    this.prepareData();
-    console.log(this.taxDetailsParams)
-    //this.cancelBtn.clickCancel();
+    this.cancelBtn.clickCancel();
   }
 }

@@ -140,7 +140,7 @@ export class PolOpenCovListComponent implements OnInit {
            a.riskName = a.project.riskName;
            a.objectDesc = a.project.objectDesc;
            a.site = a.project.site;
-           return a.openPolicyNo.split('-')[6] == "000" &&  ['Pending Approval','Approved','Rejected','In Progress','In Force'].indexOf(a.statusDesc)!= -1;
+           return ['Pending Approval','Approved','Rejected','In Progress'].indexOf(a.statusDesc)!= -1;
          });
          this.listTable.refreshTable();
        })
@@ -157,6 +157,7 @@ export class PolOpenCovListComponent implements OnInit {
    														 riskName: this.selected.riskName,
    														 policyNo: this.selected.openPolicyNo ,
    														 inqFlag: false,
+   														 fromInq: false,
    														 exitLink: '/open-cover-list'}], { skipLocationChange: true });
    }
 

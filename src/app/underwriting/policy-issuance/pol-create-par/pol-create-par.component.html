@@ -63,12 +63,12 @@
                     <div class="input-group">
                         <div class="input-group ig-row">
                             <div class="col-sm text-center">
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="qu" (change)="toggle('qu')">
-                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Quotation</label>
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="hc" (change)="toggle('hc')" style="margin-left: 14px;">
-                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Hold Cover</label>
-                                    <input class="form-control-sm input-radio" type="radio" name="optradio" [checked]="oc" (change)="toggle('oc')" style="margin-left: 14px;">
-                                    <label class="form-control-sm" for="list" style="margin-top: 2px !important; margin-left: 2px !important;">From Open Cover</label>
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" id="qu" [checked]="qu" (change)="toggle('qu')">
+                                    <label for="qu" class="form-control-sm" style="margin-top: 2px !important; margin-left: 2px !important;">From Quotation</label>
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" id="hc" [checked]="hc" (change)="toggle('hc')" style="margin-left: 14px;">
+                                    <label for="hc" class="form-control-sm" style="margin-top: 2px !important; margin-left: 2px !important;">From Hold Cover</label>
+                                    <input class="form-control-sm input-radio" type="radio" name="optradio" id="oc" [checked]="oc" (change)="toggle('oc')" style="margin-left: 14px;">
+                                    <label for="oc" class="form-control-sm" style="margin-top: 2px !important; margin-left: 2px !important;">From Open Cover</label>
                             </div>
                         </div>
                         <div class="input-group ig-row" *ngIf="qu">
@@ -117,9 +117,27 @@
                             <label class="form-control-sm col-sm-2">Insured</label>
                             <input type="text" class="form-control form-control-sm" [(ngModel)]="insuredDesc" readonly>
                         </div>
-                        <div class="input-group ig-row">
+                        <div class="input-group ig-row" *ngIf="!oc">
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
+                        </div>
+                        <div class="input-group ig-row" *ngIf="oc">
+                            <label class="form-control-sm col-sm-2">Risk</label>
+                            <input type="text"class="form-control form-control-sm col-sm-1 cap-input" [(ngModel)]="riskId" (change)="checkCodeRisk($event)" appRequired >
+                            <div class="text-search-ico1" (click)="showRiskLOV()" *ngIf="oc"><a><i class="fa fa-search"></i></a></div>
+                            &nbsp;&nbsp;
+                            <input type="text" class="form-control form-control-sm" [(ngModel)]="riskName" readonly>
+                        </div>
+                        <div class="input-group ig-row" *ngIf="oc">
+                            <label class="form-control-sm col-sm-2">Co-Insurance Policy No</label>
+                            <input [disabled]="!oc" type="text" [ngModel]="polNo[0]" mask="SSS" (ngModelChange)="polNo[0]=$event.toUpperCase()" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
+                            <input [disabled]="!oc" type="text" [(ngModel)]="polNo[1]" mask="9999" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year">
+                            <input [disabled]="!oc" type="text" [(ngModel)]="polNo[2]" mask="99999" (blur)="polNo[2]=pad($event,5)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No">
+                            <input [disabled]="!oc" type="text" [(ngModel)]="polNo[3]" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No">
+                            <input [disabled]="!oc" type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No">
+                             <input [disabled]="!oc" type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No">
+                            <span>&nbsp;</span>
+                            <div class="text-search-ico" *ngIf="oc"><a><i (click)="showPolOcLOV()" class="fa fa-search"></i></a></div>
                         </div>
                         <!-- REMOVED 4/15/2019 --> <!-- NOPE -->
                         <div class="input-group ig-row ">
@@ -223,3 +241,18 @@
         <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
     </div>
 </app-modal>
+
+<app-modal #PolOcLov class='d-none'>
+<div header>List Of Values</div>
+    <div body>
+       <app-loading-table [passData]="passDataPolOcLov" #polOcLovTable></app-loading-table>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="setPolOcLov();modalService.dismissAll(); "><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-mtn-risk id="riskLOV" #riskLOV (selectedData)="setRisks($event)"></app-mtn-risk>

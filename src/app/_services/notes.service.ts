@@ -17,6 +17,8 @@ export class NotesService {
 
   }
 
+  listParams:any;
+
   getNotesReminders() {
   	this.notesRemindersData = [
   		new NotesReminders('Reminder', 'Call Mr. Bean later', 'cuaresma', new Date('2015-02-28'), new Date('2015-02-28 16:00'), 'Pending',
@@ -125,5 +127,10 @@ export class NotesService {
     var into = "INTO XLSXML('" + fileName + "', ?)";
 
     alasql(query + ' ' + into + ' FROM ?', [mystyle,tableData]);
+  }
+
+  setListParams(params){
+    this.listParams = params;
+    delete this.listParams['paginationRequest.position'];
   }
 }

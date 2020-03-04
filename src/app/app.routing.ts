@@ -204,6 +204,10 @@ import { CloseOpenDcbComponent } from './accounting-in-trust/utilities/close-ope
 import { AcseCloseOpenDcbComponent } from './accounting-service/utilities/acse-close-open-dcb/acse-close-open-dcb.component';
 import { UpdatePolAttachmentComponent } from './underwriting/utilities/update-pol-attachment/update-pol-attachment.component';
 import { ClaimReportsComponent } from './claims/reports/claim-reports/claim-reports.component';
+import { EditDistributionEntryComponent } from './underwriting/distribution/edit-distribution-entry/edit-distribution-entry.component';
+import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
+import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
+import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 
 const appRoutes: Routes = [
 
@@ -845,7 +849,10 @@ const appRoutes: Routes = [
     { path: 'acse-chart-of-accounts', component: AcseChartAcctComponent},
     { path: 'uploader', component: UploaderComponent},
     { path: 'update-pol-attachment', component: UpdatePolAttachmentComponent},
-
+    { path: 'edit-distribution', component: EditDistributionEntryComponent},
+    { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
+    { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
+    { path: 'pol-oc-information', component: PolOcInformationComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

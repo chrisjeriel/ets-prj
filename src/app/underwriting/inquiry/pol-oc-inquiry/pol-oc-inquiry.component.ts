@@ -173,7 +173,7 @@ export class PolOcInquiryComponent implements OnInit {
   }
 
   gotoInfo(data) {
-  	   this.router.navigate(['/create-open-cover-letter',{ line: data.openPolicyNo.split('-')[1],
+  	   this.router.navigate(['/pol-oc-information',{ line: data.openPolicyNo.split('-')[1],
                                 policyIdOc:data.policyIdOc,
                                 insured: data.insuredDesc,
                                 riskName: data.riskName,
@@ -206,7 +206,7 @@ export class PolOcInquiryComponent implements OnInit {
            a.riskName = a.project.riskName;
            a.objectDesc = a.project.objectDesc;
            a.site = a.project.site;
-           return a.openPolicyNo.split('-')[6] == "000";
+           return true;
          });
          this.listTable.refreshTable();
        })

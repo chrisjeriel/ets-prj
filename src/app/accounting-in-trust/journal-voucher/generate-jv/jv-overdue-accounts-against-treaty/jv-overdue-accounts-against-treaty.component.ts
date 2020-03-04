@@ -200,7 +200,6 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
 
   retrieveAcctBal(){
     this.accountingService.getAcctTrtyBal(this.jvDetail.tranId).subscribe((data:any) => {
-      console.log(data);
       this.passData.tableData = [];
       this.cedingFlag = false;
       if( data.acctTreatyBal.length!=0){

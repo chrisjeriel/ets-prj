@@ -443,10 +443,24 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVEntry",{params});
 	}
 	
-	getJVListing(tranId) {
-		 const params = new HttpParams()
-             .set('tranId', (tranId === null || tranId === undefined ? '' : tranId) )
-        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVListing",{params});
+	getJVListing(param) {
+		 /*const params = new HttpParams()
+             .set('tranId', (param.tranId === null || param.tranId === undefined ? '' : param.tranId))
+			.set('jvNo', (param.jvNo === null || param.jvNo === undefined ? '' : param.jvNo))
+			.set('jvDateFrom', (param.jvDateFrom === null || param.jvDateFrom === undefined ? '' : param.jvDateFrom))
+			.set('jvDateTo', (param.jvDateTo === null || param.jvDateTo === undefined ? '' : param.jvDateTo))
+			.set('particulars', (param.particulars === null || param.particulars === undefined ? '' : param.particulars))
+			.set('tranTypeName', (param.tranTypeName === null || param.tranTypeName === undefined ? '' : param.tranTypeName))
+			.set('refNo', (param.refNo === null || param.refNo === undefined ? '' : param.refNo))
+			.set('preparedBy', (param.preparedBy === null || param.preparedBy === undefined ? '' : param.preparedBy))
+			.set('jvAmtFrom', (param.jvAmtFrom === null || param.jvAmtFrom === undefined ? '' : param.jvAmtFrom))
+			.set('jvAmtTo', (param.jvAmtTo === null || param.jvAmtTo === undefined ? '' : param.jvAmtTo))
+			.set('tranStat', (param.tranStat === null || param.tranStat === undefined ? '' : param.tranStat))
+			.set('jvStat', (param.jvStat === null || param.jvStat === undefined ? '' : param.jvStat))
+			.set('paginationRequest.count', (param.paginationRequest.count === null || param.paginationRequest.count === undefined ? '' : param.paginationRequest.count))
+			.set('paginationRequest.position', (param.paginationRequest.position === null || param.paginationRequest.position === undefined ? '' : param.paginationRequest.position));*/
+			
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVListing",{params: param});
 	}
 
 	getARTaxDetailsVAT() {
@@ -3466,6 +3480,10 @@ export class AccountingService {
          };
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVTrtyUnappliedColl',params,header);
-    } 
+    }
+
+    getJVListingLength(param) {
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVListingLength",{params: param, responseType: 'text'});
+	}
 
 }

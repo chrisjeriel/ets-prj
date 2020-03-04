@@ -615,8 +615,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             this.params.savePerDiem.push(e);
           }else if(this.requestData.tranTypeCd == 7){
             e.insuranceType = (e.newRec == 1)?e.insuranceTypeDesc:e.insuranceType;
-            this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
-            e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
+            // this.params.delCvItemTaxes =  e.taxAllocation.filter(a=>{return a.deleted});
+            // e.taxAllocation = e.taxAllocation.filter(a=>{return a.edited && !a.deleted});
             if(e.taxAllocation == undefined){
               this.params.delCvItemTaxes = [];
               e.taxAllocation = [];
@@ -807,7 +807,14 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       this.lov.openLOV();
     }else if(from.toUpperCase() == 'DIEMINSDATA'){
       this.passData.selector = 'sl';
-      this.passData.params.slTypeCd = (this.requestData.tranTypeCd == 6)?8:'';
+      // this.passData.params.slTypeCd = (this.requestData.tranTypeCd == 6)?8:'';
+
+      if(this.requestData.tranTypeCd == 6) {
+        this.passData.params.slTypeCd = 8;
+      } else if(this.requestData.tranTypeCd == 7) {
+        this.passData.params.slTypeCdArr = '4,8,9';
+      }
+
       this.passData.from = (this.requestData.tranTypeCd == 7)?'prq-ins':'';
       this.lov.openLOV();
     }
@@ -1086,7 +1093,5 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     // }
     this.getPaytReqPrqTrans();
   }
-
-
 
 }

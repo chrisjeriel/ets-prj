@@ -284,7 +284,13 @@ export class PolPostComponent implements OnInit {
                         updateUser:this.ns.getCurrentUser(),
                         inclEndt : 'Y'
                       };
-      params.reportId= 'POLR010';
-      this.ps.print('screen','POLR010',params);
+      if(!this.alterationFlag){
+        params.reportId= 'POLR010';
+        this.ps.print('screen','POLR010',params);
+      }
+      else{
+        params.reportId= 'POLR010B';
+        this.ps.print('screen','POLR010B',params);
+      }
     }
 }

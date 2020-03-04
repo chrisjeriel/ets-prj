@@ -37,7 +37,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   passData: any = {
         tableData: [],
         tHeader: ['Pay Mode','Curr','Curr Rate','Amount','Bank','Bank Account No.','Check No.','Check Date','Check Class', 'Remarks'],
-        dataTypes: ['reqSelect','text','percent','reqCurrency','reqSelect','text','reqTxt','reqDate','reqSelect', 'text'],
+        dataTypes: ['reqSelect','text','percent','reqCurrency','select','text','reqTxt','reqDate','reqSelect', 'text'],
         paginateFlag: true,
         infoFlag: true,
         pageLength: 5,
@@ -1321,9 +1321,11 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   paytModeValidation(): boolean{
     for(var i of this.passData.tableData){
-      if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
+      /*if(i.paytMode == 'BT' && (i.bank == null || i.bank.length === 0)){
         return true;
-      }else if(i.paytMode == 'CK' && (i.bank == null || i.bank.length === 0 || i.checkNo == null || i.checkNo.length === 0 || i.checkDate == null || i.checkDate.length === 0 || i.checkClass == null || i.checkClass.length === 0)){
+      }else */
+
+      if(i.paytMode == 'CK' && (i.bank == null || i.bank.length === 0 || i.checkNo == null || i.checkNo.length === 0 || i.checkDate == null || i.checkDate.length === 0 || i.checkClass == null || i.checkClass.length === 0)){
         return true;
       }
     }

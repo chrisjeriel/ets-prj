@@ -69,7 +69,7 @@ export class InvoiceSeriesComponent implements OnInit {
   }
 
   onClickGenerate(){
-    if(this.params.invoiceFrom >= this.params.invoiceTo){
+    if(parseInt(this.params.invoiceFrom) >= (parseInt(this.params.invoiceTo))){
       this.dialogMessage = "Invoice From must not be greater or equal to Invoice to.";
       this.dialogIcon = "error-message";
       this.successDiag.open();

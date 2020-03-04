@@ -1,9 +1,14 @@
 <div class="cust-tabs-container">
 	<h4>Policy / {{subtitle}} / {{title}}</h4>
 	<ngb-tabset >
-		<ngb-tab class="ngb-tab" title="Risk Distribution" id="risk">
+		<ngb-tab class="ngb-tab" title="Risk Distribution" id="risk" *ngIf="!fromEditDist">
 			<ng-template ngbTabContent>
 				<app-distribution-by-risk (inquiryFlag)="inquiryFlag = $event" (riskDistId)="riskDistId = $event" (riskDistStatus)="riskDistStatus = $event"></app-distribution-by-risk>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Risk Distribution" *ngIf="fromEditDist" id="risk">
+			<ng-template ngbTabContent>
+				<app-edit-distribution-risk (inquiryFlag)="inquiryFlag = $event" (riskDistId)="riskDistId = $event" (riskDistStatus)="riskDistStatus = $event"></app-edit-distribution-risk>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab [title]="distTtitle" id="policy">

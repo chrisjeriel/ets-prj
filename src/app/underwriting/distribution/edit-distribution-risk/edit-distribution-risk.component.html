@@ -1,0 +1,273 @@
+<div class="row">
+  <div class="col-sm">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Distribution Info Edit</legend>
+      <div class="custom-row-inline-inset">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Risk Dist No</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="pad(riskDistributionData?.riskDistId, 'riskDistId')">
+          <label class="form-control-sm col-sm-1">Total SI</label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="riskDistributionData?.tsiAmt  | number:'1.2-2'">
+          <label class="form-control-sm col-sm-1">Risk</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.riskName">
+          <label class="form-control-sm col-sm-1">Section I SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionI  | number:'1.2-2'">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Risk Dist Status</label>
+          <input type="text"class="form-control form-control-sm col-sm-2" readonly [ngModel]="riskDistributionData?.status">
+          <label class="form-control-sm col-sm-1">Rate (%)</label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="round((riskDistributionData?.premAmt / riskDistributionData?.tsiAmt) * 100) | number: '1.10-10'">
+          <label class="form-control-sm col-sm-1">Ceding Co</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.cedingName">
+          <label class="form-control-sm col-sm-1">Section II SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionII  | number:'1.2-2'">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Policy No</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.policyNo">
+          <label class="form-control-sm col-sm-1">Total Premium</label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="riskDistributionData?.premAmt | number:'1.2-2'">
+          <label class="form-control-sm col-sm-1">Insured</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="params.insured">
+          <label class="form-control-sm col-sm-1">Section III SI </label>
+          <input type="text" class="form-control form-control-sm txt-content-rght col-sm-2" readonly [ngModel]="coverage?.sectionIII  | number:'1.2-2'">
+        </div>
+      </div>
+    </fieldset>
+  </div>
+</div>
+<form #myForm="ngForm">
+<div class="row">
+
+  
+  <div class="col-sm-6">
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Distribution Parameters</legend>
+        <div style="margin-top: 53px !important;margin-bottom: 53px !important;">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">One Retention Line</label>
+            <input name="input1" type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.retLineAmt" (ngModelChange)="riskDistributionData.retLineAmt = $event ; treatyTable.markAsDirty();" appCurrency [readonly]="controlDisabled.oneRetLine" (change)="checkLimit()">
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">1st Retention Line</label>
+            <input name="input2" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retOneLines">
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-5">2nd Retention Line</label>
+            <input name="input3" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" readonly [ngModel]="riskDistributionData?.retTwoLines">
+          </div>
+          <div class="input-group" style="margin-bottom: 0px !important;">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-8">
+              <app-cust-editable-non-datatable #limit [passData]="limitsData">
+              </app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-3"></div>
+          </div>
+          <div class="input-group">
+            <div class="input-group" [class.d-none]="controlHidden.seciitrtyLimit">
+              <label class="form-control-sm col-sm-5">Section II Treaty Limit</label>
+              <input name="input4" type="text" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.trtyLimitSec2" [readonly]="controlDisabled.seciitrtyLimit" appCurrency (ngModelChange)="riskDistributionData.trtyLimitSec2 = $event ; treatyTable.markAsDirty();">
+            </div>
+            <div class="input-group" [class.d-none]="controlHidden.seciiPremTag">
+              <div class="col-sm-5">
+              </div>
+              <input name="input5" type="checkbox" [ngModel]="riskDistributionData?.seciiPremTag == 'Y'" (ngModelChange)="$event ? riskDistributionData.seciiPremTag = 'Y' : riskDistributionData.seciiPremTag = 'N';readOnlyAll() ; treatyTable.markAsDirty();" [disabled]="controlDisabled.seciiPremTag">
+              <label class="form-control-sm col-sm-4 text-left pt-0" style="text-align: left !important;">Consider Sec II Treaty Limit</label>
+            </div>
+            <div class="input-group">
+              <label class="form-control-sm col-sm-5">VAT on R/I Rate (%)</label>
+              <input name="input6" type="text" value="200,000.00" class="form-control form-control-sm txt-content-rght col-sm-4" [ngModel]="riskDistributionData?.vatRiRt | number: '1.10-10'" readonly>
+            </div>
+          </div>
+        </div>
+      
+    </fieldset>
+  </div>
+
+  <div class="col-sm-6 no-pad-left">
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Treaty Share and Comm Share Parameters</legend>
+      <div style="margin-top: 10px; margin-bottom: 8px;">
+            <app-cust-editable-non-datatable #wparam [passData]="wparamData" (genericBtn)="onClickDelete($event)" (onDelete)="wparam.onClickDelete('a')"  (clickLOV)="openCedingCoLOV($event)">
+              <ng-container controls-r>
+                <input type="checkbox" name="autoCalc" [ngModel]="riskDistributionData?.autoCalc === 'Y'" (ngModelChange)="$event ? riskDistributionData.autoCalc = 'Y' : riskDistributionData.autoCalc = 'N';readOnlyAll() ;$event? this.riskDistributionData.seciiPremTag = 'N':null;" [disabled]="controlDisabled.autoCalc">
+                <label class="form-control-sm">Auto Calculation</label>
+              </ng-container>
+            </app-cust-editable-non-datatable>
+      </div>
+    </fieldset>
+  </div>
+  
+</div>
+</form>
+<div>
+  <fieldset class="scheduler-border" style="padding-bottom: 7px !important;">
+    <legend class="scheduler-border">Treaty Distribution</legend>
+    <div class="row" style="padding-top: 5px;">
+      <div class="col-sm">
+        <app-cust-editable-non-datatable #treaty [passData]="treatyDistData" (export)="exportTreatyDist();"></app-cust-editable-non-datatable>
+      </div>
+    </div>
+  </fieldset>
+
+<div class="form-row">
+  <div class="form-group col-sm">
+    <div class="col-sm" style="text-align: center; padding: 10px;">
+      <app-modal [btnTitle]="'View Cedant Dist'" (modalOpened)="openPoolDistribution()">
+        <div header>Cedant Distribution</div>
+        <div body>
+          <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
+            <div class="row" style="padding-top: 5px;">
+              <div class="col-sm">
+                <app-cust-editable-non-datatable [passData]="poolDistributionData" (export)="exportPoolDist();" #poolDistTable></app-cust-editable-non-datatable>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+        <div footer class="d-flex justify-content-center" style="width: 100% !important;">
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
+        </div>
+      </app-modal>
+
+      <app-modal [btnTitle]="'View Co-Insurance'"   [class.d-none]="controlHidden.coinsBtn">
+        <div header>Co-Insurance Distribution</div>
+        <div body>
+          <fieldset class="scheduler-border" style="padding-bottom: 7px !important; margin-bottom: -5px !important; padding-top: 3px !important;">
+            <div class="row" style="padding-top: 5px;">
+              <div class="col-sm">
+                <app-cust-editable-non-datatable [passData]="coInsuranceData" #coInsTable></app-cust-editable-non-datatable>
+              </div>
+            </div>
+            <!-- <div class="row" *ngIf="!coInsTable.loadingFlag">
+              <div class="col-sm-2">
+              </div>
+              <div class="col-sm-8" style="margin-top: -15px; margin-left: -20px;">
+                <div class="input-group">
+                  <label class="form-control-sm col-sm-2">Total SI Amount</label>
+                  <input type="text" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="riskDistributionData?.tsiAmt" appCurrency>
+                  <label class="form-control-sm col-sm-3">Total Premium Amount</label>
+                  <input type="text" class="form-control form-control-sm txt-content-rght col-sm" readonly [ngModel]="riskDistributionData?.premAmt" appCurrency>
+                </div>
+              </div>
+              <div class="col-sm-2">
+              </div>
+            </div> -->
+          </fieldset>
+        </div>
+        <div footer class="d-flex justify-content-center" style="width: 100% !important;">
+          <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
+        </div>
+      </app-modal>
+      <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()" ><a>Cancel</a></button>
+      <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="controlHidden.saveBtn"><a>Save</a></button>
+      <!-- <button type="button" class="cust-btn" (click)="save()" ><a>Test Save</a></button> -->
+      <button type="button" class="cust-btn" (click)="distribute()" [class.d-none]="controlHidden.distributeBtn" ><a>Distribute</a></button>
+    </div>
+  </div>
+</div>
+
+
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button>
+
+<app-ceding-company #treatyShare (selectedData)="setSelectedCedCoTreatyShare($event)" [exclude]="hiddenCedingCo" [lovCheckBox]="true" [treaty]="false"></app-ceding-company>
+
+<app-modal #warningPosted class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    You are not allowed to make any modification. The following policies are already posted to final.
+    <div *ngFor="let dist of postedList" class="w-100 text-center">
+      {{dist.policyNo}}
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningPostedMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #warningUnsaved class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Please save the changes you have made before distributing the policy.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningUnsvdedMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+
+<app-modal #warningUndistAlt class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Unable to distribute the record. The following policy/alteration distribution must be distributed first.
+    <div *ngFor="let dist of undistAlt" class="w-100 text-center">
+      {{dist.policyNo}}
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningUndistAltMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #warningInvShare class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+    Unable to save the record. Total Share (%) per Treaty must be equal to 100%.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningInvShareMdl.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal #confirmAlt class="d-none">
+  <div header>Confirmation</div>
+  <div body>
+    The status of the subsequent alteration is Distribtuted but not Posted. Saving these changes will update the status of the subsequent alteration to Undistribtuted. Do you want to proceed?
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="save();confirmAltMdl.closeModal()" ><a>Yes</a></button>
+    <button type="button" class="cust-btn" (click)="confirmAltMdl.closeModal()" ><a>No</a></button>
+  </div>
+</app-modal>
+
+<app-modal #retLimitReached class="d-none">
+  <div header>Warning</div>
+  <div body>
+    Maximum Retention Line Amount is {{riskDistributionData?.secIIInputLimit | number:'1.2-2'}} {{riskDistributionData?.cuurCd}}
+  </div>
+  <div footer class="w-100 text-right">
+    <button type="button" class="cust-btn" (click)="retLimitReached.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>
+
+<app-modal class="d-none" id="warningModal">
+    <div header>Policy Distribution</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p>
+                  {{ warningModalMsg }}
+              </p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+
+        <button *ngIf="warningModalCode == 'PREV_NOT_POSTED' || warningModalCode == 'MODDED_COMM_RT'|| warningModalCode == 'ALREADY_POSTED'" class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        <button *ngIf="warningModalCode == 'PREV_HAS_CHANGES'" class="cust-btn" type="button" (click)="save();modalService.dismissAll();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal #warningNegVals class="d-none">
+  <div header>Warning Message</div>
+  <div body>
+     Unable to distribute record with negative amounts. Please check Treaty Share and Comm Share Parameters.
+  </div>
+  <div footer class="w-100 text-center">
+    <button type="button" class="cust-btn" (click)="warningNegVals.closeModal()" ><a>Ok</a></button>
+  </div>
+</app-modal>

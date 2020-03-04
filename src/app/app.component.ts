@@ -51,6 +51,7 @@ export class AppComponent implements OnDestroy {
     }
     content: any;
     theme : any;
+    dbName:any = "";
     constructor(
      private cdRef:ChangeDetectorRef,
      private router: Router,
@@ -195,6 +196,10 @@ export class AppComponent implements OnDestroy {
     ngOnInit(){
         this.theme = window.localStorage.getItem("selectedTheme");
         this.changeTheme(this.theme);
+
+        this.workFlowManagerService.getDBName().subscribe(a=>{
+          this.dbName = a;
+        })
 
         this.userService.moduleIdObs.subscribe(value => {
             this.moduleId = value;
@@ -486,6 +491,10 @@ export class AppComponent implements OnDestroy {
         }
       });
     }
+  }
+
+  resetListParams(){
+    this.ns.listParams = null;
   }
 }
 

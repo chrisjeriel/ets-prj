@@ -32,7 +32,8 @@ export class ProgramParameterComponent implements OnInit {
       createUser: JSON.parse(window.localStorage.currentUser).username,
       description: null,
       updateDate: '',
-      updateUser: JSON.parse(window.localStorage.currentUser).username
+      updateUser: JSON.parse(window.localStorage.currentUser).username,
+      uneditable: ['paramValueN','paramValueD','paramValueV']
     },
     opts: [{
             selector: 'paramType',
@@ -130,9 +131,13 @@ export class ProgramParameterComponent implements OnInit {
    onClickSave(){
        this.errorFlag = false;
        for(var i =0; i < this.passData.tableData.length; i++){
-         if((this.passData.tableData[i].paramType == 'V' && (this.passData.tableData[i].paramValueV == null || this.passData.tableData[i].paramValueV == "")) || (this.passData.tableData[i].paramType == 'N' && (this.passData.tableData[i].paramValueN == null || this.passData.tableData[i].paramValueN == "")) || (this.passData.tableData[i].paramType == 'D' && (this.passData.tableData[i].paramValueD == null || this.passData.tableData[i].paramValueD == ""))){
+         if((this.passData.tableData[i].paramType == 'V' && (this.passData.tableData[i].paramValueV == null || this.passData.tableData[i].paramValueV == "")) || (this.passData.tableData[i].paramType == 'N' && (this.passData.tableData[i].paramValueN == null || this.passData.tableData[i].paramValueN == "" || isNaN(this.passData.tableData[i].paramValueN))) || (this.passData.tableData[i].paramType == 'D' && (this.passData.tableData[i].paramValueD == null || this.passData.tableData[i].paramValueD == ""))){
            console.log(this.passData.tableData[i])
            this.errorFlag = true;
+         }
+
+         if (this.passData.tableData[i].paramName == null){
+              this.errorFlag = true;
          }
        }
 
@@ -196,11 +201,40 @@ export class ProgramParameterComponent implements OnInit {
   dataChange(data){
     console.log(this.passData.tableData[this.passData.tableData.length - 1].paramType)
     for (var i = 0; i < this.passData.tableData.length; i++) {
-      if(this.passData.tableData[i].paramType == 'V'){
-        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueV'];
+
+      if(this.passData.tableData[i].edited || this.passData.tableData[i].add){
+         if (data.key === 'paramType'){
+             this.removeUneditable('paramValueN',this.passData.tableData[i].uneditable);
+             this.removeUneditable('paramValueV',this.passData.tableData[i].uneditable);
+             this.removeUneditable('paramValueD',this.passData.tableData[i].uneditable);
+
+              if(this.passData.tableData[i].paramType == 'V'){
+                this.passData.tableData[i].paramValueN = null;
+                this.passData.tableData[i].paramValueD = null;
+                this.passData.tableData[i].uneditable = ['paramValueN','paramValueD'];
+              }else if (this.passData.tableData[i].paramType == 'N'){
+                this.passData.tableData[i].paramValueV = null;
+                this.passData.tableData[i].paramValueD = null;
+                this.passData.tableData[i].uneditable = ['paramValueV','paramValueD'];
+              }else if (this.passData.tableData[i].paramType == 'D'){
+                this.passData.tableData[i].paramValueV = null;
+                this.passData.tableData[i].paramValueN = null;
+                this.passData.tableData[i].uneditable = ['paramValueV','paramValueN'];
+              }else {
+                this.passData.tableData[i].uneditable = ['paramValueV','paramValueN','paramValueD'];
+              }
+         }
       }
+     /* if(this.passData.tableData[i].paramType == 'V'){
+        this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['paramName','paramType','paramValueV'];
+      }*/
     }
     
+  }
+
+removeUneditable(key?, array?){
+    var index = array.indexOf(key);
+    if (index !== -1) array.splice(index,1);
   }
 
 }

@@ -95,10 +95,21 @@ export class CancelArCvJvComponent implements OnInit {
 				this.cancelTranTbl.refreshTable();
 			});
 		}else if(this.tranClass == 'jv'){
-			this.acctService.getJVListing('')
+			var param = {
+				jvStatus: 'A,F,N,P',
+				recount: 'Y',
+				'paginationRequest.count': 10,
+				'paginationRequest.position': 1
+			};
+
+			this.searchParams.forEach(a => {
+				param[a.key] = a.search;
+			});
+
+			this.acctService.getJVListing(param)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['transactions'].filter(e => e.jvListings.jvStatus != 'X').map(e => {
+				this.passDataCancelTrans.tableData = data['transactions'].map(e => { //.filter(e => e.jvListings.jvStatus != 'X')
 					e.jvListings.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.jvListings.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e.jvListings;
@@ -142,7 +153,7 @@ export class CancelArCvJvComponent implements OnInit {
 		}else if(this.tranClass == 'jv'){
 			this.passDataCancelTrans.tHeader      = ['JV No', 'JV Date','Status','Particulars','JV Type', 'JV Ref. No.', 'Prepared By','Amount'];
 			this.passDataCancelTrans.dataTypes    = ['text','date','text','text','text','text','text','currency'];
-			this.passDataCancelTrans.keys         = ['jvNo','jvDate','jvStatusName','particulars','tranTypeName','refNo','preparedName','jvAmt'];
+			this.passDataCancelTrans.keys         = ['jvNo','jvDate','jvStatusName','particulars','tranTypeName','refNo','preparedBy','jvAmt'];
 			this.passDataCancelTrans.colSize      = ['120px','98px','100px','200px','160px','110px','118px','115px'];
 			this.passDataCancelTrans.checkFlag    = true;
 			this.passDataCancelTrans.filters      = [
