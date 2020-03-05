@@ -80,7 +80,7 @@ export class LovComponent implements OnInit {
           this.passTable.tableData[this.passTable.tableData.indexOf(el)].checked = false;
           this.dialogIcon = 'info';
           if(processingCount > 1){
-            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in another transactions.';
+            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in other transactions.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
             this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
@@ -438,6 +438,7 @@ export class LovComponent implements OnInit {
         });
       }else{
          this.mtnService.getMtnReports(this.passData.code).subscribe((data:any) => {
+            data.reports = data.reports.filter(a=>this.passData.hide.indexOf(a.reportId)==-1);
            if(data.reports.length == 1){
              data.reports[0]['ev'] = ev;
              data.reports[0]['selector'] = selector;
@@ -1564,7 +1565,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['reportId', 'reportTitle'];
       this.passData.reportId = this.passData.modReportId == undefined ? this.passData.reportId : this.passData.modReportId;
       this.mtnService.getMtnReports(this.passData.reportId).subscribe((data:any) => {
-        this.passTable.tableData = data.reports;
+        this.passTable.tableData = data.reports.filter(a=>this.passData.hide.indexOf(a.reportId)==-1);
         this.table.refreshTable();
         console.log(data)
       })

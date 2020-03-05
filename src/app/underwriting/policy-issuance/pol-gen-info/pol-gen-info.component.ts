@@ -763,7 +763,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                     principalId: this.policyInfo.principalId,
                     cedingName: this.policyInfo.cedingName, //add by paul
                     extensionTag: this.policyInfo.extensionTag, //added by Earl,
-                    holdCoverTag: this.policyInfo.holdCoverTag
+                    holdCoverTag: this.policyInfo.holdCoverTag,
+                    openCoverTag: this.policyInfo.openCoverTag
                   });
               });
 
@@ -811,7 +812,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
               principalId: this.policyInfo.principalId,
               cedingName: this.policyInfo.cedingName, //add by paul
               extensionTag: this.policyInfo.extensionTag, //added by Earl
-              holdCoverTag: this.policyInfo.holdCoverTag
+              holdCoverTag: this.policyInfo.holdCoverTag,
+              openCoverTag: this.policyInfo.openCoverTag
             });
         });
 
@@ -1037,7 +1039,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
                                      policyNo: this.policyNo,
                                      riskName: this.policyInfo.project.riskName,
                                      holdCoverTag: this.policyInfo.holdCoverTag,
-                                     extensionTag: this.policyInfo.extensionTag})
+                                     extensionTag: this.policyInfo.extensionTag,
+                                     openCoverTag: this.policyInfo.openCoverTag})
 
          // this.checkAlopInfo();
          this.getPolGenInfo('noLoading');
