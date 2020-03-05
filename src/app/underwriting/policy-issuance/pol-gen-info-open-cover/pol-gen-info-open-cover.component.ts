@@ -299,13 +299,15 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
   onClickSave(fromCancel?){
     this.prepareParams();
-    if(this.projectOcData.projDesc.length === 0 || this.genInfoOcData.insuredDesc.length === 0 ||
+    if((this.alterationFlag && !this.genInfoOcData.remarks) ||
+      this.projectOcData.projDesc.length === 0 || this.genInfoOcData.insuredDesc.length === 0 ||
        this.projectOcData.site.length === 0 ||
        this.genInfoOcData.inceptDate.length < 16 || this.genInfoOcData.expiryDate.length < 16 ||
        this.genInfoOcData.issueDate.length < 16 || this.genInfoOcData.distDate.length < 16 ||
        this.genInfoOcData.effDate.length < 16 || this.genInfoOcData.acctDate.length < 16 ||
        ('CAR' === this.line.toUpperCase() && this.projectOcData.duration.length === 0) ||
-       ('EAR' === this.line.toUpperCase() && (this.projectOcData.duration.length === 0 || this.projectOcData.testing.length === 0))){
+       ('EAR' === this.line.toUpperCase() && (this.projectOcData.duration.length === 0 || this.projectOcData.testing.length === 0
+         ))){
 
       //this.dialogMessage = 'Please fill all required fields';
       this.dialogIcon = 'error';

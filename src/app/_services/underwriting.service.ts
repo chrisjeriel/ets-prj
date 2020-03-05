@@ -1126,6 +1126,10 @@ export class UnderwritingService {
     getPolOcInfo(params){
         return this.http.get(environment.prodApiUrl+'/underwriting-service/retrievePolOcInfo',{params:params});     
     }
+
+    saveManualDistPol(params){
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveManualDistPol',JSON.stringify(params),this.header);
+    }
 }            
 
             

@@ -27,9 +27,9 @@ export class PaymentRequestsComponent implements OnInit {
 
    passData: any = {
     tableData: [], 
-    tHeader: ['Claim No', 'Hist No.', 'Policy No', 'Payment Request No', 'Payee', 'Payment Type', 'Status', 'Curr', 'Amount', 'Particulars','Request Date','Requested By','Acct. Ref. No.','Acct. Tran. Date','Insured','Risk','Loss Date'],
-    dataTypes: ['text','text','text','text','text','text','text','text','currency','text','date','text','text','date','text','text','date'],
-    keys:['claimNo','histNo','policyNo','paytReqNo','payee','paymentType','status','currCd','reqAmount','particulars','reqDate','requestedBy','acctRefNo','tranDate','insuredDesc','riskName','lossDate'],
+    tHeader: ['Claim No', 'Hist No.', 'Policy No', 'Payment Request No', 'Payee', 'Payment Type', 'Status', 'Curr', 'Amount', 'Particulars','Request Date','Requested By','Booking Mth-Yr','Acct. Ref. No.','Acct. Tran. Date','Insured','Risk','Loss Date'],
+    dataTypes: ['text','text','text','text','text','text','text','text','currency','text','date','text','text','text','date','text','text','date'],
+    keys:['claimNo','histNo','policyNo','paytReqNo','payee','paymentType','status','currCd','reqAmount','particulars','reqDate','requestedBy','bookingMonth','acctRefNo','tranDate','insuredDesc','riskName','lossDate'],
     uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     pageLength: 10,
     searchFlag:true,

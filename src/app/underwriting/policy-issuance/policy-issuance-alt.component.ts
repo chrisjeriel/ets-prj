@@ -59,12 +59,14 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
     lockUser: string = "";
     lockMessage: string = "";
     accessibleModules: any[] = [];
+    policyIdOc :any;
 
     constructor(private route: ActivatedRoute, private modalService: NgbModal, private router: Router, public us: UnderwritingService,
         private ps:PrintService, private ns: NotesService, private userService: UserService) {}
 
     ngOnInit() {
          this.sub = this.route.params.subscribe(params => {
+            this.policyIdOc = params['policyIdOc'];
             this.alterFlag = params['alteration'];
             this.policyInfo.editPol = JSON.parse(params['editPol']);
             this.policyInfo.status = params['statusDesc'];
@@ -191,7 +193,7 @@ export class PolicyIssuanceAltComponent implements OnInit, OnDestroy {
     onTabChange($event: NgbTabChangeEvent) {
         if ($event.nextId === 'Exit') {
             $event.preventDefault();
-            this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId}]);
+            this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId, policyIdOc:this.policyIdOc}]);
         } else if($event.nextId === 'Post'){
             $event.preventDefault();
             this.post = true;

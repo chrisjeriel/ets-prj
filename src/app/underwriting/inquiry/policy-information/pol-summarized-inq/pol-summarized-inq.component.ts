@@ -14,12 +14,14 @@ export class PolSummarizedInqComponent implements OnInit {
   policyId:string;
   clmInfo: any = null;
   clmInq: boolean = false;
+  policyIdOc:any;
 
   ngOnInit() {
   	this.route.params.subscribe(params => {
           console.log(params);
   	        this.showPolicyNo = params['showPolicyNo'];
             this.policyId = params['policyId'];
+            this.policyIdOc = params['policyIdOc']
             if(params['clmInfo']) {
               this.clmInfo = JSON.parse(params['clmInfo']);
               this.clmInq = params['isInquiry'];
@@ -38,7 +40,8 @@ export class PolSummarizedInqComponent implements OnInit {
 
         var routeParams = {
           policyId: this.policyId,
-          showPolicyNo: this.showPolicyNo
+          showPolicyNo: this.showPolicyNo,
+          policyIdOc: this.policyIdOc
         }
 
         if(this.clmInfo != null) {

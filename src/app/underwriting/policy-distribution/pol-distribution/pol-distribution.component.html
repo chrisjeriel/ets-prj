@@ -180,6 +180,7 @@
 				<button type="button" class="cust-btn" (click)="printModal.openNoClose();"><a>Print</a></button>
 				<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Distributed but not posted'" (click)="showConfirmPostMdl()" [class.d-none]="params.fromInq == 'true' || params.fromNegate == 'true' || inquiryFlag == true"><a>Post Distribution</a></button>
+				<button type="button" class="cust-btn"  *ngIf="fromEditDist" (click)="save()"><a>Save</a></button>
 				<button type="button" class="cust-btn" [disabled]="polDistributionData?.status!='Posted'" (click)="showConfirmNegMdl()" [class.d-none]="params.fromInq == 'true'|| params.fromNegate != 'true' "><a>Negate</a></button>
 			</div>
 		</div>
@@ -290,6 +291,7 @@
 						<option value="POLR038A" *ngIf="acctDetails.cession?.cessionId == 1">Acceptance Slip</option>
 						<option value="POLR038B" *ngIf="acctDetails.cession?.cessionId == 2">Acceptance Slip</option>
 						<option value="POLR038C">Distribution Slip</option>
+						<option value="POLR038CA">Debit Memo</option>
 					</select>
 					<div class="col-sm-1"></div>
 				</div>

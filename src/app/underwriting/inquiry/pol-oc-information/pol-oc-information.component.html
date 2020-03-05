@@ -90,14 +90,18 @@
                 	</div>
                 </div>
                 <fieldset class="scheduler-border"  style="padding-top: 5px !important;">
-                	<legend class="scheduler-border">Policy Details</legend>
-                	<app-cust-editable-non-datatable #alterationTable [passData]="passData" (newClick)="rowLick($event)"></app-cust-editable-non-datatable>
+                	<legend class="scheduler-border">Alteration Details</legend>
+                	<app-cust-editable-non-datatable #alterationTable [passData]="passData" (newClick)="rowLick($event)" (newDblClick)="goToPolicy($event)"></app-cust-editable-non-datatable>
                 </fieldset>
-                <div class="form-row">
+                <fieldset class="scheduler-border"  style="padding-top: 5px !important;">
+                    <legend class="scheduler-border">Sub-Policy Details</legend>
+                    <app-cust-editable-non-datatable #subPolTable [passData]="passDataSubPol" (newDblClick)="goToSubPolicy($event)"></app-cust-editable-non-datatable>
+                </fieldset>
+                <div class="form-row d-none">
                     <div class="form-group col-sm">
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top: 10px">
-                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPolicy()" [disabled]="selectedPol===null"><a>Policy/Alteration</a></button>
+                                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="goToPolicy($event)" [disabled]="selectedPol===null"><a>Policy/Alteration</a></button>
                             </div>
                         </div>
                     </div>

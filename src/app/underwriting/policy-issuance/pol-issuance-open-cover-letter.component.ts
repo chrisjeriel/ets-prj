@@ -43,7 +43,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
       if(this.inqFlag){
         this.title = "Policy / Inquiry / Open Cover Inquiry /"
       }
-      this.exitLink = a['exitLink']
+      this.exitLink = !a['exitLink'] ? '/open-cover-list' : a['exitLink'];
 
       if(!this.inqFlag){
         this.wsConnect();

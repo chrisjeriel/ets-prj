@@ -65,6 +65,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   lockModalShown: boolean = false;
   lockUser: string = "";
   lockMessage: string = "";
+  policyIdOc:any;
 
   accessibleModules:any[] = [];
   
@@ -81,6 +82,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
+            this.policyIdOc = params['policyIdOc'];
             this.line = params['line'];
             this.alterFlag = params['alter'];
             this.fromInq = params['fromInq'];
@@ -193,7 +195,7 @@ export class PolicyIssuanceComponent implements OnInit, OnDestroy {
   onTabChange($event: NgbTabChangeEvent) {
       if ($event.nextId === 'Exit') {
         $event.preventDefault();
-        this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId}]);
+        this.router.navigate([this.exitLink,{policyId: this.policyInfo.policyId, policyIdOc : this.policyIdOc}]);
       } else if($event.nextId === 'post'){
         $event.preventDefault();
         this.openPost();

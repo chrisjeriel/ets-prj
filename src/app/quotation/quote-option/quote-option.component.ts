@@ -592,10 +592,10 @@ saveQuoteOptionAll(cancelFlag?){
 
 
   updateCovers(){
-    if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.filter(a=>!a.deleted).length > 1){
-      this.optionsData.tableData.pop();
-      this.optionsTable.refreshTable();
-    }
+    // if(this.quotationInfo.cessionId == 2 && this.optionsData.tableData.filter(a=>!a.deleted).length > 1){
+    //   this.optionsData.tableData.pop();
+    //   this.optionsTable.refreshTable();
+    // }
     let lc = this.quotationNum.substring(0,3);
     for(let data of this.otherRatesData.tableData){
 

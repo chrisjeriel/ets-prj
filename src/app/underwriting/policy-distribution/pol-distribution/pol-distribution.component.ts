@@ -29,6 +29,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   @ViewChild('inProgCoinsMdl') inProgCoinsMdl: ModalComponent;
   @ViewChild('missingCoinsMdl') missingCoinsMdl: ModalComponent;
 
+  @Input('fromEditDist')fromEditDist:Boolean;
+
   missingCoins:any[] = [];
   inProgCoins:any[] = [];
 
@@ -145,10 +147,14 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
     //NECO 06/04/2019
     this.sub = this.route.params.subscribe((data: any)=>{
+
                   this.params = data;
                   this.retrievePolicyDistribution();
                 });
     //END
+    if(this.fromEditDist){
+      this.treatyDistData.uneditable= [true,true,true,false,false,true,false,false,false];
+    }
   }
 
 
@@ -360,7 +366,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   }
 
   onClickCancel(){
-    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId}])
+    this.router.navigate([this.params.exitLink,{policyId:this.params.policyId,policyIdOc:this.params.policyIdOc}])
   }
 
 
@@ -487,11 +493,23 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     params.reportId=this.printReport;
     params.fileName = this.polDistributionData.policyNo;
     this.ps.print(this.printDestination,this.printReport,params)
-    if(params.reportId == 'POLR038C'){
-      let params1 = JSON.parse(JSON.stringify(params));
-      params1.reportId = 'POLR038CA';
-      params.filename = 'CMDM' + this.polDistributionData.policyNo;
-      this.ps.print(this.printDestination,'POLR038CA',params1)
+    // if(params.reportId == 'POLR038C'){
+    //   let params1 = JSON.parse(JSON.stringify(params));
+    //   params1.reportId = 'POLR038CA';
+    //   params.filename = 'CMDM' + this.polDistributionData.policyNo;
+    //   this.ps.print(this.printDestination,'POLR038CA',params1)
+    // }
+  }
+
+  save(){
+    let params:any = {
+      distId: this.polDistributionData.distNo,
+      saveList: this.treatyDistData.tableData.filter(a=>a.edited),
+      policyId: this.params.policyId,
+      updateUser: this.ns.getCurrentUser()
     }
+    this.polService.saveManualDistPol(params).subscribe(a=>{
+      console.log(a)
+    })
   }
 }
