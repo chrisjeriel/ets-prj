@@ -55,7 +55,7 @@
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byDate') == -1" (change)="resetDates()">
+									[disabled]="paramsToggle.indexOf('byDate') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio2">By Date</label>
 							</div>
 							<div class="input-group">
@@ -70,7 +70,7 @@
 							</div>
 							<div class="input-group">
 								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byMonthYear') == -1" (change)="resetDates()">
+									[disabled]="paramsToggle.indexOf('byMonthYear') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
 							<div class="input-group">
@@ -109,12 +109,12 @@
 							</div>
 							<div class="input-group">
 								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('asOf') == -1" (change)="resetDates()">
+									[disabled]="paramsToggle.indexOf('asOf') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio4">As of</label>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2"></label>
-								<div class="col-sm-3 dp-cont">
+								<div class="col-sm-3 dp-cont" style="margin-left: 0 !important;">
 									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1">
 									</datepicker>
 								</div>
@@ -200,8 +200,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Status</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmStat" (ngModelChange)="params.clmStat = $event.toUpperCase()"  (change)="checkCode($event, 'clmStat')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openStatusLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmStat') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmStat') > -1"><a><i class="fa fa-search" (click)="openStatusLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="status" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmStatName" readonly placeholder="ALL STATUS">
 								</div>
@@ -216,8 +216,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Adjuster</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmAdj" (ngModelChange)="params.clmAdj = $event.toUpperCase()"  (change)="checkCode($event, 'clmAdj')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openAdjusterLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmAdj') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmAdj') > -1"><a><i class="fa fa-search" (click)="openAdjusterLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="adjuster" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmAdjName" readonly placeholder="ALL ADJUSTERS">
 								</div>
@@ -232,8 +232,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Event</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmEvent" (ngModelChange)="params.clmEvent = $event.toUpperCase()"  (change)="checkCode($event, 'clmEvent')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmEvent') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmEvent') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="event" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmEventName" readonly placeholder="ALL EVENTS">
 								</div>
@@ -247,9 +247,9 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Min. Loss Amt</label>
-									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input">
-									<input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
-									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label>
+									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input" [disabled]="paramsToggle.indexOf('minLossAmt') == -1">
+									<input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('increaseReserve') == -1"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
+									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('decreseReserve') == -1"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label>
 								</div>
 							</div>
 							<div class="col-sm-1">

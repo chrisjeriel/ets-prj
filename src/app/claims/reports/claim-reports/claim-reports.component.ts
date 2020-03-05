@@ -119,7 +119,7 @@ export class ClaimReportsComponent implements OnInit {
           this.extractDisabled = true;
         }
 
-    if (this.params.reportId == 'CLMR010A') {
+    /*if (this.params.reportId == 'CLMR010A') {
       this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf');
     } else if (this.params.reportId == 'CLMR010B') {
@@ -131,12 +131,12 @@ export class ClaimReportsComponent implements OnInit {
     } else if (this.params.reportId == 'CLMR010D') {
       this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf');
-    } else if((String(this.params.reportId).substr(0, 7) == 'CLMR010') && (['H','I','J','K'].includes(String(this.params.reportId).charAt(this.params.reportId.length-1)))) {
+    } else if((String(this.params.reportId).substr(0, 7) == 'CLMR010') && (['H','I','J','K'].includes(String(this.params.reportId).charAt(this.params.reportId.length-1)))) { */
       this.paramsToggle.push('line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag');
-    } else{
+    /*} else {
         this.params.reportId = '';
-      }
+    }*/
 
     setTimeout(()=> {
     	this.ns.lovLoader(data.ev, 0);
@@ -159,6 +159,10 @@ export class ClaimReportsComponent implements OnInit {
         this.params.reportId = '';
       }
 >>>>>>> 80a0bd17d6aaecdaec0b569ee468cb0bb5b7924c*/
+    } else {
+      this.params.reportId = '';
+      this.params.reportName = '';
+      this.paramsToggle = [];
     }
   }
 
