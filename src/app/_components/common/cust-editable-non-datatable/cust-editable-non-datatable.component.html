@@ -1021,7 +1021,7 @@
                                             </select>
                                         </div>
                                         <div *ngSwitchCase="'claimHistselect'">
-                                            <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" *ngSwitchCase="'select'" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                            <select disabled (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
                                                 <ng-container *ngFor="let data2 of passData.opts">
                                                     <ng-container *ngIf="key == data2.selector">
                                                         <option *ngIf="data2.vals.indexOf(data[key]) == -1" [value]="data[key]">{{ data[key] }}</option>

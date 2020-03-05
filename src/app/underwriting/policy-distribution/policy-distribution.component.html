@@ -13,7 +13,7 @@
 		</ngb-tab>
 		<ngb-tab [title]="distTtitle" id="policy">
 			<ng-template ngbTabContent>
-				<app-pol-distribution [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus" [acctDetails]="acctDetails"></app-pol-distribution>
+				<app-pol-distribution [inquiryFlag]="inquiryFlag" [riskDistId]="riskDistId" [riskDistStatus]="riskDistStatus" [acctDetails]="acctDetails" [fromEditDist]="fromEditDist"></app-pol-distribution>
 			</ng-template>
 		</ngb-tab>
 		<ngb-tab title="Installment Distribution" *ngIf="acctDetails?.instTag == 'Y'">
