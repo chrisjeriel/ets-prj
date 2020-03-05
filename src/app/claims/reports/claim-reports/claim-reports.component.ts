@@ -163,6 +163,7 @@ export class ClaimReportsComponent implements OnInit {
       this.params.reportId = '';
       this.params.reportName = '';
       this.paramsToggle = [];
+      this.resetDates();
     }
   }
 
