@@ -40,6 +40,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 		tHeader: ['Quarter Ending','VAT Tag','Curr','Curr Rate','Amount','Amount(PHP)'],
 		widths:[1,100,1,100,100,100],
 		nData: {
+      newRec: 1,
 			tranId: '',
 			billId: '',
 			itemNo: '',
@@ -162,6 +163,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   }
 
   sub: Subscription;
+  fromTaxMdl: boolean = false;
 
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private dp: DatePipe ) { }
 
@@ -297,10 +299,9 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
-      this.passLov.hide.push('VAT')
+    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT' || this.selectedItem.vatTag == 1){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT');
     }
-    console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.taxLovMdl.openLOV();
   }
@@ -309,7 +310,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnWhTax';
     this.passLov.hide = this.passDataWhTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    console.log(this.passLov.hide);
     this.whTaxIndex = event.index;
     this.taxLovMdl.openLOV();
   }
@@ -335,7 +335,6 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-  	console.log(data);
   	if(data === null){
       this.disableTaxBtn = true;
       this.selectedItem = null;
@@ -357,6 +356,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       this.whTaxTbl.refreshTable();
       this.selectedItem = data;
   	}
+
+    this.disableTaxBtn = data == null || data.newRec != undefined;
   }
 
   openLOV(event){
@@ -494,7 +495,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickSave(){
+  onClickSave(saveTax?){
     if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
@@ -504,6 +505,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.successDiag.open();
     }else{
+      this.fromTaxMdl = saveTax !== undefined;
       this.confirm.confirmModal();
     }
   }
@@ -554,10 +556,9 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       updateDate: this.ns.toDateTimeString(0),
       saveServFee: this.savedData,
       delServFee: this.deletedData,
-      delOrItemTaxes: this.deletedTaxData.flat()
+      delOrItemTaxes: this.deletedTaxData.flat(),
+      fromTaxMdl: this.fromTaxMdl ? 'Y' : 'N'
     }
-
-    console.log(params);
 
     this.as.saveAcseOrServFee(params).subscribe(
       (data:any)=>{

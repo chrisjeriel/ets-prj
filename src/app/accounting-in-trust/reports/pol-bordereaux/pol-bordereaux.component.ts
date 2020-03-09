@@ -180,28 +180,28 @@ export class PolBordereauxComponent implements OnInit {
     }
 
     if(this.params.reportId == 'POLR052A'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
     } else if(this.params.reportId == 'POLR052B'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
     } else if(this.params.reportId == 'POLR052C'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
     } else if(this.params.reportId == 'POLR052D'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     } else if(this.params.reportId == 'POLR052E'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     } else if(this.params.reportId == 'POLR052F'){
-      this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     }
 

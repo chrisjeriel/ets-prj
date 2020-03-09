@@ -46,20 +46,20 @@
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 5">
                                 <app-cust-editable-non-datatable id="cvDataTbl" (newClick)="onRowClick($event)" [passData]="cvData" (tableDataChange)="cvData.tableData=$event;onDataChange('cv');" #cvTbl>
                                     <!-- Added by Neco 11/19/2019 -->
-                                    <button controls-r class="cust-btn" [disabled]="cvTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                    <button controls-r class="cust-btn" [disabled]="cvTbl.indvSelect == null || disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
                                     <!-- END 11/19/2019 -->
                                 </app-cust-editable-non-datatable>
                             </ng-container>
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 2">
                                 <app-cust-editable-non-datatable id="pcvDataTbl" (clickLOV)="showLOV($event,'pcvdata')" (newClick)="onRowClick($event)" [passData]="pcvData" (tableDataChange)="pcvData.tableData=$event;onDataChange('pcv');" #pcvTbl>
                                     <!-- Added by Neco 11/19/2019 -->
-                                    <button controls-r class="cust-btn" [disabled]="pcvTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                    <button controls-r class="cust-btn" [disabled]="pcvTbl.indvSelect == null || disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
                                     <!-- END 11/19/2019 -->
                                 </app-cust-editable-non-datatable>
                             </ng-container>
                             <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6 || requestData?.tranTypeCd == 7">
                                 <app-cust-editable-non-datatable id="diemInsDataTbl" (clickLOV)="showLOV($event,'diemInsData')" (newClick)="onRowClick($event)" [passData]="diemInsData" (tableDataChange)="diemInsData.tableData=$event;onDataChange('diemins');" #dieminsTbl>
-                                    <button controls-r class="cust-btn" [disabled]="dieminsTbl.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
+                                    <button controls-r class="cust-btn" [disabled]="dieminsTbl.indvSelect == null || disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>
                                 </app-cust-editable-non-datatable>
                             </ng-container>
                         </ng-container>

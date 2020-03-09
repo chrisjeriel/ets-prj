@@ -3,7 +3,7 @@
 	<div class="col-sm-2"></div>
 	<div class="col-sm-8">
 		<app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openLOV($event)" (tableDataChange)="onTableDataChange($event)" (newClick)="onRowClick($event)">
-    <button controls-r class="cust-btn" [disabled]="table.indvSelect == null" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>  
+    <button controls-r class="cust-btn" [disabled]="table.indvSelect == null || disableTaxBtn" (click)="openTaxAllocation()" style="min-width: 130px !important;">Tax Allocation</button>  
     </app-cust-editable-non-datatable>
 	</div>
 	<div class="col-sm-2"></div>
@@ -12,7 +12,6 @@
 <div class="form-row" *ngIf="record.orStatDesc.toUpperCase() == 'NEW'">
     <div class="form-group col-sm">
       <div class="col-md-13 text-center">
-        <br>
         <div class="cust-btn-container">
           <button type="button" class="cust-btn" (click)="onClickCancel()" [class.d-none]="inquiryFlag"><a>Cancel</a></button>
           <button type="button" class="cust-btn" (click)="onClickSave()" [class.d-none]="inquiryFlag"><a>Save</a></button>
@@ -37,7 +36,7 @@
   <div footer class="w-100">
     <div class="col-md-13 text-center">
         <div class="cust-btn-container" >
-            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="passData.checkFlag"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="onClickSave(true);" *ngIf="passData.checkFlag"><a>Save</a></button>
             <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
         </div>
     </div>

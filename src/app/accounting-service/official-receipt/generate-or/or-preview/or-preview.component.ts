@@ -196,7 +196,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   deletedData: any = [];
   notBalanced: boolean = false;
 
-  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService, private ps: PrintService) { }
+  constructor(private accountingService: AccountingService, private ms: MaintenanceService, private ns: NotesService, public ps: PrintService) { }
 
   ngOnInit() {
     this.acctEntriesData.nData.tranId = this.record.tranId;

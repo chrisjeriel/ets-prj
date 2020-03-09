@@ -39,7 +39,22 @@
 									</fieldset>
 								  </div> -->
 								  	<span class="col-sm-1"></span>
-								  		<fieldset class="scheduler-border col-sm">
+									  	<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
+											<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+											<div class="form-row custom-row-inline-inset">
+												<div class="input-group">
+													<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="5" style="margin: 0 0 0 20px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+														[disabled]="paramsToggle.indexOf('accountingDate') == -1">
+													<label class="form-control-sm" for="radio7">Accounting Date</label>
+												</div>
+												<div class="input-group">
+													<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="10" style="margin: 0 0 0 20px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+														[disabled]="paramsToggle.indexOf('bookingDate') == -1">
+													<label class="form-control-sm" for="radio8">Booking Date</label>
+												</div>
+											</div>
+										</fieldset>
+								  		<fieldset class="scheduler-border col-sm" style="margin-left: 5px !important;">
 								  			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
 										<div class="form-row custom-row-inline-inset">
 											<div class="input-group">
