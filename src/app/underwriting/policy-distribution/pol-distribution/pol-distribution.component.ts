@@ -4,7 +4,7 @@ import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustEditableNonDatatableComponent, SucessDialogComponent } from '@app/_components/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import * as alasql from 'alasql';
 
@@ -137,6 +137,9 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   @Input() inquiryFlag: boolean = false;
   @Input() acctDetails:any = {};
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  dialogIcon :any;
+  dialogMessage: any;
 
 
   constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, 

@@ -682,7 +682,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     return arr.reduce((a,b) => a + b, 0);
   }
 
-  limitHistType(){
+  limitHistType(data?){
+    console.log(data);
     var ths = this;
     var trigWarn1 = false;
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
@@ -754,9 +755,9 @@ export class ClmClaimHistoryComponent implements OnInit {
             e.reserveAmt = 0;
             return;
           }else{
-            if( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
+            if(data['key']=="reserveAmt" && ( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
                (e.histCategory == 'A' && (e.reserveAmt > totAdjExpRes)) || 
-               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes)) )){
+               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes)) ))){
                 this.warnMsg = 'Payment amount is more than the reserve amount.';
                 this.showWarnMsg();
             }
