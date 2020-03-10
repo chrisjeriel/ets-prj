@@ -787,6 +787,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       }
     });
 
+
+    this.params['fromTaxMdl'] = this.frmMainSaveBtn ? 'N' : 'Y';
+
     if(this.requestData.tranTypeCd == 6){
       this.acctService.saveAcsePerDiem(JSON.stringify(this.params))
       .subscribe(data => {
@@ -867,10 +870,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         this.passData.activeTag = 'Y';
         this.passData.selector = 'mtnGenTax';
         this.passData.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-        if((this.rowData.vatTag == 1 && !this.passData.hide.includes('VAT'))){ //if Payee is VAT EXEMPT, hide VAT in LOV
-          this.passData.hide.push('VAT')
+        if((this.rowData.vatTag == 1 && !this.passData.hide.includes('VAT')) || this.selectedTblData.vatTag == 1){ //if Payee is VAT EXEMPT, hide VAT in LOV
+          this.passData.hide.push('VAT');
         }
-        console.log(this.passData.hide);
         this.genTaxIndex = event.index;
         this.lov.openLOV();
     }else if(from.toUpperCase() == 'WHTAX'){
@@ -1128,6 +1130,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     }else{
       this.disableTaxBtn = true;
     }
+
+    this.disableTaxBtn = event == null || event.newRec == 1;
     //END 11/20/2019
   }
 

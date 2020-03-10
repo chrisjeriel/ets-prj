@@ -44,6 +44,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 	    total: [null,null,null,null,'Total','currAmt','localAmt'],
 	    uneditable: [false,false,false,true,true,false,true],
 	    nData: {
+          newRec: 1,
 	        tranId: '',
 	        billId: '',
 	        itemNo: '',
@@ -158,6 +159,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
 	  savedData: any = [];
 	  deletedData: any = [];
 	  deletedTaxData: any = [];
+    fromTaxMdl: boolean = false;
 
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
@@ -341,14 +343,16 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   		this.whTaxTbl.refreshTable();
   		this.selectedItem = data;
   	}
+
+    this.disableTaxBtn = data == null || data.newRec != undefined;
   }
 
   openGenTaxLOV(event){
   	this.passLov.activeTag = 'Y';
   	this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
-      this.passLov.hide.push('VAT')
+    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT' || this.selectedItem.vatTag == 1){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT');
     }
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
@@ -423,7 +427,7 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickSave(){
+  onClickSave(saveTax?){
   	if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
@@ -433,16 +437,13 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.successDiag.open();
     }else{
+      this.fromTaxMdl = saveTax !== undefined;
       this.confirm.confirmModal();
     }
   }
 
   onClickCancel(){
   	this.cancelBtn.clickCancel();
-  }
-
-  test(event){
-    console.log(event);
   }
 
   save(cancelFlag?){
@@ -486,7 +487,8 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
       updateDate: this.ns.toDateTimeString(0),
       saveOrTransDtl: this.savedData,
       delOrTransDtl: this.deletedData,
-      delOrItemTaxes: this.deletedTaxData.flat()
+      delOrItemTaxes: this.deletedTaxData.flat(),
+      fromTaxMdl: this.fromTaxMdl ? 'Y' : 'N'
     }
     console.log(params);
 
