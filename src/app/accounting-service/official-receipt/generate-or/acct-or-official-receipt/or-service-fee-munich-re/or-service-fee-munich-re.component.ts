@@ -37,8 +37,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 
   passData: any = {
 		tableData:[],
-		tHeader: ['Quarter Ending','Curr','Curr Rate','Amount','Amount(PHP)'],
-		widths:[1,1,100,100,100],
+		tHeader: ['Quarter Ending','VAT Tag','Curr','Curr Rate','Amount','Amount(PHP)'],
+		widths:[1,100,1,100,100,100],
 		nData: {
 			tranId: '',
 			billId: '',
@@ -54,23 +54,31 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 			updateDate: '',
       taxAllocation: [],
       invoiceId: '',
-			showMG: 1
+			showMG: 1,
+      vatTag: ''
 		},
-		total:[null,null,'Total','servFeeAmt','localAmt'],
-		dataTypes: ['reqDate','text','percent','currency','currency'],
+		total:[null,null,null,'Total','servFeeAmt','localAmt'],
+		dataTypes: ['reqDate','reqSelect','text','percent','currency','currency'],
 		addFlag:true,
 		deleteFlag: true,
 		checkFlag: true,
 		infoFlag:true,
 		paginateFlag: true,
 		magnifyingGlass:['quarterEnding'],
-		keys: ['quarterEnding', 'currCd', 'currRate', 'servFeeAmt', 'localAmt'],
-		uneditable: [true,true,true,true,true]
+		keys: ['quarterEnding','vatTag','currCd', 'currRate', 'servFeeAmt', 'localAmt'],
+		uneditable: [true,false,true,true,true,true],
+    opts:[
+      {
+        selector: 'vatTag',
+        vals: [],
+        prev: []
+      }
+    ]
 	}
   passDataGenTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -87,22 +95,23 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120, 120],
+        uneditable: [true,true,true,true,true],
         pageID: 'genTaxTbl'
       }
 
   passDataWhTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -119,15 +128,16 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120, 120],
+        uneditable: [true,true,true,true,true],
         pageID: 'whTaxTbl'
       }
 
@@ -159,8 +169,14 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   @Input() inquiryFlag: boolean; // added by ENGEL;
 
   ngOnInit() {
+    this.ms.getRefCode('VAT_TAG').subscribe(data => {
+      this.passData.opts[0].vals = data['refCodeList'].map(a => a.code);
+      this.passData.opts[0].prev = data['refCodeList'].map(a => a.description);
+    });
+
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
+    this.passData.nData.vatTag = this.record.vatTag == null || this.record.vatTag == '' ? 3 : this.record.vatTag;
     this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
     this.addDefaultTaxes();
   	if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
@@ -571,7 +587,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   checkFields(): boolean{
     for(var i of this.passData.tableData){
       if(i.quarterEnding == null || (i.quarterEnding !== null && i.quarterEnding.length == 0) ||
-         i.servFeeAmt == null || (i.servFeeAmt !== null && String(i.servFeeAmt).toString().length == 0)){
+         i.servFeeAmt == null || (i.servFeeAmt !== null && String(i.servFeeAmt).toString().length == 0) ||
+         i.vatTag == '' || i.vatTag == null) {
         return true;
       }
     }

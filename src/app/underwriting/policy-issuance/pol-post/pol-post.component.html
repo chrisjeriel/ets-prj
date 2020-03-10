@@ -9,7 +9,7 @@
     	<p style="width: auto"><ngb-progressbar [value]="progress" type="info" ></ngb-progressbar></p>
         <div class="w-100 text-center mt-3">
            <button class="cust-btn" (click)="close()">Cancel</button>
-           <button [disabled]="postBtn" class="cust-btn" (click)="checkAcctDate()">Post Policy</button> 
+           <button [disabled]="postBtn" class="cust-btn" (click)="checkAcctDate()">Post {{alterationFlag?'Alteration' :'Policy'}}</button> 
         </div>
 	</div>
 </ng-template>

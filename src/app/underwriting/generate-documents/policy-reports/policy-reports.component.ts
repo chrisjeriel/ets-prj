@@ -280,7 +280,7 @@ export class PolicyReportsComponent implements OnInit {
     } 
     else if(this.params.reportId == 'POLR044L'){
       this.paramsToggle.push('bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'undistributed', 
-                             'policy', 'alteration', 'policyAlteration', 'undistributed', 'currCd');
+                             'policy', 'alteration', 'policyAlteration', 'undistributed', 'currCd','asOf');
       this.params.dateParam = '10';
     } 
     else if(this.params.reportId == 'POLR044M'){

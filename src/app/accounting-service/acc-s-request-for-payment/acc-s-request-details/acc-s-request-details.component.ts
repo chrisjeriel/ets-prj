@@ -44,8 +44,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
   cvData: any = {
     tableData     : [],
-    tHeader       : ['Item', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes     : ['text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    tHeader       : ['Item', 'Reference No.', 'Description', 'VAT Tag', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes     : ['text', 'text', 'text', 'reqSelect', 'text', 'percent', 'currency', 'currency'],
     nData: {
       itemName  : '',
       refNo     : '',
@@ -55,6 +55,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       currAmt   : 0,
       localAmt  : 0,
       newRec    : 1,
+      vatTag    : '',
       taxAllocation: []
     },
     paginateFlag  : true,
@@ -63,16 +64,23 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [false,false,false,true,true,false,true],
-    total         : [null, null, null, null,'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto','auto','auto','auto','auto','auto','auto'],
-    keys          : ['itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+    uneditable    : [false,false,false,false,true,true,false,true],
+    total         : [null, null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto',150,160,130,1,100,130,130],
+    keys          : ['itemName','refNo','remarks','vatTag','currCd','currRate','currAmt','localAmt'],
+    opts:[
+      {
+        selector: 'vatTag',
+        vals: [],
+        prev: []
+      }
+    ]
   };
 
   pcvData: any = {
     tableData     : [],
-    tHeader       : ['GL Account Code', 'GL Account Name', 'Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
-    dataTypes     : ['text','text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    tHeader       : ['GL Account Code', 'GL Account Name', 'Reference No.', 'Description','VAT Tag', 'Curr', 'Curr Rate', 'Amount', 'Amount(PHP)'],
+    dataTypes     : ['text','text', 'text', 'text', 'reqSelect', 'text', 'percent', 'currency', 'currency'],
     magnifyingGlass : ['acctCd'],
     nData: {
       glAcctId  : '',
@@ -86,6 +94,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       localAmt  : 0,
       newRec    : 1,
       showMG    : 1,
+      vatTag    : '',
       taxAllocation: []
     },
     paginateFlag  : true,
@@ -94,10 +103,17 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [true,true,false,false,true,true,false,true],
-    total         : [null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto',300,'auto','auto',1,'auto','auto','auto'],
-    keys          : ['acctCd','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+    uneditable    : [true,true,false,false,false,true,true,false,true],
+    total         : [null,null, null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    widths        : ['auto',300,150,160,130, 1,100,130,130],
+    keys          : ['acctCd','itemName','refNo','remarks','vatTag','currCd','currRate','currAmt','localAmt'],
+    opts:[
+      {
+        selector: 'vatTag',
+        vals: [],
+        prev: []
+      }
+    ]
   };
 
   diemInsData: any = {
@@ -218,12 +234,28 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
     deleteInsuranceExp : []
   };
 
+  vatTagOpts: any = [];
+
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
   }
 
   ngOnInit() {
+    this.mtnService.getRefCode('VAT_TAG').subscribe(data => {
+      this.cvData.opts[0].vals = data['refCodeList'].map(a => a.code);
+      this.cvData.opts[0].prev = data['refCodeList'].map(a => a.description);
+
+      this.pcvData.opts[0].vals = data['refCodeList'].map(a => a.code);
+      this.pcvData.opts[0].prev = data['refCodeList'].map(a => a.description);
+
+      this.vatTagOpts = [{selector: 'vatTag', vals: data['refCodeList'].map(a => a.code), prev: data['refCodeList'].map(a => a.description)}];
+    });
+
+    this.cvData.nData.vatTag = this.rowData.vatTag == null || this.rowData.vatTag == '' ? 3 : this.rowData.vatTag;
+    this.pcvData.nData.vatTag = this.rowData.vatTag == null || this.rowData.vatTag == '' ? 3 : this.rowData.vatTag;
+
     //Added by Neco 11/20/2019
+    console.log(this.rowData);
     this.mtnService.getCedingCompany(this.rowData.payeeCd).subscribe((data:any)=>{ //Check if current payee is vatable
       if(data.cedingCompany.length == 0){
         this.rowData.vatTag = 3;
@@ -431,8 +463,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
 
         if(this.requestData.tranTypeCd == 6){
           var otherDataDiemIns: any = {
-            tHeader         : ['Board Member','Directors\' Fee Type','Curr','Curr Rate','Amount','Amount(PHP)'],
-            dataTypes       : ['text','req-select','text','percent','currency','currency'],
+            tHeader         : ['Board Member','Directors\' Fee Type','VAT Tag','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','req-select','reqSelect','text','percent','currency','currency'],
             magnifyingGlass : ['directorName'],
             nData: {
               directorName  : '',
@@ -444,25 +476,28 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               localAmt      : 0,
               newRec        : 1,
               showMG        : 1,
+              vatTag        : this.rowData.vatTag == null || this.rowData.vatTag == '' ? 3 : this.rowData.vatTag,
               taxAllocation : []
             },
             opts: [
               {selector   : 'feeTypeDesc',  prev : [], vals: []},
+              {selector   : 'vatTag',  prev : [], vals: []}, 
             ],
             pageID        : 'diemInsData',
-            uneditable    : [true,false,true,true,false,true],
-            total         : [null, null, null,'Total', 'feeAmt', 'localAmt'],
-            widths        : ['auto','auto',1,'auto','auto','auto'],
-            keys          : ['directorName','feeTypeDesc','currCd','currRate','feeAmt','localAmt']
+            uneditable    : [true,false,false,true,true,false,true],
+            total         : [null, null,null,null,'Total', 'feeAmt', 'localAmt'],
+            widths        : ['auto','auto',130,1,100,130,130],
+            keys          : ['directorName','feeTypeDesc','vatTag','currCd','currRate','feeAmt','localAmt']
           };
 
           $.extend(this.diemInsData,otherDataDiemIns);
           this.diemInsData.opts[0].vals = this.dfType.map(e => e.depNo);
           this.diemInsData.opts[0].prev = this.dfType.map(e => e.description);
+          this.diemInsData.opts[1] = this.vatTagOpts[0];
         }else{
           var otherDataDiemIns: any = {
-            tHeader         : ['Insured','Insurance Type','Remarks','Reimbursement','Accrued','Curr','Curr Rate','Amount','Amount(PHP)'],
-            dataTypes       : ['text','row-dropdown','text-editor','checkbox','checkbox','text','percent','currency','currency'],
+            tHeader         : ['Insured','Insurance Type','Remarks','Reimbursement','Accrued','VAT Tag','Curr','Curr Rate','Amount','Amount(PHP)'],
+            dataTypes       : ['text','row-dropdown','text-editor','checkbox','checkbox','req-row-dropdown','text','percent','currency','currency'],
             magnifyingGlass : ['insuredName'],
             nData: {
               insuredName        : '',
@@ -477,17 +512,20 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               localAmt           : 0,
               newRec             : 1,
               showMG             : 1,
-              opts               : [{selector   :'insuranceTypeDesc',  prev : [], vals: []}],
+              opts               : [{selector   :'insuranceTypeDesc',  prev : [], vals: []},
+                                    {selector   : 'vatTag',  prev : [], vals: []}],
+              vatTag             : this.rowData.vatTag == null || this.rowData.vatTag == '' ? 3 : this.rowData.vatTag,
               taxAllocation      : []
             },
             pageID        : 'diemInsData',
-            uneditable    : [true,false,false,false,false,true,true,false,true],
-            total         : [null,null,null,null,null, null,'Total', 'insuredAmt', 'localAmt'],
-            widths        : ['auto','auto',180,1,1,1,120,180,180],
-            keys          : ['insuredName','insuranceTypeDesc','remarks','reimburseTag','accruedTag','currCd','currRate','insuredAmt','localAmt']
+            uneditable    : [true,false,false,false,false,false,true,true,false,true],
+            total         : [null,null,null,null,null, null,null,'Total', 'insuredAmt', 'localAmt'],
+            widths        : ['auto','auto',180,1,1,130,1,100,130,130],
+            keys          : ['insuredName','insuranceTypeDesc','remarks','reimburseTag','accruedTag','vatTag','currCd','currRate','insuredAmt','localAmt']
           };
 
           $.extend(this.diemInsData,otherDataDiemIns);
+          this.diemInsData.nData.opts[1] = this.vatTagOpts[0];
         }
         console.log(this.diemInsData);
         (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?(this.removeAddDelBtn(this.diemInsData),this.removeAddDelBtn(this.passDataGenTax),this.removeAddDelBtn(this.passDataWhTax)):'';
@@ -506,7 +544,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             }else if(e.insuredTypeCd == 4){
               e.opts = this.insTypeC;
             }
-          } 
+          }
+
           e.newRec = 0;
           return e; 
         });
@@ -537,13 +576,18 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   validateData(tranTypeCd,e){
     var x = [];
     if(tranTypeCd == 2){
-      x.push((e.glAcctId == '')?true:false);
+      // x.push((e.glAcctId == '')?true:false);
+      x.push(e.glAcctId == '' || e.vatTag == '');
     }else if(tranTypeCd == 6){
-      x.push((e.directorName == '' || e.directorName == null || e.feeTypeDesc == '' || e.feeTypeDesc == null || e.feeAmt == '' || e.feeAmt == null || isNaN(e.feeAmt) || e.feeAmt == 0)?true:false);
+      x.push((e.directorName == '' || e.directorName == null || e.feeTypeDesc == '' || e.feeTypeDesc == null || e.feeAmt == '' || e.feeAmt == null || isNaN(e.feeAmt) || e.feeAmt == 0 || e.vatTag == '')?true:false);
     }else if(tranTypeCd == 7){
       x.push((e.insuredName == '' || e.insuredName == null || e.insuranceTypeDesc  == '' || e.insuranceTypeDesc == null || 
-        e.insuredAmt == '' || e.insuredAmt == null || isNaN(e.insuredAmt) || e.insuredAmt == 0)?true:false);
+        e.insuredAmt == '' || e.insuredAmt == null || isNaN(e.insuredAmt) || e.insuredAmt == 0 || e.vatTag == '')?true:false);
+    } else if(tranTypeCd == 1) {
+      x.push(e.vatTag == '' || e.vatTag == null);
     }
+
+
     if(tranTypeCd != 6 && tranTypeCd != 7){
       x.push((e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0)?true:false);
     }
@@ -854,9 +898,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   //END 11/20/2019
 
   assignInsType(){
-    this.insTypeA   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
-    this.insTypeB   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
-    this.insTypeC   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}];
+    this.insTypeA   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}, this.vatTagOpts[0]];
+    this.insTypeB   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}, this.vatTagOpts[0]];
+    this.insTypeC   = [{selector   : 'insuranceTypeDesc',  prev : [], vals: []}, this.vatTagOpts[0]];
 
     this.dfType.forEach(e => {
       if(e.depNo == 2){
@@ -881,6 +925,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
       var rec = data['data'];
       rec.forEach(e => {
         e.newRec = 1;
+        // e.vatTag = this.pcvData.nData.vatTag;
         this.diemInsData.tableData.push(e);
       });
       console.log(this.diemInsData.tableData);
@@ -890,8 +935,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.directorName = e.slName;
             e.directorId   = e.slCd;
             e.createDate = '';
-            e.createUser = ''; 
+            e.createUser = '';
             e.updateUser = '';
+            e.feeAmt = 0;
+            e.vatTag = this.diemInsData.nData.vatTag;
             e.taxAllocation = this.diemInsData.nData.taxAllocation.map(a => { a.edited = true; return a; });
           }
           e.checked = false;
@@ -913,7 +960,8 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.accruedTag = 'N';
             e.createDate = '';
             e.createUser = ''; 
-            e.updateUser = ''; 
+            e.updateUser = '';
+            e.vatTag = this.diemInsData.nData.vatTag;
           }
           e.checked = false;
           if(e.slTypeCd == 9){
@@ -923,6 +971,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
           }else if(e.slTypeCd == 4){
             e.opts = this.insTypeC;
           }
+
           return e;
         });
         this.dieminsTbl.refreshTable();
@@ -986,7 +1035,9 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
             e.taxAllocation = this.pcvData.nData.taxAllocation;
             e.createDate = '';
             e.createUser = ''; 
-            e.updateUser = ''; 
+            e.updateUser = '';
+            e.currAmt = 0;
+            e.vatTag = this.pcvData.nData.vatTag;
           }
           e.checked=false;
           return e;
