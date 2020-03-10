@@ -112,6 +112,25 @@ export class NotesService {
       column: {style:{Font:{Bold:"1"}}}
     };
 
+    var opts = {
+              headers:true, 
+              column: {
+                  style:{
+                      Font:{
+                          Bold:"1",
+                          Color:"#3C3741",
+                      },
+                      Alignment:{
+                          Horizontal:"Center"
+                      },
+                      Interior:{
+                          Color:"#7CEECE",
+                          Pattern:"Solid"
+                      }
+                  }
+              }
+            }
+
     alasql.fn.datetime = function(dateStr) {
       var date = new Date(dateStr);
       return date.toLocaleString();
@@ -126,7 +145,7 @@ export class NotesService {
 
     var into = "INTO XLSXML('" + fileName + "', ?)";
 
-    alasql(query + ' ' + into + ' FROM ?', [mystyle,tableData]);
+    alasql(query + ' ' + into + ' FROM ?', [opts,tableData]);
   }
 
   setListParams(params){

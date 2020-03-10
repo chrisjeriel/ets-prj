@@ -142,6 +142,8 @@ export class PolicyReportsComponent implements OnInit {
   cancelFlag: boolean = false;
   fromSiRangeMdl: boolean = false;
 
+  passDataCsv : any[] =[];
+
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
   ngOnInit() {
@@ -581,6 +583,12 @@ export class PolicyReportsComponent implements OnInit {
 
   print() {
     this.tableFlag = true;
+    if(this.params.destination == 'csv'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+    
     if(this.params.destination === '' || this.params.destination === undefined){
       this.dialogIcon = "warning-message";
       this.dialogMessage = "Please select a print destination";
@@ -787,4 +795,80 @@ export class PolicyReportsComponent implements OnInit {
     this.rangeLOV.closeModal();
   }
 
+  getExtractToCsv(){
+    console.log(this.params.reportId);
+    //if(this.params.reportId == 'POLR044E'){
+      this.ms.getExtractToCsv('PMMSC',this.params.reportId)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return m==null?0:m<0?'('+String(m).replace('-','')+')':m;
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+        if(this.params.reportId == 'POLR044E'){
+          this.passDataCsv = data['listPolr044e'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currCdParam AS [CURRENCY CD], lineCdParam AS [LINE CD],siRange AS [SI RANGE], negFmt(currency(amtMth)) AS [AMT MTH], negFmt(currency(amtCum)) AS [AMT CUM]';
+        }else if(this.params.reportId == 'POLR044A'){
+          this.passDataCsv = data['listPolr044a'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE CD], negFmt(total) AS TOTAL';
+        }else if(this.params.reportId == 'POLR044B'){
+          this.passDataCsv = data['listPolr044b'];
+          query = 'SELECT extractUser AS [EXTRACT USER],policyNo AS [POLICY NO], cedingName AS [CEDING NAME],myFormat(expiryDate) AS [EXPIRY DATE], insuredDesc AS [INSURED DESC], projDesc AS [PROJ DESC],currencyCd AS [CURRENCY CD], negFmt(currency(siAmt)) AS [SI AMT],negFmt(currency(premAmt)) AS [PREM AMT],(CASE WHEN remarks IS NULL THEN "" ELSE remarks END) AS REMARKS';
+        }else if(this.params.reportId == 'POLR044C'){
+          this.passDataCsv = data['listPolr044c'];
+          query = 'SELECT extractUser AS [EXTRACT USER],currencyCd AS [CURRENCY CD],lineCd AS [LINE CD],prevYear AS [PREV YEAR],'+ 
+            'negFmt(currency(prevMthPrem)) AS [PREV MTH PREM],'+ 
+            'negFmt(currency(prevPctTotal)) AS [PREV PCT TOTAL],'+
+            'negFmt(currency(prevCumPrem)) AS [PREV CUM PREM],'+
+            'currYear AS [CURR YEAR],'+
+            'negFmt(currency(currMthPrem)) AS [CURR MTH PREM],'+
+            'negFmt(currency(mthIncDecPct)) AS [MTH INC DEC PCT],'+
+            'negFmt(currency(currPctTotal)) AS [CURR PCT TOTAL],'+
+            'negFmt(currency(currCumPrem)) AS [CURR CUM PREM],'+
+            'negFmt(currency(cumIncDecPct)) AS [CUM INC DEC PCT],'+
+            'negFmt(currency(mthPlanPrem)) AS [MTH PLAN PREM],'+
+            'negFmt(currency(mthVariance)) AS [MTH VARIANCE],'+
+            'negFmt(currency(cumPlanPrem)) AS [CUM PLAN PREM],'+
+            'negFmt(currency(cumVariance)) AS [CUM VARIANCE]';
+        }else if(this.params.reportId == 'POLR044D'){
+          this.passDataCsv = data['listPolr044d'];
+          query = 'SELECT extractUser AS [EXTRACT USER],toDate AS [AS OF],lineCd AS LINE_CD,mmPolcountPrev AS [PREV. MONTHLY TOTAL],mmPolcountCur AS [CURR. MONTHLY TOTAL],ytdPolcountPrev AS [PREV. YR-TO-DATE TOTAL],ytdPolcountCur AS [CURR. YR.-TO-DATE TOTAL]';
+        }else if(this.params.reportId == 'POLR044F'){
+          this.passDataCsv = data['listPolr044f'];
+          query = 'SELECT extractUser AS [EXTRACT USER], currencyCd AS [CURRENCY CD],cedingName AS [CEDING NAME],prevYear AS [PREV. YEAR],'+
+            'negFmt(currency(prevMthPrem)) AS [PREV. MTH PREM],negFmt(currency(prevCumPrem)) AS [PREV. CUM PREM],prevMthNoPol AS [PREV. MTH NO. POL], prevCumNoPol AS [PREV. CUM NO. POL],'+
+            'currYear AS [CURR. YEAR], negFmt(currency(currMthPrem)) AS [CURR. MTH PREM], negFmt(currency(currCumPrem)) AS [CURR. CUM PREM],currMthNoPol AS [CURR. MTH NO. POL],'+
+            'currCumNoPol AS [CURR. CUM NO. POL]';
+        }else if(this.params.reportId == 'POLR044G'){
+          this.passDataCsv = data['listPolr044g'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE CD],'+
+          'currencyCd AS [CURRENCY CD], renThisMmQty AS [REN. THIS MTH QTY], negFmt(currency(renThisMmPrem)) AS [REN. THIS MTH PREM],'+
+          'renCumuQty AS [REN. CUMU QTY], negFmt(currency(renCumuPrem)) AS [REN. CUMU PREM], newThisMmQty AS [NEW THIS MTH QTY],'+
+          'negFmt(currency(newThisMmPrem)) AS [NEW THIS MTH PREM], newCumuQty as [NEW CUMU QTY], negFmt(currency(newCumuPrem)) AS [NEW CUMU PREM],'+
+          'totThisMmQty AS [TOT. THIS MTH QTY], negFmt(currency(totThisMmPrem)) AS [TOT. THIS MTH PREM], totCumuQty AS [TOT. CUMU QTY],'+
+          'negFmt(currency(totCumuPrem)) AS [TOT. CUMU PREM]';
+        }else if(this.params.reportId == 'POLR044H'){
+          this.passDataCsv = data['listPolr044h'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], cedingName AS [CEDING NAME],lineCd AS [LINE CD],'+
+          'currencyCd AS [CURRENCY CD], negFmt(currency(premAmt)) AS [PREM AMT]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+        });
+  }
 }

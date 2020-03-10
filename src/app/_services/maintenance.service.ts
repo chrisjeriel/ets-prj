@@ -1959,4 +1959,12 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
   }
 
+  getExtractToCsv(extractUser?,reportName?){
+    const params = new HttpParams()
+      .set('extractUser', (extractUser == null || extractUser == undefined ? '' : extractUser))
+      .set('reportName', (reportName == null || reportName == undefined ? '' : reportName))
+
+    return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
+  }
+
 }
