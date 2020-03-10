@@ -195,6 +195,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].dueDate = selected[i].dueDate;
       this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = selected[i].insuredDesc;
       this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt = selected[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiComm = selected[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat = selected[i].prevRiCommVat;
