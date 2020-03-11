@@ -583,7 +583,7 @@ export class PolicyReportsComponent implements OnInit {
 
   print() {
     this.tableFlag = true;
-    if(this.params.destination == 'csv'){
+    if(this.params.destination == 'exl'){
       this.passDataCsv = [];
       this.getExtractToCsv();
       return;
@@ -797,7 +797,7 @@ export class PolicyReportsComponent implements OnInit {
 
   getExtractToCsv(){
     console.log(this.params.reportId);
-    //if(this.params.reportId == 'POLR044E'){
+    //if(this.params.destination.toLowerCase() == 'exl'){
       this.ms.getExtractToCsv('PMMSC',this.params.reportId)
       .subscribe(data => {
         console.log(data);
@@ -814,7 +814,7 @@ export class PolicyReportsComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          return m==null?0:m<0?'('+String(m).replace('-','')+')':m;
+          return m==null?0:(Number(String(m).replace(',',''))<0?'('+String(m).replace('-','')+')':m);
         };
 
         var name = this.params.reportId;
@@ -865,10 +865,41 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044h'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], cedingName AS [CEDING NAME],lineCd AS [LINE CD],'+
           'currencyCd AS [CURRENCY CD], negFmt(currency(premAmt)) AS [PREM AMT]';
+        }else if(this.params.reportId == 'POLR044I'){
+          this.passDataCsv = data['listPolr044i'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd AS LINE_CD,'+
+          'currencyCd AS [CURRENCY CD],(CASE WHEN amtRangeFrom >= 1000000000 THEN "Above 1,000,000,000.00" ELSE negFmt(currency(amtRangeFrom)) ||" to "|| negFmt(currency(amtRangeTo)) END) AS [SI AMOUNT RANGE],'+
+          'negFmt(currency(premAmtCum)) AS [CUM. PREMIUM]';
+        }else if(this.params.reportId == 'POLR044J'){
+          this.passDataCsv = data['listPolr044j'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY CD],lineCd AS LINE_CD,'+
+          'cedingName AS [CEDING NAME], negFmt(currency(ret1PremAmt)) AS [1st RET. PREM], negFmt(currency(ret1CommAmt)) AS [1st RET. COMM],'+
+          'negFmt(currency(ret1VatRiComm)) AS [1st RET. VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET. NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET. COMM],'+
+          'negFmt(currency(ret2VatRiComm)) AS [2nd RET. VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET. NET DUE]';
+        }else if(this.params.reportId == 'POLR044K'){
+          this.passDataCsv = data['listPolr044k'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY CD],lineCd AS [LINE CD],'+
+          'trtyCedIdName ||" - "||(CASE WHEN retLayer = "0" THEN treatyIdDesc ELSE retLayerDesc END) AS [COMPANY],negFmt(currency(premAmt)) AS [PREM AMT],'+
+          'negFmt(currency(commAmt)) AS [COMM AMT], negFmt(currency(vatRiComm)) as [VAT on RI], negFmt(currency(dueToTrty)) AS [DUE TO TREATY],'+
+          'negFmt(currency(dueToCedant)) AS [DUE TO CEDANT]';
+        }else if(this.params.reportId == 'POLR044L'){
+          this.passDataCsv = data['listPolr044l'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+
+          'policyNo AS [POLICY NO], cedingName AS [COMPANY], myFormat(inceptDate) ||" to "|| myFormat(expiryDate) AS [PERIOD], currencyCd AS [CURRENCY CD],'+
+          'negFmt(currency(premAmt)) as [PREMIUM AMT], status AS [STATUS]';
+        }else if(this.params.reportId == 'POLR044N'){
+          this.passDataCsv = data['listPolr044n'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],lineCd AS LINE_CD,currencyCd AS [CURRENCY CD],'+
+          'negFmt(currency(siAmt)) AS [SUM INSURED AMT], negFmt(currency(premAmt)) AS [PREMIUM AMT]';
+        }else if(this.params.reportId == 'POLR044O'){
+          this.passDataCsv = data['listPolr044o'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd as [LINE CD],'+
+          'currencyCd as [CURRENCY CD],negFmt(polCount) AS [NO.of POLICY],negFmt(currency(siAmt)) AS [SUM INSURED], negFmt(currency(premAmt)) AS [PREMIUM AMT],'+
+          'negFmt(lossPdCount) AS [NO. of PAID], negFmt(currency(lossPaid)) AS [LOSSES PAID], negFmt(lossOsCount) AS [NO. of OS], negFmt(currency(lossOs)) AS [O/S LOSSES]';
         }
-
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);
         });
+    //}
   }
 }
