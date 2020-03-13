@@ -512,7 +512,13 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       updateUser: this.ns.getCurrentUser()
     }
     this.polService.saveManualDistPol(params).subscribe(a=>{
-      console.log(a)
+      if(a['returnCode']== -1){
+        this.dialogIcon = 'success';
+        this.successDiag.open()
+      }else{
+        this.dialogIcon = 'error';
+        this.successDiag.open();
+      }
     })
   }
 }

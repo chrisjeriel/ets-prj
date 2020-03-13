@@ -122,10 +122,10 @@
                             </fieldset>
                            </div>
                          </div>
-                         <div class="row">
+                         <div class="row" *ngIf="alterationFlag">
                            <div class="col-sm-12 forced-col-sm">
                              <fieldset class="scheduler-border" style="padding-bottom: 9px !important;">
-                                <legend class="scheduler-border">Remarks</legend>
+                                <legend class="scheduler-border">Alteration Wordings</legend>
                                 <div class="cust-sm">
                                   <div class="cust-sm col-sm-1"></div>
                                   <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
@@ -133,7 +133,10 @@
                                      &nbsp;
                                    </div>
                                    <div class="input-group" style="margin-top: -5px;">
-                                    <textarea class="form-control-sm form-control" style="font-size: 11px; min-height: 161.5px; margin-bottom: 10px; margin-left: 13px" name="fullCoverageDetails.remarks" [(ngModel)]="fullCoverageDetails.remarks"></textarea> 
+                                      <div class="form-control-sm form-control edtr-cont" style="font-size: 11px; min-height: 161.5px; margin-bottom: 10px; margin-left: 13px">
+                                        <text-editor [editorContent]="fullCoverageDetails.remarks" (fetchContent)="fullCoverageDetails.remarks = $event" [edtrOpnrPos]="1" [format]="'html'">
+                                        </text-editor>
+                                      </div>
                                   </div>
                                   <div class="input-group">
                                    <span class="col-sm-3"></span>
@@ -152,7 +155,7 @@
                      <div class="form-group col-sm">
                        <div class="col-md-13 text-center" style="margin-top: 10px;">
                          <div class="cust-btn-container">
-                           <button type="button" class="cust-btn" (click)="openPrint()"><a>Print</a></button>
+                           <button type="button" class="cust-btn" (click)="openPrint(content)"><a>Print</a></button>
                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
                            <button type="button" class="cust-btn" (click)="onclickSave()"><a>Save</a></button>
                          </div>
@@ -213,6 +216,55 @@
                       </div>
                   </div>
               </app-modal>
+
+              <ng-template #content>
+                <div class="modal-header">
+                  <span class="modal-title" id="modal-basic-title">Print</span>
+                </div>
+                <div class="modal-body">
+                  <fieldset class="scheduler-border">
+                    <div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+                      <div class="input-group" style="margin-bottom:3px !important;">
+                        <label class="form-control-sm col-sm-3 labels">Report</label>
+                        <select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
+                          <option value="POLR010" *ngIf="!alterationFlag">Policy Schedule</option>
+                          <option value="POLR010B" *ngIf="alterationFlag">Alteration Letter</option>
+                        </select>
+                        <div class="col-sm-1"></div>
+                      </div>
+                      <div class="input-group" style="margin-bottom:3px !important;">
+                        <label class="form-control-sm col-sm-3 labels">Destination</label>
+                        <select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8 print">
+                          <option value="screen">Screen</option>
+                          <option value="dlPdf">PDF</option>
+                          <option value="printPdf">Printer</option>
+                        </select>
+                        <div class="col-sm-1"></div>
+                      </div>
+                      <div class="input-group" style="margin-bottom:3px !important;" *ngIf="!alterationFlag">
+                        <div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div class="col-sm-8">
+                          <!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+                          &nbsp;&nbsp;&nbsp;&nbsp; -->
+                          <input type="checkbox" style="vertical-align: middle" [(ngModel)]="inclEndt" >&nbsp;<label>Include Endorsement</label>
+                          <div class="col-sm-1"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <div class="col-md-13 text-center" style="margin-top: -6px;">
+                      <div class="cust-btn-container">
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+                        <button class="cust-btn" type="button" (click)="print();modalService.dismissAll();"><a>Print</a></button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+
               <app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
                   <div header>Confirmation Message</div>
                   <div body style="text-align: center">
