@@ -145,7 +145,7 @@ export class NotesService {
 
     var into = "INTO XLSXML('" + fileName + "', ?)";
 
-    alasql(query + ' ' + into + ' FROM ?', [opts,tableData]);
+    alasql.promise(query + ' ' + into + ' FROM ?', [opts,tableData]);
   }
 
   setListParams(params){
