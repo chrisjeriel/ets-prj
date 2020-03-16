@@ -821,61 +821,62 @@ export class PolicyReportsComponent implements OnInit {
         var query = '';
         if(this.params.reportId == 'POLR044E'){
           this.passDataCsv = data['listPolr044e'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currCdParam AS [CURRENCY CD], lineCdParam AS [LINE CD],siRange AS [SI RANGE], negFmt(currency(amtMth)) AS [AMT MTH], negFmt(currency(amtCum)) AS [AMT CUM]';
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currCdParam AS [CURRENCY],'+
+          'lineCdParam AS [LINE],siRange AS [SI RANGE], negFmt(mthNoPol) AS [NO of POLICIES for MOS], negFmt(cumNoPol) AS [CUM NO of POLICIES]';
         }else if(this.params.reportId == 'POLR044A'){
           this.passDataCsv = data['listPolr044a'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE CD], negFmt(total) AS TOTAL';
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],cedingName AS [COMPANY], lineCd AS [LINE], negFmt(total) AS [TOTAL No. of POLICIES]';
         }else if(this.params.reportId == 'POLR044B'){
           this.passDataCsv = data['listPolr044b'];
-          query = 'SELECT extractUser AS [EXTRACT USER],policyNo AS [POLICY NO], cedingName AS [CEDING NAME],myFormat(expiryDate) AS [EXPIRY DATE], insuredDesc AS [INSURED DESC], projDesc AS [PROJ DESC],currencyCd AS [CURRENCY CD], negFmt(currency(siAmt)) AS [SI AMT],negFmt(currency(premAmt)) AS [PREM AMT],(CASE WHEN remarks IS NULL THEN "" ELSE remarks END) AS REMARKS';
+          query = 'SELECT extractUser AS [EXTRACT USER],policyNo AS [POLICY NO], cedingName AS [COMPANY],myFormat(expiryDate) AS [EXPIRY DATE], insuredDesc AS [INSURED], projDesc AS [DESCRIPTION],currencyCd AS [CURRENCY], negFmt(currency(siAmt)) AS [SUM INSURED],negFmt(currency(premAmt)) AS [PREMIUM],(CASE WHEN remarks IS NULL THEN "" ELSE remarks END) AS REMARKS';
         }else if(this.params.reportId == 'POLR044C'){
           this.passDataCsv = data['listPolr044c'];
-          query = 'SELECT extractUser AS [EXTRACT USER],currencyCd AS [CURRENCY CD],lineCd AS [LINE CD],prevYear AS [PREV YEAR],'+ 
-            'negFmt(currency(prevMthPrem)) AS [PREV MTH PREM],'+ 
-            'negFmt(currency(prevPctTotal)) AS [PREV PCT TOTAL],'+
+          query = 'SELECT extractUser AS [EXTRACT USER],currencyCd AS [CURRENCY],lineCd AS [LINE],prevYear AS [PREV YEAR],'+ 
+            'negFmt(currency(prevMthPrem)) AS [PREV MOS PREM],'+ 
+            'negFmt(currency(prevPctTotal)) AS [PREV % TOTAL],'+
             'negFmt(currency(prevCumPrem)) AS [PREV CUM PREM],'+
             'currYear AS [CURR YEAR],'+
-            'negFmt(currency(currMthPrem)) AS [CURR MTH PREM],'+
-            'negFmt(currency(mthIncDecPct)) AS [MTH INC DEC PCT],'+
-            'negFmt(currency(currPctTotal)) AS [CURR PCT TOTAL],'+
+            'negFmt(currency(currMthPrem)) AS [CURR MOS PREM],'+
+            'negFmt(currency(mthIncDecPct)) AS [MOS INC/DEC %],'+
+            'negFmt(currency(currPctTotal)) AS [CURR % TOTAL],'+
             'negFmt(currency(currCumPrem)) AS [CURR CUM PREM],'+
-            'negFmt(currency(cumIncDecPct)) AS [CUM INC DEC PCT],'+
-            'negFmt(currency(mthPlanPrem)) AS [MTH PLAN PREM],'+
-            'negFmt(currency(mthVariance)) AS [MTH VARIANCE],'+
+            'negFmt(currency(cumIncDecPct)) AS [CUM INC/DEC %],'+
+            'negFmt(currency(mthPlanPrem)) AS [MOS PLAN PREM],'+
+            'negFmt(currency(mthVariance)) AS [MOS VARIANCE],'+
             'negFmt(currency(cumPlanPrem)) AS [CUM PLAN PREM],'+
             'negFmt(currency(cumVariance)) AS [CUM VARIANCE]';
         }else if(this.params.reportId == 'POLR044D'){
           this.passDataCsv = data['listPolr044d'];
-          query = 'SELECT extractUser AS [EXTRACT USER],toDate AS [AS OF],lineCd AS LINE_CD,mmPolcountPrev AS [PREV. MONTHLY TOTAL],mmPolcountCur AS [CURR. MONTHLY TOTAL],ytdPolcountPrev AS [PREV. YR-TO-DATE TOTAL],ytdPolcountCur AS [CURR. YR.-TO-DATE TOTAL]';
+          query = 'SELECT extractUser AS [EXTRACT USER],toDate AS [AS OF],lineCd AS [LINE],mmPolcountPrev AS [PREV MONTHLY TOTAL],mmPolcountCur AS [CURR MONTHLY TOTAL],ytdPolcountPrev AS [PREV YR-DATE TOTAL],ytdPolcountCur AS [CURR. YR-DATE TOTAL]';
         }else if(this.params.reportId == 'POLR044F'){
           this.passDataCsv = data['listPolr044f'];
-          query = 'SELECT extractUser AS [EXTRACT USER], currencyCd AS [CURRENCY CD],cedingName AS [CEDING NAME],prevYear AS [PREV. YEAR],'+
-            'negFmt(currency(prevMthPrem)) AS [PREV. MTH PREM],negFmt(currency(prevCumPrem)) AS [PREV. CUM PREM],prevMthNoPol AS [PREV. MTH NO. POL], prevCumNoPol AS [PREV. CUM NO. POL],'+
-            'currYear AS [CURR. YEAR], negFmt(currency(currMthPrem)) AS [CURR. MTH PREM], negFmt(currency(currCumPrem)) AS [CURR. CUM PREM],currMthNoPol AS [CURR. MTH NO. POL],'+
-            'currCumNoPol AS [CURR. CUM NO. POL]';
+          query = 'SELECT extractUser AS [EXTRACT USER], currencyCd AS [CURRENCY],cedingName AS [COMPANY],prevYear AS [PREV YEAR],'+
+            'negFmt(currency(prevMthPrem)) AS [PREV MTH PREM],negFmt(currency(prevCumPrem)) AS [PREV CUM PREM],prevMthNoPol AS [PREV MTH # of POL], prevCumNoPol AS [PREV CUM # of POL],'+
+            'currYear AS [CURR YEAR], negFmt(currency(currMthPrem)) AS [CURR MTH PREM], negFmt(currency(currCumPrem)) AS [CURR CUM PREM],currMthNoPol AS [CURR MTH # of POL],'+
+            'currCumNoPol AS [CURR CUM # of POL]';
         }else if(this.params.reportId == 'POLR044G'){
           this.passDataCsv = data['listPolr044g'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE CD],'+
-          'currencyCd AS [CURRENCY CD], renThisMmQty AS [REN. THIS MTH QTY], negFmt(currency(renThisMmPrem)) AS [REN. THIS MTH PREM],'+
-          'renCumuQty AS [REN. CUMU QTY], negFmt(currency(renCumuPrem)) AS [REN. CUMU PREM], newThisMmQty AS [NEW THIS MTH QTY],'+
-          'negFmt(currency(newThisMmPrem)) AS [NEW THIS MTH PREM], newCumuQty as [NEW CUMU QTY], negFmt(currency(newCumuPrem)) AS [NEW CUMU PREM],'+
-          'totThisMmQty AS [TOT. THIS MTH QTY], negFmt(currency(totThisMmPrem)) AS [TOT. THIS MTH PREM], totCumuQty AS [TOT. CUMU QTY],'+
-          'negFmt(currency(totCumuPrem)) AS [TOT. CUMU PREM]';
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE],'+
+          'currencyCd AS [CURRENCY], renThisMmQty AS [REN THIS MTH QTY], negFmt(currency(renThisMmPrem)) AS [REN THIS MTH PREM],'+
+          'renCumuQty AS [REN CUM QTY], negFmt(currency(renCumuPrem)) AS [REN CUM PREM], newThisMmQty AS [NEW THIS MTH QTY],'+
+          'negFmt(currency(newThisMmPrem)) AS [NEW THIS MTH PREM], newCumuQty as [NEW CUM QTY], negFmt(currency(newCumuPrem)) AS [NEW CUM PREM],'+
+          'totThisMmQty AS [TOTAL THIS MTH QTY], negFmt(currency(totThisMmPrem)) AS [TOTAL THIS MTH PREM], totCumuQty AS [TOTAL CUM QTY],'+
+          'negFmt(currency(totCumuPrem)) AS [TOTAL CUM PREM]';
         }else if(this.params.reportId == 'POLR044H'){
           this.passDataCsv = data['listPolr044h'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], cedingName AS [CEDING NAME],lineCd AS [LINE CD],'+
-          'currencyCd AS [CURRENCY CD], negFmt(currency(premAmt)) AS [PREM AMT]';
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], cedingName AS [COMPANY],lineCd AS [LINE],'+
+          'currencyCd AS [CURRENCY], negFmt(currency(premAmt)) AS [PREMIUM]';
         }else if(this.params.reportId == 'POLR044I'){
           this.passDataCsv = data['listPolr044i'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd AS LINE_CD,'+
-          'currencyCd AS [CURRENCY CD],(CASE WHEN amtRangeFrom >= 1000000000 THEN "Above 1,000,000,000.00" ELSE negFmt(currency(amtRangeFrom)) ||" to "|| negFmt(currency(amtRangeTo)) END) AS [SI AMOUNT RANGE],'+
-          'negFmt(currency(premAmtCum)) AS [CUM. PREMIUM]';
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd AS [LINE],'+
+          'currencyCd AS [CURRENCY],(CASE WHEN amtRangeFrom >= 1000000000 THEN "Above 1,000,000,000.00" ELSE negFmt(currency(amtRangeFrom)) ||" to "|| negFmt(currency(amtRangeTo)) END) AS [SI AMOUNT RANGE],'+
+          'negFmt(currency(premAmtCum)) AS [CUM PREMIUM]';
         }else if(this.params.reportId == 'POLR044J'){
           this.passDataCsv = data['listPolr044j'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY CD],lineCd AS LINE_CD,'+
-          'cedingName AS [CEDING NAME], negFmt(currency(ret1PremAmt)) AS [1st RET. PREM], negFmt(currency(ret1CommAmt)) AS [1st RET. COMM],'+
-          'negFmt(currency(ret1VatRiComm)) AS [1st RET. VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET. NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET. COMM],'+
-          'negFmt(currency(ret2VatRiComm)) AS [2nd RET. VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET. NET DUE]';
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
+          'cedingName AS [COMPANY], negFmt(currency(ret1PremAmt)) AS [1st RET PREM], negFmt(currency(ret1CommAmt)) AS [1st RET COMM],'+
+          'negFmt(currency(ret1VatRiComm)) AS [1st RET VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET COMM],'+
+          'negFmt(currency(ret2VatRiComm)) AS [2nd RET VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET NET DUE]';
         }else if(this.params.reportId == 'POLR044K'){
           this.passDataCsv = data['listPolr044k'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY CD],lineCd AS [LINE CD],'+

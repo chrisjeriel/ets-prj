@@ -113,9 +113,9 @@ export class NotesService {
     };
 
     var opts = {
-              headers:true, 
+              headers:true,
               column: {
-                  style:{
+                    style:{
                       Font:{
                           Bold:"1",
                           Color:"#3C3741",
@@ -126,11 +126,11 @@ export class NotesService {
                       Interior:{
                           Color:"#7CEECE",
                           Pattern:"Solid"
-                      }
+                      },
                   }
               }
-            }
-
+            };
+              
     alasql.fn.datetime = function(dateStr) {
       var date = new Date(dateStr);
       return date.toLocaleString();
