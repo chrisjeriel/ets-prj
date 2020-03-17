@@ -113,11 +113,12 @@ export class ClaimReportsComponent implements OnInit {
         this.params.reportName = data.data.reportTitle;
 
 
-        if (this.repExtractions.indexOf(this.params.reportId) > -1) {
-          this.extractDisabled = false;
-        } else {
-          this.extractDisabled = true;
-        }
+        // if (this.repExtractions.indexOf(this.params.reportId) > -1) {
+        //   this.extractDisabled = false;
+        // } else {
+        //   this.extractDisabled = true;
+        // }
+        this.extractDisabled = false;
 
     /*if (this.params.reportId == 'CLMR010A') {
       this.paramsToggle.push('line', 'company', 'currency',
@@ -163,6 +164,7 @@ export class ClaimReportsComponent implements OnInit {
       this.params.reportId = '';
       this.params.reportName = '';
       this.paramsToggle = [];
+      this.extractDisabled = true;
       this.resetDates();
     }
   }

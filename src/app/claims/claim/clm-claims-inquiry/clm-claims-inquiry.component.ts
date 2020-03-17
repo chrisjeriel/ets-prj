@@ -29,7 +29,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 					"text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
 					"text", "currency", "currency"],
 
-	    keys: ['claimNo', 'coClaimNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
+	    keys: ['claimNo', 'coClmNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
 	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'reportedBy', 'createDate', 'processedBy', 
 	    	   'lossAbbr', 'lossPdAbbr', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
 	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
@@ -266,6 +266,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
     	if(this.ns.listParams != null){
     		this.searchParams = this.ns.listParams;
     	}
+    	console.log(this.ns.listParams);
     	this.retrieveClaimlist();
 	}
 
@@ -276,7 +277,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 		  this.passData.count = data;
 		  this.table.setLength(1);
 		})
-
+		console.log(this.searchParams)
 		this.claimsService.newGetClaimsListing(this.searchParams).subscribe((data:any)=>{
          
 	       	 if(data != null){
@@ -301,6 +302,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
         for(let key of Object.keys(searchParams)){
             this.searchParams[key] = searchParams[key]
         }
+        console.log(searchParams)
 
         this.passData.btnDisabled = true;
         this.retrieveClaimlist();

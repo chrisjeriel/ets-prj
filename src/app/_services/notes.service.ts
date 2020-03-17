@@ -130,7 +130,7 @@ export class NotesService {
   }
 
   setListParams(params){
-    this.listParams = params;
+    this.listParams = JSON.parse(JSON.stringify(params));
     delete this.listParams['paginationRequest.position'];
   }
 }
