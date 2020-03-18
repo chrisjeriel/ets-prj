@@ -162,6 +162,30 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
 
   getSums(){
+    this.ts1 = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
+    this.ts2 = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
+    this.total = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
     this.treatyDistData.tableData.forEach(a=>{
       if(a.section == 'I'){
         this.ts1.si   +=a.siAmt;
@@ -183,21 +207,21 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.total.vat  += this.ts1.vat +  this.ts2.vat;
       this.total.net  += this.ts1.net +  this.ts2.net;
 
-      this.ts1.si = Number(this.ts1.si).toFixed(2);
-      this.ts1.prem = Number(this.ts1.prem).toFixed(2);
-      this.ts1.comm = Number(this.ts1.comm).toFixed(2);
-      this.ts1.vat = Number(this.ts1.vat).toFixed(2);
-      this.ts1.net = Number(this.ts1.net).toFixed(2);
-      this.ts2.si = Number(this.ts2.si).toFixed(2);
-      this.ts2.prem = Number(this.ts2.prem).toFixed(2);
-      this.ts2.comm = Number(this.ts2.comm).toFixed(2);
-      this.ts2.vat = Number(this.ts2.vat).toFixed(2);
-      this.ts2.net = Number(this.ts2.net).toFixed(2);
-      this.total.si = Number(this.total.si).toFixed(2);
-      this.total.prem = Number(this.total.prem).toFixed(2);
-      this.total.comm = Number(this.total.comm).toFixed(2);
-      this.total.vat = Number(this.total.vat).toFixed(2);
-      this.total.net = Number(this.total.net).toFixed(2);
+      // this.ts1.si = Number(this.ts1.si).toFixed(2);
+      // this.ts1.prem = Number(this.ts1.prem).toFixed(2);
+      // this.ts1.comm = Number(this.ts1.comm).toFixed(2);
+      // this.ts1.vat = Number(this.ts1.vat).toFixed(2);
+      // this.ts1.net = Number(this.ts1.net).toFixed(2);
+      // this.ts2.si = Number(this.ts2.si).toFixed(2);
+      // this.ts2.prem = Number(this.ts2.prem).toFixed(2);
+      // this.ts2.comm = Number(this.ts2.comm).toFixed(2);
+      // this.ts2.vat = Number(this.ts2.vat).toFixed(2);
+      // this.ts2.net = Number(this.ts2.net).toFixed(2);
+      // this.total.si = Number(this.total.si).toFixed(2);
+      // this.total.prem = Number(this.total.prem).toFixed(2);
+      // this.total.comm = Number(this.total.comm).toFixed(2);
+      // this.total.vat = Number(this.total.vat).toFixed(2);
+      // this.total.net = Number(this.total.net).toFixed(2);
   }
 
   getSumsPool(){
@@ -297,7 +321,7 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.polDistributionData = data.polDistribution;
       this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
       this.mainTable.refreshTable();
-      this.getSums();
+      this.getSums();  
       setTimeout(()=>{
          $('input[type=text]').focus();
          $('input[type=text]').blur();
@@ -514,8 +538,10 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     this.polService.saveManualDistPol(params).subscribe(a=>{
       if(a['returnCode']== -1){
         this.dialogIcon = 'success';
-        this.successDiag.open()
-      }else{
+        this.retrievePolicyDistribution();
+        this.successDiag.open();
+
+      }else{  
         this.dialogIcon = 'error';
         this.successDiag.open();
       }

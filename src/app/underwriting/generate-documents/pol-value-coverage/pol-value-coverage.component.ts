@@ -171,6 +171,7 @@ export class PolValueCoverageComponent implements OnInit {
     promptType: string = "";
 
     alterationFlag: boolean= false;
+    policyInfo:any = {};
 
   constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute, private ps: PrintService) { }
 
@@ -187,6 +188,13 @@ export class PolValueCoverageComponent implements OnInit {
         this.insured = params.insuredDesc;
         this.risk    = params.riskName;
         this.policyNo = params.policyNo;
+
+        this.policyInfo = {
+          policyNo : params.policyNo,
+          insured : params.insuredDesc,
+          riskName : params.riskName,
+          policyId : params.policyId
+        }
 
 
         this.alterationFlag = parseInt(this.policyNo.substr(this.policyNo.length-3)) > 0;

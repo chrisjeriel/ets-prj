@@ -299,5 +299,10 @@
               </app-modal>
             </ng-template>
         </ngb-tab>
+        <ngb-tab title="100% Value Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+          <ng-template ngbTabContent>
+            <app-pol-ful-item [policyInfo]="policyInfo"></app-pol-ful-item>
+          </ng-template>
+        </ngb-tab>
     </ngb-tabset>
 </div>

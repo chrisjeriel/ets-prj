@@ -1,0 +1,29 @@
+.col-md-13.text-center{
+	margin-top: 10px;
+}
+
+fieldset{
+	padding-top: 7px !important;
+	padding-bottom: 4px !important;
+}
+.total{
+    background: #ddd;
+    background-clip: padding-box;
+    text-align: right;
+}
+
+.input-group {
+    margin-bottom: -13px !important;
+}
+
+.custom-row-inline-inset {
+    margin-top: 3px !important;
+}
+
+.total{
+	font-size: 0.7rem !important;
+}
+
+.total label{
+	margin-bottom: 4px !important;
+}
