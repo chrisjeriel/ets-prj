@@ -208,6 +208,7 @@ import { EditDistributionEntryComponent } from './underwriting/distribution/edit
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
+import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 
 const appRoutes: Routes = [
 
@@ -853,6 +854,7 @@ const appRoutes: Routes = [
     { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
     { path: 'pol-oc-information', component: PolOcInformationComponent},
+    { path: 'posting-amt-limit', component: PostingAmtLimitComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

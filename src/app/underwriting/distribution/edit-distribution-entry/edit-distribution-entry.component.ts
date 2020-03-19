@@ -265,7 +265,7 @@ export class EditDistributionEntryComponent implements OnInit {
                                               insured: this.selectedPolicy.insuredDesc,
                                               cedingName: this.selectedPolicy.cedingName,
                                               status: this.selectedPolicy.status,
-                                              exitLink: '/pol-dist',
+                                              exitLink: '/edit-distribution',
                                               riskName: this.selectedPolicy.riskName,
                                               fromEdit:true
                                               }], { skipLocationChange: true });
