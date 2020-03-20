@@ -3421,9 +3421,11 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveOrSFeeDtlDist',{params});	
     }
 
-    getAcitUnappliedColl(cedingId){
+    getAcitUnappliedColl(param){
 		const params = new HttpParams()
-			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId));
+			.set('cedingId', (param.cedingId === null || param.cedingId === undefined ? '' : param.cedingId))
+			.set('unappliedId', (param.unappliedId === null || param.unappliedId === undefined ? '' : param.unappliedId))
+			.set('currCd', (param.currCd === null || param.currCd === undefined ? '' : param.currCd));
 
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveUnappliedCollection',{params});	
 	}

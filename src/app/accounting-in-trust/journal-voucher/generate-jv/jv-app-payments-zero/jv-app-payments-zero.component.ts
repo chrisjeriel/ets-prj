@@ -88,8 +88,9 @@ export class JvAppPaymentsZeroComponent implements OnInit {
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag =  false;
-      this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      // this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
     this.retrieveInwPolZeroBal();
@@ -154,8 +155,6 @@ export class JvAppPaymentsZeroComponent implements OnInit {
     var balance = data.data.balance;
     var datas;
     this.accService.getZeroAlt(data.data.policyId).subscribe((data:any)=> {
-      console.log('loob');
-      console.log(data);
       datas = data.soaDtlList;
       this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
       for (var i = 0; i < datas.length; i++) {

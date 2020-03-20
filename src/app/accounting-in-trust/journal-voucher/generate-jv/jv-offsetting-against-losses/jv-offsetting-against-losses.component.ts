@@ -173,13 +173,14 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.passData.checkFlag     = false;
       this.InwPolBal.checkFlag    = false;
       this.readOnly = true;
-      this.InwPolBal.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+      // this.InwPolBal.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+      this.InwPolBal.tHeaderWithColspan = this.InwPolBal.tHeaderWithColspan.slice(1);
       this.passData.uneditable  =  [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.InwPolBal.uneditable =  [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
     }
 
    
-    this.InwPolBal.nData      = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
+    this.InwPolBal.nData      = {showMG:1,tranId: '',itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',insuredDesc: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.passLov.currCd       = this.jvDetail.currCd;
     this.InwPolBal.disableAdd = true;
     this.retrieveClmLosses();
@@ -356,6 +357,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].charges          = data.data[i].balChargesDue;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].prevBalance;
       this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].remainingBal     = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
+      this.clmTable.indvSelect.inwPolBal[this.clmTable.indvSelect.inwPolBal.length - 1].insuredDesc      = data.data[i].insuredDesc;
     }
     this.inwTable.refreshTable();
     this.clmTable.onRowClick(null,this.clmTable.indvSelect);

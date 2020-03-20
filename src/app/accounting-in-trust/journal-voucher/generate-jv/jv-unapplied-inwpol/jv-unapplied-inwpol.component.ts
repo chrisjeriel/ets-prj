@@ -55,6 +55,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
   	  createDate : '',
   	  updateUser : this.ns.getCurrentUser(),
   	  updateDate : '',
+      unappliedId: '',
   	},
   	magnifyingGlass: ['transDtlName'],
   	checkFlag: true,
@@ -66,10 +67,10 @@ export class JvUnappliedInwpolComponent implements OnInit {
   	paginateFlag: true,
   	pageLength: 5,
   	pageID: '1',
-  	uneditable: [true, true,true,true,true,true,true,true,true,false,false,false,false],
+  	uneditable: [true, true,true,true,true,true,true,true,true,false,true,true,true],
   	total: [null, null, null, null, null, 'Total', 'unappliedAmt', 'prevPaytAmt', 'prevBalance', 'actualBalPaid', 'localAmt', 'newPaytAmt', 'newBalance'],
   	keys: ['transDtlName', 'itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'unappliedAmt', 'prevPaytAmt', 'prevBalance', 'actualBalPaid','localAmt','newPaytAmt', 'newBalance'],
-  	widths: [110,100,85,110,48,65,105,85,90,100,130,90,90],
+  	widths: [100,100,85,110,1,65,105,85,90,100,130,90,90],
   }
 
   passData: any = {};
@@ -106,6 +107,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
     this.passData.disableAdd = true;
     this.passDataUnapplied.disableAdd = true;
     this.passData.nData = {showMG:1,tranId: '',soaNo: '', itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
+    this.passData.tableData = [];
     this.retrieveUnappInw();
   }
 
@@ -123,6 +125,23 @@ export class JvUnappliedInwpolComponent implements OnInit {
         this.jvDetails.cedingName = this.passDataUnapplied.tableData[0].cedingName;
         this.jvDetails.ceding = this.passDataUnapplied.tableData[0].cedingId;
       }
+
+      if(this.jvDetail.statusType == 'A' || this.jvDetail.statusType == 'X' || this.jvDetail.statusType == 'P') {
+        this.passDataUnapplied.addFlag = false;
+        this.passDataUnapplied.deleteFlag = false;
+        this.passDataUnapplied.checkFlag = false;
+        this.passDataUnapplied.tHeaderWithColspan = this.passDataUnapplied.tHeaderWithColspan.slice(1);
+        this.passDataUnapplied.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+        this.passData.addFlag = false;
+        this.passData.deleteFlag = false;
+        this.passData.checkFlag = false;
+        this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
+        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+        this.readOnly = true;
+      }
+
       this.table.refreshTable();
       this.inwTbl.refreshTable();
     });
@@ -148,7 +167,12 @@ export class JvUnappliedInwpolComponent implements OnInit {
 
   unappliedLOV(data){
     this.passLov.cedingId = this.jvDetails.ceding;
-    this.passLov.hide = this.passDataUnapplied.tableData.filter((a)=>{return a.refTranId !== null && !a.deleted}).map(a=>{return a.refTranId.toString()});
+    this.passLov.params = {
+      unappliedId: '',
+      cedingId: this.jvDetails.ceding,
+      currCd: this.jvDetail.currCd
+    }
+    this.passLov.hide = this.passDataUnapplied.tableData.filter((a)=>{return a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
     this.passLov.selector = 'unappliedColl';
     setTimeout(() => {
       this.lovMdl.openLOV();
@@ -165,20 +189,21 @@ export class JvUnappliedInwpolComponent implements OnInit {
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].refBillId      = data.data[i].billId;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].refItemNo      = data.data[i].itemNo;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].transDtlName   = data.data[i].transdtlName;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].transdtlType   = data.data[i].transdtlType;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].transDtlType   = data.data[i].transdtlType;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].itemNo         = data.data[i].itemNo;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].itemName       = data.data[i].itemName;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].refNo          = data.data[i].refNo;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].remarks        = data.data[i].remarks;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].currCd         = data.data[i].currCd;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].currRate       = data.data[i].currRate;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt    = data.data[i].prevPaytAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevBalance    = data.data[i].prevBalance;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt   = data.data[i].unappliedAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid  = data.data[i].actualBalPaid;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevPaytAmt    = data.data[i].totalApldAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].prevBalance    = data.data[i].balUnapldAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedAmt   = data.data[i].totalUnapldAmt;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].actualBalPaid  = data.data[i].balUnapldAmt;
       this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].localAmt       = data.data[i].localAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newPaytAmt     = data.data[i].newPaytAmt;
-      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newBalance     = data.data[i].newBalance;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newPaytAmt     = +(parseFloat(data.data[i].balUnapldAmt) + parseFloat(data.data[i].totalApldAmt)).toFixed(2);
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].newBalance     = 0;
+      this.passDataUnapplied.tableData[this.passDataUnapplied.tableData.length - 1].unappliedId    = data.data[i].unappliedId;
     }
     this.table.refreshTable();
     this.table.onRowClick(null, this.passDataUnapplied.tableData[0]);
@@ -236,6 +261,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat    = data.data[i].prevRiCommVat;
       this.passData.tableData[this.passData.tableData.length - 1].prevCharges      = data.data[i].prevCharges;
       this.passData.tableData[this.passData.tableData.length - 1].prevNetDue       = data.data[i].prevNetDue;
+      this.passData.tableData[this.passData.tableData.length - 1].netDue           = data.data[i].netDue;
       this.passData.tableData[this.passData.tableData.length - 1].prevPaytAmt      = data.data[i].totalPayments;
       this.passData.tableData[this.passData.tableData.length - 1].cumPayment       = data.data[i].cumPayment;
       this.passData.tableData[this.passData.tableData.length - 1].balance          = data.data[i].prevBalance;
@@ -247,6 +273,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].charges          = data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayt        = data.data[i].cumPayment + data.data[i].prevBalance;
       this.passData.tableData[this.passData.tableData.length - 1].remainingBal     = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
+      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc      = data.data[i].insuredDesc;
     }
 
     this.inwTbl.refreshTable();

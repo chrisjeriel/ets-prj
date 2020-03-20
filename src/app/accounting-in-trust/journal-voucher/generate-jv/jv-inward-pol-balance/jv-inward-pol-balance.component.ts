@@ -193,7 +193,8 @@ export class JvInwardPolBalanceComponent implements OnInit {
        this.passData.deleteFlag = false;
        this.passData.checkFlag =  false;
        this.passData.btnDisabled = true;
-       this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+       // this.passData.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
+       this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
        this.disable = true;
      }
@@ -298,6 +299,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].charges = data.data[i].balChargesDue;
       this.passData.tableData[this.passData.tableData.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].balAmtDue;
       this.passData.tableData[this.passData.tableData.length - 1].remainingBal = data.data[i].prevNetDue  - (data.data[i].cumPayment + data.data[i].balAmtDue);
+      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = data.data[i].insuredDesc;
     }
     this.table.refreshTable();
   }

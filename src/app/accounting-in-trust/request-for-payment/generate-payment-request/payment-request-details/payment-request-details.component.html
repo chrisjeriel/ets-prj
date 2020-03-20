@@ -194,13 +194,13 @@
         <ng-template ngbTabContent>
           <div class="input-group cust-border" style="padding-top: 0.6em">
             <div class="col-sm-12">
-              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;onChangeCurr('unc');addDirty('unColTbl');">
+              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;onChangeCurr('unc');addDirty('unColTbl');unappliedColChange($event);" (clickLOV)="showUnappliedLov($event)">
                 <ng-container controls-r>
                   <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
                 </ng-container>
               </app-cust-editable-non-datatable>
             </div>
-            <div class="form-row col-sm-12" style="margin-top: 40px !important;">
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
               <div class="form-group col-sm-12">
                 <div class="text-center">
                   <div class="cust-btn-container">
@@ -227,7 +227,7 @@
                 </ng-container>
               </app-cust-editable-non-datatable>
             </div>
-            <div class="form-row col-sm-12" style="margin-top: 40px !important;">
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
               <div class="form-group col-sm-12">
                 <div class="text-center">
                   <div class="cust-btn-container">
@@ -270,7 +270,7 @@
 <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #osQsoaLov  [passData]="passData" (selectedData)="setData($event,'lovOsQsoaTbl')"></app-lov>
-
+<app-lov #unappliedLov [passData]="passData" (selectedData)="setUnapplied($event)"></app-lov>
 
 <app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
 <app-sucess-dialog #sucClm [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
