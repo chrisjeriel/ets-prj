@@ -635,7 +635,10 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickCancel(){
+  onClickCancel(onNo?){
+    if(!!onNo){
+      $('.ng-dirty').removeClass('ng-dirty');
+    }
     this.router.navigate([this.params.exitLink,{policyId:this.params.policyId,policyIdOc:this.policyIdOc}]);
   }
 

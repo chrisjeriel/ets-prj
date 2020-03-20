@@ -305,6 +305,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   minBookingDate:any = '1970-01-01';
   altBookingDate:any ='';
   earliestBookingDate: any = '1970-01-01';
+  excludeCedingCo: any[] = [];
 
   constructor(private route: ActivatedRoute, public modalService: NgbModal,
     private underwritingService: UnderwritingService, private titleService: Title, private ns: NotesService,
@@ -1749,6 +1750,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   showPolLov(){
     this.polMdl.openNoClose();
     this.getQuoteList();
+  }
+
+  setReinsurer(event) {
+    this.form.control.markAsDirty();
+    console.log(event);
+    this.policyInfo.reinsurerId = this.pad(event.cedingId);
+    this.policyInfo.reinsurerName = event.cedingName;
+    this.ns.lovLoader(event.ev, 0);
+    this.focusBlur();
+  }
+
+  showCedingCompanyNotMemberLOV() {
+    $('#cedingCompanyNotMember #modalBtn').trigger('click');
   }
 
 }

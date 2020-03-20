@@ -38,7 +38,7 @@
 <div class="cust-tabs-container">
     <h4>Policy / Distribution</h4>
     <ngb-tabset (tabChange)="onTabChange($event)">
-        <ngb-tab title="Distribution Processing">
+        <ngb-tab title="Policy Distribution (Modification)">
             <ng-template ngbTabContent>
                 <div class="row" style="margin-top: 10px;">
                     <div class="col-sm-2"></div>
@@ -57,15 +57,18 @@
                                         <div class="input-group ig-row">
                                             <label class="form-control-sm col-sm-2">Policy No</label>
                                             <div class="input-group col-sm-8">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Line" appRequired [ngModel]="policyInfo.policyNo.split('-')[0]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'lineCd')" maxlength="7">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Year" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[1]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'year')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Sequence No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[2]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'seqNo')" maxlength="5">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Ceding ID" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[3]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'cedingId')" maxlength="3">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Company Series No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[4]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'coSeriesNo')" maxlength="4">
-                                                <input type="text" class="form-control form-control-sm cap-input col-sm-2" ngbTooltip="Alteration No" style="margin-left: 3px;" appRequired [ngModel]="policyInfo.policyNo.split('-')[5]" (blur)="checkPolParams()" (ngModelChange)="policySearchParams($event, 'altNo')" maxlength="3">
+                                                <input  appRequired type="text" [ngModel]="polNo[0]" mask="SSS" (ngModelChange)="polNo[0]=$event.toUpperCase()" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input" ngbTooltip="Line">
+                                                <input  appRequired type="text" [(ngModel)]="polNo[1]" mask="9999" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Year">
+                                                <input  appRequired type="text" [(ngModel)]="polNo[2]" mask="99999" (blur)="polNo[2]=pad($event,5)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-3 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Sequence No">
+                                                <input  appRequired type="text" [(ngModel)]="polNo[3]" mask="999" (blur)="polNo[3]=pad($event,3)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-1 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Company No">
+                                                <input  appRequired type="text" [(ngModel)]="polNo[4]" mask="9999" (blur)="polNo[4]=pad($event,4)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Co Series No">
+                                                 <input  appRequired type="text" [(ngModel)]="polNo[5]" mask="999" (blur)="polNo[5]=pad($event,3)" (change)="filterPolOcLov()" class="form-control form-control-sm col-sm-2 cap-input text-right" style="margin-left: 3px;" ngbTooltip="Alt No">
+                                                
                                             </div>
                                             <span>&nbsp;</span>
                                             <div class="text-search-ico col-sm-1"><a (click)="openModal();"><i class="fa fa-search"></i></a></div>
+
+
                                         </div>
                                         <div class="input-group ig-row" style="margin-top: -3px !important;">
                                             <label class="form-control-sm col-sm-2">Ceding Company</label>

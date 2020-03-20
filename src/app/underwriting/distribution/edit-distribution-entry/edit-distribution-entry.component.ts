@@ -136,9 +136,6 @@ export class EditDistributionEntryComponent implements OnInit {
 	saveBtnDisabledStatus: string[] = ['2','3','4','5','6'];
 
 	searchParams: any = {
-        statusArr:['2'],
-        'paginationRequest.count':10,
-        'paginationRequest.position':1,   
     };
 
 
@@ -148,55 +145,52 @@ export class EditDistributionEntryComponent implements OnInit {
 	}
 
 	retrievePolListing(){
-			if(!this.noDataFound){
-		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
-		      this.policyListingData.filters[0].enabled =true;
-		      this.searchParams.policyNo = this.tempPolNo.join('%-%');
-		    }else{
-		    	this.policyListingData.filters[0].search = '';
-		    	this.policyListingData.filters[0].enabled =false;
-		    	this.searchParams.policyNo = '';
-		    }
+		this.searchParams.lineCd = !this.polNo[0] ? '' : this.polNo[0];
+		this.searchParams.polYear = !this.polNo[1] ? '' : this.polNo[1];
+		this.searchParams.polSeqNo = !this.polNo[2] ? '' : this.polNo[2];
+		this.searchParams.cedingId = !this.polNo[3] ? '' : this.polNo[3];
+		this.searchParams.coSeriesNo = !this.polNo[4] ? '' : this.polNo[4];
+		this.searchParams.altNo = !this.polNo[5] ? '' : this.polNo[5];
 
-			this.us.getEditableDistListing(this.searchParams).subscribe((data: any) =>{
-				data.polList = data.polList === null ? [] : data.polList; //filter out all policies with alteration
-				let recs:any[] = [];
-				if(data.polList.length !== 0){
-					this.noDataFound = false;
-					for(var rec of data.polList){
-						recs.push({
-							policyId: rec.policyId,
-							policyNo: rec.policyNo,
-							cedingName: rec.cedingName,
-							insuredDesc: rec.insuredDesc,
-							riskName: rec.riskName
-						});
-					}
-					if(this.isType && !this.isIncomplete){
-						this.isIncomplete = false;
-						this.policyInfo 					= recs[0];
-						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
-						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
-						this.tempPolNo						= this.policyInfo.policyNo.split('-');
-						this.selectedPolicy                 = recs[0];
-					}
-				}else{
-					this.noDataFound = true;
-					this.table.addFiller();
-					if(this.isType){
-						this.policyInfo.cedingName = '';
-						this.policyInfo.insuredDesc = '';
-						this.policyInfo.riskName = '';
-						this.policyInfo.statusDesc = '';
-						setTimeout(()=>{
-							this.openModal();
-						}, 100);
-					}
+		this.us.getEditableDistListing(this.searchParams).subscribe((data: any) =>{
+			data.polList = data.polList === null ? [] : data.polList; //filter out all policies with alteration
+			let recs:any[] = [];
+			if(data.polList.length !== 0){
+				this.noDataFound = false;
+				for(var rec of data.polList){
+					recs.push({
+						policyId: rec.policyId,
+						policyNo: rec.policyNo,
+						cedingName: rec.cedingName,
+						insuredDesc: rec.insuredDesc,
+						riskName: rec.riskName
+					});
 				}
-				this.policyListingData.count = data.polList.length; 
-				this.table.placeData(recs);
-				this.modalOpen = true;
-			});
+				// if(this.isType && !this.isIncomplete){
+				// 	this.isIncomplete = false;
+				// 	this.policyInfo 					= recs[0];
+				// 	this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
+				// 	this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
+				// 	this.tempPolNo						= this.policyInfo.policyNo.split('-');
+				// 	this.selectedPolicy                 = recs[0];
+				// }
+			}else{
+				this.noDataFound = true;
+				this.table.addFiller();
+				if(this.isType){
+					this.policyInfo.cedingName = '';
+					this.policyInfo.insuredDesc = '';
+					this.policyInfo.riskName = '';
+					this.policyInfo.statusDesc = '';
+					setTimeout(()=>{
+						this.openModal();
+					}, 100);
+				}
+			}
+			this.policyListingData.count = data.polList.length; 
+			this.table.placeData(recs);
+			this.modalOpen = true;
+		});
 		
 	}
 
@@ -228,6 +222,7 @@ export class EditDistributionEntryComponent implements OnInit {
 		this.polHoldCoverParams.policyId = this.policyInfo.policyId;
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
+		this.polNo = this.policyInfo.policyNo.split('-');
 	}
 
 	onTabChange($event: NgbTabChangeEvent) {
@@ -236,54 +231,29 @@ export class EditDistributionEntryComponent implements OnInit {
   		} 
   	}
 
-  	policySearchParams(data:string, key:string){
-  		this.fromHcMonitoring = '';
-  		this.isType = true;
-
-  		if(data.length === 0){
-  			this.isIncomplete = true;
-			this.policyInfo.cedingName = '';
-			this.policyInfo.insuredDesc = '';
-			this.policyInfo.riskName = '';
-			this.policyInfo.statusDesc = '';
-			this.policyInfo.policyId = '';
-  		}
-
-  		if(key === 'lineCd'){
-  			this.tempPolNo[0] = data.toUpperCase();
-  		}else if(key === 'year'){
-  			this.tempPolNo[1] = data;
-  		}else if(key === 'seqNo'){
-  			this.tempPolNo[2] = data;
-  		}else if(key === 'cedingId'){
-  			this.tempPolNo[3] = data;
-  		}else if(key === 'coSeriesNo'){
-  			this.tempPolNo[4] = data;
-  		}else if(key === 'altNo'){
-  			this.tempPolNo[5] = data;
-  		}
-  	}
-
-  	checkPolParams(){
-  		this.isModify = false;
-  		if(this.isIncomplete){
-	  		if(this.tempPolNo[0].length !== 0 &&
-	  		   this.tempPolNo[1].length !== 0 &&
-	  		   this.tempPolNo[2].length !== 0 &&
-	  		   this.tempPolNo[3].length !== 0 &&
-	  		   this.tempPolNo[4].length !== 0 &&
-	  		   this.tempPolNo[5].length !== 0){
-	  			this.isIncomplete = false;
-	  			this.retrievePolListing();
-	  		}else{
-	  			this.isIncomplete = true;
-				this.policyInfo.cedingName = '';
-				this.policyInfo.insuredDesc = '';
-				this.policyInfo.riskName = '';
-				this.policyInfo.statusDesc = '';
-	  		}
-  		}
-  	}
+  	polNo:any = [];
+  	filterPolOcLov(){
+	    if(this.polNo.every(a=>!!a) && this.polNo.length == 6 ){
+	      this.searchParams.lineCd = !this.polNo[0] ? '' : this.polNo[0];
+	      this.searchParams.polYear = !this.polNo[1] ? '' : this.polNo[1];
+	      this.searchParams.polSeqNo = !this.polNo[2] ? '' : this.polNo[2];
+	      this.searchParams.cedingId = !this.polNo[3] ? '' : this.polNo[3];
+	      this.searchParams.coSeriesNo = !this.polNo[4] ? '' : this.polNo[4];
+	      this.searchParams.altNo = !this.polNo[5] ? '' : this.polNo[5];
+	      this.us.getEditableDistListing(this.searchParams).subscribe((a:any)=>{
+	        if(a.polList.length  == 1){
+	          this.isIncomplete = false;
+			  this.policyInfo 					= a.polList[0];
+	  	      this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
+	     	  this.polHoldCoverParams.lineCd 	= this.policyInfo.policyNo.split('-')[0];
+			  this.tempPolNo						= this.policyInfo.policyNo.split('-');
+		      this.selectedPolicy                 = this.policyInfo;
+	        }else{
+	          
+	        }
+	      })
+	  	}
+	  }
 
    onClickNext(){
    	this.router.navigate(['policy-dist', {policyId:this.selectedPolicy.policyId,
@@ -295,7 +265,7 @@ export class EditDistributionEntryComponent implements OnInit {
                                               insured: this.selectedPolicy.insuredDesc,
                                               cedingName: this.selectedPolicy.cedingName,
                                               status: this.selectedPolicy.status,
-                                              exitLink: '/pol-dist',
+                                              exitLink: '/edit-distribution',
                                               riskName: this.selectedPolicy.riskName,
                                               fromEdit:true
                                               }], { skipLocationChange: true });
@@ -312,6 +282,11 @@ export class EditDistributionEntryComponent implements OnInit {
       this.retrievePolListing();
     }
 
+   pad(ev,num) {
+    var str = ev.target.value;    
+
+    return str === '' ? '' : String(str).padStart(num, '0');
+  }
 }
 
 

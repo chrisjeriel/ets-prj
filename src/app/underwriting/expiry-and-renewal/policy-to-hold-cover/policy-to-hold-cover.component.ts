@@ -618,7 +618,13 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	  			//this.onClickSave();
 	  			this.retrievePolHoldCov(this.policyInfo.policyId, this.policyInfo.policyNo, '');
 	  			this.isForViewing = true;
-	  			this.ps.print(this.destination,'POLR029A',{policyId:this.policyInfo.policyId});
+		  		let params = {
+					policyId: this.policyInfo.policyId,
+					holdCovId: this.polHoldCoverParams.holdCovId,
+					updateUser: this.userName,
+					updateDate: this.noteService.toDateTimeString(0)
+				}
+	  			this.ps.print(this.destination,'POLR029A',params);
 	  			//this.isReleasing = false;
 	  		});
   		}else{
@@ -630,7 +636,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 				updateUser: this.userName,
 				updateDate: this.noteService.toDateTimeString(0)
 			}
-	  		this.ps.print(this.destination.toLowerCase(),'POLR029',params);
+	  		this.ps.print(this.destination.toLowerCase(),'POLR029A',params);
   		}	
   	}
 

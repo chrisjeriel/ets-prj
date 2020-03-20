@@ -55,7 +55,6 @@ export class NotesService {
   }
 
   lovLoader(ev, num){
-    console.log(ev)
     if(ev != null) {
       var ic = $(ev.target).next().find('i');
       
@@ -130,7 +129,7 @@ export class NotesService {
   }
 
   setListParams(params){
-    this.listParams = params;
+    this.listParams = JSON.parse(JSON.stringify(params));
     delete this.listParams['paginationRequest.position'];
   }
 }

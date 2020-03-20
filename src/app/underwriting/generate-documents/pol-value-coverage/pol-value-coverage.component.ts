@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NotesService, UnderwritingService } from '@app/_services';
+import { NotesService, UnderwritingService, PrintService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
@@ -170,7 +170,10 @@ export class PolValueCoverageComponent implements OnInit {
     promptMessage: string = "";
     promptType: string = "";
 
-  constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute) { }
+    alterationFlag: boolean= false;
+    policyInfo:any = {};
+
+  constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute, private ps: PrintService) { }
 
 
   ngOnInit() {
@@ -185,6 +188,16 @@ export class PolValueCoverageComponent implements OnInit {
         this.insured = params.insuredDesc;
         this.risk    = params.riskName;
         this.policyNo = params.policyNo;
+
+        this.policyInfo = {
+          policyNo : params.policyNo,
+          insured : params.insuredDesc,
+          riskName : params.riskName,
+          policyId : params.policyId
+        }
+
+
+        this.alterationFlag = parseInt(this.policyNo.substr(this.policyNo.length-3)) > 0;
       })
       this.getFullCoverage();
   }
@@ -201,9 +214,11 @@ export class PolValueCoverageComponent implements OnInit {
     this.passData.tableData = [];
     this.underwritingService.getFullCoverage(null,this.policyId).subscribe((data:any) => {
       console.log(data)
+
       if(data.policy.project !== null){
         var datas = data.policy.project.fullCoverage.fullSecCover;
         this.fullCoverageDetails            = data.policy.project.fullCoverage;
+        this.fullCoverageDetails.remarks   = data.altWordings;       
         this.fullCoverageDetails.projId    = data.policy.project.projId;
         this.fullCoverageDetails.riskId    = data.policy.project.riskId;
         this.fullCoverageDetails.treatyShare = this.decimal.transform(this.fullCoverageDetails.treatyShare, '1.10-10');
@@ -627,8 +642,9 @@ export class PolValueCoverageComponent implements OnInit {
     });
   }
 
-  openPrint(){
-    $('#printModal #modalBtn').trigger('click');
+  openPrint(content){
+    this.printReport = this.alterationFlag ? 'POLR010B' : 'POLR010';
+    this.modalService.open(content, { centered: true, backdrop: 'static', windowClass: "modal-size" });
   }
   
   pctShare(data){
@@ -660,8 +676,17 @@ export class PolValueCoverageComponent implements OnInit {
     $('#confirm-save #modalBtn2').trigger('click');
   }
 
+  printDestination:string = 'screen';
+  printReport:string = 'POLR010B';
+  inclEndt:boolean = true;
   print(){
-    window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=POLR010' + '&userId=' + this.ns.getCurrentUser() + '&tranId=' + this.policyId, '_blank');
-    this.modalService.dismissAll();
+    let params:any = {
+                        policyId:this.policyId,
+                        updateUser:this.ns.getCurrentUser(),
+                        inclEndt : this.inclEndt ? 'Y' : 'N',
+                        hundredPct: 'Y'
+                      };
+    params.reportId=this.printReport;
+    this.ps.print(this.printDestination,this.printReport,params)
   }
 }
