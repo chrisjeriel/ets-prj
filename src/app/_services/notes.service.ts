@@ -55,7 +55,6 @@ export class NotesService {
   }
 
   lovLoader(ev, num){
-    console.log(ev)
     if(ev != null) {
       var ic = $(ev.target).next().find('i');
       

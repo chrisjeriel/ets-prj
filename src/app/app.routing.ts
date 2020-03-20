@@ -389,7 +389,7 @@ const appRoutes: Routes = [
     		canActivate: [AuthGuard, ModuleAccessGuard],
     		data: { moduleId : 'POL036'}
 	},
-    { path: 'policy-dist', component: PolicyDistributionComponent, 
+    { path: 'policy-dist', component: PolicyDistributionComponent, canDeactivate: [UnsavedChangesGuard],
     		canActivate: [AuthGuard, ModuleAccessGuard],
     		data: { moduleId : 'POL038', verifyWithData: true } //and POL037
 	},

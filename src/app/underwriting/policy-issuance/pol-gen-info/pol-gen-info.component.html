@@ -1418,8 +1418,10 @@
 										</div>
 										<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Reinsurance From</label>
-											<input name="input245" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId">
-											<input name="input246" type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.reinsurerName" style="margin-left: 5px;">
+											<input name="input245" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')">
+											<div class="text-search-ico" *ngIf="!fromInq" ><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
+											<span>&nbsp;</span>
+											<input name="input246" type="text" class="form-control form-control-sm col-sm" [ngModel]="policyInfo.reinsurerName" style="margin-left: 5px;" readonly="">
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
@@ -2724,6 +2726,7 @@
 <app-mtn-object id="objIdLov" (selectedData)="setObj($event)" [line]="line"></app-mtn-object>
 <app-mtn-risk #riskLOV id="riskLOV" (selectedData)="setRisk($event)"></app-mtn-risk>
 <app-mtn-quotation-wordings id="wordingOpeningIdLov" (selectedData)="setOpeningWording($event);" [line]="line" [type]="'O'"></app-mtn-quotation-wordings>
+<app-mtn-ceding-company id="cedingCompanyNotMember" (selectedData)="setReinsurer($event)" [exclude]="excludeCedingCo" [membershipTag]="''"></app-mtn-ceding-company>
 <!-- <app-special-lov (selectedData)="setPrincipal($event)"></app-special-lov>
 <app-special-lov id="contractorLOV" (selectedData)="setContractor($event)"></app-special-lov> -->
 

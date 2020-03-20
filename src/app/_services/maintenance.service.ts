@@ -1975,4 +1975,18 @@ export class MaintenanceService{
 	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPostingAmtLimit',JSON.stringify(params),header);
 	}
 
+	retrieveMtnClmReportsRange(userId){
+    	const params = new HttpParams()
+    				.set('userId', (userId === null || userId === undefined ? '' : userId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmReportsRange", {params});
+    }
+
+    saveMtnClmReportsRange(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmReportsRange', JSON.stringify(params), header);
+    }
 }
