@@ -14,7 +14,7 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
-									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
+									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
@@ -32,11 +32,11 @@
 					<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group" >
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="9" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" >
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="9" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" [disabled]="paramsToggle.indexOf('clmFileDate') == -1">
 								<label class="form-control-sm" for="radio9">Claim File Date</label>
 							</div>
 							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" [disabled]="paramsToggle.indexOf('lossDate') == -1">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
 							</div>
 							<div class="input-group" >
@@ -118,7 +118,12 @@
 									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1">
 									</datepicker>
 								</div>
-								<div class="col-sm-7"></div>
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2" style="padding-left: 0">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn col-sm-1" (click)="rangeLOV.openNoClose();retrieveRange();" [disabled]="paramsToggle.indexOf('siRangeBtnDisabled') == -1"  ><a>SI Range</a></button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</fieldset>
@@ -311,9 +316,25 @@
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-cancel-button (onYes)="extract(true)"></app-cancel-button>
+<app-cancel-button #appCancel (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>
 <app-mtn-currency-code  #currencyModal id="currLOV" (selectedData)="setCurr($event)"></app-mtn-currency-code>
+
+<app-modal class="d-none" id="range" #Range>
+	<div header>SI Range</div>
+	<div body>
+		<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="deleteCurr()" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;" (newClick)="onRowClick($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="siClickCancel();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="tableFlag=true; onClickSave();"><a>Save</a></button>
+        </div>
+    </div>
+    <app-cancel-button #siLovCancel (onYes)="tableFlag=false; fromSiRangeMdl=true; saveRange(true);" (no)="table.markAsPristine(); rangeLOV.closeModal();"></app-cancel-button>
+    <app-sucess-dialog #success [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+    <app-confirm-save (onYes)="saveRange()"></app-confirm-save>
+</app-modal>
