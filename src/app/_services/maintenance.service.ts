@@ -1989,4 +1989,9 @@ export class MaintenanceService{
         };
     	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmReportsRange', JSON.stringify(params), header);
     }
+
+    checkOkDeleteRetPerCede(currencyCd, retHistId){
+    	let params = {currencyCd: currencyCd, retHistId: retHistId};
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
+    }
 }
