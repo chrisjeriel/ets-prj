@@ -252,9 +252,9 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Min. Loss Amt</label>
-									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input" [disabled]="paramsToggle.indexOf('minLossAmt') == -1">
-									<input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('increaseReserve') == -1"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
-									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('decreseReserve') == -1"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label>
+									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input" [disabled]="paramsToggle.indexOf('minLossAmt') == -1" appCurrency [(ngModel)]="params.minLossAmt" >
+									<!-- <input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('increaseReserve') == -1"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
+									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('decreseReserve') == -1"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label> -->
 								</div>
 							</div>
 							<div class="col-sm-1">

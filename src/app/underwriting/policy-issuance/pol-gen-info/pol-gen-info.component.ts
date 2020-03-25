@@ -1765,4 +1765,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
     $('#cedingCompanyNotMember #modalBtn').trigger('click');
   }
 
+  checkMtnFromTime(){
+    console.log(this.policyInfo.maintenanceFrom.split('T')[1]);
+    console.log(this.policyInfo.maintenanceFrom.split('T')[0]);
+    if((!this.policyInfo.maintenanceFrom.split('T')[1] || this.policyInfo.maintenanceFrom.split('T')[1]=='undefined') && !(!this.policyInfo.maintenanceFrom.split('T')[0]) ){
+      this.policyInfo.maintenanceFrom=this.policyInfo.maintenanceFrom.split('T')[0]+'T'+ this.policyInfo.expiryDate.split('T')[1];
+      console.log('proc')
+    }
+  }
+
+  checkMtnToTime(){
+    if((!this.policyInfo.maintenanceTo.split('T')[1] || this.policyInfo.maintenanceTo.split('T')[1]=='undefined') && !!this.policyInfo.maintenanceTo.split('T')[0]){
+      this.policyInfo.maintenanceTo = this.policyInfo.maintenanceTo.split('T')[0]+'T'+ this.policyInfo.expiryDate.split('T')[1];
+    }
+  }
+
 }

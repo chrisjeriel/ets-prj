@@ -82,6 +82,7 @@ export class MtnEndtCodeComponent implements OnInit {
 
   openModal(){
     this.passData.tableData = [];
+    this.table.overlayLoader = true;
     this.mtnService.getEndtCode(this.line,'').subscribe((data: any) => {
       for (var i = 0; i< data.endtCode.length ; i++) {
         if(this.hide!== undefined && this.hide.indexOf(data.endtCode[i].endtCd) != -1)

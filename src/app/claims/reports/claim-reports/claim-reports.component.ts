@@ -101,8 +101,8 @@ export class ClaimReportsComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Range', 'Amount'],
-    dataTypes: ['string', 'currency'],
+    tHeader: ['Range', 'Year Range'],
+    dataTypes: ['string', 'number'],
     nData: {rangeCd: '', rangeValue: ''},
     addFlag: true,
     deleteFlag: false,
@@ -190,14 +190,14 @@ export class ClaimReportsComponent implements OnInit {
     }*/
       if(this.params.reportId == 'CLMR010Q' || this.params.reportId == 'CLMR010R' ){
         this.paramsToggle.push('siRangeBtnDisabled')
-      }
-
-      if(this.params.reportId == 'CLMR010L'){
+      } else if(this.params.reportId == 'CLMR010L'){
         this.paramsToggle= ['line', 'company', 'currency',
                              'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag'];
       }else if(this.params.reportId == 'CLMR010C'){
         this.paramsToggle= ['line', 'clmAdj', 'currency','clmStat',
                              'byDate', 'byMonthYear', 'asOf', 'extTypeTag','clmStat','lossDate'];
+      } else if(this.params.reportId == 'CLMR010A'){
+        this.paramsToggle.push('minLossAmt');
       }
 
     setTimeout(()=> {
