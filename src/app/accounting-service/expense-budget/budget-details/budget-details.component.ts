@@ -281,8 +281,11 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   copyExpenseBudget(fromOverride?){
+    if(fromOverride !== undefined && !fromOverride) {
+      return;
+    }
+
     this.params.desYear = this.budgetYear;
-    console.log(this.params);
 
     this.params['force'] = fromOverride == undefined ? 'N' : 'Y';
 
