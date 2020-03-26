@@ -60,3 +60,33 @@ padding-right: 0px !important;">
 <!-- <app-confirm-save (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-cancel-button (onYes)="save('cancel')" [url]="'/'"></app-cancel-button> -->
+<app-modal class="d-none" #extModal>
+    <div header>Extract</div>  
+    <div body style=" max-width: 600px;">
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group" style="margin-bottom: 5px !important;">
+                <label class="form-control-sm col-sm-12 labels" style="font-size: 11px !important; text-align: center !important;">
+                	Please provide the "As of Date" consideration for extraction<br/>of actual expense for the desired budget year
+                </label>
+            </div>
+            <div class="input-group">
+            	<div class="col-sm-4"></div>
+            	<div class="dp-cont col-sm-4">
+                	<datepicker [type]="'date'" [(value)]="extDate"></datepicker>
+                </div>
+                <div class="col-sm-4"></div>
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        
+        <ng-container *ngIf="loader">
+	    	<span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Please wait</span>
+	    </ng-container>
+	    <ng-container *ngIf="!loader">
+	    	<button type="button" class="cust-btn" (click)="extract();"><a>Extract</a></button>
+        	<button type="button" class="cust-btn" (click)="extModal.closeModal();"><a>Cancel</a></button>
+	    </ng-container>
+    </div>
+</app-modal>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="extModal.closeModal()"></app-sucess-dialog>

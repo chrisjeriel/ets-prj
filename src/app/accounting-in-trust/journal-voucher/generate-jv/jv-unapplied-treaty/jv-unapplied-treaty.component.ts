@@ -238,7 +238,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
 
     showOsQsoaMdl() {
 	    this.passLov.selector = 'osQsoa';
-	    this.passLov.hide = this.passData.tableData.map(a => a.qsoaId);
+	    this.passLov.hide = this.passData.tableData.filter(a => !a.deleted).map(a => a.qsoaId);
 	    this.passLov.params = {
 	      qsoaId: '',
 	      currCd: this.jvDetail.currCd,
