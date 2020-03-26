@@ -121,7 +121,7 @@
 								<div class="col-sm-2"></div>
 								<div class="col-sm-2" style="padding-left: 0">
 									<div class="cust-btn-container">
-										<button type="button" class="cust-btn col-sm-1" (click)="rangeLOV.openNoClose();retrieveRange();" [disabled]="paramsToggle.indexOf('siRangeBtnDisabled') == -1"  ><a>SI Range</a></button>
+										<button type="button" class="cust-btn col-sm-1" (click)="rangeLOV.openNoClose();retrieveRange();" [disabled]="paramsToggle.indexOf('siRangeBtnDisabled') == -1"  ><a>Year Range</a></button>
 									</div>
 								</div>
 							</div>
@@ -324,7 +324,7 @@
 <app-mtn-currency-code  #currencyModal id="currLOV" (selectedData)="setCurr($event)"></app-mtn-currency-code>
 
 <app-modal class="d-none" id="range" #Range>
-	<div header>SI Range</div>
+	<div header>Year Range</div>
 	<div body>
 		<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="deleteCurr()" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;" (newClick)="onRowClick($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
 	</div>

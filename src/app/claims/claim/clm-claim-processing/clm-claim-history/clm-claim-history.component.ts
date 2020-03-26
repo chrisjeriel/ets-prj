@@ -1037,7 +1037,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   showApprovedAmtMdl(){
-    $('#approvedAmtMdl > #modalBtn').trigger('click');
+    this.approvedAmtMdl.openNoClose();
     this.getClaimApprovedAmt();
     this.removeDirtyHistTbl();
   }

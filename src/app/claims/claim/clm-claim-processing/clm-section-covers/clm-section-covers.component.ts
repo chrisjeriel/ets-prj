@@ -73,11 +73,11 @@ export class ClmSectionCoversComponent implements OnInit {
   constructor(private claimService: ClaimsService, private ns: NotesService, private route: ActivatedRoute, private maintenanceService: MaintenanceService) { }
 
   ngOnInit() {
-    this.route.params.subscribe((data:any)=>{
-      console.log(data)
-      this.claimId = data.claimId;
-    });
-    
+    // this.route.params.subscribe((data:any)=>{
+    //   console.log(data)
+    //   this.claimId = data.claimId;
+    // });
+    this.claimId = this.claimInfo.claimId;
     this.getClmSec();
     this.check();
   }

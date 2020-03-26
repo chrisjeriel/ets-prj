@@ -161,7 +161,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelResStat()" *ngIf="!isInquiry"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickSaveResStat()" *ngIf="!isInquiry"><a>Save</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="resStatMdl.closeModal()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 
@@ -173,7 +173,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()" *ngIf="!isInquiry"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickSaveAppAmt()" *ngIf="!isInquiry"><a>Save</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="approvedAmtMdl.closeModal()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 
