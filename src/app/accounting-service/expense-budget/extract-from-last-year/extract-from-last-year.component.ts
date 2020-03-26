@@ -144,8 +144,8 @@ export class ExtractFromLastYearComponent implements OnInit {
 
   ngOnInit() {
     this.generateYears();
-    //this.retrieveAcseActExpMonthly(this.selectedYear);
     this.selectedYear = new Date().getFullYear();
+    this.retrieveAcseActExpMonthly(this.selectedYear, true);
   }
 
   generateYears(){
