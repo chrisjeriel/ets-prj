@@ -48,7 +48,7 @@
      <div class="row">
         <div class="col-sm-12" style="margin-top: 14px">
             <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)" (newClick)="onRowclick($event)">
-                <ng-container controls-l>
+                <ng-container controls-l *ngIf="jvDetails.statusType != 'A' && jvDetails.statusType != 'X' && jvDetails.statusType != 'P'">
                     <label class="form-control-sm">For Approval</label> 
                     <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="onClickApproval()" [disabled]="notBalanced">
                 </ng-container>

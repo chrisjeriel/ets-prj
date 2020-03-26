@@ -172,11 +172,11 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     //this.passDataOffsetting.tHeaderWithColspan.push({ header: "", span: 1 }, { header: "Policy Information", span: 14 },
     //     { header: "Payment Details", span: 5 }, { header: "", span: 2 });
     // this.passDataOffsetting = this.accountingService.getInwardPolicyKeys('JV');
-    this.passDataOffsetting.nData = {showMG:1,tranId : '',qsoaId : '',itemNo : '',policyId : '',policyNo : '',soaNo : '',coRefNo : '',effDate : '',dueDate : '',instNo : '',currCd : '',currRate : '',premAmt : '',riComm : '',riCommVat : '',charges : '',netDue : '',prevPaytAmt : '',balPaytAmt : '',overdueInt : '',remarks : '',createUser : this.ns.getCurrentUser(),createDate : '',updateUser : this.ns.getCurrentUser(),updateDate : ''};
+    this.passDataOffsetting.nData = {showMG:1,tranId : '',qsoaId : '',itemNo : '',policyId : '',policyNo : '',soaNo : '',coRefNo : '',effDate : '',dueDate : '',instNo : '', insuredDesc: '',currCd : '',currRate : '',premAmt : '',riComm : '',riCommVat : '',charges : '',netDue : '',prevPaytAmt : '',balPaytAmt : '',overdueInt : '',remarks : '',createUser : this.ns.getCurrentUser(),createDate : '',updateUser : this.ns.getCurrentUser(),updateDate : ''};
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
-      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1, 4);
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
       this.readOnly = true;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
@@ -186,8 +186,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.passDataOffsetting.deleteFlag = false;
       this.passData.uneditable = [true,true,true,true,true];
       this.passData.disableAdd = true;
-      this.passDataOffsetting.tHeaderWithColspan = [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}],
-      this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,false,true,true,true,true,true,true];
+      this.passDataOffsetting.tHeaderWithColspan = this.passDataOffsetting.tHeaderWithColspan.slice(1);
+      this.passDataOffsetting.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.passDataOffsetting.disableAdd = true;
     }
 
@@ -390,6 +390,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].charges = data.data[i].balChargesDue;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].totalPayt = data.data[i].cumPayment + data.data[i].prevBalance;
       this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].remainingBal = data.data[i].prevNetDue - (data.data[i].cumPayment + data.data[i].prevBalance);
+      this.quarterTable.indvSelect.acctOffset[this.quarterTable.indvSelect.acctOffset.length - 1].insuredDesc = data.data[i].insuredDesc;
       
     }
     this.trytytrans.refreshTable();

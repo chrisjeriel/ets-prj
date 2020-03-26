@@ -63,6 +63,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   @ViewChild('servFeeMainTbl') servFeeMainTbl: CustEditableNonDatatableComponent;
   @ViewChild('servFeeSubTbl') servFeeSubTbl: CustEditableNonDatatableComponent;
+  @ViewChild('unappliedLov') unappliedLov         : LovComponent;
 
   @Input() rowData : any = {
     reqId : ''
@@ -182,7 +183,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       currRate  : '',
       currAmt   : 0,
       localAmt  : 0,
-      newRec    : 1
+      newRec    : 1,
     },
     // opts: [
     //   {selector   : 'currCd',  prev : [], vals: []},
@@ -201,10 +202,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   unappliedColData: any = {
     tableData     : [],
-    tHeader       : ['Type','Item','Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
-    dataTypes     : ['req-select','text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    // tHeader       : ['Type','Item','Reference No.', 'Description', 'Curr', 'Curr Rate', 'Amount', 'Amount (PHP)'],
+    // dataTypes     : ['req-select','text', 'text', 'text', 'text', 'percent', 'currency', 'currency'],
+    tHeader       : ['Return','Type', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes     : ['checkbox','reqSelect', 'reqTxt2','text','text','text','percent','reqCurrency','currency'],
     nData: {
-      transdtlType : '',
+      transdtlType : 'OP',
       itemName     : '',
       refNo        : '',
       remarks      : '',
@@ -212,10 +215,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
       currRate     : '',
       currAmt      : 0,
       localAmt     : 0,
-      newRec       : 1
+      newRec       : 1,
+      unappliedId  : '',
+      return       : 0,
+      returnTag    : 'N'
     },
     opts: [
-      {selector   : 'transdtlTypeDesc',  prev : [], vals: []},
+      {selector   : 'transdtlType',  prev : [], vals: []},
     ],
     paginateFlag  : true,
     infoFlag      : true,
@@ -223,10 +229,11 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : true,
     addFlag       : true,
     deleteFlag    : true,
-    uneditable    : [false,false,false,false,true,true,false,true],
-    total         : [null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
-    widths        : ['auto','auto','auto','auto','auto','auto','auto','auto'],
-    keys          : ['transdtlTypeDesc','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
+    uneditable    : [false,false,false,false,false,true,true,false,true],
+    total         : [null,null,null, null, null, null,'Total', 'currAmt', 'localAmt'],
+    // widths        : ['auto','auto','auto','auto','auto','auto','auto','auto'],
+    widths        : [1,180,210,160,'auto',80,100,120,120],
+    keys          : ['returnTag','transdtlType','itemName','refNo','remarks','currCd','currRate','currAmt','localAmt']
   };
 
   serviceFeeMainData: any = {
@@ -385,7 +392,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.treatyBalanceData.tableData = [];
           (this.requestData.reqStatus != 'F' && this.requestData.reqStatus != 'N')?this.removeAddDelBtn(this.treatyBalanceData):'';
           if(!['F','N'].includes(this.requestData.reqStatus)) {
-            this.treatyBalanceData.tHeaderWithColspan = this.treatyBalanceData.tHeaderWithColspan.slice(1, 4);
+            this.treatyBalanceData.tHeaderWithColspan = this.treatyBalanceData.tHeaderWithColspan.slice(1);
           }
           this.getTreaty();
         }else if(this.requestData.tranTypeCd == 7){
@@ -409,7 +416,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.unappliedColData.opts[0].vals = rec.map(e => e.code);
       this.unappliedColData.opts[0].prev = rec.map(e => e.description);
     });
-    this.unappliedColData.tableData = this.recPrqTrans.filter(e => e.transdtlType != null).map(e => {e.reqId  = this.rowData.reqId;return e;});
+    this.unappliedColData.tableData = this.recPrqTrans.filter(e => e.transdtlType != null).map(e => {
+      e.reqId = this.rowData.reqId;
+      e['return'] = 2;
+      e['uneditable'] = ['returnTag'];
+
+      if(e.returnTag == 'Y') {
+        e['uneditable'] = ['returnTag', 'transdtlType'];
+        e['uneditable2'] = ['itemName'];
+      }
+
+      return e;
+    });
     this.unColTbl.refreshTable();
   }
 
@@ -732,11 +750,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.dialogIcon = '';
     this.dialogMessage = '';
     var isEmpty = 0;
+    var posReturn = false;
     this.params.savePrqTrans = [];
     this.unappliedColData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
-      if(e.transdtlTypeDesc == '' || e.transdtlTypeDesc == null || e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
+      if(e.transdtlType == '' || e.transdtlType == null || e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0 ||
+         (e.returnTag == 'Y' && e.currAmt >= 0)){
         if(!e.deleted){
+          posReturn = e.returnTag == 'Y' && e.currAmt >= 0;
           isEmpty = 1;
           e.fromCancel = false;
         }else{
@@ -761,7 +782,13 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
     console.log(this.unappliedColData.tableData);
     if(isEmpty == 1){
-      this.dialogIcon = 'error';
+      if(posReturn) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Return amount/s must be negative.';
+      } else {
+        this.dialogIcon = 'error';
+      }
+
       this.sucUnCol.open();
       this.params.savePrqTrans   = [];
     }else{
@@ -1681,6 +1708,72 @@ export class PaymentRequestDetailsComponent implements OnInit {
    
     this.ns.export(name, query, tblData); 
     
+  }
+
+  unappliedColChange(data) {
+    if(data.key === 'returnTag') {
+      for(var i = 0; i < data.length; i++) {
+        if(data[i].returnTag == 'Y' && data[i].newRec !== undefined && data[i]['return'] !== 2) {
+          data[i]['unappliedId'] = '';
+          data[i]['itemName'] = '';
+          data[i]['refNo'] = '';
+          data[i]['remarks'] = '';
+          data[i]['currAmt'] = 0;
+          data[i]['localAmt'] = 0;
+
+          data[i]['magnifyingGlass'] = ['itemName'];
+          data[i]['uneditable'] = ['transdtlType'];
+          data[i]['uneditable2'] = ['itemName'];
+          data[i]['return'] = 1;
+        } else if(data[i].returnTag == 'N' && data[i].newRec !== undefined) {
+          data[i]['magnifyingGlass'] = [];
+          data[i]['uneditable'] = [];
+          data[i]['uneditable2'] = [];
+          data[i]['return'] = 0;
+          data[i]['unappliedId'] = '';
+        }
+      }
+    }
+  }
+
+  showUnappliedLov(ev) {
+    this.passData.params = {
+      unappliedId: '',
+      cedingId: this.requestData.payeeCd,
+      currCd: this.requestData.currCd
+    }
+    this.passData.hide = this.unappliedColData.tableData.filter((a)=>{return a.unappliedId !== undefined && a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
+    this.passData.selector = 'unappliedColl';
+
+    setTimeout(() => {
+      this.unappliedLov.openLOV();
+    });
+  }
+
+  setUnapplied(data) {
+    this.unappliedColData.tableData = this.unappliedColData.tableData.filter(a=>a.return!=1);
+    for(var i = 0; i < data.data.length; i++) {
+      console.log(data.data[i]);
+      this.unappliedColData.tableData.push(JSON.parse(JSON.stringify(this.unappliedColData.nData)));
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['edited']           = true;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['return']           = 2;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['magnifyingGlass']  = [];
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['uneditable']       = ['returnTag', 'transdtlType'];
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['uneditable2']      = ['itemName'];
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['unappliedId']      = data.data[i].unappliedId;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['returnTag']        = 'Y';
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['transdtlType']     = data.data[i].transdtlType;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['itemName']         = data.data[i].itemName;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['refNo']            = data.data[i].refNo;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['remarks']          = data.data[i].remarks;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['currCd']           = data.data[i].currCd;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['currRate']         = data.data[i].currRate;
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['currAmt']          = -(parseFloat(data.data[i].balUnapldAmt));
+      this.unappliedColData.tableData[this.unappliedColData.tableData.length - 1]['localAmt']         = -(parseFloat(data.data[i].localAmt));
+    }
+
+    this.unColTbl.refreshTable();
+    this.unColTbl.onRowClick(null, this.unappliedColData.tableData[0]);
   }
 
 }

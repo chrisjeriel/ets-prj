@@ -151,6 +151,10 @@ export class JvAccountingEntriesComponent implements OnInit {
           data.list[i].showMG = 1;
         }
 
+        if(this.jvDetails.statusType == 'A' || this.jvDetails.statusType == 'X' || this.jvDetails.statusType == 'P') {
+          data.list[i].showMG = 0;
+        }
+
         this.passData.tableData.push(data.list[i]);
         this.debitTotal  += data.list[i].foreignDebitAmt;
         this.creditTotal += data.list[i].foreignCreditAmt;

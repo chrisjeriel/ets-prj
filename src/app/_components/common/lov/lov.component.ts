@@ -101,7 +101,14 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'unappliedColl'){
-            this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            var refArr = ref.split('-');
+
+            if(Number(refArr[1]) == 0) {
+              this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the Acknowledgement Receipt first.';
+            } else {
+              this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            }
+            
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
@@ -1112,10 +1119,10 @@ export class LovComponent implements OnInit {
        })
 
     }else if(this.passData.selector == 'acitSoaDtl'){
-      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
-      this.passTable.widths =[300,300,1,200,200,200,200]
-      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
-      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
       this.passTable.checkFlag = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -1641,14 +1648,21 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'unappliedColl'){
-      this.passTable.tHeader = ['Item','Type','Reference No','Amount'];
-      this.passTable.widths = [125, 125, 100, 120];
-      this.passTable.dataTypes = ['text','text','text','currency'];
-      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'currAmt'];
+      this.passTable.tHeader = ['Item','Type','Reference No','Total Unapplied', 'Total Applied', 'Unapplied Balance'];
+      this.passTable.minColSize = ['100px', '100px', '160px', '120px', '120px', '120px'];
+      this.passTable.dataTypes = ['text','text','text','currency', 'currency', 'currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'totalUnapldAmt', 'totalApldAmt', 'balUnapldAmt'];
       this.passTable.checkFlag = true;
 
-      this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
-        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+      this.accountingService.getAcitUnappliedColl(this.passData.params).subscribe((data:any) => {
+        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.unappliedId)==-1});
+
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        
         this.table.refreshTable();
       });
     } else if(this.passData.selector == 'acitTranType') {

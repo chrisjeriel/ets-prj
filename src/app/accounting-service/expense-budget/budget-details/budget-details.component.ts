@@ -13,6 +13,7 @@ import { map } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 
 @Component({
   selector: 'app-budget-details',
@@ -27,13 +28,16 @@ export class BudgetDetailsComponent implements OnInit {
   @ViewChild('suc') suc                 : SucessDialogComponent;
   @ViewChild('myForm') form             : NgForm;
   @ViewChild('copyYear') copyYear       : ModalComponent;
+  @ViewChild('override') overrideLogin: OverrideLoginComponent;
+  @ViewChild('conOvr') conOvr                 : ConfirmSaveComponent;
+  @ViewChild('conOvrMdl') conOvrMdl       : ModalComponent;
 
   budgetYrData: any = {
     tableData        : [],
-    tHeader          : ["Account Code", "Account Name","SL Type", "SL Name", "Amount"],
-    resizable        : [true, true, true, true, true],
-    uneditable       : [true, true, true, true, false],
-    dataTypes        : ["text", "text", "text","text","currency"],
+    tHeader          : ["Account Code", "Account Name","SL Type", "SL Name", "Total Budget", "Total Expense"],
+    resizable        : [true, true, true, true, true, true],
+    uneditable       : [true, false, true, true, false, true],
+    dataTypes        : ["text", "text", "text","text","currency","currency"],
     nData  : {
       glAcctId     : '',
       glShortCd    : '',
@@ -51,12 +55,12 @@ export class BudgetDetailsComponent implements OnInit {
     searchFlag       : true,
     pageLength       : 15,
     infoFlag         : true,
-    widths           : [117, 'auto', 'auto', 'auto', 125],
+    widths           : [117, 'auto', 'auto', 'auto', 125, 125],
     paginateFlag     : true,
     pageID           : 'budgetYrDataID',
     magnifyingGlass  : ['glShortCd','slTypeName','slName'],
-    total            : [null,null,null,'TOTAL','totalBudget'],
-    keys             : ['glShortCd','glShortDesc','slTypeName','slName','totalBudget'],
+    total            : [null,null,null,'TOTAL','totalBudget', 'totalExpense'],
+    keys             : ['glShortCd','glShortDesc','slTypeName','slName','totalBudget', 'totalExpense'],
     filters: [
             {key: 'accCode',title: 'Account Code',dataType: 'text'},
             {key: 'accName',title: 'Account Name',dataType: 'text'},
@@ -94,6 +98,8 @@ export class BudgetDetailsComponent implements OnInit {
   dialogMessage  : string;
   lovCheckBox    : boolean = true;
   lovRow         : any;
+  approvalCd: string = 'AC011';
+  conOvrMsg: string = '';
 
   constructor(private titleService: Title,private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
               public modalService: NgbModal, private router : Router) { }
@@ -260,32 +266,68 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   yearsRange(){
-    var d = new Date().getFullYear()+10;
-    for(var i=2000;i<=d;i++){
+    var d = new Date().getFullYear();
+    for(var i=2000;i<=d+10;i++){
       this.budgetYearArr.push(i);
     }
     this.budgetYearArr.sort((a,b) => b-a);
-    this.budgetYear = this.budgetYearArr[0];
+    this.budgetYear = d.toString(); //this.budgetYearArr[0];
     this.getAcseBudgetExpense();
   }
 
   onClickCopy(){
+    this.params.originYear = '';
     this.copyYear.openNoClose();
   }
 
-  copyExpenseBudget(){
+  copyExpenseBudget(fromOverride?){
+    if(fromOverride !== undefined && !fromOverride) {
+      return;
+    }
+
     this.params.desYear = this.budgetYear;
-    console.log(this.params);
+
+    this.params['force'] = fromOverride == undefined ? 'N' : 'Y';
+
+    this.con.showLoading(true);
     this.acctService.copyExpenseBudget(this.params).subscribe((data:any) => {
-      if(data['returnCode'] == 0){
+      console.log(data);
+      this.con.showLoading(false);
+      if(data['returnCode'] == 0) {
         this.dialogIcon = 'error';
-      }else{
+        this.suc.open();
+      } else if (data['returnCode'] == 1) {
+        this.conOvrMsg = data['messageList'][0]['message'];
+        this.conOvrMdl.openNoClose();
+      } else if(data['returnCode'] == 2) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = data['messageList'][0]['message'];
+        this.suc.open();
+      } else {
         this.dialogMessage = 'Expense Budget for '+this.params.desYear+' was successfully copied from '+this.params.originYear;
         this.dialogIcon = 'success-message';
         this.getAcseBudgetExpense();
+        this.suc.open();
       }
-      this.suc.open();
+      
     });
+  }
+
+  checkUser() {
+    this.con.showLoading(true);
+    this.mtnService.getMtnApprovalFunction(this.approvalCd).subscribe(
+      (data:any)=>{
+        this.con.showLoading(false);
+        if(data.approverFn.map(a=>{return a.userId}).includes(this.ns.getCurrentUser())){
+          //User has the authority to print AR
+          this.copyExpenseBudget(true);
+        }else{
+          //User has no authority. Open Override Login
+          this.overrideLogin.getApprovalFn();
+          this.overrideLogin.overrideMdl.openNoClose();
+        }
+      }
+    );
   }
 }
 

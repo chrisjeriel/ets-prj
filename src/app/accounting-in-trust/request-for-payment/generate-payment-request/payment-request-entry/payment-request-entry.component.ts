@@ -243,8 +243,11 @@ export class PaymentRequestEntryComponent implements OnInit {
       console.log(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')));
       if(this.saveAcitPaytReq.tranTypeCd == 5){
         this.isReqAmtEqDtlAmts = true;
-      }else{
-        console.log('here');
+      } else if(this.saveAcitPaytReq.tranTypeCd == 6) {
+        var unapplied = ((recPrq.filter(x => x.transdtlType !== null).map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100) * 2;
+
+        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == (Number(Math.abs(totalReqAmts))-unapplied));
+      } else {
         this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
       }
 

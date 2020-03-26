@@ -304,7 +304,7 @@
                                          <ng-container *ngSwitchCase="'reqCurrency'">
                                              <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
                                              <ng-template #currency>
-                                                 <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
+                                                 <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
                                              </ng-template>
                                          </ng-container>
 
@@ -785,7 +785,7 @@
                                              <ng-container *ngSwitchCase="'reqCurrency'">
                                                  <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
                                                  <ng-template #currency>
-                                                     <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
+                                                     <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
                                                  </ng-template>
                                              </ng-container>
 
@@ -797,6 +797,15 @@
                                                      </ng-container>
                                                  </ng-container>
                                              </select>
+
+                                             <ng-container *ngSwitchCase="'reqTxt2'">
+                                                <span *ngIf="data.uneditable2 != undefined && data.uneditable2.indexOf(key)!=-1; else reqTxt2">{{ data[key] }}</span>
+                                                <ng-template #reqTxt2>
+                                                    <input  (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
+                                                </ng-template>
+
+                                                <div><a *ngIf="data.magnifyingGlass !== undefined && data.magnifyingGlass.indexOf(key)!=-1"><i (click)="onClickLOV(data,key)" class="fa fa-search align-middle"></i></a></div>
+                                             </ng-container>
 
                                              <input  (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" *ngSwitchCase="'reqTxt'" class="editable-text form-control-sm" type="text" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [maxlength]="passData.limit && passData.limit[key] != undefined ? passData.limit[key] : -1" [appRequired]="false">
 
@@ -1284,7 +1293,7 @@
                                      <ng-container *ngSwitchCase="'reqCurrency'">
                                          <span *ngIf="data.newRec != 1 && !data.others && passData.uneditableKeys && passData.uneditableKeys.indexOf(key)!=-1; else currency" class="text-right">{{ data[key] | number:'1.2-2' | negativeAmount }}</span>
                                          <ng-template #currency>
-                                             <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" appCurrency class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
+                                             <input (keydown)="traverse($event,data,key,ti)" [id]="passData.pageID+key+ti" (focus)="focus(data)" onClick="this.select();" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" [ngModelOptions]="{standalone: true}" class="editable-text text-right number form-control-sm" type="text" [ngModel]="data[key] | number:'1.2-2' | negativeAmount" (blur)="format($event , data, key)" [class.number-magnify]="passData.magnifyingGlass.indexOf(key)!=-1" (change)="onDataChange($event,data,key)" [ngClass]="{'negativeNumber': data[key]<0}" [appRequired]="false">
                                          </ng-template>
                                      </ng-container>
 
