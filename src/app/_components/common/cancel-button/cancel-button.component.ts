@@ -39,7 +39,7 @@ export class CancelButtonComponent implements OnInit {
       $('.ng-dirty').removeClass('ng-dirty');
       this.router.navigate([this.url]);
     } else {
-      this.saveModal.closeModal();
+      // this.saveModal.closeModal();
     }
   }
 

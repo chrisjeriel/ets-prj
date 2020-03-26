@@ -34,7 +34,8 @@ export class RenewExpPolicyComponent implements OnInit {
   searchParams: any = {
         statusArr:['2'],
         'paginationRequest.count':10,
-        'paginationRequest.position':1    
+        'paginationRequest.position':1,
+        renTag:'Y'    
     };
 
 
@@ -125,6 +126,10 @@ export class RenewExpPolicyComponent implements OnInit {
 
       this.searchParams['paginationRequest.count']=10;
       this.searchParams['paginationRequest.position']=1;  
+    }
+
+    if(this.lovTable != undefined){
+      this.lovTable.overlayLoader = true;
     }
 
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
@@ -308,9 +313,10 @@ export class RenewExpPolicyComponent implements OnInit {
   showWarningMdl() {
     this.searchParams = {
         statusArr:['2'],
-        'paginationRequest.count':10,
+        'paginationRequest.count':10,  
         'paginationRequest.position':1,   
-        altNo:0        
+        altNo:0,
+        renTag: 'Y  '       
     }
     $('#altWarningModal > #modalBtn').trigger('click');
   }

@@ -701,6 +701,13 @@ export class ClmClaimHistoryComponent implements OnInit {
         //edit by paul 9/5/2019
         let validHistTypes:any[] = this.histTypeData;
 
+        if(e.histCategory != 'L'){
+          e.uneditable = ['exGratia'];
+          e.exGratia = 'N';
+        }else{
+          e.uneditable = [];
+        }
+
         if((e.histCategory == 'L' && this.preVal.lossStatCd=='CD') || ((e.histCategory == 'O' || e.histCategory == 'A') && this.preVal.expStatCd=='CD')){
           validHistTypes = validHistTypes.filter(a=>a.code != 2 && a.code != 3 && a.code != 1 && a.code != 6);
         }
@@ -749,11 +756,11 @@ export class ClmClaimHistoryComponent implements OnInit {
             this.showWarnMsg();
             e.histType = '';
             e.histTypeDesc = ''; 
-          }else if(paymentstAmt> this.clmHistoryData.approvedAmt && e.histCategory == 'L'){
-            this.warnMsg = 'Please add Approved Amount before proceeding.';
-            this.showWarnMsg();
-            e.reserveAmt = 0;
-            return;
+          // }else if(paymentstAmt> this.clmHistoryData.approvedAmt && e.histCategory == 'L'){
+          //   this.warnMsg = 'Please add Approved Amount before proceeding.';
+          //   this.showWarnMsg();
+          //   e.reserveAmt = 0;
+          //   return;
           }else{
             if(data['key']=="reserveAmt" && ( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
                (e.histCategory == 'A' && (e.reserveAmt > totAdjExpRes)) || 
@@ -787,9 +794,9 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     });
 
-    if(this.passDataHistory.tableData.some(e => e.exGratia == 'Y')){
-      this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
-    }
+    // if(this.passDataHistory.tableData.some(e => e.exGratia == 'Y')){
+    //   this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
+    // }
 
     setTimeout(() => {
       $('#histId').find('tbody').children().each(function(indx){
@@ -799,7 +806,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         var histType = $(histSelects[2]);
         var resAmt = $($(this).find('input.number')[0]).val();
 
-        (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
+        // (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
           histType.addClass('unclickable');
         }else{

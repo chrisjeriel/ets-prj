@@ -391,29 +391,25 @@ export class QuoteEndorsementComponent implements OnInit {
      this.table.loadingFlag = true;
       this.opId = event.optionId;
        this.quotationService.getEndorsements(this.quotationInfo.quoteId,'',event.optionId).subscribe((data: any) => {
-             while(this.endorsementData.tableData.length > 0) {
-              this.endorsementData.tableData.pop();
-            }    
-            for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
-                          this.endorsementData.tableData.push(
-                                                          // new QuoteEndorsement(
-                                                          //          data.endorsements[lineCount].endtCd, 
-                                                          //          data.endorsements[lineCount].endtTitle,
-                                                          //          data.endorsements[lineCount].description,
-                                                          //          data.endorsements[lineCount].remarks)
-                                                          data.endorsements[lineCount]
-                                                           );
-                                                          this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
-                                                          this.saveEndt.optionId = data.endorsements[lineCount].optionId;
-                                                          // this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
-                                                          this.saveEndt.createUser = this.ns.getCurrentUser();
-                                                          this.saveEndt.updateUser = this.ns.getCurrentUser();          
-            }
-            if(data.endorsements.length == 0){
-                // console.log(data)
-                // this.endorsementData.tableData = JSON.parse(JSON.stringify(this.defaultEndorsements));
-                // this.table.markAsDirty();
-            }
+            //  while(this.endorsementData.tableData.length > 0) {
+            //   this.endorsementData.tableData.pop();
+            // }    
+            this.endorsementData.tableData = data.endorsements;
+            // for(var lineCount = 0; lineCount < data.endorsements.length; lineCount++){
+            //               this.endorsementData.tableData.push(
+            //                                               // new QuoteEndorsement(
+            //                                               //          data.endorsements[lineCount].endtCd, 
+            //                                               //          data.endorsements[lineCount].endtTitle,
+            //                                               //          data.endorsements[lineCount].description,
+            //                                               //          data.endorsements[lineCount].remarks)
+            //                                               data.endorsements[lineCount]
+            //                                                );
+                                                          // this.saveEndt.quoteId = data.endorsements[lineCount].quoteId;
+                                                          // this.saveEndt.optionId = data.endorsements[lineCount].optionId;
+                                                          // // this.saveEndt.createDate = this.formatDate(data.endorsements[lineCount].createDate);
+                                                          // this.saveEndt.createUser = this.ns.getCurrentUser();
+                                                          // this.saveEndt.updateUser = this.ns.getCurrentUser();          
+            // }
            /* this.table.refreshTable();*/
             this.table.refreshTable();
        });
@@ -457,8 +453,8 @@ export class QuoteEndorsementComponent implements OnInit {
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].edited  = true; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].endtCd = data[i].endtCd; 
           this.endorsementData.tableData[this.endorsementData.tableData.length-1].showMG = 0; 
+          this.getDefaultDeductibles(this.endorsementData.tableData[this.endorsementData.tableData.length-1])
         }
-
         this.table.refreshTable();
     }
 
@@ -612,29 +608,29 @@ export class QuoteEndorsementComponent implements OnInit {
       this.cancelBtn.clickCancel();
     }
 
-    showDeductiblesOptions(){
-      if(this.table.indvSelect != null && this.optionTable.indvSelect){
-          this.showModal = true;
-          setTimeout(()=>{
-                this.deductiblesModal.openNoClose();
-          },0)
-          let params:any ={
-                quoteId:this.quoteId,
-                optionId:this.optionTable.indvSelect.optionId,
-                coverCd: '0',
-                quotationNo: '',
-                endtCd: this.table.indvSelect.endtCode    
-          };
-          this.quotationService.getDeductibles(params).subscribe((data)=>{
-              if(data['quotation'].optionsList != null){
-                this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
-                this.deductibleTable.refreshTable();
-              }
-              else
-                this.getDefaultDeductibles();
-            });
-      }
-    }
+    // showDeductiblesOptions(){
+    //   if(this.table.indvSelect != null && this.optionTable.indvSelect){
+    //       this.showModal = true;
+    //       setTimeout(()=>{
+    //             this.deductiblesModal.openNoClose();
+    //       },0)
+    //       let params:any ={
+    //             quoteId:this.quoteId,
+    //             optionId:this.optionTable.indvSelect.optionId,
+    //             coverCd: '0',
+    //             quotationNo: '',
+    //             endtCd: this.table.indvSelect.endtCode    
+    //       };
+    //       this.quotationService.getDeductibles(params).subscribe((data)=>{
+    //           if(data['quotation'].optionsList != null){
+    //             this.deductiblesData.tableData = data['quotation'].optionsList[0].deductiblesList;
+    //             this.deductibleTable.refreshTable();
+    //           }
+    //           else
+    //             this.getDefaultDeductibles();
+    //         });
+    //   }
+    // }
 
   // onClickSaveDeductibles(){
   //   $('#deductibles #confirm-save #modalBtn2').trigger('click');
@@ -735,7 +731,7 @@ export class QuoteEndorsementComponent implements OnInit {
             this.deductiblesData.tableData = [];
         }
         else if(data.deductiblesList.length == 0 && data.add){
-            this.getDefaultDeductibles();
+            // this.getDefaultDeductibles();
             this.deductiblesData.disableAdd = false;
         }
         else{
@@ -745,23 +741,26 @@ export class QuoteEndorsementComponent implements OnInit {
         this.deductibleTable.refreshTable();
     }
 
-    getDefaultDeductibles(){
-    this.uwService.getMaintenanceDeductibles(this.quotationInfo['lineCd'],'',
-        '0',this.table.indvSelect.endtCd,'Y','Y').subscribe((data)=>{
-          this.table.indvSelect.deductiblesList = data['deductibles'].filter((a)=>{
-            a.sumInsured = 0;
-            a.coverCd = 0;
-            a.deductibleTxt = a.deductibleText;
-            a.deductibleRt = a.deductibleRate;
-            a.endtCd = this.table.indvSelect.endtCode;
-            a.edited = true;
-            a.createDate = null;
-            a.updateDate = null;
-            return true;
-          })
-          this.deductiblesData.tableData = this.table.indvSelect.deductiblesList
-          this.deductibleTable.refreshTable();
-          this.deductibleTable.markAsDirty();
+    getDefaultDeductibles(endt:any){
+
+      this.uwService.getMaintenanceDeductibles(this.quotationInfo['lineCd'],'',
+          '0',endt.endtCd,'Y','Y').subscribe((data)=>{
+            endt.deductiblesList = data['deductibles'].filter((a)=>{
+              a.sumInsured = 0;
+              a.coverCd = 0;
+              a.deductibleTxt = a.deductibleText;
+              a.deductibleRt = a.deductibleRate;
+              a.endtCd = endt.endtCode;
+              a.edited = true;
+              a.createDate = null;
+              a.updateDate = null;
+              return true;
+            })
+            if(this.table.indvSelect == endt){
+              this.deductiblesData.tableData = this.table.indvSelect.deductiblesList
+              this.deductibleTable.refreshTable();
+              this.deductibleTable.markAsDirty();
+            }
         })
 
   }

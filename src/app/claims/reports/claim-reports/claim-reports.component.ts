@@ -12,6 +12,7 @@ import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mt
 import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
+import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
   selector: 'app-claim-reports',
@@ -24,13 +25,19 @@ export class ClaimReportsComponent implements OnInit {
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild('ceding') cedingLov: CedingCompanyComponent;
-  @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
+  @ViewChild('appCancel') cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
   @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
   @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
   @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
+  @ViewChild('Range') rangeLOV: ModalComponent;
+  @ViewChild('success') openDialog: SucessDialogComponent;
+  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+
+  tableFlag: boolean = false;
+  cancelFlag: boolean = false;
 
   passLov: any = {
     selector: 'mtnReport',
@@ -48,7 +55,7 @@ export class ClaimReportsComponent implements OnInit {
   	reportId : '',
     lineCd: '',
     lineName: '',
-    destination: '',
+    destination: 'screen',
     cedingId: '',
     cedingName: '',
     alteration: '',
@@ -61,7 +68,7 @@ export class ClaimReportsComponent implements OnInit {
     clmEventName: '',
     currCd: '',
     currency: '',
-    extTypeTag: '',
+    extTypeTag: 'LE',
   }
 
   sendData: any = {
@@ -92,6 +99,25 @@ export class ClaimReportsComponent implements OnInit {
   modalMode: string = "";
   loading : boolean = true;
 
+  passData: any = {
+    tableData: [],
+    tHeader: ['Range', 'Year Range'],
+    dataTypes: ['string', 'number'],
+    nData: {rangeCd: '', rangeValue: ''},
+    addFlag: true,
+    deleteFlag: false,
+    genericBtn:'Delete',
+    checkFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    pagination: true,
+    pageStatus: true,
+    pageLength: 10,
+    uneditable: [false,false],
+    keys: ['rangeCd', 'rangeValue'],
+    widths: [110,140]
+  };
+
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal) { }
 
 
@@ -108,7 +134,31 @@ export class ClaimReportsComponent implements OnInit {
   setReport(data){
     if(data.data != null){
         this.paramsToggle = [];
-        this.params = [];
+        this.params = {
+                        dateRange: '',
+                        dateParam:'',
+                        reportName : '',
+                        byDateFrom:'',
+                        byDateTo:'',
+                        byAsOf:'',
+                        reportId : '',
+                        lineCd: '',
+                        lineName: '',
+                        destination: 'screen',
+                        cedingId: '',
+                        cedingName: '',
+                        alteration: '',
+                        incRecTag: '',
+                        clmStat: '',
+                        clmStatName: '',
+                        clmAdj: '',
+                        clmAdjName: '',
+                        clmEvent: '',
+                        clmEventName: '',
+                        currCd: '',
+                        currency: '',
+                        extTypeTag: 'LE',
+                      };
         this.params.reportId = data.data.reportId;
         this.params.reportName = data.data.reportTitle;
 
@@ -134,32 +184,25 @@ export class ClaimReportsComponent implements OnInit {
                              'byDate', 'byMonthYear', 'asOf');
     } else if((String(this.params.reportId).substr(0, 7) == 'CLMR010') && (['H','I','J','K'].includes(String(this.params.reportId).charAt(this.params.reportId.length-1)))) { */
       this.paramsToggle.push('line', 'company', 'currency',
-                             'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag');
+                             'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate');
     /*} else {
         this.params.reportId = '';
     }*/
+      if(this.params.reportId == 'CLMR010Q' || this.params.reportId == 'CLMR010R' ){
+        this.paramsToggle.push('siRangeBtnDisabled')
+      } else if(this.params.reportId == 'CLMR010L'){
+        this.paramsToggle= ['line', 'company', 'currency',
+                             'byDate', 'byMonthYear', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag'];
+      }else if(this.params.reportId == 'CLMR010C'){
+        this.paramsToggle= ['line', 'clmAdj', 'currency','clmStat',
+                             'byDate', 'byMonthYear', 'asOf', 'extTypeTag','clmStat','lossDate'];
+      } else if(this.params.reportId == 'CLMR010A'){
+        this.paramsToggle.push('minLossAmt');
+      }
 
     setTimeout(()=> {
     	this.ns.lovLoader(data.ev, 0);
     }, 500);
-/*=======
-        if (this.params.reportId == 'CLMR010A') {
-          this.paramsToggle.push('line', 'company',
-                                 'byDate', 'byMonthYear', 'asOf');
-        } else if (this.params.reportId == 'CLMR010B') {
-          this.paramsToggle.push('line', 'company',
-                                 'byDate', 'byMonthYear', 'asOf');
-        }
-
-        
-
-        setTimeout(()=> {
-          this.ns.lovLoader(data.ev, 0);
-        }, 500)
-      }else{
-        this.params.reportId = '';
-      }
->>>>>>> 80a0bd17d6aaecdaec0b569ee468cb0bb5b7924c*/
     } else {
       this.params.reportId = '';
       this.params.reportName = '';
@@ -223,7 +266,10 @@ export class ClaimReportsComponent implements OnInit {
 
   prepareData(){
     this.modalMode = "";
-
+    let forceE = this.sendData.forceExtract;
+    this.sendData = JSON.parse(JSON.stringify(this.params));
+    this.sendData.forceExtract = forceE;
+    this.sendData.extractUser = this.ns.getCurrentUser();
     if(this.params.dateRange == 1){
       this.sendData.fromDate = this.ns.toDateTimeString(this.params.byDateFrom);
       this.sendData.toDate = this.ns.toDateTimeString(this.params.byDateTo);
@@ -246,6 +292,8 @@ export class ClaimReportsComponent implements OnInit {
 
   extract(cancel?){
     this.loading = true;
+
+    this.tableFlag = true;
     this.prepareData();
 
     this.printService.extractReport({ reportId: this.params.reportId, clmr010Params:this.sendData }).subscribe((data:any)=>{
@@ -298,6 +346,7 @@ export class ClaimReportsComponent implements OnInit {
 
     let params :any = {
       "reportId" : this.params.reportId,
+      // clmr010Params : this.sendData,
       "clmr010Params.extractUser" :   this.sendData.extractUser,
       "clmr010Params.dateRange" :   this.sendData.dateRange,
       "clmr010Params.dateParam" :  this.sendData.dateParam,
@@ -368,4 +417,144 @@ export class ClaimReportsComponent implements OnInit {
     this.params.byAsOf = '';
   }
 
+  retrieveRange(){
+    this.table.loadingFlag = true;
+    this.ms.retrieveMtnClmReportsRange(this.ns.getCurrentUser()).subscribe((data:any) => {
+      console.log(data)
+      this.passData.tableData = [];
+      var nextSiRange;
+      if(data.reportsRange.length !== 0){
+        for (var i = 0; i < data.reportsRange.length; i++) {
+          this.passData.tableData.push(data.reportsRange[i]);
+          this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['rangeCd'];
+        }
+        nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].rangeCd + 1;
+        this.passData.nData = {rangeCd: nextSiRange, rangeValue: ''};
+      }else{
+        this.passData.nData = {rangeCd: 1, rangeValue: ''};
+      }
+
+      this.table.refreshTable();
+      this.table.loadingFlag = false;
+      this.passData.disableGeneric = true
+    });
+  }
+
+  deleteCurr(){
+    var notChecked = this.passData.tableData.filter(a=> !a.deleted && !a.checked);
+    var finalRange = notChecked.length > 0 ? notChecked[notChecked.length - 1].rangeCd : undefined;
+    var errorFlag = false;
+
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].checked ){
+        if(finalRange != undefined && this.passData.tableData[i].rangeCd < finalRange){
+          errorFlag = true;
+          break;
+        }
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Range must be in a chronological order";
+      this.openDialog.open();
+    }else{
+      // this.table.indvSelect.deleted = true;
+      // this.table.selected  = [this.table.indvSelect]
+      this.table.confirmDelete();
+    }
+  }
+
+  update(data){
+    var checkFlag = false;
+    this.table.markAsDirty();
+    var nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].rangeCd +1;
+    this.passData.nData = {rangeCd: nextSiRange, amount: ''};
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].checked){
+        checkFlag = true;
+        break;
+      }
+    }
+    console.log(checkFlag)
+    if(checkFlag){
+      this.passData.disableGeneric = false;
+    }else{
+      this.passData.disableGeneric = true;
+    }
+  }
+
+  @ViewChild('siLovCancel') siCancelBtn: CancelButtonComponent;
+  siClickCancel(){
+    if(this.table.form.first.dirty) {
+      this.siCancelBtn.clickCancel();
+    } else {
+      this.rangeLOV.closeModal();
+    }
+  }
+
+  rangeParams: any = {}
+  onClickSave(){
+    var errorFlag = false;
+    for (var i = 0; i < this.passData.tableData.length - 1; i++) {
+      if(!this.passData.tableData[i].deleted){
+        if(this.passData.tableData[i].rangeValue >= this.passData.tableData[i+1].rangeValue && !this.passData.tableData[i+1].deleted){
+          errorFlag = true;
+          break;
+        } 
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Amount must be in ascending order";
+      this.openDialog.open();
+    }else{
+      this.confirm.confirmModal();
+    }
+    
+  }
+
+  saveRange(cancel?){
+    this.cancelFlag = cancel !== undefined;
+    // this.tableFlag = true;
+    this.rangeParams.saveReportsRange = [];
+    this.rangeParams.delReportsRange = [];
+    for (var i = 0; i < this.passData.tableData.length; i++) {
+      if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
+        this.passData.tableData[i].userId = this.ns.getCurrentUser();
+        this.rangeParams.saveReportsRange.push(this.passData.tableData[i]);
+      }
+
+      if(this.passData.tableData[i].deleted){
+        this.passData.tableData[i].userId = this.ns.getCurrentUser();
+        this.rangeParams.delReportsRange.push(this.passData.tableData[i]);
+      }
+    }
+
+    this.ms.saveMtnClmReportsRange(this.rangeParams).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.appDialog.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.appDialog.open();
+        this.table.markAsPristine();
+        this.retrieveRange();
+      }
+    });
+  }
+
+  onRowClick(data){
+    if( data !==null){
+      this.passData.disableGeneric = false;
+    }
+  }
+  fromSiRangeMdl: boolean = false;
+  afterCancelSave() {
+    this.fromSiRangeMdl = false;
+    this.rangeLOV.closeModal();
+  }
 }

@@ -148,6 +148,9 @@ export class PolDistComponent implements OnInit {
 	}
 
 	retrievePolListing(){
+		if(this.table!= undefined){
+			this.table.overlayLoader = true;
+		}
 		setTimeout(()=>{
 			if(!this.noDataFound){
 		      this.policyListingData.filters[0].search = this.tempPolNo.join('%-%');
@@ -175,13 +178,15 @@ export class PolDistComponent implements OnInit {
 							totalSi: rec.project.coverage.totalSi
 						});
 					}
-					if(this.isType && !this.isIncomplete){
+					if(this.isType && !this.isIncomplete && recs.length == 1){
 						this.isIncomplete = false;
 						this.policyInfo 					= recs[0];
 						this.polHoldCoverParams.policyId 	= this.policyInfo.policyId;
 						this.polHoldCoverParams.lineCd 		= this.policyInfo.policyNo.split('-')[0];
 						this.tempPolNo						= this.policyInfo.policyNo.split('-');
 						this.selectedPolicy                 = recs[0];
+					}else if(this.isType && !this.isIncomplete && recs.length != 1){
+						$('#lovMdl #modalBtn').trigger('click');
 					}
 				}else{
 					this.noDataFound = true;
