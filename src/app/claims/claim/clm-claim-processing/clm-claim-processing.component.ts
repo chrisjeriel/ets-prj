@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ClaimsService, UnderwritingService, MaintenanceService, NotesService, UserService } from '@app/_services';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
@@ -9,6 +8,7 @@ import { MtnRiskComponent } from '@app/maintenance/mtn-risk/mtn-risk.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+import {NgbModal,NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-clm-claim-processing',
@@ -36,6 +36,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     pageStatus: true,
     searchFlag: true,
     pageLength: 20,
+    pageID: 'claimList',
     filters: [
        {
             key: 'claimNo',
@@ -169,7 +170,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
     pageID: 'polList',
     pagination: true,
     pageStatus: true,
-    pageLength: 10
+    pageLength: 10,
   }
 
   searchParams: any = {
@@ -210,7 +211,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   searchParamsLOVTbl: any[] = [];
   refPolNo: string = null;
   subscription: Subscription = new Subscription();
-
+  claimsCont:NgbModalRef;
+  claimInfo:any = {
+      }
   constructor(private titleService: Title, private modalService: NgbModal, private router: Router, 
               private cs : ClaimsService, private us : UnderwritingService, private ms : MaintenanceService,
               private ns : NotesService, private userService: UserService) { }
@@ -566,20 +569,30 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
       }
     }
 
-    onClickViewLOVTbl(event) {
+    onClickViewLOVTbl(event,content) {
       // this.clmProcessingMdl.closeModal();
-      this.modalService.dismissAll();
+      // this.modalService.dismissAll();
       let line = this.selectedLOVTbl.policyNo.split('-')[0];
-      this.router.navigate(
-                      ['/claims-claim', {
-                          from: 'edit',
-                          claimId: this.selectedLOVTbl.claimId,
-                          claimNo: this.selectedLOVTbl.claimNo,
-                          line: line,
-                          exitLink: 'clm-claim-processing'
-                      }],
-                      { skipLocationChange: true }
-        );
+      // this.router.navigate(
+      //                 ['/claims-claim', {
+      //                     from: 'edit',
+      //                     claimId: this.selectedLOVTbl.claimId,
+      //                     claimNo: this.selectedLOVTbl.claimNo,
+      //                     line: line,
+      //                     exitLink: 'clm-claim-processing'
+      //                 }],
+      //                 { skipLocationChange: true }
+      //   );
+
+      this.claimInfo = {
+        from: 'edit',
+        claimId: this.selectedLOVTbl.claimId,
+        claimNo: this.selectedLOVTbl.claimNo,
+        line: line,
+        readonly: true,
+        exitLink: 'clm-claim-processing'
+      }
+      this.claimsCont = this.modalService.open(content,{ windowClass : "claimsModal"});
     }
 
     searchQueryLOVTbl(searchParams){

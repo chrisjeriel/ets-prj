@@ -44,7 +44,7 @@
 	    </div>
 	    <div footer class="text-center w-100">
 	        <div class="cust-btn-container">
-				<button *ngIf="readonly" class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Close</a></button>
+				<button *ngIf="readonly" class="cust-btn" type="button" (click)="edtrMdl.closeModal()"><a>Close</a></button>
 				<button *ngIf="!readonly" class="cust-btn" type="button" (click)="onClickCancel(confirm)"><a>Cancel</a></button>
 				<button *ngIf="!readonly" class="cust-btn" type="button" (click)="closeTextEditorModal($event)"><a>Ok</a></button>
 			</div>

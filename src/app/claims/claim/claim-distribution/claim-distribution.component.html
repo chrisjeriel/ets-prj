@@ -174,42 +174,45 @@
 
 <div class="row" style="margin-top: 10px !important; margin-bottom: 15px !important; position: relative; z-index: 0;">
 	<div class="col-sm-12 d-flex justify-content-center">
-		<app-modal [btnTitle]="'View Cedant Dist'" (modalOpened)="getPoolDist()" [disabled]="selected==null || selected==undefined">
-			<div header>Cedant Distribution</div>
-			<div body>
-				<fieldset class="scheduler-border" style="padding-bottom: 5px !important; margin-bottom: -5px !important; padding-top: 34px !important;">
-					<div class="row" style="padding-top: 5px;">
-						<div class="col-sm" style="margin-top: -28px;">
-							<app-cust-editable-non-datatable #poolTable [passData]="poolDistPassData" class="d-block mb-4"></app-cust-editable-non-datatable>
-						</div>
-					</div>
-					<!-- <div class="row">
-						<div class="col-sm" style="margin-top: -15px; margin-left: -14px;">
-							<div class="input-group" style="margin-bottom: -18px !important;">
-								<label class="form-control-sm col-sm-2"></label>
-								<label class="form-control-sm col-sm label-center">1st Retention</label>
-								<label class="form-control-sm col-sm label-center">2nd Retention</label>
-								<label class="form-control-sm col-sm label-center">Total</label>
-							</div>
-							<div class="input-group">
-								<label class="form-control-sm col-sm-2">SI Amount</label>
-								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret1 | number:'1.2-2'" style="margin-left: 3px;">
-								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret2 | number:'1.2-2'" style="margin-left: 3px;">
-								<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.total | number:'1.2-2'" style="margin-left: 3px;">
-							</div>
-						</div>
-					</div> -->
-				</fieldset>
-			</div>
-			<div footer class="d-flex justify-content-center" style="width: 100% !important;">
-				<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Return</a></button>
-			</div>
-		</app-modal>
-		<button class="cust-btn">Print</button>
+		<button class="cust-btn" (click)="cedantModal.openNoClose()">View Cedant Dist</button>
+		<!-- <button class="cust-btn">Print</button> -->
 		<button class="cust-btn" (click)="cancel()">Cancel</button>
 		<button class="cust-btn " [disabled]="(currTab=='cummReserve' && cummDistPassData.tableData.length == 0 )||((selected == null || selected == undefined) && (currTab=='payment' || currTab=='reserve'))" (click)="confirmRedsitribute()" *ngIf="!isInquiry && currTab=='reserve'">Redistribute</button>
 	</div>
 </div>
+
+
+<app-modal class="d-none" [btnTitle]="'View Cedant Dist'" (modalOpened)="getPoolDist()" [disabled]="selected==null || selected==undefined" #cedantModal>
+	<div header>Cedant Distribution</div>
+	<div body>
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important; margin-bottom: -5px !important; padding-top: 34px !important;">
+			<div class="row" style="padding-top: 5px;">
+				<div class="col-sm" style="margin-top: -28px;">
+					<app-cust-editable-non-datatable #poolTable [passData]="poolDistPassData" class="d-block mb-4"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+			<!-- <div class="row">
+				<div class="col-sm" style="margin-top: -15px; margin-left: -14px;">
+					<div class="input-group" style="margin-bottom: -18px !important;">
+						<label class="form-control-sm col-sm-2"></label>
+						<label class="form-control-sm col-sm label-center">1st Retention</label>
+						<label class="form-control-sm col-sm label-center">2nd Retention</label>
+						<label class="form-control-sm col-sm label-center">Total</label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-2">SI Amount</label>
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret1 | number:'1.2-2'" style="margin-left: 3px;">
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret2 | number:'1.2-2'" style="margin-left: 3px;">
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.total | number:'1.2-2'" style="margin-left: 3px;">
+					</div>
+				</div>
+			</div> -->
+		</fieldset>
+	</div>
+	<div footer class="d-flex justify-content-center" style="width: 100% !important;">
+		<button class="cust-btn" type="button" (click)="cedantModal.closeModal()"><a>Return</a></button>
+	</div>
+</app-modal>
 
 <app-modal #confirmRedist class="d-none">
 	<div header>Confirmation</div>

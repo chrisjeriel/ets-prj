@@ -12,6 +12,7 @@ import { Location } from '@angular/common';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from '@environments/environment';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-claim',
@@ -25,6 +26,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   @ViewChild(SucessDialogComponent) success  : SucessDialogComponent;
   @ViewChild('clmHist') clmHist: ClmClaimHistoryComponent;
   @ViewChild('recordLock') recordLock;
+  @Input() contModal: NgbModalRef;
 
   passDataHistory: any = {
         tHeader: ["History No", "Amount Type", "History Type", "Currency","mount","Remarks","Accounting Tran ID","Accounting Date"],
@@ -83,40 +85,69 @@ export class ClaimComponent implements OnInit, OnDestroy {
 
   @ViewChild('tabset') tabset: any;
 
+  @Input()claimParams:any;
+
   activeIdString:string = 'geninfo';
 
   ngOnInit() {
-    this.sub = this.route.params.subscribe(
-      (params)=>{
-        if(params['readonly'] == 'true' || params['readonly'] == true){
-          this.isInquiry = true;
-        }else{
-          this.isInquiry = false;
+    if(!this.claimParams){
+
+      this.sub = this.route.params.subscribe(
+        (params)=>{
+          if(params['readonly'] == 'true' || params['readonly'] == true){
+            this.isInquiry = true;
+          }else{
+            this.isInquiry = false;
+          }
+
+          if(params['tab']!=undefined){
+            this.activeIdString=params['tab'];
+            this.claimInfo = params;
+            this.disableClmHistory = false;
+            this.disableNextTabs = false;
+            this.disablePaytReq = false;
+
+
+          }
+
+          if (!this.isInquiry) {
+            this.claimInfo.claimId = params['claimId'];
+            this.wsConnect();
+          }
+
+
         }
+      );
+    }else{
+      this.claimInfo = this.claimParams;
+      this.claimInfo.fromModal = true;
+      if(this.claimParams['readonly'] == 'true' || this.claimParams['readonly'] == true){
+        this.isInquiry = true;
+      }else{
+        this.isInquiry = false;
+      }
 
-        if(params['tab']!=undefined){
-          this.activeIdString=params['tab'];
-          this.claimInfo = params;
-          this.disableClmHistory = false;
-          this.disableNextTabs = false;
-          this.disablePaytReq = false;
-
-
-        }
-
-        if (!this.isInquiry) {
-          this.claimInfo.claimId = params['claimId'];
-          this.wsConnect();
-        }
+      if(this.claimParams['tab']!=undefined){
+        this.activeIdString=this.claimParams['tab'];
+        this.claimInfo = this.claimParams;
+        this.disableClmHistory = false;
+        this.disableNextTabs = false;
+        this.disablePaytReq = false;
 
 
       }
-    );
+
+      if (!this.isInquiry) {
+        this.claimInfo.claimId = this.claimParams['claimId'];
+        this.wsConnect();
+      }
+    }
     
   }
 
   ngOnDestroy(){
-    this.sub.unsubscribe();
+    if(this.sub != undefined)
+      this.sub.unsubscribe();
 
     if (!this.isInquiry && this.stompClient != undefined) {
       this.wsDisconnect();
@@ -190,7 +221,15 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
 
   onTabChange($event: NgbTabChangeEvent) {
-      if ($event.nextId === 'Exit' && this.isInquiry) {
+      if(this.contModal != undefined && $event.nextId === 'edit-claim'){
+        setTimeout(a=>this.contModal.dismiss(),0);
+        this.router.navigate(
+                        ['/claims-claim', this.claimParams],
+                        { skipLocationChange: true }
+          );
+      }else if(this.contModal != undefined && $event.nextId === 'Exit'){
+        this.contModal.dismiss();
+      }else if ($event.nextId === 'Exit' && this.isInquiry) {
         $event.preventDefault();
         this.router.navigateByUrl('/claims-inquiry');
       } else if($event.nextId === 'Exit' && !this.isInquiry && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0){
@@ -204,7 +243,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.prevTab = $event.activeId;
       }
 
-      if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0){
+      if($('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length != 0 && this.contModal==undefined){
         $event.preventDefault();
         const subject = new Subject<boolean>();
         const modal = this.modalService.open(ConfirmLeaveComponent,{
@@ -244,6 +283,10 @@ export class ClaimComponent implements OnInit, OnDestroy {
   }
   
   showWarnMdl(event) {
+    if(this.isInquiry){
+      return;
+    }
+
     this.msg = event.msg;
     this.proceed = event.val;
 

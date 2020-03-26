@@ -31,12 +31,17 @@
         <app-claims-attachment [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claims-attachment>
       </ng-template>
     </ngb-tab>
-    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Print">
+    <!-- <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Print">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab> -->
+    <ngb-tab id="view-pol-info" title="View Policy Info" *ngIf="contModal == undefined">
       <ng-template ngbTabContent>
 
       </ng-template>
     </ngb-tab>
-    <ngb-tab id="view-pol-info" title="View Policy Info">
+    <ngb-tab id="edit-claim" title="Edit Claim" *ngIf="contModal != undefined">
       <ng-template ngbTabContent>
 
       </ng-template>

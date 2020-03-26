@@ -164,6 +164,7 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 			if(!data.okDelete){
 				this.historyTable.overlayLoader = true;
 				this.poolMemberTable.overlayLoader = true;
+				this.historyData.disableGeneric = true;
 				this.ms.checkOkDeleteRetPerCede(this.currencyCd,data.retHistId).subscribe(a=>{
 					data.okDelete = a;
 					this.poolMemberData.uneditable[2] = data.okDelete == 'N';
@@ -179,6 +180,8 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 					this.poolMemberTable.onRowClick(null, this.poolMemberData.tableData[0]);
 					this.historyTable.overlayLoader = false;
 					this.poolMemberTable.overlayLoader = false;
+
+					this.historyData.disableGeneric = false;
 				})
 			}else{
 				this.poolMemberData.uneditable[2] = data.okDelete == 'N';

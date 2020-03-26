@@ -118,6 +118,11 @@
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="clmProcessingMdl.closeModal()"><a>Return</a></button>
-        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event,container)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
     </div>
 </app-modal>
+
+<ng-template #container class="w-100 h-100" >
+   <app-claim [claimParams]="claimInfo" [contModal]="claimsCont"></app-claim>
+
+</ng-template>
