@@ -223,6 +223,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   onTabChange($event: NgbTabChangeEvent) {
       if(this.contModal != undefined && $event.nextId === 'edit-claim'){
         setTimeout(a=>this.contModal.dismiss(),0);
+        this.claimParams.readonly = false;
         this.router.navigate(
                         ['/claims-claim', this.claimParams],
                         { skipLocationChange: true }

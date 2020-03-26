@@ -66,9 +66,15 @@ export class ModalComponent implements OnInit, OnDestroy/*, AfterViewInit*/ {
     openNoClose(content?){
         $('.globalLoading').css('display','none');
         this.modalRef = this.modalService.open(this.test, this.mdlOptions);
-        if($('.modal').length>1){
-            $('.modal-backdrop')[$('.modal-backdrop').length-1].style.zIndex = 1051+$('.modal').length+'';
-        }    
+        // this.modalRef.zIndex = 
+        // setTimeout(a=>{
+
+        //     if($('.modal').length>1){
+        //         $('.modal-backdrop')[$('.modal-backdrop').length-1].style.zIndex = 1051+$('.modal').length+'';
+        //         $('.modal')[$('.modal-backdrop').length-1].style.zIndex = 1051+$('.modal').length+1+'';
+        //     }    
+
+        // },0)
         this.modalOpened.emit();
     }
 
