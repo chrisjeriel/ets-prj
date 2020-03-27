@@ -601,6 +601,10 @@
 										<label  class="form-control-sm col-sm-2">Block</label>
 										<input name="input95" type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
 									</div>
+									<div class="input-group ig-cust">
+										<label  class="form-control-sm col-sm-2">Duration</label>
+										<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
+									</div>
 								</div>
 							</div>
 						</fieldset>
@@ -684,6 +688,12 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+									<label  class="form-control-sm col-sm-2">Duration</label>
+									<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
+								</div>
+							</div>
 						</fieldset>
 					</ng-container>
 
@@ -761,6 +771,12 @@
 										<label  class="form-control-sm col-sm-2">No Claim Period</label>
 										<input name="input120" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd"  appRequired >
 									</div>
+								</div>
+							</div>
+							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+									<label  class="form-control-sm col-sm-2">Duration</label>
+									<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
 								</div>
 							</div>
 						</fieldset>
