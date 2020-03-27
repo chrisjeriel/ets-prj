@@ -192,10 +192,10 @@ export class MaintenanceService{
 	}
 
 	getMtnTypeOfCession(cessionId) {
-		const params = new HttpParams()
-                .set('cessionId',cessionId);
+		// const params = new HttpParams()
+  //               .set('cessionId',cessionId);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params});
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params:{cessionId:cessionId}});
 	}
 
 
