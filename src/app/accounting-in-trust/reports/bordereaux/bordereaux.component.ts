@@ -81,6 +81,7 @@ export class BordereauxComponent implements OnInit {
 
 	paramsToggle: Array<string> = [];
 
+
 	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService,
 		        private printService: PrintService, public modalService: NgbModal) { }
 
@@ -394,6 +395,12 @@ export class BordereauxComponent implements OnInit {
   }
 
   print() {
+  	// if(this.params.destination == 'exl'){
+   //    this.passDataCsv = [];
+   //    this.getExtractToCsv();
+   //    return;
+   //  }
+
   	if(this.params.destination === '' || this.params.destination === undefined){
   	  this.dialogIcon = "warning-message";
   	  this.dialogMessage = "Please select a print destination";
@@ -448,4 +455,6 @@ export class BordereauxComponent implements OnInit {
   	    this.params.perLine		= true;
   	    this.params.perCession	= true;
   }
+
+ 
 }
