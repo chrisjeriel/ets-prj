@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
 import { ClaimsService, NotesService, UserService } from '../../_services';
@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './payment-requests.component.html',
   styleUrls: ['./payment-requests.component.css']
 })
-export class PaymentRequestsComponent implements OnInit {
+export class PaymentRequestsComponent implements OnInit, AfterViewInit {
 
   btnDisabled: boolean;
   btnDisabled_neg: boolean;
@@ -147,12 +147,22 @@ export class PaymentRequestsComponent implements OnInit {
   	this.btnDisabled_neg = true;
   	this.titleService.setTitle("Clm | Payment Request Inquiry");
     this.userService.emitModuleId("CLM010");
-
+    if(this.ns.listParams != null){
+        this.searchParams = this.ns.listParams;
+    }
   	this.getList();
+  }
+
+  ngAfterViewInit(){
+    if(this.ns.listParams != null){
+        this.inqTable.setPreviousParams(this.ns.listParams);
+      }
   }
 
   getList(){
     var recs = []
+    
+    this.ns.setListParams(this.searchParams);
     this.claimsService.getClaimPaytReqInq(this.searchParams).subscribe((a:any)=>{
       
       this.passData.count = a['list'].length;
@@ -183,7 +193,7 @@ export class PaymentRequestsComponent implements OnInit {
                           claimId: data.claimId,
                           claimNo: data.claimNo,
                           line: line,
-                          exitLink: 'payment-request',
+                          exitLink: '/payment-request',
                           tab: 'paymentRequest',
 
                           clmStatus:data.clmStatus,

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 //import { UnderwritingPolicyInquiryInfo } from '@app/_models';
 import { ClaimsService, NotesService, UserService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -11,7 +11,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 	templateUrl: './clm-claims-inquiry.component.html',
 	styleUrls: ['./clm-claims-inquiry.component.css']
 })
-export class ClmClaimsInquiryComponent implements OnInit {
+export class ClmClaimsInquiryComponent implements OnInit, AfterViewInit {
 	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 	passData: any = {
 	    tHeader: ["Claim No", "Co Claim No","Loss Date", "Report Date", "Status", "Policy No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
@@ -270,6 +270,12 @@ export class ClmClaimsInquiryComponent implements OnInit {
     	this.retrieveClaimlist();
 	}
 
+	ngAfterViewInit(){
+		if(this.ns.listParams != null){
+    		this.table.setPreviousParams(this.ns.listParams);
+    	}
+	}
+
 
 	retrieveClaimlist() {
 		this.ns.setListParams(this.searchParams); 
@@ -408,7 +414,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	                        claimId: this.claimId,
 	                        claimNo: this.claimNo,
 	                        line: line,
-	                        exitLink: 'claims-inquiry'
+	                        exitLink: '/claims-inquiry'
 	                    }],
 	                    { skipLocationChange: true }
 	      );

@@ -130,6 +130,7 @@ export class NotesService {
 
   setListParams(params){
     this.listParams = JSON.parse(JSON.stringify(params));
-    delete this.listParams['paginationRequest.position'];
+    this.listParams['paginationRequest.position'] = 1;
+    this.listParams.recount = 'Y';
   }
 }
