@@ -505,15 +505,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             this.prevEffExt = this.policyInfo.effDate;
           });
 
+          this.refPolicyId = data.policy.lastAffectingPolId;
+          this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.prevInceptDate));
+          this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.prevExpiryDate));
+
           polNo[polNo.length-1] = Number(polNo[polNo.length-1]) == 0 ? '000' : String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
-          if (this.prevPolicyId !== '') {
-            this.underwritingService.getPolGenInfo(this.prevPolicyId).subscribe((data:any) => {
-              this.refPolicyId = data.policy.policyId;
-              this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
-              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
-              this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
-            });
-          }
+          // if (this.prevPolicyId !== '') {
+          //   this.underwritingService.getPolGenInfo(this.prevPolicyId).subscribe((data:any) => {
+          //     this.refPolicyId = data.policy.policyId;
+          //     this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
+          //     this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
+          //     this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
+          //   });
+          // }
         }
 
         setTimeout(() => {
