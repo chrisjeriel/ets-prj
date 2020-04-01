@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UnderwritingPolicyInquiryInfo } from '@app/_models';
-import { UnderwritingService, NotesService } from '@app/_services';
+import { UnderwritingService, NotesService, ClaimsService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { Router } from '@angular/router';
@@ -184,7 +184,9 @@ export class PolicyInquiryComponent implements OnInit, AfterViewInit {
         mode:'inquiry'
     };
 
-  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router, private ns: NotesService) { }
+    infoLoading:Boolean = false;
+
+  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router, private ns: NotesService, private cs: ClaimsService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
@@ -206,10 +208,22 @@ export class PolicyInquiryComponent implements OnInit, AfterViewInit {
   }
 
   onRowClick(data){
-    if(data!==null && Object.keys(data).length !== 0)
-      this.policyInfo = data;
-    else
+    this.infoLoading = false;
+    if(data!==null && Object.keys(data).length !== 0){
+      if(data.withClaim){
+        this.policyInfo = data;
+      }else{
+        this.infoLoading = true;
+        this.cs.checkExistingClaim(data.policyId).subscribe(a => {
+          data.withClaim = a;
+          this.policyInfo = data;
+          this.infoLoading = false;
+        });
+      }
+    }
+    else{
       this.policyInfo = this.defaultPolicyInfo;
+    }
   }
 
   searchQuery(searchParams){

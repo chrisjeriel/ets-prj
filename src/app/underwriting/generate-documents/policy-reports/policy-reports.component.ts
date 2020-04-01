@@ -103,7 +103,8 @@ export class PolicyReportsComponent implements OnInit {
                         'ACITR061F',
                         'ACITR061G',
                         'ACITR048A',
-                        'POLR044W'
+                        'POLR044W',
+                        'POLR044Y'
                         ];
 
   rangeParams :any = {
@@ -340,7 +341,13 @@ export class PolicyReportsComponent implements OnInit {
       this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company','currCd','accountingDate', 'bookingDate',);
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
-    } else {
+    } 
+    else if(this.params.reportId == 'POLR044Y'){
+      this.paramsToggle.push('accountingDate', 'bookingDate','byDate', 'byMonthYear', 'line', 'company', 'currCd');
+      this.params.dateParam = '5';
+      this.params.dateRange = '2';
+      this.checkMonthYear();
+    }else {
       this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
                              'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
                              'policy', 'alteration', 'policyAlteration',
@@ -441,7 +448,17 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    } else {
+    } if(this.params.reportId == 'POLR044Y'){
+      this.paramsToggle = [];
+      if(this.params.dateParam == 10){
+        this.paramsToggle.push('accountingDate', 'bookingDate','byDate', 'byMonthYear', 'line', 'company', 'currCd');
+        this.params.incRecTag = 'D';
+      }else{
+        this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate' , 'byMonthYear', 'line', 'company', 'currCd');
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
+        this.params.incRecTag = '';
+      }
+     } else {
       this.paramsToggle = [];
       if(this.params.dateParam == 10) {
         this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',

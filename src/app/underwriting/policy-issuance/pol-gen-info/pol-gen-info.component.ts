@@ -401,6 +401,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.policyInfo.binderWarrantyDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.binderWarrantyDate))
         this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
         this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
@@ -929,7 +930,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "coTermTag"       : this.policyInfo.coTermTag,
       "coTermText"       : this.policyInfo.coTermText,
       "mbiPolicyId"       : this.policyInfo.mbiPolicyId,
-      "coAltRefNo"    :this.policyInfo.coAltRefNo
+      "coAltRefNo"    :this.policyInfo.coAltRefNo,
+      "binderWarrantyDate" : this.policyInfo.binderWarrantyDate
     }
 
     var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');

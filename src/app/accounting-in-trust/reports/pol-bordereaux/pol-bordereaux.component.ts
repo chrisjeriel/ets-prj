@@ -108,7 +108,9 @@ export class PolBordereauxComponent implements OnInit {
                         'POLR052C',
                         'POLR052D',
                         'POLR052E',
-                        'POLR052F'
+                        'POLR052F',
+                        'POLR052G',
+                        'POLR052H'
                         ];
 
   rangeParams :any = {
@@ -201,6 +203,12 @@ export class PolBordereauxComponent implements OnInit {
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     } else if(this.params.reportId == 'POLR052F'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052G'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052H'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
     }
