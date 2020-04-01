@@ -94,7 +94,7 @@
 											</div>
 											<div class="w-100 text-center">
 												<button class="cust-btn" (click)="approveQuotation();" [disabled]="quoteInfo.statusDesc == 'Approved' || quoteInfo.statusDesc == 'Released'">{{ approveText }}</button>
-												<button class="cust-btn" (click)="rejectQuotation();" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Rejected</button>
+												<button class="cust-btn" (click)="rejectReasonModal.openNoClose();" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Rejected</button>
 											</div>
 										</div>
 									</div>
@@ -176,7 +176,17 @@
 </ng-template>
 <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
  -->
-
+<app-modal class="d-none" #rejectReasonModal>
+	<div header>Enter reason for rejection</div>
+	<div body class="edtr-cont" style=" margin-bottom: 0px !important; height: 100px;"> 
+		<text-editor [editorContent]="reason" (fetchContent)="reason = $event" >
+		</text-editor>
+	</div>
+	<div footer class="w-100 text-center">
+		<button class="cust-btn" (click)="rejectReasonModal.closeModal();">Cancel</button>
+		<button class="cust-btn" (click)="rejectQuotation();rejectReasonModal.closeModal()" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Ok</button>
+	</div>
+</app-modal>
 
 <ng-template #recordLock>
 				<div class="modal-header">

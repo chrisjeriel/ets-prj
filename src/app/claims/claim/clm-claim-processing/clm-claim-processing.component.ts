@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, AfterViewInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ClaimsService, UnderwritingService, MaintenanceService, NotesService, UserService } from '@app/_services';
@@ -15,7 +15,7 @@ import {NgbModal,NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './clm-claim-processing.component.html',
   styleUrls: ['./clm-claim-processing.component.css']
 })
-export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
+export class ClmClaimProcessingComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('mainTable') table : LoadingTableComponent;
   @ViewChild('polListTbl') polListTbl : LoadingTableComponent;
   @ViewChild('add') addModal : ModalComponent;
@@ -221,8 +221,16 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle("Clm | Claim Processing");
     this.userService.emitModuleId("CLM001");
-
+    if(this.ns.listParams != null){
+        this.searchParams = this.ns.listParams;
+    }
     this.retrieveClaimsList();
+  }
+
+  ngAfterViewInit(){
+      if(this.ns.listParams != null){
+          this.table.setPreviousParams(this.ns.listParams);
+      }
   }
 
   ngOnDestroy() {
@@ -230,6 +238,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy {
   }
 
   retrieveClaimsList(){
+    this.ns.setListParams(this.searchParams); 
     this.cs.newGetClaimsListingLength(this.searchParams).subscribe(data=>{
       this.passData.count = data;
       this.table.setLength(1);

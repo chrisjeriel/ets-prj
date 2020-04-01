@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GeneralInfoComponent } from '@app/quotation/general-info/general-info.component';
 import { environment } from '@environments/environment';
-import { QuotationService, UserService, NotesService } from '@app/_services';
+import { QuotationService, UserService, NotesService, WorkFlowManagerService } from '@app/_services';
 import { first } from 'rxjs/operators';
 import { ConfirmLeaveComponent, ModalComponent, SucessDialogComponent } from '@app/_components/common/';
 import { Subject } from 'rxjs';
@@ -21,7 +21,7 @@ import * as SockJS from 'sockjs-client';
 })
 export class QuotationComponent implements OnInit, OnDestroy {
 	constructor(private route: ActivatedRoute, public modalService: NgbModal, private titleService: Title, private router: Router, 
-              private quotationService: QuotationService, private userService: UserService, private ns: NotesService) { 
+              private quotationService: QuotationService, private userService: UserService, private ns: NotesService, private wfms :WorkFlowManagerService) { 
   }
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('tabset') tabset: any;
@@ -93,6 +93,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
   lockUser: string = "";
   lockMessage: string = "";
   addParams:any;
+  fullQuoteInfo:any= {};
 
   @ViewChild('active')activeComp:any;
   @ViewChild('recordLock') recordLock;
@@ -579,7 +580,40 @@ export class QuotationComponent implements OnInit, OnDestroy {
       },100); */
     }
 
+    reason:any='';
     rejectQuotation(){
+      let note ={
+        noteList:[
+          {
+              "noteId"       :  null,
+              "title"        : 'Rejected Quotation ' + this.quoteInfo.quotationNo,
+              "note"         : 'Reason: '+this.reason,
+              "impTag"       : 'N',
+              "urgTag"       : 'N',
+              "module"       : 'Quotation',
+              "referenceId"  : this.quoteInfo.quoteId,
+              "details"      : this.quoteInfo.quotationNo,
+              "assignedTo"   : this.fullQuoteInfo.assignedBy ? this.fullQuoteInfo.assignedBy : this.ns.getCurrentUser(),
+              "status"       : "A",
+              "createUser"   : this.ns.getCurrentUser(),
+              "createDate"   : this.ns.toDateTimeString(0),
+              "updateUser"   : this.ns.getCurrentUser(),
+              "updateDate"   : this.ns.toDateTimeString(0),
+          }
+        ],
+        delNoteList : []
+      } 
+
+
+      
+
+
+
+      this.wfms.saveWfmNotes(note).subscribe((data: any)=>{
+        null
+      });
+
+
       this.quotationService.updateQuoteStatus(this.quoteInfo.quoteId, 'R', this.currentUserId).subscribe((data)=>{
             if(data['returnCode'] == 0) {
               /*this.dialogMessage = data['errorList'][0].errorMessage;
@@ -602,6 +636,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
         this.genInfoComponent.ngOnInit();
       }
       this.quotationService.getQuoteGenInfo(this.quoteInfo.quoteId,'').subscribe(a=>{
+        this.fullQuoteInfo = a['quotationGeneralInfo'];
         this.quoteInfo.status = a['quotationGeneralInfo'].status;
         this.quoteInfo.statusDesc = a['quotationGeneralInfo'].statusDesc;
         console.log(this.quoteInfo.statusDesc)
