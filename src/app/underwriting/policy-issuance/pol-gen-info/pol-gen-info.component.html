@@ -117,7 +117,7 @@
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
 										<!-- <input name="input18" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId">
 											<input name="input19" type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.intmName"> -->
-											<input name="input20" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
+											<input name="input20" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" >
 											<!-- <input name="input21" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 											<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 											<span>&nbsp;</span>
@@ -1004,7 +1004,7 @@
 					</div>
 					<div class="input-group">
 						<label class="form-control-sm col-sm-2">Total SI</label>
-						<input name="input196" type="text" mask="comma_separator.2" class="form-control form-control-sm cust-sm txt-content-rght text-right" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi" readonly tabindex="-1">
+						<input name="input196" type="text" appCurrency class="form-control form-control-sm cust-sm txt-content-rght text-right" required onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="policyInfo.project.totalSi" readonly tabindex="-1">
 					</div>
 				</div>
 			</fieldset>
@@ -1425,7 +1425,7 @@
 										</div>
 										<div class="input-group">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Intermediary</label>
-										<input name="input247" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" mask="999999">
+										<input name="input247" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="policyInfo.intmId" (blur)="policyInfo.intmId=pad(policyInfo.intmId, 6)" (change)="checkCode($event,'intermediary')" >
 										<!-- <input name="input248" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'APPROVED'" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="genInfoData.intmId | number:'3.0'" (ngModelChange)="genInfoData.intmId=$event" (change)="checkCode($event,'intermediary')"> -->
 										<div *ngIf="!fromInq" class="text-search-ico"><a><i class="fa fa-search" (click)="showIntLOV()"></i></a></div>
 										<span>&nbsp;</span>

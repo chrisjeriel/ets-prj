@@ -441,7 +441,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 				console.log('eyyyy')
 				this.form.control.markAsDirty();
 			}
-		},1000);
+		},0);
 
 		this.getLineClass();
 	}
@@ -1032,7 +1032,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 
   compute(ev,str) {
   	// this.form.control.markAsDirty();
-
+  	this.project.totalValue = this.project.totalValue.split(',').join('');
+  	this.project.pctShare = this.project.pctShare.split(',').join('');
+  	console.log(this.project.totalValue);
+  	console.log(this.project.pctShare);
   	if(str === 'pctShare' && this.project.totalSi != '') {
   		if(Number(this.project.pctShare) > 100) {
   			this.project.pctShare = '';
