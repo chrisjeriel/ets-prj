@@ -7,8 +7,8 @@ import { SpecialLovComponent } from '@app/_components/special-lov/special-lov.co
 import {HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse} from '@angular/common/http';
 import { RequestOptions, Headers } from '@angular/http';
 import { Observable } from 'rxjs';
+import {NgbModal,NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 @Component({
     selector: 'app-dummy',
     templateUrl: './dummy.component.html',
@@ -19,7 +19,7 @@ export class DummyComponent implements OnInit {
     @ViewChild(ModalComponent) modalComp: ModalComponent;
     @ViewChild(SpecialLovComponent) specLov: SpecialLovComponent;
 
-    
+    claimsCont:NgbModalRef;
 
     tableData: any[] = [];
     tableData2: any[] = [];
@@ -385,4 +385,17 @@ export class DummyComponent implements OnInit {
 
       edtr: any = 'test\nme\ndaddy';
       testDate2: any = new Date('2019-01-03');
+
+
+      claimInfo:any = {
+          from: 'edit',
+          readonly: true,
+          claimId: 12741,
+          claimNo: 'CAR-2020-00099',
+          line: 'CAR',
+          exitLink: 'clm-claim-processing'
+      }
+      openClaimsLov(content){
+          this.claimsCont = this.modalService.open(content,{ windowClass : "claimsModal"});
+      }
 }

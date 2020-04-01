@@ -70,6 +70,8 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 	a: string = '';
 	b: string = '';
 
+	cessionList:any = [];
+
 	@Input() inquiryFlag: boolean = false;
 
 	project: any = {
@@ -116,7 +118,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		cedingId: '',
 		cedingName: '',
 		cessionDesc: '',
-		cessionId: '',
+		// cessionId: '',
 		closingParag: '',
 		contractorId: '',
 		contractorName: '',
@@ -205,6 +207,10 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 		this.dataTypes.push("text", "text");
 		this.filters.push("Item No", "Desc. of Items");
 
+		this.maintenanceService.getMtnTypeOfCession('').subscribe(a=>{
+			this.cessionList =  a['cession'];
+		})
+
 		this.savingType = this.quotationService.savingType;
 		this.sub = this.route.params.subscribe(params => {
 
@@ -253,7 +259,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					this.genInfoData.printDate 	= (this.genInfoData.printDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.printDate);
 					this.genInfoData.reqDate 	= (this.genInfoData.reqDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.reqDate);
 					this.genInfoData.updateDate = (this.genInfoData.updateDate == null) ? '' : this.ns.toDateTimeString(this.genInfoData.updateDate);
-
+					console.log(this.savingType);
 					if(this.savingType === 'internalComp') {
 						this.genInfoData.quoteId = '';
 						this.genInfoData.quotationNo = '';

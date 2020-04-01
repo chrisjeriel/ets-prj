@@ -37,16 +37,13 @@
 										</div>
 										<div class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-2">Type of Cession</label>			
-											<input name="input2"  type="text" class="form-control form-control-sm t"  [(ngModel)]="genInfoData.cessionDesc" readonly>
+											<!-- <input name="input2"  type="text" class="form-control form-control-sm t"  [(ngModel)]="genInfoData.cessionDesc" readonly> -->
+											<div class="col-sm-4" style="padding: 0;">
+												<select name="select4"  [disabled]="inquiryFlag || genInfoData.statusDesc.toUpperCase() == 'RELEASED' || (savingType != 'modification' && genInfoData?.quoteRevNo == 0)" class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.cessionId" appRequired>
+													<option *ngFor="let cl of cessionList" [value]="cl.cessionId">{{cl.description}}</option>
+												</select>
+											</div>
 											<label  class="form-control-sm col-sm-2">Line Class</label>
-											<!-- <input name="input3" id="firstFocus" type="text" [(ngModel)]="genInfoData.lineClassDesc" class="form-control form-control-sm req" [style.margin-right.px]="inquiryFlag || intCompTag ? '0' : '1'"
-											 appRequired [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'">
-											<div class="text-search-ico" [class.d-none]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'"><a><i class="fa fa-search" (click)=showLineClassLOV()></i></a></div>
-											<span [class.d-none]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'">&nbsp;</span> -->
-											<!-- <select name="select1" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="genInfoData.lineClassCd"
-												[disabled]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" appRequired>
-												<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
-											</select> -->
 											<div class="col-sm-4" style="padding: 0;">
 												<select name="select2"  *ngIf="!inquiryFlag && !intCompTag  && genInfoData.statusDesc.toUpperCase() !== 'RELEASED'" class="form-control form-control-sm cust-sm req" [(ngModel)]="genInfoData.lineClassCd" appRequired>
 													<option *ngFor="let lc of lineClasses" [value]="lc.lineClassCd">{{lc.lineClassCdDesc}}</option>
@@ -68,7 +65,7 @@
 											<span [class.d-none]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'">&nbsp;</span>
 											<input name="input8" type="text" class="form-control form-control-sm col-sm ig-mrgn"  [(ngModel)]="genInfoData.cedingName" style="margin-left: 5px;" readonly>
 										</div>
-										<div *ngIf="genInfoData.cessionDesc.toUpperCase() === 'RETROCESSION'" class="input-group ig-cust">
+										<div *ngIf="genInfoData.cessionId == '2'" class="input-group ig-cust">
 											<label  class="form-control-sm col-sm-2">Reinsurance From</label>
 											<input name="input9" [readonly]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm col-sm-2 req" [(ngModel)]="genInfoData.reinsurerId" (change)="checkCode($event,'cedingCoNotMember')" mask="999" appRequired>
 											<div class="text-search-ico" [class.d-none]="inquiryFlag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'"><a><i class="fa fa-search" (click)="showCedingCompanyNotMemberLOV()"></i></a></div>
@@ -525,7 +522,7 @@
 									</div>
 								</div>
 							</div>
-							<div *ngIf="line === 'EEI'" class="form-row" style="margin-right: 0px; margin-top: -2px;">
+							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
 								<div class="input-group col-sm-6">
 									<label  class="form-control-sm col-sm-2">Duration</label>
 									<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
@@ -603,6 +600,10 @@
 										<input name="input94" type="text" class="form-control form-control-sm" [(ngModel)]="project.districtDesc" readonly>
 										<label  class="form-control-sm col-sm-2">Block</label>
 										<input name="input95" type="text" class="form-control form-control-sm" [(ngModel)]="project.blockDesc" readonly>
+									</div>
+									<div class="input-group ig-cust">
+										<label  class="form-control-sm col-sm-2">Duration</label>
+										<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
 									</div>
 								</div>
 							</div>
@@ -687,6 +688,12 @@
 									</div>
 								</div>
 							</div>
+							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+									<label  class="form-control-sm col-sm-2">Duration</label>
+									<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
+								</div>
+							</div>
 						</fieldset>
 					</ng-container>
 
@@ -764,6 +771,12 @@
 										<label  class="form-control-sm col-sm-2">No Claim Period</label>
 										<input name="input120" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.noClaimPd"  appRequired >
 									</div>
+								</div>
+							</div>
+							<div class="form-row" style="margin-right: 0px; margin-top: -2px;">
+								<div class="input-group col-sm-6" style="margin-bottom: -8px !important;">
+									<label  class="form-control-sm col-sm-2">Duration</label>
+									<input name="input54" [readonly]="inquiryFlag || intCompTag || genInfoData.statusDesc.toUpperCase() === 'RELEASED'" type="text" class="form-control form-control-sm req" [(ngModel)]="project.duration">
 								</div>
 							</div>
 						</fieldset>

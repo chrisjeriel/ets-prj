@@ -14,7 +14,7 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.reportId"
-									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')">
+									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id=line type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
@@ -32,11 +32,11 @@
 					<fieldset class="scheduler-border col-sm-2" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group" >
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="9" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" >
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="9" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" [disabled]="paramsToggle.indexOf('clmFileDate') == -1">
 								<label class="form-control-sm" for="radio9">Claim File Date</label>
 							</div>
 							<div class="input-group" >
-								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam">
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="4" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" [disabled]="paramsToggle.indexOf('lossDate') == -1">
 								<label class="form-control-sm" for="radio8">Loss Date</label>
 							</div>
 							<div class="input-group" >
@@ -55,7 +55,7 @@
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group">
 								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byDate') == -1">
+									[disabled]="paramsToggle.indexOf('byDate') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio2">By Date</label>
 							</div>
 							<div class="input-group">
@@ -70,7 +70,7 @@
 							</div>
 							<div class="input-group">
 								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('byMonthYear') == -1">
+									[disabled]="paramsToggle.indexOf('byMonthYear') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio3">By Month/Year</label>
 							</div>
 							<div class="input-group">
@@ -109,16 +109,21 @@
 							</div>
 							<div class="input-group">
 								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"
-									[disabled]="paramsToggle.indexOf('asOf') == -1">
+									[disabled]="paramsToggle.indexOf('asOf') == -1 || params.dateParam == ''" (change)="resetDates()">
 								<label class="form-control-sm" for="radio4">As of</label>
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-2"></label>
-								<div class="col-sm-3 dp-cont">
+								<div class="col-sm-3 dp-cont" style="margin-left: 0 !important;">
 									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1">
 									</datepicker>
 								</div>
-								<div class="col-sm-7"></div>
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2" style="padding-left: 0">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn col-sm-1" (click)="rangeLOV.openNoClose();retrieveRange();" [disabled]="paramsToggle.indexOf('siRangeBtnDisabled') == -1"  ><a>Year Range</a></button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</fieldset>
@@ -200,8 +205,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Status</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmStat" (ngModelChange)="params.clmStat = $event.toUpperCase()"  (change)="checkCode($event, 'clmStat')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openStatusLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmStat') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmStat') > -1"><a><i class="fa fa-search" (click)="openStatusLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="status" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmStatName" readonly placeholder="ALL STATUS">
 								</div>
@@ -216,8 +221,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Adjuster</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmAdj" (ngModelChange)="params.clmAdj = $event.toUpperCase()"  (change)="checkCode($event, 'clmAdj')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openAdjusterLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmAdj') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmAdj') > -1"><a><i class="fa fa-search" (click)="openAdjusterLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="adjuster" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmAdjName" readonly placeholder="ALL ADJUSTERS">
 								</div>
@@ -232,8 +237,8 @@
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Event</label>
 									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmEvent" (ngModelChange)="params.clmEvent = $event.toUpperCase()"  (change)="checkCode($event, 'clmEvent')"
-									[disabled]="paramsToggle.indexOf('line') == -1">
-									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
+									[disabled]="paramsToggle.indexOf('clmEvent') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmEvent') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
 									<span>&nbsp;</span>
 									<input id="event" type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.clmEventName" readonly placeholder="ALL EVENTS">
 								</div>
@@ -247,9 +252,9 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Min. Loss Amt</label>
-									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input">
-									<input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
-									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label>
+									<input id=line type="text" class="form-control form-control-sm col-sm-3 cap-input" [disabled]="paramsToggle.indexOf('minLossAmt') == -1" appCurrency [(ngModel)]="params.minLossAmt" >
+									<!-- <input id="incR" type="checkbox" style="vertical-align: middle;margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('increaseReserve') == -1"><label for="incR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Increase Reserve</label>
+									<input id="decR" type="checkbox" style="vertical-align: middle; margin-top: 5px; margin-left: 10px;" class="rdo" [disabled]="paramsToggle.indexOf('decreseReserve') == -1"><label for="decR" class="form-control-sm" style="margin-bottom: 0px !important; margin-left: -5px;">Decrease Reserve</label> -->
 								</div>
 							</div>
 							<div class="col-sm-1">
@@ -312,9 +317,25 @@
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
-<app-cancel-button (onYes)="extract(true)"></app-cancel-button>
+<app-cancel-button #appCancel (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>
 <app-mtn-currency-code  #currencyModal id="currLOV" (selectedData)="setCurr($event)"></app-mtn-currency-code>
+
+<app-modal class="d-none" id="range" #Range>
+	<div header>Year Range</div>
+	<div body>
+		<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="deleteCurr()" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;" (newClick)="onRowClick($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="siClickCancel();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="tableFlag=true; onClickSave();"><a>Save</a></button>
+        </div>
+    </div>
+    <app-cancel-button #siLovCancel (onYes)="tableFlag=false; fromSiRangeMdl=true; saveRange(true);" (no)="table.markAsPristine(); rangeLOV.closeModal();"></app-cancel-button>
+    <app-sucess-dialog #success [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+    <app-confirm-save (onYes)="saveRange()"></app-confirm-save>
+</app-modal>

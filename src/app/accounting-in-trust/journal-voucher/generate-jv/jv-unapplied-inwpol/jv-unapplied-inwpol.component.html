@@ -6,8 +6,8 @@
                 <div class="col-sm-8">
                     <div class="input-group">
                         <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
-                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [(ngModel)]="jvDetails.cedingName">
-                        <div style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="showCedingCompanyLOV($event)"></i></a></div>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [(ngModel)]="jvDetails.cedingName" [disabled]="jvDetail.statusType == 'A' || jvDetail.statusType == 'X' || jvDetail.statusType == 'P'">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="showCedingCompanyLOV($event)"></i></a></div>
                     </div>
                 </div>
                 <div class="col-sm-2"></div>

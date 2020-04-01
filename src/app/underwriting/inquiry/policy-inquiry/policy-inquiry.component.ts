@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UnderwritingPolicyInquiryInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import * as alasql from 'alasql';
   templateUrl: './policy-inquiry.component.html',
   styleUrls: ['./policy-inquiry.component.css']
 })
-export class PolicyInquiryComponent implements OnInit {
+export class PolicyInquiryComponent implements OnInit, AfterViewInit {
   @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
@@ -184,12 +184,21 @@ export class PolicyInquiryComponent implements OnInit {
         mode:'inquiry'
     };
 
-  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
+  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router, private ns: NotesService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
     // this.passData.tableData = this.underwritingService.getPolicyInquiry();
+    if(this.ns.listParams != null){
+        this.searchParams = this.ns.listParams;
+    }
     this.retrievePolListing();
+  }
+
+  ngAfterViewInit(){
+    if(this.ns.listParams != null){
+        this.listTable.setPreviousParams(this.ns.listParams);
+      }
   }
 
   gotoInfo(data) {
@@ -212,6 +221,7 @@ export class PolicyInquiryComponent implements OnInit {
    }
 
    retrievePolListing(){
+       this.ns.setListParams(this.searchParams);
        if(this.searchParams.recount != 'N'){
          this.underwritingService.getPolicyListingLength(this.searchParams).subscribe(data=>{
            this.passData.count = data;

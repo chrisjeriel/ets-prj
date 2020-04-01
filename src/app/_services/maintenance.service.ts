@@ -192,10 +192,10 @@ export class MaintenanceService{
 	}
 
 	getMtnTypeOfCession(cessionId) {
-		const params = new HttpParams()
-                .set('cessionId',cessionId);
+		// const params = new HttpParams()
+  //               .set('cessionId',cessionId);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params});
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params:{cessionId:cessionId}});
 	}
 
 
@@ -1966,5 +1966,41 @@ export class MaintenanceService{
 
     return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
   }
+
+  getMtnPostingAmtLimit(userGrp?,lineCd?){
+		const params = new HttpParams()
+		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
+		     .set('lineCd', (lineCd === null || lineCd === undefined ? '' : lineCd))
+		return this.http.get(environment.prodApiUrl + "/maintenance-service/retMtnPostingAmtLimit", {params});   
+	}
+
+	saveMtnPostingAmtLimit(params){
+		let header : any = {
+	        headers: new HttpHeaders({
+	             'Content-Type': 'application/json'
+	        })
+	     };
+	     return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPostingAmtLimit',JSON.stringify(params),header);
+	}
+
+	retrieveMtnClmReportsRange(userId){
+    	const params = new HttpParams()
+    				.set('userId', (userId === null || userId === undefined ? '' : userId));
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnClmReportsRange", {params});
+    }
+
+    saveMtnClmReportsRange(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnClmReportsRange', JSON.stringify(params), header);
+    }
+
+    checkOkDeleteRetPerCede(currencyCd, retHistId){
+    	let params = {currencyCd: currencyCd, retHistId: retHistId};
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
+    }
 
 }

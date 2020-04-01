@@ -704,4 +704,20 @@ export class LoadingTableComponent implements OnInit, AfterViewInit {
     		this.dbQuery(this.passData.filters,'N')
     	}
     }
+
+    setPreviousParams(params){
+        console.log(params)
+        this.searchString = params['search.value'];
+        for(let index in this.passData.filters){
+            if(this.passData.filters[index].dataType != 'datespan' && this.passData.filters[index].dataType != 'textspan'){
+                this.passData.filters[index].search = params[this.passData.filters[index].key];
+                this.passData.filters[index].enabled = !!this.passData.filters[index].search;
+            }else{
+                this.passData.filters[index].keys.search = params[this.passData.filters[index].keys.from];
+                this.passData.filters[index].keys.search2 = params[this.passData.filters[index].keys.to];
+                this.passData.filters[index].enabled = !!params[this.passData.filters[index].keys.to];
+            }
+        }
+        console.log(this.passData.filters);
+    }
 }

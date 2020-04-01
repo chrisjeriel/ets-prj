@@ -1126,6 +1126,27 @@ export class UnderwritingService {
     getPolOcInfo(params){
         return this.http.get(environment.prodApiUrl+'/underwriting-service/retrievePolOcInfo',{params:params});     
     }
+
+    saveManualDistPol(params){
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/saveManualDistPol',JSON.stringify(params),this.header);
+    }
+
+    getFullItemInfoData(policyNo?, policyId?) {
+        /*this.itemInfoData = [
+            new ItemInformation(1001, "Description for item number 1"),
+            new ItemInformation(1002, "Description for item number 2"),
+            new ItemInformation(1003, "Description for item number 3")
+        ];*/
+         const params = new HttpParams()
+             .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
+             .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolFullItem",{params});;
+    }
+
+     savePolFullItem(itemData:any){
+        
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullItem', JSON.stringify(itemData), this.header);
+    }
 }            
 
             

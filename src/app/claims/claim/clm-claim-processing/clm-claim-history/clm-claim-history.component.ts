@@ -257,7 +257,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       var recHistType    = data['histType']['refCodeList'];
       var recCurr        = data['cov']['claims']['project']['clmCoverage'];
       var recParam       = data['param']['parameters'].filter(el => el.paramName.toUpperCase() == 'ALLOW_MAX_SI').map(el => {return el});
-      var recBookingMth  = data['bookingMth']['bookingMonthList'].filter(e => e.bookedTag != 'Y').map(e => {return e});
+      var recBookingMth  = data['bookingMth']['bookingMonthList'].filter(e => e.bookedTag != 'Y' && e.tempClosedTag != 'Y').map(e => {return e});
       //recBookingMth.sort((a,b) => a.bookingMm - b.bookingMm);
 
       this.histTypeData = recHistType;
@@ -682,7 +682,8 @@ export class ClmClaimHistoryComponent implements OnInit {
     return arr.reduce((a,b) => a + b, 0);
   }
 
-  limitHistType(){
+  limitHistType(data?){
+    console.log(data);
     var ths = this;
     var trigWarn1 = false;
     var catArr  = this.passDataHistory.tableData.filter(e => e.newRec != 1).map(e => e.histCategory);
@@ -699,6 +700,13 @@ export class ClmClaimHistoryComponent implements OnInit {
       if(e.newRec == 1){
         //edit by paul 9/5/2019
         let validHistTypes:any[] = this.histTypeData;
+
+        if(e.histCategory != 'L'){
+          e.uneditable = ['exGratia'];
+          e.exGratia = 'N';
+        }else{
+          e.uneditable = [];
+        }
 
         if((e.histCategory == 'L' && this.preVal.lossStatCd=='CD') || ((e.histCategory == 'O' || e.histCategory == 'A') && this.preVal.expStatCd=='CD')){
           validHistTypes = validHistTypes.filter(a=>a.code != 2 && a.code != 3 && a.code != 1 && a.code != 6);
@@ -748,15 +756,15 @@ export class ClmClaimHistoryComponent implements OnInit {
             this.showWarnMsg();
             e.histType = '';
             e.histTypeDesc = ''; 
-          }else if(paymentstAmt> this.clmHistoryData.approvedAmt && e.histCategory == 'L'){
-            this.warnMsg = 'Please add Approved Amount before proceeding.';
-            this.showWarnMsg();
-            e.reserveAmt = 0;
-            return;
+          // }else if(paymentstAmt> this.clmHistoryData.approvedAmt && e.histCategory == 'L'){
+          //   this.warnMsg = 'Please add Approved Amount before proceeding.';
+          //   this.showWarnMsg();
+          //   e.reserveAmt = 0;
+          //   return;
           }else{
-            if( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
+            if(data['key']=="reserveAmt" && ( ((e.histCategory == 'L' && (e.reserveAmt > this.clmHistoryData.lossResAmt)) || 
                (e.histCategory == 'A' && (e.reserveAmt > totAdjExpRes)) || 
-               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes)) )){
+               (e.histCategory == 'O' && (e.reserveAmt > totOthExpRes)) ))){
                 this.warnMsg = 'Payment amount is more than the reserve amount.';
                 this.showWarnMsg();
             }
@@ -786,9 +794,9 @@ export class ClmClaimHistoryComponent implements OnInit {
 
     });
 
-    if(this.passDataHistory.tableData.some(e => e.exGratia == 'Y')){
-      this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
-    }
+    // if(this.passDataHistory.tableData.some(e => e.exGratia == 'Y')){
+    //   this.passDataHistory.tableData.forEach(e => {(e.newRec == 1)?e.exGratia='Y':'';});
+    // }
 
     setTimeout(() => {
       $('#histId').find('tbody').children().each(function(indx){
@@ -798,7 +806,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         var histType = $(histSelects[2]);
         var resAmt = $($(this).find('input.number')[0]).val();
 
-        (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
+        // (ths.passDataHistory.tableData.some(e => e.exGratia == 'Y' && e.newRec != 1))?cb.prop('disabled',true):'';
         if(histCat.val() == '' || histCat.val() == null || histCat.val() == undefined){
           histType.addClass('unclickable');
         }else{
@@ -1029,7 +1037,7 @@ export class ClmClaimHistoryComponent implements OnInit {
   }
 
   showApprovedAmtMdl(){
-    $('#approvedAmtMdl > #modalBtn').trigger('click');
+    this.approvedAmtMdl.openNoClose();
     this.getClaimApprovedAmt();
     this.removeDirtyHistTbl();
   }

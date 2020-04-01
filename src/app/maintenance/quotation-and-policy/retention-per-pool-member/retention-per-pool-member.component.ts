@@ -161,17 +161,42 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 		this.disableCopySetup = this.historySelected == null || this.historySelected == '';
 
 		if(data != '' && data != null) {
-			this.poolMemberData.uneditable[2] = data.okDelete == 'N';
-			this.poolMemberData.uneditable[3] = data.okDelete == 'N';
+			if(!data.okDelete){
+				this.historyTable.overlayLoader = true;
+				this.poolMemberTable.overlayLoader = true;
+				this.historyData.disableGeneric = true;
+				this.ms.checkOkDeleteRetPerCede(this.currencyCd,data.retHistId).subscribe(a=>{
+					data.okDelete = a;
+					this.poolMemberData.uneditable[2] = data.okDelete == 'N';
+					this.poolMemberData.uneditable[3] = data.okDelete == 'N';
 
-			this.poolMemberData.tableData = data.poolMemberList.sort((a, b) => a.cedingId - b.cedingId)
-															   .map(i => {
-															   		i.createDate = this.ns.toDateTimeString(i.createDate);
-															   		i.updateDate = this.ns.toDateTimeString(i.updateDate);
-															   		return i;
-															   });
-			this.poolMemberTable.refreshTable();
-			this.poolMemberTable.onRowClick(null, this.poolMemberData.tableData[0]);
+					this.poolMemberData.tableData = data.poolMemberList.sort((a, b) => a.cedingId - b.cedingId)
+																	   .map(i => {
+																	   		i.createDate = this.ns.toDateTimeString(i.createDate);
+																	   		i.updateDate = this.ns.toDateTimeString(i.updateDate);
+																	   		return i;
+																	   });
+					this.poolMemberTable.refreshTable();
+					this.poolMemberTable.onRowClick(null, this.poolMemberData.tableData[0]);
+					this.historyTable.overlayLoader = false;
+					this.poolMemberTable.overlayLoader = false;
+
+					this.historyData.disableGeneric = false;
+				})
+			}else{
+				this.poolMemberData.uneditable[2] = data.okDelete == 'N';
+				this.poolMemberData.uneditable[3] = data.okDelete == 'N';
+
+				this.poolMemberData.tableData = data.poolMemberList.sort((a, b) => a.cedingId - b.cedingId)
+																   .map(i => {
+																   		i.createDate = this.ns.toDateTimeString(i.createDate);
+																   		i.updateDate = this.ns.toDateTimeString(i.updateDate);
+																   		return i;
+																   });
+				this.poolMemberTable.refreshTable();
+				this.poolMemberTable.onRowClick(null, this.poolMemberData.tableData[0]);
+			}
+			
 		} else {
 			this.poolMemberData.tableData = [];
 			this.poolMemberTable.refreshTable();
@@ -469,4 +494,6 @@ export class RetentionPerPoolMemberComponent implements OnInit {
 			}
 		});
 	}
+
+
 }

@@ -14,7 +14,7 @@
             <div body style="width: 600px !important;">
               <fieldset class="scheduler-border col-sm-12 left" style="padding-top: 7px !important;padding-bottom: 4px !important;">
                 <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
-                <div style="position: fixed;width: 46%;height: 65%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+                <!-- <div style="position: fixed;width: 46%;height: 65%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div> -->
                 <div class="form-row custom-row-inline-inset" style="margin-left: -56px !important;">
 
                   <div class="input-group">
@@ -113,11 +113,16 @@
                 <p style="margin-bottom: 0px;">Selected Policy No. <strong>{{ refPolNo }}</strong></p>
                 <p style="margin-bottom: 5px;">has existing Claim No/s</p>
             </div>
-            <app-cust-non-datatable [passData]="passDataLOVTbl" (rowClick)="onRowClickLOVTbl($event)" (newRowDblClick)="selectedLOVTbl=$event; onClickViewLOVTbl($event)" (searchToDb)="searchQueryLOVTbl($event)" #LOVTbl></app-cust-non-datatable>
+            <app-cust-non-datatable [passData]="passDataLOVTbl" (rowClick)="onRowClickLOVTbl($event)" (newRowDblClick)="selectedLOVTbl=$event; onClickViewLOVTbl($event,container)" (searchToDb)="searchQueryLOVTbl($event)" #LOVTbl></app-cust-non-datatable>
         </fieldset>
     </div>
     <div footer class="text-center w-100">
         <button class="cust-btn" type="button" (click)="clmProcessingMdl.closeModal()"><a>Return</a></button>
-        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
+        <button class="cust-btn" type="button" (click)="onClickViewLOVTbl($event,container)" [disabled]="selectedLOVTbl == null"><a>View</a></button>
     </div>
 </app-modal>
+
+<ng-template #container class="w-100 h-100" >
+   <app-claim [claimParams]="claimInfo" [contModal]="claimsCont"></app-claim>
+
+</ng-template>

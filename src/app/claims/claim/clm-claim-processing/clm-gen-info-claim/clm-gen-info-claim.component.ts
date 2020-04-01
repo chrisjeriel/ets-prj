@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Title } from '@angular/platform-browser';
 import { ClaimsService, NotesService, UnderwritingService, MaintenanceService } from '@app/_services';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustEditableNonDatatableComponent, ModalComponent } from '@app/_components/common';
 import { MtnLossCdComponent } from '@app/maintenance/mtn-loss-cd/mtn-loss-cd.component';
 import { MtnUsersComponent } from '@app/maintenance/mtn-users/mtn-users.component';
 import { MtnClmEventComponent } from '@app/maintenance/mtn-clm-event/mtn-clm-event.component';
@@ -41,11 +41,12 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   @ViewChild('usersLov') usersLov: MtnUsersComponent;
   @ViewChild(NgForm) myForm: NgForm;
   @ViewChildren(DatepickerComponent) dps : QueryList<DatepickerComponent>;
+  @ViewChild('adjusterModal') adjusterModal: ModalComponent;
 
   line: string;
   sub: any;
 
-  @Input() claimInfo = {
+  @Input() claimInfo:any = {
     claimId: '',
     claimNo: ''
   }
@@ -239,38 +240,57 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.titleService.setTitle("Clm | General Info");
     $('.globalLoading').css('display','block');
 
-    this.sub = this.actRoute.params.subscribe(params => {
-      this.line = params['line'];
-
-      if((this.claimInfo.claimId != '' || this.claimInfo.claimNo != '')&& this.claimInfo.claimId != undefined) {
-        this.claimId = Number(this.claimInfo.claimId);
-        this.claimNo = this.claimInfo.claimNo;
-
-        this.retrieveClmGenInfo();
-      } else if(params['from'] == 'edit') {
-        this.claimId = params['claimId'];
-        this.claimNo = params['claimNo'];
-        //neco
-        if(this.isInquiry){
-          //this.isInquiry = true;
-          this.adjData.addFlag = false;
-          this.adjData.deleteFlag = false;
-          this.adjData.genericBtn = undefined;
-          this.adjData.uneditable = [];
-          for(var i in this.adjData.tHeader){
-            this.adjData.uneditable.push(true);
+    if(this.claimInfo.fromModal){
+      this.line = this.claimInfo.line;
+      this.claimId = Number(this.claimInfo.claimId);
+      this.claimNo = this.claimInfo.claimNo;
+      if(this.isInquiry){
+            //this.isInquiry = true;
+            this.adjData.addFlag = false;
+            this.adjData.deleteFlag = false;
+            this.adjData.genericBtn = undefined;
+            this.adjData.uneditable = [];
+            for(var i in this.adjData.tHeader){
+              this.adjData.uneditable.push(true);
+            }
+            this.adjTable.refreshTable();
           }
-          this.adjTable.refreshTable();
-        }
-        //neco end
-        this.retrieveClmGenInfo();
-      } else if(params['from'] == 'add') {
-        this.policyId = params['policyId'];
-        this.policyNo = params['policyNo'];
+      this.retrieveClmGenInfo();
+    }else{
+      this.sub = this.actRoute.params.subscribe(params => {
+        this.line = params['line'];
 
-        this.retrievePolDetails();
-      }
-    });
+        if((this.claimInfo.claimId != '' || this.claimInfo.claimNo != '')&& this.claimInfo.claimId != undefined) {
+          this.claimId = Number(this.claimInfo.claimId);
+          this.claimNo = this.claimInfo.claimNo;
+
+          this.retrieveClmGenInfo();
+        } else if(params['from'] == 'edit') {
+          this.claimId = params['claimId'];
+          this.claimNo = params['claimNo'];
+          //neco
+          if(this.isInquiry){
+            //this.isInquiry = true;
+            this.adjData.addFlag = false;
+            this.adjData.deleteFlag = false;
+            this.adjData.genericBtn = undefined;
+            this.adjData.uneditable = [];
+            for(var i in this.adjData.tHeader){
+              this.adjData.uneditable.push(true);
+            }
+            this.adjTable.refreshTable();
+          }
+          //neco end
+          this.retrieveClmGenInfo();
+        } else if(params['from'] == 'add') {
+          this.policyId = params['policyId'];
+          this.policyNo = params['policyNo'];
+
+          this.retrievePolDetails();
+        }
+      });
+    }
+    
   }
 
   ngOnDestroy() {
@@ -438,7 +458,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     this.adjData.tableData = JSON.parse(JSON.stringify(this.claimData.clmAdjusterList));
     this.adjTable.refreshTable();
     this.adjTable.onRowClick(null, this.adjData.tableData[0]);
-    $('#adjustersModal #modalBtn').trigger('click');
+    this.adjusterModal.openNoClose();
   }
 
   onCancelNo() {
@@ -466,7 +486,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
   }
 
   showUsersLOV() {
-    $('#usersLOV #modalBtn').trigger('click');
+    $('#usersLOV #modalBtn2').trigger('click');
   }
 
   setProcessedBy(ev) {
@@ -626,7 +646,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     if(this.adjTable.form.first.dirty){
       this.adjCancelBtn.saveModal.openNoClose();
     } else {
-      this.modalService.dismissAll();
+      this.adjusterModal.closeModal();
     }
   }
 
@@ -797,10 +817,10 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
         this.successDialog.open();
       } else if(data['returnCode'] == 1) {
         this.mdlType = 'warn3';        
-        $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        $('#clmGenInfoConfirmationModal #modalBtn2').trigger('click');
       } else if(data['returnCode'] == 2) {
         this.mdlType = 'warn4';
-        $('#clmGenInfoConfirmationModal #modalBtn').trigger('click');
+        $('#clmGenInfoConfirmationModal #modalBtn2').trigger('click');
       }
     });
   }

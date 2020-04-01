@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, QueryList } from '@angular/core';
+import { Component, OnInit, ViewChild, QueryList, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { QuotationList } from '@app/_models';
 import { QuotationService, NotesService } from '../../../_services';
@@ -13,7 +13,7 @@ import * as alasql from 'alasql';
     templateUrl: './list-of-quotations.component.html',
     styleUrls: ['./list-of-quotations.component.css']
 })
-export class ListOfQuotationsComponent implements OnInit {
+export class ListOfQuotationsComponent implements OnInit, AfterViewInit {
     @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     //Table Parameters
     tableData: any[] = [];
@@ -175,6 +175,10 @@ export class ListOfQuotationsComponent implements OnInit {
     }
 
     ngOnInit() {
+        
+        if(this.notes.listParams != null){
+            this.searchParams = this.notes.listParams;
+        }
         this.retrieveQuoteListingMethod();
         /*this.passData.tableData = this.quotationService.getQuotationListInfo();
         this.passData.tableData.forEach(function(e){
@@ -185,9 +189,17 @@ export class ListOfQuotationsComponent implements OnInit {
             delete e.approvedBy;
         });
         this.allData = this.quotationService.getQuotationListInfo();*/
+
+    }
+
+    ngAfterViewInit(){
+      if(this.notes.listParams != null){
+          this.table.setPreviousParams(this.notes.listParams);
+        }
     }
 
     retrieveQuoteListingMethod(){
+        this.notes.setListParams(this.searchParams);
         if(this.table != undefined)
             this.table.lengthFirst = false;
         if(this.searchParams.recount != 'N'){

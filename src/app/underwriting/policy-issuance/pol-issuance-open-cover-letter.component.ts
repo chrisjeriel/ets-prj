@@ -174,7 +174,7 @@ export class PolIssuanceOpenCoverLetterComponent implements OnInit, OnDestroy {
       let params:any = {
                           policyIdOc:this.policyInfo.policyIdOc,
                           updateUser:this.ns.getCurrentUser(),
-
+                          policyId: this.policyInfo.policyIdOc,
                         };
 
       params.reportId=this.printReport;

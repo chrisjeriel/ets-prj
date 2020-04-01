@@ -4,7 +4,7 @@ import { DistributionByRiskInfo } from '@app/_models';
 import { UnderwritingService, NotesService, PrintService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
+import { CustEditableNonDatatableComponent, SucessDialogComponent } from '@app/_components/common';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import * as alasql from 'alasql';
 
@@ -28,6 +28,8 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   @ViewChild('inProgCoinsMdl') inProgCoinsMdl: ModalComponent;
   @ViewChild('missingCoinsMdl') missingCoinsMdl: ModalComponent;
+
+  @Input('fromEditDist')fromEditDist:Boolean;
 
   missingCoins:any[] = [];
   inProgCoins:any[] = [];
@@ -135,6 +137,9 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
 
   @Input() inquiryFlag: boolean = false;
   @Input() acctDetails:any = {};
+  @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  dialogIcon :any;
+  dialogMessage: any;
 
 
   constructor(private polService: UnderwritingService, private titleService: Title, public modalService: NgbModal, 
@@ -150,10 +155,37 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
                   this.retrievePolicyDistribution();
                 });
     //END
+    if(this.fromEditDist){
+      this.treatyDistData.uneditable= [true,true,true,false,false,true,false,false,false];
+    }
   }
 
 
   getSums(){
+    this.ts1 = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
+    this.ts2 = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
+    this.total = {
+      si: 0,
+      prem: 0,
+      comm: 0,
+      vat: 0,
+      net:0
+    };
+
     this.treatyDistData.tableData.forEach(a=>{
       if(a.section == 'I'){
         this.ts1.si   +=a.siAmt;
@@ -175,21 +207,21 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
       this.total.vat  += this.ts1.vat +  this.ts2.vat;
       this.total.net  += this.ts1.net +  this.ts2.net;
 
-      this.ts1.si = Number(this.ts1.si).toFixed(2);
-      this.ts1.prem = Number(this.ts1.prem).toFixed(2);
-      this.ts1.comm = Number(this.ts1.comm).toFixed(2);
-      this.ts1.vat = Number(this.ts1.vat).toFixed(2);
-      this.ts1.net = Number(this.ts1.net).toFixed(2);
-      this.ts2.si = Number(this.ts2.si).toFixed(2);
-      this.ts2.prem = Number(this.ts2.prem).toFixed(2);
-      this.ts2.comm = Number(this.ts2.comm).toFixed(2);
-      this.ts2.vat = Number(this.ts2.vat).toFixed(2);
-      this.ts2.net = Number(this.ts2.net).toFixed(2);
-      this.total.si = Number(this.total.si).toFixed(2);
-      this.total.prem = Number(this.total.prem).toFixed(2);
-      this.total.comm = Number(this.total.comm).toFixed(2);
-      this.total.vat = Number(this.total.vat).toFixed(2);
-      this.total.net = Number(this.total.net).toFixed(2);
+      this.ts1.si = Math.round(this.ts1.si*100)/100;
+      this.ts1.prem = Math.round(this.ts1.prem*100)/100;
+      this.ts1.comm = Math.round(this.ts1.comm*100)/100;
+      this.ts1.vat = Math.round(this.ts1.vat*100)/100;
+      this.ts1.net = Math.round(this.ts1.net*100)/100;
+      this.ts2.si = Math.round(this.ts2.si*100)/100;
+      this.ts2.prem = Math.round(this.ts2.prem*100)/100;
+      this.ts2.comm = Math.round(this.ts2.comm*100)/100;
+      this.ts2.vat = Math.round(this.ts2.vat*100)/100;
+      this.ts2.net = Math.round(this.ts2.net*100)/100;
+      this.total.si = Math.round(this.total.si*100)/100;
+      this.total.prem = Math.round(this.total.prem*100)/100;
+      this.total.comm = Math.round(this.total.comm*100)/100;
+      this.total.vat = Math.round(this.total.vat*100)/100;
+      this.total.net = Math.round(this.total.net*100)/100;
   }
 
   getSumsPool(){
@@ -284,12 +316,13 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
   //NECO 06/04/2019
   retrievePolicyDistribution(){
     this.polService.getPolDistribution(this.params.policyId).subscribe((data: any)=>{
+      this.mainTable.markAsPristine();
       this.missingCoins = data.missingCoins;
       this.inProgCoins = data.inProgCoins;
       this.polDistributionData = data.polDistribution;
       this.treatyDistData.tableData = data.polDistribution.trtyListPerSec;
       this.mainTable.refreshTable();
-      this.getSums();
+      this.getSums();  
       setTimeout(()=>{
          $('input[type=text]').focus();
          $('input[type=text]').blur();
@@ -488,11 +521,31 @@ export class PolDistributionComponent implements OnInit, OnDestroy {
     params.reportId=this.printReport;
     params.fileName = this.polDistributionData.policyNo;
     this.ps.print(this.printDestination,this.printReport,params)
-    if(params.reportId == 'POLR038C'){
-      let params1 = JSON.parse(JSON.stringify(params));
-      params1.reportId = 'POLR038CA';
-      params.filename = 'CMDM' + this.polDistributionData.policyNo;
-      this.ps.print(this.printDestination,'POLR038CA',params1)
+    // if(params.reportId == 'POLR038C'){
+    //   let params1 = JSON.parse(JSON.stringify(params));
+    //   params1.reportId = 'POLR038CA';
+    //   params.filename = 'CMDM' + this.polDistributionData.policyNo;
+    //   this.ps.print(this.printDestination,'POLR038CA',params1)
+    // }
+  }
+
+  save(){
+    let params:any = {
+      distId: this.polDistributionData.distNo,
+      saveList: this.treatyDistData.tableData.filter(a=>a.edited),
+      policyId: this.params.policyId,
+      updateUser: this.ns.getCurrentUser()
     }
+    this.polService.saveManualDistPol(params).subscribe(a=>{
+      if(a['returnCode']== -1){
+        this.dialogIcon = 'success';
+        this.retrievePolicyDistribution();
+        this.successDiag.open();
+
+      }else{  
+        this.dialogIcon = 'error';
+        this.successDiag.open();
+      }
+    })
   }
 }

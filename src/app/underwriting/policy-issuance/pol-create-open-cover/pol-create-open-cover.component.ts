@@ -220,13 +220,15 @@ export class PolCreateOpenCoverComponent implements OnInit {
       if(!this.noDataFound){
           this.passDataLOV.filters[0].search = this.tempQuoteNo.join('%-%');
           this.passDataLOV.filters[0].enabled =true;
-          this.searchParams.policyNo = this.tempQuoteNo.join('%-%');
+          this.searchParams.quotationNo = this.tempQuoteNo.join('%-%');
         }else{
           this.passDataLOV.filters[0].search = '';
           this.passDataLOV.filters[0].enabled =false;
-          this.searchParams.policyNo = '';
+          this.searchParams.quotationNo = '';
         }
-
+      if(this.quListTable != undefined){
+        this.quListTable.overlayLoader = true;
+      }
       this.qs.newGetQuoProcessingData(this.searchParams).subscribe(data => {
         this.quotationList = data['quotationList'];
         this.passDataLOV.count = data['length'];

@@ -122,10 +122,15 @@
 <div class="row">
     <fieldset class="scheduler-border d-block w-100">
         <legend class="scheduler-border">Paul's Domain</legend>
-        <button (click)="specLov.openLOV()">Test</button>
+        <button (click)="openClaimsLov(container)">Summon Claims</button>
     </fieldset>
 </div>
 
+<ng-template #container class="w-100 h-100" >
+   <app-claim [claimParams]="claimInfo" [contModal]="claimsCont"></app-claim>
+
+</ng-template>
+<!-- 
 <app-special-lov></app-special-lov>
 
 
@@ -192,7 +197,7 @@
 <br>
 
 <text-editor [editorContent]="edtr" (fetchContent)="edtr=$event"></text-editor>
-
+ -->
 
 
 <!-- <input type="text" appCheckForm [data]="ttt" (output)="ttt=$event"> -->

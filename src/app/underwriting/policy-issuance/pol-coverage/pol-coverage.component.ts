@@ -134,7 +134,7 @@ export class PolCoverageComponent implements OnInit {
 
   passDataDeductibles: any = {
         tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
-        dataTypes: ["text","text","text", "percent", "currency"],
+        dataTypes: ["text","text","text-editor", "percent", "currency"],
         pageLength:5,
         addFlag: true,
         deleteFlag: true,

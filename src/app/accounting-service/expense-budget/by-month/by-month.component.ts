@@ -140,7 +140,8 @@ export class ByMonthComponent implements OnInit {
 
   ngOnInit() {
     this.generateYears();
-  	this.retrieveAcseBudExpMonthly(this.selectedYear);
+    this.selectedYear = new Date().getFullYear();
+  	this.retrieveAcseBudExpMonthly(this.selectedYear, true);
   }
 
   generateYears(){
@@ -152,7 +153,7 @@ export class ByMonthComponent implements OnInit {
       currYear -= 1;
     }
     this.yearArray.sort((a,b) => b-a);
-    this.selectedYear = this.yearArray[0];
+    this.selectedYear = currYear - 10; //this.yearArray[0];
   }
 
   retrieveAcseBudExpMonthly(year: number, fromNgModelChange?: boolean){

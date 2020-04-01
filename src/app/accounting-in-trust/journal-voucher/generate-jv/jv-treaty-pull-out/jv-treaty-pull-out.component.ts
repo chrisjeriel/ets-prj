@@ -159,7 +159,7 @@ export class JvTreatyPullOutComponent implements OnInit {
     if(this.jvDetail.statusType == 'N'){
       this.readOnly = false;
     }else {
-      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1, 4);
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
       this.readOnly = true;
       this.readOnly = true;
       this.passData.addFlag = false;

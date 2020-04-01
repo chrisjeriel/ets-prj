@@ -28,7 +28,7 @@
 			<div class="custom-row-inline-inset">
 				<div class="row">
 					<div class="col-sm-12">
-						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt($event); checkDirtyTbl();limitHistType();" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
+						<app-cust-editable-non-datatable id="histId" [passData]="passDataHistory" (newClick)="clickRow($event)" (tableDataChange)="passDataHistory.tableData=$event; compResPayt($event); checkDirtyTbl();limitHistType($event);" (add)="onClickAddHistTbl()" #histTbl></app-cust-editable-non-datatable>
 					</div>
 				</div>
 				<div class="form-row" style="margin-top: -10px;margin-right: 22px !important;">
@@ -161,7 +161,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelResStat()" *ngIf="!isInquiry"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickSaveResStat()" *ngIf="!isInquiry"><a>Save</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="resStatMdl.closeModal()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 
@@ -173,7 +173,7 @@
     <div footer class="d-flex justify-content-center w-100">                    
         <button class="cust-btn" type="button" (click)="onClickCancelAppAmt()" *ngIf="!isInquiry"><a>Cancel</a></button>
         <button class="cust-btn" type="button" (click)="onClickSaveAppAmt()" *ngIf="!isInquiry"><a>Save</a></button>
-        <button class="cust-btn" type="button" (click)="this.modalService.dismissAll()" *ngIf="isInquiry"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="approvedAmtMdl.closeModal()" *ngIf="isInquiry"><a>Return</a></button>
     </div>
 </app-modal>
 

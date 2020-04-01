@@ -111,8 +111,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
     this.passLov.payeeNo = this.record.payeeNo;
     this.isReopen = this.record.reopenTag == 'Y';
     if(this.record.arStatDesc.toUpperCase() != 'NEW'){
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-      this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 1}];
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+      // this.passData.tHeaderWithColspan= [{header: 'Inward Policy Info', span: 13}, {header: 'Payment Details', span: 5}, {header: '', span: 1}, {header: '', span: 3}];
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
       this.passData.checkFlag = false;
@@ -195,6 +196,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.passData.tableData[this.passData.tableData.length - 1].dueDate = selected[i].dueDate;
       this.passData.tableData[this.passData.tableData.length - 1].currCd = selected[i].currCd;
       this.passData.tableData[this.passData.tableData.length - 1].currRate = selected[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1].insuredDesc = selected[i].insuredDesc;
       this.passData.tableData[this.passData.tableData.length - 1].prevPremAmt = selected[i].prevPremAmt;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiComm = selected[i].prevRiComm;
       this.passData.tableData[this.passData.tableData.length - 1].prevRiCommVat = selected[i].prevRiCommVat;

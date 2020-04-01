@@ -6,6 +6,7 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
 
 @Component({
   selector: 'app-unapplied-collection',
@@ -22,6 +23,7 @@ export class UnappliedCollectionComponent implements OnInit {
   @ViewChild(CancelButtonComponent) cancel: CancelButtonComponent;
   @ViewChild(ModalComponent) netMdl: ModalComponent;
   @Output() emitCreateUpdate: EventEmitter<any> = new EventEmitter();
+  @ViewChild('lov') lov: LovComponent;
 
   dialogIcon: string = '';
   dialogMessage: string = '';
@@ -39,12 +41,13 @@ export class UnappliedCollectionComponent implements OnInit {
 
   passData: any = {
   	tableData: [],
-    tHeader: ['Type', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['reqSelect', 'reqTxt','text','text','text','percent','reqCurrency','currency'],
+    tHeader: ['Return','Type', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes: ['checkbox','reqSelect', 'reqTxt2','text','text','text','percent','reqCurrency','currency'],
     nData: {
       tranId: '',
       billId: '',
       itemNo: '',
+      returnTag: 'N',
       transdtlType: 'OP',
       itemName: '',
       refNo: '',
@@ -52,24 +55,34 @@ export class UnappliedCollectionComponent implements OnInit {
       currCd: '',
       currRate: '',
       currAmt: 0,
-      localAmt: 0
+      localAmt: 0,
+      unappliedId: '',
+      return: 0,
+      newRec: true
     },
-    total:[null,null,null,null,null,'Total','currAmt','localAmt'],
+    total:[null,null,null,null,null,null,'Total','currAmt','localAmt'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     pageLength: 10,
-    widths: [180,210,160,'auto',80,100,120,120],
-    keys: ['transdtlType','itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-    uneditable: [false,false,false,false,true,true,false,true],
+    widths: [1,180,210,160,'auto',80,100,120,120],
+    keys: ['returnTag','transdtlType','itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
+    uneditable: [false,false,false,false,false,true,true,false,true],
     paginateFlag:true,
     infoFlag:true,
     opts:[{
       selector: 'transdtlType',
       vals: [],
       prev: []
-    }]
+    }],
   }
+
+  passLov: any = {
+    selector: '',
+    cedingId: '',
+    hide: []
+  };
+
   constructor(private accountingService: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
@@ -78,7 +91,7 @@ export class UnappliedCollectionComponent implements OnInit {
     this.isReopen = this.arDetails.reopenTag == 'Y';
     //this.getCurrency();
     if(this.arDetails.arStatDesc.toUpperCase() != 'NEW'){
-      this.passData.uneditable = [true, true, true, true, true, true,true, true];
+      this.passData.uneditable = [true,true, true, true, true, true, true,true, true];
       this.passData.addFlag = false;
       this.passData.deleteFlag =  false;
       this.passData.checkFlag = false;
@@ -98,6 +111,18 @@ export class UnappliedCollectionComponent implements OnInit {
           for(var i of data.transDtlList){
             this.originalNet += i.currAmt;
           }
+
+          data.transDtlList.map(a => {
+            a['return'] = 2;
+            a['uneditable'] = ['returnTag'];
+
+            if(a.returnTag == 'Y') {
+              a['uneditable'] = ['returnTag', 'transdtlType'];
+              a['uneditable2'] = ['itemName'];
+            }
+
+            return a;
+          });
           this.passData.tableData = data.transDtlList;
           this.table.refreshTable();
         }
@@ -133,6 +158,8 @@ export class UnappliedCollectionComponent implements OnInit {
   }
 
   onClickSave(cancel?){
+    var returnArr = this.passData.tableData.filter(a => a.edited && !a.deleted && a.returnTag == 'Y' && a.currAmt >= 0);
+
     if(this.arDetails.dcbStatus == 'C' || this.arDetails.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
@@ -140,7 +167,11 @@ export class UnappliedCollectionComponent implements OnInit {
       this.successDiag.open();
     }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
-    }else{
+    } else if(returnArr.length > 0) {
+      this.dialogIcon = 'error-message';
+      this.dialogMessage = 'Return amount/s must be negative.';
+      this.successDiag.open();
+    } else {
       if(cancel != undefined){
         this.save(cancel);
       }else{
@@ -227,6 +258,28 @@ export class UnappliedCollectionComponent implements OnInit {
         data[i].currRate = data[i].currCd.split('T')[1];
         data[i].localAmt = data[i].currAmt * data[i].currRate;
       }
+    } else if(data.key === 'returnTag') {
+      for(var i = 0; i < data.length; i++) {
+        if(data[i].returnTag == 'Y' && data[i].newRec !== undefined && data[i]['return'] !== 2) {
+          data[i]['unappliedId'] = '';
+          data[i]['itemName'] = '';
+          data[i]['refNo'] = '';
+          data[i]['remarks'] = '';
+          data[i]['currAmt'] = 0;
+          data[i]['localAmt'] = 0;
+
+          data[i]['magnifyingGlass'] = ['itemName'];
+          data[i]['uneditable'] = ['transdtlType'];
+          data[i]['uneditable2'] = ['itemName'];
+          data[i]['return'] = 1;
+        } else if(data[i].returnTag == 'N' && data[i].newRec !== undefined) {
+          data[i]['magnifyingGlass'] = [];
+          data[i]['uneditable'] = [];
+          data[i]['uneditable2'] = [];
+          data[i]['return'] = 0;
+          data[i]['unappliedId'] = '';
+        }
+      }
     }
     this.passData.tableData = data;
   }
@@ -251,6 +304,46 @@ export class UnappliedCollectionComponent implements OnInit {
     console.log('originalAmt => ' + this.originalNet );
     console.log('newAlterAmt => ' + this.newAlteredAmt);
     return this.newAlteredAmt != this.originalNet;
+  }
+
+  showUnappliedLov(ev) {
+    this.passLov.params = {
+      unappliedId: '',
+      cedingId: this.arDetails.payeeNo,
+      currCd: this.arDetails.currCd
+    }
+    this.passLov.hide = this.passData.tableData.filter((a)=>{return a.unappliedId !== undefined && a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
+    this.passLov.selector = 'unappliedColl';
+
+    setTimeout(() => {
+      this.lov.openLOV();
+    });
+  }
+
+  setLOV(data) {
+    this.passData.tableData = this.passData.tableData.filter(a=>a.return!=1);
+    for(var i = 0; i < data.data.length; i++) {
+      console.log(data.data[i]);
+      this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+      this.passData.tableData[this.passData.tableData.length - 1]['edited']           = true;
+      this.passData.tableData[this.passData.tableData.length - 1]['return']           = 2;
+      this.passData.tableData[this.passData.tableData.length - 1]['magnifyingGlass']  = [];
+      this.passData.tableData[this.passData.tableData.length - 1]['uneditable']       = ['returnTag', 'transdtlType'];
+      this.passData.tableData[this.passData.tableData.length - 1]['uneditable2']      = ['itemName'];
+      this.passData.tableData[this.passData.tableData.length - 1]['unappliedId']      = data.data[i].unappliedId;
+      this.passData.tableData[this.passData.tableData.length - 1]['returnTag']        = 'Y';
+      this.passData.tableData[this.passData.tableData.length - 1]['transdtlType']     = data.data[i].transdtlType;
+      this.passData.tableData[this.passData.tableData.length - 1]['itemName']         = data.data[i].itemName;
+      this.passData.tableData[this.passData.tableData.length - 1]['refNo']            = data.data[i].refNo;
+      this.passData.tableData[this.passData.tableData.length - 1]['remarks']          = data.data[i].remarks;
+      this.passData.tableData[this.passData.tableData.length - 1]['currCd']           = data.data[i].currCd;
+      this.passData.tableData[this.passData.tableData.length - 1]['currRate']         = data.data[i].currRate;
+      this.passData.tableData[this.passData.tableData.length - 1]['currAmt']          = -(parseFloat(data.data[i].balUnapldAmt));
+      this.passData.tableData[this.passData.tableData.length - 1]['localAmt']         = -(parseFloat(data.data[i].localAmt));
+    }
+
+    this.table.refreshTable();
+    this.table.onRowClick(null, this.passData.tableData[0]);
   }
 
 }

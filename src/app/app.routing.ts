@@ -208,6 +208,7 @@ import { EditDistributionEntryComponent } from './underwriting/distribution/edit
 import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/booking-mth.component';
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
+import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 
 import { PivotComponent } from './sample/pivot/pivot.component';
 
@@ -391,7 +392,7 @@ const appRoutes: Routes = [
     		canActivate: [AuthGuard, ModuleAccessGuard],
     		data: { moduleId : 'POL036'}
 	},
-    { path: 'policy-dist', component: PolicyDistributionComponent, 
+    { path: 'policy-dist', component: PolicyDistributionComponent, canDeactivate: [UnsavedChangesGuard],
     		canActivate: [AuthGuard, ModuleAccessGuard],
     		data: { moduleId : 'POL038', verifyWithData: true } //and POL037
 	},
@@ -856,7 +857,7 @@ const appRoutes: Routes = [
     { path: 'mtn-booking-mth', component: BookingMthComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
     { path: 'pol-oc-information', component: PolOcInformationComponent},
-
+    { path: 'posting-amt-limit', component: PostingAmtLimitComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

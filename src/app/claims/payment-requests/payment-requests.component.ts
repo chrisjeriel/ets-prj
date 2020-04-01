@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild,AfterViewInit } from '@angular/core';
 import { ClaimPaymentRequests } from  '@app/_models';
 import { Router } from '@angular/router';
 import { ClaimsService, NotesService, UserService } from '../../_services';
@@ -13,7 +13,7 @@ import { finalize } from 'rxjs/operators';
   templateUrl: './payment-requests.component.html',
   styleUrls: ['./payment-requests.component.css']
 })
-export class PaymentRequestsComponent implements OnInit {
+export class PaymentRequestsComponent implements OnInit, AfterViewInit {
 
   btnDisabled: boolean;
   btnDisabled_neg: boolean;
@@ -27,11 +27,12 @@ export class PaymentRequestsComponent implements OnInit {
 
    passData: any = {
     tableData: [], 
-    tHeader: ['Claim No', 'Hist No.', 'Policy No', 'Payment Request No', 'Payee', 'Payment Type', 'Status', 'Curr', 'Amount', 'Particulars','Request Date','Requested By','Acct. Ref. No.','Acct. Tran. Date','Insured','Risk','Loss Date'],
-    dataTypes: ['text','text','text','text','text','text','text','text','currency','text','date','text','text','date','text','text','date'],
-    keys:['claimNo','histNo','policyNo','paytReqNo','payee','paymentType','status','currCd','reqAmount','particulars','reqDate','requestedBy','acctRefNo','tranDate','insuredDesc','riskName','lossDate'],
+    tHeader: ['Claim No', 'Hist No.', 'Policy No', 'Payment Request No', 'Payee', 'Payment Type', 'Status', 'Curr', 'Amount', 'Particulars','Request Date','Requested By','Booking Mth-Yr','Acct. Ref. No.','Acct. Tran. Date','Insured','Risk','Loss Date'],
+    dataTypes: ['text','text','text','text','text','text','text','text','currency','text','date','text','text','text','date','text','text','date'],
+    keys:['claimNo','histNo','policyNo','paytReqNo','payee','paymentType','status','currCd','reqAmount','particulars','reqDate','requestedBy','bookingMonth','acctRefNo','tranDate','insuredDesc','riskName','lossDate'],
     uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     pageLength: 10,
+    sortKeys : ['CLAIM_NO','HIST_NO','POLICY_NO','PAYT_REQ_NO','PAYEE','PAYMENT_TYPE','STATUS','CURR_CD','REQ_AMOUNT','PARTICULARS','REQ_DATE','REQUESTED_BY','BOOKING_MONTH','ACCT_REF_NO','TRAN_DATE','INSURED_DESC','RISK_NAME','LOSS_DATE'],
     searchFlag:true,
     pagination: true,
     pageStatus: true,
@@ -97,6 +98,11 @@ export class PaymentRequestsComponent implements OnInit {
         dataType: 'text'
       },
       {
+        key: 'bookingMonth',
+        title:'Booking Month',
+        dataType: 'text'
+      },
+      {
         key: 'acctRef',
         title:'Acct. Ref. No',
         dataType: 'text'
@@ -132,7 +138,7 @@ export class PaymentRequestsComponent implements OnInit {
   selected:any = null;
 
    @ViewChild('confirmation') confirmation;
-   @ViewChild('inqTable') inqTable: CustNonDatatableComponent;
+   @ViewChild('inqTable') inqTable: LoadingTableComponent;
    
   constructor(private claimsService: ClaimsService, private router: Router, private modalService: NgbModal, private titleService: Title, private ns: NotesService, private userService: UserService) { }
 
@@ -141,16 +147,26 @@ export class PaymentRequestsComponent implements OnInit {
   	this.btnDisabled_neg = true;
   	this.titleService.setTitle("Clm | Payment Request Inquiry");
     this.userService.emitModuleId("CLM010");
-
+    if(this.ns.listParams != null){
+        this.searchParams = this.ns.listParams;
+    }
   	this.getList();
+  }
+
+  ngAfterViewInit(){
+    if(this.ns.listParams != null){
+        this.inqTable.setPreviousParams(this.ns.listParams);
+      }
   }
 
   getList(){
     var recs = []
+    
+    this.ns.setListParams(this.searchParams);
     this.claimsService.getClaimPaytReqInq(this.searchParams).subscribe((a:any)=>{
-      this.passData.tableData = a['list'];
-      this.inqTable.refreshTable();
-      //this.inqTable.placeData(a['list']);
+      
+      this.passData.count = a['list'].length;
+      this.inqTable.placeData(a['list']);
     })
   }
 
@@ -177,7 +193,7 @@ export class PaymentRequestsComponent implements OnInit {
                           claimId: data.claimId,
                           claimNo: data.claimNo,
                           line: line,
-                          exitLink: 'payment-request',
+                          exitLink: '/payment-request',
                           tab: 'paymentRequest',
 
                           clmStatus:data.clmStatus,
@@ -233,6 +249,6 @@ export class PaymentRequestsComponent implements OnInit {
              else
                return date.toLocaleString().split(',')[0];
        };
-    alasql('SELECT  claimNo AS [Claim No],  histNo AS [Hist No.],  policyNo AS [Policy No],  paytReqNo AS [Payment Request No],  payee AS [Payee],  paymentType AS [Payment Type],  status AS [Status],  currCd AS [Curr],  reqAmount AS [Amount],  particulars AS [Particulars],  datetime(reqDate) AS [Request Date],  requestedBy AS [Requested By],  nvl(acctRefNo) AS [Acct. Ref. No.],  datetime(tranDate) AS [Acct. Tran. Date],  insuredDesc AS [Insured],  riskName AS [Risk],  datetime(lossDate) AS [Loss Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
+    alasql('SELECT  claimNo AS [Claim No],  histNo AS [Hist No.],  policyNo AS [Policy No],  paytReqNo AS [Payment Request No],  payee AS [Payee],  paymentType AS [Payment Type],  status AS [Status],  currCd AS [Curr],  reqAmount AS [Amount],  particulars AS [Particulars],  datetime(reqDate) AS [Request Date],  requestedBy AS [Requested By],bookingMonth AS [Booking Mth-Yr],  nvl(acctRefNo) AS [Acct. Ref. No.],  datetime(tranDate) AS [Acct. Tran. Date],  insuredDesc AS [Insured],  riskName AS [Risk],  datetime(lossDate) AS [Loss Date] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,record]);    
   }
 }

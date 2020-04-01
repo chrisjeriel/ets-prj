@@ -210,6 +210,10 @@ export class UpdateGeneralInfoComponent implements OnInit {
         this.searchParamsLov.recount = 'N';
       }
 
+      if(this.quListTable!= undefined){
+        this.quListTable.overlayLoader = true;
+      }
+
 
       this.us.newGetParListing(obj).subscribe(data => {
         var records = data['policyList'];

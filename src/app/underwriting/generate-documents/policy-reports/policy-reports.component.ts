@@ -36,7 +36,9 @@ export class PolicyReportsComponent implements OnInit {
   passLov: any = {
     selector: 'mtnReport',
     reportId: '',
-    hide: []
+    hide: [
+      'POLR044BA'
+    ]
   }
 
   params :any = {
@@ -147,12 +149,12 @@ export class PolicyReportsComponent implements OnInit {
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService, public modalService: NgbModal,  private decimal : DecimalPipe, private router:Router) { }
 
   ngOnInit() {
-      this.passLov.modReportId = 'POLR044_';
+      this.passLov.modReportId = 'POLR044%';
       this.loading = false;
   }
 
   getReports(){
-    this.passLov.reportId = 'POLR044_';
+    this.passLov.reportId = 'POLR044%';
     this.lovMdl.openLOV();
   }
 
@@ -167,13 +169,17 @@ export class PolicyReportsComponent implements OnInit {
     if(data.data != null){
       this.params.reportId = data.data.reportId;
       this.params.reportName = data.data.reportTitle;
-    }
-
-    if (this.repExtractions.indexOf(this.params.reportId) > -1) {
       this.extractDisabled = false;
     } else {
       this.extractDisabled = true;
+      return;
     }
+
+    /*if (this.repExtractions.indexOf(this.params.reportId) > -1) {
+      this.extractDisabled = false;
+    } else {
+      this.extractDisabled = true;
+    }*/
 
       // this.paramsToggle.push('issueDate');
       // this.paramsToggle.push('lossDate');
@@ -197,6 +203,7 @@ export class PolicyReportsComponent implements OnInit {
     if(this.params.reportId == 'POLR044A'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
       this.params.dateParam = '5';
+      this.params.incRecTag = '';
     } 
     else if(this.params.reportId == 'POLR044B'){
       this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company', 'currCd');
@@ -205,43 +212,52 @@ export class PolicyReportsComponent implements OnInit {
       this.paramsToggle.push('accountingDate', 'bookingDate','byDate', 'byMonthYear', 'line', 'company', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
     else if(this.params.reportId == 'POLR044D'){
       this.paramsToggle.push('bookingDate', 'accountingDate', 'asOf', 'line', 'company', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '3';
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044E'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     } 
     else if(this.params.reportId == 'POLR044F'){
       this.paramsToggle.push('bookingDate', 'accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     } 
     else if(this.params.reportId == 'POLR044G'){
       this.paramsToggle.push('line', 'company','byMonthYear', 'bookingDate', 'accountingDate', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     } 
     else if(this.params.reportId == 'POLR044H'){
       this.paramsToggle.push('bookingDate', 'accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044I'){
-      this.paramsToggle.push('line', 'company', 'asOf', 'currCd');
-      this.params.dateRange = '3';
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
+      this.params.dateParam = '5';
+      this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044J'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       // this.params.incRecTag = 'D';
       this.checkMonthYear();
     } 
@@ -249,22 +265,24 @@ export class PolicyReportsComponent implements OnInit {
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
     else if(this.params.reportId == 'POLR044J_RET'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
+      this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
     else if(this.params.reportId == 'POLR044K'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
-      // this.params.incRecTag = 'D';
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044L'){
       this.paramsToggle.push('bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'undistributed', 
-                             'policy', 'alteration', 'policyAlteration', 'undistributed', 'currCd');
+                             'policy', 'alteration', 'policyAlteration', 'undistributed', 'currCd','asOf');
       this.params.dateParam = '10';
     } 
     else if(this.params.reportId == 'POLR044M'){
@@ -276,7 +294,9 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
     } 
     else if(this.params.reportId == 'POLR044O'){
-      this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company','currCd');
+      this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company','currCd','accountingDate', 'bookingDate',);
+      this.params.dateParam = '5';
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044P'){
       this.paramsToggle.push('line', 'company', 'asOf', 'currCd');
@@ -301,20 +321,32 @@ export class PolicyReportsComponent implements OnInit {
     else if(this.params.reportId == 'ACITR061F'){
       this.paramsToggle.push('issueDate', 'createDate', 'effectiveDate', 'bookingDate', 'accountingDate', 'distributed', 'undistributed',
                              'byDate', 'byMonthYear', 'asOf', );
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'ACITR061G'){
       this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
                              'createDate', 'effectiveDate', 'accountingDate', 'byDate', 'byMonthYear',
                              'asOf');
+      this.params.incRecTag = 'D';
     } 
     else if(this.params.reportId == 'POLR044V'){
       this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
                              'createDate', 'effectiveDate', 'accountingDate', 'line', 'company',
                              'policy', 'alteration', 'policyAlteration', 'distributed', 'undistributed',
                              'byDate', 'byMonthYear', 'asOf');
+      this.params.incRecTag = 'D';
     }
     else if(this.params.reportId == 'POLR044W'){
       this.paramsToggle.push('byDate', 'byMonthYear', 'asOf');
+    } else if(this.params.reportId == 'POLR044OA' || this.params.reportId == 'POLR044OB' || this.params.reportId == 'POLR044OB'){
+      this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company','currCd','accountingDate', 'bookingDate',);
+      this.params.dateParam = '5';
+      this.params.incRecTag = 'D';
+    } else {
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration',
+                             'byDate', 'byMonthYear', 'asOf', 'currCd');
     }
 
     this.ns.lovLoader(data.ev, 0);
@@ -329,7 +361,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate' , 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044D'){
       this.paramsToggle = [];
@@ -339,9 +371,9 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044E'){
+    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -350,7 +382,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044F'){
       this.paramsToggle = [];
@@ -360,7 +392,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044G'){
       this.paramsToggle = [];
@@ -370,7 +402,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044H'){
       this.paramsToggle = [];
@@ -380,7 +412,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044J'){
       this.paramsToggle = [];
@@ -390,7 +422,7 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }else if(this.params.reportId == 'POLR044K'){
       this.paramsToggle = [];
@@ -400,9 +432,34 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = 'D';
       }else{
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
-        this.params.incRecTag = '';
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
+      }
+    } else if(this.params.reportId == 'POLR044O' || this.params.reportId == 'POLR044OA' || this.params.reportId == 'POLR044OB'){
+      this.paramsToggle = [];
+      if(this.params.dateParam == 10){
+        this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
+        this.params.incRecTag = 'D';
+      }else{
+        this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
+      }
+    } else {
+      this.paramsToggle = [];
+      if(this.params.dateParam == 10) {
+        this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration',
+                             'byDate', 'byMonthYear', 'asOf', 'currCd', 'distributed', 'undistributed', 'alldistribution');
+        this.params.incRecTag = 'D';
+      } else {
+        this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
+                             'policy', 'alteration', 'policyAlteration',
+                             'byDate', 'byMonthYear', 'asOf', 'currCd');
+        this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }
+
   }
 
   checkMonthYear(){
@@ -419,7 +476,7 @@ export class PolicyReportsComponent implements OnInit {
           this.params.byMonthToYear = '';
         }
       }
-    }else if(this.params.reportId == 'POLR044E'){
+    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I'){
       if(this.params.dateRange == 2){
         this.disableTo = true;
 
@@ -631,8 +688,8 @@ export class PolicyReportsComponent implements OnInit {
     } else if(field === 'company') {
         this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
     } else if(field === 'report'){
-      if((this.params.reportId.indexOf('POLR044') == -1) || (this.params.reportId.length > 8)){
-        this.passLov.code = 'POLR044_';
+      if(this.params.reportId.indexOf('POLR044') == -1) { // || (this.params.reportId.length > 8)){
+        this.passLov.code = 'POLR044%';
       }else{
         this.passLov.code = this.params.reportId;
       }

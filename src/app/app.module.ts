@@ -512,6 +512,8 @@ import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/bo
 import { PolBordereauxComponent } from './accounting-in-trust/reports/pol-bordereaux/pol-bordereaux.component';
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
+import { PolFulItemComponent } from './underwriting/pol-ful-item/pol-ful-item.component';
+import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 
 
 @NgModule({
@@ -1028,7 +1030,9 @@ import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-informa
         BookingMthComponent,
         PolBordereauxComponent,
         PolCreateAltOcComponent,
-        PolOcInformationComponent
+        PolOcInformationComponent,
+        PolFulItemComponent,
+        PostingAmtLimitComponent,
     ],
 
   	providers: [

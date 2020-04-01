@@ -826,7 +826,7 @@
     </div>
 </div>
 
-<app-modal hidden id="adjustersModal" style="margin-bottom: 2px;padding-top: 2px !important;">
+<app-modal hidden id="adjustersModal" style="margin-bottom: 2px;padding-top: 2px !important;" #adjusterModal>
     <div header style="width: 600px !important;">Adjusters</div>
     <div body>
         <div id="adj-table">
@@ -849,8 +849,8 @@
 <app-mtn-users #usersLov id="usersLOV" (selectedData)="setProcessedBy($event)"></app-mtn-users>
 
 <app-confirm-save [form]="adjTable.form?.first" #adjConfirmSave (onYes)="adjSave()"></app-confirm-save>
-<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelAdj ? modalService.dismissAll() : null"></app-sucess-dialog>
-<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="modalService.dismissAll(); onCancelNo()"></app-cancel-button>
+<app-sucess-dialog #adjSuccessDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelAdj ? adjusterModal.closeModal() : null"></app-sucess-dialog>
+<app-cancel-button #adjCancelBtn (onYes)="adjSave(true)" [url]="null" (no)="adjusterModal.closeModal(); onCancelNo()"></app-cancel-button>
 
 <app-confirm-save #confirmSave (onYes)="save()"></app-confirm-save>
 <app-sucess-dialog #successDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>

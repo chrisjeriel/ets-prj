@@ -80,7 +80,7 @@ export class LovComponent implements OnInit {
           this.passTable.tableData[this.passTable.tableData.indexOf(el)].checked = false;
           this.dialogIcon = 'info';
           if(processingCount > 1){
-            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in another transactions.';
+            this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in other transactions.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
             this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
@@ -101,7 +101,14 @@ export class LovComponent implements OnInit {
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector == 'unappliedColl'){
-            this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            var refArr = ref.split('-');
+
+            if(Number(refArr[1]) == 0) {
+              this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the Acknowledgement Receipt first.';
+            } else {
+              this.dialogMessage = 'This Unapplied Collection is being processed in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
+            }
+            
             this.passData.data = data.filter(a=>{return a.checked});
           }else{
             this.passData.data = data;
@@ -438,6 +445,7 @@ export class LovComponent implements OnInit {
         });
       }else{
          this.mtnService.getMtnReports(this.passData.code).subscribe((data:any) => {
+            data.reports = data.reports.filter(a=>this.passData.hide.indexOf(a.reportId)==-1);
            if(data.reports.length == 1){
              data.reports[0]['ev'] = ev;
              data.reports[0]['selector'] = selector;
@@ -1111,10 +1119,10 @@ export class LovComponent implements OnInit {
        })
 
     }else if(this.passData.selector == 'acitSoaDtl'){
-      this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
-      this.passTable.widths =[300,300,1,200,200,200,200]
-      this.passTable.dataTypes = [ 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
-      this.passTable.keys = [ 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
       this.passTable.checkFlag = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -1159,10 +1167,11 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'acitSoaDtlAr'){
-      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
-      this.passTable.widths =[300,300,300,1,200,200,200,200]
-      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
-      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      // this.passTable.widths =[300,300,300,1,'250px',200,200,200,200];
+      this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
       this.passTable.checkFlag = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -1176,10 +1185,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       })
     }else if(this.passData.selector == 'ZeroBal'){
-      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
-      this.passTable.widths =[300, 300,300,1,200,200,200,200]
-      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'date', 'currency', 'currency', 'currency'];
-      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'netDue', 'totalPayments', 'balance'];
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.colSize =['300px', '300px','300px','auto','200px', '200px','200px','200px','200ppx']
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'insuredDesc', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo','insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'balance'];
       this.passTable.checkFlag = false;
       this.accountingService.getSoaDtlZero(this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.currCd).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -1207,10 +1216,10 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'acitSoaDtlPrq'){ //temporary
-      this.passTable.tHeader    = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref. No.', 'Due Date', 'Cumulative Payment', 'Balance'];
-      this.passTable.widths     = [120,120,1,1,110,110,120];
-      this.passTable.dataTypes  = ['text', 'text', 'sequence-2','text','date', 'currency', 'currency'];
-      this.passTable.keys       = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'dueDate', 'totalPayments','prevBalance'];
+      this.passTable.tHeader    = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref. No.', 'Insured', 'Due Date', 'Cumulative Payment', 'Balance'];
+      this.passTable.colSize     = ['300px','300px','auto','auto', '200px', '110px','110px','120px'];
+      this.passTable.dataTypes  = ['text', 'text', 'sequence-2','text','text','date', 'currency', 'currency'];
+      this.passTable.keys       = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc','dueDate', 'totalPayments','prevBalance'];
       this.passTable.checkFlag  = true;
       this.accountingService.getAcitSoaDtlNew(this.passData.currCd, this.passData.policyId, this.passData.instNo, this.passData.cedingId, this.passData.payeeNo,this.passData.zeroBal)
       .subscribe((a:any)=>{
@@ -1564,7 +1573,7 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['reportId', 'reportTitle'];
       this.passData.reportId = this.passData.modReportId == undefined ? this.passData.reportId : this.passData.modReportId;
       this.mtnService.getMtnReports(this.passData.reportId).subscribe((data:any) => {
-        this.passTable.tableData = data.reports;
+        this.passTable.tableData = data.reports.filter(a=>this.passData.hide.indexOf(a.reportId)==-1);
         this.table.refreshTable();
         console.log(data)
       })
@@ -1639,14 +1648,21 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });
     }else if(this.passData.selector == 'unappliedColl'){
-      this.passTable.tHeader = ['Item','Type','Reference No','Amount'];
-      this.passTable.widths = [125, 125, 100, 120];
-      this.passTable.dataTypes = ['text','text','text','currency'];
-      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'currAmt'];
+      this.passTable.tHeader = ['Item','Type','Reference No','Total Unapplied', 'Total Applied', 'Unapplied Balance'];
+      this.passTable.minColSize = ['100px', '100px', '160px', '120px', '120px', '120px'];
+      this.passTable.dataTypes = ['text','text','text','currency', 'currency', 'currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'totalUnapldAmt', 'totalApldAmt', 'balUnapldAmt'];
       this.passTable.checkFlag = true;
 
-      this.accountingService.getAcitUnappliedColl(this.passData.cedingId).subscribe((data:any) => {
-        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.tranId)==-1});
+      this.accountingService.getAcitUnappliedColl(this.passData.params).subscribe((data:any) => {
+        this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.unappliedId)==-1});
+
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        
         this.table.refreshTable();
       });
     } else if(this.passData.selector == 'acitTranType') {

@@ -32,17 +32,17 @@
 					<fieldset class="scheduler-border col-sm-3" style="margin-right: 5px !important;">
 						<div class="form-row custom-row-inline-inset">
 							<div class="input-group" style="    margin-top: 10px;">
-								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" (click)="checkReport()"
+								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
 									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
 								<label class="form-control-sm" for="radio">Issue Date</label>
 							</div>
 							<div class="input-group">
-								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="2" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" (click)="checkReport()"
+								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="2" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
 									[disabled]="paramsToggle.indexOf('effectiveDate') == -1">
 								<label class="form-control-sm" for="radio6">Effective Date</label>
 							</div>
 							<div class="input-group" >
-								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [(ngModel)]="params.dateParam" (click)="checkReport()"
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
 									[disabled]="paramsToggle.indexOf('createDate') == -1">
 								<label class="form-control-sm" for="radio9">Create Date</label>
 							</div>

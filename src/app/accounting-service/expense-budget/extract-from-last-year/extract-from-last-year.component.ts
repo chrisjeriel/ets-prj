@@ -4,6 +4,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
 
 @Component({
   selector: 'app-extract-from-last-year',
@@ -16,6 +17,7 @@ export class ExtractFromLastYearComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('extModal') extModal: ModalComponent;
 
    passData: any = {
     tableData: [],
@@ -135,11 +137,15 @@ export class ExtractFromLastYearComponent implements OnInit {
     updateDate: null
   };
 
+  extDate: string = '';
+  loader: boolean = false;
+
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService) { }
 
   ngOnInit() {
     this.generateYears();
-    //this.retrieveAcseActExpMonthly(this.selectedYear);
+    this.selectedYear = new Date().getFullYear();
+    this.retrieveAcseActExpMonthly(this.selectedYear, true);
   }
 
   generateYears(){
@@ -151,7 +157,7 @@ export class ExtractFromLastYearComponent implements OnInit {
       currYear -= 1;
     }
     this.yearArray.sort((a,b) => b-a);
-    this.selectedYear = this.yearArray[0];
+    this.selectedYear = currYear - 10; //this.yearArray[0];
   }
 
   retrieveAcseActExpMonthly(year: number, fromNgModelChange?: boolean){
@@ -197,7 +203,11 @@ export class ExtractFromLastYearComponent implements OnInit {
   }
 
   onClickExtract(){
-    this.retrieveAcseActExpMonthly(this.selectedYear, true);
+    // this.retrieveAcseActExpMonthly(this.selectedYear, true);
+    this.extDate = '';
+    setTimeout(() => {
+      this.extModal.openNoClose();
+    }, 0);
   }
 
   onClickPrint(){
@@ -283,6 +293,29 @@ export class ExtractFromLastYearComponent implements OnInit {
       }
     }
     return false;
+  }
+
+  extract() {
+    var params = {
+      extDate: this.extDate,
+      extUser: this.ns.getCurrentUser()
+    }
+
+    this.loader = true;
+    this.as.extractAcseExpenseBudget(params).subscribe(data => {
+      console.log(data);
+      this.loader = false;
+      if(data['returnCode'] == 0) {
+        this.dialogIcon = 'error-message';
+        this.dialogMessage = 'Extraction failed';
+      } else if(data['returnCode'] == -1) {
+        this.dialogIcon = 'success-message';
+        this.dialogMessage = 'Successfully extracted';
+        this.retrieveAcseActExpMonthly(this.selectedYear, true);
+      }
+
+      this.successDiag.open();
+    });
   }
 
 }

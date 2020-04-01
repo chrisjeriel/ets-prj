@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 //import { UnderwritingPolicyInquiryInfo } from '@app/_models';
 import { ClaimsService, NotesService, UserService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
@@ -11,7 +11,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
 	templateUrl: './clm-claims-inquiry.component.html',
 	styleUrls: ['./clm-claims-inquiry.component.css']
 })
-export class ClmClaimsInquiryComponent implements OnInit {
+export class ClmClaimsInquiryComponent implements OnInit, AfterViewInit {
 	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
 	passData: any = {
 	    tHeader: ["Claim No", "Co Claim No","Loss Date", "Report Date", "Status", "Policy No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
@@ -29,7 +29,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 					"text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
 					"text", "currency", "currency"],
 
-	    keys: ['claimNo', 'coClaimNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
+	    keys: ['claimNo', 'coClmNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
 	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'reportedBy', 'createDate', 'processedBy', 
 	    	   'lossAbbr', 'lossPdAbbr', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
 	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
@@ -266,7 +266,14 @@ export class ClmClaimsInquiryComponent implements OnInit {
     	if(this.ns.listParams != null){
     		this.searchParams = this.ns.listParams;
     	}
+    	console.log(this.ns.listParams);
     	this.retrieveClaimlist();
+	}
+
+	ngAfterViewInit(){
+		if(this.ns.listParams != null){
+    		this.table.setPreviousParams(this.ns.listParams);
+    	}
 	}
 
 
@@ -276,7 +283,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 		  this.passData.count = data;
 		  this.table.setLength(1);
 		})
-
+		console.log(this.searchParams)
 		this.claimsService.newGetClaimsListing(this.searchParams).subscribe((data:any)=>{
          
 	       	 if(data != null){
@@ -301,6 +308,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
         for(let key of Object.keys(searchParams)){
             this.searchParams[key] = searchParams[key]
         }
+        console.log(searchParams)
 
         this.passData.btnDisabled = true;
         this.retrieveClaimlist();
@@ -406,7 +414,7 @@ export class ClmClaimsInquiryComponent implements OnInit {
 	                        claimId: this.claimId,
 	                        claimNo: this.claimNo,
 	                        line: line,
-	                        exitLink: 'claims-inquiry'
+	                        exitLink: '/claims-inquiry'
 	                    }],
 	                    { skipLocationChange: true }
 	      );

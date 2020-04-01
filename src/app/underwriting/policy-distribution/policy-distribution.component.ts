@@ -64,6 +64,10 @@ export class PolicyDistributionComponent implements OnInit {
       console.log(data.fromEdit);
       this.fromEditDist = data.fromEdit == 'true';
 
+      if(this.fromEditDist){
+        this.title = 'Policy Distribution (Modification)';
+      }
+
       this.inquiryFlag = this.params.fromInq=='true';
      this.getInstInfo();
       setTimeout(a=>this.tabset.select("risk"),0);

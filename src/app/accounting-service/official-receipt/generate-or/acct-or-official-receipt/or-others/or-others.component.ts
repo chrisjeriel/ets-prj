@@ -34,17 +34,18 @@ export class OrOthersComponent implements OnInit, OnDestroy {
 
    passData : any = {
       tableData: [],
-      tHeader : ["Item","Reference No","Curr","Curr Rate","Amount","Amount(PHP)"],
-      dataTypes: ["reqTxt","text","text","percent","reqCurrency","currency"],
+      tHeader : ["Item","Reference No","VAT Tag","Curr","Curr Rate","Amount","Amount(PHP)"],
+      dataTypes: ["reqTxt","text","reqSelect","text","percent","reqCurrency","currency"],
       addFlag: true,
       deleteFlag: true,
       checkFlag: true,
       infoFlag: true,
       pageLength: 10,
       paginateFlag: true,
-      total: [null,null,null,'Total','currAmt','localAmt'],
-      uneditable: [false,false,true,true,false,true],
+      total: [null,null,null,null,'Total','currAmt','localAmt'],
+      uneditable: [false,false,false,true,true,false,true],
       nData: {
+          newRec: 1,
           tranId: '',
           billId: '',
           itemNo: '',
@@ -59,17 +60,25 @@ export class OrOthersComponent implements OnInit, OnDestroy {
           createDate: '',
           updateUser: '',
           updateDate: '',
+          vatTag: '',
           taxAllocation: []
       },
-      keys: ['itemName', 'refNo', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-      widths: ['auto',120,1,100,120,120],
-      pageID: 'mainTbl'
+      keys: ['itemName', 'refNo', 'vatTag', 'currCd', 'currRate', 'currAmt', 'localAmt'],
+      widths: ['auto',150,130,1,100,120,120],
+      pageID: 'mainTbl',
+      opts:[
+          {
+            selector: 'vatTag',
+            vals: [],
+            prev: []
+          }
+      ]
     }
 
     passDataGenTax : any = {
       tableData: [],
-      tHeader : ["Tax Code","Description","Rate","Amount"],
-      dataTypes: ["text","text","percent","currency"],
+      tHeader : ["Tax Code","Description","Base Amount", "Rate","Tax Amount"],
+      dataTypes: ["text","text","currency","percent","currency"],
       addFlag: true,
       deleteFlag: true,
       checkFlag: true,
@@ -86,15 +95,16 @@ export class OrOthersComponent implements OnInit, OnDestroy {
           taxName: '',
           taxRate: '',
           taxAmt: 0,
+          taxBaseAmt: 0,
           createUser: '',
           createDate: '',
           updateUser: '',
           updateDate: '',
           showMG: 1
       },
-      keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-      widths: [1,150,120,120],
-      uneditable: [true,true,true,true],
+      keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+      widths: [1,150,120,120,120],
+      uneditable: [true,true,true,true,true],
       pageID: 'genTaxTbl'
     }
 
@@ -102,8 +112,8 @@ export class OrOthersComponent implements OnInit, OnDestroy {
 
     passDataWhTax : any = {
       tableData: [],
-      tHeader : ["Tax Code","Description","Rate","Amount"],
-      dataTypes: ["text","text","percent","currency"],
+      tHeader : ["Tax Code","Description","Base Amount","Rate","Tax Amount"],
+      dataTypes: ["text","text","currency","percent","currency"],
       addFlag: true,
       deleteFlag: true,
       checkFlag: true,
@@ -120,15 +130,16 @@ export class OrOthersComponent implements OnInit, OnDestroy {
           taxName: '',
           taxRate: '',
           taxAmt: 0,
+          taxBaseAmt: 0,
           createUser: '',
           createDate: '',
           updateUser: '',
           updateDate: '',
           showMG: 1
       },
-      keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-      widths: [1,150,120,120],
-      uneditable: [true,true,true,true],
+      keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+      widths: [1,150,120,120,120],
+      uneditable: [true,true,true,true,true],
       pageID: 'whTaxTbl'
     }
 
@@ -149,12 +160,19 @@ export class OrOthersComponent implements OnInit, OnDestroy {
     savedData: any = [];
     deletedData: any = [];
     deletedTaxData: any = [];
+    fromTaxMdl: boolean = false;
 
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.ms.getRefCode('VAT_TAG').subscribe(data => {
+      this.passData.opts[0].vals = data['refCodeList'].map(a => a.code);
+      this.passData.opts[0].prev = data['refCodeList'].map(a => a.description);
+    });
+    
     this.passData.nData.currCd = this.record.currCd;
     this.passData.nData.currRate = this.record.currRate;
+    this.passData.nData.vatTag = this.record.vatTag == null || this.record.vatTag == '' ? 3 : this.record.vatTag;
     this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
     this.addDefaultTaxes();
     if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
@@ -167,7 +185,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
       this.passDataWhTax.checkFlag = false;
       this.passDataWhTax.addFlag = false;
     this.passDataWhTax.deleteFlag = false;
-      this.passData.uneditable = [true,true,true,true,true,true];
+      this.passData.uneditable = [true,true,true,true,true,true,true];
       this.passDataGenTax.uneditable = [true,true,true,true];
       this.passDataWhTax.uneditable = [true,true,true,true];
     }
@@ -208,7 +226,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
                updateUser: '',
                updateDate: '',
                showMG: 0,
-               edited: true
+               // edited: true
              });
            }
          }
@@ -228,7 +246,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
              updateUser: '',
              updateDate: '',
              showMG: 0,
-             edited: true
+             // edited: true
            });
          }
          this.passData.nData.taxAllocation = this.passData.nData.taxAllocation.filter(a=>{
@@ -304,7 +322,6 @@ export class OrOthersComponent implements OnInit, OnDestroy {
   }
 
   onRowClick(data){
-    console.log(data);
     if(data === null){
       this.disableTaxBtn = true;
       this.selectedItem = null;
@@ -326,16 +343,17 @@ export class OrOthersComponent implements OnInit, OnDestroy {
       this.whTaxTbl.refreshTable();
       this.selectedItem = data;
     }
+
+    this.disableTaxBtn = data == null || data.newRec != undefined;
   }
 
   openGenTaxLOV(event){
     this.passLov.activeTag = 'Y';
     this.passLov.selector = 'mtnGenTax';
     this.passLov.hide = this.passDataGenTax.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.taxCd});
-    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT'){ //if Payee is VAT EXEMPT, hide VAT in LOV
-      this.passLov.hide.push('VAT')
+    if((this.record.vatTag == 1 && !this.passLov.hide.includes('VAT')) || this.record.orType == 'NON-VAT' || this.selectedItem.vatTag == 1){ //if Payee is VAT EXEMPT, hide VAT in LOV
+      this.passLov.hide.push('VAT');
     }
-    console.log(this.passLov.hide);
     this.genTaxIndex = event.index;
     this.lovMdl.openLOV();
   }
@@ -409,7 +427,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickSave(){
+  onClickSave(saveTax?){
     if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
@@ -419,6 +437,7 @@ export class OrOthersComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error';
       this.successDiag.open();
     }else{
+      this.fromTaxMdl = saveTax !== undefined;
       this.confirm.confirmModal();
     }
   }
@@ -469,7 +488,8 @@ export class OrOthersComponent implements OnInit, OnDestroy {
       updateDate: this.ns.toDateTimeString(0),
       saveOrTransDtl: this.savedData,
       delOrTransDtl: this.deletedData,
-      delOrItemTaxes: this.deletedTaxData.flat()
+      delOrItemTaxes: this.deletedTaxData.flat(),
+      fromTaxMdl: this.fromTaxMdl ? 'Y' : 'N'
     }
 
     this.as.saveAcseOrTransDtl(params).subscribe(
@@ -508,7 +528,8 @@ export class OrOthersComponent implements OnInit, OnDestroy {
   checkFields(): boolean{
     for(var i of this.passData.tableData){
       if(i.itemName == null || (i.itemName !== null && i.itemName.length == 0) ||
-         i.currAmt == null || (i.currAmt !== null && String(i.currAmt).toString().length == 0)){
+         i.currAmt == null || (i.currAmt !== null && String(i.currAmt).toString().length == 0) ||
+         i.vatTag == '' || i.vatTag == null){
         return true;
       }
     }
