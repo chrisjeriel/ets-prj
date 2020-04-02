@@ -341,7 +341,11 @@ export class PolicyReportsComponent implements OnInit {
       this.paramsToggle.push('byDate', 'byMonthYear', 'line', 'company','currCd','accountingDate', 'bookingDate',);
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
-    } 
+    } else if (this.params.reportId == 'POLR044X') {
+      this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
+                             'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
+                             'byDate', 'byMonthYear', 'asOf', 'currCd');
+    }
     else if(this.params.reportId == 'POLR044Y'){
       this.paramsToggle.push('accountingDate', 'bookingDate','byDate', 'byMonthYear', 'line', 'company', 'currCd');
       this.params.dateParam = '5';
