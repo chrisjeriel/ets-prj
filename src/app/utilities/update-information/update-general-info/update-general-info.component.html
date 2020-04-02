@@ -88,6 +88,10 @@
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-2" for="riBinderNo">RI Binder No</label>
 								<input id=riBinderNo type="text" class="form-control form-control-sm cust-sm col-sm" [disabled]="disabledBool" (change)="addNgDirty('riBinderNo');" [(ngModel)]="policyInfo.riBinderNo"  >
+								<label class="form-control-sm col-sm-2">Binder Warranty Until</label>
+								<div class="col-sm dp-cont">
+									<datepicker [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.binderWarrantyDate?.split('T')[0]" (valueChange)="policyInfo.binderWarrantyDate=$event+'T00:00:00';"></datepicker>
+								</div>
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group">

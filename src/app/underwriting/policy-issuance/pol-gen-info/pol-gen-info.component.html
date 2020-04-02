@@ -109,7 +109,7 @@
 										<input name="input15" type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.riBinderNo">
 										<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Binder Warranty Until</label>
 										<div class="col-sm dp-cont">
-											<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.binderWarrantyDate?.split('T')[0]" (valueChange)="policyInfo.binderWarrantyDate=$event+'T'+policyInfo.binderWarrantyDate.split('T')[1];"></datepicker>
+											<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.binderWarrantyDate?.split('T')[0]" (valueChange)="policyInfo.binderWarrantyDate=$event+'T00:00:00';"></datepicker>
 										</div>
 
 									</div>
@@ -1422,7 +1422,7 @@
 											<input name="input15" type="text" class="form-control form-control-sm col-sm" style="margin-left: 5px;" [(ngModel)]="policyInfo.riBinderNo">
 											<label class="form-control-sm col-sm-2 cust-lbl-left-offset">Binder Warranty Until</label>
 											<div class="col-sm dp-cont">
-												<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.binderWarrantyDate?.split('T')[0]" (valueChange)="policyInfo.binderWarrantyDate=$event+'T'+policyInfo.binderWarrantyDate.split('T')[1];"></datepicker>
+												<datepicker [disabled]="fromInq" [type]="'date'" [required]="false" [showIcon]="true" [value]="policyInfo.binderWarrantyDate?.split('T')[0]" (valueChange)="policyInfo.binderWarrantyDate=$event+'T00:00:00';"></datepicker>
 											</div>
 										</div>
 										<div *ngIf="policyInfo.cessionDesc?.toUpperCase() == 'RETROCESSION'" class="input-group">

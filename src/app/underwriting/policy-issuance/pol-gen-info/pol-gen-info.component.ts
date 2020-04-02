@@ -401,7 +401,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
-        this.policyInfo.binderWarrantyDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.binderWarrantyDate))
+        this.policyInfo.binderWarrantyDate = this.policyInfo.binderWarrantyDate == null ?'' : this.ns.toDateTimeString(this.setSec(this.policyInfo.binderWarrantyDate))
         this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
         this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));

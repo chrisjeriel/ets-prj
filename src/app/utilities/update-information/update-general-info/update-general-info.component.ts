@@ -451,10 +451,16 @@ export class UpdateGeneralInfoComponent implements OnInit {
             this.policyInfo.project.latitude = records.project.latitude;
             this.policyInfo.project.longitude = records.project.longitude;
             this.policyInfo.altNo             = records.altNo;
+            this.policyInfo.binderWarrantyDate = records.binderWarrantyDate == null ?'' : this.ns.toDateTimeString(this.setSec(records.binderWarrantyDate))
           }
 
          
         });
+    }
+
+    setSec(d) {
+      d = new Date(d);
+      return d.setSeconds(0);
     }
 
     isEmptyObject(obj) {
@@ -621,7 +627,8 @@ export class UpdateGeneralInfoComponent implements OnInit {
          "longitude"       : this.policyInfo.project.longitude,
          "updateDate"      : this.ns.toDateTimeString(0),
          "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
-         "coAltRefNo"      : this.policyInfo.coAltRefNo
+         "coAltRefNo"      : this.policyInfo.coAltRefNo,
+         "binderWarrantyDate" : this.policyInfo.binderWarrantyDate
        }
 
        
