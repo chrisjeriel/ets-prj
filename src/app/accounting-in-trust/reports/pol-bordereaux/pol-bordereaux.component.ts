@@ -56,7 +56,8 @@ export class PolBordereauxComponent implements OnInit {
     byMonthFrom: '',
     byMonthFromYear: '',
     byMonthTo : '',
-    byMonthToYear: ''
+    byMonthToYear: '',
+    faculTag : 'N'
   }
 
   sendData: any = {
@@ -71,6 +72,7 @@ export class PolBordereauxComponent implements OnInit {
     reportId : '',
     destination: '',
     forceExtract: 'N',
+    faculTag : 'N'
   };
 
   /*repExtractions: Array<string> = [
@@ -110,7 +112,8 @@ export class PolBordereauxComponent implements OnInit {
                         'POLR052E',
                         'POLR052F',
                         'POLR052G',
-                        'POLR052H'
+                        'POLR052H',
+                        'POLR052I'
                         ];
 
   rangeParams :any = {
@@ -211,6 +214,9 @@ export class PolBordereauxComponent implements OnInit {
     } else if(this.params.reportId == 'POLR052H'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
+    }else if(this.params.reportId == 'POLR052I'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
     }
 
     this.ns.lovLoader(data.ev, 0);
@@ -275,6 +281,7 @@ export class PolBordereauxComponent implements OnInit {
     this.sendData.cedingIdParam = this.params.cedingId;
     this.sendData.incRecTag = 'D'; //this.params.incRecTag;
     this.sendData.destination = this.params.destination;
+    this.sendData.faculTag = this.params.faculTag;
   }
 
   extract(cancel?){

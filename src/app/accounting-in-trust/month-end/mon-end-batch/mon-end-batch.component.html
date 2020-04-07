@@ -27,6 +27,7 @@
       		      <div class="cust-btn-container">
       		        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="eomDate == null || eomDate == ''" style="width: 100%;"><a>Generate</a></button>
       		        <button type="button" class="cust-btn" style="width: 100%;"><a>Data Check Report</a></button>
+                  <button type="button" class="cust-btn" style="width: 100%;" (click)="printModal.openNoClose()"><a>Print Reports</a></button>
       		      </div>
               </ng-container>
     		    </div>
@@ -53,4 +54,34 @@
         <button *ngIf="returnCode !== 2" class="cust-btn" type="button" (click)="onClickGenerate(true); eomProdMdl.closeModal();"><a>Yes</a></button>
         <button class="cust-btn" type="button" (click)="eomProdMdl.closeModal()"><a>{{ returnCode == 2 ? 'Ok' : 'No' }}</a></button>
     </div>
+</app-modal>
+
+<app-modal #printModal class="d-none">
+  <div header>Print</div>
+  <div body>
+    <fieldset class="scheduler-border">
+      <div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+        <div class="input-group" style="margin-bottom:3px !important;">
+          <label class="form-control-sm col-sm-3 labels">Report</label>
+          <select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+            <option value="ACITR063A">Monthly Production Report</option>
+          </select>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="input-group" style="margin-bottom:3px !important;">
+          <label class="form-control-sm col-sm-3 labels">Destination</label>
+          <select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+            <option value="screen">Screen</option>
+            <option value="dlPdf">PDF</option>
+            <option value="printPdf">Printer</option>
+          </select>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div footer class="cust-btn-container">
+    <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="print();printModal.closeModal();"><a>Print</a></button>
+  </div>
 </app-modal>

@@ -931,7 +931,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "coTermText"       : this.policyInfo.coTermText,
       "mbiPolicyId"       : this.policyInfo.mbiPolicyId,
       "coAltRefNo"    :this.policyInfo.coAltRefNo,
-      "binderWarrantyDate" : this.policyInfo.binderWarrantyDate
+      "binderWarrantyDate" : this.policyInfo.binderWarrantyDate.split('T')[0] ?  this.policyInfo.binderWarrantyDate : ''
     }
 
     var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');

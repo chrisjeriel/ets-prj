@@ -628,7 +628,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
          "updateDate"      : this.ns.toDateTimeString(0),
          "updateUser"      : JSON.parse(window.localStorage.currentUser).username,
          "coAltRefNo"      : this.policyInfo.coAltRefNo,
-         "binderWarrantyDate" : this.policyInfo.binderWarrantyDate
+        "binderWarrantyDate" : this.policyInfo.binderWarrantyDate.split('T')[0] ?  this.policyInfo.binderWarrantyDate : ''
        }
 
        

@@ -210,6 +210,16 @@
 											<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currdesc" readonly placeholder="ALL CURRENCIES">
 											<span class="col-sm-1"></span>
 										</div>
+										<div class="input-group" *ngIf="params.reportId == 'POLR052I'">
+											<span class="col-sm-3"></span>
+											<div class="col-sm-3 p-0">
+												<input type="checkbox" name="faculPlacement" [ngModel]="params.faculTag == 'Y'" 
+														(ngModelChange)="params.faculTag = params.faculTag == 'Y'? 'N' : 'Y'">
+												<label class="form-control-sm">
+													Facultative Placement Only
+												</label>
+											</div>
+										</div>
 
 										<!-- <div class="row">
 											<div class="col-sm-3">

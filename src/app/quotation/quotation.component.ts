@@ -104,6 +104,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
           this.inquiryFlag = params['inquiry'];
           this.exitLink = params['exitLink'];
           this.quoteInfo.quoteId = params['quoteId'];
+          this.quoteInfo.quotationNo = params['quotationNo'];
           this.addParams = params['addParams'];
 
           if (this.addParams != undefined) {
