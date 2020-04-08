@@ -74,7 +74,9 @@ export class JvEntryComponent implements OnInit {
     preparedDate:'',
     approvedBy:'',
     approvedDate:'',
-    tranData: {}
+    tranData: {},
+    memoId: '',
+    memoType: ''
   }
 
   jvDatas: any = {
@@ -253,11 +255,16 @@ export class JvEntryComponent implements OnInit {
           this.printBut     = false;
         }
         
-        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P'){
+        if(this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'X' || this.entryData.jvStatus == 'P') {
           this.approvedStat = true;
           this.disableBut   = true;
           this.approveBut   = true;
           this.cancelJVBut = true;
+        }
+
+        if((this.entryData.jvStatus == 'A' || this.entryData.jvStatus == 'P') &&
+          [67,68,69].includes(this.entryData.tranTypeCd)) {
+          this.cancelJVBut = false;
         }
 
         this.entryData.tranData = {};
@@ -679,7 +686,7 @@ export class JvEntryComponent implements OnInit {
   }
 
   onClickCMDM(){
-    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/generate-jv',tranId: this.tranId}], { skipLocationChange: true }); 
+    this.router.navigate(['/acct-it-generate-cmdm', {exitLink:'/generate-jv',tranId: this.tranId, memoId: this.entryData.memoId, memoType: this.entryData.memoType}], { skipLocationChange: true }); 
   }
 
   onClickAlloc(){

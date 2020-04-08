@@ -112,6 +112,22 @@ export class JvUnappliedTreatyComponent implements OnInit {
     this.passDataUnapplied.disableAdd = true;
     this.passData.tableData = [];
   	this.retrieveUnappTrty();
+
+    if(this.jvDetail.statusType == 'A' || this.jvDetail.statusType == 'X' || this.jvDetail.statusType == 'P') {
+      this.passDataUnapplied.addFlag = false;
+      this.passDataUnapplied.deleteFlag = false;
+      this.passDataUnapplied.checkFlag = false;
+      this.passDataUnapplied.tHeaderWithColspan = this.passDataUnapplied.tHeaderWithColspan.slice(1);
+      this.passDataUnapplied.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+      this.readOnly = true;
+    }
   }
 
   retrieveUnappTrty(){
@@ -131,22 +147,6 @@ export class JvUnappliedTreatyComponent implements OnInit {
         this.table.onRowClick(null,this.passDataUnapplied.tableData[0]);
         this.jvDetails.cedingName = this.passDataUnapplied.tableData[0].cedingName;
         this.jvDetails.ceding = this.passDataUnapplied.tableData[0].cedingId;
-      }
-
-      if(this.jvDetail.statusType == 'A' || this.jvDetail.statusType == 'X' || this.jvDetail.statusType == 'P') {
-        this.passDataUnapplied.addFlag = false;
-        this.passDataUnapplied.deleteFlag = false;
-        this.passDataUnapplied.checkFlag = false;
-        this.passDataUnapplied.tHeaderWithColspan = this.passDataUnapplied.tHeaderWithColspan.slice(1);
-        this.passDataUnapplied.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
-
-        this.passData.addFlag = false;
-        this.passData.deleteFlag = false;
-        this.passData.checkFlag = false;
-        this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
-        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-
-        this.readOnly = true;
       }
 
   	  this.table.refreshTable();
@@ -268,23 +268,23 @@ export class JvUnappliedTreatyComponent implements OnInit {
       }*/
 
 	    data['data'].forEach(a => {
-	    if(this.passData.tableData.some(b => b.qsoaId != a.qsoaId)) {
-	      a.currCd = this.jvDetail.currCd;
-	      a.currRate = this.jvDetail.currRate;
-	      a.prevPaytAmt = a.cumPayt;
-	      a.prevBalance = a.remainingBal;
-	      a.balanceAmt = a.remainingBal;
-	      a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.balanceAmt)).toFixed(2);
-	      a.newBalance = 0;
-	      a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
-	      a.edited = true;
-	      a.checked = false;
-	      a.createDate = '';
-	      a.createUser = '';
-	      a.localAmt = +(parseFloat(a.remainingBal) * parseFloat(this.jvDetail.currRate)).toFixed(2);
-	      this.passData.tableData.push(a);
-	    }
-	  });
+  	    if(this.passData.tableData.some(b => b.qsoaId != a.qsoaId)) {
+  	      a.currCd = this.jvDetail.currCd;
+  	      a.currRate = this.jvDetail.currRate;
+  	      a.prevPaytAmt = a.cumPayt;
+  	      a.prevBalance = a.remainingBal;
+  	      a.balanceAmt = a.remainingBal;
+  	      a.newPaytAmt = +(parseFloat(a.cumPayt) + parseFloat(a.balanceAmt)).toFixed(2);
+  	      a.newBalance = 0;
+  	      a.quarterEnding = this.dp.transform(a.quarterEnding, 'MM/dd/yyyy');
+  	      a.edited = true;
+  	      a.checked = false;
+  	      a.createDate = '';
+  	      a.createUser = '';
+  	      a.localAmt = +(parseFloat(a.remainingBal) * parseFloat(this.jvDetail.currRate)).toFixed(2);
+  	      this.passData.tableData.push(a);
+  	    }
+  	  });
 
 	  this.passData.tableData = this.passData.tableData.filter(a => a.qsoaId != '');
 	  this.inwTbl.refreshTable();
@@ -298,7 +298,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.passData.tableData[i].localAmt = isNaN(this.passData.tableData[i].currRate) ? 1:this.passData.tableData[i].currRate * this.passData.tableData[i].balanceAmt;
 
-        this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].localAmt)).toFixed(2);
+        this.passData.tableData[i].newPaytAmt = +(parseFloat(this.passData.tableData[i].prevPaytAmt) + parseFloat(this.passData.tableData[i].balanceAmt)).toFixed(2);
         this.passData.tableData[i].newBalance = +(parseFloat(this.passData.tableData[i].netQsoaAmt) - parseFloat(this.passData.tableData[i].newPaytAmt)).toFixed(2);
 
         if(this.passData.tableData[i].deleted){

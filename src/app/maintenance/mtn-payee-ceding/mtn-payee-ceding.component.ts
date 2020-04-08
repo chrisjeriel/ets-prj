@@ -18,6 +18,7 @@ export class MtnPayeeCedingComponent implements OnInit {
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   selected: any = null;
   selects: any[] = [];
+  from: any = null;
 
   passData: any = {
       tableData : [],
@@ -68,6 +69,10 @@ export class MtnPayeeCedingComponent implements OnInit {
 
   okBtnClick(){
     if(!this.lovCheckBox){
+      if(this.selected !== null) {
+        this.selected['from'] = this.from;
+      }
+      
       this.selectedData.emit(this.selected);
       this.selected = null;
     }
@@ -80,6 +85,8 @@ export class MtnPayeeCedingComponent implements OnInit {
       this.selectedData.emit(this.selects);
       this.selects = [];
     }
+
+    this.from = null;
   }
 
   openModal(){
