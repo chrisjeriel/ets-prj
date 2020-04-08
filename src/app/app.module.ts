@@ -515,6 +515,8 @@ import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-informa
 import { PolFulItemComponent } from './underwriting/pol-ful-item/pol-ful-item.component';
 import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 import { JvMultipleOffsettingComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-multiple-offsetting/jv-multiple-offsetting.component';
+import { BatchMoveBookingDateComponent } from './underwriting/utilities/batch-move-booking-date/batch-move-booking-date.component';
+
 
 @NgModule({
     imports: [
@@ -537,7 +539,7 @@ import { JvMultipleOffsettingComponent } from './accounting-in-trust/journal-vou
         AccordionModule,
         DropdownModule,
         FullCalendarModule,
-        TimeagoModule.forRoot(),
+        TimeagoModule.forRoot()
     ],
     declarations: [
         AppComponent,
@@ -1034,6 +1036,7 @@ import { JvMultipleOffsettingComponent } from './accounting-in-trust/journal-vou
         PolFulItemComponent,
         PostingAmtLimitComponent,
         JvMultipleOffsettingComponent,
+        BatchMoveBookingDateComponent,
     ],
 
   	providers: [

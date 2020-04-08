@@ -63,10 +63,11 @@ export class MaintenanceService{
 	// 		);
 	// }
 
-	getEndtCode(lineCd,endtCd,filters?){
+	getEndtCode(lineCd,endtCd,filters?,mtnMode?){
 		let params = {
 			lineCd : lineCd,
-			endtCd : endtCd
+			endtCd : endtCd,
+			mtnMode: mtnMode ? mtnMode : 'N'
 		}
 		params = {...params,...filters};
 
@@ -192,10 +193,10 @@ export class MaintenanceService{
 	}
 
 	getMtnTypeOfCession(cessionId) {
-		const params = new HttpParams()
-                .set('cessionId',cessionId);
+		// const params = new HttpParams()
+  //               .set('cessionId',cessionId);
 
-        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params});
+        return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnTypeOfCession', {params:{cessionId:cessionId}});
 	}
 
 
@@ -1959,6 +1960,14 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
   }
 
+  getExtractToCsv(extractUser?,reportName?){
+    const params = new HttpParams()
+      .set('extractUser', (extractUser == null || extractUser == undefined ? '' : extractUser))
+      .set('reportName', (reportName == null || reportName == undefined ? '' : reportName))
+
+    return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
+  }
+
   getMtnPostingAmtLimit(userGrp?,lineCd?){
 		const params = new HttpParams()
 		     .set('userGrp', (userGrp === null || userGrp === undefined ? '' : userGrp))
@@ -1994,4 +2003,5 @@ export class MaintenanceService{
     	let params = {currencyCd: currencyCd, retHistId: retHistId};
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
     }
+
 }

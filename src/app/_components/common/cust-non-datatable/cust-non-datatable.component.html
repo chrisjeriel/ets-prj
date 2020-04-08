@@ -223,6 +223,12 @@
                                     <div  *ngSwitchCase="'right'" style="text-align: right">
                                         <span class="unclickable">{{data[key] }}</span>
                                     </div>
+                                    <ng-container *ngSwitchCase="'text-editor-h'">
+                                        <div style="max-height: 21px; max-width: 91%">
+                                            <text-editor [table]="true" name="" [editorContent]="data[key]" [readonly]="true" [editablePrev]="false" [format]="'html'">
+                                            </text-editor>
+                                        </div>
+                                    </ng-container>
                                     <span *ngSwitchCase="'date'" class="unclickable">{{data[key] | date: 'MM/dd/yyyy'}}</span>
                                     <span *ngSwitchCase="'time'" class="unclickable">{{data[key] | date: 'HH:mm'}}</span>
                                     <span *ngSwitchCase="'datetime'" class="unclickable">{{data[key] | date: 'yyyy-MM-ddTHH:mm'}}</span>

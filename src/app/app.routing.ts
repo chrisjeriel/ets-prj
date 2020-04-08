@@ -210,6 +210,9 @@ import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-crea
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 
+import { PivotComponent } from './sample/pivot/pivot.component';
+
+
 const appRoutes: Routes = [
 
 

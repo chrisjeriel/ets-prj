@@ -401,6 +401,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         //this.policyInfo.policyNo = this.showPolicyNo == undefined ? this.policyInfo.policyNo : this.showPolicyNo; // edit by paul for summarized policy info
         this.policyInfo.inceptDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.inceptDate));
         this.policyInfo.expiryDate = this.ns.toDateTimeString(this.setSec(this.policyInfo.expiryDate));
+        this.policyInfo.binderWarrantyDate = this.policyInfo.binderWarrantyDate == null ?'' : this.ns.toDateTimeString(this.setSec(this.policyInfo.binderWarrantyDate))
         this.lastExpiryDate = new String(this.policyInfo.expiryDate); //edit by paul for maintenance adjustment
         this.policyInfo.lapseFrom = this.policyInfo.lapseFrom == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseFrom));
         this.policyInfo.lapseTo = this.policyInfo.lapseTo == null ? '' : this.ns.toDateTimeString(this.setSec(this.policyInfo.lapseTo));
@@ -505,15 +506,19 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
             this.prevEffExt = this.policyInfo.effDate;
           });
 
+          this.refPolicyId = data.policy.lastAffectingPolId;
+          this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.prevInceptDate));
+          this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.prevExpiryDate));
+
           polNo[polNo.length-1] = Number(polNo[polNo.length-1]) == 0 ? '000' : String(Number(polNo[polNo.length-1]) - 1).padStart(3, '0');
-          if (this.prevPolicyId !== '') {
-            this.underwritingService.getPolGenInfo(this.prevPolicyId).subscribe((data:any) => {
-              this.refPolicyId = data.policy.policyId;
-              this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
-              this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
-              this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
-            });
-          }
+          // if (this.prevPolicyId !== '') {
+          //   this.underwritingService.getPolGenInfo(this.prevPolicyId).subscribe((data:any) => {
+          //     this.refPolicyId = data.policy.policyId;
+          //     this.prevInceptDate = this.ns.toDateTimeString(this.setSec(data.policy.inceptDate));
+          //     this.prevEffDate = this.ns.toDateTimeString(this.setSec(data.policy.effDate));
+          //     this.prevExpiryDate = this.ns.toDateTimeString(this.setSec(data.policy.expiryDate));
+          //   });
+          // }
         }
 
         setTimeout(() => {
@@ -925,7 +930,8 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
       "coTermTag"       : this.policyInfo.coTermTag,
       "coTermText"       : this.policyInfo.coTermText,
       "mbiPolicyId"       : this.policyInfo.mbiPolicyId,
-      "coAltRefNo"    :this.policyInfo.coAltRefNo
+      "coAltRefNo"    :this.policyInfo.coAltRefNo,
+      "binderWarrantyDate" : this.policyInfo.binderWarrantyDate.split('T')[0] ?  this.policyInfo.binderWarrantyDate : ''
     }
 
     var mfArr = savePolGenInfoParam.maintenanceFrom.split('T');

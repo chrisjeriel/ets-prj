@@ -79,6 +79,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
     lockUser: string = "";
     lockMessage: string = "";
 
+  exitLink:any;
+
   constructor( private router: Router, private route: ActivatedRoute, private modalService: NgbModal, 
                private ns: NotesService, private clmService : ClaimsService, private mtnService: MaintenanceService, private userService: UserService,
                private securityService: SecurityService, private loc: Location) { }
@@ -99,6 +101,8 @@ export class ClaimComponent implements OnInit, OnDestroy {
           }else{
             this.isInquiry = false;
           }
+
+          this.exitLink = params['exitLink']
 
           if(params['tab']!=undefined){
             this.activeIdString=params['tab'];
@@ -223,6 +227,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
   onTabChange($event: NgbTabChangeEvent) {
       if(this.contModal != undefined && $event.nextId === 'edit-claim'){
         setTimeout(a=>this.contModal.dismiss(),0);
+        this.claimParams.readonly = false;
         this.router.navigate(
                         ['/claims-claim', this.claimParams],
                         { skipLocationChange: true }
@@ -231,7 +236,7 @@ export class ClaimComponent implements OnInit, OnDestroy {
         this.contModal.dismiss();
       }else if ($event.nextId === 'Exit' && this.isInquiry) {
         $event.preventDefault();
-        this.router.navigateByUrl('/claims-inquiry');
+        this.router.navigateByUrl(this.exitLink);
       } else if($event.nextId === 'Exit' && !this.isInquiry && $('.ng-dirty.ng-touched:not([type="search"]):not(.exclude)').length == 0){
         $event.preventDefault();
         this.router.navigateByUrl('/clm-claim-processing');

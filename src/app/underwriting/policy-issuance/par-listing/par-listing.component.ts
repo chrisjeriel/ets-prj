@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { PARListing } from '@app/_models'
 import { UnderwritingService, NotesService } from '../../../_services';
 import { Title } from '@angular/platform-browser';
@@ -12,7 +12,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
     templateUrl: './par-listing.component.html',
     styleUrls: ['./par-listing.component.css']
 })
-export class ParListingComponent implements OnInit {
+export class ParListingComponent implements OnInit, AfterViewInit {
     @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -167,6 +167,9 @@ export class ParListingComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Policy List");
+        if(this.ns.listParams != null){
+            this.searchParams = this.ns.listParams;
+        }
         this.retrievePolListing();
     }
 
@@ -203,8 +206,14 @@ export class ParListingComponent implements OnInit {
    //     }
    //     );
    // }
+   ngAfterViewInit(){
+        if(this.ns.listParams != null){
+            this.table.setPreviousParams(this.ns.listParams);
+        }
+    }
 
    retrievePolListing(){
+       this.ns.setListParams(this.searchParams); 
        if(this.table != undefined)
            this.table.lengthFirst = false;
        if(this.searchParams.recount != 'N'){

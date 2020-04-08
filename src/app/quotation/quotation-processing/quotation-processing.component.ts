@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuotationService, NotesService, MaintenanceService, UserService, AuthenticationService } from '@app/_services';
 import { NgbModal, NgbTabset, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,7 @@ import { LoadingTableComponent } from '@app/_components/loading-table/loading-ta
     templateUrl: './quotation-processing.component.html',
     styleUrls: ['./quotation-processing.component.css']
 })
-export class QuotationProcessingComponent implements OnInit {
+export class QuotationProcessingComponent implements OnInit, AfterViewInit {
     @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
     @ViewChild('typeOfCessionLOV') typeOfCessionLov: MtnTypeOfCessionComponent;
@@ -256,10 +256,19 @@ export class QuotationProcessingComponent implements OnInit {
         this.first = true;
         this.titleService.setTitle("Quo | List Of Quotations");
         this.userService.emitModuleId("QUOTE001");
+        if(this.ns.listParams != null){
+            this.searchParams = this.ns.listParams;
+        }
         this.searchParams.recount = 'Y';
         this.retrieveQuoteListingMethod();
         this.getAccessibleModules();
         this.tabset.tabChange
+    }
+
+    ngAfterViewInit(){
+        if(this.ns.listParams != null){
+            this.table.setPreviousParams(this.ns.listParams);
+        }
     }
 
     onTabChange(data:NgbTabChangeEvent){
@@ -278,6 +287,7 @@ export class QuotationProcessingComponent implements OnInit {
     }
 
     retrieveQuoteListingMethod(){
+        this.ns.setListParams(this.searchParams); 
         if(this.table != undefined)
             this.table.lengthFirst = false;
         if(this.searchParams.recount != 'N'){

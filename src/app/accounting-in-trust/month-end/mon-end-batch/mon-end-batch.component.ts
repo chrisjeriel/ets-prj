@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService, UserService } from '@app/_services';
+import { AccountingService, NotesService, UserService, PrintService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { environment } from '@environments/environment';
 import { Title } from '@angular/platform-browser';
@@ -26,7 +26,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   topic: string = "/prodLogs";
   stompClient: any;
 
-  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService) {
+  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService,private ps : PrintService) {
   }
 
   ngOnInit() {
@@ -107,6 +107,18 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.txtArea.nativeElement.scrollTop = this.txtArea.nativeElement.scrollHeight;  
     }, 0);
+  }
+
+  printReport:any = 'ACITR063A';
+  printDestination:any = 'screen';
+  @ViewChild('printModal') printModal: ModalComponent;
+   print(){
+    let params:any = {
+                        prodDate : this.ns.toDateTimeString(this.eomDate)
+                      };
+    params.reportId=this.printReport;
+    params.fileName = 'Monthly_Production_Report'+ this.ns.toDateTimeString(this.eomDate);
+    this.ps.print(this.printDestination,this.printReport,params);
   }
 
 }

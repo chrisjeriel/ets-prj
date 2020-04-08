@@ -8,7 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
+import { MtnClmEventComponent } from '@app/maintenance/mtn-clm-event/mtn-clm-event.component';
 import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
@@ -28,7 +28,7 @@ export class ClaimReportsComponent implements OnInit {
   @ViewChild('appCancel') cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
-  @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
+  @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventComponent;
   @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
   @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
@@ -98,6 +98,9 @@ export class ClaimReportsComponent implements OnInit {
   dialogMessage: string = "";
   modalMode: string = "";
   loading : boolean = true;
+
+
+  passDataCsv : any[] =[];
 
   passData: any = {
     tableData: [],
@@ -198,6 +201,8 @@ export class ClaimReportsComponent implements OnInit {
                              'byDate', 'byMonthYear', 'asOf', 'extTypeTag','clmStat','lossDate'];
       } else if(this.params.reportId == 'CLMR010A'){
         this.paramsToggle.push('minLossAmt');
+      } else if(this.params.reportId == 'CLMR010G'){
+        this.paramsToggle.push('clmEvent')
       }
 
     setTimeout(()=> {
@@ -253,8 +258,8 @@ export class ClaimReportsComponent implements OnInit {
   setClmEvent(ev) {
     this.ns.lovLoader(ev.ev, 0);
 
-    this.params.clmEvent = ev.eventTypeCd;
-    this.params.clmEventName = ev.eventTypeDesc;
+    this.params.clmEvent = ev.eventCd;
+    this.params.clmEventName = ev.eventDesc;
   }
 
   setSelectedMainAdjuster(data) {
@@ -335,6 +340,13 @@ export class ClaimReportsComponent implements OnInit {
   }
 
   print() {
+
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     if(this.params.destination === '' || this.params.destination === undefined){
       this.dialogIcon = "warning-message";
       this.dialogMessage = "Please select a print destination";
@@ -386,7 +398,7 @@ export class ClaimReportsComponent implements OnInit {
 	    	this.ns.lovLoader(ev, 0);
 	  }, 500)
     }else if(field === 'clmEvent') {
-        this.clmEventTypeLOV.checkCode(this.params.clmEvent, ev);
+        this.clmEventTypeLOV.checkCode(this.params.clmEvent,'', ev);
     }else if(field === 'clmAdj') {
         this.adjusterLOVMain.checkCode(this.params.clmAdj, ev);
     }else if(field === 'clmStat') {
@@ -405,6 +417,138 @@ export class ClaimReportsComponent implements OnInit {
     this.params.currCd = data.currencyCd;
     this.params.currency = data.description;
     this.ns.lovLoader(data.ev, 0);
+  }
+
+  getExtractToCsv(){
+    console.log(this.params.reportId);
+      console.log(this.ns.getCurrentUser() + ' >> current user');
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId)
+      .subscribe(data => {
+        console.log(data);
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='')?0:(Number(String(m).replace(',',''))<0?('('+String(m).replace('-','')+')'):isNaN(Number(String(m).replace(',','')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+
+        var name = this.params.reportId;
+        var query = '';
+        if(this.params.reportId == 'CLMR010A'){
+          this.passDataCsv = data['listClmr010a'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],claimNo AS [CLAIM NO],insuredDesc as [INSURED NAME],myFormat(lossDate) as [LOSS DATE],uwYear as [U/W YEAR],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
+          'lossAbbr as [NATURE OF LOSS],negFmt(currency(minAmt)) as [MINIMUM AMOUNT],treatyCompany as [TREATY COMPANY],negFmt(currency(osAmt)) as OUTSTANDING,negFmt(currency(pdAmt)) as [PAID]';
+        }else if(this.params.reportId == 'CLMR010B'){
+          this.passDataCsv = data['listClmr010b'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'histCatDesc as [HIST CATEGORY],claimNo as [CLAIM NO],isNull(clmCoRefNo) as [COMPANY CLAIM NO],lossDate as [LOSS DATE],isNull(adjRefNo) as [ADJUSTER REF NO],'+
+          'isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],isNull(polCoRefNo) as [COMPANY POLICY NO],insuredDesc as [INSURED],'+
+          'negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
+          'histTypeDesc as [HIST TYPE],negFmt(currency(origResAmt)) as [ORIGINAL RESERVE],negFmt(currency(revResAmt)) as [REVISED RESERVE],'+
+          'treatyCompany as [TREATY]';
+        }else if(this.params.reportId == 'CLMR010C'){
+          this.passDataCsv = data['listClmr010c'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'adjName as [ADJUSTER],claimNo AS [CLAIM NO], policyNo as [POLICY NO], cedingName as [COMPANY], coRefNo as [CO POLICY NO],myFormat(lossDate) as [LOSS DATE],'+
+          'lossAbbr as [LOSS CAUSE], insuredDesc as [INSURED], negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMT],'+
+          'negFmt(currency(lossOsAmt)) as [OS LOSS],negFmt(currency(lossPdAmt)) as [PAID LOSS],negFmt(currency(adjFeeAmt)) as [ADJUSTERS FEE],clmStatDesc as [STATUS]';
+        }else if(this.params.reportId == 'CLMR010D'){
+          this.passDataCsv = data['listClmr010d'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
+          'insuredDesc as [INSURED],isNull(coRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],lossAbbr as [NATURE OF LOSS],'+
+          'treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+        }else if(this.params.reportId == 'CLMR010E'){
+          this.passDataCsv = data['listClmr010e'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE], lineCd as [LINE],currencyCd AS [CURRENCY],'+
+          'refYear as [YEAR],ctgryCdDesc as [CATEGORY],thisMthQty as [THIS MTH QTY],negFmt(currency(thisMthAmt)) as [THIS MTH AMT], lastMthQty as [LAST MTH QTY],'+
+          'negFmt(currency(lastMthAmt)) as [LAST MTH AMT]';
+        }else if(this.params.reportId == 'CLMR010H'){
+          this.passDataCsv = data['listClmr010h'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],treatyIdName as [TREATY],trtyCedIdName as [TREATY COMPANY],negFmt(currency(resAmt)) as [CLAIM]';
+        }else if(this.params.reportId == 'CLMR010I'){
+          this.passDataCsv = data['listClmr010i'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],treatyIdName as [TREATY],trtyCedIdName as [TREATY COMPANY],negFmt(currency(resAmt)) as [CLAIM]';
+        }else if(this.params.reportId == 'CLMR010J'){
+          this.passDataCsv = data['listClmr010j'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'cedingIdName as [COMPANY], negFmt(currency(ret1ClmAmt)) as [1st RETENTION],negFmt(currency(ret2ClmAmt)) as [2nd RETENTION],'+
+          'negFmt(currency(total)) as [TOTAL]';
+        }else if(this.params.reportId == 'CLMR010K'){
+          this.passDataCsv = data['listClmr010k'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'cedingIdName as [COMPANY], negFmt(currency(ret1ClmAmt)) as [1st RETENTION],negFmt(currency(ret2ClmAmt)) as [2nd RETENTION],'+
+          'negFmt(currency(total)) as [TOTAL]';
+        }else if(this.params.reportId == 'CLMR010M'){
+          this.passDataCsv = data['listClmr010m'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
+          'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
+          'treatyName as [TREATY],treatyCompany as [TREATY COMPANY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+        }else if(this.params.reportId == 'CLMR010N'){
+          this.passDataCsv = data['listClmr010n'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
+          'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
+          'treatyName as [TREATY],treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+        }else if(this.params.reportId == 'CLMR010O'){
+          this.passDataCsv = data['listClmr010o'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
+          'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
+          'treatyName as [TREATY],treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+        }else if(this.params.reportId == 'CLMR010P'){
+          this.passDataCsv = data['listClmr010p'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
+          'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
+          'treatyName as [TREATY],treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+        }else if(this.params.reportId == 'CLMR010S'){
+          this.passDataCsv = data['listClmr010s'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [COMPANY],negFmt(currency(lossResAmt)) as [O/S CLAIMS]';
+        }else if(this.params.reportId == 'CLMR010T'){
+          this.passDataCsv = data['listClmr010t'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [COMPANY],negFmt(currency(lossResAmt)) as [PAID CLAIMS]';
+        }else if(this.params.reportId == 'CLMR010U'){
+          this.passDataCsv = data['listClmr010u'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [INSURING COMPANY],negFmt(currency(lossResAmt)) as [ESTIMATED RESERVE]';
+        }else if(this.params.reportId == 'CLMR010V'){
+          this.passDataCsv = data['listClmr010v'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [INSURING COMPANY],negFmt(currency(lossResAmt)) as [ESTIMATED RESERVE],negFmt(currency(lossPdAmt)) as [ACTUAL PAID]';
+        }else if(this.params.reportId == 'CLMR010W'){
+          this.passDataCsv = data['listClmr010w'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [COMPANY]';
+        }else if(this.params.reportId == 'CLMR010X'){
+          this.passDataCsv = data['listClmr010x'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],cedingName as [COMPANY]';
+        }
+
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+      });
   }
 
   resetDates() {

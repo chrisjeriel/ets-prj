@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UnderwritingPolicyInquiryInfo } from '@app/_models';
-import { UnderwritingService } from '@app/_services';
+import { UnderwritingService, NotesService, ClaimsService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import * as alasql from 'alasql';
   templateUrl: './policy-inquiry.component.html',
   styleUrls: ['./policy-inquiry.component.css']
 })
-export class PolicyInquiryComponent implements OnInit {
+export class PolicyInquiryComponent implements OnInit, AfterViewInit {
   @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
@@ -184,12 +184,23 @@ export class PolicyInquiryComponent implements OnInit {
         mode:'inquiry'
     };
 
-  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router) { }
+    infoLoading:Boolean = false;
+
+  constructor(private underwritingService: UnderwritingService, private titleService: Title, private router : Router, private ns: NotesService, private cs: ClaimsService) { }
 
   ngOnInit() {
     this.titleService.setTitle("Pol | Policy Inquiry");
     // this.passData.tableData = this.underwritingService.getPolicyInquiry();
+    if(this.ns.listParams != null){
+        this.searchParams = this.ns.listParams;
+    }
     this.retrievePolListing();
+  }
+
+  ngAfterViewInit(){
+    if(this.ns.listParams != null){
+        this.listTable.setPreviousParams(this.ns.listParams);
+      }
   }
 
   gotoInfo(data) {
@@ -197,10 +208,22 @@ export class PolicyInquiryComponent implements OnInit {
   }
 
   onRowClick(data){
-    if(data!==null && Object.keys(data).length !== 0)
-      this.policyInfo = data;
-    else
+    this.infoLoading = false;
+    if(data!==null && Object.keys(data).length !== 0){
+      if(data.withClaim){
+        this.policyInfo = data;
+      }else{
+        this.infoLoading = true;
+        this.cs.checkExistingClaim(data.policyId).subscribe(a => {
+          data.withClaim = a;
+          this.policyInfo = data;
+          this.infoLoading = false;
+        });
+      }
+    }
+    else{
       this.policyInfo = this.defaultPolicyInfo;
+    }
   }
 
   searchQuery(searchParams){
@@ -212,6 +235,7 @@ export class PolicyInquiryComponent implements OnInit {
    }
 
    retrievePolListing(){
+       this.ns.setListParams(this.searchParams);
        if(this.searchParams.recount != 'N'){
          this.underwritingService.getPolicyListingLength(this.searchParams).subscribe(data=>{
            this.passData.count = data;

@@ -14,7 +14,7 @@
 								<div class="input-group">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
 									<input type="text" class="form-control form-control-sm col-sm-2 reports" [ngModel]="params.reportId"
-									 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report')" appRequired>
+									 (ngModelChange)="params.reportId = $event.toUpperCase();" (change)="checkCode($event, 'report')" appRequired>
 									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
 									<span>&nbsp;</span>
 									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
@@ -126,7 +126,7 @@
 								<div class="col-sm-2"></div>
 								<div class="col-sm-2" style="padding-left: 0">
 									<div class="cust-btn-container">
-										<button type="button" class="cust-btn" (click)="rangeLOV.openNoClose();retrieveRange();" style="margin-top: 5px;" [disabled]="extractDisabled"  ><a>SI Range</a></button>
+										<button type="button" class="cust-btn" (click)="rangeLOV.openNoClose();retrieveRange();" style="margin-top: 5px;" [disabled]="paramsToggle.indexOf('siRange') == -1"  ><a>SI Range</a></button>
 									</div>
 								</div>
 							</div>
@@ -229,6 +229,7 @@
 										<option value="screen">Screen</option>
 				    					<option value="dlPdf">PDF</option>
 				    					<option value="printPdf">Printer</option>
+				    					<option value="exl">Excel</option>
 									</select>
 									<div class="col-sm-2"></div>
 								</div>
