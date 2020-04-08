@@ -32,7 +32,10 @@
                             <app-loading-table #listTable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="gotoInfo($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-loading-table>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="position: absolute;">
+                         <div style="background-color: rgba(255, 255, 255, 0.5);z-index: 1" class="h-100 w-100 position-absolute text-center pt-3" *ngIf="infoLoading">
+                           <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="globalLoading">
+                         </div>
                          <div class="col-sm-6" style="padding-left: 0px;padding-right: 8px">
                             <fieldset class="scheduler-border">
                                  <div class="form-row" style="margin-right: 0px; margin-bottom: 1px;">
@@ -82,10 +85,18 @@
                                       <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.site">
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
-                                      <label class="form-control-sm col-sm-2">Object</label>
-                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.objectDesc">
-                                      <label class="form-control-sm col-sm-2">Currency</label>
-                                      <input readonly type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 8px ! important" [value]="policyInfo?.currencyCd">
+                                      <div class="col-sm-6 d-flex p-0">
+                                        <label class="form-control-sm col-sm-4">Object</label>
+                                        <input readonly type="text" class="form-control form-control-sm col-sm" style="margin-left: 8px ! important" [value]="policyInfo?.objectDesc">
+                                      </div>
+                                      <div class="col-sm-6 d-flex p-0">
+                                        <label class="form-control-sm col-sm-4">Currency</label>
+                                        <input readonly type="text" class="form-control form-control-sm col-sm-3" style="margin-left: 8px ! important" [value]="policyInfo?.currencyCd">
+                                        <label class="form-control-sm col-sm-2">With Claim</label>
+                                        <div class="form-control-sm col-sm pt-0" >
+                                          <input type="checkbox" [checked]="policyInfo.withClaim == 'Y'">
+                                        </div>
+                                      </div>
                                   </div>
                                   <div class="input-group ig-row" style="margin-right: 25px ! important;;margin-left: 10px ! important" >
                                       <label class="form-control-sm col-sm-2">Sum Insured</label>

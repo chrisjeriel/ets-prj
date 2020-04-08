@@ -63,10 +63,11 @@ export class MaintenanceService{
 	// 		);
 	// }
 
-	getEndtCode(lineCd,endtCd,filters?){
+	getEndtCode(lineCd,endtCd,filters?,mtnMode?){
 		let params = {
 			lineCd : lineCd,
-			endtCd : endtCd
+			endtCd : endtCd,
+			mtnMode: mtnMode ? mtnMode : 'N'
 		}
 		params = {...params,...filters};
 

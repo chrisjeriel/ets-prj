@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { UnderwritingService, NotesService} from '../../../_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import * as alasql from 'alasql';
     templateUrl: './alt-par-listing.component.html',
     styleUrls: ['./alt-par-listing.component.css']
 })
-export class AltParListingComponent implements OnInit {
+export class AltParListingComponent implements OnInit, AfterViewInit {
     @ViewChild(LoadingTableComponent) table: LoadingTableComponent;
     tableData: any[] = [];
     tHeader: any[] = [];
@@ -159,11 +159,20 @@ export class AltParListingComponent implements OnInit {
 
     ngOnInit() {
         this.titleService.setTitle("Pol | Alteration List");
+        if(this.ns.listParams != null){
+            this.searchParams = this.ns.listParams;
+        }
         this.retrievePolAltListing();
+    }
+    
+    ngAfterViewInit(){
+        if(this.ns.listParams != null){
+            this.table.setPreviousParams(this.ns.listParams);
+        }
     }
 
     retrievePolAltListing(){
-
+        this.ns.setListParams(this.searchParams); 
        if(this.searchParams.recount != 'N'){
              this.uwService.getPolicyListingLength(this.searchParams).subscribe(data=>{
                this.altParListData.count = data;

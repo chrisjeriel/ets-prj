@@ -975,7 +975,7 @@ export class LovComponent implements OnInit {
       })
     }else if(this.passData.selector == 'polWordings'){
       this.passTable.tHeader = [ 'Wording Code','Wording Title','Text'];
-      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.dataTypes = [ 'text','text','text-editor-h'];
       this.passTable.keys = ['wordingCd','wordingTitle','text']
       this.mtnService.getMtnPolWordings(this.passData.params).subscribe((data:any)=>{
         for(let a of data.mtnPolWordings){
@@ -1003,7 +1003,7 @@ export class LovComponent implements OnInit {
       })
     }else if(this.passData.selector == 'polWordingsAlt'){
       this.passTable.tHeader = [ 'Wording Code','Wording Title','Text'];
-      this.passTable.dataTypes = [ 'text','text','text'];
+      this.passTable.dataTypes = [ 'text','text','text-editor-h'];
       this.passTable.keys = ['wordingCd','wordingTitle','text']
       this.mtnService.getMtnPolWordings(this.passData.params).subscribe((data:any)=>{
         for(let a of data.mtnPolWordings){

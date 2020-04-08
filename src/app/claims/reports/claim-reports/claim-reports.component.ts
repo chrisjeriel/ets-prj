@@ -8,7 +8,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { MtnClmEventTypeComponent } from '@app/maintenance/mtn-clm-event-type/mtn-clm-event-type.component';
+import { MtnClmEventComponent } from '@app/maintenance/mtn-clm-event/mtn-clm-event.component';
 import { MtnAdjusterComponent } from '@app/maintenance/mtn-adjuster/mtn-adjuster.component';
 import { MtnClaimStatusLovComponent } from '@app/maintenance/mtn-claim-status-lov/mtn-claim-status-lov.component';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
@@ -28,7 +28,7 @@ export class ClaimReportsComponent implements OnInit {
   @ViewChild('appCancel') cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
-  @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventTypeComponent;
+  @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventComponent;
   @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
   @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
@@ -201,6 +201,8 @@ export class ClaimReportsComponent implements OnInit {
                              'byDate', 'byMonthYear', 'asOf', 'extTypeTag','clmStat','lossDate'];
       } else if(this.params.reportId == 'CLMR010A'){
         this.paramsToggle.push('minLossAmt');
+      } else if(this.params.reportId == 'CLMR010G'){
+        this.paramsToggle.push('clmEvent')
       }
 
     setTimeout(()=> {
@@ -256,8 +258,8 @@ export class ClaimReportsComponent implements OnInit {
   setClmEvent(ev) {
     this.ns.lovLoader(ev.ev, 0);
 
-    this.params.clmEvent = ev.eventTypeCd;
-    this.params.clmEventName = ev.eventTypeDesc;
+    this.params.clmEvent = ev.eventCd;
+    this.params.clmEventName = ev.eventDesc;
   }
 
   setSelectedMainAdjuster(data) {
@@ -396,7 +398,7 @@ export class ClaimReportsComponent implements OnInit {
 	    	this.ns.lovLoader(ev, 0);
 	  }, 500)
     }else if(field === 'clmEvent') {
-        this.clmEventTypeLOV.checkCode(this.params.clmEvent, ev);
+        this.clmEventTypeLOV.checkCode(this.params.clmEvent,'', ev);
     }else if(field === 'clmAdj') {
         this.adjusterLOVMain.checkCode(this.params.clmAdj, ev);
     }else if(field === 'clmStat') {

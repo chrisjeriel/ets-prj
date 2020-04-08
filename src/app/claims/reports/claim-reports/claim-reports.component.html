@@ -236,7 +236,7 @@
 							<div class="col-sm">
 								<div class="input-group" style="margin-bottom: 0px !important;">
 									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Claim Event</label>
-									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmEvent" (ngModelChange)="params.clmEvent = $event.toUpperCase()"  (change)="checkCode($event, 'clmEvent')"
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.clmEvent" (ngModelChange)="params.clmEvent = $event.toUpperCase()"  (change)="checkCode($event, 'clmEvent')" readonly="readonly" 
 									[disabled]="paramsToggle.indexOf('clmEvent') == -1">
 									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('clmEvent') > -1"><a><i class="fa fa-search" (click)="openClmEventLOV()"></i></a></div>
 									<span>&nbsp;</span>
@@ -319,7 +319,7 @@
 <app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
 <app-cancel-button #appCancel (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
-<app-mtn-clm-event-type #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event-type>
+<app-mtn-clm-event #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event>
 <app-mtn-adjuster #adjusterLOVMain (selectedData)="setSelectedMainAdjuster($event)" ></app-mtn-adjuster>
 <app-mtn-claim-status-lov #statusLOV (selectedData)="setStatus($event)"></app-mtn-claim-status-lov>
 <app-mtn-currency-code  #currencyModal id="currLOV" (selectedData)="setCurr($event)"></app-mtn-currency-code>

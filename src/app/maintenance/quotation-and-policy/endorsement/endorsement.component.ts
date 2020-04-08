@@ -231,7 +231,7 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
 
   getMtnEndorsements(){
     this.endtTable.loadingFlag = true;
-      this.ms.getEndtCode(this.line.lineCd.trim(),'').subscribe(a=>{
+      this.ms.getEndtCode(this.line.lineCd.trim(),'',undefined,'Y').subscribe(a=>{
         this.passEndtTable.disableAdd = false;
         this.passEndtTable.tableData = a['endtCode'];
         this.passEndtTable.tableData.forEach(a=>{{
