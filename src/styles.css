@@ -852,3 +852,7 @@ a.carousel-control-prev {
     max-width: 100%;
     height: 100%;
 }
+
+.required-directive:not(disabled) {
+    background-color : #fffacd85 !important;
+}

@@ -193,7 +193,7 @@
 										<div class="input-group">
 											<span class="col-sm-1"></span>
 											<label class="form-control-sm col-sm-2">Company</label>
-											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company')"
+											<input [appRequired]="params.reportId=='POLR052I'" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company')"
 											[disabled]="paramsToggle.indexOf('company') == -1">
 											<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
 											<span>&nbsp;</span>

@@ -57,7 +57,7 @@ export class PolBordereauxComponent implements OnInit {
     byMonthFromYear: '',
     byMonthTo : '',
     byMonthToYear: '',
-    faculTag : 'N'
+    faculTag : 'Y'
   }
 
   sendData: any = {
@@ -72,7 +72,7 @@ export class PolBordereauxComponent implements OnInit {
     reportId : '',
     destination: '',
     forceExtract: 'N',
-    faculTag : 'N'
+    faculTag : 'Y'
   };
 
   /*repExtractions: Array<string> = [
@@ -217,6 +217,7 @@ export class PolBordereauxComponent implements OnInit {
     }else if(this.params.reportId == 'POLR052I'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
+      this.params.faculTag = 'Y';
     }
 
     this.ns.lovLoader(data.ev, 0);
@@ -311,6 +312,13 @@ export class PolBordereauxComponent implements OnInit {
         this.appDialog.open();
         return;
       }
+    }
+
+    if(this.params.reportId == 'POLR052I' && !this.params.cedingId){
+      this.dialogIcon = "warning-message";  
+      this.dialogMessage = "Please select company.";
+      this.appDialog.open();
+      return;
     }
 
     this.loading = true;
