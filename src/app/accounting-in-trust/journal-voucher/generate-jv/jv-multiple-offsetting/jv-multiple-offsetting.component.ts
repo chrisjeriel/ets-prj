@@ -310,7 +310,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   			  private np: NegativeAmountPipe) { }
 
   ngOnInit() {
-  	console.log(this.jvDetail);
   	this.passDataIpb = this.as.getInwardPolicyKeys('JV');
   	this.passDataIpb.nData['soaNo'] = null;
 
@@ -511,7 +510,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
-  	  	console.log(data);
   	  	this.passDataInvPo.tableData = data['invPoList'];
 
   	  	if(data['invPoList'].length > 0) {
@@ -532,7 +530,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
-  	  	console.log(data);
   	  	this.passDataInvPl.tableData = data['invPlList'];
 
   	  	if(data['invPlList'].length > 0) {
@@ -604,9 +601,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   onTabChange(ev: NgbTabChangeEvent) {
-  	if((ev.activeId == 'unappTab' && this.unappTbl.form.first.dirty)) {
-  		console.log(this.unappTbl.form);
-  	}
   	if((ev.activeId == 'ipbTab' && this.ipbTbl.form.first.dirty)
 		|| (ev.activeId == 'clmTab' && this.clmTbl.form.first.dirty)
 		|| (ev.activeId == 'trtyTab' && this.trtyTbl.form.first.dirty)
@@ -672,8 +666,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   showLov(ev, from) {
-  	console.log(ev);
-  	console.log(from);
   	if(from == 'ipb') {
   	  this.passLov.selector = 'acitSoaDtl';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
@@ -722,8 +714,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   setLov(ev) {
-  	console.log(ev);
-  	console.log(ev.data);
   	if(ev.selector == 'acitSoaDtl') {
   	  this.passDataIpb.tableData = this.passDataIpb.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {
@@ -928,7 +918,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   setCeding(ev) {
-  	console.log(ev);
   	if(ev !== null) {
   	  this.passDataIpb.disableAdd = false;
   	  this.passDataTrty.disableAdd = false;
@@ -948,15 +937,12 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	this.as.getAcitJVCedRepLoss(params).subscribe(data => {
   	  	  this.lrdLoader = false;
   	  	  this.setLrd(data['cedRepLossList']);
-  	  	  console.log(data);
   	  	});
   	  }
   	}
   }
 
   onTblDataChange(ev, from) {
-  	console.log(ev);
-  	console.log(from);
   	if(from == 'ipb') {
       this.passDataIpb.tableData.forEach(a => {
       	a.premAmt = (a.paytAmt / a.prevNetDue) * a.prevPremAmt;
@@ -1088,7 +1074,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	} else if(from == 'invPo' || from == 'invPl') {
   	  proceed = true;
   	} else if(from == 'lrd') {
-  	  console.log(this.form);
   	  var a = this.passDataLrd.php.netLossresdep;
   	  var b = this.passDataLrd.usd.netLossresdep;
   	  var aa = (a.indexOf('(') !== -1 ? -1 : 1) * Number(a.replace(/\(|\)|\,/g, ''));
@@ -1145,7 +1130,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	this.prepareParams();
 
   	this.as.saveJVMultiOffset(this.params).subscribe(data => {
-  	  console.log(data);
   	  if(data['returnCode'] == 0) {
   	  	this.dialogIcon = "error";
   	  	this.successDialog.open();
@@ -1194,7 +1178,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   prepareParams() {
-  	console.log(this.currentTab);
   	this.params.tranId = this.jvDetail.tranId;
     this.params.tranType = this.jvDetail.tranType;
     this.params.saveIpb = [];
