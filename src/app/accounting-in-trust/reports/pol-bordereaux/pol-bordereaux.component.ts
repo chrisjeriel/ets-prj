@@ -432,8 +432,9 @@ export class PolBordereauxComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          return m==null?0:(Number(String(m).replace(',',''))<0?'('+String(m).replace('-','')+')':m);
+          return (m==null || m=='')?0:(Number(String(m).replace(',',''))<0?('('+String(m).replace('-','')+')'):isNaN(Number(String(m).replace(',','')))?'0.00':m);
         };
+
 
         var name = this.params.reportId;
         var query = '';
