@@ -209,6 +209,8 @@ import { BookingMthComponent } from './maintenance/accounting-mtn/booking-mth/bo
 import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-create-alt-oc/pol-create-alt-oc.component';
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
+import { BatchMoveBookingDateComponent } from './underwriting/utilities/batch-move-booking-date/batch-move-booking-date.component';
+
 
 const appRoutes: Routes = [
 
@@ -855,6 +857,8 @@ const appRoutes: Routes = [
     { path: 'pol-create-alt-oc', component: PolCreateAltOcComponent},
     { path: 'pol-oc-information', component: PolOcInformationComponent},
     { path: 'posting-amt-limit', component: PostingAmtLimitComponent},
+    { path: 'update-booking-date', component: BatchMoveBookingDateComponent},
+
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -26,6 +26,7 @@ export class RequiredDirective implements OnInit{
         this.renderer.addClass(this.er.nativeElement, 'required-directive');
       }else{
         this.renderer.removeClass(this.er.nativeElement, 'required-directive');
+        unHighlight(this.er);
       }
     }
 

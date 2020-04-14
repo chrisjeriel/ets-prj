@@ -1,3 +1,77 @@
-<p>
-  batch-move-booking-date works!
-</p>
+<div class="cust-tabs-container">
+	<h4>Policy / Utilities / Update Booking Date</h4>
+    <ngb-tabset>
+        <ngb-tab title="Update Booking Date">
+        	
+            <ng-template ngbTabContent>
+                <div class="w-100 d-flex p-0 mr-1" style="margin-bottom: -12px">
+                    <div class="col-sm-6 p-0">
+                        <fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 3px !important; padding-bottom: 25px !important;">
+                            <div class="input-group text-center" style="margin-bottom: -14px !important;">
+                                <div class="w-100 text-center" >
+                                        <input type="radio" name="distStatus" id="statNw" value="U" style="vertical-align: middle;" [(ngModel)]="searchParams.distStatus" (change)="getPolicyListing()">
+                                        <label for="statNw" class="text-left cust-mg">&nbsp;Undistributed</label>
+
+                                        <input type="radio" name="distStatus" id="statPr" value="D" style="vertical-align: middle;" [(ngModel)]="searchParams.distStatus" (change)="getPolicyListing()">
+                                        <label for="statPr" class="text-left cust-mg">&nbsp;Distributed</label>
+
+                                        <input type="radio" name="distStatus" id="statCs" value="A" style="vertical-align: middle;" [(ngModel)]="searchParams.distStatus" (change)="getPolicyListing()">
+                                        <label for="statCs" class="text-left cust-mg">&nbsp;All</label>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col-sm-6 p-0 ml-1">
+                        <fieldset class="scheduler-border" style="padding-top: 10px !important;padding-bottom: 8px !important;">
+                            <legend class="scheduler-border">Distribution Date</legend>
+                            <div class="d-flex p-0">
+                                <label class="col-sm-1">From: </label>
+                                <div class="col-sm dp-cont">
+                                    <datepicker [type]="'date'" [showIcon]="true" [value]="searchParams.bookingFrom" (valueChange)="searchParams.bookingFrom=$event;getPolicyListing()"></datepicker>
+                                </div>
+                                <label class="col-sm-1">To: </label>
+                                <div class="col-sm dp-cont">
+                                    <datepicker [type]="'date'" [showIcon]="true" [value]="searchParams.bookingTo" (valueChange)="searchParams.bookingTo=$event;getPolicyListing()"></datepicker>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="w-100">
+                    <app-cust-non-datatable [passData]="passData" (searchToDb)="getPolicyListing($event)" ></app-cust-non-datatable>
+                </div>
+                <div class="form-row w-100">
+                    <div class="form-group col-sm">
+                        <div class="col-md-12 text-center">
+                            <div class="cust-btn-container">
+                                <button type="button" class="cust-btn" (click)="confirmModal.openNoClose()"><a>Move</a></button>
+                                <button type="button" class="cust-btn" (click)="onCLickCancel()"><a>Cancel</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <app-modal #confirmModal class="d-none">
+                    <div header>Confirmation</div>
+                    <div body>
+                        Are you sure you want to move the booking date of the selected policies?
+                        <div class="w-100 p-0 d-flex">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4 dp-cont">
+                                <datepicker [type]="'date'" [showIcon]="true" [value]="bookingDates.newBookingDate" 
+                                    (valueChange)="bookingDates.newBookingDate=$event" [minDate]="bookingDates.minDate" [textAlign]="'center'">        
+                                </datepicker>
+                            </div>
+                        </div>
+                    </div>
+                    <div footer>
+                        <button type="button" class="cust-btn" (click)="save();confirmModal.closeModal()"><a>Yes</a></button>
+                        <button type="button" class="cust-btn" (click)="confirmModal.closeModal()"><a>No</a></button>
+                    </div>
+                </app-modal>
+                <app-sucess-dialog [icon]="dialogIcon"></app-sucess-dialog>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
