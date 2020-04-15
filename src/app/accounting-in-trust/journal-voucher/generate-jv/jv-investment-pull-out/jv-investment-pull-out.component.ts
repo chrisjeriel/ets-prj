@@ -72,7 +72,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
     uneditable: [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
     checkFlag: true,
     pageID: 6,
-    widths:[140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120],
+    widths: [140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120],
     disableAdd: true
   };
 

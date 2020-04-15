@@ -9,7 +9,7 @@
                 <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
                  style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="jvDetails.jvNo" readonly>
                 <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
-                <div class="col-sm-2 dp-cont">
+                <div class="col-sm-2 dp-cont" style="margin-left: 0 !important;">
                     <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [disabled]="true"></datepicker>
                 </div>
                 <label class="form-control-sm col-sm-1">Status</label>
@@ -23,7 +23,7 @@
                 readonly>
                 
                 <label class="form-control-sm col-sm-1">Ref No Date</label>
-                <div class="col-sm-2 dp-cont">
+                <div class="col-sm-2 dp-cont" style="margin-left: 0 !important;">
                     <datepicker [type]="'date'" [value]="jvDetails.refnoDate?.split('T')[0]" [disabled]="true"></datepicker>
                 </div>
             </div>
@@ -43,7 +43,7 @@
     </div>
 </fieldset>
 <div class="cust-tabs-container" style="margin-top: 10px ! important">
-    <ngb-tabset>
+    <ngb-tabset *ngIf="jvType !== 69">
         <ngb-tab>
             <ng-template ngbTabTitle>
                <ng-container [ngSwitch]="jvType">
@@ -123,6 +123,9 @@
             </ng-template>
         </ngb-tab>
     </ngb-tabset>
+    <ng-container *ngIf="jvType == 69">
+        <app-jv-multiple-offsetting [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-multiple-offsetting>
+    </ng-container>
 </div>
 <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
 	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">

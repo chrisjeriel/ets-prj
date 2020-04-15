@@ -109,6 +109,22 @@ export class JvUnappliedInwpolComponent implements OnInit {
     this.passData.nData = {showMG:1,tranId: '',soaNo: '', itemNo: '',policyId: '',instNo: '',policyNo: '',coRefNo: '',effDate: '',dueDate: '',currCd: '',currRate: '',premAmt: '',riComm: '',riCommVat: '',charges: '',netDue: '',prevPaytAmt: '',balPaytAmt: '',overdueInt: '',remarks: '',createUser: this.ns.getCurrentUser(),createDate: '',updateUser: this.ns.getCurrentUser(),updateDate: ''};
     this.passData.tableData = [];
     this.retrieveUnappInw();
+
+    if(this.jvDetail.statusType == 'A' || this.jvDetail.statusType == 'X' || this.jvDetail.statusType == 'P') {
+      this.passDataUnapplied.addFlag = false;
+      this.passDataUnapplied.deleteFlag = false;
+      this.passDataUnapplied.checkFlag = false;
+      this.passDataUnapplied.tHeaderWithColspan = this.passDataUnapplied.tHeaderWithColspan.slice(1);
+      this.passDataUnapplied.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+      this.passData.addFlag = false;
+      this.passData.deleteFlag = false;
+      this.passData.checkFlag = false;
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+
+      this.readOnly = true;
+    }
   }
 
   retrieveUnappInw(){
@@ -124,22 +140,6 @@ export class JvUnappliedInwpolComponent implements OnInit {
         this.table.onRowClick(null,this.passDataUnapplied.tableData[0]);
         this.jvDetails.cedingName = this.passDataUnapplied.tableData[0].cedingName;
         this.jvDetails.ceding = this.passDataUnapplied.tableData[0].cedingId;
-      }
-
-      if(this.jvDetail.statusType == 'A' || this.jvDetail.statusType == 'X' || this.jvDetail.statusType == 'P') {
-        this.passDataUnapplied.addFlag = false;
-        this.passDataUnapplied.deleteFlag = false;
-        this.passDataUnapplied.checkFlag = false;
-        this.passDataUnapplied.tHeaderWithColspan = this.passDataUnapplied.tHeaderWithColspan.slice(1);
-        this.passDataUnapplied.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
-
-        this.passData.addFlag = false;
-        this.passData.deleteFlag = false;
-        this.passData.checkFlag = false;
-        this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
-        this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
-
-        this.readOnly = true;
       }
 
       this.table.refreshTable();

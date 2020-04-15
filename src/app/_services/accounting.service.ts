@@ -79,7 +79,7 @@ export class AccountingService {
 	        createDate: '',
 	        updateUser: '',
 	        updateDate: '',
-	        showMG:1,
+	        showMG: 1,
 	        edited: true
 	      },
 	    addFlag: true,
@@ -3497,5 +3497,23 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-serv-service/extractAcseExpenseBudget',params,header);
     }
+
+    saveJVMultiOffset(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveJVMultiOffset',params,header);
+    }
+
+    getAcitJVMultiOffset(param) {
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVMultiOffset",{params: param});
+	}
+
+	getAcitJVCedRepLoss(param) {
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVCedRepLoss",{params: param});
+	}
 
 }

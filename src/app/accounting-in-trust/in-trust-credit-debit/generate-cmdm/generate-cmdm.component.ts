@@ -17,18 +17,20 @@ export class GenerateCMDMComponent implements OnInit {
   constructor(private route: ActivatedRoute, private router: Router,private modalService: NgbModal,) { }
   passData:any = {};
   memoId : any;
+  exitTranId: any;
   ngOnInit() {
     this.route.params.subscribe(a=>{
       this.passData.memoId = a.memoId;
       this.passData.memoType = a.memoType;
       this.exitLink = a.exitLink;
       this.memoId = a.memoId;
+      this.exitTranId = a.tranId;
     })
   }
 
   onTabChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'Exit') {
-      this.router.navigate([this.exitLink,{memoId: this.memoId}],{ skipLocationChange: true });
+      this.router.navigate([this.exitLink,{memoId: this.memoId, tranId: this.exitTranId}],{ skipLocationChange: true });
     } 
 
 
