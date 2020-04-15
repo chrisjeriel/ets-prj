@@ -14,14 +14,19 @@ export class BatchMoveBookingDateComponent implements OnInit {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Policy No.', 'Installment No.', 'Booking Date', 'Distribution Status','With Installment','Type of Cession', 'Created By', 'Sum Insured', 'Premium'],
-        dataTypes: ['text','text','date','text','checkbox','text','text','currency','currency'],
+        tHeader: ['Policy No.', 'Inst. No.', 'Booking Date', 'Distribution Status','With Installment','Type of Cession', 'Created By', 'Sum Insured', 'Premium','Insured'],
+        dataTypes: ['text','number','date','text','checkbox','text','text','currency','currency','text'],
         keys: ['policyNo','instNo','bookingDate','distStatus','withInst','cessionDesc',
-            'createUser','totalSi','totalPrem'],
+            'createUser','totalSi','totalPrem','insuredDesc'],
         filters: [
             {
                 key: 'policyNo',
-                title: 'Policu No.',
+                title: 'Policy No.',
+                dataType: 'text'
+            },
+            {
+                key: 'instNo',
+                title: 'Inst No.',
                 dataType: 'text'
             },
             {
@@ -50,6 +55,11 @@ export class BatchMoveBookingDateComponent implements OnInit {
                 title: 'Premium',
                 dataType: 'textspan'
             },
+            {
+                key: 'insuredDesc',
+                title: 'Insured',
+                dataType: 'text'
+            },
 
         ],
         pageLength: 15,
@@ -58,7 +68,8 @@ export class BatchMoveBookingDateComponent implements OnInit {
         fixedCol: false, 
         printBtn: false, 
         pagination: true, 
-        pageStatus: true
+        pageStatus: true,
+        colSize: []
     }
 
     searchParams:any = {
