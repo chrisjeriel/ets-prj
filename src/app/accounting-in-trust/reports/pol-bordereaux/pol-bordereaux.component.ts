@@ -456,7 +456,7 @@ export class PolBordereauxComponent implements OnInit {
 
         alasql.fn.negFmt = function(m){
           // return (m==null || m=='')?0:(Number(String(m).replace(',',''))<0?('('+String(m).replace('-','')+')'):isNaN(Number(String(m).replace(',','')))?'0.00':m);
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/,/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
         };
 
         alasql.fn.isNull = function(n){
@@ -502,10 +502,10 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(totalVatri)) as [TOTAL RI VAT],negFmt(currency(vatriQuota)) as [RI VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI VAT 1st RET],'+
           'negFmt(currency(vatri2ndRet)) as [RI VAT 2ND RET],negFmt(currency(vatri1stSurplus)) as [RI VAT 1ST SURPLUS],negFmt(currency(vatri2ndSurplus)) as [RI VAT 2ND SURPLUS],'+
           'negFmt(currency(vatriFacul)) as [RI VAT FACUL]';
-        }else if(this.params.reportId == 'POLR052E'){
-          this.passDataCsv = data['listPolr052e'];
+        }else if(this.params.reportId == 'POLR052D'){
+          this.passDataCsv = data['listPolr052d'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],lineCd as [LINE],currencyCd as [CURRENCY],'+
-          'policyNo || "/" || instNo as [POLICY NO/ INST NO],cedingName as [COMPANY],myFormat(inceptDate) || "to" myFormat(expiryDate) as [PERIOD],insuredDesc as [INSURED],'+
+          'policyNo || "/" || instNo as [POLICY NO/INST NO],cedingName as [COMPANY],myFormat(inceptDate) || "to" || myFormat(expiryDate) as [PERIOD],insuredDesc as [INSURED],'+
           'contractorName as [CONTRACTOR], negFmt(pctShare) as [% SHARE],negFmt(currency(totalSiAmt)) as [TOTAL SI], negFmt(currency(totalPremAmt)) as [TOTAL PREMIUM],'+
           'negFmt(currency(siFacul)) as [FACUL SI], negFmt(currency(premFacul)) as [FACUL PREMIUM]';
         }else if(this.params.reportId == 'POLR052E'){
@@ -519,6 +519,16 @@ export class PolBordereauxComponent implements OnInit {
           'debitMemoNo as [DEBIT MEMO NO],isNull(policyRef) as [POLICY REF NO],myFormat(inceptDate) as [INCEPTION DATE],myFormat(expDate) as [EXPIRY DATE],myFormat(effDate) as [EFF DATE],'+
           'negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(vatriComm)) as [VAT on RI COMM],'+
           'negFmt(currency(premAmt)) as [PREMIUM]';
+        }else if(this.params.reportId == 'POLR052G'){
+          this.passDataCsv = data['listPolr052g'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],tinNo as [T.I.N.],currencyCd as [CURRENCY],shrTinNo as [SHR T.I.N.],'+
+          'shrCedName as [REGISTERED NAME], shrAddress as [ADDRESS], negFmt(currency(premAmt)) as [SHARE on PREMIUMS],negFmt(currency(commAmt)) as [COMMISSION],'+
+          'negFmt(currency(vatRiComm)) as [INPUT VAT]';
+        }else if(this.params.reportId == 'POLR052H'){
+          this.passDataCsv = data['listPolr052h'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],tinNo as [T.I.N.],currencyCd as [CURRENCY],shrTinNo as [SHR T.I.N.],'+
+          'shrCedName as [REGISTERED NAME], shrAddress as [ADDRESS], negFmt(currency(premAmt)) as [SHARE on PREMIUMS],negFmt(currency(commAmt)) as [COMMISSION],'+
+          'negFmt(currency(vatRiComm)) as [INPUT VAT]';
         }
 
         console.log(this.passDataCsv);
