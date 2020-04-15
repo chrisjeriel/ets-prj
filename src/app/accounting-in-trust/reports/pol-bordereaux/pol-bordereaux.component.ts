@@ -458,6 +458,9 @@ export class PolBordereauxComponent implements OnInit {
           return (m==null || m=='')?0:(Number(String(m).replace(',',''))<0?('('+String(m).replace('-','')+')'):isNaN(Number(String(m).replace(',','')))?'0.00':m);
         };
 
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
 
         var name = this.params.reportId;
         var query = '';
@@ -465,11 +468,11 @@ export class PolBordereauxComponent implements OnInit {
         if(this.params.reportId == 'POLR052A'){
           this.passDataCsv = data['listPolr052a'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo as [POLICY NO],currencyCd as [CURRENCY],'+
-          'totalPrem as [TOTAL PREM],negFmt(currency(premQuota)) as [PREM QUOTA SHARE],negFmt(currency(prem1stRet)) as [PREM 1st RET],'+
+          'negFmt(currency(totalPrem)) as [TOTAL PREM],negFmt(currency(premQuota)) as [PREM QUOTA SHARE],negFmt(currency(prem1stRet)) as [PREM 1st RET],'+
           'negFmt(currency(prem2ndRet)) as [PREM 2nd RET], negFmt(currency(prem1stSurplus)) as [PREM 1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [PREM 2nd SURPLUS],'+
-          'negFmt(currency(premFacul)) as [PREM FACUL], totalComm as [TOTAL COMM],negFmt(currency(commQuota)) as [COMM QUOTA SHARE],negFmt(currency(comm1stRet)) as [COMM 1st RET],'+
+          'negFmt(currency(premFacul)) as [PREM FACUL], negFmt(currency(totalComm)) as [TOTAL COMM],negFmt(currency(commQuota)) as [COMM QUOTA SHARE],negFmt(currency(comm1stRet)) as [COMM 1st RET],'+
           'negFmt(currency(comm2ndRet)) as [COMM 2nd RET], negFmt(currency(comm1stSurplus)) as [COMM 1st SURPLUS],negFmt(currency(comm2ndSurplus)) as [COMM 2nd SURPLUS],'+
-          'negFmt(currency(commFacul)) as [COMM FACUL], totalVatRi as [TOTAL RI COMM VAT],negFmt(currency(vatriQuota)) as [RI COMM VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI COMM VAT 1st RET],'+
+          'negFmt(currency(commFacul)) as [COMM FACUL], totalVatri as [TOTAL RI COMM VAT],negFmt(currency(vatriQuota)) as [RI COMM VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI COMM VAT 1st RET],'+
           'negFmt(currency(vatri2ndRet)) as [RI COMM VAT 2nd RET], negFmt(currency(vatri1stSurplus)) as [RI COMM VAT 1st SURPLUS],negFmt(currency(vatri2ndSurplus)) as [RI COMM VAT 2nd SURPLUS],'+
           'negFmt(currency(vatriFacul)) as [RI COMM VAT FACUL]';
         }else if(this.params.reportId == 'POLR052B'){
@@ -500,13 +503,19 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(vatriFacul)) as [RI VAT FACUL]';
         }else if(this.params.reportId == 'POLR052E'){
           this.passDataCsv = data['listPolr052e'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],lineCd as [LINE],currencyCd as [CURRENCY],'+
+          'policyNo || "/" || instNo as [POLICY NO/ INST NO],cedingName as [COMPANY],myFormat(inceptDate) || "to" myFormat(expiryDate) as [PERIOD],insuredDesc as [INSURED],'+
+          'contractorName as [CONTRACTOR], negFmt(pctShare) as [% SHARE],negFmt(currency(totalSiAmt)) as [TOTAL SI], negFmt(currency(totalPremAmt)) as [TOTAL PREMIUM],'+
+          'negFmt(currency(siFacul)) as [FACUL SI], negFmt(currency(premFacul)) as [FACUL PREMIUM]';
+        }else if(this.params.reportId == 'POLR052E'){
+          this.passDataCsv = data['listPolr052e'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],debitMemoNo as [DEBIT MEMO NO],cedingName as [COMPANYY],'+
           'policyNo as [POLICY NO],instNo as [INST NO],negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(vatriComm)) as [VAT on RI COMM],'+
           'negFmt(currency(premAmt)) as [PREMIUM]';
         }else if(this.params.reportId == 'POLR052F'){
           this.passDataCsv = data['listPolr052f'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],currencyCd as [CURRENCY],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo as [POLICY NO],instNo as [INST NO],'+
-          'debitMemoNo as [DEBIT MEMO NO],(CASE WHEN policyRef IS NULL THEN "" ELSE policyRef END) as [POLICY REF NO],myFormat(inceptDate) as [INCEPTION DATE],myFormat(expDate) as [EXPIRY DATE],myFormat(effDate) as [EFF DATE],'+
+          'debitMemoNo as [DEBIT MEMO NO],isNull(policyRef) as [POLICY REF NO],myFormat(inceptDate) as [INCEPTION DATE],myFormat(expDate) as [EXPIRY DATE],myFormat(effDate) as [EFF DATE],'+
           'negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(vatriComm)) as [VAT on RI COMM],'+
           'negFmt(currency(premAmt)) as [PREMIUM]';
         }
