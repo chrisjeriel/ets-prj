@@ -853,6 +853,6 @@ a.carousel-control-prev {
     height: 100%;
 }
 
-.required-directive:not(disabled) {
+.required-directive:enabled:not([readonly]){
     background-color : #fffacd85 !important;
 }

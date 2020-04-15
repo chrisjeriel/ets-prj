@@ -1140,12 +1140,20 @@ export class UnderwritingService {
          const params = new HttpParams()
              .set('policyNo', (policyNo === null || policyNo === undefined ? '' : policyNo) )
              .set('policyId',(policyId === null || policyId === undefined ? '' : policyId) )
-        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolFullItem",{params});;
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrievePolFullItem",{params});
     }
 
      savePolFullItem(itemData:any){
         
         return this.http.post(environment.prodApiUrl + '/underwriting-service/savePolFullItem', JSON.stringify(itemData), this.header);
+    }
+
+    getMoveBookingList(params:any){
+        return this.http.get(environment.prodApiUrl + "/underwriting-service/retrieveMoveBookingMonthList",{params:params});
+    }
+
+    batchUpdateBookingDate(params){
+        return this.http.post(environment.prodApiUrl + '/underwriting-service/batchUpdateBookingDate',JSON.stringify(params),this.header);
     }
 }            
 
