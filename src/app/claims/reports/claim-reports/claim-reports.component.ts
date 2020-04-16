@@ -463,7 +463,7 @@ export class ClaimReportsComponent implements OnInit {
         }else if(this.params.reportId == 'CLMR010C'){
           this.passDataCsv = data['listClmr010c'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
-          'adjName as [ADJUSTER],claimNo AS [CLAIM NO], policyNo as [POLICY NO], cedingName as [COMPANY], coRefNo as [CO POLICY NO],myFormat(lossDate) as [LOSS DATE],'+
+          'adjName as [ADJUSTER],claimNo AS [CLAIM NO], policyNo as [POLICY NO], cedingName as [COMPANY], isNull(coRefNo) as [CO POLICY NO],myFormat(lossDate) as [LOSS DATE],'+
           'lossAbbr as [LOSS CAUSE], insuredDesc as [INSURED], negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMT],'+
           'negFmt(currency(lossOsAmt)) as [OS LOSS],negFmt(currency(lossPdAmt)) as [PAID LOSS],negFmt(currency(adjFeeAmt)) as [ADJUSTERS FEE],clmStatDesc as [STATUS]';
         }else if(this.params.reportId == 'CLMR010D'){
@@ -475,12 +475,12 @@ export class ClaimReportsComponent implements OnInit {
         }else if(this.params.reportId == 'CLMR010G'){
           this.passDataCsv = data['listClmr010g'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
-          'claimNo as [CLAIM NO],policyNo as [POLICY NO],cedingName as [WRITING COMPANY], lineCd as [CLASS TYPE],myFormat(inceptDate) || " to " myFormat(expiryDate) as [PERIOD OF INS],'+
+          'claimNo as [CLAIM NO],policyNo as [POLICY NO],cedingName as [WRITING COMPANY], lineCd as [CLASS TYPE],myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD OF INS],'+
           'insuredDesc as [NAME OF INSURED], myFormat(lossDate) as [LOSS DATE],site as [LOCATION],negFmt(currency(tsiAmt)) as [TREATY CESSION],pctShare as [% OF TOTAL],'+
           'negFmt(currency(polQuCedRet1)) as [QUOTA 1st LAYER],negFmt(currency(polQuCedRet2)) as [QUOTA 2nd LAYER],negFmt(currency(polQuMre)) as [QUOTA MRe],'+
           'negFmt(currency(polQuNre)) as [QUOTA NRe],negFmt(currency(pol1spMre)) as [1SP MRe],negFmt(currency(pol1spNre)) as [1SP NRe],negFmt(currency(pol2spMre)) as [2SP MRe],'+
           'negFmt(currency(pol2spNre)) as [2SP NRe],negFmt(currency(polFacul)) as [FACULTATIVE],negFmt(currency(retLineAmt)) as [CEDANTS RETENTION],negFmt(currency(osAmt)) as [LOSS RESERVE],'+
-          'negFmt(currency(pdAmt)) as [LOSS PAID],adjName as [ADJUSTER], negFmt(currency(adjFee)) as [ADJUSTERS FEE],negFmt(currency(cedRet1Shr)) as [1st LAYER PARTICIPATION],'+
+          'negFmt(currency(pdAmt)) as [LOSS PAID],isNull(adjName) as [ADJUSTER], negFmt(currency(adjFee)) as [ADJUSTERS FEE],negFmt(currency(cedRet1Shr)) as [1st LAYER PARTICIPATION],'+
           'negFmt(currency(cedRet2Shr)) as [2nd LAYER PARTICIPATION],negFmt(currency(cedTotalShr)) as [TOTAL PARTICIPATION],negFmt(currency(clmQuMre)) as [CLM QUOTA MRe],'+
           'negFmt(currency(clmQuNre)) as [CLM QUOTA NRe],negFmt(currency(clm1spMre)) as [CLM 1SP MRe],negFmt(currency(clm1spNre)) as [CLM 1SP NRe],negFmt(currency(clm2spMre)) as [CLM 2SP MRe],'+
           'negFmt(currency(clm2spNre)) as [CLM 2SP NRe],negFmt(currency(clmFacul)) as [CLM FACULTATIVE],negFmt(currency(clmQuCedRet1)) as [1st RET LAYER],negFmt(currency(clmQuCedRet2)) as [2nd RET LAYER],'+
@@ -579,7 +579,7 @@ export class ClaimReportsComponent implements OnInit {
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'lineCd as [LINE],refYear as [REF YEAR],negFmt(currency(premAmt)) as [PREMIUM],negFmt(osQty) as [OS QTY],negFmt(currency(osAmt)) as [OS AMT],'+
           'negFmt(pdQty) as [PAID QTY], negFmt(currency(pdAmt)) as [PAID AMT], negFmt(totalClmQty) as [TOTAL CLAIM QTY],negFmt(currency(totalClmAmt)) as [TOTAL CLAIM AMT],'+
-          'incuredYear as [INCURED YEAR],negFmt(incuredQty) as [INCURED QTY], negFmt(currency(incuredAmt)) as [INCURED AMT],negFmt(lossRatio) as [U/W YEAR LOSS RATIO]';
+          'incurredYear as [INCURED YEAR],negFmt(incurredQty) as [INCURED QTY], negFmt(currency(incurredAmt)) as [INCURED AMT],negFmt(lossRatio) as [U/W YEAR LOSS RATIO]';
         }
 
         console.log(this.passDataCsv);
