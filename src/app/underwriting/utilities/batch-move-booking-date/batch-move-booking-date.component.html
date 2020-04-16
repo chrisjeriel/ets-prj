@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="w-100">
-                    <app-cust-non-datatable [passData]="passData" (searchToDb)="getPolicyListing($event)" ></app-cust-non-datatable>
+                    <app-cust-non-datatable [passData]="passData" (searchToDb)="getPolicyListing($event)" (export)="export()"></app-cust-non-datatable>
                 </div>
                 <div class="form-row w-100">
                     <div class="form-group col-sm">
