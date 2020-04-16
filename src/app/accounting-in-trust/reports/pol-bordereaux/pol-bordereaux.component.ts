@@ -521,14 +521,19 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(premAmt)) as [PREMIUM]';
         }else if(this.params.reportId == 'POLR052G'){
           this.passDataCsv = data['listPolr052g'];
-          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],tinNo as [T.I.N.],currencyCd as [CURRENCY],shrTinNo as [SHR T.I.N.],'+
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],isNull(tinNo) as [T.I.N.],currencyCd as [CURRENCY],isNull(shrTinNo) as [SHR T.I.N.],'+
           'shrCedName as [REGISTERED NAME], shrAddress as [ADDRESS], negFmt(currency(premAmt)) as [SHARE on PREMIUMS],negFmt(currency(commAmt)) as [COMMISSION],'+
           'negFmt(currency(vatRiComm)) as [INPUT VAT]';
         }else if(this.params.reportId == 'POLR052H'){
           this.passDataCsv = data['listPolr052h'];
-          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],tinNo as [T.I.N.],currencyCd as [CURRENCY],shrTinNo as [SHR T.I.N.],'+
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],cedingName as [TREATIES ISSUED BY],isNull(tinNo) as [T.I.N.],currencyCd as [CURRENCY],isNull(shrTinNo) as [SHR T.I.N.],'+
           'shrCedName as [REGISTERED NAME], shrAddress as [ADDRESS], negFmt(currency(premAmt)) as [SHARE on PREMIUMS],negFmt(currency(commAmt)) as [COMMISSION],'+
           'negFmt(currency(vatRiComm)) as [INPUT VAT]';
+        }else if(this.params.reportId == 'POLR052I'){
+          this.passDataCsv = data['listPolr052i'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], cedingName as [CEDING NAME],address as [ADDRESS],'+
+          'currencyCd as [CURRENCY],policyNo || "/" || instNo as [INSURER POLICY NO],insuredDesc as [INSURED],myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD of COVER],'+
+          'isNull(cedRepName) as [REPRESENTATIVE], isNull(cedRepPosition) as [POSITION], negFmt(currency(premAmt)) as [PREMIUM], negFmt(currency(commAmt)) as [COMMISSION],negFmt(currency(vatRiComm)) as [VAT], negFmt(currency(netDue)) as [NET PREMIUM]';
         }
 
         console.log(this.passDataCsv);
