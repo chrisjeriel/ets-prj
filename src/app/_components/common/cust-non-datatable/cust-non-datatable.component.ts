@@ -423,7 +423,7 @@ export class CustNonDatatableComponent implements OnInit {
                 }
             }
             this.rowClick.emit(this.selected);
-            this.refreshTable();
+            // this.refreshTable();
         }
         else{
             this.displayData = this.displayData.filter((a) => {

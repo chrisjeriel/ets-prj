@@ -327,38 +327,38 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       this.passDataIpb.deleteFlag = false;
       this.passDataIpb.checkFlag = false;	
       this.passDataIpb.tHeaderWithColspan = this.passDataIpb.tHeaderWithColspan.slice(1);
-	  this.passDataIpb.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataIpb.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
-	  this.passDataClm.addFlag = false;
-	  this.passDataClm.deleteFlag = false;
-	  this.passDataClm.checkFlag = false;
-	  this.passDataClm.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataClm.addFlag = false;
+	    this.passDataClm.deleteFlag = false;
+	    this.passDataClm.checkFlag = false;
+	    this.passDataClm.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
 
-	  this.passDataTrty.addFlag = false;
-	  this.passDataTrty.deleteFlag = false;
-	  this.passDataTrty.checkFlag = false;
-	  this.passDataTrty.tHeaderWithColspan = this.passDataTrty.tHeaderWithColspan.slice(1);
-	  this.passDataTrty.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataTrty.addFlag = false;
+	    this.passDataTrty.deleteFlag = false;
+	    this.passDataTrty.checkFlag = false;
+	    this.passDataTrty.tHeaderWithColspan = this.passDataTrty.tHeaderWithColspan.slice(1);
+	    this.passDataTrty.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
 
-	  this.passDataUnapp.addFlag = false;
-	  this.passDataUnapp.deleteFlag = false;
-	  this.passDataUnapp.checkFlag = false;
-	  this.passDataUnapp.tHeaderWithColspan = this.passDataUnapp.tHeaderWithColspan.slice(1);
-	  this.passDataUnapp.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataUnapp.addFlag = false;
+	    this.passDataUnapp.deleteFlag = false;
+	    this.passDataUnapp.checkFlag = false;
+	    this.passDataUnapp.tHeaderWithColspan = this.passDataUnapp.tHeaderWithColspan.slice(1);
+	    this.passDataUnapp.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
-	  this.passDataInvPo.addFlag = false;
-	  this.passDataInvPo.deleteFlag = false;
-	  this.passDataInvPo.checkFlag = false;
+	    this.passDataInvPo.addFlag = false;
+	    this.passDataInvPo.deleteFlag = false;
+	    this.passDataInvPo.checkFlag = false;
 
-	  this.passDataInvPl.addFlag = false;
-	  this.passDataInvPl.deleteFlag = false;
-	  this.passDataInvPl.checkFlag = false;
+	    this.passDataInvPl.addFlag = false;
+	    this.passDataInvPl.deleteFlag = false;
+	    this.passDataInvPl.checkFlag = false;
 
-	  this.passDataOth.addFlag = false;
-	  this.passDataOth.deleteFlag = false;
-	  this.passDataOth.checkFlag = false;
+	    this.passDataOth.addFlag = false;
+	    this.passDataOth.deleteFlag = false;
+	    this.passDataOth.checkFlag = false;
 
-	  this.readOnly = true;
+	    this.readOnly = true;
     }
   }
 
@@ -547,24 +547,27 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  params['cedingId'] = this.multOffDetails.cedingId;
 
   	  var sub$ = forkJoin(this.as.getAcitJVMultiOffset(params),
-  	  					  this.as.getAcitJVCedRepLoss(retParams)).pipe(map(([rec, ret]) => { return { rec, ret }; }));
+  	  					          this.as.getAcitJVCedRepLoss(retParams)).pipe(map(([rec, ret]) => { return { rec, ret }; }));
 
   	  this.lrdLoader = true;
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
   	  	this.lrdLoader = false;
   	  	this.withExtCed = data['existing'] !== null;
   	  	if(data['existing'] !== null) {
-	      this.multOffDetails.cedingId = data['existing']['cedingId'];
-	      this.multOffDetails.cedingName = data['existing']['cedingName'];
-	    }
+	        this.multOffDetails.cedingId = data['existing']['cedingId'];
+	        this.multOffDetails.cedingName = data['existing']['cedingName'];
+	      }
   	  	var a = data['lrdList'];
 
   	  	if(data['lrdList'].length > 0) {
   	  	  this.multOffDetails.cedingId = a[0].cedingId;
-	      this.multOffDetails.cedingName = a[0].cedingName;
-	    }
+	        this.multOffDetails.cedingName = a[0].cedingName;
+
+          var b = a.filter(a => a.currCd == this.jvDetail.currCd);
+          this.infoData.emit(b.length == 0 ? null : b[0]);
+	      }
 	    
-	    this.setLrd(a); 
+	      this.setLrd(a); 
   	  });
   	} else if(from == 'othTab') {
   	  this.passDataOth.tableData = [];
@@ -1339,9 +1342,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       	e.tranId = this.jvDetail.tranId;
       	e.cedingId = this.multOffDetails.cedingId;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+	      e.createDate = this.ns.toDateTimeString(0);
+	      e.updateUser = this.ns.getCurrentUser();
+	      e.updateDate = this.ns.toDateTimeString(0);
 
       	return e;
       });
@@ -1399,8 +1402,8 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  this.passDataLrd.tin = a.tin;
   	  this.passDataLrd.activetag = a.activetag;
   	  this.passDataLrd.cedingRep = a.cedingRep;
-	  this.passDataLrd.contactNo = a.contactNo;
-	  this.passDataLrd.emailAdd = a.emailAdd;
+	    this.passDataLrd.contactNo = a.contactNo;
+	    this.passDataLrd.emailAdd = a.emailAdd;
 
 	  var currArr = data.filter(x => x.currCd !== null).map(x => x.currCd);
 
@@ -1465,29 +1468,28 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  tin: '',
   	  activetag: '',
   	  cedingRep: '',
-	  contactNo: '',
-	  emailAdd: '',
-	  php: {
-	    currCd: 'PHP',
-	    currRate: '',
-	    totalLossresdep: '',
-	    localAmt: '',
-	    offsetPayt: 0,
-	    netLossresdep: 0
-	  },
-	  usd: {
-	    currCd: 'USD',
-	    currRate: '',
-	    totalLossresdep: '',
-	    localAmt: '',
-	    offsetPayt: 0,
-	    netLossresdep: 0
-	  }
+	    contactNo: '',
+	    emailAdd: '',
+	    php: {
+	      currCd: 'PHP',
+	      currRate: '',
+	      totalLossresdep: '',
+	      localAmt: '',
+	      offsetPayt: 0,
+	      netLossresdep: 0
+	    },
+	    usd: {
+	      currCd: 'USD',
+	      currRate: '',
+	      totalLossresdep: '',
+	      localAmt: '',
+	      offsetPayt: 0,
+	      netLossresdep: 0
+	    }
     }
   }
 
   onClickExport() {
-  	console.log(this.passDataIpb.tableData);
     var name = 'InwardPolicyBalances_PolicyList_' + this.jvDetail.jvYear + '-' + this.jvDetail.jvNo;
     var query = 'SELECT policyNo AS [Policy No], ' +
                        'CASE WHEN coRefNo IS NULL THEN \'\' ELSE coRefNo END AS [Co. Ref. No.], ' +
@@ -1502,16 +1504,17 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
                        'currency(cumPayment) AS [Cumulative Payments], ' +
                        'currency(balance) AS [Balance], ' +
                        'currency(paytAmt) AS [Payment Amount], ' +
-                       'currency(premAmt) AS [Premium], ' +
-                       'currency(riComm) AS [RI Comm], ' +
-                       'currency(riCommVat) AS [RI Comm Vat], ' +
-                       'currency(charges) AS [Charges], ' +
+                       'currency(premAmt) AS [Premium (Payment)], ' +
+                       'currency(riComm) AS [RI Comm (Payment)], ' +
+                       'currency(riCommVat) AS [RI Comm Vat (Payment)], ' +
+                       'currency(charges) AS [Charges (Payment)], ' +
                        'currency(totalPayt) AS [Total Payments], ' +
                        'currency(remainingBal) AS [Remaining Balance], ' +
                        'currCd AS [Curr], ' +
-                       'currRate AS [Curr Rate]' ;
+                       'currRate AS [Curr Rate]';
 
-    this.ns.export(name, query, this.passDataIpb.tableData);
+    var x = this.passDataIpb.tableData.map(a => Object.create(a));
+    this.ns.export(name, query, x);
   }
 
 }

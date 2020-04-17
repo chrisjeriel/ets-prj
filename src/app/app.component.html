@@ -448,6 +448,10 @@
                                                 <button (click)="resetListParams()" [routerLink]="['/update-pol-attachment']" class="button btn btn-link">Update Policy Attachment</button>
                                                 <br />
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('POL055') > -1">
+                                                <button (click)="resetListParams()" [routerLink]="['/update-booking-date']" class="button btn btn-link">Update Booking Date</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

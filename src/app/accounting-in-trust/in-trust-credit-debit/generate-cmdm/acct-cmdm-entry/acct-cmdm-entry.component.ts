@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ViewChild, Output, EventEmitter } from '@angular/core';
-import { AccountingService, MaintenanceService, NotesService } from '@app/_services';
+import { AccountingService, MaintenanceService, NotesService, PrintService } from '@app/_services';
 import { CMDM } from '@app/_models';
 import { Title } from '@angular/platform-browser';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
@@ -96,7 +96,8 @@ export class AcctCmdmEntryComponent implements OnInit {
   dialogMessage: string = '';
   cancelFlag: boolean = false;
 
-constructor(private accountingService: AccountingService, private titleService: Title, private mtnService: MaintenanceService, private ns: NotesService) { }
+constructor(private accountingService: AccountingService, private titleService: Title, private mtnService: MaintenanceService, 
+  private ns: NotesService, private ps: PrintService) { }
 
   ngOnInit() {
   	if(this.passData.memoId != undefined && this.passData.memoType != undefined){
@@ -130,6 +131,7 @@ constructor(private accountingService: AccountingService, private titleService: 
         $('input,textarea').prop('readonly','readonly');
       }
       this.updateData.emit(this.memoInfo);
+      this.updateReportsList(this.memoInfo.memoType,this.memoInfo.tranTypeCd);
     });
   }
 
@@ -169,6 +171,7 @@ constructor(private accountingService: AccountingService, private titleService: 
 		    this.passLov.params.groupTag = this.memoInfo.groupTag;
         // this.passData.tranId = this.memoInfo.tranId;
         this.updateData.emit(this.memoInfo);
+        this.updateReportsList(this.memoInfo.memoType,this.memoInfo.memoTranType);
   		}else{
   			this.dialogIcon = 'error';
   			this.successDiag.open();
@@ -286,5 +289,51 @@ constructor(private accountingService: AccountingService, private titleService: 
        }
      });
    }
+
+  printReport:any = '';
+  printDestination:any = 'screen';
+
+  reportsList:any[] = [];
+
+  @ViewChild('printModal') printModal: ModalComponent;
+
+  updateReportsList(memoType, memoTranType){
+    this.reportsList = [];
+    if(this.memoInfo.refNo.substring(0,2) == 'JV'){
+     this.accountingService.getJVEntry(this.memoInfo.refNoTranId).subscribe((a:any)=>{
+        if(a.transactions.tranTypeCd == 7){
+          this.reportsList = [{reportId: 'ACITR046F', reportName:'CMDM-Losses Offsetting'}]
+        }else if(memoTranType== '1'){
+          this.reportsList = [{reportId: 'ACITR046A', reportName:'CMDM-Policy'}]
+        }else if(memoTranType == '3' || memoTranType == '4'){
+          this.reportsList = [{reportId: 'ACITR046E', reportName:'CMDM-Offsetting of Receivables In-Trust'}]
+        }else if(memoType == 'DM' && memoTranType== '5'){
+          this.reportsList = [{reportId: 'ACITR046C', reportName:'CMDM-Interest Penalty'}]
+        }else if(memoType == 'DM' && memoTranType== '6'){
+          this.reportsList = [{reportId: 'ACITR046D', reportName:'CMDM-Service Feee'}]
+        }else{
+          this.reportsList = [{reportId: 'ACITR046B', reportName:'CMDM-Others'}]
+        }
+        this.printReport = this.reportsList[0].reportId;
+     })
+    }else{
+      if(memoTranType== '1'){
+        this.reportsList = [{reportId: 'ACITR046A', reportName:'CMDM-Policy'}]
+      }
+      this.printReport = this.reportsList[0].reportId;
+    }
+
+  }
+
+  print(){
+    let params:any = {
+                        memoId:this.memoInfo.memoId
+                     }
+    params.reportId = this.printReport;
+    params.fileName = this.memoInfo.memoType + '-' + this.memoInfo.memoTranType + '-' + this.memoInfo.memoYear + '-' + this.memoInfo.memoMm + '-' + this.memoInfo.memoSeqNo;
+
+    
+    this.ps.print(this.printDestination,this.printReport,params);
+  }
 
 }

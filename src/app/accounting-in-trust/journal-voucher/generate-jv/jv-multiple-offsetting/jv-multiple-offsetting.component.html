@@ -222,9 +222,9 @@
 					        <form #form="ngForm">
 					        	<div class="input-group">
 						        	<label class="form-control-sm col-sm-2">Offset Payment</label>
-						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.offsetPayt" (change)="updateLrd($event, 'php')" name="php-offset-payt">
+						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly || jvDetail.currCd !== 'PHP'" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.offsetPayt" (change)="jvDetail.currCd !== 'PHP' ? null : updateLrd($event, 'php')" name="php-offset-payt">
 						            <label class="form-control-sm col-sm-3">Offset Payment</label>
-						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.offsetPayt" (change)="updateLrd($event, 'usd')" name="usd-offset-payt">
+						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly || jvDetail.currCd !== 'USD'" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.offsetPayt" (change)="jvDetail.currCd !== 'USD' ? null : updateLrd($event, 'usd')" name="usd-offset-payt">
 						            <span clas="col-sm-1"></span>
 						        </div>
 					        </form>

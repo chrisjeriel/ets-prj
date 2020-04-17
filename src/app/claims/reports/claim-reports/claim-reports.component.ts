@@ -515,7 +515,7 @@ export class ClaimReportsComponent implements OnInit {
           'lineCd as [LINE],lossAbbr as [NATURE OF LOSS],negFmt(lossOsQty) as [LOSS OS QTY],negFmt(currency(lossOsAmt)) as [LOSS OS AMT],negFmt(lossPdQty) as [LOSS PAID QTY],negFmt(currency(lossPdAmt)) as [LOSS PAID AMT],'+
           'negFmt(adjOsQty) as [ADJ OS QTY],negFmt(currency(adjOsAmt)) as [ADJ OS AMT],negFmt(adjPdQty) as [ADJ PAID QTY],negFmt(currency(adjPdAmt)) as [ADJ PAID AMT],'+
           'negFmt(othOsQty) as [OTHERS OS QTY],negFmt(currency(othOsAmt)) as [OTHERS OS AMT],negFmt(othPdQty) as [OTHERS PAID QTY],negFmt(currency(othPdAmt)) as [OTHERS PAID AMT],'+
-          'negFmt(totalOsQty) as [TOTAL OS QTY],negFmt(currency(totalOsAmt)) as [TOTAL OS AMT],negFmt(totalPdQty) as [TOTAL PAID QTY],negFmt(currency(totalPdAmt)) as [TOTAL PAID AMT]'
+          'negFmt(totalOsQty) as [TOTAL OS QTY],negFmt(currency(totalOsAmt)) as [TOTAL OS AMT],negFmt(totalPdQty) as [TOTAL PAID QTY],negFmt(currency(totalPdAmt)) as [TOTAL PAID AMT]';
         }else if(this.params.reportId == 'CLMR010M'){
           this.passDataCsv = data['listClmr010m'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
