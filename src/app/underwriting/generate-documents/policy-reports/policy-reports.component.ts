@@ -1007,6 +1007,16 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
           'currencyCd as [CURRENCY],insuredName as [INSURED],insuredId as [INSURED ID],negFmt(polCount) AS [NO of POLICY],negFmt(currency(siAmt)) AS [SUM INSURED], negFmt(currency(premAmt)) AS [PREMIUM],'+
           'negFmt(lossPdCount) AS [NO of PAID], negFmt(currency(lossPaid)) AS [LOSSES PAID], negFmt(lossOsCount) AS [NO of OS], negFmt(currency(lossOs)) AS [O/S LOSSES]';
+        }else if(this.params.reportId == 'POLR044R'){
+          this.passDataCsv = data['listPolr044r'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
+        }else if(this.params.reportId == 'POLR044S'){
+          this.passDataCsv = data['listPolr044s'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
         }else if(this.params.reportId == 'POLR044W'){
           this.passDataCsv = data['listPolr044w'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd as [CURRENCY],lineCd as [LINE],'+
