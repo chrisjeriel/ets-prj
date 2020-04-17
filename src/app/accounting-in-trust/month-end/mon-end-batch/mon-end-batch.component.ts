@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { AccountingService, NotesService, UserService, PrintService } from '@app/_services';
+import { AccountingService, NotesService, UserService, PrintService, MaintenanceService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { environment } from '@environments/environment';
 import { Title } from '@angular/platform-browser';
@@ -26,7 +26,9 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   topic: string = "/prodLogs";
   stompClient: any;
 
-  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService,private ps : PrintService) {
+  passDataCsv : any[] =[];
+
+  constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService,private ps : PrintService, private ms: MaintenanceService) {
   }
 
   ngOnInit() {
@@ -113,12 +115,69 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   printDestination:any = 'screen';
   @ViewChild('printModal') printModal: ModalComponent;
    print(){
+    if(this.printDestination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     let params:any = {
                         prodDate : this.ns.toDateTimeString(this.eomDate)
                       };
     params.reportId=this.printReport;
     params.fileName = 'Monthly_Production_Report'+ this.ns.toDateTimeString(this.eomDate);
     this.ps.print(this.printDestination,this.printReport,params);
+  }
+
+  getExtractToCsv(){
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.printReport,this.ns.toDateTimeString(this.eomDate))
+    .subscribe(data => {
+      console.log(data);
+      var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+
+        var name = this.printReport;
+        var query = '';
+        if(this.printReport == 'ACITR063A'){
+          this.passDataCsv = data['listAcitr063a'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],'+
+          'lineCd as [LINE],policyNo || "/" || instNo as [POLICY NO / INST NO],negFmt(currency(tsiAmt)) as [TOTAL SI],negFmt(currency(tsiQuota)) as [QUOTA SI],'+
+          'negFmt(currency(tsi1stRet)) as [SI 1st RET],negFmt(currency(tsi2ndRet)) as [SI 2nd RET],negFmt(currency(tsi1stSurplus)) as [SI 1st SURPLUS],'+
+          'negFmt(currency(tsi2ndSurplus)) as [SI 2nd SURPLUS],negFmt(currency(tsiFacul)) as [SI FACUL],'+
+          'negFmt(currency(premAmt)) as [TOTAL PREM],negFmt(currency(premQuota)) as [QUOTA PREM],'+
+          'negFmt(currency(prem1stRet)) as [PREM 1st RET],negFmt(currency(prem2ndRet)) as [PREM 2nd RET],negFmt(currency(prem1stSurplus)) as [PREM 1st SURPLUS],'+
+          'negFmt(currency(prem2ndSurplus)) as [PREM 2nd SURPLUS],negFmt(currency(premFacul)) as [PREM FACUL],'+
+          'negFmt(currency(commAmt)) as [TOTAL COMM],negFmt(currency(commQuota)) as [QUOTA COMM],'+
+          'negFmt(currency(comm1stRet)) as [COMM 1st RET],negFmt(currency(comm2ndRet)) as [COMM 2nd RET],negFmt(currency(comm1stSurplus)) as [COMM 1st SURPLUS],'+
+          'negFmt(currency(comm2ndSurplus)) as [COMM 2nd SURPLUS],negFmt(currency(commFacul)) as [COMM FACUL],'+
+          'negFmt(currency(commVatAmt)) as [TOTAL COMM VAT],negFmt(currency(commVatQuota)) as [QUOTA COMM VAT],'+
+          'negFmt(currency(commVat1stRet)) as [COMM VAT 1st RET],negFmt(currency(commVat2ndRet)) as [COMM VAT 2nd RET],negFmt(currency(commVat1stSurplus)) as [COMM VAT 1st SURPLUS],'+
+          'negFmt(currency(commVat2ndSurplus)) as [COMM VAT 2nd SURPLUS],negFmt(currency(commVatFacul)) as [COMM VAT FACUL],'+
+          'negFmt(currency(netDueAmt)) as [TOTAL NET DUE],negFmt(currency(netDueQuota)) as [QUOTA NET DUE],'+
+          'negFmt(currency(netDue1stRet)) as [NET DUE 1st RET],negFmt(currency(netDue2ndRet)) as [NET DUE 2nd RET],negFmt(currency(netDue1stSurplus)) as [NET DUE 1st SURPLUS],'+
+          'negFmt(currency(netDue2ndSurplus)) as [NET DUE 2nd SURPLUS],negFmt(currency(netDueFacul)) as [NET DUE FACUL]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+    });
   }
 
 }
