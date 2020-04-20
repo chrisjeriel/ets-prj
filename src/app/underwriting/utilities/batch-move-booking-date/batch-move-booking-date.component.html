@@ -24,11 +24,11 @@
 
                     <div class="col-sm-6 p-0 ml-1">
                         <fieldset class="scheduler-border" style="padding-top: 10px !important;padding-bottom: 8px !important;">
-                            <legend class="scheduler-border">Distribution Date</legend>
+                            <legend class="scheduler-border">Booking Date</legend>
                             <div class="d-flex p-0">
                                 <label class="col-sm-1">From: </label>
                                 <div class="col-sm dp-cont">
-                                    <datepicker [type]="'date'" [showIcon]="true" [value]="searchParams.bookingFrom" (valueChange)="searchParams.bookingFrom=$event;getPolicyListing()"></datepicker>
+                                    <datepicker [type]="'date'" [showIcon]="true" [value]="searchParams.bookingFrom" (valueChange)="searchParams.bookingFrom=$event;searchParams.bookingTo=$event;getPolicyListing()"></datepicker>
                                 </div>
                                 <label class="col-sm-1">To: </label>
                                 <div class="col-sm dp-cont">
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 <div class="w-100">
-                    <app-cust-non-datatable [passData]="passData" (searchToDb)="getPolicyListing($event)" ></app-cust-non-datatable>
+                    <app-cust-non-datatable [passData]="passData" (searchToDb)="getPolicyListing($event)" (export)="export()"></app-cust-non-datatable>
                 </div>
                 <div class="form-row w-100">
                     <div class="form-group col-sm">

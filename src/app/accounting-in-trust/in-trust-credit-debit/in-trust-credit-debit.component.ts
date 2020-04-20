@@ -24,7 +24,7 @@ export class InTrustCreditDebitComponent implements OnInit {
         pageLength: 18,
         pageStatus: true,
         pagination: true,
-        colSize: [1, '90px', '80px', '', '', '', '', '125px'],
+        colSize: ['125px', '90px', '80px', '', '', '', '', '125px'],
     };
 
     seqDigits:number = 1;

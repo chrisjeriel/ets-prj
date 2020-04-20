@@ -990,7 +990,7 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(premAmt)) as [PREMIUM AMT], status AS [STATUS]';
         }else if(this.params.reportId == 'POLR044N'){
           this.passDataCsv = data['listPolr044n'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],lineCd AS [LINE],currencyCd AS [CURRENCY],'+
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],currencyCd AS [CURRENCY],lineCd AS [LINE],negFmt(noOfPol) as [NO of POLICIES],'+
           'negFmt(currency(siAmt)) AS [SUM INSURED], negFmt(currency(premAmt)) AS [PREMIUM]';
         }else if(this.params.reportId == 'POLR044O'){
           this.passDataCsv = data['listPolr044o'];

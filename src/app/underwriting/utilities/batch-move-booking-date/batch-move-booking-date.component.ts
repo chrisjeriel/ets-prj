@@ -17,7 +17,7 @@ export class BatchMoveBookingDateComponent implements OnInit {
         tHeader: ['Policy No.', 'Inst. No.', 'Booking Date', 'Distribution Status','With Installment','Type of Cession', 'Created By', 'Sum Insured', 'Premium','Insured'],
         dataTypes: ['text','number','date','text','checkbox','text','text','currency','currency','text'],
         keys: ['policyNo','instNo','bookingDate','distStatus','withInst','cessionDesc',
-            'createUser','totalSi','totalPrem','insuredDesc'],
+            'createUser','totalSi','totalPrem','insuredDesc',],
         filters: [
             {
                 key: 'policyNo',
@@ -69,7 +69,8 @@ export class BatchMoveBookingDateComponent implements OnInit {
         printBtn: false, 
         pagination: true, 
         pageStatus: true,
-        colSize: []
+        colSize: [],
+        exportFlag:true
     }
 
     searchParams:any = {
@@ -117,6 +118,9 @@ export class BatchMoveBookingDateComponent implements OnInit {
 
 
   save(){
+    if(this.table){
+      this.table.overlayLoader = true;
+    }
     let params:any = {
       list: this.passData.tableData.filter(a=>a.checked),
       bookingDate: this.bookingDates.newBookingDate.split('T')[0],
@@ -135,6 +139,46 @@ export class BatchMoveBookingDateComponent implements OnInit {
 
   onCLickCancel(){
     this.router.navigate(['/']);
+  }
+
+  export(){
+        //do something
+
+        
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'PolicyInquiry_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+            num = num == 'NaN' ?'' : num;
+            return num
+      };
+
+
+
+         alasql('SELECT policyNo AS [Policy No.], instNo AS [Inst. No.], datetime(bookingDate) AS [Booking Date], distStatus AS [Distribution Status], withInst AS [With Installment], cessionDesc AS [Type of Cession], createUser AS [Created By], currency(totalSi) AS [Sum Insured], currency(totalPrem) AS [Premium], insuredDesc AS [Insured]   INTO XLSXML("'+filename+'",?) FROM ?',
+           [mystyle,this.table.displayData.filter(a=>a!= this.table.fillData)]);
+
+     
   }
 
 }
