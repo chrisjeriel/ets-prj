@@ -244,14 +244,16 @@ export class ChangeToNewArComponent implements OnInit {
   }
 
   retrieveArList(){
+    this.searchParams = this.searchParams.filter(a => a.key !== 'arStat');
+    this.searchParams.push({key: 'arStat', search: 'X'});
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0){
           console.log(data);
-          for(var i:number = 1; i<data.ar.length; i++){
-              if (data.ar[i].arStatDesc === 'Cancelled' ){
+          for(var i:number = 0; i<data.ar.length; i++){
+              // if (data.ar[i].arStatDesc === 'Cancelled' ){
                 this.passDataAR.tableData.push(data.ar[i]);
-              }
+              // }
           }
           this.ARTable.refreshTable();
           this.passDataAR.btnDisabled = false;

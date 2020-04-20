@@ -1572,6 +1572,8 @@ export class AccountingService {
                      .set('particulars','')
                      .set('arAmtFrom','')
                      .set('arAmtTo','')
+                     .set('tranStat','')
+                     .set('arStat','')
                      // .set('paginationRequest.position',null)
                      // .set('paginationRequest.count',null)
                      // .set('sortRequest.sortKey',null)

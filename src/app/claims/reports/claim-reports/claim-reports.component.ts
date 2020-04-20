@@ -471,7 +471,7 @@ export class ClaimReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
           'insuredDesc as [INSURED],isNull(coRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],lossAbbr as [NATURE OF LOSS],'+
-          'treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
+          'isNull(treatyCompany) as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [Distribution Share]';
         }else if(this.params.reportId == 'CLMR010G'){
           this.passDataCsv = data['listClmr010g'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
@@ -489,7 +489,7 @@ export class ClaimReportsComponent implements OnInit {
         }else if(this.params.reportId == 'CLMR010E'){
           this.passDataCsv = data['listClmr010e'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE], lineCd as [LINE],currencyCd AS [CURRENCY],'+
-          'refYear as [YEAR],ctgryCdDesc as [CATEGORY],thisMthQty as [THIS MTH QTY],negFmt(currency(thisMthAmt)) as [THIS MTH AMT], lastMthQty as [LAST MTH QTY],'+
+          'refYear as [YEAR], isNull(ctgryCdDesc) as [CATEGORY],thisMthQty as [THIS MTH QTY],negFmt(currency(thisMthAmt)) as [THIS MTH AMT], lastMthQty as [LAST MTH QTY],'+
           'negFmt(currency(lastMthAmt)) as [LAST MTH AMT]';
         }else if(this.params.reportId == 'CLMR010H'){
           this.passDataCsv = data['listClmr010h'];
@@ -533,13 +533,13 @@ export class ClaimReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
           'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
-          'treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [DISTRIBUTION SHARE]';
+          'treatyName as [TREATY],treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [DISTRIBUTION SHARE]';
         }else if(this.params.reportId == 'CLMR010P'){
           this.passDataCsv = data['listClmr010p'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'claimNo as [CLAIM NO],myFormat(lossDate) as [LOSS DATE],isNull(adjName) as [ADJUSTER],cedingName as [COMPANY],policyNo as [POLICY NO],'+
           'insuredDesc as [INSURED],isNull(polCoRefNo) as [POLICY REF],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS],'+
-          'treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [DISTRIBUTION SHARE]';
+          'treatyName as [TREATY],treatyCompany as [TREATY],histCatDesc as [HIST CATEGORY],negFmt(currency(lossResAmt)) as [DISTRIBUTION SHARE]';
         }else if(this.params.reportId == 'CLMR010S'){
           this.passDataCsv = data['listClmr010s'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
