@@ -988,6 +988,11 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+
           'policyNo AS [POLICY NO], cedingName AS [COMPANY], myFormat(inceptDate) ||" to "|| myFormat(expiryDate) AS [PERIOD], currencyCd AS [CURRENCY],'+
           'negFmt(currency(premAmt)) as [PREMIUM AMT], status AS [STATUS]';
+        }else if(this.params.reportId == 'POLR044M'){
+          this.passDataCsv = data['listPolr044m'];
+           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFromTo) AS [AS OF],currencyCd AS [CURRENCY],'+
+           'zoneCd as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
+           'negFmt(currency(avRiskAmt)) as [ACTUAL VALUE at RISK]';
         }else if(this.params.reportId == 'POLR044N'){
           this.passDataCsv = data['listPolr044n'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],currencyCd AS [CURRENCY],lineCd AS [LINE],negFmt(noOfPol) as [NO of POLICIES],'+
