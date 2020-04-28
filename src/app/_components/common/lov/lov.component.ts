@@ -1395,8 +1395,12 @@ export class LovComponent implements OnInit {
       this.passTable.keys = ['paytReqNo','tranTypeDesc','reqDate','particulars','requestedBy','currCd','reqAmt'];
       this.passTable.checkFlag = true;
       if(this.passData.from == 'acit'){
-        this.accountingService.getPaytReqList([]).subscribe((a:any)=>{
-          var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == this.passData.paytReqType);
+        var params = [
+          {key: 'prqStat', search: 'A'},
+          {key: 'currCd', search: this.passData.currCd},
+        ]
+        this.accountingService.getPaytReqList(params).subscribe((a:any)=>{
+          var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.paytReqType == this.passData.paytReqType);
           this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
           for(var i of this.passTable.tableData){
             if(i.processing !== null && i.processing !== undefined){
@@ -1501,6 +1505,7 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
       this.passTable.keys = ['arNo', 'payor', 'arDate', 'tranTypeName', 'arStatDesc', 'particulars', 'arAmt'];
       this.passTable.checkFlag = false;
+      this.passData.searchParams = this.passData.searchParams.filter(a => a.key !== 'tranStat');
       this.passData.searchParams.push({key: 'tranStat', search: 'O,C'});
       this.accountingService.getArList(this.passData.searchParams).subscribe((a:any)=>{
         this.passTable.tableData = a.ar; //.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
@@ -1538,8 +1543,10 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = ['text','text','text','date','text','text','currency',];
       this.passTable.keys = ['cvGenNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt'];
       this.passTable.checkFlag = false;
+      this.passData.searchParams = this.passData.searchParams.filter(a => a.key !== 'tranStat');
+      this.passData.searchParams.push({key: 'tranStat', search: 'O,C'});
       this.accountingService.getAcitCvList(this.passData.searchParams).subscribe((data:any)=>{
-        data.acitCvList = data.acitCvList.filter(a=>{return a.mainTranStat !== 'D' && a.mainTranStat !== 'P'});
+        // data.acitCvList = data.acitCvList.filter(a=>{return a.mainTranStat !== 'D' && a.mainTranStat !== 'P'});
         var rec = data['acitCvList'].map(i => { 
                 /*i.createDate     = this.ns.toDateTimeString(i.createDate); 
                 i.updateDate     = this.ns.toDateTimeString(i.updateDate);

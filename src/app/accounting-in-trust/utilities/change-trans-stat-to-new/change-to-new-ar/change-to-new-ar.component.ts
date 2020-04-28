@@ -294,7 +294,8 @@ export class ChangeToNewArComponent implements OnInit {
 
 
   retrieveCVlist(){
- 
+    this.searchParams = this.searchParams.filter(a => a.key !== 'cvStat');
+    this.searchParams.push({key: 'cvStat', search: 'P,X'});
     this.as.getAcitCvList(this.searchParams).subscribe(data => {
 
       var rec = data['acitCvList'].map(i => { 
@@ -312,9 +313,9 @@ export class ChangeToNewArComponent implements OnInit {
         return i; 
       });
 
-      this.passDataCV.tableData = rec.filter(a => String(a.cvStatus).toUpperCase() === 'X' ||
+      this.passDataCV.tableData = rec; /*.filter(a => String(a.cvStatus).toUpperCase() === 'X' ||
                                                   String(a.cvStatus).toUpperCase() === 'P' 
-                                            );
+                                            );*/
       this.CVTable.refreshTable();
 
     });

@@ -1607,9 +1607,11 @@ export class AccountingService {
 				.set('reqStatusDesc','')
 				.set('payee','')
 				.set('currCd','')
-				.set('reqAmt','')
+				.set('reqAmtFrom','')
+				.set('reqAmtTo','')
 				.set('particulars','')
 				.set('requestedBy','')
+				.set('prqStat','')
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
@@ -2226,7 +2228,10 @@ export class AccountingService {
 				.set('cvStatusDesc','')
 				.set('payee','')
 				.set('particulars','')
-				.set('cvAmt','')
+				.set('cvAmtFrom','')
+				.set('cvAmtTo','')
+				.set('tranStat','')
+				.set('cvStat','')
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){

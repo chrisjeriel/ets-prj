@@ -116,36 +116,26 @@ export class AcctArListingsComponent implements OnInit {
     this.searchParams = this.searchParams.filter(a => a.key !== 'tranStat' && a.key !== 'arStat');
     switch(this.tranStat) {
       case 'new':
-        // this.searchParams['tranStat'] = '';
-        // this.searchParams['arStat'] = 'N';
         this.searchParams.push({key: 'tranStat', search: ''});
         this.searchParams.push({key: 'arStat', search: 'N'});
 
         break;
       case 'printed':
-        // this.searchParams['tranStat'] = '';
-        // this.searchParams['arStat'] = 'P';
         this.searchParams.push({key: 'tranStat', search: ''});
         this.searchParams.push({key: 'arStat', search: 'P'});
 
         break;
       case 'closed':
-        // this.searchParams['arStat'] = '';
-        // this.searchParams['tranStat'] = 'C';
         this.searchParams.push({key: 'arStat', search: ''});
         this.searchParams.push({key: 'tranStat', search: 'C'});
 
         break;
       case 'posted':
-        // this.searchParams['arStat'] = '';
-        // this.searchParams['tranStat'] = 'P';
         this.searchParams.push({key: 'arStat', search: ''});
         this.searchParams.push({key: 'tranStat', search: 'P'});
 
         break;
       case 'deleted':
-        // this.searchParams['arStat'] = '';
-        // this.searchParams['tranStat'] = 'D';
         this.searchParams.push({key: 'arStat', search: ''});
         this.searchParams.push({key: 'tranStat', search: 'D'});
 

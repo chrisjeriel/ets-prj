@@ -74,7 +74,7 @@ export class CancelArCvJvComponent implements OnInit {
 		this.getTblOtherInfo();
 		if(this.tranClass == 'ar'){
 			this.searchParams = this.searchParams.filter(a => a.key !== 'arStat');
-			this.searchParams.push({key: 'arStat', search: 'N,P'})
+			this.searchParams.push({key: 'arStat', search: 'N,P'});
 			this.acctService.getArList(this.searchParams)
 			.subscribe(data => {
 			  console.log(data);
@@ -86,6 +86,8 @@ export class CancelArCvJvComponent implements OnInit {
 			  this.cancelTranTbl.refreshTable();
 			}); 
 		}else if(this.tranClass == 'cv'){
+			this.searchParams = this.searchParams.filter(a => a.key !== 'cvStat');
+			this.searchParams.push({key: 'cvStat', search: 'A,F,N,P'});
 			this.acctService.getAcitCvList(this.searchParams)
 			.subscribe(data => {
 				console.log(data);

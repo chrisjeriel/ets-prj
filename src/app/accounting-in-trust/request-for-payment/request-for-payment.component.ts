@@ -37,7 +37,15 @@ export class RequestForPaymentComponent implements OnInit {
       },   title: 'Request Date', dataType: 'datespan'},
       { key: 'particulars',  title: 'Particulars',         dataType: 'text'},
       { key: 'currCd',       title: 'Curr',                dataType: 'text'},
-      { key: 'reqAmt',       title: 'Amount',              dataType: 'text'},
+      // { key: 'reqAmt',       title: 'Amount',              dataType: 'text'},
+      {
+          keys: {
+            from: 'reqAmtFrom',
+            to: 'reqAmtTo'
+          },
+          title: 'Amount',
+          dataType: 'textspan'
+        },
       { key: 'requestedBy',  title: 'Requested By',        dataType: 'text'},
     ]
   };
@@ -78,22 +86,41 @@ export class RequestForPaymentComponent implements OnInit {
   }
 
   getPaytReq() {
+    this.searchParams = this.searchParams.filter(a => a.key !== 'prqStat');
     this.table.overlayLoader = true;
+
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams.push({key: 'prqStat', search: 'N'});
+
+        break;
+      case 'for finance checking':
+        this.searchParams.push({key: 'prqStat', search: 'F'});
+
+        break;
+      case 'ok for disbursement':
+        this.searchParams.push({key: 'prqStat', search: 'A'});
+
+        break;
+      case 'paid':
+        this.searchParams.push({key: 'prqStat', search: 'P'});
+
+        break;
+      case 'cancelled':
+        this.searchParams.push({key: 'prqStat', search: 'X'});
+
+        break;
+    }
+
     this.acctService.getPaytReqList(this.searchParams)
     .subscribe(data => {
       console.log(data);
       var rec = data['acitPaytReq'].map(i => {
         i.createDate = this.ns.toDateTimeString(i.createDate);
         i.updateDate = this.ns.toDateTimeString(i.updateDate);
-
-        /*if(i.tranStat != null && i.tranStat != 'O') {
-          i.reqStatus = i.tranStat;
-          i.reqStatusDesc = i.tranStatDesc;
-        }*/
-
         return i;
       });
-      this.passData.tableData = rec.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      this.passData.tableData = rec; //.filter(a => String(a.reqStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       if(this.passData.tableData.length > 0){
         this.table.onRowClick(null, this.passData.tableData[0],0);
         this.passData.btnDisabled = false;
