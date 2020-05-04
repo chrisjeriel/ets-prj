@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, UserService } from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
 import * as alasql from 'alasql';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
 @Component({
   selector: 'app-mon-end-trial-bal',
@@ -22,6 +25,9 @@ export class MonEndTrialBalComponent implements OnInit {
   @ViewChild('eomTbDialog') eomTbDialog: SucessDialogComponent;
   @ViewChild('eomTbDialog2') eomTbDialog2: SucessDialogComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+  @ViewChild('reportMdl') reportMdl: LovComponent;
+  @ViewChild('cedingMdl') cedingMdl: CedingCompanyComponent;
+  @ViewChild('currencyMdl') currencyMdl: MtnCurrencyCodeComponent;
 
   tranDate: string = '';
   inclPrevMon: boolean = true;
@@ -60,9 +66,29 @@ export class MonEndTrialBalComponent implements OnInit {
   returnCode2: number = null;
   mdl2Type: string = '';
 
-  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService) { }
+  params: any = {
+    reportId: '',
+    reportName: '',
+    eomDate: '',
+    cedingId: '',
+    cedingName: '',
+    currCd: '',
+    currency: '',
+    destination: 'screen'
+  };
+
+  paramsToggle: any[] = [];
+  passLov: any = {
+    selector: 'mtnReport',
+    reportId: '',
+    hide: []
+  }
+  allDest: boolean = true;
+
+  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService) { }
 
   ngOnInit() {
+    this.passLov.modReportId = 'ACITR066%';
     this.titleService.setTitle("Acct-IT | Trial Balance Processing");
     this.userService.emitModuleId("ACIT066");
 
@@ -128,6 +154,7 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   onClickPrint() {
+    this.resetParams();
     this.printMdl.openNoClose();
   }
 
@@ -310,6 +337,96 @@ export class MonEndTrialBalComponent implements OnInit {
         }
       });
     }
+  }
+
+  openReportMdl() {
+    this.passLov.reportId = 'ACITR066%';
+    this.reportMdl.openLOV();
+  }
+
+  setReport(data) {
+    this.ns.lovLoader(data.ev, 0);
+    this.resetParams();
+    if(data.data !== null) {
+      this.params.reportId = data.data.reportId;
+      this.params.reportName = data.data.reportTitle;
+
+      this.paramsToggle = ['eomDate', 'destination'];
+
+      if(this.params.reportId !== 'ACITR066A') {
+        this.paramsToggle.push('currCd');
+      }
+
+      if(this.params.reportId == 'ACITR066D') {
+        this.paramsToggle.push('cedingId');
+      }
+
+      this.allDest = this.params.reportId !== 'ACITR066G';
+    }
+  }
+
+  openCedingMdl() {
+    this.cedingMdl.modal.openNoClose();
+  }
+
+  setCeding(data) {
+    this.params.cedingId = data.cedingId;
+    this.params.cedingName = data.cedingName; 
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  openCurrencyMdl() {
+    this.currencyMdl.modal.openNoClose();
+  }
+
+  setCurrency(data) {
+    this.params.currCd = data.currencyCd;
+    this.params.currency = data.description;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  checkCode(ev, from) {
+    this.ns.lovLoader(ev, 1);
+    if(from == 'report') {
+      if(this.params.reportId.indexOf('ACITR066') == -1){
+        this.passLov.code = 'ACITR066%';
+      }else{
+        this.passLov.code = this.params.reportId;
+      }
+
+      this.reportMdl.checkCode('reportId', ev);
+    } else if(from == 'cedingId') {
+      this.cedingMdl.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);
+    } else if(from == 'currCd') {
+      this.currencyMdl.checkCode(this.params.currCd, ev);
+    }
+  }
+
+  resetParams() {
+    this.allDest = true;
+    this.paramsToggle = [];
+    this.params = {
+      reportId: '',
+      reportName: '',
+      eomDate: '',
+      cedingId: '',
+      cedingName: '',
+      currCd: '',
+      currency: '',
+      destination: 'screen'
+    };
+  }
+
+  print() {
+    this.ps.printLoader = true;
+    let params: any = {
+      "acitr066Params.eomDate":   this.params.eomDate,
+      "acitr066Params.cedingId":   this.params.cedingId,
+      "acitr066Params.currCd":   this.params.currCd,
+      "fileName": this.params.reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+    }
+
+    this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
 }
