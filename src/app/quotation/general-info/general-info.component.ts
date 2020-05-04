@@ -1102,7 +1102,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
         'line':'MBI',
-        statusArr:['3','4','5','7']
+        statusArr:['3','4','5','7','1','2','P','A']
   };
 
   searchQuery(searchParams){

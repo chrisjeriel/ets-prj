@@ -91,7 +91,7 @@ export class AcctArListingsComponent implements OnInit {
     updateDate: ''
   }
 
-  tranStat: string = 'open';
+  tranStat: string = 'new';
 
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService, private userService: UserService) { }
 
@@ -113,17 +113,46 @@ export class AcctArListingsComponent implements OnInit {
   }
 
   retrieveArList(){
+    this.searchParams = this.searchParams.filter(a => a.key !== 'tranStat' && a.key !== 'arStat');
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'arStat', search: 'N'});
+
+        break;
+      case 'printed':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'arStat', search: 'P'});
+
+        break;
+      case 'closed':
+        this.searchParams.push({key: 'arStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'C'});
+
+        break;
+      case 'posted':
+        this.searchParams.push({key: 'arStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'P'});
+
+        break;
+      case 'deleted':
+        this.searchParams.push({key: 'arStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'D'});
+
+        break;
+    }
+
     this.table.overlayLoader = true;
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0) {
-          // this.passData.tableData = data.ar;
-          if(this.tranStat.toUpperCase() == 'CLOSEDWITHACCTENT'){
+          this.passData.tableData = data.ar;
+          /*if(this.tranStat.toUpperCase() == 'CLOSEDWITHACCTENT'){
             console.log(this.passData.tableData);
             this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == 'CLOSED' && a.acctEntDate !== null);
           }else{
             this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
-          }
+          }*/
         }
         this.table.refreshTable();
 

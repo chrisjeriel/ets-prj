@@ -29,7 +29,15 @@ export class CheckVoucherComponent implements OnInit {
              from : 'cvDateFrom', to: 'cvDateTo'
           }, title: 'CV Date', dataType: 'datespan' },
           { key: 'particulars', title: 'Particulars', dataType: 'text'},
-          { key: 'cvAmt',       title: 'Amount',      dataType: 'text'}
+          // { key: 'cvAmt',       title: 'Amount',      dataType: 'text'}
+          {
+            keys: {
+              from: 'cvAmtFrom',
+              to: 'cvAmtTo'
+            },
+              title: 'Amount',
+              dataType: 'textspan'
+            }
         ],
         btnDisabled  : true,
         pagination   : true,
@@ -74,6 +82,44 @@ export class CheckVoucherComponent implements OnInit {
   }
 
   getAcitCv(){
+    this.searchParams = this.searchParams.filter(a => a.key !== 'tranStat' && a.key !== 'cvStat');
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'cvStat', search: 'N'});
+
+        break;
+      case 'for finance checking':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'cvStat', search: 'F'});
+
+        break;
+      case 'ok for printing':
+        this.searchParams.push({key: 'cvStat', search: 'A'});
+        this.searchParams.push({key: 'tranStat', search: ''});
+
+        break;
+      case 'printed':
+        this.searchParams.push({key: 'cvStat', search: 'P'});
+        this.searchParams.push({key: 'tranStat', search: ''});
+
+        break;
+      case 'closed':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'C'});
+
+        break;
+      case 'posted':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'P'});
+
+        break;
+      case 'deleted':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'D'});
+
+        break;
+    }
     this.table.overlayLoader = true;
     this.acctService.getAcitCvList(this.searchParams)
     .subscribe(data => {
@@ -85,18 +131,19 @@ export class CheckVoucherComponent implements OnInit {
         i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
         i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);
 
-        if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+        /*if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
           i.cvStatus = i.mainTranStat;
           i.cvStatusDesc = i.mainTranStatDesc;
-        }
+        }*/
 
         return i;
       });
-      if(this.tranStat.toUpperCase() == 'CLOSED'){
+      /*if(this.tranStat.toUpperCase() == 'CLOSED'){
         this.passData.tableData = rec.filter(a => String(a.mainTranStatDesc).toUpperCase() == this.tranStat.toUpperCase() && a.acctEntDate !== null);
       }else{
         this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
-      }
+      }*/
+      this.passData.tableData = rec;
       this.table.refreshTable();
 
       this.table.filterDisplay(this.table.filterObj, this.table.searchString);

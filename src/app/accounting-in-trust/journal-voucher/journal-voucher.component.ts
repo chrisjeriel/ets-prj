@@ -146,6 +146,8 @@ export class JournalVoucherComponent implements OnInit {
       case 'deleted':
         this.searchParams['jvStat'] = '';
         this.searchParams['tranStat'] = 'D';
+        
+        break;
     }
 
     /*if(this.table2 != undefined)
