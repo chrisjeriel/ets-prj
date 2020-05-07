@@ -3523,4 +3523,8 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVCedRepLoss",{params: param});
 	}
 
+	updateAgingSoa(params) {
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAgingSoa?eomDate='+params,params);
+    }
+
 }

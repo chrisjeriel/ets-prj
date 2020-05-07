@@ -24,6 +24,7 @@ export class MonEndTrialBalComponent implements OnInit {
   @ViewChild('lovMdl') lovMdl: ModalComponent;
   @ViewChild('eomTbDialog') eomTbDialog: SucessDialogComponent;
   @ViewChild('eomTbDialog2') eomTbDialog2: SucessDialogComponent;
+  @ViewChild('eomTbDialog3') eomTbDialog3: SucessDialogComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
   @ViewChild('reportMdl') reportMdl: LovComponent;
   @ViewChild('cedingMdl') cedingMdl: CedingCompanyComponent;
@@ -84,6 +85,8 @@ export class MonEndTrialBalComponent implements OnInit {
     hide: []
   }
   allDest: boolean = true;
+  dialogIcon3: string = '';
+  dialogMessage3: string = '';
 
   passDataCsv : any[] = [];
 
@@ -329,12 +332,12 @@ export class MonEndTrialBalComponent implements OnInit {
         } else if(this.returnCode2 == -1) {
           this.returnCode = null;
           this.dialogIcon = 'success-message';
-          this.dialogMessage = 'Month reopened.'
+          this.dialogMessage = 'Month reopened.';
           this.eomTbDialog.open();
         } else if(this.returnCode2 == 0) {
           this.returnCode = null;
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Month reopening failed.'
+          this.dialogMessage = 'Month reopening failed.';
           this.eomTbDialog.open();
         }
       });
@@ -352,6 +355,7 @@ export class MonEndTrialBalComponent implements OnInit {
     if(data.data !== null) {
       this.params.reportId = data.data.reportId;
       this.params.reportName = data.data.reportTitle;
+      this.params.eomDate = this.tranDate;
 
       this.paramsToggle = ['eomDate', 'destination'];
 
@@ -437,6 +441,7 @@ export class MonEndTrialBalComponent implements OnInit {
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
+<<<<<<< HEAD
   getExtractToCsv(){
     console.log('extract to csv from trial balance processing');
     this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd)
@@ -510,4 +515,21 @@ export class MonEndTrialBalComponent implements OnInit {
 
       });
     }
+
+  onClickUpdateAgingSoa() {
+    this.ps.printLoader = true;
+    this.as.updateAgingSoa(this.params.eomDate).subscribe(data => {
+      console.log(data);
+      this.ps.printLoader = false;
+      if(data['returnCode'] == 0) {
+        this.dialogIcon3 = 'error-message';
+        this.dialogMessage3 = 'Update failed';
+        this.eomTbDialog3.open();
+      } else if(data['returnCode'] == -1) {
+        this.dialogIcon3 = 'success-message';
+        this.dialogMessage3 = 'Aging SOA updated'
+        this.eomTbDialog3.open();
+      }
+    });
+  }
 }
