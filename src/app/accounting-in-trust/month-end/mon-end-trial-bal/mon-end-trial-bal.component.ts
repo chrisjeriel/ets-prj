@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService,MaintenanceService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
-import * as alasql from 'alasql';
+// import * as alasql from 'alasql';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
@@ -85,7 +85,9 @@ export class MonEndTrialBalComponent implements OnInit {
   }
   allDest: boolean = true;
 
-  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService) { }
+  passDataCsv : any[] = [];
+
+  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService, private ms:MaintenanceService) { }
 
   ngOnInit() {
     this.passLov.modReportId = 'ACITR066%';
@@ -418,6 +420,12 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   print() {
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     this.ps.printLoader = true;
     let params: any = {
       "acitr066Params.eomDate":   this.params.eomDate,
@@ -429,4 +437,77 @@ export class MonEndTrialBalComponent implements OnInit {
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          console.log('from month end trial balance');
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+
+        if(this.params.reportId == 'ACITR066A'){
+          this.passDataCsv = data['listAcitr066a'];
+          query = 'SELECT acctGroup as [ACCT GROUP], accountName as [ACCOUNT NAME], negFmt(currency(dollarTreaty)) as [DOLLAR TREATY],'+
+          'negFmt(currency(pesoEquivalent)) as [PESO EQUIVALENT], negFmt(currency(pesoTreaty)) as [PESO TREATY], negFmt(currency(totalTreatyCy)) as [TOTAL TREATY(CURR YR)],'+
+          'negFmt(currency(totalTreatyPy)) as [TOTAL TREATY(PREV YR)],myFormat(paramDate) as [PARAM DATE]';
+        }else if(this.params.reportId == 'ACITR066B'){
+          this.passDataCsv = data['listAcitr066b'];
+          query = 'SELECT cedingName as [CEDANT],negFmt(currency(ageGrp1)) as [1-30 DAYS],negFmt(currency(ageGrp2)) as [31-60 DAYS],'+
+          'negFmt(currency(ageGrp3)) as [61-90 DAYS], negFmt(currency(ageGrp4)) as [91-180 DAYS], negFmt(currency(ageGrp5)) as [181-270 DAYS], negFmt(currency(ageGrp6)) as [271-360 DAYS],'+
+          'negFmt(currency(ageGrp7)) as [361-450 DAYS], negFmt(currency(ageGrp8)) as [OVER 450 DAYS], negFmt(currency(intPenalty)) as [INTEREST PENALTY],' +
+          'negFmt(currency(totalDueFrom)) as [TOTAL DUE FROM], negFmt(currency(totalDueTo)) as [TOTAL DUE TO], negFmt(currency(trtyDueTo)) as [DUE TO MEMBER],'+
+          'negFmt(currency(lossPayable)) as [LOSS PAYABLE], myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066C'){
+          this.passDataCsv = data['listAcitr066c'];
+          query = 'SELECT grpNo as [GROUP NO], itemNo as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
+          'negFmt(currency(currMreTotal)) as [CURR MRE TOTAL], negFmt(currency(currNatreTotal)) as [CURR NATRE TOTAL],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
+          'negFmt(currency(prevMembersTotal)) as [PREV MEMBERS TOTAL],negFmt(currency(prevMreTotal)) as [PREV MRE TOTAL], negFmt(currency(prevNatreTotal)) as [PREV NATRE TOTAL],'+
+          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT]';
+        }else if(this.params.reportId == 'ACITR066E'){
+          this.passDataCsv = data['listAcitr066e'];
+          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
+          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
+          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
+          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
+          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+        }else if(this.params.reportId == 'ACITR066F'){
+          this.passDataCsv = data['listAcitr066f'];
+          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
+          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
+          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
+          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
+          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
 }

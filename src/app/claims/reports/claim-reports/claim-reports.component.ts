@@ -430,6 +430,9 @@ export class ClaimReportsComponent implements OnInit {
         "Oct", "Nov", "Dec");
 
         alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
           var date = new Date(d);
           var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
           var mos = months[date.getMonth()];

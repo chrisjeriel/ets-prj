@@ -1960,11 +1960,13 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
   }
 
-  getExtractToCsv(extractUser?,reportName?,prodDate?){
+  getExtractToCsv(extractUser?,reportName?,prodDate?,paramDate?,paramCurrency?){
     const params = new HttpParams()
       .set('extractUser', (extractUser == null || extractUser == undefined ? '' : extractUser))
       .set('reportName', (reportName == null || reportName == undefined ? '' : reportName))
       .set('prodDate', (prodDate == null || prodDate == undefined ? '' : prodDate))
+      .set('paramDate', (paramDate == null || paramDate == undefined ? '' : paramDate))
+      .set('paramCurrency', (paramCurrency == null || paramCurrency == undefined ? '' : paramCurrency))
 
     return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
   }
