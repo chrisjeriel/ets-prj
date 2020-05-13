@@ -122,6 +122,48 @@ export class MonEndTrialBalComponent implements OnInit {
     },
     err => { $('.globalLoading').css('display', 'none'); });
   }
+
+  printToExcel() {
+    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
+    var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
+    var opts = [{
+                sheetid: 'PHP',
+                headers: true
+               },
+               {
+                sheetid: 'USD',
+                headers: true
+               }];
+
+    alasql.fn.datetime = function(dateStr) {
+      var date = new Date(dateStr);
+      return date.toLocaleString();
+    };
+
+    alasql.fn.currency = function(currency) {
+      var parts = parseFloat(currency).toFixed(2).split(".");
+      var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+          (parts[1] ? "." + parts[1] : "");
+      return num
+    };
+
+    alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
+                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
+             'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
+  }
   
   onTabChange($event: NgbTabChangeEvent) {
     if ($event.nextId === 'Exit') {
@@ -249,47 +291,47 @@ export class MonEndTrialBalComponent implements OnInit {
     
   }
 
-  export() {
-    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
-    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
-    var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
-    var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
+  // export() {
+  //   var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+  //   var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+  //   var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
+  //   var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
-    var today = new Date();
-    var dd = String(today.getDate()).padStart(2, '0');
-    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-    var yyyy = today.getFullYear();
-    var hr = String(today.getHours()).padStart(2,'0');
-    var min = String(today.getMinutes()).padStart(2,'0');
-    var sec = String(today.getSeconds()).padStart(2,'0');
-    var ms = today.getMilliseconds()
-    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
-    var opts = [{
-                sheetid: 'PHP',
-                headers: true
-               },
-               {
-                sheetid: 'USD',
-                headers: true
-               }];
+  //   var today = new Date();
+  //   var dd = String(today.getDate()).padStart(2, '0');
+  //   var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  //   var yyyy = today.getFullYear();
+  //   var hr = String(today.getHours()).padStart(2,'0');
+  //   var min = String(today.getMinutes()).padStart(2,'0');
+  //   var sec = String(today.getSeconds()).padStart(2,'0');
+  //   var ms = today.getMilliseconds()
+  //   var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+  //   var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
+  //   var opts = [{
+  //               sheetid: 'PHP',
+  //               headers: true
+  //              },
+  //              {
+  //               sheetid: 'USD',
+  //               headers: true
+  //              }];
 
-    alasql.fn.datetime = function(dateStr) {
-      var date = new Date(dateStr);
-      return date.toLocaleString();
-    };
+  //   alasql.fn.datetime = function(dateStr) {
+  //     var date = new Date(dateStr);
+  //     return date.toLocaleString();
+  //   };
 
-    alasql.fn.currency = function(currency) {
-      var parts = parseFloat(currency).toFixed(2).split(".");
-      var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
-          (parts[1] ? "." + parts[1] : "");
-      return num
-    };
+  //   alasql.fn.currency = function(currency) {
+  //     var parts = parseFloat(currency).toFixed(2).split(".");
+  //     var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+  //         (parts[1] ? "." + parts[1] : "");
+  //     return num
+  //   };
 
-    alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
-                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
-             'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
-  }
+  //   alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
+  //                 'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
+  //            'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
+  // }
 
   checkMonth(ev) {
     if(ev !== '') {
@@ -441,10 +483,9 @@ export class MonEndTrialBalComponent implements OnInit {
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
-<<<<<<< HEAD
   getExtractToCsv(){
     console.log('extract to csv from trial balance processing');
-    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd)
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd,this.params.cedingId)
       .subscribe(data => {
         console.log(data);
     
@@ -491,23 +532,30 @@ export class MonEndTrialBalComponent implements OnInit {
           query = 'SELECT grpNo as [GROUP NO], itemNo as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
           'negFmt(currency(currMreTotal)) as [CURR MRE TOTAL], negFmt(currency(currNatreTotal)) as [CURR NATRE TOTAL],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
           'negFmt(currency(prevMembersTotal)) as [PREV MEMBERS TOTAL],negFmt(currency(prevMreTotal)) as [PREV MRE TOTAL], negFmt(currency(prevNatreTotal)) as [PREV NATRE TOTAL],'+
-          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT]';
+          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT],'+
+          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066D'){
+          this.passDataCsv = data['listAcitr066d'];
+          query = 'SELECT cedingId as [CEDING ID], cedingName as [COMPANY], grpNo as [GROUP NO], itemNo as [ITEM NO], itemName as [ITEM NAME],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
+          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066E'){
           this.passDataCsv = data['listAcitr066e'];
-          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
-          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066F'){
           this.passDataCsv = data['listAcitr066f'];
-          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
-          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066G'){
+          this.printToExcel();
         }
 
         console.log(this.passDataCsv);
