@@ -103,7 +103,7 @@
 	                    					<div class="cust-btn-container">
 	                    						<button type="button" class="cust-btn" (click)="can.clickCancel()"><a>Cancel</a></button>
 	                    						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
-	                    						<button type="button" class="cust-btn"><a>Print</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickPrint()"><a>Print</a></button>
 	                    						<button type="button" class="cust-btn" (click)="onClickCopy()"><a>Copy</a></button>
 	                    					</div>
 	                    				</div>
@@ -166,6 +166,42 @@
     <div footer class="text-center">
         <button type="button" class="cust-btn" (click)="copyExpenseBudget();copyYear.closeModal();"><a>Copy</a></button>
         <button type="button" class="cust-btn" (click)="copyYear.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #printMdl>
+    <div header>Print</div>  
+    <div body style=" max-width: 450px;">
+        <div class="row">
+            <div class="input-group" style="margin-bottom: -14px !important;">
+	          <div class="col-sm-2"></div>
+	          <label class="form-control-sm col-sm-3 cust-lbl">As of</label>
+	          <div class="dp-cont col-sm-4" style="margin-left: 0 !important;">
+	            <datepicker [type]="'date'" [(value)]="printParams.asOfDate"></datepicker>
+	          </div>
+	          <div class="col-sm-3"></div>
+	        </div>
+	        <div class="input-group" style="margin-bottom: -14px !important;">
+	          <div class="col-sm-2"></div>
+	          <label class="form-control-sm col-sm-3 cust-lbl">Destination</label>
+	          <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="printParams.destination" [disabled]="printParams.asOfDate == ''">
+	            <option value="screen">Screen</option>
+	            <option value="dlPdf">PDF</option>
+	            <option value="printPdf">Printer</option>
+	            <option value="exl">Excel</option>
+	          </select>
+	          <div class="col-sm-3"></div>
+	        </div>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+    	<ng-container *ngIf="ps.printLoader">
+	      <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Please wait</span>
+	    </ng-container>
+	    <ng-container *ngIf="!ps.printLoader">
+	    	<button type="button" class="cust-btn" (click)="printMdl.closeModal();"><a>Cancel</a></button>
+	        <button type="button" class="cust-btn" (click)="print()" [disabled]="printParams.asOfDate == ''"><a>Print</a></button>
+    	</ng-container>
     </div>
 </app-modal>
 
