@@ -184,7 +184,7 @@
     </ng-container>
     <ng-container *ngIf="!ps.printLoader">
       <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>Cancel</a></button>
-      <button *ngIf="params.reportId == 'ACITR066B'" class="cust-btn" type="button" [disabled]="params.eomDate == ''" (click)="onClickUpdateAgingSoa();"><a>Update Aging SOA</a></button>
+      <button *ngIf="showUpdateAgingSoa" class="cust-btn" type="button" [disabled]="params.eomDate == ''" (click)="onClickUpdateAgingSoa();"><a>Update Aging SOA</a></button>
       <button class="cust-btn" type="button" [disabled]="params.reportId == '' || params.eomDate == ''" (click)="print();"><a>Print</a></button>
     </ng-container>
   </div>

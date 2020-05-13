@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService } from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
 import * as alasql from 'alasql';
+import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
 @Component({
   selector: 'app-me-trial-bal-proc',
@@ -21,7 +24,11 @@ export class MeTrialBalProcComponent implements OnInit {
   @ViewChild('lovMdl') lovMdl: ModalComponent;
   @ViewChild('eomTbDialog') eomTbDialog: SucessDialogComponent;
   @ViewChild('eomTbDialog2') eomTbDialog2: SucessDialogComponent;
+  @ViewChild('eomTbDialog3') eomTbDialog3: SucessDialogComponent;
   @ViewChild(CustNonDatatableComponent) table: CustNonDatatableComponent;
+  @ViewChild('reportMdl') reportMdl: LovComponent;
+  @ViewChild('cedingMdl') cedingMdl: CedingCompanyComponent;
+  @ViewChild('currencyMdl') currencyMdl: MtnCurrencyCodeComponent;
 
   tranDate: string = '';
   inclPrevMon: boolean = true;
@@ -60,10 +67,34 @@ export class MeTrialBalProcComponent implements OnInit {
   returnCode2: number = null;
   mdl2Type: string = '';
 
-  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title) { }
+  params: any = {
+    reportId: '',
+    reportName: '',
+    eomDate: '',
+    cedingId: '',
+    cedingName: '',
+    currCd: '',
+    currency: '',
+    destination: 'screen'
+  };
+
+  paramsToggle: any[] = [];
+  passLov: any = {
+    selector: 'mtnReport',
+    reportId: '',
+    hide: []
+  }
+  allDest: boolean = true;
+  dialogIcon3: string = '';
+  dialogMessage3: string = '';
+
+  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService) { }
 
   ngOnInit() {
+    this.passLov.modReportId = 'ACSER024%';
     this.titleService.setTitle("Acct-Service | Trial Balance Processing");
+    this.userService.emitModuleId("ACIT024");
+
     this.getAcseMonthEndTrialBal(this.ns.toDateTimeString(0), true);
     this.getAcseMonthEndUnpostedMonths();
   }
@@ -124,6 +155,7 @@ export class MeTrialBalProcComponent implements OnInit {
   }
 
   onClickPrint() {
+    this.resetParams();
     this.printMdl.openNoClose();
   }
 
@@ -298,15 +330,122 @@ export class MeTrialBalProcComponent implements OnInit {
         } else if(this.returnCode2 == -1) {
           this.returnCode = null;
           this.dialogIcon = 'success-message';
-          this.dialogMessage = 'Month reopened.'
+          this.dialogMessage = 'Month reopened.';
           this.eomTbDialog.open();
         } else if(this.returnCode2 == 0) {
           this.returnCode = null;
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Month reopening failed.'
+          this.dialogMessage = 'Month reopening failed.';
           this.eomTbDialog.open();
         }
       });
     }
   }
+
+  openReportMdl() {
+    this.passLov.reportId = 'ACSER024%';
+    this.reportMdl.openLOV();
+  }
+
+  setReport(data) {
+    this.ns.lovLoader(data.ev, 0);
+    this.resetParams();
+    if(data.data !== null) {
+      this.params.reportId = data.data.reportId;
+      this.params.reportName = data.data.reportTitle;
+      this.params.eomDate = this.tranDate;
+
+      this.paramsToggle = ['eomDate', 'destination'];
+
+      if(this.params.reportId !== 'ACSER024A') {
+        this.paramsToggle.push('currCd');
+      }
+
+      this.allDest = this.params.reportId !== 'ACSER024E';
+    }
+  }
+
+  openCedingMdl() {
+    this.cedingMdl.modal.openNoClose();
+  }
+
+  setCeding(data) {
+    this.params.cedingId = data.cedingId;
+    this.params.cedingName = data.cedingName; 
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  openCurrencyMdl() {
+    this.currencyMdl.modal.openNoClose();
+  }
+
+  setCurrency(data) {
+    this.params.currCd = data.currencyCd;
+    this.params.currency = data.description;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  checkCode(ev, from) {
+    this.ns.lovLoader(ev, 1);
+    if(from == 'report') {
+      if(this.params.reportId.indexOf('ACSER024') == -1){
+        this.passLov.code = 'ACSER024%';
+      }else{
+        this.passLov.code = this.params.reportId;
+      }
+
+      this.reportMdl.checkCode('reportId', ev);
+    } else if(from == 'cedingId') {
+      this.cedingMdl.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);
+    } else if(from == 'currCd') {
+      this.currencyMdl.checkCode(this.params.currCd, ev);
+    }
+  }
+
+  resetParams() {
+    this.allDest = true;
+    this.paramsToggle = [];
+    this.params = {
+      reportId: '',
+      reportName: '',
+      eomDate: '',
+      cedingId: '',
+      cedingName: '',
+      currCd: '',
+      currency: '',
+      destination: 'screen'
+    };
+  }
+
+  print() {
+    this.ps.printLoader = true;
+    let params: any = {
+      "reportId": this.params.reportId,
+      "acser024Params.reportId": this.params.reportId,
+      "acser024Params.eomDate": this.params.eomDate,
+      "acser024Params.cedingId": this.params.cedingId,
+      "acser024Params.currCd": this.params.currCd,
+      "fileName": this.params.reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+    }
+
+    this.ps.print(this.params.destination, this.params.reportId, params);
+  }
+
+  onClickUpdateAgingSoa() {
+    this.ps.printLoader = true;
+    this.as.updateAgingSoa(this.params.eomDate).subscribe(data => {
+      console.log(data);
+      this.ps.printLoader = false;
+      if(data['returnCode'] == 0) {
+        this.dialogIcon3 = 'error-message';
+        this.dialogMessage3 = 'Update failed';
+        this.eomTbDialog3.open();
+      } else if(data['returnCode'] == -1) {
+        this.dialogIcon3 = 'success-message';
+        this.dialogMessage3 = 'Aging SOA updated'
+        this.eomTbDialog3.open();
+      }
+    });
+  }
+
 }

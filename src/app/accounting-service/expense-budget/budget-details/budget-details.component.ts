@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
+import { AccountingService, NotesService, MaintenanceService, PrintService } from '@app/_services';
 import { AccCVPayReqList } from '@app/_models';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -31,6 +31,7 @@ export class BudgetDetailsComponent implements OnInit {
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
   @ViewChild('conOvr') conOvr                 : ConfirmSaveComponent;
   @ViewChild('conOvrMdl') conOvrMdl       : ModalComponent;
+  @ViewChild('printMdl') printMdl: ModalComponent;
 
   budgetYrData: any = {
     tableData        : [],
@@ -101,8 +102,14 @@ export class BudgetDetailsComponent implements OnInit {
   approvalCd: string = 'AC011';
   conOvrMsg: string = '';
 
+  printParams: any = {
+    reportId: 'ACSER004',
+    asOfDate: '',
+    destination: 'screen'
+  };
+
   constructor(private titleService: Title,private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
-              public modalService: NgbModal, private router : Router) { }
+              public modalService: NgbModal, private router : Router, public ps: PrintService) { }
 
   ngOnInit() {
     this.yearsRange();
@@ -329,6 +336,29 @@ export class BudgetDetailsComponent implements OnInit {
       }
     );
   }
+
+  onClickPrint() {
+    this.printParams = {
+      reportId: 'ACSER004',
+      asOfDate: '',
+      destination: 'screen'
+    };
+
+    this.printMdl.openNoClose();
+  }
+
+  print() {
+    this.ps.printLoader = true;
+    let params: any = {
+      "reportId": this.printParams.reportId,
+      "acser024Params.reportId": this.printParams.reportId,
+      "acser024Params.eomDate": this.printParams.asOfDate,
+      "fileName": this.printParams.reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+    }
+
+    this.ps.print(this.printParams.destination, this.printParams.reportId, params);
+  }
+
 }
 
 

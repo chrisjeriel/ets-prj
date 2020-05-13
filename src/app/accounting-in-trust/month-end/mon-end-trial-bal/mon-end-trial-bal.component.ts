@@ -87,6 +87,7 @@ export class MonEndTrialBalComponent implements OnInit {
   allDest: boolean = true;
   dialogIcon3: string = '';
   dialogMessage3: string = '';
+  showUpdateAgingSoa: boolean = false;
 
   constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService) { }
 
@@ -162,6 +163,8 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   onClickPost() {
+    this.eomMm = null;
+    this.eomYear = null;
     this.postMdl.openNoClose();
   }
 
@@ -361,9 +364,14 @@ export class MonEndTrialBalComponent implements OnInit {
         this.paramsToggle.push('currCd');
       }
 
+      if(this.params.reportId == 'ACITR066B') {
+        this.showUpdateAgingSoa = true;
+      }
+
       if(this.params.reportId == 'ACITR066D') {
         this.paramsToggle.push('cedingId');
       }
+
 
       this.allDest = this.params.reportId !== 'ACITR066G';
     }
@@ -400,7 +408,7 @@ export class MonEndTrialBalComponent implements OnInit {
 
       this.reportMdl.checkCode('reportId', ev);
     } else if(from == 'cedingId') {
-      this.cedingMdl.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);
+      this.cedingMdl.checkCode(String(this.params.cedingId) == '' ? '' : String(this.params.cedingId).padStart(3, '0'), ev);
     } else if(from == 'currCd') {
       this.currencyMdl.checkCode(this.params.currCd, ev);
     }
@@ -408,6 +416,7 @@ export class MonEndTrialBalComponent implements OnInit {
 
   resetParams() {
     this.allDest = true;
+    this.showUpdateAgingSoa = false;
     this.paramsToggle = [];
     this.params = {
       reportId: '',
@@ -424,9 +433,11 @@ export class MonEndTrialBalComponent implements OnInit {
   print() {
     this.ps.printLoader = true;
     let params: any = {
-      "acitr066Params.eomDate":   this.params.eomDate,
-      "acitr066Params.cedingId":   this.params.cedingId,
-      "acitr066Params.currCd":   this.params.currCd,
+      "reportId": this.params.reportId,
+      "acitr066Params.reportId": this.params.reportId,
+      "acitr066Params.eomDate": this.params.eomDate,
+      "acitr066Params.cedingId": this.params.cedingId,
+      "acitr066Params.currCd": this.params.currCd,
       "fileName": this.params.reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
     }
 

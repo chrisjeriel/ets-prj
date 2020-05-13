@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, UserService} from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -17,10 +17,11 @@ export class ProfitCommissionComponent implements OnInit {
 	@ViewChild("cedingComp") cedingCoLOV: CedingCompanyComponent;
 	@ViewChild("cedingCompModal") cedingCoModal: CedingCompanyComponent;
 	@ViewChild('queryMdl') queryModal : ModalComponent;
-    @ViewChild('profitCommMdl') profitCommMdl : ModalComponent;
-    @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-    @ViewChild('profitComm') profitCommtable: CustEditableNonDatatableComponent;
-    @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild('profitCommMdl') profitCommMdl : ModalComponent;
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild('profitComm') profitCommtable: CustEditableNonDatatableComponent;
+  @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+  @ViewChild('printMdl') printMdl: ModalComponent;
 
 	dateFrom : any = '';
 	dateTo: any = '';   
@@ -90,7 +91,13 @@ export class ProfitCommissionComponent implements OnInit {
   disableGenerateJV: boolean = true;
   profCommParams: any[] = [];
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService) { }
+  printParams: any = {
+    reportId: 'ACITR049',
+    profCommId: '',
+    destination: 'screen'
+  };
+
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService, public ps: PrintService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
@@ -375,6 +382,28 @@ export class ProfitCommissionComponent implements OnInit {
         this.successDialog.open();
       }
     });
+  }
+
+  onClickPrint() {
+    this.printParams = {
+      reportId: 'ACITR049',
+      profCommId: this.selectedData.profCommId,
+      destination: 'screen'
+    };
+
+    this.printMdl.openNoClose();
+  }
+
+  print() {
+    this.ps.printLoader = true;
+    let params: any = {
+      "reportId": this.printParams.reportId,
+      "acitr049Params.reportId": this.printParams.reportId,
+      "acitr049Params.profCommId": this.printParams.profCommId,
+      "fileName": this.printParams.reportId + '_' + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+    }
+
+    this.ps.print(this.printParams.destination, this.printParams.reportId, params);
   }
 
 }
