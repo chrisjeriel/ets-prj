@@ -25,6 +25,7 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/prodLogs";
   stompClient: any;
+  msg: number = 1;
 
   constructor(private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService,private ps : PrintService) {
   }
@@ -74,11 +75,14 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
 
   getAcitMonthEnd(eomDate?) {
     var date = eomDate === undefined ? this.ns.toDateTimeString(0) : eomDate;
-
+    this.processing = true;
     this.as.getAcitMonthEnd(date).subscribe(data => {
+      this.processing = false;
       if(data['monthEnd'].length > 0) {
         this.eomDate = this.ns.toDateTimeString(data['monthEnd'][0].eomDate).split('T')[0];
         this.extLog = data['monthEnd'][0].batchProdReport;
+      } else {
+        this.extLog = '';
       }
     });
   }
@@ -113,12 +117,40 @@ export class MonEndBatchComponent implements OnInit, OnDestroy {
   printDestination:any = 'screen';
   @ViewChild('printModal') printModal: ModalComponent;
    print(){
-    let params:any = {
-                        prodDate : this.ns.toDateTimeString(this.eomDate)
-                      };
-    params.reportId=this.printReport;
-    params.fileName = 'Monthly_Production_Report'+ this.ns.toDateTimeString(this.eomDate);
-    this.ps.print(this.printDestination,this.printReport,params);
+    if(this.printReport == 'ACITR063A') {
+      let params:any = {
+                          prodDate : this.ns.toDateTimeString(this.eomDate)
+                        };
+      params.reportId=this.printReport;
+      params.fileName = 'Monthly_Production_Report'+ this.ns.toDateTimeString(this.eomDate);
+      this.ps.print(this.printDestination,this.printReport,params);
+    } else {
+      this.as.getAcitMonthEndJV('PROD', this.eomDate).subscribe(data => {
+        var jvList = data['monthEndJVList'];
+
+        if(jvList.length > 0) {
+          var name = 'MonthEndJVList_Production';
+          var query = 'SELECT tranNo AS [Tran No], ' +
+                             'tranTypeName AS [Tran Type], ' +
+                             'datetime(acctEntDate) AS [Tran Date], ' +
+                             'currCd AS [Currency], ' +
+                             'currency(jvAmt) AS [Amount]';
+
+          var x = jvList.map(a => Object.create(a));
+          this.ns.export(name, query, x);
+        } else {
+          this.returnCode = 2;
+          this.eomMessage = 'No record';
+          this.eomProdMdl.openNoClose();
+        }
+      });
+    }
+  }
+
+  checkMonth(ev) {
+    if(ev !== '') {
+      this.getAcitMonthEnd(ev);
+    }
   }
 
 }

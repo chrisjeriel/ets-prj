@@ -25,3 +25,15 @@
     margin-left: 3px !important;
     height: 22px;
 }
+
+.cust-lbl {
+    margin-bottom: -1px !important;
+}
+
+
+.cust-fs {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}

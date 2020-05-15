@@ -96,7 +96,7 @@ export class AcctOrListingsComponent implements OnInit {
     updateDate: ''
   }
 
-  tranStat: string = 'open';
+  tranStat: string = 'new';
 
   constructor(private router: Router,private titleService: Title, private as: AccountingService, private ns: NotesService) { }
 
@@ -117,14 +117,42 @@ export class AcctOrListingsComponent implements OnInit {
   }
 
   retrieveOrList(){
+    this.searchParams = this.searchParams.filter(a => a.key !== 'tranStat' && a.key !== 'orStat');
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'orStat', search: 'N'});
+
+        break;
+      case 'printed':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'orStat', search: 'P'});
+
+        break;
+      case 'closed':
+        this.searchParams.push({key: 'orStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'C'});
+
+        break;
+      case 'posted':
+        this.searchParams.push({key: 'orStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'P'});
+
+        break;
+      case 'deleted':
+        this.searchParams.push({key: 'orStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'D'});
+
+        break;
+    }
+
     this.table.overlayLoader = true;
     this.as.getAcseOrList(this.searchParams).subscribe(
       (data: any)=>{
-        console.log(data);
-        if(data.orList.length !== 0) {
-          // this.passData.tableData = data.ar;
-          this.passData.tableData = data.orList.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
-        }
+        /*if(data.orList.length !== 0) {
+          this.passData.tableData = data.orList; //.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
+        }*/
+        this.passData.tableData = data.orList;
         this.table.refreshTable();
       },
       (error)=>{

@@ -161,8 +161,8 @@
 </app-modal>
 
 
-<app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
-<app-ceding-company #cedingCompModal (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
+<app-ceding-company #cedingComp [exclude]="exc" (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
+<app-ceding-company #cedingCompModal [exclude]="exc" (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="queryModal.closeModal()"></app-sucess-dialog>
 
 <app-modal class="d-none" #printMdl>

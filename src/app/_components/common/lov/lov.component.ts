@@ -1615,9 +1615,10 @@ export class LovComponent implements OnInit {
         this.passTable.dataTypes = ['sequence-6','text','date','text','text','text','currency'];
         this.passTable.keys = ['orNo', 'orType', 'orDate', 'tranTypeName', 'orStatDesc', 'particulars', 'orAmt'];
         this.passTable.checkFlag = false;
-
+        this.passData.searchParams = this.passData.searchParams.filter(a => a.key !== 'tranStat');
+        this.passData.searchParams.push({key: 'tranStat', search: 'O,C'});
         this.accountingService.getAcseOrList(this.passData.searchParams).subscribe((a:any)=>{
-          this.passTable.tableData = a.orList.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
+          this.passTable.tableData = a.orList; //.filter(a=>{return a.tranStat !== 'D' && a.tranStat !== 'P'});
           this.table.refreshTable();
         });
      } else if(this.passData.selector == 'acseCvList'){

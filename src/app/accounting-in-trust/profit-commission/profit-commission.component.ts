@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService, MaintenanceService } from '@app/_services';
 import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
@@ -97,7 +97,10 @@ export class ProfitCommissionComponent implements OnInit {
     destination: 'screen'
   };
 
-  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService, public ps: PrintService) { }
+  qsCedingId: string = '';
+  exc: any[] = [];
+
+  constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private userService: UserService, public ps: PrintService, private ms: MaintenanceService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Profit Commission Statement");
@@ -106,6 +109,12 @@ export class ProfitCommissionComponent implements OnInit {
   	/*this.queryModal.openNoClose();*/
   	this.getProfCommList(this.searchParams);
   	this.dataAll = this.passData.tableData;
+    this.ms.getMtnParameters('V', 'QS_CEDING_ID').subscribe(data => {
+      if(data['parameters'].length > 0) {
+        this.qsCedingId = data['parameters'][0].paramValueV;
+        this.exc = [this.qsCedingId];
+      }
+    });
   }
 
 	onTabChange($event: NgbTabChangeEvent) {
