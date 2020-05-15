@@ -921,9 +921,9 @@ export class PolicyReportsComponent implements OnInit {
           return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
         };
 
-        // alasql.fn.isNull = function(n){
-        //   return n==null?'':n;
-        // };
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
 
         var name = this.params.reportId;
         var query = '';
@@ -1039,9 +1039,12 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
         }else if(this.params.reportId == 'POLR044V'){
           this.passDataCsv = data['listPolr044v'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(dateFromTo) as [AS OF], cedingId || "-" || cedingName as [COMPANY], policyNo as [POLICY NO],'+
-          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], insuredDesc as [NAME OF INSURED], projectDesc as [NATURE OF PROJECT],'+
-          'currencyCd as [CURRENCY],negFmt(currency(siAmt)) as [SUM INSURED]';
+          query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [AS OF], cedingId || "-" || cedingName as [COMPANY], policyNo as [POLICY NO],' +
+          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], insuredDesc as [NAME OF INSURED], isNull(projectDesc) as [NATURE OF PROJ],' +
+          'currencyCd as [CURRENCY], negFmt(currency(siAmt)) as [SUM INSURED]';
+          // query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [AS OF], cedingId || "-" || cedingName as [COMPANY], policyNo as [POLICY NO],' +
+          // 'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], insuredDesc as [NAME OF INSURED],' +
+          // 'currencyCd as [CURRENCY], negFmt(currency(siAmt)) as [SUM INSURED]';
         }else if(this.params.reportId == 'POLR044W'){
           this.passDataCsv = data['listPolr044w'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd as [CURRENCY],lineCd as [LINE],'+

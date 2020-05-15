@@ -107,7 +107,7 @@ export class MonEndTrialBalComponent implements OnInit {
     this.as.getAcitMonthEndTrialBal(eomDate).subscribe(data => {
       $('.globalLoading').css('display', 'none');
       this.monthlyTotals = data['monthlyTotalsList'].map(a => { a.eomDate = this.ns.toDateTimeString(a.eomDate); return a; });
-
+      console.log(this.monthlyTotals);
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
         this.canTempClose = true;
@@ -417,7 +417,8 @@ export class MonEndTrialBalComponent implements OnInit {
       }
 
 
-      this.allDest = this.params.reportId !== 'ACITR066G';
+      // this.allDest = this.params.reportId !== 'ACITR066G';
+      this.allDest = this.params.reportId;
     }
   }
 
@@ -475,7 +476,9 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   print() {
+    console.log(this.params.destination);
     if(this.params.destination == 'exl'){
+      console.log('destination = exl');
       this.passDataCsv = [];
       this.getExtractToCsv();
       return;
@@ -495,7 +498,7 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   getExtractToCsv(){
-    console.log('extract to csv from trial balance processing');
+    console.log('extract to csv from trial balance processing');  
     this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd,this.params.cedingId)
       .subscribe(data => {
         console.log(data);
@@ -566,7 +569,11 @@ export class MonEndTrialBalComponent implements OnInit {
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
           'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066G'){
-          this.printToExcel();
+          this.passDataCsv = this.monthlyTotals;
+          query = 'SELECT eomMm AS [MONTH], eomYear AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+                  'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
+                  'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
+                  'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
         }
 
         console.log(this.passDataCsv);

@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { NotesService, AccountingService, UserService, PrintService } from '@app/_services';
+import { NotesService, AccountingService, UserService, PrintService, MaintenanceService } from '@app/_services';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { Title } from '@angular/platform-browser';
-import * as alasql from 'alasql';
+//import * as alasql from 'alasql';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
@@ -88,7 +88,9 @@ export class MeTrialBalProcComponent implements OnInit {
   dialogIcon3: string = '';
   dialogMessage3: string = '';
 
-  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService) { }
+  passDataCsv : any[] = [];
+
+  constructor( private router: Router, private ns: NotesService, private as: AccountingService, private titleService: Title, private userService: UserService, public ps: PrintService, private ms:MaintenanceService) { }
 
   ngOnInit() {
     this.passLov.modReportId = 'ACSER024%';
@@ -418,6 +420,12 @@ export class MeTrialBalProcComponent implements OnInit {
   }
 
   print() {
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     this.ps.printLoader = true;
     let params: any = {
       "reportId": this.params.reportId,
@@ -430,6 +438,67 @@ export class MeTrialBalProcComponent implements OnInit {
 
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
+
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd,this.params.cedingId)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          console.log('from month end trial balance');
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+
+        if(this.params.reportId == 'ACSER024A'){
+          this.passDataCsv = data['listAcser024a'];
+          query = 'SELECT acctGroup as [ACCT GROUP], groupNum as [SORT SEQ 1], itemNo as [SORT SEQ 2], acctName as [ACCT NAME], negFmt(currency(acctAmt)) as [ACCT AMOUNT], negFmt(currency(currNetAmt)) as [NET AMOUNT(CURR YR)],'+
+          'negFmt(currency(prevNetAmt)) as [NET AMOUNT(PREV YR)],myFormat(paramDate) AS [PARAM DATE]';
+        }else if(this.params.reportId == 'ACSER024B'){
+          this.passDataCsv = data['listAcser024b'];
+          query = 'SELECT itemNo as [REC NO], itemName as [ACCOUNT NAME], negFmt(currency(currIncome)) as [CURRENT YEAR], negFmt(currency(prevIncome)) as [LAST YEAR], myFormat(paramDate) as [PARAM DATE]';
+        }else if(this.params.reportId == 'ACSER024C'){
+          this.passDataCsv = data['listAcser024c'];
+          query = 'SELECT eomMm as [EOM MM], eomYear as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
+          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
+          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
+          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
+          'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACSER024D'){
+          this.passDataCsv = data['listAcser024d'];
+          query = 'SELECT eomMm as [EOM MM], eomYear as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
+          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
+          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
+          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
+          'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
 
   onClickUpdateAgingSoa() {
     this.ps.printLoader = true;
