@@ -16,6 +16,7 @@ import * as SockJS from 'sockjs-client';
 export class BatchOsTakeupComponent implements OnInit, OnDestroy {
   @ViewChild('txtArea') txtArea: ElementRef;
   @ViewChild('eomOsMdl') eomOsMdl: ModalComponent;
+  @ViewChild('printModal') printModal: ModalComponent;
 
   eomDate: string = '';
   dialogMsg: string = '';
@@ -27,6 +28,9 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
   webSocketEndPoint: string = environment.prodApiUrl + '/extractionLog';
   topic: string = "/osLogs";
   stompClient: any;
+  msg: number = 1;
+  printReport:any = 'ACITR066H';
+  printDestination:any = 'exl';
 
   constructor( private router: Router, private as: AccountingService, private ns: NotesService, private titleService: Title, private userService: UserService) { }
 
@@ -75,11 +79,14 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
 
   getAcitMonthEnd(eomDate?) {
     var date = eomDate === undefined ? this.ns.toDateTimeString(0) : eomDate;
-
+    this.processing = true;
     this.as.getAcitMonthEnd(date).subscribe(data => {
+      this.processing = false;
       if(data['monthEnd'].length > 0) {
         this.eomDate = this.ns.toDateTimeString(data['monthEnd'][0].eomDate).split('T')[0];
         this.extLog = data['monthEnd'][0].batchOsReport;
+      } else {
+        this.extLog = '';
       }
     });
   }
@@ -109,4 +116,33 @@ export class BatchOsTakeupComponent implements OnInit, OnDestroy {
       this.txtArea.nativeElement.scrollTop = this.txtArea.nativeElement.scrollHeight;  
     }, 0);
   }
+
+  checkMonth(ev) {
+    if(ev !== '') {
+      this.getAcitMonthEnd(ev);
+    }
+  }
+
+  print() {
+    this.as.getAcitMonthEndJV('OS', this.eomDate).subscribe(data => {
+      var jvList = data['monthEndJVList'];
+
+      if(jvList.length > 0) {
+        var name = 'MonthEndJVList_OS';
+        var query = 'SELECT tranNo AS [Tran No], ' +
+                           'tranTypeName AS [Tran Type], ' +
+                           'datetime(acctEntDate) AS [Tran Date], ' +
+                           'currCd AS [Currency], ' +
+                           'currency(jvAmt) AS [Amount]';
+
+        var x = jvList.map(a => Object.create(a));
+        this.ns.export(name, query, x);
+      } else {
+        this.returnCode = 2;
+        this.eomMessage = 'No record';
+        this.eomOsMdl.openNoClose();
+      }
+    });
+  }
+
 }

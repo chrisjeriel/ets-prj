@@ -145,15 +145,16 @@ export class AcctArListingsComponent implements OnInit {
     this.table.overlayLoader = true;
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
-        if(data.ar.length !== 0) {
+        /*if(data.ar.length !== 0) {
           this.passData.tableData = data.ar;
-          /*if(this.tranStat.toUpperCase() == 'CLOSEDWITHACCTENT'){
+          if(this.tranStat.toUpperCase() == 'CLOSEDWITHACCTENT'){
             console.log(this.passData.tableData);
             this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == 'CLOSED' && a.acctEntDate !== null);
           }else{
             this.passData.tableData = data.ar.filter(a => String(a.tranStatDesc).toUpperCase() == this.tranStat.toUpperCase());
-          }*/
-        }
+          }
+        }*/
+        this.passData.tableData = data.ar;
         this.table.refreshTable();
 
         this.table.filterDisplay(this.table.filterObj, this.table.searchString);

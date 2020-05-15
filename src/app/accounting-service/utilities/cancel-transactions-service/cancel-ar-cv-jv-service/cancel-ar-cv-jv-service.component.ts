@@ -63,10 +63,12 @@ export class CancelArCvJvServiceComponent implements OnInit {
 	getAcseList(){
 		this.getTblOtherInfo();
 		if(this.tranClass == 'or'){
+			this.searchParams = this.searchParams.filter(a => a.key !== 'orStat');
+			this.searchParams.push({key: 'orStat', search: 'N,P'});
 			this.acctService.getAcseOrList(this.searchParams)
 			.subscribe(data => {
 			  console.log(data);
-			  this.passDataCancelTrans.tableData = data['orList'].filter(e => e.orStatus != 'X').map(e => { 
+			  this.passDataCancelTrans.tableData = data['orList']/*.filter(e => e.orStatus != 'X')*/.map(e => { 
 			  	e.createDate = this.ns.toDateTimeString(e.createDate);
 			  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 			  	return e;

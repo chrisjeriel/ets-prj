@@ -2447,6 +2447,8 @@ export class AccountingService {
                  .set('particulars','')
                  .set('orAmtFrom','')
                  .set('orAmtTo','')
+                 .set('tranStat','')
+                 .set('orStat','');
                  // .set('paginationRequest.position',null)
                  // .set('paginationRequest.count',null)
                  // .set('sortRequest.sortKey',null)
@@ -3526,5 +3528,38 @@ export class AccountingService {
 	updateAgingSoa(params) {
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAgingSoa?eomDate='+params,params);
     }
+
+    getAcitMonthEndJV(from, eomDate){
+		const params = new HttpParams()
+			.set('from', (from == null || from == undefined ? '' : from))
+			.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitMonthEndJV',{params});	
+	}
+
+	getAcitQsoaPrint(searchParams: any[]){
+		// const params = new HttpParams()
+		// 	.set('from', (from == null || from == undefined ? '' : from))
+		// 	.set('eomDate', (eomDate == null || eomDate == undefined ? '' : eomDate));
+
+		var params;
+		if(searchParams.length < 1){
+        	params = new HttpParams()
+        	.set('treatyTag','')
+			.set('cedingId','')
+			.set('currCd','')
+			.set('fromQtr','')
+			.set('fromYear','')
+			.set('toQtr','')
+			.set('toYear','');
+    	}else{
+    		params = new HttpParams();
+            for(var i of searchParams){
+                params = params.append(i.key, i.search);
+            }
+    	}
+
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitQsoaPrint',{params});	
+	}
 
 }

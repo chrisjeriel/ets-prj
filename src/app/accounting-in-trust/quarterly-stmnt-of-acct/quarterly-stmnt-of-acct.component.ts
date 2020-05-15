@@ -4,13 +4,12 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
-import { AccountingService } from '@app/_services/accounting.service';
-import { UserService } from '@app/_services';
-import { NotesService } from '@app/_services/notes.service';
+import { UserService, NotesService, AccountingService, PrintService, MaintenanceService, UnderwritingService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
 @Component({
   selector: 'app-quarterly-stmnt-of-acct',
@@ -31,6 +30,9 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('combinedStmtOfAcctMdl') combinedStmtOfAcctMdl: ModalComponent;
 	@ViewChild('acctReceivableMdl') acctReceivableMdl: ModalComponent;
 	@ViewChild('acctRemittanceMdl') acctRemittanceMdl: ModalComponent;
+	@ViewChild('printMdl') printMdl: ModalComponent;
+	@ViewChild('cedingPrintMdl') cedingPrintMdl: CedingCompanyComponent;
+	@ViewChild('currencyMdl') currencyMdl: MtnCurrencyCodeComponent;
 
 	comStmt:boolean = false;
 	receivables:boolean = false;
@@ -174,16 +176,51 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	totalDebit: any = 0;
 	totalCredit: any = 0;
 
-	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService, private ns: NotesService, private userService: UserService) { }
+	params: any = {
+		reportId: '',
+		cedingId: '',
+		cedingName: '',
+		currCd: '',
+		currency: '',
+		printFromQtr: '',
+		printFromYear: '',
+		printToQtr: '',
+		printToYear: '',
+		destination: 'screen'
+	};
+
+	allDest: boolean = false;
+	exc: any[] = [];
+	treatyComp: any[] = [];
+	minYear: number = 2020;
+
+	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService,
+				private ns: NotesService, private userService: UserService, public ps: PrintService, private ms: MaintenanceService,
+				private us: UnderwritingService) { }
 
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | QSOA Inquiry");
     	this.userService.emitModuleId("ACIT050");
+
+    	this.ms.getMtnParameters('V', 'QS_CEDING_ID').subscribe(data => {
+		  if(data['parameters'].length > 0) {
+		    this.exc = [data['parameters'][0].paramValueV];
+		  }
+		});
+
+		this.us.getCedingCompanyList('','','','','','','','Y','','Y').subscribe(data => {
+			this.treatyComp = data['cedingcompany'].filter(a => a.treatyTag == 'Y').map(a => a.cedingId);
+		});
+
 		var d = new Date();
 	    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
 	    this.gnrtYear = d.getFullYear();
+	    this.params.printFromQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.params.printToQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.params.printFromYear = d.getFullYear();
+	    this.params.printToYear = d.getFullYear();
 
-	    for(let x = d.getFullYear(); x >= 2018; x--) {
+	    for(let x = d.getFullYear(); x >= this.minYear; x--) {
 	    	this.yearParamOpts.push(x);
 	    }
 
@@ -359,4 +396,133 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 		console.log(this.filtCedingId);
 	}
+
+	onClickPrint() {
+		this.resetParams();
+		this.printMdl.openNoClose();
+	}
+
+	setCedingPrint(data) {
+		this.params.cedingId = data.cedingId;
+	    this.params.cedingName = data.cedingName;
+	    this.allDest = this.treatyComp.includes(data.cedingId);
+	    this.ns.lovLoader(data.ev, 0);
+	}
+
+	setCurrency(data) {
+	    this.params.currCd = data.currencyCd;
+	    this.params.currency = data.description;
+	    this.ns.lovLoader(data.ev, 0);
+	}
+
+	checkCode(ev, from) {
+	    this.ns.lovLoader(ev, 1);
+	    if(from == 'cedingId') {
+	      this.cedingPrintMdl.checkCode(String(this.params.cedingId) == '' ? '' : String(this.params.cedingId).padStart(3, '0'), ev);
+	    } else if(from == 'currCd') {
+	      this.currencyMdl.checkCode(this.params.currCd, ev);
+	    }
+	}
+
+	print() {
+		console.log(this.treatyComp);
+		this.ps.printLoader = true;
+		if(this.treatyComp.includes(this.params.cedingId)) {
+			var param = [
+				{ key: 'treatyTag', search: 'Y' },
+				{ key: 'cedingId', search: this.params.cedingId },
+				{ key: 'currCd', search: this.params.currCd },
+				{ key: 'fromQtr', search: this.params.printFromQtr },
+				{ key: 'fromYear', search: this.params.printFromYear },
+				{ key: 'toQtr', search: this.params.printToQtr },
+				{ key: 'toYear', search: this.params.printToYear }
+			];
+			
+			this.as.getAcitQsoaPrint(param).subscribe(data => {
+				data['qsoaPrintList'].forEach(a => {
+					var custName = a.cedingAbbr + '_' + this.ns.toDateTimeString(a.quarterEnding).split('T')[0] + '_' + a.currCd + '_';
+
+					let paramsB: any = {
+				      "reportId": 'ACITR050B',
+				      "acitr050Params.reportId": 'ACITR050B',
+				      "acitr050Params.cedingId": a.cedingId,
+				      "acitr050Params.currCd": a.currCd,
+				      "acitr050Params.qtrEnding": this.ns.toDateTimeString(a.quarterEnding).split('T')[0],
+				      "fileName": 'ACITR050B_' + custName + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+				    }
+
+				    this.ps.print(this.params.destination, 'ACITR050B', paramsB);
+
+				    let paramsC: any = {
+				      "reportId": 'ACITR050C',
+				      "acitr050Params.reportId": 'ACITR050C',
+				      "acitr050Params.cedingId": a.cedingId,
+				      "acitr050Params.currCd": a.currCd,
+				      "acitr050Params.qtrEnding": this.ns.toDateTimeString(a.quarterEnding).split('T')[0],
+				      "fileName": 'ACITR050C_' + custName + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+				    }
+
+				    this.ps.print(this.params.destination, 'ACITR050C', paramsC);
+
+				    let paramsD: any = {
+				      "reportId": 'ACITR050D',
+				      "acitr050Params.reportId": 'ACITR050D',
+				      "acitr050Params.cedingId": a.cedingId,
+				      "acitr050Params.currCd": a.currCd,
+				      "acitr050Params.qtrEnding": this.ns.toDateTimeString(a.quarterEnding).split('T')[0],
+				      "fileName": 'ACITR050D_' + custName + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+				    }
+
+				    this.ps.print(this.params.destination, 'ACITR050D', paramsD);
+				});
+			});
+		} else {
+			var param = [
+				{ key: 'treatyTag', search: 'N' },
+				{ key: 'cedingId', search: this.params.cedingId },
+				{ key: 'currCd', search: this.params.currCd },
+				{ key: 'fromQtr', search: this.params.printFromQtr },
+				{ key: 'fromYear', search: this.params.printFromYear },
+				{ key: 'toQtr', search: this.params.printToQtr },
+				{ key: 'toYear', search: this.params.printToYear }
+			];
+			
+			this.as.getAcitQsoaPrint(param).subscribe(data => {
+				data['qsoaPrintList'].forEach(a => {
+					var custName = a.cedingAbbr + '_' + this.ns.toDateTimeString(a.quarterEnding).split('T')[0] + '_' + a.currCd + '_';
+
+					let params: any = {
+				      "reportId": 'ACITR050A',
+				      "acitr050Params.reportId": 'ACITR050A',
+				      "acitr050Params.qsoaId": a.qsoaId,
+				      "fileName": 'ACITR050A_' + custName + String(this.ns.toDateTimeString(0)).replace(/:/g, '.') + '.pdf'
+				    }
+
+				    this.ps.print(this.params.destination, 'ACITR050A', params);
+				});
+			});
+		}
+	}
+
+	resetParams() {
+		this.params = {
+			reportId: '',
+			cedingId: '',
+			cedingName: '',
+			currCd: '',
+			currency: '',
+			printFromQtr: '',
+			printFromYear: '',
+			printToQtr: '',
+			printToYear: '',
+			destination: 'screen'
+		}
+
+		var d = new Date();
+	    this.params.printFromQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.params.printToQtr = Math.floor((d.getMonth() / 3) + 1);
+	    this.params.printFromYear = d.getFullYear();
+	    this.params.printToYear = d.getFullYear();
+	}
+
 }
