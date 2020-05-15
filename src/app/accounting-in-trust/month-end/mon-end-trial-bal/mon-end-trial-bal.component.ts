@@ -441,7 +441,7 @@ export class MonEndTrialBalComponent implements OnInit {
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
-<<<<<<< HEAD
+
   getExtractToCsv(){
     console.log('extract to csv from trial balance processing');
     this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd)
