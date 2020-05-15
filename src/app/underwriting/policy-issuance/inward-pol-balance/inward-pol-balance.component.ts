@@ -335,9 +335,11 @@ export class InwardPolBalanceComponent implements OnInit {
   }
 
   onClickSave(){
-    if(this.instllmentTable.getSum('premAmt') == this.totalPrem)
+    if(this.instllmentTable.getSum('premAmt').toFixed(2) == this.totalPrem)
       this.confirmSave.confirmModal();
     else if(this.passData.tableData.every(a=>a.premAmt != 0)){
+      console.log(this.instllmentTable.getSum('premAmt'))
+      console.log(this.totalPrem)
       this.dialogIcon = 'error';
       //this.dialogMsg = 'Total Premium must be equal to the sum of premium per installment.';
       this.successDiag.open();
