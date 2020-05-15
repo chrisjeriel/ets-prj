@@ -908,6 +908,9 @@ export class PolicyReportsComponent implements OnInit {
         "Oct", "Nov", "Dec");
 
         alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
           var date = new Date(d);
           var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
           var mos = months[date.getMonth()];
@@ -916,6 +919,10 @@ export class PolicyReportsComponent implements OnInit {
 
         alasql.fn.negFmt = function(m){
           return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
         };
 
         var name = this.params.reportId;
@@ -988,6 +995,11 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+
           'policyNo AS [POLICY NO], cedingName AS [COMPANY], myFormat(inceptDate) ||" to "|| myFormat(expiryDate) AS [PERIOD], currencyCd AS [CURRENCY],'+
           'negFmt(currency(premAmt)) as [PREMIUM AMT], status AS [STATUS]';
+        }else if(this.params.reportId == 'POLR044M'){
+          this.passDataCsv = data['listPolr044m'];
+           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFromTo) AS [AS OF],currencyCd AS [CURRENCY],'+
+           'zoneCd as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
+           'negFmt(currency(avRiskAmt)) as [ACTUAL VALUE at RISK]';
         }else if(this.params.reportId == 'POLR044N'){
           this.passDataCsv = data['listPolr044n'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],currencyCd AS [CURRENCY],lineCd AS [LINE],negFmt(noOfPol) as [NO of POLICIES],'+
@@ -1007,6 +1019,21 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
           'currencyCd as [CURRENCY],insuredName as [INSURED],insuredId as [INSURED ID],negFmt(polCount) AS [NO of POLICY],negFmt(currency(siAmt)) AS [SUM INSURED], negFmt(currency(premAmt)) AS [PREMIUM],'+
           'negFmt(lossPdCount) AS [NO of PAID], negFmt(currency(lossPaid)) AS [LOSSES PAID], negFmt(lossOsCount) AS [NO of OS], negFmt(currency(lossOs)) AS [O/S LOSSES]';
+        }else if(this.params.reportId == 'POLR044R'){
+          this.passDataCsv = data['listPolr044r'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
+        }else if(this.params.reportId == 'POLR044S'){
+          this.passDataCsv = data['listPolr044s'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
+        }else if(this.params.reportId == 'POLR044V'){
+          this.passDataCsv = data['listPolr044v'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(dateFromTo) as [AS OF], cedingId || "-" || cedingName as [COMPANY], policyNo as [POLICY NO],'+
+          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], insuredDesc as [NAME OF INSURED], isNull(projectDesc) as [NATURE OF PROJECT],'+
+          'currencyCd as [CURRENCY],negFmt(currency(siAmt)) as [SUM INSURED]';
         }else if(this.params.reportId == 'POLR044W'){
           this.passDataCsv = data['listPolr044w'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd as [CURRENCY],lineCd as [LINE],'+

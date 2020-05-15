@@ -106,6 +106,7 @@ export class NotesService {
   export(name, query, tableData) {
     var currDate = this.toDateTimeString(0).replace(':', '.');
     var fileName = name + '_' + currDate + '.xls';
+    
     var mystyle = {
       headers: true, 
       column: {style:{Font:{Bold:"1"}}}
@@ -142,9 +143,8 @@ export class NotesService {
       return num;
     };
 
-    var into = "INTO XLSXML('" + fileName + "', ?)";
-
-    alasql.promise(query + ' ' + into + ' FROM ?', [opts,tableData]);
+     var into = "INTO XLSXML('" + fileName + "', ?)";
+     alasql.promise(query + ' ' + into + ' FROM ?', [opts,tableData]);
   }
 
   setListParams(params){
