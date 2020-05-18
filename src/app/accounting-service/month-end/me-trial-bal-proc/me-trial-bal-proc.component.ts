@@ -286,6 +286,11 @@ export class MeTrialBalProcComponent implements OnInit {
       return num
     };
 
+    console.log('entered here in export method');
+    console.log(this.monthlyTotals);
+    console.log(phpList);
+    console.log(usdList);
+
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
                   'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
@@ -363,7 +368,8 @@ export class MeTrialBalProcComponent implements OnInit {
         this.paramsToggle.push('currCd');
       }
 
-      this.allDest = this.params.reportId !== 'ACSER024E';
+      // this.allDest = this.params.reportId !== 'ACSER024E';
+      this.allDest = this.params.reportId;
     }
   }
 
@@ -492,6 +498,14 @@ export class MeTrialBalProcComponent implements OnInit {
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
           'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACSER024E'){
+          console.log('entered acser024e');
+          //this.export();
+          this.passDataCsv = this.monthlyTotals;
+          query = 'SELECT eomMm AS [MONTH], eomYear AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+                  'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
+                  'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
+                  'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
         }
 
         console.log(this.passDataCsv);
