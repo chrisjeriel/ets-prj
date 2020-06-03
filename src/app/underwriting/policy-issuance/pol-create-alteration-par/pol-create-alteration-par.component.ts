@@ -77,6 +77,8 @@ export class PolCreateAlterationPARComponent implements OnInit {
   fromLOV: boolean = false;
   doneCheck: boolean = false;
 
+  policyId:any;
+
   constructor(private underwritingService: UnderwritingService, private router: Router,
    public modalService: NgbModal, private titleService: Title, private cs: ClaimsService) { }
 
@@ -192,12 +194,20 @@ export class PolCreateAlterationPARComponent implements OnInit {
       this.riskName = this.selected.riskName;
 
       if(fromMdl !== undefined) {
-        this.fromLOV = true;
-        this.searchArr = this.polNo.map((a, i) => {
-          return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
-        });
+        // this.fromLOV = true;
+        // this.searchArr = this.polNo.map((a, i) => {
+        //   return (i == 0) ? a + '%' : (i == this.polNo.length - 1) ? '%' + a : '%' + a + '%';
+        // });
 
-        this.search('forceSearch',{ target: { value: '' } });
+        // this.search('forceSearch',{ target: { value: '' } });
+        this.cs.checkExistingClaim(this.selected.policyId).subscribe(data => {
+          if(data =='Y') {
+            this.warningMsg = 3;
+            this.showWarningMdl();
+          }
+
+          this.doneCheck = true;
+        });
       }
     }
   }

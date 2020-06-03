@@ -286,20 +286,26 @@ export class AltParListingComponent implements OnInit, AfterViewInit {
     }
 
      onRowDblClick(event) {
-        for (var i = 0; i < event.target.closest("tr").children.length; i++) {
-        this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
-        }
+        // for (var i = 0; i < event.target.closest("tr").children.length; i++) {
+        // this.uwService.rowData[i] = event.target.closest("tr").children[i].innerText;
+        // }
 
-        for(let rec of this.fetchedData){
-              if(rec.policyNo === this.uwService.rowData[0]) {
-                this.policyId = rec.policyId;
-                this.statusDesc = rec.statusDesc;
-                this.riskName = rec.project.riskName;
-                this.insuredDesc = rec.insuredDesc;
-              }
-        }
-        this.polLine = this.uwService.rowData[0].split("-")[0];
-        this.policyNo = this.uwService.rowData[0];
+        // for(let rec of this.fetchedData){
+        //       if(rec.policyNo === this.uwService.rowData[0]) {
+        //         this.policyId = rec.policyId;
+        //         this.statusDesc = rec.statusDesc;
+        //         this.riskName = rec.project.riskName;
+        //         this.insuredDesc = rec.insuredDesc;
+        //       }
+        // }
+        this.policyId = event.policyId;
+        this.statusDesc = event.status;
+        this.riskName = event.riskName;
+        this.insuredDesc = event.insuredDesc;
+
+
+        this.polLine = event.policyNo.split("-")[0];
+        this.policyNo = event.policyNo;
 
         this.uwService.getAlterationsPerPolicy(this.policyId, 'alteration').subscribe(data => {
             var polList = data['policyList'];
