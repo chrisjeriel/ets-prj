@@ -91,7 +91,7 @@ export class CancelArCvJvComponent implements OnInit {
 			this.acctService.getAcitCvList(this.searchParams)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['acitCvList'].filter(e => e.cvStatus != 'X').map(e => { 
+				this.passDataCancelTrans.tableData = data['acitCvList']/*.filter(e => e.cvStatus != 'X')*/.map(e => { 
 				  	e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e;

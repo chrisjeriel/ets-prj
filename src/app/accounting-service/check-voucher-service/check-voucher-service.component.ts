@@ -19,9 +19,9 @@ export class CheckVoucherServiceComponent implements OnInit {
  
   passData: any = {
         tableData: [],
-        tHeader: ["CV No", "Check No", "Payee", "Payment Request No", "CV Date", "Status","Particulars","Amount"],
-        dataTypes: ['text','text','text','text','date','text','text','currency',],
-        colSize: ['','','150px','120px','','','150px',''],
+        tHeader: ["CV No", "Check No", "Payee", "Payment Request No", "CV Date","Particulars","Amount"],
+        dataTypes: ['text','text','text','text','date','text','currency',],
+        colSize: ['','','150px','120px','','150px',''],
         filters: [
           { key: 'cvGenNo', title: 'C.V. No.', dataType: 'text'},
           { key: 'payee',   title: 'Payee',    dataType: 'text'},
@@ -29,7 +29,14 @@ export class CheckVoucherServiceComponent implements OnInit {
              from : 'cvDateFrom', to: 'cvDateTo'
           }, title: 'CV Date', dataType: 'datespan' },
           { key: 'particulars', title: 'Particulars', dataType: 'text'},
-          { key: 'cvAmt',       title: 'Amount',      dataType: 'text'}
+          {
+            keys: {
+              from: 'cvAmtFrom',
+              to: 'cvAmtTo'
+            },
+              title: 'Amount',
+              dataType: 'textspan'
+            }
         ],
         btnDisabled  : true,
         pagination   : true,
@@ -38,7 +45,7 @@ export class CheckVoucherServiceComponent implements OnInit {
         editFlag     : true,
         pageLength   : 10,
         exportFlag   : true,
-        keys         : ['cvGenNo','checkNo','payee','refNo','cvDate','cvStatusDesc','particulars','cvAmt']
+        keys         : ['cvGenNo','checkNo','payee','refNo','cvDate','particulars','cvAmt']
   };
 
   searchParams: any[] = [];
@@ -74,7 +81,7 @@ export class CheckVoucherServiceComponent implements OnInit {
   }
 
   getAcseCv(){
-    this.table.overlayLoader = true;
+    /*this.table.overlayLoader = true;
     this.acctService.getAcseCvList(this.searchParams)
     .subscribe(data => {
       console.log(data);
@@ -94,6 +101,67 @@ export class CheckVoucherServiceComponent implements OnInit {
       });
 
       this.passData.tableData = rec.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
+      this.table.refreshTable();
+    });*/
+
+    this.searchParams = this.searchParams.filter(a => a.key !== 'tranStat' && a.key !== 'cvStat');
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'cvStat', search: 'N'});
+
+        break;
+      case 'for finance checking':
+        this.searchParams.push({key: 'tranStat', search: ''});
+        this.searchParams.push({key: 'cvStat', search: 'F'});
+
+        break;
+      case 'ok for printing':
+        this.searchParams.push({key: 'cvStat', search: 'A'});
+        this.searchParams.push({key: 'tranStat', search: ''});
+
+        break;
+      case 'printed':
+        this.searchParams.push({key: 'cvStat', search: 'P'});
+        this.searchParams.push({key: 'tranStat', search: ''});
+
+        break;
+      case 'closed':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'C'});
+
+        break;
+      case 'posted':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'P'});
+
+        break;
+      case 'deleted':
+        this.searchParams.push({key: 'cvStat', search: ''});
+        this.searchParams.push({key: 'tranStat', search: 'D'});
+
+        break;
+    }
+    this.table.overlayLoader = true;
+    this.acctService.getAcseCvList(this.searchParams)
+    .subscribe(data => {
+      console.log(data);
+      var rec = data['acseCvList'].map(i => { 
+        i.createDate     = this.ns.toDateTimeString(i.createDate); 
+        i.updateDate     = this.ns.toDateTimeString(i.updateDate);
+        i.checkDate      = this.ns.toDateTimeString(i.checkDate);
+        i.preparedDate   = this.ns.toDateTimeString(i.preparedDate);
+        i.certifiedDate  = this.ns.toDateTimeString(i.certifiedDate);
+
+        /*if(i.mainTranStat != 'O' && i.mainTranStat != 'C') {
+          i.cvStatus = i.mainTranStat;
+          i.cvStatusDesc = i.mainTranStatDesc;
+        }*/
+
+        return i; 
+      });
+
+      this.passData.tableData = rec; //.filter(a => String(a.cvStatusDesc).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
     });
   }

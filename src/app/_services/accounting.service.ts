@@ -2409,10 +2409,12 @@ export class AccountingService {
 	}
 
 
-	getACSEJvList(tranId){
-		const params = new HttpParams()
+	getACSEJvList(param){
+		/*const params = new HttpParams()
 			.set('tranId', (tranId == null || tranId == undefined ? '' : tranId))
-		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params});
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params});*/
+
+		return this.http.get(environment.prodApiUrl + "/acct-serv-service/retrieveJVList",{params: param});
 	}
 
 	saveAcitQsoa(params){
@@ -2491,9 +2493,11 @@ export class AccountingService {
 				.set('reqStatusDesc','')
 				.set('payee','')
 				.set('currCd','')
-				.set('reqAmt','')
+				.set('reqAmtFrom','')
+				.set('reqAmtTo','')
 				.set('particulars','')
 				.set('requestedBy','')
+				.set('prqStat','')
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
@@ -2636,7 +2640,10 @@ export class AccountingService {
 				.set('cvStatusDesc','')
 				.set('payee','')
 				.set('particulars','')
-				.set('cvAmt','')
+				.set('cvAmtFrom','')
+				.set('cvAmtTo','')
+				.set('tranStat','')
+				.set('cvStat','')
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
