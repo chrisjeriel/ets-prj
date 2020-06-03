@@ -1410,8 +1410,12 @@ export class LovComponent implements OnInit {
           this.table.refreshTable();
         });
       }else if(this.passData.from == 'acse'){
-        this.accountingService.getAcsePaytReqList([]).subscribe((a:any) => {
-          var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.currCd == this.passData.currCd && e.reqStatus == 'A' && e.paytReqType == Number(this.passData.paytReqType));
+        var params = [
+          {key: 'prqStat', search: 'A'},
+          {key: 'currCd', search: this.passData.currCd},
+        ]
+        this.accountingService.getAcsePaytReqList(params).subscribe((a:any) => {
+          var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd &&  e.paytReqType == Number(this.passData.paytReqType));
           this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
           for(var i of this.passTable.tableData){
             if(i.processing !== null && i.processing !== undefined){

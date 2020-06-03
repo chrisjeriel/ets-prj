@@ -33,9 +33,12 @@ export class JournalVoucherServiceComponent implements OnInit {
           dataType: 'text'
         },
         {
-          key: 'jvDate',
-          title: 'JV Date',
-          dataType: 'date'
+        keys: {
+              from: 'jvDateFrom',
+              to: 'jvDateTo'
+            },
+            title: 'JV Date',
+            dataType: 'datespan'
         },
         {
           key: 'particulars',
@@ -58,9 +61,12 @@ export class JournalVoucherServiceComponent implements OnInit {
           dataType: 'text'
         },
         {
-          key: 'amount',
-          title: 'Amount',
-          dataType: 'text'
+          keys: {
+              from: 'jvAmtFrom',
+              to: 'jvAmtTo'
+            },
+            title: 'Amount',
+            dataType: 'textspan'
         }
       ],
   };
@@ -74,6 +80,10 @@ export class JournalVoucherServiceComponent implements OnInit {
   }
 
   tranStat: string = 'new';
+  searchParams: any = {
+    'paginationRequest.count': 10,
+    'paginationRequest.position': 1
+  };
 
   constructor(private accountingService: AccountingService,private router: Router, private titleService: Title, private ns: NotesService) { }
 
@@ -100,7 +110,7 @@ export class JournalVoucherServiceComponent implements OnInit {
   }
 
   retrieveJVlist(){
-    this.table.overlayLoader = true;
+    /*this.table.overlayLoader = true;
     this.accountingService.getACSEJvList(null).subscribe((data:any) => {
       this.passDataJVListing.tableData = [];
 
@@ -119,6 +129,68 @@ export class JournalVoucherServiceComponent implements OnInit {
       this.passDataJVListing.tableData = this.passDataJVListing.tableData.filter(a => String(a.statusName).toUpperCase() == this.tranStat.toUpperCase());
       this.table.refreshTable();
 
+      this.table.filterDisplay(this.table.filterObj, this.table.searchString);
+    });*/
+
+    switch(this.tranStat) {
+      case 'new':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'N';
+
+        break;
+      case 'for approval':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'F';
+
+        break;
+      case 'approved':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'A';
+
+        break;
+      case 'closed':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'C';
+
+        break;
+      case 'printed':
+        this.searchParams['tranStat'] = '';
+        this.searchParams['jvStat'] = 'P';
+
+        break;
+      case 'posted':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'P';
+
+        break;
+      case 'deleted':
+        this.searchParams['jvStat'] = '';
+        this.searchParams['tranStat'] = 'D';
+        
+        break;
+    }
+
+    this.table.overlayLoader = true;
+    this.accountingService.getACSEJvList(this.searchParams).subscribe((data:any) => {
+      this.passDataJVListing.tableData = [];
+
+      /*for(var i=0; i< data.jvList.length;i++){
+        this.passDataJVListing.tableData.push(data.jvList[i]);
+        this.passDataJVListing.tableData[this.passDataJVListing.tableData.length - 1].jvNo = String(data.jvList[i].jvYear) + '-' +  String(data.jvList[i].jvNo);
+      }*/
+
+      this.passDataJVListing.tableData = data.jvList.map(a => {
+        a.jvNo = String(a.jvYear) + '-' + String(a.jvNo);
+
+        if(a.tranStat != 'O' && a.tranStat != 'C') {
+          a.jvStatus = a.jvStatus;
+          a.statusName = a.statusName;
+        }
+
+        return a;
+      });
+
+      this.table.refreshTable();
       this.table.filterDisplay(this.table.filterObj, this.table.searchString);
     });
   }
@@ -192,11 +264,12 @@ export class JournalVoucherServiceComponent implements OnInit {
     alasql('SELECT jvNo AS [J.V. No], datetime(jvDate) AS [J.V. Date], particulars AS Particulars, tranTypeName AS [JV Type], refNo AS [JV Ref. No.], preparedName AS [Prepared By],jvAmt AS Amount INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataJVListing.tableData]);
   }
 
-  /*searchQuery(data){
-    this.searchParams = searchParams;
-    this.passData.tableData = [];
-    console.log(this.searchParams);
+  searchQuery(data) {
+    data.forEach(a => {
+      this.searchParams[a.key] = a.search;
+    });
+
     this.retrieveJVlist();
-  }*/
+  }
 
 }

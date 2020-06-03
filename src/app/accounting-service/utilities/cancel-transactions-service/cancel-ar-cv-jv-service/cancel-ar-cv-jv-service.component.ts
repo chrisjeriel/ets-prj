@@ -76,10 +76,12 @@ export class CancelArCvJvServiceComponent implements OnInit {
 			  this.cancelTranTbl.refreshTable();
 			}); 
 		}else if(this.tranClass == 'cv'){
+			this.searchParams = this.searchParams.filter(a => a.key !== 'cvStat');
+			this.searchParams.push({key: 'cvStat', search: 'A,F,N,P'});
 			this.acctService.getAcseCvList(this.searchParams)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['acseCvList'].filter(e => e.cvStatus != 'X').map(e => { 
+				this.passDataCancelTrans.tableData = data['acseCvList']/*.filter(e => e.cvStatus != 'X')*/.map(e => { 
 				  	e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e;
@@ -87,10 +89,21 @@ export class CancelArCvJvServiceComponent implements OnInit {
 				this.cancelTranTbl.refreshTable();
 			});
 		}else if(this.tranClass == 'jv'){
-			this.acctService.getACSEJvList('')
+			var param = {
+				jvStatus: 'A,F,N,P',
+				recount: 'Y',
+				'paginationRequest.count': 10,
+				'paginationRequest.position': 1
+			};
+
+			this.searchParams.forEach(a => {
+				param[a.key] = a.search;
+			});
+
+			this.acctService.getACSEJvList(param)
 			.subscribe(data => {
 				console.log(data);
-				this.passDataCancelTrans.tableData = data['jvList'].filter(e => e.jvStatus != 'X').map(e => {
+				this.passDataCancelTrans.tableData = data['jvList'].map(e => { //.filter(e => e.jvStatus != 'X')
 					e.createDate = this.ns.toDateTimeString(e.createDate);
 				  	e.updateDate = this.ns.toDateTimeString(e.updateDate);
 				  	return e;
