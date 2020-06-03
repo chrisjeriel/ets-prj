@@ -108,6 +108,8 @@ export class BudgetDetailsComponent implements OnInit {
     destination: 'screen'
   };
 
+  passDataCsv : any[] =[];
+
   constructor(private titleService: Title,private acctService: AccountingService, private ns : NotesService, private mtnService : MaintenanceService, 
               public modalService: NgbModal, private router : Router, public ps: PrintService) { }
 
@@ -348,6 +350,13 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   print() {
+
+    if(this.printParams.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     this.ps.printLoader = true;
     let params: any = {
       "reportId": this.printParams.reportId,
@@ -358,6 +367,52 @@ export class BudgetDetailsComponent implements OnInit {
 
     this.ps.print(this.printParams.destination, this.printParams.reportId, params);
   }
+
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.mtnService.getExtractToCsv(this.ns.getCurrentUser(),this.printParams.reportId,null,this.printParams.asOfDate)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        var name = this.printParams.reportId;
+        var query = '';
+
+        if(this.printParams.reportId == 'ACSER004'){
+          this.passDataCsv = data['listAcser004'];
+          query = 'SELECT budgetYear as [BUDGET YEAR], itemNo as [ITEM NO], itemName as [ACCOUNT TITLES], isNull(slName) as [SL NAME],'+
+          'negFmt(currency(currAsofBudget)) as [BUDGET CURRENT DATE], negFmt(currency(currAsofExpense)) as [EXPENSES CURRENT DATE],' +
+          'negFmt(currency(saveOvrdrft)) as [SAVING OVERDRAFT], negFmt(saveOvrdrftPct) as [% SAVING OVERDRAFT],negFmt(currency(prevAsofExpense)) as [EXPENSES LAST YEAR],'+
+          'negFmt(overunderPct) as [% OVER UNDER], negFmt(currency(currTotalBudget)) as [CURRENT TOTAL BUDGET], negFmt(asofVsTotalExp) as [CURR EXPENSES VS TOTAL BUDGET],'+
+          'myFormat(paramDate) AS [PARAM DATE]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
 
 }
 

@@ -107,7 +107,7 @@ export class MonEndTrialBalComponent implements OnInit {
     this.as.getAcitMonthEndTrialBal(eomDate).subscribe(data => {
       $('.globalLoading').css('display', 'none');
       this.monthlyTotals = data['monthlyTotalsList'].map(a => { a.eomDate = this.ns.toDateTimeString(a.eomDate); return a; });
-
+      
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
         this.canTempClose = true;
@@ -375,7 +375,8 @@ export class MonEndTrialBalComponent implements OnInit {
       }
 
 
-      this.allDest = this.params.reportId !== 'ACITR066G';
+      // this.allDest = this.params.reportId !== 'ACITR066G';
+      this.allDest = this.params.reportId;
     }
   }
 
@@ -452,10 +453,9 @@ export class MonEndTrialBalComponent implements OnInit {
     this.ps.print(this.params.destination, this.params.reportId, params);
   }
 
-
   getExtractToCsv(){
-    console.log('extract to csv from trial balance processing');
-    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd)
+    console.log('extract to csv from trial balance processing');  
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,this.params.eomDate,this.params.currCd,this.params.cedingId)
       .subscribe(data => {
         console.log(data);
     
@@ -502,23 +502,35 @@ export class MonEndTrialBalComponent implements OnInit {
           query = 'SELECT grpNo as [GROUP NO], itemNo as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
           'negFmt(currency(currMreTotal)) as [CURR MRE TOTAL], negFmt(currency(currNatreTotal)) as [CURR NATRE TOTAL],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
           'negFmt(currency(prevMembersTotal)) as [PREV MEMBERS TOTAL],negFmt(currency(prevMreTotal)) as [PREV MRE TOTAL], negFmt(currency(prevNatreTotal)) as [PREV NATRE TOTAL],'+
-          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT]';
+          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT],'+
+          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066D'){
+          this.passDataCsv = data['listAcitr066d'];
+          query = 'SELECT cedingId as [CEDING ID], cedingName as [COMPANY], grpNo as [GROUP NO], itemNo as [ITEM NO], itemName as [ITEM NAME],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
+          'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066E'){
           this.passDataCsv = data['listAcitr066e'];
-          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
-          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066F'){
           this.passDataCsv = data['listAcitr066f'];
-          query = 'SELECT myFormat(eomDate) as [EOM DATE], eomMM as [EOM MM], eomYear as [EOM YEAR], isNull(currCd) as [CURRENCY], isNull(currRt) as [CURRENCY RT],'+
-          'isNull(glAcctId) as [GL ACCT ID], isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],isNull(longDesc) as [LONG DESC],'+
+          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(eomUser) as [EOM USER], isNull(tbBase) as [TB BASE]';
+          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066G'){
+          //this.passDataCsv = this.monthlyTotals;
+          // query = 'SELECT eomMm AS [MONTH], eomYear AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+          //         'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
+          //         'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
+          //         'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
+          this.export();
         }
 
         console.log(this.passDataCsv);

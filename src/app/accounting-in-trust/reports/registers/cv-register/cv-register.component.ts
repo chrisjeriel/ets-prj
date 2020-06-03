@@ -41,6 +41,8 @@ export class CvRegisterComponent implements OnInit {
   printerList: string[] = [];
   selectedPrinter: string = '';
 
+  passDataCsv : any[] = [];
+
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
 
   ngOnInit() {
@@ -68,6 +70,12 @@ export class CvRegisterComponent implements OnInit {
       this.params.reportId = "ACITR061B";
     } else if (this.rType == "D"){
       this.params.reportId = "ACITR061B_DTL";
+    }
+
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
     }
 
     let params :any = {
@@ -121,4 +129,49 @@ export class CvRegisterComponent implements OnInit {
     $('.rdo').prop('checked', false);
     $(el).prop('checked', true);
   }
+
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,'','','',this.params.paytMode,this.params.paytType,this.params.fromDate,this.params.toDate,
+                            this.params.incClosedTran,this.params.incCancelTran,this.params.tranPostDate,this.params.chkDate)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          console.log('from month end trial balance');
+          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+
+        if(this.params.reportId == 'ACITR061B'){
+          this.passDataCsv = data['listAcitr061b'];
+          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
+          'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
 }

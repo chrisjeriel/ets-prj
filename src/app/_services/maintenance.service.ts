@@ -1960,13 +1960,22 @@ export class MaintenanceService{
 	    return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnBookingMth',params,header);
   }
 
-  getExtractToCsv(extractUser?,reportName?,prodDate?,paramDate?,paramCurrency?){
+  getExtractToCsv(extractUser?,reportName?,prodDate?,paramDate?,paramCurrency?,cedingId?,paymentMode?,paymentType?,fromDate?,toDate?,incClosedTran?,incCancelTran?,tranpostDate?,chkDate?){
     const params = new HttpParams()
       .set('extractUser', (extractUser == null || extractUser == undefined ? '' : extractUser))
       .set('reportName', (reportName == null || reportName == undefined ? '' : reportName))
       .set('prodDate', (prodDate == null || prodDate == undefined ? '' : prodDate))
       .set('paramDate', (paramDate == null || paramDate == undefined ? '' : paramDate))
       .set('paramCurrency', (paramCurrency == null || paramCurrency == undefined ? '' : paramCurrency))
+      .set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+      .set('paymentMode', (paymentMode == null || paymentMode == undefined ? '' : paymentMode))
+      .set('paymentType', (paymentType == null || paymentType == undefined ? '' : paymentType))
+      .set('fromDate', (fromDate == null || fromDate == undefined ? '' : fromDate))
+      .set('toDate', (toDate == null || toDate == undefined ? '' : toDate))
+      .set('incClosedTran', (incClosedTran == null || incClosedTran == undefined ? '' : incClosedTran))
+      .set('incCancelTran', (incCancelTran == null || incCancelTran == undefined ? '' : incCancelTran))
+      .set('tranpostDate', (tranpostDate == null || tranpostDate == undefined ? '' : tranpostDate))
+      .set('chkDate', (chkDate == null || chkDate == undefined ? '' : chkDate))
 
     return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
   }
