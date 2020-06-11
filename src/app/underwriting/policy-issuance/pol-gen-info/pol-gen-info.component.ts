@@ -500,7 +500,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
         if(this.alteration && !this.newAlt) {
           var polNo = this.policyInfo.policyNo.split('-');
 
-          this.underwritingService.getUWCoverageAlt(polNo[0],polNo[1],Number(polNo[2]),polNo[3],Number(polNo[4]),polNo[5]).subscribe(data => {
+          this.underwritingService.getUWCoverageAlt(polNo[0],polNo[1],Number(polNo[2]),polNo[3],Number(polNo[4]),polNo[5],this.policyId).subscribe(data => {
             this.withCovDtls = data['policy'] != null;
             this.prevInceptExt = this.policyInfo.inceptDate;
             this.prevEffExt = this.policyInfo.effDate;
@@ -586,9 +586,14 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   }
 
   updateMinBookingDate(){
-    let lowerDate = this.ns.toDate(this.policyInfo.issueDate) > this.ns.toDate(this.policyInfo.effDate) ? this.policyInfo.effDate : this.policyInfo.issueDate;
-    console.log(lowerDate)
-    this.minBookingDate = lowerDate!=undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
+    try{
+      let lowerDate = this.ns.toDate(this.policyInfo.issueDate) > this.ns.toDate(this.policyInfo.effDate) ? this.policyInfo.effDate : this.policyInfo.issueDate;
+      console.log(lowerDate)
+      this.minBookingDate = lowerDate!=undefined && this.ns.toDate(lowerDate) > this.ns.toDate(this.earliestBookingDate) ? lowerDate : this.earliestBookingDate;
+    }catch(ev){
+      return;
+    }
+    
 
   }
 
@@ -728,7 +733,7 @@ export class PolGenInfoComponent implements OnInit, OnDestroy {
   checkPolIdF(event){
     let parameters = this.policyInfo.policyNo.split(/[-]/g);
     if(this.alteration)
-      {this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
+      {this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5],this.policyInfo.policyId).subscribe((data: any) => {
               if(data.policy !== null){
                 let alopFlag = false;
                 if(data.policy.project !== null){

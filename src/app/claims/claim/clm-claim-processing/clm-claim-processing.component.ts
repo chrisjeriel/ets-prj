@@ -316,9 +316,12 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy, AfterView
         // this.polListTbl.refreshTable();
         // this.polListTbl.overlayLoader = false;
         this.loading = false;
-        if(this.isType && this.policyListingData.count === 0){
+        if(this.isType && this.policyListingData.count != 1){
           this.noDataFound = true;
-          this.openPolLOV();
+          if(this.policyListingData.count > 1)
+            this.polListModal.openNoClose();
+          else
+            this.openPolLOV();
           console.log(1);
           //this.polListTbl.overlayLoader = false;
         }else if(this.isType && this.policyListingData.count > 0){
@@ -368,9 +371,9 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy, AfterView
     this.loading = true;
     this.isType = false;
     this.isFromRisk = false;
-
+    console.log(this.selectedPolicyRow)
     var sub$ = forkJoin(this.us.getPolGenInfo(policyId, policyNo),
-                        this.cs.getClaimsListing([{ key: 'policyNo', search: policyNo }])).pipe(map(([polGI, clmList]) => { return { polGI, clmList }; }));
+                        this.cs.getClaimsListing([{ key: 'policyNo', search: policyNo },{key:'currencyCd',search:this.selectedPolicyRow.currencyCd}])).pipe(map(([polGI, clmList]) => { return { polGI, clmList }; }));
 
     /*this.us.getPolGenInfo(policyId, policyNo).subscribe((data: any)=>{
       this.policyDetails.policyId = data.policy.policyId;
@@ -415,6 +418,7 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy, AfterView
       this.policyDetails.cityDesc = pol.project.cityDesc;
       this.policyDetails.districtDesc = pol.project.districtDesc;
       this.policyDetails.blockDesc = pol.project.blockDesc;
+      this.policyDetails.currencyCd = this.selectedPolicyRow.currencyCd;
       this.loading = false;
       this.disableRisk = true;
 
@@ -443,7 +447,8 @@ export class ClmClaimProcessingComponent implements OnInit, OnDestroy, AfterView
                         cessionId: this.policyDetails.cessionId,
                         cessionDesc: this.policyDetails.cessionDesc,
                         line: this.policyDetails.policyNo.split('-')[0],
-                        exitLink: 'clm-claim-processing'
+                        exitLink: 'clm-claim-processing',
+                        currencyCd: this.policyDetails.currencyCd
                     }],
                     { skipLocationChange: true }
       );
