@@ -171,6 +171,13 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   @Input() inquiryFlag: boolean; // added by ENGEL;
 
   ngOnInit() {
+    this.ms.getMtnParameters('V', 'ALLOW_EDIT_TAX_ALLOC').subscribe(data => {
+      if(data['parameters'].length > 0 && data['parameters'][0]['paramValueV'] == 'Y') {
+        this.passDataGenTax.uneditable = [true,true,false,true,false];
+        this.passDataWhTax.uneditable = [true,true,false,true,false];
+      }
+    });
+    
     this.ms.getRefCode('VAT_TAG').subscribe(data => {
       this.passData.opts[0].vals = data['refCodeList'].map(a => a.code);
       this.passData.opts[0].prev = data['refCodeList'].map(a => a.description);
