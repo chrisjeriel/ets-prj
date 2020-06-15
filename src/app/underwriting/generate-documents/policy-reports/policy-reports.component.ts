@@ -357,7 +357,11 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateParam = '5';
       this.params.dateRange = '2';
       this.checkMonthYear();
-    }else {
+    }else if (this.params.reportId == 'POLR044Z') {
+        this.paramsToggle = ['byDate','byMonthYear','asOf']
+        this.params.dateParam = '10';
+        this.params.dateRange = '3';
+    } else  {
       this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
                              'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
                              'policy', 'alteration', 'policyAlteration',
@@ -486,7 +490,7 @@ export class PolicyReportsComponent implements OnInit {
     }else if(this.params.reportId == 'POLR044V'){
       // this.paramsToggle.push('line', 'company', 'asOf', 'currCd');
       // this.params.dateRange = '3';
-    } else {
+    }else {
       this.paramsToggle = [];
       if(this.params.dateParam == 10) {
         this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
