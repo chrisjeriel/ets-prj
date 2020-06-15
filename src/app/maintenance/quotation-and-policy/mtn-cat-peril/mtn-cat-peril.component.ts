@@ -120,14 +120,47 @@ export class MtnCATPerilComponent implements OnInit, AfterViewInit {
     this.getCatPeril();
   }
 
-  clickRow(data){
-     if(data !== null){
-      this.passData.disableGeneric = false
-      this.perilData = data;
-      this.perilData.createDate = this.ns.toDateTimeString(data.createDate);
-      this.perilData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  // clickRow(data){
+  //    if(data !== null){
+  //     this.passData.disableGeneric = false
+  //     this.perilData = data;
+  //     this.perilData.createDate = this.ns.toDateTimeString(data.createDate);
+  //     this.perilData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  //   }else{
+  //     this.passData.disableGeneric = true
+  //   }
+  // }
+
+  // clickRow(data){
+  //   console.log(data)
+  //   if(data != null){
+  //     this.passData.disableGeneric = false;
+  //     this.perilData = data;
+  //     this.perilData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  //     this.perilData.createDate = this.ns.toDateTimeString(data.createDate);
+  //   }else{
+  //     this.passData.disableGeneric = true;
+  //     this.perilData.createUser = '';
+  //     this.perilData.updateUser = '';
+  //     this.perilData.updateDate = '';
+  //     this.perilData.createDate = '';
+  //   }  
+  // }
+
+  clickRow(event){
+    console.log(event);
+    if(event !== null){
+      this.perilData.updateDate  = this.ns.toDateTimeString(event.updateDate);
+      this.perilData.updateUser  = event.updateUser;
+      this.perilData.createDate  = this.ns.toDateTimeString(event.createDate);
+      this.perilData.createUser  = event.createUser;
+      this.passData.disableGeneric = false;
     }else{
-      this.passData.disableGeneric = true
+      this.perilData.updateDate  = '';
+      this.perilData.updateUser  = '';
+      this.perilData.createDate  = '';
+      this.perilData.createUser  = '';
+      this.passData.disableGeneric = true;
     }
   }
 

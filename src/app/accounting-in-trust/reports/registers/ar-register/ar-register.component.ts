@@ -267,13 +267,14 @@ export class ArRegisterComponent implements OnInit {
           this.passDataCsv = data['listAcitr061a'];
           query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
           'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT], isNull(tranClass) as [TRAN CLASS],'+
-          'isNull(paytModeDesc) as [PAYMENT MODE], isNull(tranTypeCd) as [TRAN TYPE CD], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(incClosedTran) as [INC CLOSED TRAN],'=
+          'isNull(paytModeDesc) as [PAYMENT MODE], isNull(tranTypeCd) as [TRAN TYPE CD], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(incClosedTran) as [INC CLOSED TRAN],'+
           'isNull(incCancelTran) AS [INC CANCEL TRAN], isNull(tranpostDateDesc) as [TRANPOST DATE]';
-        }else if(this.params.reportId == 'ACITR061B'){
-          this.passDataCsv = data['listAcitr061b'];
-          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
-          'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
         }
+        // else if(this.params.reportId == 'ACITR061B'){
+        //   this.passDataCsv = data['listAcitr061b'];
+        //   query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
+        //   'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
+        // }
 
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);

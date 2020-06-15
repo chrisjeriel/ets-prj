@@ -974,6 +974,11 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044h'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], cedingName AS [COMPANY],lineCd AS [LINE],'+
           'currencyCd AS [CURRENCY], negFmt(currency(premAmt)) AS [PREMIUM]';
+        }else if(this.params.reportId == 'POLR044HA'){
+          this.passDataCsv = data['listPolr044ha'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], currencyCd as [CURRENCY],'+
+          'cessionId as [CESSION ID], cessionIdDesc as [TYPE OF CESSION], lineCd as [LINE], policyId as [POLICY ID], policyNo || "/" || instNo as [POLICY NO/INST NO],cedingName as [CEDING NAME],'+
+          'myFormat(issueDate) as [ISSUE DATE], myFormat(effDate) as [EFFECTIVE DATE], negFmt(currency(premAmt)) as [PREMIUM AMOUNT]';
         }else if(this.params.reportId == 'POLR044I'){
           this.passDataCsv = data['listPolr044i'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
@@ -1067,11 +1072,22 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(commVat2ndRet)) as [VAT on RI 2nd RET],negFmt(currency(commVat1stSurplus)) as [VAT on RI 1st SURPLUS], negFmt(currency(commVat2ndSurplus)) as [VAT on RI 2nd SURPLUS],negFmt(currency(commVatFacul)) as [VAT on RI FACUL],'+
           'negFmt(currency(netDueAmt)) as [NET DUE], negFmt(currency(netDueQuota)) as [NET DUE QUOTA], negFmt(currency(netDue1stRet)) as [NET DUE 1st RET],'+
           'negFmt(currency(netDue2ndRet)) as [NET DUE 2nd RET],negFmt(currency(netDue1stSurplus)) as [NET DUE 1st SURPLUS], negFmt(currency(netDue2ndSurplus)) as [NET DUE 2nd SURPLUS],negFmt(currency(netDueFacul)) as [COMM FACUL]';
+        }else if(this.params.reportId == 'POLR044Z'){
+          this.passDataCsv = data['listPolr044z'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], policyId as [POLICY ID], policyNo as [POLICY NO],'+
+          'currencyCd as [CURRENCY CD], myFormat(bookingDate) as [BOOKING DATE],negFmt(pctShare) as [% SHARE],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(tsiAmt)) as [TSI AMT],'+
+          'negFmt(currency(hundredPremAmt)) as [HUNDRED PREM AMT], negFmt(currency(hundredTsiAmt)) as [HUNDRED TSI AMT],negFmt(currency(localPremAmt)) as [LOCAL PREM AMT],negFmt(currency(localTsiAmt)) as [LOCAL TSI AMT],'+
+          'negFmt(currency(hundredLocalPremAmt)) as [HUNDRED LOCAL PREM AMT],negFmt(currency(hundredLocalTsiAmt)) as [HUNDRED LOCAL TSI AMT],negFmt(currency(mioPremAmt)) as [MIO PREM AMT],'+
+          'negFmt(currency(mioTsiAmt)) as [MIO TSI AMT],negFmt(currency(hundredMioPremAmt)) as [HUNDRED MIO PREM AMT], negFmt(currency(hundredMioTsiAmt)) as [HUNDRED MIO TSIAMT]';
         }
-
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);
         });
     //}
   }
 }
+
+
+                   
+                   
+                   
