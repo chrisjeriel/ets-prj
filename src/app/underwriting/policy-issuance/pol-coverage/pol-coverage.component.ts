@@ -476,7 +476,7 @@ export class PolCoverageComponent implements OnInit {
   }
 
   getPolCoverageAlt(){
-    this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5]).subscribe((data: any) => {
+    this.underwritingservice.getUWCoverageAlt(this.parameters[0],this.parameters[1],this.parameters[2],this.parameters[3],this.parameters[4],this.parameters[5],this.policyId).subscribe((data: any) => {
       console.log(data)
       this.passData.tableData  = [];  
       this.prevsectionISi      = data.policy.project.coverage.prevSectionISi;

@@ -306,7 +306,7 @@ export class QuotationComponent implements OnInit, OnDestroy {
       this.passData.reasonCd = this.quoteInfo.reasonCd;
   		setTimeout(() => { this.header = "/ " + (this.quoteInfo.quotationNo == '' ? this.quoteInfo.lineCd : this.quoteInfo.quotationNo) }, 0);
       this.reportsList = [];
-      if( ['1','2','P','A','R'].indexOf(this.quoteInfo.status) == -1
+      if(this.passData.quoteId && ['1','2','P','A','R'].indexOf(this.quoteInfo.status) == -1
           ){
         console.log('status: ' + this.quoteInfo.status)
         this.inquiryFlag = true;

@@ -240,7 +240,7 @@ export class PolAlopComponent implements OnInit {
      });
    }else{
      var parameters = this.policyInfo.policyNo.split(/[-]/g);
-     this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5]).subscribe((data: any) => {
+     this.underwritingService.getUWCoverageAlt(parameters[0],parameters[1],parameters[2],parameters[3],parameters[4],parameters[5],this.policyInfo.policyId).subscribe((data: any) => {
        if(data !== null){
          var sectionCovers = data.policy.project.coverage.sectionCovers;
          for( var i = 0; i <sectionCovers.length;i++){
