@@ -448,7 +448,7 @@ export class ClaimReportsComponent implements OnInit {
 
         alasql.fn.negFmt = function(m){
           // return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
-          return Number(m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
