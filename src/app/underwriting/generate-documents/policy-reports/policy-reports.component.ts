@@ -934,7 +934,7 @@ export class PolicyReportsComponent implements OnInit {
         if(this.params.reportId == 'POLR044E'){
           this.passDataCsv = data['listPolr044e'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currCdParam AS [CURRENCY],'+
-          'lineSortSeq as [LINE SORT SEQ],lineCdParam AS [LINE],siRange AS [SI RANGE], negFmt(mthNoPol) AS [No of POLICIES for MTH], negFmt(cumNoPol) AS [CUM No of POLICIES]';
+          'lineSortSeq as [LINE SORT SEQ],lineCdParam AS [LINE],siRange AS [SI RANGE],siRangeDesc AS [SI RANGE DESC], negFmt(mthNoPol) AS [No of POLICIES for MTH], negFmt(cumNoPol) AS [CUM No of POLICIES]';
         }else if(this.params.reportId == 'POLR044A'){
           this.passDataCsv = data['listPolr044a'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],cedingName AS [COMPANY], lineCd AS [LINE], negFmt(total) AS [TOTAL No. of POLICIES]';
@@ -969,7 +969,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044G'){
           this.passDataCsv = data['listPolr044g'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], lineCd AS [LINE],'+
-          'currencyCd AS [CURRENCY], renThisMmQty AS [REN THIS MTH QTY], negFmt(currency(renThisMmPrem)) AS [REN THIS MTH PREM],'+
+          'currencyCd AS [CURRENCY],renewTag as [RENEW TAG], renThisMmQty AS [REN THIS MTH QTY], negFmt(currency(renThisMmPrem)) AS [REN THIS MTH PREM],'+
           'renCumuQty AS [REN CUM QTY], negFmt(currency(renCumuPrem)) AS [REN CUM PREM], newThisMmQty AS [NEW THIS MTH QTY],'+
           'negFmt(currency(newThisMmPrem)) AS [NEW THIS MTH PREM], newCumuQty as [NEW CUM QTY], negFmt(currency(newCumuPrem)) AS [NEW CUM PREM],'+
           'totThisMmQty AS [TOTAL THIS MTH QTY], negFmt(currency(totThisMmPrem)) AS [TOTAL THIS MTH PREM], totCumuQty AS [TOTAL CUM QTY],'+
@@ -986,7 +986,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044I'){
           this.passDataCsv = data['listPolr044i'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineSortSeq AS [LINE SORT SEQ],lineCd AS [LINE],'+
-          'amtRangeDesc as [SI AMOUNT RANGE], negFmt(currency(premAmtCum)) as [CUMMULATIVE PREMIUM], negFmt(currency(premAmtMth)) as [PREMIUM FOR THE MONTH]';
+          'siRange as [SI RANGE],amtRangeDesc as [SI AMOUNT RANGE], negFmt(currency(premAmtCum)) as [CUMMULATIVE PREMIUM], negFmt(currency(premAmtMth)) as [PREMIUM FOR THE MONTH]';
         }else if(this.params.reportId == 'POLR044J'){
           this.passDataCsv = data['listPolr044j'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
@@ -1039,12 +1039,12 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044R'){
           this.passDataCsv = data['listPolr044r'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],siRange as [SI RANGE],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
           'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
         }else if(this.params.reportId == 'POLR044S'){
           this.passDataCsv = data['listPolr044s'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],siRange as [SI RANGE],amtRangeDesc as [SI BAND],polCount as [QUANTITY],'+
           'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
         }else if(this.params.reportId == 'POLR044V'){
           this.passDataCsv = data['listPolr044v'];
@@ -1057,7 +1057,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044W'){
           this.passDataCsv = data['listPolr044w'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd as [CURRENCY],lineSortSeq as [LINE SORT SEQ], lineCd as [LINE],'+
-          'amtRangeDesc as [SI RANGE], negFmt(quotIssCnt) as [QUOTED], negFmt(quotConvCnt) as [WRITTEN]';
+          'siRange as [SI RANGE],amtRangeDesc as [SI RANGE], negFmt(quotIssCnt) as [QUOTED], negFmt(quotConvCnt) as [WRITTEN]';
         }else if(this.params.reportId == 'POLR044X'){
           this.passDataCsv = data['listPolr044x'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd as [LINE],'+
