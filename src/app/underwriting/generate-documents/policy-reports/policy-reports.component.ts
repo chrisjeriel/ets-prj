@@ -1059,7 +1059,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044W'){
           this.passDataCsv = data['listPolr044w'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd as [CURRENCY],lineSortSeq as [LINE SORT SEQ], lineCd as [LINE],'+
-          'siRange as [SI RANGE],amtRangeDesc as [SI RANGE], negFmt(quotIssCnt) as [QUOTED], negFmt(quotConvCnt) as [WRITTEN]';
+          'siRange as [SI RANGE],amtRangeDesc as [SI RANGE DESC], negFmt(quotIssCnt) as [QUOTED], negFmt(quotConvCnt) as [WRITTEN]';
         }else if(this.params.reportId == 'POLR044X'){
           this.passDataCsv = data['listPolr044x'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],lineCd as [LINE],'+
@@ -1082,8 +1082,7 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044z'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], policyId as [POLICY ID], policyNo as [POLICY NO],'+
           'currencyCd as [CURRENCY CD], myFormat(bookingDate) as [BOOKING DATE],negFmt(pctShare) as [% SHARE],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(tsiAmt)) as [TSI AMT],'+
-          'negFmt(currency(hundredPremAmt)) as [HUNDRED PREM AMT], negFmt(currency(hundredTsiAmt)) as [HUNDRED TSI AMT],negFmt(currency(localPremAmt)) as [LOCAL PREM AMT],negFmt(currency(localTsiAmt)) as [LOCAL TSI AMT],'+
-          'negFmt(currency(hundredLocalPremAmt)) as [HUNDRED LOCAL PREM AMT],negFmt(currency(hundredLocalTsiAmt)) as [HUNDRED LOCAL TSI AMT],negFmt(currency(mioPremAmt)) as [MIO PREM AMT],'+
+          'negFmt(currency(hundredPremAmt)) as [HUNDRED PREM AMT], negFmt(currency(hundredTsiAmt)) as [HUNDRED TSI AMT],negFmt(currency(mioPremAmt)) as [MIO PREM AMT],'+
           'negFmt(currency(mioTsiAmt)) as [MIO TSI AMT],negFmt(currency(hundredMioPremAmt)) as [HUNDRED MIO PREM AMT], negFmt(currency(hundredMioTsiAmt)) as [HUNDRED MIO TSIAMT]';
         }
         console.log(this.passDataCsv);
