@@ -139,7 +139,7 @@ export class ClaimReportsComponent implements OnInit {
         this.paramsToggle = [];
         this.params = {
                         dateRange: '',
-                        dateParam:'',
+                        dateParam:'10',
                         reportName : '',
                         byDateFrom:'',
                         byDateTo:'',
@@ -164,6 +164,11 @@ export class ClaimReportsComponent implements OnInit {
                       };
         this.params.reportId = data.data.reportId;
         this.params.reportName = data.data.reportTitle;
+        if(this.params.reportName.toLowerCase().indexOf('o/s') != -1 || this.params.reportName.toLowerCase().indexOf('outstanding') != -1){
+          this.params.dateRange = '3'
+        }else{
+          this.params.dateRange = '2'
+        }
 
 
         // if (this.repExtractions.indexOf(this.params.reportId) > -1) {
@@ -205,13 +210,15 @@ export class ClaimReportsComponent implements OnInit {
         this.paramsToggle.push('clmEvent')
       }
 
-    setTimeout(()=> {
-    	this.ns.lovLoader(data.ev, 0);
-    }, 500);
+      setTimeout(()=> {
+      	this.ns.lovLoader(data.ev, 0);
+      }, 500);
     } else {
       this.params.reportId = '';
       this.params.reportName = '';
+      this.params.dateParam = '';
       this.paramsToggle = [];
+      this.params.dateRange = '';
       this.extractDisabled = true;
       this.resetDates();
     }
@@ -440,7 +447,8 @@ export class ClaimReportsComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          // return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){

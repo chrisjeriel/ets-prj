@@ -85,6 +85,7 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044F',
                         'POLR044G',
                         'POLR044H',
+                        'POLR044HA',
                         'POLR044I',
                         'POLR044J',
                         'POLR044J_ISS',
@@ -243,7 +244,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.incRecTag = 'D';
       this.checkMonthYear();
     } 
-    else if(this.params.reportId == 'POLR044H'){
+    else if(this.params.reportId == 'POLR044H' || this.params.reportId == 'POLR044HA'){
       this.paramsToggle.push('bookingDate', 'accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
@@ -433,7 +434,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044H'){
+    }else if(this.params.reportId == 'POLR044H' || this.params.reportId == 'POLR044HA' ){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -922,7 +923,8 @@ export class PolicyReportsComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          // return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
