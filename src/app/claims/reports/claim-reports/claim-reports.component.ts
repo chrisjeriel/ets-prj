@@ -591,6 +591,34 @@ export class ClaimReportsComponent implements OnInit {
           'lineCd as [LINE],refYear as [REF YEAR],negFmt(currency(premAmt)) as [PREMIUM],negFmt(osQty) as [OS QTY],negFmt(currency(osAmt)) as [OS AMT],'+
           'negFmt(pdQty) as [PAID QTY], negFmt(currency(pdAmt)) as [PAID AMT], negFmt(totalClmQty) as [TOTAL CLAIM QTY],negFmt(currency(totalClmAmt)) as [TOTAL CLAIM AMT],'+
           'incurredYear as [INCURED YEAR],negFmt(incurredQty) as [INCURED QTY], negFmt(currency(incurredAmt)) as [INCURED AMT],negFmt(lossRatio) as [U/W YEAR LOSS RATIO]';
+        }else if(this.params.reportId == 'CLMR010BE'){
+          this.passDataCsv = data['listClmr010be'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE], claimId as [CLAIM ID],'+
+          'claimNo as [CLAIM NO],lineCd as [LINE], myFormat(lossDate) as [LOSS DATE], currencyCd as [CURRENCY], bookingMth AS [BOOKING MONTH],'+
+          'bookingYear as [BOOKING YEAR],histType as [HIST TYPE], histTypeDesc as [RESERVE STATUS], histCategory as [HIST CATEGORY], histCatDesc as [HIST CATEGORY DESC],'+
+          'negFmt(currency(lossOs)) as [LOSS OS],isNull(clmCoRefNo) as [COMPANY CLAIM NO],isNull(adjRefNo) as [ADJUSTER REF NO],isNull(adjName) as [ADJUSTER],'+
+          'cedingName as [COMPANY],policyNo as [POLICY NO],isNull(polCoRefNo) as [COMPANY POLICY NO],insuredDesc as [INSURED],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],'+
+          'lossAbbr as [NATURE OF LOSS]'
+        }else if(this.params.reportId == 'CLMR010NE'){
+          this.passDataCsv = data['listClmr010ne'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],claimId as [CLAIM ID],'+
+          'claimNo as [CLAIM NO],myFormat(createDate) AS [CREATE DATE], bookingMth AS [BOOKING MONTH],bookingYear as [BOOKING YEAR],histCategory as [HIST CATEGORY], histCatDesc as [HIST CATEGORY DESC],'+
+          'lineCd as [LINE], currencyCd as [CURRENCY], negFmt(currency(lossPaid)) as [LOSS PAID], isNull(adjId) as [ADJUSTER ID],isNull(adjName) as [ADJUSTER NAME],'+
+          'cedingId || "-" || cedingName as [COMPANY], policyId as [POLICY ID], policyNo as [POLICY NO],isNull(insuredDesc) as [INSURED],isNull(polCoRefNo) as [COMPANY POLICY NO],'+
+          'negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS]';
+        }else if(this.params.reportId == 'CLMR010ME'){
+          this.passDataCsv = data['listClmr010me'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],claimId as [CLAIM ID],'+
+          'claimNo as [CLAIM NO],lineCd as [LINE], myFormat(lossDate) as [LOSS DATE],currencyCd as [CURRENCY],histCategory as [HIST CATEGORY], histCatDesc as [HIST CATEGORY DESC],'+
+          'negFmt(currency(lossOs)) as [LOSS OS],isNull(adjId) as [ADJUSTER ID],isNull(adjName) as [ADJUSTER NAME],cedingId || "-" || cedingName as [COMPANY], policyId as [POLICY ID], policyNo as [POLICY NO],'+
+          'isNull(insuredDesc) as [INSURED],isNull(polCoRefNo) as [COMPANY POLICY NO],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS]';
+        }else if(this.params.reportId == 'CLMR010Y'){
+          this.passDataCsv = data['listClmr010y'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],claimId as [CLAIM ID],'+
+          'laimNo as [CLAIM NO],lineCd as [LINE], myFormat(lossDate) as [LOSS DATE], lossYear as [LOSS YEAR],currencyCd as [CURRENCY], negFmt(currency(lossOs)) as [LOSS OS],'+
+          'isNull(adjId) as [ADJUSTER ID],isNull(adjName) as [ADJUSTER NAME],cedingId || "-" || cedingName as [COMPANY],policyId as [POLICY ID], policyNo as [POLICY NO],'+
+          'isNull(insuredDesc) as [INSURED],isNull(polCoRefNo) as [COMPANY POLICY NO],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
+          'negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS]';
         }
 
         console.log(this.passDataCsv);
