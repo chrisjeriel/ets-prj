@@ -145,6 +145,8 @@ export class MtnApprovalFunctionComponent implements OnInit {
       this.disabledFlag = false;
       this.approvalCd = data.approvalCd
       this.approvalDetails = data;
+      this.approvalDetails.updateUser = data.updateUser;
+      this.approvalDetails.createUser = data.createUser;
       this.approvalDetails.updateDate = this.ns.toDateTimeString(data.updateDate);
       this.approvalDetails.createDate = this.ns.toDateTimeString(data.createDate);
     }  
