@@ -4,6 +4,7 @@ import { UnderwritingService, NotesService } from '../../../_services';
 import { MtnIntermediaryComponent } from '@app/maintenance/mtn-intermediary/mtn-intermediary.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { FormsModule }   from '@angular/forms';
+import { CustEditableNonDatatableComponent, SucessDialogComponent, ModalComponent, ConfirmSaveComponent, LovComponent} from '@app/_components/common';
 
 @Component({
   selector: 'app-pol-gen-info-open-cover',
@@ -25,6 +26,9 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
   @ViewChild(MtnIntermediaryComponent) intermediaryLov: MtnIntermediaryComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild('myForm') form:any;
+  @ViewChild('mainSuccess') mainSuccess : SucessDialogComponent;
+  @ViewChild('mainCancel') mainCancel : CancelButtonComponent;
+  @ViewChild('mainConfirmSave') mainConfirmSave : ConfirmSaveComponent;
 
   currentUser: string = JSON.parse(window.localStorage.currentUser).username;
 
@@ -155,6 +159,12 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     //this.line = 'EAR';
     this.loading = true;
     this.retrievePolGenInfoOc(this.policyInfo.policyIdOc, this.policyInfo.policyNo);
+    if(this.policyInfo.fromInq =='true'){
+      this.passDataDeductibles.addFlag = false;
+      this.passDataDeductibles.deleteFlag = false;
+      this.passDataDeductibles.checkFlag = false;
+      this.passDataDeductibles.uneditable = [true,true,true,true,true,true]
+    }
   }
 
   showItemInfoModal(content) {
@@ -311,7 +321,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
       //this.dialogMessage = 'Please fill all required fields';
       this.dialogIcon = 'error';
-      $('#successDialog #modalBtn').trigger('click');
+      this.mainSuccess.open();
     }else{
       this.saveParams = {
         "acctDate": this.genInfoOcData.acctDate,
@@ -371,7 +381,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
 
       };
       if(fromCancel === undefined){
-        $('#confirm-save #modalBtn2').trigger('click');
+        this.mainConfirmSave.confirmModal();
       }else{
         this.saveQuoteGenInfoOc('save');
       }
@@ -390,7 +400,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.dialogMessage = 'An unspecified error has occured';
-          $('#successDialog #modalBtn').trigger('click'); 
+          this.mainSuccess.open();
           if(this.cancelFlag){
             this.cancelFailed = true;
           }else{
@@ -401,7 +411,7 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
           this.cancelFailed = false;
           this.dialogIcon = '';
           this.dialogMessage = '';
-          $('#successDialog #modalBtn').trigger('click'); 
+          this.mainSuccess.open();
           this.form.control.markAsPristine();
           this.ns.formGroup.markAsPristine();
         }
@@ -453,4 +463,164 @@ export class PolGenInfoOpenCoverComponent implements OnInit {
     this.expiryDateParams.date = this.ns.toDateTimeString(d).split('T')[0];
   }
 
+  // Add deductibles
+
+  passDataDeductibles: any = {
+    tHeader: ["Deductible Code","Deductible Title", "Deductible Text", "Rate(%)", "Amount"],
+    dataTypes: ["text","text","text", "percent", "currency"],
+    pageLength:10,
+    addFlag: true,
+    deleteFlag: true,
+    searchFlag: true,
+    checkFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    widths: [1, 1, 1, 1, 1, 1],
+    magnifyingGlass: ['deductibleCd'],
+    keys:['deductibleCd','deductibleTitle','deductibleTxt','deductibleRt','deductibleAmt'],
+    tableData:[],
+    pageID:'deductibles',
+    nData: {
+      "coverCd": 0,
+      "createDate": this.ns.toDateTimeString(0),
+      "createUser": this.ns.getCurrentUser(),
+      "deductibleAmt": 0,
+      "deductibleCd": null,
+      "deductibleRt": 0,
+      "deductibleTxt": '',
+      "endtCd": "0",
+      "updateDate": this.ns.toDateTimeString(0),
+      "updateUser":this.ns.getCurrentUser(),
+      showMG : 1
+    },
+    uneditable: [true,true,false,false,false]
+  };
+
+
+  @ViewChild('dedCancel') dedCancelBtn : CancelButtonComponent;
+  @ViewChild('deductiblesTable') deductiblesTable :CustEditableNonDatatableComponent;
+  @ViewChild('deductiblesModal') deductiblesModal :ModalComponent;
+  @ViewChild('dedSuccess') successDlg: SucessDialogComponent;
+  @ViewChild('dedConSave') dedConSave: ConfirmSaveComponent;
+  @ViewChild(LovComponent) lov: LovComponent;
+
+  lovCheckBox: Boolean = true;
+  passLOVData:any = {
+    selector: '',
+
+  }
+
+  showDeductiblesModal(deductibles){
+    // setTimeout(()=>{this.getDeductibles();},0);
+    // this.modalService.open(deductibles, { centered: true, backdrop: 'static', windowClass: "modal-size" });
+    this.getDeductibles();
+    this.deductiblesModal.openNoClose();
+  }
+
+  getDeductibles(){
+    //this.deductiblesTable.loadingFlag = true;
+    let params : any = {
+      policyId:this.policyInfo.policyIdOc,
+      policyNo:'',
+      coverCd:0,
+      endtCd: 0
+    }
+    this.underwritingService.getPolDeductiblesOc(params).subscribe(data=>{
+      console.log(data);
+      if(data['policy']!==null){
+        this.passDataDeductibles.tableData = data['policy']['deductibles'].filter(a=>{
+          a.createDate = this.ns.toDateTimeString(a.createDate);
+          a.updateDate = this.ns.toDateTimeString(a.updateDate);
+          a.updateUser = JSON.parse(window.localStorage.currentUser).username;
+          return true;
+        });
+      }
+      else
+        this.passDataDeductibles.tableData = [];
+      this.deductiblesTable.refreshTable();
+      this.deductiblesTable.markAsPristine();
+    });
+  }
+
+  saveDeductibles(cancel?){
+    let params:any = {
+      policyId:this.policyInfo.policyIdOc,
+      saveDeductibleList: [],
+      deleteDeductibleList:[]
+    };
+    params.saveDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && !a.deleted && a.deductibleCd!==null);
+    params.deleteDeductibleList = this.passDataDeductibles.tableData.filter(a=>a.edited && a.deleted && a.deductibleCd!==null);
+    
+    for(let ded of params.saveDeductibleList){
+      if((isNaN(ded.deductibleRt) || ded.deductibleRt=="" || ded.deductibleRt==null) && (isNaN(ded.deductibleAmt) || ded.deductibleAmt=="" || ded.deductibleAmt==null)){
+        this.dialogIcon = "error";
+        setTimeout(a=>this.successDlg.open(),0);
+        return null;
+      }
+    }
+    //this.deductiblesTable.loadingFlag = true;
+    this.underwritingService.savePolDeductiblesOc(params).subscribe(data=>{
+        if(data['returnCode'] == -1){
+          this.dialogIcon = '';
+          this.successDlg.open();
+          if(cancel == undefined)
+            this.getDeductibles();
+          else
+            this.deductiblesModal.closeModal();
+        }else{
+          this.deductiblesTable.loadingFlag = false;
+          this.dialogIcon = 'error';
+          this.successDlg.open();
+        }
+      });
+  }
+
+  onDedCancel(){
+      if(this.passDataDeductibles.tableData.filter(a=>a.edited || a.deleted).length != 0 ){
+        this.dedCancelBtn.saveModal.openNoClose();
+      }else{
+        this.deductiblesModal.closeModal();
+      }
+    }
+
+
+   clickDeductiblesLOV(data){
+    if(data.key=="deductibleCd"){
+      this.lovCheckBox = true;
+      this.passLOVData.selector = 'deductibles';
+      this.passLOVData.lineCd = this.genInfoOcData.lineCd;
+      this.passLOVData.params = {
+        coverCd : 0,
+        endtCd: '0',
+        activeTag:'Y'
+      }
+      this.passLOVData.hide = this.passDataDeductibles.tableData.filter((a)=>{return !a.deleted}).map(a=>a.deductibleCd);
+    }
+    this.form.control.markAsDirty();
+    this.lov.openLOV();
+  }
+
+
+  setSelected(data){
+    if(data.selector == 'deductibles'){
+      this.passDataDeductibles.tableData = this.passDataDeductibles.tableData.filter(a=>a.showMG!=1);
+      for(var i = 0; i<data.data.length;i++){
+        this.passDataDeductibles.tableData.push(JSON.parse(JSON.stringify(this.passDataDeductibles.nData)));
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTitle = data.data[i].deductibleTitle;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleRt = data.data[i].deductibleRate;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleAmt = data.data[i].deductibleAmt;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleTxt = data.data[i].deductibleText;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].edited = true;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length -1].deductibleCd = data.data[i].deductibleCd;
+        this.passDataDeductibles.tableData[this.passDataDeductibles.tableData.length - 1].showMG = 0;
+      }
+    }
+    this.deductiblesTable.refreshTable();
+  }
+
+  onClickOkDed(){
+    if(this.cancelFlag && this.dialogIcon != 'error'){
+     this.dedCancelBtn.onNo()
+    }
+  }
 }
