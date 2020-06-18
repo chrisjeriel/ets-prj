@@ -657,7 +657,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
                  editedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
                  editedDedt[editedDedt.length - 1].createDate = this.ns.toDateTimeString(editedDedt[editedDedt.length - 1].createDate)
                  editedDedt[editedDedt.length - 1].updateDate = this.ns.toDateTimeString(editedDedt[editedDedt.length - 1].updateDate)
-                 editedDedt[editedData.length - 1].updateUser = this.ns.getCurrentUser(); 
+                 editedDedt[editedDedt.length - 1].updateUser = this.ns.getCurrentUser(); 
                }else if(this.passDataSectionCover.tableData[i].deductiblesSec[j].deleted){
                  deletedDedt.push(this.passDataSectionCover.tableData[i].deductiblesSec[j]);
                }
