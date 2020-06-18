@@ -598,7 +598,7 @@ export class ClaimReportsComponent implements OnInit {
           'bookingYear as [BOOKING YEAR],histType as [HIST TYPE], histTypeDesc as [RESERVE STATUS], histCategory as [HIST CATEGORY], histCatDesc as [HIST CATEGORY DESC],'+
           'negFmt(currency(lossOs)) as [LOSS OS],isNull(clmCoRefNo) as [COMPANY CLAIM NO],isNull(adjRefNo) as [ADJUSTER REF NO],isNull(adjName) as [ADJUSTER],'+
           'cedingName as [COMPANY],policyNo as [POLICY NO],isNull(polCoRefNo) as [COMPANY POLICY NO],insuredDesc as [INSURED],negFmt(currency(insuredClm)) as [INSURED CLAIM],negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],'+
-          'lossAbbr as [NATURE OF LOSS]'
+          'negFmt(currency(origResAmt)) as [ORIGINAL RESERVE],negFmt(currency(revResAmt)) as [REVISED RESERVE],lossAbbr as [NATURE OF LOSS]'
         }else if(this.params.reportId == 'CLMR010NE'){
           this.passDataCsv = data['listClmr010ne'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],claimId as [CLAIM ID],'+

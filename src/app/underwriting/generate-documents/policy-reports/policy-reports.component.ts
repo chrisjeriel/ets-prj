@@ -1011,7 +1011,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044M'){
           this.passDataCsv = data['listPolr044m'];
            query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFromTo) AS [AS OF],currencyCd AS [CURRENCY],'+
-           'TO_NUMBER(zoneCd) as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
+           'negFmt(zoneCd) as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
            'negFmt(currency(avRiskAmt)) as [ACTUAL VALUE at RISK]';
         }else if(this.params.reportId == 'POLR044N'){
           this.passDataCsv = data['listPolr044n'];
@@ -1035,14 +1035,14 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044P'){
           this.passDataCsv = data['listPolr044p'];
           query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [DATE], cedingId || "-" || cedingName as [COMPANY],lineCd as [LINE],currencyCd as [CURRENCY],'+
-          'TO_NUMBER(zoneCd) as [ZONE], negFmt(currency(siAmtDist)) as [SUM INSURED], treatyCompany as [TREATY COMPANY]';
+          'negFmt(zoneCd) as [ZONE], negFmt(currency(siAmtDist)) as [SUM INSURED], treatyCompany as [TREATY COMPANY]';
         }else if(this.params.reportId == 'POLR044Q'){
           this.passDataCsv = data['listPolr044q'];
           // query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [DATE], cedingId || "-" || cedingName as [COMPANY],lineCd as [LINE],currencyCd as [CURRENCY],'+
-          // 'TO_NUMBER(zoneCd) as [ZONE], negFmt(currency(siAmtDist)) as [SUM INSURED], treatyCompany as [TREATY COMPANY]';
+          // 'negFmt(zoneCd) as [ZONE], negFmt(currency(siAmtDist)) as [SUM INSURED], treatyCompany as [TREATY COMPANY]';
           query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(cedingIdParam) as [CEDING ID PARAM], myFormat(inceptDate) as [INCEPT DATE],'+
           'myFormat(expiryDate) as [EXPIRY DATE], lineCd as [LINE], policyId as [POLICY ID], policyNo as [POLICY NO], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME],'+
-          'TO_NUMBER(zoneCd) as [ZONE CD], currencyCd as [CURRENCY], negFmt(currency(siAmt)) as [SI AMT], negFmt(currency(accumSiAmt)) as [ACCUM SI AMT], negFmt(currency(premAmt)) as [PREM AMT],'+
+          'negFmt(zoneCd) as [ZONE CD], currencyCd as [CURRENCY], negFmt(currency(siAmt)) as [SI AMT], negFmt(currency(accumSiAmt)) as [ACCUM SI AMT], negFmt(currency(premAmt)) as [PREM AMT],'+
           'negFmt(currency(accumPremAmt)) as [ACCUM PREM AMT], treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TREATY CED ID],'+
           'isNull(treatyCompany) as [TREATY COMPANY], isNull(retLayer) as [RET LAYER], isNull(retName) as [RET NAME], isNull(distGrp) AS [DIST GRP]';
         }else if(this.params.reportId == 'POLR044R'){
