@@ -104,7 +104,19 @@ export class CedingCompaniesListComponent implements OnInit {
 
     onRowClick(data){
       console.log(data);
-        this.selected = data;
+      this.selected = data;
+
+      if(data !== null){
+        this.selected.updateUser = data.updateUser;
+        this.selected.createUser = data.createUser;
+        this.selected.updateDate = this.ns.toDateTimeString(data.updateDate);
+        this.selected.createDate = this.ns.toDateTimeString(data.createDate);
+      }else{
+        this.selected.createUser = '';
+        this.selected.updateUser = '';
+        this.selected.updateDate = '';
+        this.selected.createDate = '';
+      }  
     }
 
     onRowDblClick(data){
