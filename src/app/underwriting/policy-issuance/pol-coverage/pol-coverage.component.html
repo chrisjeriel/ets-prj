@@ -118,11 +118,11 @@
                   </div>
                   <div class="input-group" style="margin-bottom: -13px !important">
                    <label class="form-control-sm col-sm-5">Share(%) of 100% Value</label>
-                   <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageData.pctShare" (ngModelChange)="pctShare($event)" (blur)="checkPctShare()" style="text-align: right !important" appRequired appOtherRates name="coverageData.pctShare">
+                   <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageData.pctShare" (ngModelChange)="pctShare($event)" (blur)="checkPctShare()" style="text-align: right !important" appRequired appOtherRates name="coverageData.pctShare" [disabled]="policyInfo.openCoverTag == 'Y'">
                  </div>
                  <div class="input-group" style="margin-bottom: -6px !important">
                    <label class="form-control-sm  col-sm-5" style="margin-bottom: 1px;">100% Value</label>
-                   <input type="text" class="form-control form-control-sm calc col-sm" [(ngModel)]="coverageData.totalValue"  style="text-align: right !important" (ngModelChange)="totalValue($event)" (blur)="checktotalValue()" appRequired appCurrency name="coverageData.totalValue">
+                   <input type="text" class="form-control form-control-sm calc col-sm" [(ngModel)]="coverageData.totalValue"  style="text-align: right !important" (ngModelChange)="totalValue($event)" (blur)="checktotalValue()" appRequired appCurrency name="coverageData.totalValue" [disabled]="policyInfo.openCoverTag == 'Y'">
                    
                  </div>
                  <div class="input-group" style="margin-bottom: -6px !important">
@@ -360,14 +360,14 @@
             </div>
             <div class="input-group" style="margin-bottom: -13px !important">
              <label class="form-control-sm col-sm-3">Share(%) of 100% Value</label>
-             <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)" name="altCoverageData.pctShare">
+             <input type="text" class="form-control form-control-sm req" appOtherRates appRequired [(ngModel)] = "altCoverageData.pctShare" (blur)="checkPctShare()" (ngModelChange)="pctShare($event)" name="altCoverageData.pctShare" [disabled]="policyInfo.openCoverTag == 'Y'">
              <label class="form-control-sm col-sm-2">PML(%)</label>
              <input type="text" class="form-control form-control-sm req" appOtherRates [ngModel] = "altCoverageData.pctPml" (ngModelChange)="altCoverageData.pctPml = $event" name="altCoverageData.pctPml">
              <span class="col-sm-1"></span>
            </div>
            <div class="input-group" style="margin-bottom: -6px !important">
              <label class="form-control-sm col-sm-3">100% Values</label>
-             <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue($event)" (blur)="checktotalValue()" name="altCoverageData.totalValue">
+             <input type="text" class="form-control form-control-sm calc" appCurrency appRequired [(ngModel)] = "altCoverageData.totalValue"  (ngModelChange) = "totalValue($event)" (blur)="checktotalValue()" name="altCoverageData.totalValue" [disabled]="policyInfo.openCoverTag == 'Y'">
              <span class="col-sm-1"></span>
            </div>
          </div>

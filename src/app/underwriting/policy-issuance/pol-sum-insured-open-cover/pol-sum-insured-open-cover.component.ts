@@ -201,7 +201,17 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
       }
     }
 
-    if(this.errorFlag){
+    if(this.coverageInfo.totalSi > parseFloat(this.coverageInfo.totalValue.toString().split(',').join(''))){
+      if(['EEI', 'MBI' , 'BPV'].includes(this.line)){
+        this.promptMessage = "Max sum insured of the policy exceeded the new replacement value of the project.";
+      }else if(['DOS','MLP'].includes(this.line)){
+        this.promptMessage = "Max sum insured of the policy exceeded the annual sum insured of the project.";
+      }else{
+        this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";  
+      }
+      this.promptType = "totalval";
+      this.mdl.open();
+    }else if(this.errorFlag){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Please check Sum Insured.';
       this.successDiag.open();
@@ -484,18 +494,7 @@ export class PolSumInsuredOpenCoverComponent implements OnInit {
 
       this.getEditableCov();
 
-      if(this.coverageInfo.totalSi > parseFloat(this.coverageInfo.totalValue.toString().split(',').join(''))){
-        if(['EEI', 'MBI' , 'BPV'].includes(this.line)){
-          this.promptMessage = "Max sum insured of the policy exceeded the new replacement value of the project.";
-        }else if(['DOS','MLP'].includes(this.line)){
-          this.promptMessage = "Max sum insured of the policy exceeded the annual sum insured of the project.";
-        }else{
-          this.promptMessage = "Max sum insured of the policy exceeded the total contract value of the project.";  
-        }
-        
-        this.promptType = "totalval";
-        this.mdl.open();
-      }
+
     }
 
     getEditableCov(){
