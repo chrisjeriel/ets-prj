@@ -14,9 +14,9 @@ export class BatchMoveBookingDateComponent implements OnInit {
 
   passData: any = {
         tableData: [],
-        tHeader: ['Policy No.', 'Inst. No.', 'Booking Date', 'Distribution Status','With Installment','Type of Cession', 'Created By', 'Sum Insured', 'Premium','Insured'],
-        dataTypes: ['text','number','date','text','checkbox','text','text','currency','currency','text'],
-        keys: ['policyNo','instNo','bookingDate','distStatus','withInst','cessionDesc',
+        tHeader: ['Policy No.', 'Inst. No.', 'Booking Date', 'Distribution Status', 'Policy Status','With Installment','Type of Cession', 'Created By', 'Sum Insured', 'Premium','Insured'],
+        dataTypes: ['text','number','date','text','text','checkbox','text','text','currency','currency','text'],
+        keys: ['policyNo','instNo','bookingDate','distStatus','policyStatus','withInst','cessionDesc',
             'createUser','totalSi','totalPrem','insuredDesc',],
         filters: [
             {

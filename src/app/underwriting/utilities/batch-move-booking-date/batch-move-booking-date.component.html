@@ -9,6 +9,9 @@
                         <fieldset class="scheduler-border" style="margin-top: 12px !important; padding-top: 3px !important; padding-bottom: 25px !important;">
                             <div class="input-group text-center" style="margin-bottom: -14px !important;">
                                 <div class="w-100 text-center" >
+                                        <input type="radio" name="distStatus" id="inProg" value="I" style="vertical-align: middle;" [(ngModel)]="searchParams.distStatus" (change)="getPolicyListing()">
+                                        <label for="statNw" class="text-left cust-mg">&nbsp;In Progress</label>
+
                                         <input type="radio" name="distStatus" id="statNw" value="U" style="vertical-align: middle;" [(ngModel)]="searchParams.distStatus" (change)="getPolicyListing()">
                                         <label for="statNw" class="text-left cust-mg">&nbsp;Undistributed</label>
 
