@@ -1001,12 +1001,12 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(ret1VatRiComm)) AS [1st RET VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET COMM],'+
           'negFmt(currency(ret2VatRiComm)) AS [2nd RET VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET NET DUE]';
         }else if(this.params.reportId == 'POLR044JA'){
-          this.passDataCsv = data['listPolr044ja'];
-          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
-          'incRecTag as [INC REC TAG], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [COMPANY], isNull(tranType) as [TRAN TYPE], isNull(TRAN TYPE DESC) AS [TRAN TYPE DESC],'+
-          'policyId as [POLICY ID], policyNo || " / " || instNo as [POLICY NO/INST NO], isNull(insuredDesc) as [INSURED DESC], isNull(sortSeq) as [SORT SEQ],'+
-          'negFmt(currency(ret1PremAmt)) as [RET1 PREM AMT],negFmt(currency(ret1CommAmt)) as [RET1 COMM AMT], negFmt(currency(ret1VatRiComm)) as [RET1 VAT RI COMM], negFmt(currency(ret1NetDue)) as [RET1 NET DUE],'+
-          'negFmt(currency(ret2PremAmt)) as [RET2 PREM AMT],negFmt(currency(ret2CommAmt)) as [RET2 COMM AMT], negFmt(currency(ret2VatRiComm)) as [RET2 VAT RI COMM], negFmt(currency(ret2NetDue)) as [RET2 NET DUE]';
+          // this.passDataCsv = data['listPolr044ja'];
+          // query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
+          // 'incRecTag as [INC REC TAG], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [COMPANY], isNull(tranType) as [TRAN TYPE], isNull(TRAN TYPE DESC) AS [TRAN TYPE DESC],'+
+          // 'policyId as [POLICY ID], policyNo || " / " || instNo as [POLICY NO/INST NO], isNull(insuredDesc) as [INSURED DESC], isNull(sortSeq) as [SORT SEQ],'+
+          // 'negFmt(currency(ret1PremAmt)) as [RET1 PREM AMT],negFmt(currency(ret1CommAmt)) as [RET1 COMM AMT], negFmt(currency(ret1VatRiComm)) as [RET1 VAT RI COMM], negFmt(currency(ret1NetDue)) as [RET1 NET DUE],'+
+          // 'negFmt(currency(ret2PremAmt)) as [RET2 PREM AMT],negFmt(currency(ret2CommAmt)) as [RET2 COMM AMT], negFmt(currency(ret2VatRiComm)) as [RET2 VAT RI COMM], negFmt(currency(ret2NetDue)) as [RET2 NET DUE]';
         }else if(this.params.reportId == 'POLR044K'){
           this.passDataCsv = data['listPolr044k'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
