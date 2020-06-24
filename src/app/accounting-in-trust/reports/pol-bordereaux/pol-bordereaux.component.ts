@@ -483,6 +483,26 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(commFacul)) as [COMM FACUL], totalVatri as [TOTAL RI COMM VAT],negFmt(currency(vatriQuota)) as [RI COMM VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI COMM VAT 1st RET],'+
           'negFmt(currency(vatri2ndRet)) as [RI COMM VAT 2nd RET], negFmt(currency(vatri1stSurplus)) as [RI COMM VAT 1st SURPLUS],negFmt(currency(vatri2ndSurplus)) as [RI COMM VAT 2nd SURPLUS],'+
           'negFmt(currency(vatriFacul)) as [RI COMM VAT FACUL]';
+        }else if(this.params.reportId == 'POLR052AA'){
+          this.passDataCsv = data['listPolr052aa'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],currencyCd as [CURRENCY],'+
+          'lineCd as [LINE], policyId as [POLICY ID], policyNo || "/" || instNo as [POLICY NO/INST NO],'+
+          'negFmt(currency(premQsMre)) as [PREM QS MRe], negFmt(currency(premQsNre)) as [PREM QS NRe], negFmt(currency(premQsRet1)) as [PREM QS RET1], negFmt(currency(premQsRet2)) as [PREM QS RET2],'+
+          'negFmt(currency(prem1spMre)) as [PREM 1st SP MRe], negFmt(currency(prem1spNre)) as [PREM 1st SP NRe], negFmt(currency(prem2spMre)) as [PREM 2nd SP MRe], negFmt(currency(prem2spNre)) as [PREM 2nd SP NRe],'+
+          'negFmt(currency(premFaculMre)) as [PREM FACUL MRe],'+
+          'negFmt(currency(commQsMre)) as [COMM QS MRe], negFmt(currency(commQsNre)) as [COMM QS NRe], negFmt(currency(commQsRet1)) as [COMM QS RET1], negFmt(currency(commQsRet2)) as [COMM QS RET2],'+
+          'negFmt(currency(comm1spMre)) as [COMM 1st SP MRe], negFmt(currency(comm1spNre)) as [COMM 1st SP NRe], negFmt(currency(comm2spMre)) as [COMM 2nd SP MRe], negFmt(currency(comm2spNre)) as [COMM 2nd SP NRe],'+
+          'negFmt(currency(commFaculMre)) as [COMM FACUL MRe],'+
+          'negFmt(currency(vatriQsMre)) as [VAT RI QS MRe], negFmt(currency(vatriQsNre)) as [VAT RI QS NRe], negFmt(currency(vatriQsRet1)) as [VAT RI QS RET1], negFmt(currency(vatriQsRet2)) as [VAT RI QS RET2],'+
+          'negFmt(currency(vatri1spMre)) as [VAT RI 1st SP MRe], negFmt(currency(vatri1spNre)) as [VAT RI 1st SP NRe], negFmt(currency(vatri2spMre)) as [VAT RI 2nd SP MRe], negFmt(currency(vatri2spNre)) as [VAT RI 2nd SP NRe],'+
+          'negFmt(currency(vatriFaculMre)) as [VAT RI FACUL MRe],'+
+          'negFmt(currency(netbalQsMre)) as [NET BAL QS MRe], negFmt(currency(netbalQsNre)) as [NET BAL QS NRe], negFmt(currency(netbalQsRet1)) as [NET BAL QS RET1], negFmt(currency(netbalQsRet2)) as [NET BAL QS RET2],'+
+          'negFmt(currency(netbal1spMre)) as [NET BAL 1st SP MRe], negFmt(currency(netbal1spNre)) as [NET BAL 1st SP NRe], negFmt(currency(netbal2spMre)) as [NET BAL 2nd SP MRe], negFmt(currency(netbal2spNre)) as [NET BAL 2nd SP NRe],'+
+          'negFmt(currency(netbalFaculMre)) as [NET BAL FACUL MRe],'+
+          'negFmt(currency(totalPremMre)) as [TOTAL PREM MRe], negFmt(currency(totalPremNre)) as [TOTAL PREM NRe], negFmt(currency(totalPremCedants)) as [TOTAL PREM CEDANTS], negFmt(currency(totalPrem)) as [TOTAL PREMIUM],'+
+          'negFmt(currency(totalCommMre)) as [TOTAL COMM MRe], negFmt(currency(totalCommNre)) as [TOTAL COMM NRe], negFmt(currency(totalCommCedants)) as [TOTAL COMM CEDANTS], negFmt(currency(totalComm)) as [TOTAL COMM],'+
+          'negFmt(currency(totalVatriMre)) as [TOTAL VAT RI MRe], negFmt(currency(totalVatriNre)) as [TOTAL VAT RI NRe], negFmt(currency(totalVatriCedants)) as [TOTAL VAT RI CEDANTS], negFmt(currency(totalVatri)) as [TOTAL VAT RI],'+
+          'negFmt(currency(totalNetbalMre)) as [TOTAL NET BAL MRe], negFmt(currency(totalNetbalNre)) as [TOTAL NET BAL NRe], negFmt(currency(totalNetbalCedants)) as [TOTAL NET BAL CEDANTS], negFmt(currency(totalNetbal)) as [TOTAL NET BAL]';
         }else if(this.params.reportId == 'POLR052B'){
           this.passDataCsv = data['listPolr052b'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo as [POLICY NO],instNo as [INST NO],'+
@@ -496,6 +516,28 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(totalVatri)) as [TOTAL RI VAT],negFmt(currency(vatriQuota)) as [RI VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI VAT 1st RET],'+
           'negFmt(currency(vatri2ndRet)) as [RI VAT 2ND RET],negFmt(currency(vatri1stSurplus)) as [RI VAT 1ST SURPLUS],negFmt(currency(vatri2ndSurplus)) as [RI VAT 2ND SURPLUS],'+
           'negFmt(currency(vatriFacul)) as [RI VAT FACUL]';
+        }else if(this.params.reportId == 'POLR052BA'){
+          this.passDataCsv = data['listPolr052ba'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],currencyCd as [CURRENCY],'+
+          'lineCd as [LINE], policyId as [POLICY ID], policyNo || "/" || instNo as [POLICY NO/INST NO], isNull(coRefNo) as [CO REF NO],'+
+          'isNull(cedingId) as [CEDING ID], isNull(cedingAbbr) as [COMPANY], isNull(insuredDesc) as [INSURED], myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD],'+
+          'negFmt(currency(totalSi)) as [SUM INSURED], negFmt(currency(ret1Lines)) as [1st RET], negFmt(currency(ret2Lines)) as [2nd RET],'+
+          'negFmt(currency(premQsMre)) as [PREM QS MRe], negFmt(currency(premQsNre)) as [PREM QS NRe], negFmt(currency(premQsRet1)) as [PREM QS RET1], negFmt(currency(premQsRet2)) as [PREM QS RET2],'+
+          'negFmt(currency(prem1spMre)) as [PREM 1st SP MRe], negFmt(currency(prem1spNre)) as [PREM 1st SP NRe], negFmt(currency(prem2spMre)) as [PREM 2nd SP MRe], negFmt(currency(prem2spNre)) as [PREM 2nd SP NRe],'+
+          'negFmt(currency(premFaculMre)) as [PREM FACUL MRe],'+
+          'negFmt(currency(commQsMre)) as [COMM QS MRe], negFmt(currency(commQsNre)) as [COMM QS NRe], negFmt(currency(commQsRet1)) as [COMM QS RET1], negFmt(currency(commQsRet2)) as [COMM QS RET2],'+
+          'negFmt(currency(comm1spMre)) as [COMM 1st SP MRe], negFmt(currency(comm1spNre)) as [COMM 1st SP NRe], negFmt(currency(comm2spMre)) as [COMM 2nd SP MRe], negFmt(currency(comm2spNre)) as [COMM 2nd SP NRe],'+
+          'negFmt(currency(commFaculMre)) as [COMM FACUL MRe],'+
+          'negFmt(currency(vatriQsMre)) as [VAT RI QS MRe], negFmt(currency(vatriQsNre)) as [VAT RI QS NRe], negFmt(currency(vatriQsRet1)) as [VAT RI QS RET1], negFmt(currency(vatriQsRet2)) as [VAT RI QS RET2],'+
+          'negFmt(currency(vatri1spMre)) as [VAT RI 1st SP MRe], negFmt(currency(vatri1spNre)) as [VAT RI 1st SP NRe], negFmt(currency(vatri2spMre)) as [VAT RI 2nd SP MRe], negFmt(currency(vatri2spNre)) as [VAT RI 2nd SP NRe],'+
+          'negFmt(currency(vatriFaculMre)) as [VAT RI FACUL MRe],'+
+          'negFmt(currency(netbalQsMre)) as [NET BAL QS MRe], negFmt(currency(netbalQsNre)) as [NET BAL QS NRe], negFmt(currency(netbalQsRet1)) as [NET BAL QS RET1], negFmt(currency(netbalQsRet2)) as [NET BAL QS RET2],'+
+          'negFmt(currency(netbal1spMre)) as [NET BAL 1st SP MRe], negFmt(currency(netbal1spNre)) as [NET BAL 1st SP NRe], negFmt(currency(netbal2spMre)) as [NET BAL 2nd SP MRe], negFmt(currency(netbal2spNre)) as [NET BAL 2nd SP NRe],'+
+          'negFmt(currency(netbalFaculMre)) as [NET BAL FACUL MRe],'+
+          'negFmt(currency(totalPremMre)) as [TOTAL PREM MRe], negFmt(currency(totalPremNre)) as [TOTAL PREM NRe], negFmt(currency(totalPremCedants)) as [TOTAL PREM CEDANTS], negFmt(currency(totalPrem)) as [TOTAL PREMIUM],'+
+          'negFmt(currency(totalCommMre)) as [TOTAL COMM MRe], negFmt(currency(totalCommNre)) as [TOTAL COMM NRe], negFmt(currency(totalCommCedants)) as [TOTAL COMM CEDANTS], negFmt(currency(totalComm)) as [TOTAL COMM],'+
+          'negFmt(currency(totalVatriMre)) as [TOTAL VAT RI MRe], negFmt(currency(totalVatriNre)) as [TOTAL VAT RI NRe], negFmt(currency(totalVatriCedants)) as [TOTAL VAT RI CEDANTS], negFmt(currency(totalVatri)) as [TOTAL VAT RI],'+
+          'negFmt(currency(totalNetbalMre)) as [TOTAL NET BAL MRe], negFmt(currency(totalNetbalNre)) as [TOTAL NET BAL NRe], negFmt(currency(totalNetbalCedants)) as [TOTAL NET BAL CEDANTS], negFmt(currency(totalNetbal)) as [TOTAL NET BAL]';
         }else if(this.params.reportId == 'POLR052C'){
           this.passDataCsv = data['listPolr052c'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo as [POLICY NO],instNo as [INST NO],'+
@@ -509,6 +551,28 @@ export class PolBordereauxComponent implements OnInit {
           'negFmt(currency(totalVatri)) as [TOTAL RI VAT],negFmt(currency(vatriQuota)) as [RI VAT QUOTA SHARE],negFmt(currency(vatri1stRet)) as [RI VAT 1st RET],'+
           'negFmt(currency(vatri2ndRet)) as [RI VAT 2ND RET],negFmt(currency(vatri1stSurplus)) as [RI VAT 1ST SURPLUS],negFmt(currency(vatri2ndSurplus)) as [RI VAT 2ND SURPLUS],'+
           'negFmt(currency(vatriFacul)) as [RI VAT FACUL]';
+        }else if(this.params.reportId == 'POLR052CA'){
+          this.passDataCsv = data['listPolr052ca'];
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],currencyCd as [CURRENCY],'+
+          'lineCd as [LINE], policyId as [POLICY ID], policyNo || "/" || instNo as [POLICY NO/INST NO], isNull(coRefNo) as [CO REF NO],'+
+          'isNull(cedingId) as [CEDING ID], isNull(cedingAbbr) as [COMPANY], isNull(insuredDesc) as [INSURED], myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD],'+
+          'negFmt(currency(totalSi)) as [SUM INSURED], negFmt(currency(ret1Lines)) as [1st RET], negFmt(currency(ret2Lines)) as [2nd RET],'+
+          'negFmt(currency(premQsMre)) as [PREM QS MRe], negFmt(currency(premQsNre)) as [PREM QS NRe], negFmt(currency(premQsRet1)) as [PREM QS RET1], negFmt(currency(premQsRet2)) as [PREM QS RET2],'+
+          'negFmt(currency(prem1spMre)) as [PREM 1st SP MRe], negFmt(currency(prem1spNre)) as [PREM 1st SP NRe], negFmt(currency(prem2spMre)) as [PREM 2nd SP MRe], negFmt(currency(prem2spNre)) as [PREM 2nd SP NRe],'+
+          'negFmt(currency(premFaculMre)) as [PREM FACUL MRe],'+
+          'negFmt(currency(commQsMre)) as [COMM QS MRe], negFmt(currency(commQsNre)) as [COMM QS NRe], negFmt(currency(commQsRet1)) as [COMM QS RET1], negFmt(currency(commQsRet2)) as [COMM QS RET2],'+
+          'negFmt(currency(comm1spMre)) as [COMM 1st SP MRe], negFmt(currency(comm1spNre)) as [COMM 1st SP NRe], negFmt(currency(comm2spMre)) as [COMM 2nd SP MRe], negFmt(currency(comm2spNre)) as [COMM 2nd SP NRe],'+
+          'negFmt(currency(commFaculMre)) as [COMM FACUL MRe],'+
+          'negFmt(currency(vatriQsMre)) as [VAT RI QS MRe], negFmt(currency(vatriQsNre)) as [VAT RI QS NRe], negFmt(currency(vatriQsRet1)) as [VAT RI QS RET1], negFmt(currency(vatriQsRet2)) as [VAT RI QS RET2],'+
+          'negFmt(currency(vatri1spMre)) as [VAT RI 1st SP MRe], negFmt(currency(vatri1spNre)) as [VAT RI 1st SP NRe], negFmt(currency(vatri2spMre)) as [VAT RI 2nd SP MRe], negFmt(currency(vatri2spNre)) as [VAT RI 2nd SP NRe],'+
+          'negFmt(currency(vatriFaculMre)) as [VAT RI FACUL MRe],'+
+          'negFmt(currency(netbalQsMre)) as [NET BAL QS MRe], negFmt(currency(netbalQsNre)) as [NET BAL QS NRe], negFmt(currency(netbalQsRet1)) as [NET BAL QS RET1], negFmt(currency(netbalQsRet2)) as [NET BAL QS RET2],'+
+          'negFmt(currency(netbal1spMre)) as [NET BAL 1st SP MRe], negFmt(currency(netbal1spNre)) as [NET BAL 1st SP NRe], negFmt(currency(netbal2spMre)) as [NET BAL 2nd SP MRe], negFmt(currency(netbal2spNre)) as [NET BAL 2nd SP NRe],'+
+          'negFmt(currency(netbalFaculMre)) as [NET BAL FACUL MRe],'+
+          'negFmt(currency(totalPremMre)) as [TOTAL PREM MRe], negFmt(currency(totalPremNre)) as [TOTAL PREM NRe], negFmt(currency(totalPremCedants)) as [TOTAL PREM CEDANTS], negFmt(currency(totalPrem)) as [TOTAL PREMIUM],'+
+          'negFmt(currency(totalCommMre)) as [TOTAL COMM MRe], negFmt(currency(totalCommNre)) as [TOTAL COMM NRe], negFmt(currency(totalCommCedants)) as [TOTAL COMM CEDANTS], negFmt(currency(totalComm)) as [TOTAL COMM],'+
+          'negFmt(currency(totalVatriMre)) as [TOTAL VAT RI MRe], negFmt(currency(totalVatriNre)) as [TOTAL VAT RI NRe], negFmt(currency(totalVatriCedants)) as [TOTAL VAT RI CEDANTS], negFmt(currency(totalVatri)) as [TOTAL VAT RI],'+
+          'negFmt(currency(totalNetbalMre)) as [TOTAL NET BAL MRe], negFmt(currency(totalNetbalNre)) as [TOTAL NET BAL NRe], negFmt(currency(totalNetbalCedants)) as [TOTAL NET BAL CEDANTS], negFmt(currency(totalNetbal)) as [TOTAL NET BAL]';
         }else if(this.params.reportId == 'POLR052D'){
           this.passDataCsv = data['listPolr052d'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],lineCd as [LINE],currencyCd as [CURRENCY],'+
