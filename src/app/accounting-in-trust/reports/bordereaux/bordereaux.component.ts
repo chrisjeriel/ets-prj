@@ -10,6 +10,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
 @Component({
   selector: 'app-bordereaux',
@@ -24,6 +25,7 @@ export class BordereauxComponent implements OnInit {
 	@ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
 	@ViewChild(LovComponent) lovMdl: LovComponent;
 	@ViewChild(CedingCompanyComponent) cedingLov: CedingCompanyComponent;
+	@ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
 
 	dateParam: string = '1';
 	extnType: string = 'O';
@@ -54,6 +56,8 @@ export class BordereauxComponent implements OnInit {
 	    cessionId: '',
 	    cedingId: '',
 	    cedingName: '',
+	    currCd: '',
+	    currency: '',
 	    destination: '',
 	    forceExtract: 'N',
 	    perLine: true,
@@ -88,7 +92,8 @@ export class BordereauxComponent implements OnInit {
 	ngOnInit() {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
-		this.passLov.modReportId = 'ACITR052%';
+		// this.passLov.modReportId = 'ACITR052%';
+		this.passLov.modReportId = 'ACITR061%';
 		this.loading = false;
 	}
 
@@ -100,7 +105,8 @@ export class BordereauxComponent implements OnInit {
 	}
 
 	getReports(){
-		this.passLov.reportId = 'ACITR052%';
+		// this.passLov.reportId = 'ACITR052%';
+		this.passLov.reportId = 'ACITR061%';
 	  	this.lovMdl.openLOV();
 	}
 
@@ -231,6 +237,24 @@ export class BordereauxComponent implements OnInit {
 					this.params.osPaidTag = 'O';
 					this.params.dateParam = '4';
 					break;
+
+				case 'ACITR061H':
+		  			this.disableLosses = true;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = false;
+		  			this.params.osPaidTag = 'O';
+		  			this.params.dateParam = '4';
+		  			break;
+		  		case 'ACITR061I':
+		  			this.disableLosses = false;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = true;
+		  			this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+		  			break;
 				default:
 					this.disableOutstanding = true;
 					this.disableLosses = true;
@@ -305,17 +329,25 @@ export class BordereauxComponent implements OnInit {
 		if(str == 'line') {
 			this.lineLOV.checkCode(this.params.lineCd, ev);
 		}else if(str === 'company') {
-	        this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);            
+			if(this.params.cedingId != '') {
+				this.cedingLov.checkCode(String(this.params.cedingId).padStart(3, '0'), ev);
+			} else {
+				this.cedingLov.checkCode(this.params.cedingId, ev);
+			} 
 	    } else if(str == 'cession') {
 			this.cessionLOV.checkCode(this.params.cessionId, ev);
-		} if(str === 'report'){
-	      if(this.params.reportId.indexOf('ACITR052') == -1){
-	        this.passLov.code = 'ACITR052%';
+		} else if(str === 'report'){
+	      // if(this.params.reportId.indexOf('ACITR052') == -1){
+	      //   this.passLov.code = 'ACITR052%';
+	      if(this.params.reportId.indexOf('ACITR061') == -1){
+	        this.passLov.code = 'ACITR061%';
 	      }else{
 	      	this.passLov.code = this.params.reportId;
 	      }
 	      this.lovMdl.checkCode('reportId',ev);
-	  }
+	  	} else if(str == 'currency') {
+	  		this.currLov.checkCode(this.params.currCd, ev);
+	  	}
 	}
 
 	prepareData(){
@@ -346,11 +378,13 @@ export class BordereauxComponent implements OnInit {
     	this.loading = true;
     	this.prepareData();
     	let paramsJson = JSON.stringify(this.params);
-    	let acit052Params = JSON.parse(paramsJson);
+    	// let acit052Params = JSON.parse(paramsJson);
+    	let acit061Params = JSON.parse(paramsJson);
 
-    	acit052Params['dateTo'] = acit052Params['dateTo'] == null || acit052Params['dateTo'].length == 0 ? acit052Params['dateToAsOf'] : acit052Params['dateTo'];
+    	// acit052Params['dateTo'] = acit052Params['dateTo'] == null || acit052Params['dateTo'].length == 0 ? acit052Params['dateToAsOf'] : acit052Params['dateTo'];
+    	acit061Params['dateTo'] = acit061Params['dateTo'] == null || acit061Params['dateTo'].length == 0 ? acit061Params['dateToAsOf'] : acit061Params['dateTo'];
 
-	    this.printService.extractReport({ reportId: this.params.reportId, acitr052Params:acit052Params }).subscribe((data:any)=>{
+	    this.printService.extractReport({ reportId: this.params.reportId, acitr061Params: acit061Params }).subscribe((data:any)=>{
 	        if (data.errorList.length > 0) {
 	          
 	          if (data.errorList[0].errorMessage.includes("parameters already exists.")) {
@@ -409,7 +443,7 @@ export class BordereauxComponent implements OnInit {
   	}
     this.prepareData();
 
-    let params :any = {
+    /*let params :any = {
         "reportId" : this.params.reportId,
         "acitr052Params.extractUser" : this.params.extractUser,
 		"acitr052Params.osPaidTag" : this.params.osPaidTag,
@@ -425,6 +459,25 @@ export class BordereauxComponent implements OnInit {
 		"acitr052Params.destination" : this.params.destination,
 		"acitr052Params.forceExtract" : this.params.forceExtract,
 		"acitr052Params.cedingId" : this.params.cedingId
+    }*/
+
+    let params :any = {
+        "reportId" : this.params.reportId,
+        "acitr061Params.extractUser" : this.params.extractUser,
+		"acitr061Params.osPaidTag" : this.params.osPaidTag,
+		"acitr061Params.extTypeTag" : this.params.extTypeTag,
+		"acitr061Params.dateParam" : this.params.dateParam,
+		"acitr061Params.dateRange" : this.params.dateRange,
+		"acitr061Params.reportName" :  this.params.reportName,
+		"acitr061Params.dateFrom" : this.params.dateFrom,
+		"acitr061Params.dateTo" : this.params.dateTo == null || this.params.dateTo.length == 0 ? this.params.dateToAsOf : this.params.dateTo,
+		"acitr061Params.reportId" : this.params.reportId,
+		"acitr061Params.lineCd" : this.params.lineCd,
+		"acitr061Params.cessionId" : this.params.cessionId,
+		"acitr061Params.destination" : this.params.destination,
+		"acitr061Params.forceExtract" : this.params.forceExtract,
+		"acitr061Params.cedingId" : this.params.cedingId,
+		"acitr061Params.currCd" : this.params.currCd
     }
 
     this.printService.print(this.params.destination,this.params.reportId, params);
@@ -456,5 +509,18 @@ export class BordereauxComponent implements OnInit {
   	    this.params.perCession	= true;
   }
 
+  showCurrencyModal() {
+    // $('#currencyModal #modalBtn').trigger('click');
+    this.currLov.modal.openNoClose();
+  }
+
+  setCurrency(data){
+    this.params.currCd = data.currencyCd;
+    this.params.currency = data.description;
+    this.ns.lovLoader(data.ev, 0);
+    setTimeout(()=>{
+      $('.currCd').focus().blur();
+    }, 0);
+  }
  
 }
