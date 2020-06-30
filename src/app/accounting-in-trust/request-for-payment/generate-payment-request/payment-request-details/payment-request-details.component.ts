@@ -1013,7 +1013,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.treatyBalanceData.tableData = this.treatyBalanceData.tableData.map(e => {
           e.quartEndingSave = e.quarterEnding;
           e.quarterEnding = this.dp.transform(this.ns.toDateTimeString(e.quarterEnding).split('T')[0], 'MM/dd/yyyy');
-          if(e.currAmt < 0){e.currAmt=0; e.localAmt=0;};
+          // if(e.currAmt < 0){e.currAmt=0; e.localAmt=0;};
         return e; 
       });
     }

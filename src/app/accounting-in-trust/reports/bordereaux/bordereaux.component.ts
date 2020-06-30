@@ -93,7 +93,7 @@ export class BordereauxComponent implements OnInit {
 		this.titleService.setTitle("Acct-IT | Bordereaux");
     	this.userService.emitModuleId("ACIT061");
 		// this.passLov.modReportId = 'ACITR052%';
-		this.passLov.modReportId = 'ACITR061%';
+		this.passLov.modReportId = 'CLMR052%';
 		this.loading = false;
 	}
 
@@ -106,7 +106,7 @@ export class BordereauxComponent implements OnInit {
 
 	getReports(){
 		// this.passLov.reportId = 'ACITR052%';
-		this.passLov.reportId = 'ACITR061%';
+		this.passLov.reportId = 'CLMR052%';
 	  	this.lovMdl.openLOV();
 	}
 
@@ -238,7 +238,7 @@ export class BordereauxComponent implements OnInit {
 					this.params.dateParam = '4';
 					break;
 
-				case 'ACITR061H':
+				case 'CLMR052A':
 		  			this.disableLosses = true;
 		  			this.params.dateRange = 'A';
 		  			this.disableCompany = false;
@@ -246,7 +246,7 @@ export class BordereauxComponent implements OnInit {
 		  			this.params.osPaidTag = 'O';
 		  			this.params.dateParam = '4';
 		  			break;
-		  		case 'ACITR061I':
+		  		case 'CLMR052B':
 		  			this.disableLosses = false;
 		  			this.params.dateRange = 'A';
 		  			this.disableCompany = false;
@@ -339,8 +339,8 @@ export class BordereauxComponent implements OnInit {
 		} else if(str === 'report'){
 	      // if(this.params.reportId.indexOf('ACITR052') == -1){
 	      //   this.passLov.code = 'ACITR052%';
-	      if(this.params.reportId.indexOf('ACITR061') == -1){
-	        this.passLov.code = 'ACITR061%';
+	      if(this.params.reportId.indexOf('CLMR025') == -1){
+	        this.passLov.code = 'CLMR025%';
 	      }else{
 	      	this.passLov.code = this.params.reportId;
 	      }
@@ -379,12 +379,12 @@ export class BordereauxComponent implements OnInit {
     	this.prepareData();
     	let paramsJson = JSON.stringify(this.params);
     	// let acit052Params = JSON.parse(paramsJson);
-    	let acit061Params = JSON.parse(paramsJson);
+    	let clm052Params = JSON.parse(paramsJson);
 
     	// acit052Params['dateTo'] = acit052Params['dateTo'] == null || acit052Params['dateTo'].length == 0 ? acit052Params['dateToAsOf'] : acit052Params['dateTo'];
-    	acit061Params['dateTo'] = acit061Params['dateTo'] == null || acit061Params['dateTo'].length == 0 ? acit061Params['dateToAsOf'] : acit061Params['dateTo'];
+    	clm052Params['dateTo'] = clm052Params['dateTo'] == null || clm052Params['dateTo'].length == 0 ? clm052Params['dateToAsOf'] : clm052Params['dateTo'];
 
-	    this.printService.extractReport({ reportId: this.params.reportId, acitr061Params: acit061Params }).subscribe((data:any)=>{
+	    this.printService.extractReport({ reportId: this.params.reportId, clmr052Params: clm052Params }).subscribe((data:any)=>{
 	        if (data.errorList.length > 0) {
 	          
 	          if (data.errorList[0].errorMessage.includes("parameters already exists.")) {
@@ -463,21 +463,21 @@ export class BordereauxComponent implements OnInit {
 
     let params :any = {
         "reportId" : this.params.reportId,
-        "acitr061Params.extractUser" : this.params.extractUser,
-		"acitr061Params.osPaidTag" : this.params.osPaidTag,
-		"acitr061Params.extTypeTag" : this.params.extTypeTag,
-		"acitr061Params.dateParam" : this.params.dateParam,
-		"acitr061Params.dateRange" : this.params.dateRange,
-		"acitr061Params.reportName" :  this.params.reportName,
-		"acitr061Params.dateFrom" : this.params.dateFrom,
-		"acitr061Params.dateTo" : this.params.dateTo == null || this.params.dateTo.length == 0 ? this.params.dateToAsOf : this.params.dateTo,
-		"acitr061Params.reportId" : this.params.reportId,
-		"acitr061Params.lineCd" : this.params.lineCd,
-		"acitr061Params.cessionId" : this.params.cessionId,
-		"acitr061Params.destination" : this.params.destination,
-		"acitr061Params.forceExtract" : this.params.forceExtract,
-		"acitr061Params.cedingId" : this.params.cedingId,
-		"acitr061Params.currCd" : this.params.currCd
+        "clmr052Params.extractUser" : this.params.extractUser,
+		"clmr052Params.osPaidTag" : this.params.osPaidTag,
+		"clmr052Params.extTypeTag" : this.params.extTypeTag,
+		"clmr052Params.dateParam" : this.params.dateParam,
+		"clmr052Params.dateRange" : this.params.dateRange,
+		"clmr052Params.reportName" :  this.params.reportName,
+		"clmr052Params.dateFrom" : this.params.dateFrom,
+		"clmr052Params.dateTo" : this.params.dateTo == null || this.params.dateTo.length == 0 ? this.params.dateToAsOf : this.params.dateTo,
+		"clmr052Params.reportId" : this.params.reportId,
+		"clmr052Params.lineCd" : this.params.lineCd,
+		"clmr052Params.cessionId" : this.params.cessionId,
+		"clmr052Params.destination" : this.params.destination,
+		"clmr052Params.forceExtract" : this.params.forceExtract,
+		"clmr052Params.cedingId" : this.params.cedingId,
+		"clmr052Params.currCd" : this.params.currCd
     }
 
     this.printService.print(this.params.destination,this.params.reportId, params);
