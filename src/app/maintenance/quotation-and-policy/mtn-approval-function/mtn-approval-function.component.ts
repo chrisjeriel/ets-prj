@@ -132,7 +132,16 @@ export class MtnApprovalFunctionComponent implements OnInit {
 
   onRowClick(data){
     console.log(data)
-    if(data == null){
+    if(data !== null){
+      this.passData.disableGeneric = false;
+      this.disabledFlag = false;
+      this.approvalCd = data.approvalCd
+      //this.approvalDetails = data;
+      this.approvalDetails.updateUser = data.updateUser;
+      this.approvalDetails.createUser = data.createUser;
+      this.approvalDetails.updateDate = this.ns.toDateTimeString(data.updateDate);
+      this.approvalDetails.createDate = this.ns.toDateTimeString(data.createDate);
+    }else{
       this.passData.disableGeneric = true;
       this.disabledFlag = true;
       this.approvalCd = null
@@ -140,13 +149,6 @@ export class MtnApprovalFunctionComponent implements OnInit {
       this.approvalDetails.updateUser = '';
       this.approvalDetails.updateDate = '';
       this.approvalDetails.createDate = '';
-    }else{
-      this.passData.disableGeneric = false;
-      this.disabledFlag = false;
-      this.approvalCd = data.approvalCd
-      this.approvalDetails = data;
-      this.approvalDetails.updateDate = this.ns.toDateTimeString(data.updateDate);
-      this.approvalDetails.createDate = this.ns.toDateTimeString(data.createDate);
     }  
   }
 

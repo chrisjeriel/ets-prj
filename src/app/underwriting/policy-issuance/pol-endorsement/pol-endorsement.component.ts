@@ -446,6 +446,8 @@ export class PolEndorsementComponent implements OnInit {
         }
         if(this.ocFlag){
             params.policyId = this.policyInfo.policyIdOc;
+            params.saveDeductibleList.forEach(a=>{a.coverCd = 0})
+            params.deleteDeductibleList.forEach(a=>{a.coverCd = 0})
             this.underwritingService.savePolEndtOc(params).subscribe(data=>{
                 if(data['returnCode'] == -1){
                     this.dialogIcon = "success";

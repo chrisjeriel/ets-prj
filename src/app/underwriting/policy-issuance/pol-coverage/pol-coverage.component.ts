@@ -514,6 +514,7 @@ export class PolCoverageComponent implements OnInit {
       this.riskId              = data.policy.project.riskId;
       this.altCoverageData     = data.policy.project.coverage;
       this.altCoverageData.pctPml = this.altCoverageData.pctPml == null || this.altCoverageData.pctPml == 0 ? 100:this.altCoverageData.pctPml;
+      this.policyInfo.openCoverTag = data.policy.openCoverTag;
 
       var dataTable = data.policy.project.coverage.sectionCovers;
         for (var i = 0; i< dataTable.length;i++){
@@ -803,6 +804,7 @@ export class PolCoverageComponent implements OnInit {
       this.underwritingservice.getUWCoverageInfos(null,this.policyId).subscribe((data:any) => {
           console.log(data)
           this.passDataSectionCover.tableData = [];
+          this.policyInfo.openCoverTag = data.policy.openCoverTag;
           this.projId = data.policy.project.projId;
           this.riskId = data.policy.project.riskId;
           this.coverageData = data.policy.project.coverage;
@@ -1309,10 +1311,9 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue, '1.2-2');*/
     /*this.coverageData.totalSi = this.sectionISi + this.sectionIISi + this.sectionIIISi;
     this.coverageData.totalPrem = this.sectionIPrem + this.sectionIIPrem + this.sectionIIIPrem;*/
+    
 
-    this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
 
-    this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
     this.coverageData.totalSi = this.totalSi;
     this.coverageData.totalPrem = this.totalPrem;
     this.coverageData.sectionISi = this.sectionISi;
@@ -1321,6 +1322,15 @@ export class PolCoverageComponent implements OnInit {
     this.coverageData.sectionIPrem = this.sectionIPrem;
     this.coverageData.sectionIIPrem = this.sectionIIPrem;
     this.coverageData.sectionIIIPrem = this.sectionIIIPrem;
+
+    if(this.policyInfo.openCoverTag == 'Y'){
+      console.log(this.coverageData)
+      this.coverageData.totalValue = (parseFloat(this.coverageData.totalSi) / parseFloat(this.coverageData.pctShare.toString().split(',').join('')) * 100).toFixed(2)
+      this.coverageData.totalValue = this.decimal.transform(this.coverageData.totalValue,'1.10-10');
+    }else{
+      this.coverageData.pctShare = (this.totalSi / parseFloat(this.coverageData.totalValue.toString().split(',').join(''))*100);
+      this.coverageData.pctShare = this.decimal.transform(this.coverageData.pctShare,'1.10-10');
+    }
 
     this.getEditableCov();
 
@@ -1918,7 +1928,11 @@ export class PolCoverageComponent implements OnInit {
 
     /*console.log('comtotalSi - ' + this.altCoverageData.comtotalSi)
     console.log('totalVal - ' + this.altCoverageData.totalValue)*/
-    this.altCoverageData.pctShare = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().replace(/[,]/g,""))*100);
+    if(this.policyInfo.openCoverTag == 'Y'){
+      this.altCoverageData.totalValue = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().replace(/[,]/g,""))*100);
+    } else{
+      this.altCoverageData.pctShare = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.totalValue.toString().replace(/[,]/g,""))*100);
+    }
     //this.altCoverageData.pctShare = this.decimal.transform(this.altCoverageData.pctShare,'1.10-10');
     //this.altCoverageData.totalValue = (this.altCoverageData.comtotalSi / parseFloat(this.altCoverageData.pctShare.toString().replace(/[,]/g,""))*100);
     //this.altCoverageData.totalValue = this.decimal.transform(this.altCoverageData.totalValue, '1.2-2');

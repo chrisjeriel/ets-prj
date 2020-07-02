@@ -750,13 +750,14 @@
 		</div>
 	</div>
 </ng-container>
-<div class="form-row" *ngIf="policyInfo.fromInq!='true'">
+<div class="form-row">
 		<div class="form-group col-sm">
 			<div class="col-md-13 text-center">
 				<br>
 				<div class="cust-btn-container">
-					<button type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
-					<button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+					<button type="button" class="cust-btn" (click)="showDeductiblesModal('deductibles')"><a>Deductibles</a></button>
+					<button type="button" class="cust-btn" (click)="cancel();" *ngIf="policyInfo.fromInq!='true'"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
 				</div>
 			</div>
 		</div>
@@ -793,6 +794,24 @@
 
 
 <app-mtn-intermediary id="intLOV" (selectedData)="setInt($event)"></app-mtn-intermediary>
-<app-sucess-dialog id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && !cancelFailed ? this.cancelBtn.onNo():null"></app-sucess-dialog>
-<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
-<app-confirm-save (onYes)="saveQuoteGenInfoOc();"></app-confirm-save>
+<app-sucess-dialog #mainSuccess id="successDialog" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && !cancelFailed ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button #mainCancel (onYes)="onClickSave('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
+<app-confirm-save #mainConfirmSave (onYes)="saveQuoteGenInfoOc();"></app-confirm-save>
+
+
+<app-modal class="d-none" #deductiblesModal>
+	<div header>Deductibles</div>
+	<div body>
+		<app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+		<button class="cust-btn" type="button" (click)="onDedCancel();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="dedConSave.confirmModal();" *ngIf="policyInfo.fromInq!='true'"><a>Save</a></button>
+	</div>
+</app-modal>
+
+<app-cancel-button #dedCancel (onYes)="saveDeductibles('cancel')" (no)="deductiblesModal.closeModal()"></app-cancel-button>
+<app-sucess-dialog #dedSuccess [icon]="dialogIcon" (onOk)="onClickOkDed()"></app-sucess-dialog>
+<app-confirm-save #dedConSave (onYes)="saveDeductibles();" [form]="deductiblesTable.form?.first"></app-confirm-save>
+
+<app-lov #dedLov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="lovCheckBox"></app-lov>
