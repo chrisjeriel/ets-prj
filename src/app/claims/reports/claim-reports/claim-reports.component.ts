@@ -209,7 +209,7 @@ export class ClaimReportsComponent implements OnInit {
       } else if(this.params.reportId == 'CLMR010G'){
         this.paramsToggle.push('clmEvent')
       } else if(this.params.reportId =='CLMR010NE'){
-        this.paramsToggle = ['line', 'company', 'currency', 'asOf', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate']
+        this.paramsToggle = ['line', 'company', 'currency', 'byMonthYear', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate']
         this.params.dateRange = '3'
       }
 
