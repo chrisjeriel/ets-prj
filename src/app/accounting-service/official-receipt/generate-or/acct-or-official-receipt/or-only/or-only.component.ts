@@ -192,8 +192,8 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   		this.passDataWhTax.addFlag = false;
 		  this.passDataWhTax.deleteFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true,true];
-  		this.passDataGenTax.uneditable = [true,true,true,true];
-  		this.passDataWhTax.uneditable = [true,true,true,true];
+  		this.passDataGenTax.uneditable = [true,true,true,true,true];
+  		this.passDataWhTax.uneditable = [true,true,true,true,true];
   	}
   	this.retrieveOrTransDtl();
   }

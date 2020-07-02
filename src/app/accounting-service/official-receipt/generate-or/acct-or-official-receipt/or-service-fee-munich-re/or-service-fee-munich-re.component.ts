@@ -193,6 +193,14 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   		this.passData.deleteFlag = false;
   		this.passData.checkFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true];
+      this.passDataGenTax.addFlag = false;
+      this.passDataGenTax.checkFlag = false;
+      this.passDataGenTax.deleteFlag = false;
+      this.passDataWhTax.addFlag = false;
+      this.passDataWhTax.checkFlag = false;
+      this.passDataWhTax.deleteFlag = false;
+      this.passDataGenTax.uneditable = [true,true,true,true,true];
+      this.passDataWhTax.uneditable = [true,true,true,true,true];
   	}
 	this.retrieveOrServFee();
   }
