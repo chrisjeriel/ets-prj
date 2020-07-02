@@ -339,8 +339,8 @@ export class BordereauxComponent implements OnInit {
 		} else if(str === 'report'){
 	      // if(this.params.reportId.indexOf('ACITR052') == -1){
 	      //   this.passLov.code = 'ACITR052%';
-	      if(this.params.reportId.indexOf('CLMR025') == -1){
-	        this.passLov.code = 'CLMR025%';
+	      if(this.params.reportId.indexOf('CLMR052') == -1){
+	        this.passLov.code = 'CLMR052%';
 	      }else{
 	      	this.passLov.code = this.params.reportId;
 	      }
