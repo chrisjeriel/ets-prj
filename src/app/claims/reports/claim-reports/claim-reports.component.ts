@@ -509,10 +509,22 @@ export class ClaimReportsComponent implements OnInit {
           this.passDataCsv = data['listClmr010h'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'lineCd as [LINE],treatyIdName as [TREATY],trtyCedIdName as [TREATY COMPANY],negFmt(currency(resAmt)) as [CLAIM]';
+        }else if(this.params.reportId == 'CLMR010HA'){
+          this.passDataCsv = data['listClmr010ha'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY],lineCd AS [LINE], uwYear as [UW YEAR],'+
+          'treaty as [TREATY], treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(treatyCompany) as [TREATY COMPANY],'+
+          'isNull(retLayer) as [RET LAYER], negFmt(currency(clmAmt)) as [RES AMT], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO], dateFromTo as [DATE FROM TO],'+
+          'isNull(eventCd) as [EVENT CD], isNull(sortSeq) as [SORT SEQ]';
         }else if(this.params.reportId == 'CLMR010I'){
           this.passDataCsv = data['listClmr010i'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
           'lineCd as [LINE],treatyIdName as [TREATY],trtyCedIdName as [TREATY COMPANY],negFmt(currency(resAmt)) as [CLAIM]';
+        }else if(this.params.reportId == 'CLMR010IA'){
+          this.passDataCsv = data['listClmr010ia'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY],lineCd AS [LINE], uwYear as [UW YEAR],'+
+          'treaty as [TREATY], treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(treatyCompany) as [TREATY COMPANY],'+
+          'isNull(retLayer) as [RET LAYER], negFmt(currency(clmAmt)) as [RES AMT], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO], dateFromTo as [DATE FROM TO],'+
+          'isNull(eventCd) as [EVENT CD], isNull(sortSeq) as [SORT SEQ]';
         }else if(this.params.reportId == 'CLMR010J'){
           this.passDataCsv = data['listClmr010j'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+

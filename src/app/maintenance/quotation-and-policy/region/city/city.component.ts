@@ -315,25 +315,42 @@ export class CityComponent implements OnInit {
     return cb === true?'Y':'N';
   }
 
+  // onRowClick(event){
+  // 	if(event !== null){
+  //     this.selectedData = event;
+  //     this.cityRecord.cityCd = event.cityCd;
+  // 	  this.passData.disableGeneric    = false;
+  // 		this.cityRecord.provinceCd	= event.provinceCd;
+	 //  	this.cityRecord.createUser	= event.createUser;
+	 //  	this.cityRecord.createDate	= event.createDate;
+	 //  	this.cityRecord.updateUser	= event.updateUser;
+	 //  	this.cityRecord.updateDate	= event.updateDate;
+  // 	} else {
+  // 	  this.passData.disableGeneric  = true;
+  // 		this.cityRecord.provinceCd	= null;
+	 //  	this.cityRecord.createUser	= null;
+	 //  	this.cityRecord.createDate	= null;
+	 //  	this.cityRecord.updateUser	= null;
+	 //  	this.cityRecord.updateDate	= null;
+  // 	}
+  // }
+
   onRowClick(event){
-  	if(event !== null){
-      this.selectedData = event;
-      this.cityRecord.cityCd = event.cityCd;
-  	  this.passData.disableGeneric    = false;
-  		this.cityRecord.provinceCd	= event.provinceCd;
-	  	this.cityRecord.createUser	= event.createUser;
-	  	this.cityRecord.createDate	= event.createDate;
-	  	this.cityRecord.updateUser	= event.updateUser;
-	  	this.cityRecord.updateDate	= event.updateDate;
-  	} else {
-  	  this.passData.disableGeneric  = true;
-  		this.cityRecord.provinceCd	= null;
-	  	this.cityRecord.createUser	= null;
-	  	this.cityRecord.createDate	= null;
-	  	this.cityRecord.updateUser	= null;
-	  	this.cityRecord.updateDate	= null;
-  	}
+    if(event !== null){
+      this.cityRecord.updateDate  = this.ns.toDateTimeString(event.updateDate);
+      this.cityRecord.updateUser  = event.updateUser;
+      this.cityRecord.createDate  = this.ns.toDateTimeString(event.createDate);
+      this.cityRecord.createUser  = event.createUser;
+      this.passData.disableGeneric = false;
+    }else{
+      this.cityRecord.updateDate  = '';
+      this.cityRecord.updateUser  = '';
+      this.cityRecord.createDate  = '';
+      this.cityRecord.createUser  = '';
+      this.passData.disableGeneric = true;
+    }
   }
+
 
   clickCrestaZone(data){
     $('#crestaZoneLOV #modalBtn').trigger('click');
