@@ -24,7 +24,14 @@ export class AdviceWordingsComponent implements OnInit {
 
   counter: number = 1;
 
-  selectedRow: any;
+  // selectedRow: any;
+  selectedRow : any = {
+    createDate: '',
+    createUser: null,
+    updateDate: '',
+    updateUser: null
+  }
+
   indvSelect: any;
 
   cancelFlag: boolean = false;
@@ -79,13 +86,30 @@ export class AdviceWordingsComponent implements OnInit {
       }
     }
 
+  // onRowClick(data){
+  //   if(data !== null){
+  //     this.adviceWordingsData.disableGeneric = false;
+  //     this.selectedRow = data;
+  //   }else{
+  //     this.adviceWordingsData.disableGeneric = true;
+  //   }
+  // }
+
   onRowClick(data){
+    console.log(data)
     if(data !== null){
+      this.selectedRow.updateUser = data.updateUser;
+      this.selectedRow.createUser = data.createUser;
+      this.selectedRow.updateDate = this.ns.toDateTimeString(data.updateDate);
+      this.selectedRow.createDate = this.ns.toDateTimeString(data.createDate);
       this.adviceWordingsData.disableGeneric = false;
-      this.selectedRow = data;
     }else{
+      this.selectedRow.createUser = '';
+      this.selectedRow.updateUser = '';
+      this.selectedRow.updateDate = '';
+      this.selectedRow.createDate = '';
       this.adviceWordingsData.disableGeneric = true;
-    }
+    }  
   }
 
   onClickAdd(event){

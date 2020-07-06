@@ -1037,6 +1037,13 @@ export class PolicyReportsComponent implements OnInit {
           'trtyCedIdName ||" - "||(CASE WHEN retLayer = "0" THEN treatyIdDesc ELSE retLayerDesc END) AS [COMPANY],negFmt(currency(premAmt)) AS [PREM AMT],'+
           'negFmt(currency(commAmt)) AS [COMM AMT], negFmt(currency(vatRiComm)) as [VAT on RI], negFmt(currency(dueToTrty)) AS [DUE TO TREATY],'+
           'negFmt(currency(dueToCedant)) AS [DUE TO CEDANT]';
+        }else if(this.params.reportId == 'POLR044KA'){
+          this.passDataCsv = data['listPolr044ka'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY],lineCd AS [LINE], uwYear as [UW YEAR],'+
+          'treaty as [TREATY], treatyId as [TREATY ID], treatyIdName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TREATY COMPANY],'+
+          'isNull(retLayer) as [RET LAYER], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) as [TRAN TYPE DESC], negFmt(currency(premAmt)) as [PREM AMT],'+
+          'negFmt(currency(commAmt)) as [COMM AMT], negFmt(currency(vatRiComm)) as [VAT RI COMM], negFmt(currency(dueToTrty)) as [DUE TO TRTY], negFmt(currency(dueToCedant)) as [DUE TO CEDANT],'+
+          'myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
         }else if(this.params.reportId == 'POLR044L'){
           this.passDataCsv = data['listPolr044l'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+

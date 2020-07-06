@@ -82,16 +82,33 @@ export class MtnCurrencyListComponent implements OnInit {
     });
   }
 
-  onrowClick(data){
-  	console.log(data)
-  	if(data != null){
-  		this.passData.disableGeneric = false;
-  		this.currencyData = data;
-  		this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
-  		this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
-  	}else{
-  		this.passData.disableGeneric = true;
-  	}
+  // onrowClick(data){
+  // 	console.log(data)
+  // 	if(data != null){
+  // 		this.passData.disableGeneric = false;
+  // 		this.currencyData = data;
+  // 		this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
+  // 		this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  // 	}else{
+  // 		this.passData.disableGeneric = true;
+  // 	}
+  // }
+
+  onrowClick(event){
+    console.log(event);
+    if(event !== null){
+      this.currencyData.updateDate  = this.ns.toDateTimeString(event.updateDate);
+      this.currencyData.updateUser  = event.updateUser;
+      this.currencyData.createDate  = this.ns.toDateTimeString(event.createDate);
+      this.currencyData.createUser  = event.createUser;
+      this.passData.disableGeneric = false;
+    }else{
+      this.currencyData.updateDate  = '';
+      this.currencyData.updateUser  = '';
+      this.currencyData.createDate  = '';
+      this.currencyData.createUser  = '';
+      this.passData.disableGeneric = true;
+    }
   }
 
   prepareData(){

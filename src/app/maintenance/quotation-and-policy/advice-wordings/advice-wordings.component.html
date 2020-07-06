@@ -26,7 +26,7 @@
 				</div>
 				<div class="row" style="margin-top: 12px">
 					<div class="col-sm-12">
-						<fieldset class="scheduler-border">
+						<!-- <fieldset class="scheduler-border">
 							<div class="custom-row-inline-inset">
 								<div class="input-group">
 									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
@@ -39,7 +39,23 @@
 									<input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="selectedRow?.updateDate !== null ? ns.toDateTimeString(selectedRow?.updateDate) : ''" readonly>
 								</div>
 							</div>
-						</fieldset>
+						</fieldset> -->
+						 <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+		                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+		                        <label class="form-control-sm col-sm-1">Created By</label>
+		                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedRow?.createUser" readonly>
+		                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+		                        <div class="col-sm dp-cont">
+		                            <datepicker [value]="selectedRow?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+		                        </div>
+		                        <label class="form-control-sm col-sm-1">Last Update By</label>
+		                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedRow?.updateUser" readonly>
+		                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+		                        <div class="col-sm dp-cont">
+		                            <datepicker [value]="selectedRow?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+		                        </div>
+		                    </div>
+		                </fieldset>
 					</div>
 				</div>
 			</ng-template>

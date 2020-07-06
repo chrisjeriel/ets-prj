@@ -81,15 +81,31 @@ export class MtnCrestaComponent implements OnInit {
   	})
   }
 
-  onrowClick(data){
-  	if(data != null){
-  		this.passData.disableGeneric = false;
-  		this.crestaData = data;
-  		this.crestaData.createDate = this.ns.toDateTimeString(data.createDate);
-  		this.crestaData.updateDate = this.ns.toDateTimeString(data.updateDate);
-  	}else{
-  		this.passData.disableGeneric = true;
-  	}
+  // onrowClick(data){
+  // 	if(data != null){
+  // 		this.passData.disableGeneric = false;
+  // 		this.crestaData = data;
+  // 		this.crestaData.createDate = this.ns.toDateTimeString(data.createDate);
+  // 		this.crestaData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  // 	}else{
+  // 		this.passData.disableGeneric = true;
+  // 	}
+  // }
+
+  onrowClick(event){
+    if(event !== null){
+      this.crestaData.updateDate  = this.ns.toDateTimeString(event.updateDate);
+      this.crestaData.updateUser  = event.updateUser;
+      this.crestaData.createDate  = this.ns.toDateTimeString(event.createDate);
+      this.crestaData.createUser  = event.createUser;
+      this.passData.disableGeneric = false;
+    }else{
+      this.crestaData.updateDate  = '';
+      this.crestaData.updateUser  = '';
+      this.crestaData.createDate  = '';
+      this.crestaData.createUser  = '';
+      this.passData.disableGeneric = true;
+    }
   }
 
   delete(){

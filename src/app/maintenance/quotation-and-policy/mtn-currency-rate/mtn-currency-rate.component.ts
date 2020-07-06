@@ -115,18 +115,35 @@ export class MtnCurrencyRateComponent implements OnInit, AfterViewInit {
     }
   }
 
-  clickRow(data){
-    this.currencyData = data;
-    if(data !== null && data.okDelete !== 'N'){
-      this.passData.disableGeneric = false
-      this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
-      this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  // clickRow(data){
+  //   this.currencyData = data;
+  //   if(data !== null && data.okDelete !== 'N'){
+  //     this.passData.disableGeneric = false
+  //     this.currencyData.createDate = this.ns.toDateTimeString(data.createDate);
+  //     this.currencyData.updateDate = this.ns.toDateTimeString(data.updateDate);
+  //   }else{
+  //     /*this.currencyData.createUser = null;
+  //     this.currencyData.createDate = null;
+  //     this.currencyData.updateDate = null;
+  //     this.currencyData.updateUser = null;*/
+  //     this.passData.disableGeneric = true
+  //   }
+  // }
+
+  clickRow(event){
+    console.log(event);
+    if(event !== null){
+      this.currencyData.updateDate  = this.ns.toDateTimeString(event.updateDate);
+      this.currencyData.updateUser  = event.updateUser;
+      this.currencyData.createDate  = this.ns.toDateTimeString(event.createDate);
+      this.currencyData.createUser  = event.createUser;
+      this.passData.disableGeneric =  (event.okDelete == 'N')?true:false;
     }else{
-      /*this.currencyData.createUser = null;
-      this.currencyData.createDate = null;
-      this.currencyData.updateDate = null;
-      this.currencyData.updateUser = null;*/
-      this.passData.disableGeneric = true
+      this.currencyData.updateDate  = '';
+      this.currencyData.updateUser  = '';
+      this.currencyData.createDate  = '';
+      this.currencyData.createUser  = '';
+      this.passData.disableGeneric = true;
     }
   }
 
