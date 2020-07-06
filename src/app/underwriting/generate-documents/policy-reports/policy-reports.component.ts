@@ -1039,10 +1039,10 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044KA'){
           this.passDataCsv = data['listPolr044ka'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY],lineCd AS [LINE], uwYear as [UW YEAR],'+
-          'isNull(trtyLayerDesc) as [TRTY LAYER DESC], treaty as [TREATY], treatyId as [TREATY ID], treatyIdName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TREATY COMPANY],'+
+          'treaty as [TREATY], treatyId as [TREATY ID], treatyIdName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TREATY COMPANY],'+
           'isNull(retLayer) as [RET LAYER], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) as [TRAN TYPE DESC], negFmt(currency(premAmt)) as [PREM AMT],'+
           'negFmt(currency(commAmt)) as [COMM AMT], negFmt(currency(vatRiComm)) as [VAT RI COMM], negFmt(currency(dueToTrty)) as [DUE TO TRTY], negFmt(currency(dueToCedant)) as [DUE TO CEDANT],'+
-          'myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE], dateFromTo as [DATE FROM TO], isNull(incRecTag) as [INC REC TAG], isNull(sortSeq) as [SORT SEQ], isNull(cedingIdParam) as [CEDING ID PARAM]';
+          'myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
         }else if(this.params.reportId == 'POLR044L'){
           this.passDataCsv = data['listPolr044l'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+
