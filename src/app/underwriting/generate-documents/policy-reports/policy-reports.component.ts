@@ -92,6 +92,7 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044J_ISS',
                         'POLR044J_RET',
                         'POLR044K',
+                        'POLR044KA',
                         'POLR044L',
                         'POLR044M',
                         'POLR044N',
@@ -278,7 +279,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
-    else if(this.params.reportId == 'POLR044K'){
+    else if(this.params.reportId == 'POLR044K' || this.params.reportId == 'POLR044KA'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
@@ -457,7 +458,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044K'){
+    }else if(this.params.reportId == 'POLR044K' || this.params.report == 'POLR044KA'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
