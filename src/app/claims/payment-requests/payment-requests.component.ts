@@ -103,6 +103,11 @@ export class PaymentRequestsComponent implements OnInit, AfterViewInit {
         dataType: 'text'
       },
       {
+        key: 'bookingYear',
+        title:'Booking Year',
+        dataType: 'text'
+      },
+      {
         key: 'acctRef',
         title:'Acct. Ref. No',
         dataType: 'text'

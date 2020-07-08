@@ -769,7 +769,7 @@ export class ClmClaimHistoryComponent implements OnInit {
                 this.showWarnMsg();
             }
           }
-        }else if(e.histType == 6){
+        }else if(e.histType == 6 && data['key']=="reserveAmt"){
           if(this.passDataHistory.tableData.filter(e => e.newRec != 1).some(e => e.histType == 4 || e.histType == 5)){
             if((e.histCategory == 'L' && e.reserveAmt != 0 && this.clmHistoryData.lossPdAmt == 0) || 
                (e.histCategory == 'A' && e.reserveAmt != 0 && totAdjExpPd == 0) || 
