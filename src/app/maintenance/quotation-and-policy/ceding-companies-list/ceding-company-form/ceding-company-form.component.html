@@ -187,6 +187,31 @@
 										<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="companyData.updateDate === '' ? '' : ns.toDateTimeString(companyData.updateDate)" name="updateDate" readonly>
 									</div>
 								</div>
+								
+								<!-- start july 1,2020--> 
+								<!-- <div style="margin-right: 50px;">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Remarks</label>
+										<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="companyData.remarks" name="remarks">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Created By</label>
+										<input type="text" class="form-control form-control-sm col-sm" [ngModel]="companyData?.createUser" readonly name="createUser">
+										<label class="form-control-sm col-sm-2">Date Created</label>
+				                        <div class="col-sm dp-cont">
+				                            <datepicker [value]="companyData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+				                        </div>
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Last Update By</label>
+										<input type="text" class="form-control form-control-sm col-sm" value="QUECOH" [ngModel]="companyData?.updateUser" readonly name="updateUser">
+										<label class="form-control-sm col-sm-2">Last Update</label>
+										<div class="col-sm dp-cont">
+				                            <datepicker [value]="companyData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+				                        </div>
+									</div>
+								</div> -->
+								<!-- end -->
 							</fieldset>
 						</div>
 						<div class="col-sm-2"></div>

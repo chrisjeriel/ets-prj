@@ -92,6 +92,7 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044J_ISS',
                         'POLR044J_RET',
                         'POLR044K',
+                        'POLR044KA',
                         'POLR044L',
                         'POLR044M',
                         'POLR044N',
@@ -278,7 +279,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
-    else if(this.params.reportId == 'POLR044K'){
+    else if(this.params.reportId == 'POLR044K' || this.params.reportId == 'POLR044KA'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
@@ -457,7 +458,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044K'){
+    }else if(this.params.reportId == 'POLR044K' || this.params.report == 'POLR044KA'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -903,11 +904,25 @@ export class PolicyReportsComponent implements OnInit {
     this.rangeLOV.closeModal();
   }
 
+  export(tab1,tab2) {
+    var currDate = this.ns.toDateTimeString(0).replace(':', '.');
+    var filename = this.params.reportId + '_' + currDate + '.xls';
+    var opts = [{
+                sheetid: 'Sheet1',
+                headers: true
+               },
+               {
+                sheetid: 'Sheet2',
+                headers: true
+               }];
+
+    alasql('SELECT INTO XLSX("'+filename+'",?) FROM ?', [opts, [tab1, tab2]]);
+
+  }
+
   getExtractToCsv(){
     console.log(this.params.reportId);
-    //if(this.params.destination.toLowerCase() == 'exl'){
       console.log(this.ns.getCurrentUser() + ' >> current user');
-      //this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,null,null,null,null,null,null,null,null,null,null,null,null,lineCd)
       this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,this.params.currCd,null,null,null,
            null,null,null,null,null,null,null,null,null,this.params.lineCd)
       .subscribe(data => {
@@ -935,6 +950,15 @@ export class PolicyReportsComponent implements OnInit {
         alasql.fn.isNull = function(n){
           return n==null?'':n;
         };
+
+        function checkNull(obj) {
+          for (var key in obj) {
+              if (obj[key] == null){
+                 obj[key] = ' ';
+              }
+          }
+          return obj;
+        }
 
         var name = this.params.reportId;
         var query = '';
@@ -1001,18 +1025,25 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(ret1VatRiComm)) AS [1st RET VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET COMM],'+
           'negFmt(currency(ret2VatRiComm)) AS [2nd RET VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET NET DUE]';
         }else if(this.params.reportId == 'POLR044JA'){
-          // this.passDataCsv = data['listPolr044ja'];
-          // query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
-          // 'incRecTag as [INC REC TAG], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [COMPANY], isNull(tranType) as [TRAN TYPE], isNull(TRAN TYPE DESC) AS [TRAN TYPE DESC],'+
-          // 'policyId as [POLICY ID], policyNo || " / " || instNo as [POLICY NO/INST NO], isNull(insuredDesc) as [INSURED DESC], isNull(sortSeq) as [SORT SEQ],'+
-          // 'negFmt(currency(ret1PremAmt)) as [RET1 PREM AMT],negFmt(currency(ret1CommAmt)) as [RET1 COMM AMT], negFmt(currency(ret1VatRiComm)) as [RET1 VAT RI COMM], negFmt(currency(ret1NetDue)) as [RET1 NET DUE],'+
-          // 'negFmt(currency(ret2PremAmt)) as [RET2 PREM AMT],negFmt(currency(ret2CommAmt)) as [RET2 COMM AMT], negFmt(currency(ret2VatRiComm)) as [RET2 VAT RI COMM], negFmt(currency(ret2NetDue)) as [RET2 NET DUE]';
+          this.passDataCsv = data['listPolr044ja'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
+          'isNull(incRecTag) as [INC REC TAG], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [COMPANY], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) AS [TRAN TYPE DESC],'+
+          'policyId as [POLICY ID], policyNo || "/" || instNo as [POLICY NO/INST NO], isNull(insuredDesc) as [INSURED DESC], isNull(sortSeq) as [SORT SEQ],'+
+          'negFmt(currency(ret1PremAmt)) as [RET1 PREM AMT],negFmt(currency(ret1CommAmt)) as [RET1 COMM AMT], negFmt(currency(ret1VatRiComm)) as [RET1 VAT RI COMM], negFmt(currency(ret1NetDue)) as [RET1 NET DUE],'+
+          'negFmt(currency(ret2PremAmt)) as [RET2 PREM AMT],negFmt(currency(ret2CommAmt)) as [RET2 COMM AMT], negFmt(currency(ret2VatRiComm)) as [RET2 VAT RI COMM], negFmt(currency(ret2NetDue)) as [RET2 NET DUE]';
         }else if(this.params.reportId == 'POLR044K'){
           this.passDataCsv = data['listPolr044k'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
           'trtyCedIdName ||" - "||(CASE WHEN retLayer = "0" THEN treatyIdDesc ELSE retLayerDesc END) AS [COMPANY],negFmt(currency(premAmt)) AS [PREM AMT],'+
           'negFmt(currency(commAmt)) AS [COMM AMT], negFmt(currency(vatRiComm)) as [VAT on RI], negFmt(currency(dueToTrty)) AS [DUE TO TREATY],'+
           'negFmt(currency(dueToCedant)) AS [DUE TO CEDANT]';
+        }else if(this.params.reportId == 'POLR044KA'){
+          this.passDataCsv = data['listPolr044ka'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY],lineCd AS [LINE], uwYear as [UW YEAR],'+
+          'treaty as [TREATY], treatyId as [TREATY ID], treatyIdName as [TREATY NAME], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TREATY COMPANY],'+
+          'isNull(retLayer) as [RET LAYER], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) as [TRAN TYPE DESC], negFmt(currency(premAmt)) as [PREM AMT],'+
+          'negFmt(currency(commAmt)) as [COMM AMT], negFmt(currency(vatRiComm)) as [VAT RI COMM], negFmt(currency(dueToTrty)) as [DUE TO TRTY], negFmt(currency(dueToCedant)) as [DUE TO CEDANT],'+
+          'myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
         }else if(this.params.reportId == 'POLR044L'){
           this.passDataCsv = data['listPolr044l'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],myFormat(acctDate) AS [ACCT DATE],'+
@@ -1020,9 +1051,9 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(premAmt)) as [PREMIUM AMT], status AS [STATUS]';
         }else if(this.params.reportId == 'POLR044M'){
           this.passDataCsv = data['listPolr044m'];
-           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFromTo) AS [AS OF],currencyCd AS [CURRENCY],'+
-           'negFmt(zoneCd) as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
-           'negFmt(currency(avRiskAmt)) as [ACTUAL VALUE at RISK]';
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFromTo) AS [AS OF],currencyCd AS [CURRENCY],'+
+          'negFmt(zoneCd) as [ZONE],negFmt(polCount) as [NO of POLICIES],negFmt(currency(siAmt)) as [SUM INSURED],negFmt(currency(premAmt)) as [PREMIUM],'+
+          'negFmt(currency(avRiskAmt)) as [ACTUAL VALUE at RISK]';
         }else if(this.params.reportId == 'POLR044N'){
           this.passDataCsv = data['listPolr044n'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(toDate) AS [AS OF],currencyCd AS [CURRENCY],lineCd AS [LINE],negFmt(noOfPol) as [NO of POLICIES],'+
@@ -1047,13 +1078,38 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [DATE], cedingId || "-" || cedingName as [COMPANY],lineCd as [LINE],currencyCd as [CURRENCY],'+
           'negFmt(zoneCd) as [ZONE], negFmt(currency(siAmtDist)) as [SUM INSURED], treatyCompany as [TREATY COMPANY]';
         }else if(this.params.reportId == 'POLR044Q'){
-          this.passDataCsv = data['listPolr044q'];
-          query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE], isNull(cedingIdParam) as [CEDING ID PARAM], myFormat(inceptDate) as [INCEPT DATE],'+
-          'myFormat(expiryDate) as [EXPIRY DATE], lineCd as [LINE], policyId as [POLICY ID], policyNo as [POLICY NO], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME],'+
-          'negFmt(zoneCd) as [ZONE CD], currencyCd as [CURRENCY], negFmt(currency(pctPml)) as [PCT PML], negFmt(accumNoDays) as [ACCUM NO DAYS], negFmt(totalNoDays) as [TOTAL NO DAYS],'+
-          'treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TREATY CED ID],isNull(treatyCompany) as [TREATY COMPANY], isNull(retLayer) as [RET LAYER],'+
-          'isNull(retName) as [RET NAME], isNull(distGrp) AS [DIST GRP],negFmt(currency(siAmt)) as [SI AMT], negFmt(currency(accumSiAmt)) as [ACCUM SI AMT],'+
-          'negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(accumPremAmt)) as [ACCUM PREM AMT]';
+          // this.passDataCsv = data['listPolr044q'];
+          // query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE], isNull(cedingIdParam) as [CEDING ID PARAM], myFormat(inceptDate) as [INCEPT DATE],'+
+          // 'myFormat(expiryDate) as [EXPIRY DATE], lineCd as [LINE], policyId as [POLICY ID], policyNo as [POLICY NO], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME],'+
+          // 'negFmt(zoneCd) as [ZONE CD], currencyCd as [CURRENCY], negFmt(currency(pctPml)) as [PCT PML], negFmt(accumNoDays) as [ACCUM NO DAYS], negFmt(totalNoDays) as [TOTAL NO DAYS],'+
+          // 'treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TREATY CED ID],isNull(treatyCompany) as [TREATY COMPANY], isNull(retLayer) as [RET LAYER],'+
+          // 'isNull(retName) as [RET NAME], isNull(distGrp) AS [DIST GRP],negFmt(currency(siAmt)) as [SI AMT], negFmt(currency(accumSiAmt)) as [ACCUM SI AMT],'+
+          // 'negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(accumPremAmt)) as [ACCUM PREM AMT]';
+          var tab1 : any[] =[];
+          var tab2 : any[] =[];
+          var res1 =  data['listPolr044q'];
+          var res2 =  data['listPolr044q2'];
+
+          res1.forEach(e => {
+            checkNull(e);
+          });
+
+          res2.forEach(e => {
+            checkNull(e);
+          });
+
+          res1.forEach(e => {
+              tab1.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+           
+          res2.forEach(e => {
+              tab2.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+
+          console.log(tab1);
+          console.log(tab2);
+
+          this.export(tab1,tab2);
         }else if(this.params.reportId == 'POLR044R'){
           this.passDataCsv = data['listPolr044r'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+

@@ -21,7 +21,7 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+					<!-- <fieldset class="scheduler-border" style="margin-top: 10px !important;">
 					    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
 					        <label class="form-control-sm col-sm-1">Created By</label>
 					        <input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="crestaData.createUser" readonly>
@@ -32,7 +32,25 @@
 					        <label class="form-control-sm col-sm-1">Last Update</label>
 					        <input type="datetime-local" class="form-control form-control-sm col-sm" [(ngModel)]="crestaData.updateDate" readonly>
 					    </div>
-					</fieldset>
+					</fieldset> -->
+
+
+					<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+	                        <label class="form-control-sm col-sm-1">Created By</label>
+	                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="crestaData?.createUser" readonly>
+	                        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+	                        <div class="col-sm dp-cont">
+	                            <datepicker [value]="crestaData?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+	                        </div>
+	                        <label class="form-control-sm col-sm-1">Last Update By</label>
+	                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="crestaData?.updateUser" readonly>
+	                        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+	                        <div class="col-sm dp-cont">
+	                            <datepicker [value]="crestaData?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+	                        </div>
+	                    </div>
+	                </fieldset>
 
 					<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
 					<app-confirm-save (onYes)="saveData()"></app-confirm-save>
