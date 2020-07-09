@@ -10,6 +10,7 @@ import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/suc
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '@environments/environment';
+import { TextEditorComponent } from '@app/_components/common';
 
 @Component({
   selector: 'app-pol-value-coverage',
@@ -25,6 +26,7 @@ export class PolValueCoverageComponent implements OnInit {
   @ViewChild('infoCov') modal : ModalComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild(TextEditorComponent) textEditor : TextEditorComponent;
 
   passData: any = {
     tHeader:['Section','Bullet No','Cover Name','Sum Insured','Rate(%)','Premium','Sum Insured','Rate(%)','Premium','D/S','Add SI'],
@@ -172,6 +174,7 @@ export class PolValueCoverageComponent implements OnInit {
 
     alterationFlag: boolean= false;
     policyInfo:any = {};
+    ocTag:boolean = false;
 
   constructor( private ns: NotesService, private underwritingService: UnderwritingService, private modalService: NgbModal, private decimal : DecimalPipe, private route: ActivatedRoute, private ps: PrintService) { }
 
@@ -182,7 +185,6 @@ export class PolValueCoverageComponent implements OnInit {
       this.passDataPerSection.tableData = [['SECTION I','',''],['SECTION II','',''],['SECTION III','','']]
 
       this.route.params.subscribe((params) => {
-        console.log(params)
         this.policyId = params.policyId;
         this.line = params.policyNo.split('-')[0],
         this.insured = params.insuredDesc;
@@ -214,7 +216,7 @@ export class PolValueCoverageComponent implements OnInit {
     this.passData.tableData = [];
     this.underwritingService.getFullCoverage(null,this.policyId).subscribe((data:any) => {
       console.log(data)
-
+      this.ocTag = data.policy.openCoverTag == 'Y';
       if(data.policy.project !== null){
         var datas = data.policy.project.fullCoverage.fullSecCover;
         this.fullCoverageDetails            = data.policy.project.fullCoverage;
@@ -612,6 +614,12 @@ export class PolValueCoverageComponent implements OnInit {
         }  
     }
 
+    if(this.ocTag && !this.alterationFlag){
+      this.fullCoverageDetails.polWordings = this.fullCoverageDetails.remarks;
+    }else{
+      this.fullCoverageDetails.altWordings = this.fullCoverageDetails.remarks;
+    }
+
     this.fullCoverageDetails.saveFullSectionCovers     = this.editedData;
     this.fullCoverageDetails.deleteFullSectionCovers   = this.deletedData;
     this.fullCoverageDetails.saveDeductibleList     = this.editedDedt;
@@ -635,6 +643,10 @@ export class PolValueCoverageComponent implements OnInit {
         //$('#fullCoveragevalue #successModalBtn').trigger('click');
         this.sectionTable.markAsPristine();
         this.deductiblesTable.markAsPristine();
+        if(this.textEditor != undefined){
+          this.textEditor.edtrMdlForm.control.markAsPristine();
+          this.textEditor.edtrPrevForm.control.markAsPristine();
+        }
         this.getFullCoverage();
         this.deductiblesTable.refreshTable();
         console.log('success');
