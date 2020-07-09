@@ -1263,6 +1263,7 @@ export class MaintenanceService{
     				.set('drCrTag', (param.drCrTag === null || param.drCrTag === undefined ? '' : param.drCrTag))
     				.set('postTag', (param.postTag === null || param.postTag === undefined ? '' : param.postTag))
     				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
+    				.set('lov', (param.lov === null || param.lov === undefined ? '' : param.lov))
 
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitChartAcct", {params});
     }
@@ -1473,6 +1474,7 @@ export class MaintenanceService{
     				.set('drCrTag', (param.drCrTag === null || param.drCrTag === undefined ? '' : param.drCrTag))
     				.set('postTag', (param.postTag === null || param.postTag === undefined ? '' : param.postTag))
     				.set('activeTag', (param.activeTag === null || param.activeTag === undefined ? '' : param.activeTag))
+    				.set('lov', (param.lov === null || param.lov === undefined ? '' : param.lov))
 
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcct", {params});
     }
