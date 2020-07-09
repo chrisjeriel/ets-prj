@@ -283,13 +283,17 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       try{
 
+          var recCheckHist   = data['clmHist']['checkHistList'];
+          this.recCheckHistGl = recCheckHist;
+          this.histFunction(1);
+          
           if(data['clmHist']['claimReserveList'].length == 0){
             var recClmHist = data['clmHist']['claimReserveList'];
 
             if(this.initFetch){
-              var recCheckHist   = data['clmHist']['checkHistList'];
-              this.recCheckHistGl = recCheckHist;
-              this.histFunction(1);
+              // var recCheckHist   = data['clmHist']['checkHistList'];
+              // this.recCheckHistGl = recCheckHist;
+              // this.histFunction(1);
             }
           }else{
             var res = data['clmHist']['claimReserveList'][0];

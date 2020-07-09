@@ -15,14 +15,14 @@ export class PolicyInquiryComponent implements OnInit, AfterViewInit {
   @ViewChild('listTable') listTable: LoadingTableComponent;
   passData: any = {
     tHeader: [
-        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status","Created By"
+        "Line","Policy No", "Type Cession","Ceding Company", "Insured", "Risk", "Object", "Site", "Currency", "Sum Insured", "Premium" , "Issue Date", "Inception Date", "Expiry Date","Booking Date","Status","Co Ref No","Created By"
     ],
-    sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC','CREATE_USER'],
+    sortKeys : ['POLICY_NO','POLICY_NO','CESSION_DESC','CEDING_NAME','INSURED_DESC','RISK_NAME','OBJECT_DESC','SITE','CURRENCY_CD','TOTAL_SI','TOTAL_PREM','ISSUE_DATE','INCEPT_DATE','EXPIRY_DATE','ACCT_DATE','STATUS_DESC',"CO_REF_NO",'CREATE_USER'],
     dataTypes: [
             "text","text", "text", "text", "text", "text", "text", "text",
-            "text", "currency", "currency", "date", "date", "date", "date", "text", "text"
+            "text", "currency", "currency", "date", "date", "date", "date", "text", "text", "text"
     ],
-    keys: ['lineCd','policyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','totalPrem','issueDate','inceptDate','expiryDate','acctDate','statusDesc','createUser'],
+    keys: ['lineCd','policyNo','cessionDesc','cedingName','insuredDesc','riskName','objectDesc','site','currencyCd','totalSi','totalPrem','issueDate','inceptDate','expiryDate','acctDate','statusDesc','coRefNo','createUser'],
     // checkFlag: false,
     // selectFlag: false,
     // addFlag: false,
@@ -131,6 +131,11 @@ export class PolicyInquiryComponent implements OnInit, AfterViewInit {
                 dataType: 'text'
             },
             {
+                key: 'coRefNo',
+                title: 'Co Ref No',
+                dataType: 'text'
+            },
+            {
                 key: 'createUser',
                 title: 'Created By',
                 dataType: 'text'
@@ -156,6 +161,7 @@ export class PolicyInquiryComponent implements OnInit, AfterViewInit {
     currencyCd: null,
     totalSi: null,
     totalPrem: null,
+    coRefNo: null
   }
 
   defaultPolicyInfo:any = {
