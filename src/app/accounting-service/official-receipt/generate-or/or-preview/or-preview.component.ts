@@ -202,6 +202,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     this.acctEntriesData.nData.tranId = this.record.tranId;
     this.acctEntriesData.nData.autoTag = 'N';
     console.log(this.record);
+    if(this.record.from.toLowerCase() == 'jv') {
+      this.currentTab = 'acctEntries';
+    }
+
     if(this.paymentType == null){
           this.paymentType = "";
     }
@@ -421,6 +425,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
           }
           /*this.genTaxData.tableData = genTax;
           this.whTaxData.tableData = whTax;*/
+
           this.genTaxTbl.refreshTable();
           this.whTaxTbl.refreshTable();
         },

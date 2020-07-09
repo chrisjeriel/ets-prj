@@ -32,7 +32,7 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     keys: ['glAcctId','glAcctCategory','glAcctCategory','glAcctControl','glAcctSub1','glAcctSub2','glAcctSub3','shortDesc','longDesc','shortCode','slTypeName','drCrTag','postTag','activeTag'],
     uneditable: [true,false,true,false,false,false,false,false,false,true,false,false,false,false],
     uneditableKeys: ['glAcctCategory','glAcctControl','glAcctSub1','glAcctSub2','glAcctSub3','shortCode'],
-    widths: ['1','auto','1','1','1','1','1','auto','auto','95','100','55','95','1'],
+    widths: ['1','auto','1','1','1','1','1','auto','auto','90','100','55','132','1'],
     nData: {
       showMG: 1,
       newRec: 1,
@@ -71,8 +71,8 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
     },
     {
       selector: 'postTag',
-      prev: ['Summary','Detail'],
-      vals: ['S','D'],
+      prev: [],
+      vals: []
     }],
     limit: {
       glAcctControl: 2,
@@ -127,14 +127,19 @@ export class MaintChartTrstAcctComponent implements OnInit, OnDestroy {
   getMtnAcitChartAcct(params) {
     this.table.loadingFlag = true;
     var sub$ = forkJoin(this.ms.getMtnAcitChartAcct(params),
-                        this.ms.getRefCode('MTN_ACIT_CHART_ACCT.GL_ACCT_CATEGORY')).pipe(map(([chartAcct, ref]) => { return { chartAcct, ref} }));
+                        this.ms.getRefCode('MTN_ACIT_CHART_ACCT.GL_ACCT_CATEGORY'),
+                        this.ms.getRefCode('MTN_ACIT_CHART_ACCT.POST_TAG')).pipe(map(([chartAcct, ref, postTagRef]) => { return { chartAcct, ref, postTagRef} }));
 
     this.subscription.add(sub$.subscribe(data => {
-
       this.chartOfAccounts.opts.forEach( a=> {
         if(a.selector == 'glAcctCategory'){
           a.prev = [];
           a.vals = [];
+        }
+
+        if(a.selector == 'postTag'){
+          a.prev = data['postTagRef']['refCodeList'].map(a => a.description);
+          a.vals = data['postTagRef']['refCodeList'].map(a => a.code);
         }
       });
 
