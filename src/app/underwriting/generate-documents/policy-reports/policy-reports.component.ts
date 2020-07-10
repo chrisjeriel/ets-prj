@@ -915,6 +915,80 @@ export class PolicyReportsComponent implements OnInit {
                 headers: true
                }];
 
+    // var opts = [
+    //             {sheetid: 'Sheet1',headers: true,
+    //               cells: {1:{1:{
+    //                 style: {Color:"#7CEECE"}
+    //               }}}
+    //             },
+    //             {sheetid: 'Sheet2',headers: true,
+    //               cells: {1:{1:{
+    //                 style:"background:blue"
+    //               }}}
+    //             }
+    //            ];
+
+// var opts = {
+//               headers:true,
+//               column: {
+//                     style:{
+//                       Font:{
+//                           Bold:"1",
+//                           Color:"#3C3741",
+//                       },
+//                       Alignment:{
+//                           Horizontal:"Center"
+//                       },
+//                       Interior:{
+//                           Color:"#7CEECE",
+//                           Pattern:"Solid"
+//                       },
+//                   }
+//               }
+//             };
+
+// columns: [
+                //   {columnid:'a',title:'Albatroses',
+                //     style:'background:red;font-size:20px',
+                //     cell:{style:'background:blue'}
+                //   },
+                //   {columnid:'b',title:'Bird',cell:{
+                //     style:function(value,sheet,row,column,rowidx,columnidx){
+                //       return 'background'+(value==10?'brown':'white')
+                //   }}},
+                //   { 
+                //     columnid: 'b', cell:{value:function(value){ return value * value}}
+                //   }
+                // ]
+    // var opts = {
+    //   headers:true, 
+    //   column: {style:{Font:{Bold:"1"}}},
+    //   rows: {1:{style:{Font:{Color:"#7CEECE"}}}},
+    //   cells: {1:{1:{
+    //     style: {Font:{Color:"#7CEECE"}}
+    //   }}}
+    // };
+
+    // var opts = {
+    //           headers:true,
+    //           column: {
+    //                 style:{
+    //                   Font:{
+    //                       Bold:"1",
+    //                       Color:"#3C3741",
+    //                   },
+    //                   Alignment:{
+    //                       Horizontal:"Center"
+    //                   },
+    //                   Interior:{
+    //                       Color:"#7CEECE",
+    //                       Pattern:"Solid"
+    //                   },
+    //               }
+    //           }
+    //         };
+
+    //alasql('SELECT INTO XLSX("'+filename+'",?) FROM ?', [opts,[tab1,tab2]]);
     alasql('SELECT INTO XLSX("'+filename+'",?) FROM ?', [opts, [tab1, tab2]]);
 
   }

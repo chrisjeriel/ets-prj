@@ -228,12 +228,15 @@ export class ChecksRegisterComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          console.log('from month end trial balance');
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.params.reportId;
@@ -241,8 +244,8 @@ export class ChecksRegisterComponent implements OnInit {
 
         if(this.params.reportId == 'ACITR061D'){
           this.passDataCsv = data['listAcitr061d'];
-          query = 'SELECT printedBy as [PRINTED BY], myFormat(fromDate) || " to " || myFormat(toDate) AS [PERIOD], myFormat(tranDate) as [DATE],isNull(tranStatDesc) as [TRANS STAT],cvNo as [CV NO], payee as [PAYEE], particulars as [PARTICULARS],'+
-          'negFmt(currency(localAmt)) as [AMOUNT], officialName as [BANK], accountNo as [ACCOUNT NO], myFormat(cvDate) as [CV DATE], myFormat(checkDate) as [CHECK DATE], checkNo as [CHECK NO]';
+          query = 'SELECT printedBy as [PRINTED BY], myFormat(fromDate) || " to " || myFormat(toDate) AS [PERIOD], myFormat(tranDate) as [DATE],isNull(tranStatDesc) as [TRANS STAT],checkNullNo(cvNo) as [CV NO], payee as [PAYEE], particulars as [PARTICULARS],'+
+          'negFmt(currency(localAmt)) as [AMOUNT], officialName as [BANK], accountNo as [ACCOUNT NO], myFormat(cvDate) as [CV DATE], myFormat(checkDate) as [CHECK DATE], checkNullNo(checkNo) as [CHECK NO]';
         }
 
         console.log(this.passDataCsv);

@@ -466,12 +466,15 @@ export class MeTrialBalProcComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          console.log('from month end trial balance');
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.params.reportId;
@@ -479,33 +482,33 @@ export class MeTrialBalProcComponent implements OnInit {
 
         if(this.params.reportId == 'ACSER024A'){
           this.passDataCsv = data['listAcser024a'];
-          query = 'SELECT acctGroup as [ACCT GROUP], groupNum as [SORT SEQ 1], itemNo as [SORT SEQ 2], acctName as [ACCT NAME], negFmt(currency(acctAmt)) as [ACCT AMOUNT], negFmt(currency(currNetAmt)) as [NET AMOUNT(CURR YR)],'+
+          query = 'SELECT acctGroup as [ACCT GROUP], checkNullNo(groupNum) as [SORT SEQ 1], checkNullNo(itemNo) as [SORT SEQ 2], acctName as [ACCT NAME], negFmt(currency(acctAmt)) as [ACCT AMOUNT], negFmt(currency(currNetAmt)) as [NET AMOUNT(CURR YR)],'+
           'negFmt(currency(prevNetAmt)) as [NET AMOUNT(PREV YR)],myFormat(paramDate) AS [PARAM DATE]';
         }else if(this.params.reportId == 'ACSER024B'){
           this.passDataCsv = data['listAcser024b'];
-          query = 'SELECT itemNo as [REC NO], itemName as [ACCOUNT NAME], negFmt(currency(currIncome)) as [CURRENT YEAR], negFmt(currency(prevIncome)) as [LAST YEAR], myFormat(paramDate) as [PARAM DATE]';
+          query = 'SELECT checkNullNo(itemNo) as [REC NO], itemName as [ACCOUNT NAME], negFmt(currency(currIncome)) as [CURRENT YEAR], negFmt(currency(prevIncome)) as [LAST YEAR], myFormat(paramDate) as [PARAM DATE]';
         }else if(this.params.reportId == 'ACSER024C'){
           this.passDataCsv = data['listAcser024c'];
-          query = 'SELECT eomMm as [EOM MM], eomYear as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
+          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
           'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACSER024D'){
           this.passDataCsv = data['listAcser024d'];
-          query = 'SELECT eomMm as [EOM MM], eomYear as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
+          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
           'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACSER024E'){
           console.log('entered acser024e');
-          //this.export();
-          this.passDataCsv = this.monthlyTotals;
-          query = 'SELECT eomMm AS [MONTH], eomYear AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
-                  'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
-                  'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
-                  'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
+          this.export();
+          // this.passDataCsv = this.monthlyTotals;
+          // query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+          //         'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
+          //         'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
+          //         'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
         }
 
         console.log(this.passDataCsv);

@@ -252,12 +252,15 @@ export class ArRegisterComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          console.log('from month end trial balance');
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.params.reportId;
@@ -265,16 +268,11 @@ export class ArRegisterComponent implements OnInit {
 
         if(this.params.reportId == 'ACITR061A'){
           this.passDataCsv = data['listAcitr061a'];
-          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
+          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], checkNullNo(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
           'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT], isNull(tranClass) as [TRAN CLASS],'+
-          'isNull(paytModeDesc) as [PAYMENT MODE], isNull(tranTypeCd) as [TRAN TYPE CD], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(incClosedTran) as [INC CLOSED TRAN],'+
+          'isNull(paytModeDesc) as [PAYMENT MODE], checkNullNo(tranTypeCd) as [TRAN TYPE CD], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(incClosedTran) as [INC CLOSED TRAN],'+
           'isNull(incCancelTran) AS [INC CANCEL TRAN], isNull(tranpostDateDesc) as [TRANPOST DATE]';
         }
-        // else if(this.params.reportId == 'ACITR061B'){
-        //   this.passDataCsv = data['listAcitr061b'];
-        //   query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
-        //   'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
-        // }
 
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);
