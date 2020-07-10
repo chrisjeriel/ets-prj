@@ -28,7 +28,7 @@
                         </div>
                     </div>
                     <label class="form-control-sm col-sm-1" style="    margin-left: -10px;">Ref No</label>
-                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" name="entryData.refNo" [readonly]="approvedStat" [(ngModel)]="entryData.refNo">
+                    <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 4px !important;margin-left: 16px !important;" name="entryData.refno" [readonly]="approvedStat" [(ngModel)]="entryData.refno">
                     <div *ngIf="!approvedStat" style="margin-left: -19px !important;margin-right: 13px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="openLov('refNo')"></i></a></div>
                 </div>
                 <div class="input-group" style="margin-bottom: -13px !important">
@@ -106,9 +106,9 @@
                     <div class="col-sm-4">
                         <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
                             <div class="col-sm-9" style="padding: 0px">
-                                <datepicker [showSeconds]="true" [required]="true" [value]="entryData.preparedDate" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')"  [disabled]="approvedStat"></datepicker>
+                                <datepicker [showSeconds]="true" [required]="true" [(value)]="entryData.preparedDate" [disabled]="approvedStat"></datepicker>
                             </div>
-                            <!-- <div class="col-sm-5 dp-cont">
+                            <!-- <div class="col-sm-5 dp-cont">  (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'dt')" 
                                 <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="entryData.preparedDate?.split('T')[0]" (valueChange)="entryData.preparedDate=dc($event,entryData.preparedDate,'d')" appRequired name="entryData.preparedDate"  [disabled]="approvedStat"></datepicker>
                             </div>
 
@@ -130,6 +130,14 @@
                             <div class="col-sm dp-cont">
                                 <datepicker [type]="'time'" required [showIcon]="true" [value]="entryData.approvedDate?.split('T')[1]" (valueChange)="entryData.approvedDate=dc($event,entryData.approvedDate,'t')" disabled name="entryData.approvedDate2"></datepicker>
                             </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Remarks</label>
+                    <div class="col-sm">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.remarks" name="entryData.remarks" [readonly]="approvedStat">
                         </div>
                     </div>
                 </div>
@@ -159,11 +167,17 @@
                     <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createUser" name="entryData.createUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate" name="entryData.createDate">
+                    <!-- <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.createDate" name="entryData.createDate"> -->
+                    <div class="col-sm-2 dp-cont">
+                        <datepicker [showSeconds]="true" [value]="entryData.createDate" [disabled]="true"></datepicker>
+                    </div>
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
                     <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateUser" name="entryData.updateUser">
                     <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
-                    <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate" name="entryData.updateDate">
+                    <!-- <input type="datetime-local" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="entryData.updateDate" name="entryData.updateDate"> -->
+                    <div class="col-sm-2 dp-cont">
+                        <datepicker [showSeconds]="true" [value]="entryData.updateDate" [disabled]="true"></datepicker>
+                    </div>
                 </div>
             </div>
         </fieldset>
@@ -294,3 +308,4 @@
 <app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>
 <app-mtn-acse-trantype id="jvTypeModal" (selectedData)="setTranType($event)"></app-mtn-acse-trantype>
 <app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>
+<app-lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
