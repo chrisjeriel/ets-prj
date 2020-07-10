@@ -192,12 +192,15 @@ export class JvRegisterComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          console.log('from month end trial balance');
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.params.reportId;
@@ -205,7 +208,7 @@ export class JvRegisterComponent implements OnInit {
 
         if(this.params.reportId == 'ACITR061C'){
           this.passDataCsv = data['listAcitr061c'];
-          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], isNull(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
+          query = 'SELECT printedBy as [PRINTED BY], fromDate || " to " || toDate AS [PERIOD], checkNullNo(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
           'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
         }
 

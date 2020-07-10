@@ -480,12 +480,15 @@ export class MonEndTrialBalComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          console.log('from month end trial balance');
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.params.reportId;
@@ -505,18 +508,18 @@ export class MonEndTrialBalComponent implements OnInit {
           'negFmt(currency(lossPayable)) as [LOSS PAYABLE], myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066C'){
           this.passDataCsv = data['listAcitr066c'];
-          query = 'SELECT grpNo as [GROUP NO], itemNo as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
+          query = 'SELECT checkNullNo(grpNo) as [GROUP NO], checkNullNo(itemNo) as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
           'negFmt(currency(currMreTotal)) as [CURR MRE TOTAL], negFmt(currency(currNatreTotal)) as [CURR NATRE TOTAL],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
           'negFmt(currency(prevMembersTotal)) as [PREV MEMBERS TOTAL],negFmt(currency(prevMreTotal)) as [PREV MRE TOTAL], negFmt(currency(prevNatreTotal)) as [PREV NATRE TOTAL],'+
           'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL], negFmt(currency(planAmt)) as [PLAN AMT], negFmt(currency(incDecPct)) as [INC DEC PCT],'+
           'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066D'){
           this.passDataCsv = data['listAcitr066d'];
-          query = 'SELECT cedingId as [CEDING ID], cedingName as [COMPANY], grpNo as [GROUP NO], itemNo as [ITEM NO], itemName as [ITEM NAME],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
+          query = 'SELECT cedingId as [CEDING ID], cedingName as [COMPANY], checkNullNo(grpNo) as [GROUP NO], checkNullNo(itemNo) as [ITEM NO], itemName as [ITEM NAME],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
           'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066E'){
           this.passDataCsv = data['listAcitr066e'];
-          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          query = 'SELECT checkNullNo(eomMM) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
           'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
@@ -524,7 +527,7 @@ export class MonEndTrialBalComponent implements OnInit {
           'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066F'){
           this.passDataCsv = data['listAcitr066f'];
-          query = 'SELECT eomMM as [EOM MM], eomYear as [EOM YEAR],'+ 
+          query = 'SELECT checkNullNo(eomMM) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
           'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
@@ -532,7 +535,7 @@ export class MonEndTrialBalComponent implements OnInit {
           'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066G'){
           //this.passDataCsv = this.monthlyTotals;
-          // query = 'SELECT eomMm AS [MONTH], eomYear AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+          // query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
           //         'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
           //         'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
           //         'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';

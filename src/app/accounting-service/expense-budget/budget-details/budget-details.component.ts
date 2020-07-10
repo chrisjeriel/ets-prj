@@ -389,11 +389,15 @@ export class BudgetDetailsComponent implements OnInit {
         };
 
         alasql.fn.negFmt = function(m){
-          return (m==null || m=='')?0:(Number(String(m).replace(/,/g, ''))<0?('('+String(m).replace(/-/g, '')+')'):isNaN(Number(String(m).replace(/,/g, '')))?'0.00':m);
+          return (m==null || m=='') ? 0 : Number(m);
         };
 
         alasql.fn.isNull = function(n){
           return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
         };
 
         var name = this.printParams.reportId;
@@ -401,7 +405,7 @@ export class BudgetDetailsComponent implements OnInit {
 
         if(this.printParams.reportId == 'ACSER004'){
           this.passDataCsv = data['listAcser004'];
-          query = 'SELECT budgetYear as [BUDGET YEAR], itemNo as [ITEM NO], itemName as [ACCOUNT TITLES], isNull(slName) as [SL NAME],'+
+          query = 'SELECT checkNullNo(budgetYear) as [BUDGET YEAR], checkNullNo(itemNo) as [ITEM NO], itemName as [ACCOUNT TITLES], isNull(slName) as [SL NAME],'+
           'negFmt(currency(currAsofBudget)) as [BUDGET CURRENT DATE], negFmt(currency(currAsofExpense)) as [EXPENSES CURRENT DATE],' +
           'negFmt(currency(saveOvrdrft)) as [SAVING OVERDRAFT], negFmt(saveOvrdrftPct) as [% SAVING OVERDRAFT],negFmt(currency(prevAsofExpense)) as [EXPENSES LAST YEAR],'+
           'negFmt(overunderPct) as [% OVER UNDER], negFmt(currency(currTotalBudget)) as [CURRENT TOTAL BUDGET], negFmt(asofVsTotalExp) as [CURR EXPENSES VS TOTAL BUDGET],'+
