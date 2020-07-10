@@ -3569,4 +3569,18 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitQsoaPrint',{params});	
 	}
 
+	getRefNoAcseLov(param){
+    	const params = new HttpParams()
+			.set('orTag', (param.orTag == null || param.orTag == undefined ? '' : param.orTag))
+			.set('cvTag', (param.cvTag == null || param.cvTag == undefined ? '' : param.cvTag))
+			.set('jvTag', (param.jvTag == null || param.jvTag == undefined ? '' : param.jvTag))
+			.set('tranStat', (param.tranStat == null || param.tranStat == undefined ? '' : param.tranStat))
+			.set('orStatus', (param.orStatus == null || param.orStatus == undefined ? '' : param.orStatus))
+			.set('cvStatus', (param.cvStatus == null || param.cvStatus == undefined ? '' : param.cvStatus))
+			.set('jvStatus', (param.jvStatus == null || param.jvStatus == undefined ? '' : param.jvStatus))
+			.set('groupTag', (param.groupTag == null || param.groupTag == undefined ? '' : param.groupTag));
+
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseRefNoLOV',{params});	
+    }
+
 }

@@ -720,6 +720,37 @@ export class LovComponent implements OnInit {
             });
           }
         }
+    else if (selector == 'refNoAcse') {
+          this.passData.refNo = ev.target.value;
+          if(this.passData.refNo == '') {
+            this.selectedData.emit({
+              selector: selector,
+              data: null,
+              ev: ev
+            });
+          } else {
+            this.accountingService.getRefNoAcseLov(this.passData.params).subscribe((data: any) => {
+                let filtered:any[] = data.refNoList.filter(a=>a.tranNo==this.passData.refNo)
+                if(filtered.length > 0) {
+                  filtered[0].ev = ev;
+                  this.selectedData.emit({
+                      selector: selector,
+                      data : filtered[0],
+                      ev: ev
+                    }
+                    );
+                } else {
+                  this.selectedData.emit({
+                    selector: selector,
+                    data: null,
+                    ev: ev
+                  });
+                  this.passData.selector = 'refNo';
+                  this.modal.openNoClose();
+                }
+            });
+          }
+        }
   }
 
   openModal(){
@@ -1050,6 +1081,14 @@ export class LovComponent implements OnInit {
       this.passTable.dataTypes = [ 'text','text','text','date','text','currency'];
       this.passTable.keys = [ 'tranClass','tranNo','tranTypeName','tranDate','particulars','amount'];
       this.accountingService.getRefNoLov(this.passData.params).subscribe(a=>{
+        this.passTable.tableData = a["refNoList"];
+        this.table.refreshTable();
+      })
+    }else if(this.passData.selector == 'refNoAcse'){
+      this.passTable.tHeader = ['Tran Class','Tran No.', 'Tran Type','Tran Date','Particulars','Amount'];
+      this.passTable.dataTypes = ['text','text','text','date','text','currency'];
+      this.passTable.keys = ['tranClass','tranNo','tranTypeName','tranDate','particulars','amount'];
+      this.accountingService.getRefNoAcseLov(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["refNoList"];
         this.table.refreshTable();
       })

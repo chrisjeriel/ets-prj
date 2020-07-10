@@ -25,7 +25,7 @@ export class JvEntryServiceComponent implements OnInit {
   @Output() emitData = new EventEmitter<any>();
   @Output() disableTab : EventEmitter<any> = new EventEmitter();  
   @ViewChild('ApproveJV') approveJV: ModalComponent;
-  @ViewChild(LovComponent)lov: LovComponent;
+  @ViewChild(LovComponent) lov: LovComponent;
   @ViewChild(MtnCurrencyComponent) currLov: MtnCurrencyComponent;
   @ViewChild('ApproverNames') approverName: MtnPrintableNamesComponent;
   @ViewChild('myForm') form:any;
@@ -41,8 +41,9 @@ export class JvEntryServiceComponent implements OnInit {
     jvNo: '',
     status: '',
     autoTag:'',
-    refNo:'',
-    refNoDate:'',
+    refno:'',
+    refnoDate:'',
+    refnoTranId: '',
     jvType: '',
     particulars: '',
     currencyCd:'',
@@ -51,7 +52,8 @@ export class JvEntryServiceComponent implements OnInit {
     preparedBy:'',
     preparedDate:'',
     approvedBy:'',
-    approvedDate:''
+    approvedDate:'',
+    remarks: ''
   };
 
   jvDatas: any = {
@@ -67,7 +69,8 @@ export class JvEntryServiceComponent implements OnInit {
     tranStat : '', 
     tranYear : '', 
     updateDate : '', 
-    updateUser : '', 
+    updateUser : '',
+    remarks: ''
   };
 
   passLov:any = {
@@ -213,7 +216,8 @@ export class JvEntryServiceComponent implements OnInit {
                          jvStatus: ev.statusName,
                          statusType: ev.jvStatus,
                          refnoDate: ev.refnoDate,
-                         refnoTranId: ev.refNo,
+                         refnoTranId: ev.refnoTranId,
+                         refno: ev.refno,
                          currCd: ev.currCd,
                          currRate: ev.currRate,
                          jvAmt: parseFloat(ev.jvAmt.toString().split(',').join('')),
@@ -250,9 +254,9 @@ export class JvEntryServiceComponent implements OnInit {
         this.entryData.tranTypeName = '';
         this.entryData.jvDate = this.ns.toDateTimeString(0);
         this.entryData.autoTag = 'N';
-        this.entryData.refNo = '';
+        this.entryData.refno = '';
         this.entryData.refnoTranId = '';
-        this.entryData.refNoDate = '';
+        this.entryData.refnoDate = '';
         this.entryData.jvType =  '';
         this.entryData.particulars =  '';
         this.entryData.currCd = 'PHP';
@@ -292,10 +296,10 @@ export class JvEntryServiceComponent implements OnInit {
 
   openLov(selector){
     if(selector == 'refNo'){
-    this.passLov.params.arTag = 'Y';
+    this.passLov.params.orTag = 'Y';
     this.passLov.params.cvTag = 'Y';
     this.passLov.params.jvTag = 'Y';
-      this.passLov.selector = 'refNo';
+      this.passLov.selector = 'refNoAcse';
     }
 
     this.lov.openLOV();
@@ -422,8 +426,8 @@ export class JvEntryServiceComponent implements OnInit {
     this.jvDatas.jvTranTypeCd   = this.entryData.tranTypeCd;
     this.jvDatas.tranTypeName   = this.entryData.tranTypeName;
     this.jvDatas.autoTag        = this.entryData.autoTag;
-    this.jvDatas.refnoTranId    = this.entryData.refnoTranId == null ? '': this.entryData.refNoTranId;
-    this.jvDatas.refnoDate      = this.entryData.refnoDate == '' ? '': this.ns.toDateTimeString(this.entryData.refnoDate);
+    this.jvDatas.refnoTranId    = this.entryData.refnoTranId == null ? '' : this.entryData.refnoTranId;
+    this.jvDatas.refnoDate      = this.entryData.refnoDate == '' ? '' : this.ns.toDateTimeString(this.entryData.refnoDate);
     this.jvDatas.particulars    = this.entryData.particulars;
     this.jvDatas.currCd         = this.entryData.currCd;
     this.jvDatas.currRate       = (parseFloat(this.entryData.currRate.toString().split(',').join(''))),
@@ -439,6 +443,7 @@ export class JvEntryServiceComponent implements OnInit {
     this.jvDatas.createDateJv   = this.ns.toDateTimeString(0);
     this.jvDatas.updateUserJv   = this.ns.getCurrentUser();
     this.jvDatas.updateDateJv   = this.ns.toDateTimeString(0);
+    this.jvDatas.remarks        = this.entryData.remarks;
   }
 
   saveData(cancel?){
@@ -663,6 +668,15 @@ uploadAcctEntries(){
 
   clearPrinterName(){
     (this.printData.destination != 'printer')?this.printData.selPrinter='':''
+  }
+
+  setLov(data){
+    if(data.selector == 'refNoAcse'){
+      this.entryData.refnoTranId = parseInt(data.data.tranId);
+      this.entryData.refnoDate   = this.ns.toDateTimeString(data.data.tranDate);
+      this.entryData.refno       = data.data.tranNo;
+      this.form.control.markAsDirty();
+    }
   }
 
   /*getAcctEnt(){
