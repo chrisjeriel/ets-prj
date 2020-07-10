@@ -21,20 +21,25 @@ import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confi
 })
 export class ClaimReportsComponent implements OnInit {
 
-  @ViewChild (CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+  @ViewChild ('yearRangeTbl') table: CustEditableNonDatatableComponent;
+  @ViewChild ('siRangeTbl') siTable: CustEditableNonDatatableComponent;
   @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(MtnLineComponent) lineLov: MtnLineComponent;
   @ViewChild('ceding') cedingLov: CedingCompanyComponent;
   @ViewChild('appCancel') cancelBtn: CancelButtonComponent;
   @ViewChild('polReportsModal') polReportsModal: ModalComponent;
   @ViewChild('appDialog') appDialog: SucessDialogComponent;
+  @ViewChild('success') success: SucessDialogComponent;
+
   @ViewChild('clmEventLOV') clmEventTypeLOV: MtnClmEventComponent;
   @ViewChild('adjusterLOVMain') adjusterLOVMain: MtnAdjusterComponent;
   @ViewChild('statusLOV') statusLOV: MtnClaimStatusLovComponent;
   @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
   @ViewChild('Range') rangeLOV: ModalComponent;
+  @ViewChild('SiRange') siRangeLOV: ModalComponent;
   @ViewChild('success') openDialog: SucessDialogComponent;
-  @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild('yearRangeConf') confirm: ConfirmSaveComponent;
+  @ViewChild('siRangeConf') confirmSi: ConfirmSaveComponent;
 
   tableFlag: boolean = false;
   cancelFlag: boolean = false;
@@ -118,6 +123,26 @@ export class ClaimReportsComponent implements OnInit {
     pageLength: 10,
     uneditable: [false,false],
     keys: ['rangeCd', 'rangeValue'],
+    widths: [110,140]
+  };
+
+
+  passDataSi: any = {
+    tableData: [],
+    tHeader: ['Range', 'Amount'],
+    dataTypes: ['string', 'currency'],
+    nData: {siRange: '', amount: ''},
+    addFlag: true,
+    deleteFlag: false,
+    genericBtn:'Delete',
+    checkFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    pagination: true,
+    pageStatus: true,
+    pageLength: 10,
+    uneditable: [false,false],
+    keys: ['siRange', 'amount'],
     widths: [110,140]
   };
 
@@ -215,6 +240,8 @@ export class ClaimReportsComponent implements OnInit {
       } else if(this.params.reportId == 'CLMR010AP'){
         this.paramsToggle = ['line', 'company', 'currency','minLossAmt',
                                      'byDate', 'byMonthYear', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate']
+      } else if(this.params.reportId == 'CLMR010ZO' || this.params.reportId == 'CLMR010ZP'){
+        this.paramsToggle.push('siRange');
       }
 
       setTimeout(()=> {
@@ -666,7 +693,7 @@ export class ClaimReportsComponent implements OnInit {
           this.passData.tableData.push(data.reportsRange[i]);
           this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['rangeCd'];
         }
-        nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].rangeCd + 1;
+        nextSiRange = parseInt(this.passData.tableData[this.passData.tableData.length - 1].rangeCd) + 1;
         this.passData.nData = {rangeCd: nextSiRange, rangeValue: ''};
       }else{
         this.passData.nData = {rangeCd: 1, rangeValue: ''};
@@ -706,7 +733,7 @@ export class ClaimReportsComponent implements OnInit {
   update(data){
     var checkFlag = false;
     this.table.markAsDirty();
-    var nextSiRange = this.passData.tableData[this.passData.tableData.length - 1].rangeCd +1;
+    var nextSiRange = parseInt(this.passData.tableData[this.passData.tableData.length - 1].rangeCd) +1;
     this.passData.nData = {rangeCd: nextSiRange, amount: ''};
     for (var i = 0; i < this.passData.tableData.length; i++) {
       if(this.passData.tableData[i].checked){
@@ -722,7 +749,7 @@ export class ClaimReportsComponent implements OnInit {
     }
   }
 
-  @ViewChild('siLovCancel') siCancelBtn: CancelButtonComponent;
+  @ViewChild('yearLovCancel') siCancelBtn: CancelButtonComponent;
   siClickCancel(){
     if(this.table.form.first.dirty) {
       this.siCancelBtn.clickCancel();
@@ -774,11 +801,11 @@ export class ClaimReportsComponent implements OnInit {
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
-        this.appDialog.open();
+        this.success.open();
       }else{
         this.dialogMessage = "";
         this.dialogIcon = "success";
-        this.appDialog.open();
+        this.success.open();
         this.table.markAsPristine();
         this.retrieveRange();
       }
@@ -786,13 +813,157 @@ export class ClaimReportsComponent implements OnInit {
   }
 
   onRowClick(data){
-    if( data !==null){
-      this.passData.disableGeneric = false;
-    }
+      this.passData.disableGeneric = !this.passData.tableData.some(a=>a.checked);
   }
   fromSiRangeMdl: boolean = false;
   afterCancelSave() {
     this.fromSiRangeMdl = false;
-    this.rangeLOV.closeModal();
+    if(this.rangeLOV.modalRef != undefined){
+      this.rangeLOV.closeModal();
+    }else if(this.siRangeLOV.modalRef != undefined){
+      this.siRangeLOV.closeModal();
+    }
   }
+
+
+
+
+////////////////////////////////////////////////////////////////////////////
+
+  @ViewChild('siLovCancel') trueSiCancelBtn: CancelButtonComponent;
+  retrieveSiRange(){
+    this.siTable.loadingFlag = true;
+    this.ms.retrieveReportRange(this.ns.getCurrentUser()).subscribe((data:any) => {
+      this.passDataSi.tableData = [];
+      var nextSiRange;
+      if(data.reportsRange.length !== 0){
+        for (var i = 0; i < data.reportsRange.length; i++) {
+          this.passDataSi.tableData.push(data.reportsRange[i]);
+          this.passDataSi.tableData[this.passDataSi.tableData.length - 1].uneditable = ['siRange'];
+        }
+        nextSiRange = parseInt(this.passDataSi.tableData[this.passDataSi.tableData.length - 1].siRange) + 1;
+        this.passDataSi.nData = {siRange: nextSiRange, amount: ''};
+      }else{
+        this.passDataSi.nData = {siRange: 1, amount: ''};
+      }
+
+      this.siTable.refreshTable();
+      this.siTable.loadingFlag = false;
+      this.passDataSi.disableGeneric = true
+    });
+  }
+
+  updateSi(data){
+    var checkFlag = false;
+    this.siTable.markAsDirty();
+    var nextSiRange = parseInt(this.passDataSi.tableData[this.passDataSi.tableData.length - 1].siRange) +1;
+    this.passDataSi.nData = {siRange: nextSiRange, amount: ''};
+    for (var i = 0; i < this.passDataSi.tableData.length; i++) {
+      if(this.passDataSi.tableData[i].checked){
+        checkFlag = true;
+        break;
+      }
+    }
+    console.log(checkFlag)
+    if(checkFlag){
+      this.passDataSi.disableGeneric = false;
+    }else{
+      this.passDataSi.disableGeneric = true;
+    }
+  }
+
+  onRowClickSi(data){
+      this.passDataSi.disableGeneric = !this.passDataSi.tableData.some(a=>a.checked);
+  }
+
+  deleteCurrSi(){
+    var notChecked = this.passDataSi.tableData.filter(a=> !a.deleted && !a.checked);
+    var finalRange = notChecked.length > 0 ? notChecked[notChecked.length - 1].siRange : undefined;
+    var errorFlag = false;
+
+    for (var i = 0; i < this.passDataSi.tableData.length; i++) {
+      if(this.passDataSi.tableData[i].checked ){
+        if(finalRange != undefined && this.passDataSi.tableData[i].siRange < finalRange){
+          errorFlag = true;
+          break;
+        }
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Range must be in a chronological order";
+      this.openDialog.open();
+    }else{
+      // this.table.indvSelect.deleted = true;
+      // this.table.selected  = [this.table.indvSelect]
+      this.siTable.confirmDelete();
+    }
+  }
+
+  onClickSaveSi(){
+    var errorFlag = false;
+    for (var i = 0; i < this.passDataSi.tableData.length - 1; i++) {
+      if(!this.passDataSi.tableData[i].deleted){
+        if(this.passDataSi.tableData[i].amount >= this.passDataSi.tableData[i+1].amount && !this.passDataSi.tableData[i+1].deleted){
+          errorFlag = true;
+          break;
+        } 
+      }
+    }
+
+    if(errorFlag){
+      this.dialogIcon = "warning-message";
+      this.dialogMessage = "Amount must be in ascending order";
+      this.openDialog.open();
+    }else{
+      this.confirmSi.confirmModal();
+    }
+    
+  }
+
+  saveSiRange(cancel?){
+    this.cancelFlag = cancel !== undefined;
+    // this.tableFlag = true;
+    this.rangeParams.saveReportsRange = [];
+    this.rangeParams.delReportsRange = [];
+    for (var i = 0; i < this.passDataSi.tableData.length; i++) {
+      if(this.passDataSi.tableData[i].edited && !this.passDataSi.tableData[i].deleted){
+        this.passDataSi.tableData[i].userId = this.ns.getCurrentUser();
+        this.rangeParams.saveReportsRange.push(this.passDataSi.tableData[i]);
+      }
+
+      if(this.passDataSi.tableData[i].deleted){
+        this.passDataSi.tableData[i].userId = this.ns.getCurrentUser();
+        this.rangeParams.delReportsRange.push(this.passDataSi.tableData[i]);
+      }
+    }
+
+    this.ms.saveReportRange(this.rangeParams).subscribe((data:any) => {
+      if(data['returnCode'] != -1) {
+        this.dialogMessage = data['errorList'][0].errorMessage;
+        this.dialogIcon = "error";
+        this.success.open();
+      }else{
+        this.dialogMessage = "";
+        this.dialogIcon = "success";
+        this.success.open();
+        this.siTable.markAsPristine();
+        this.retrieveSiRange();
+      }
+    });
+  }
+
+  realSiClickCancel(){
+    if(this.siTable.form.first.dirty) {
+      this.trueSiCancelBtn.clickCancel();
+    } else {
+      this.siRangeLOV.closeModal();
+    }
+  }
+
+  // afterCancelSave() {
+  //   this.fromSiRangeMdl = false;
+  //   this.siRangeLOV.closeModal();
+  // }
 }
