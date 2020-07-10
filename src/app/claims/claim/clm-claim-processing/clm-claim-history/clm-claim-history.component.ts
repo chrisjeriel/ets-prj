@@ -202,6 +202,8 @@ export class ClmClaimHistoryComponent implements OnInit {
 
   resStats:any[];
 
+  clmResHistCount:Number = 0;
+
   constructor(private titleService: Title, private clmService: ClaimsService,private ns : NotesService, private mtnService: MaintenanceService, 
               private polService: UnderwritingService, public modalService: NgbModal) {
   }
@@ -282,10 +284,12 @@ export class ClmClaimHistoryComponent implements OnInit {
       this.passDataHistory.nData.currencyRt = recCurr.currencyRt;
 
       try{
-
-          var recCheckHist   = data['clmHist']['checkHistList'];
-          this.recCheckHistGl = recCheckHist;
-          this.histFunction(1);
+          if(this.initFetch){
+            var recCheckHist   = data['clmHist']['checkHistList'];
+            this.recCheckHistGl = recCheckHist;
+            this.clmResHistCount = data['clmHist']['claimReserveList'].length;
+            this.histFunction(1);
+          }
           
           if(data['clmHist']['claimReserveList'].length == 0){
             var recClmHist = data['clmHist']['claimReserveList'];
@@ -1111,7 +1115,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       case 2:
       //console.log('here 2');
-        if(this.recCheckHistGl[0].withinLapse != 'Y'){
+        if(this.recCheckHistGl[0].withinLapse != 'Y' && this.clmResHistCount == 0){
           msg = 'Loss Date is within the lapse period (Inception to Effective Date) of policy. Do you want to proceed?';
           this.preventHistory.emit({val:2,msg:msg,apvlCd:'CLM004A', show: true});
         } else {
@@ -1122,7 +1126,7 @@ export class ClmClaimHistoryComponent implements OnInit {
 
       case 3:
       //console.log('here 3');
-        if(this.recCheckHistGl[0].withinPolTerm != 'Y'){
+        if(this.recCheckHistGl[0].withinPolTerm != 'Y' && this.clmResHistCount == 0){
           msg = 'Loss Date is not within the period of insurance(Inception Date and Expiry Date) of policy. Do you want to proceed?';
           this.preventHistory.emit({val:3,msg:msg,apvlCd:'CLM004B', show: true});
         } else {
@@ -1133,7 +1137,7 @@ export class ClmClaimHistoryComponent implements OnInit {
       
       case 4:
       //console.log('here 4');
-        if(this.recCheckHistGl[0].hasUnpaidPrem != 'Y'){
+        if(this.recCheckHistGl[0].hasUnpaidPrem != 'Y' && this.clmResHistCount == 0){
           msg = 'The policy has unpaid premiums. Do you want to proceed?';
           this.preventHistory.emit({val:4,msg:msg,apvlCd:'CLM004C', show: true});
         }else{
