@@ -164,6 +164,13 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   constructor(private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.ms.getMtnParameters('V', 'ALLOW_EDIT_TAX_ALLOC').subscribe(data => {
+      if(data['parameters'].length > 0 && data['parameters'][0]['paramValueV'] == 'Y') {
+        this.passDataGenTax.uneditable = [true,true,false,true,false];
+        this.passDataWhTax.uneditable = [true,true,false,true,false];
+      }
+    });
+    
     this.ms.getRefCode('VAT_TAG').subscribe(data => {
       this.passData.opts[0].vals = data['refCodeList'].map(a => a.code);
       this.passData.opts[0].prev = data['refCodeList'].map(a => a.description);
@@ -185,8 +192,8 @@ export class OrOnlyComponent implements OnInit, OnDestroy {
   		this.passDataWhTax.addFlag = false;
 		  this.passDataWhTax.deleteFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true,true];
-  		this.passDataGenTax.uneditable = [true,true,true,true];
-  		this.passDataWhTax.uneditable = [true,true,true,true];
+  		this.passDataGenTax.uneditable = [true,true,true,true,true];
+  		this.passDataWhTax.uneditable = [true,true,true,true,true];
   	}
   	this.retrieveOrTransDtl();
   }

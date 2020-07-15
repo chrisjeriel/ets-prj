@@ -241,6 +241,26 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    /*setTimeout(() => {
+      if(this.rowData.tranTypeCd == 1 || this.rowData.tranTypeCd == 5) {
+        this.cvTbl.refreshTable();
+        this.cvTbl.overlayLoader = true;
+      } else if(this.rowData.tranTypeCd == 2) {
+        this.pcvTbl.refreshTable();
+        this.pcvTbl.overlayLoader = true;
+      } else if(this.rowData.tranTypeCd == 6 || this.rowData.tranTypeCd == 7) {
+        this.dieminsTbl.refreshTable();
+        this.dieminsTbl.overlayLoader = true;  
+      }
+    }, 0);*/
+
+    this.mtnService.getMtnParameters('V', 'ALLOW_EDIT_TAX_ALLOC').subscribe(data => {
+      if(data['parameters'].length > 0 && data['parameters'][0]['paramValueV'] == 'Y') {
+        this.passDataGenTax.uneditable = [true,true,false,true,false];
+        this.passDataWhTax.uneditable = [true,true,false,true,false];
+      }
+    });
+
     this.mtnService.getRefCode('VAT_TAG').subscribe(data => {
       this.cvData.opts[0].vals = data['refCodeList'].map(a => a.code);
       this.cvData.opts[0].prev = data['refCodeList'].map(a => a.description);
@@ -263,9 +283,10 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
         this.rowData.vatTag = data.cedingCompany[0].vatTag;
       }
       this.addDefaultTaxes();
+      this.getPaytReqPrqTrans(true);
     });
     //END 11/20/2019
-    this.getPaytReqPrqTrans();
+    // this.getPaytReqPrqTrans();
   }
 
   ngOnDestroy(){
@@ -417,10 +438,25 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
   }
   //END 11/20/2019
 
-  getPaytReqPrqTrans(){
+  getPaytReqPrqTrans(init?){
     var subRes = forkJoin(this.acctService.getAcsePaytReq(this.rowData.reqId),this.acctService.getAcsePrqTrans(this.rowData.reqId,''),
                          this.acctService.getAcsePerDiem(this.rowData.reqId),this.mtnService.getMtnGlSubDepNo(),this.acctService.getAcseInsuranceExp(this.rowData.reqId))
                  .pipe(map(([pr,prq,pd,df,ie]) => { return { pr, prq, pd, df, ie }; }));
+
+    setTimeout(() => {
+      if(init == undefined) {
+        if(this.rowData.tranTypeCd == 1 || this.rowData.tranTypeCd == 5) {
+          this.cvTbl.refreshTable();
+          this.cvTbl.overlayLoader = true;
+        } else if(this.rowData.tranTypeCd == 2) {
+          this.pcvTbl.refreshTable();
+          this.pcvTbl.overlayLoader = true;
+        } else if(this.rowData.tranTypeCd == 6 || this.rowData.tranTypeCd == 7) {
+          this.dieminsTbl.refreshTable();
+          this.dieminsTbl.overlayLoader = true;  
+        }
+      }
+    }, 0);
     subRes.subscribe(data => {
       this.requestData = data['pr']['acsePaytReq'].map(e => { e.createDate = this.ns.toDateTimeString(e.createDate); e.updateDate = this.ns.toDateTimeString(e.updateDate);
                                                e.preparedDate = this.ns.toDateTimeString(e.preparedDate); e.reqDate = this.ns.toDateTimeString(e.reqDate);
@@ -998,7 +1034,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               if(selected[i].taxRate == null || (selected[i].taxRate !== null && selected[i].taxRate == 0)){ //if fixed tax
                 this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = selected[i].amount;
               }else{ //else if rated tax
-                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt;
+                this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.currAmt;
               }
               this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].reqId = this.rowData.reqId;
               this.passDataGenTax.tableData[this.passDataGenTax.tableData.length - 1].edited = true;
@@ -1014,7 +1050,7 @@ export class AccSRequestDetailsComponent implements OnInit, OnDestroy {
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxCd = selected[i].taxCd; 
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxName = selected[i].taxName; 
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxRate = selected[i].taxRate;
-              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.localAmt; //placeholder
+              this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].taxAmt = (selected[i].taxRate/100) * this.selectedTblData.currAmt; //placeholder
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].reqId = this.rowData.reqId;
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].edited = true;
               this.passDataWhTax.tableData[this.passDataWhTax.tableData.length - 1].showMG = 0;

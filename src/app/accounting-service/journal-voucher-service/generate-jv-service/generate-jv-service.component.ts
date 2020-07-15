@@ -23,6 +23,7 @@ export class GenerateJvServiceComponent implements OnInit {
      jvYear: '', 
      jvDate: '', 
      jvStatus: '',
+     refno: '',
      refnoDate: '',
      refnoTranId: '',
      currCd: '',
@@ -57,6 +58,7 @@ export class GenerateJvServiceComponent implements OnInit {
      this.jvData.jvDate =  data.jvDate;
      this.jvData.jvStatus =  data.jvStatus;
      this.jvData.statusType = data.statusType;
+     this.jvData.refno = data.refno;
      this.jvData.refnoDate =  data.refnoDate;
      this.jvData.refnoTranId =  data.refnoTranId;
      this.jvData.currCd =  data.currCd;

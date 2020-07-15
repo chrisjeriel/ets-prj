@@ -101,7 +101,7 @@
                   <label class="form-control-sm col-sm-1">Status</label>
                   <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.jvStatus" readonly>
                   <label class="form-control-sm col-sm-1 text-right">Ref No</label>
-                  <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="record.refnoTranId" readonly>
+                  <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="record.refno" readonly>
               </div>
               <div class="input-group">
                   <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
@@ -109,7 +109,10 @@
                   readonly>
                   
                   <label class="form-control-sm col-sm-1">Ref No Date</label>
-                  <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.refnoDate" readonly>
+                  <!-- <input type="datetime-local"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="record.refnoDate" readonly> -->
+                  <div class="dp-cont col-sm-2" style="margin-left: 0 !important;">
+                    <datepicker [showSeconds]="true" [disabled]="true" [value]="record?.refnoDate"></datepicker>
+                  </div>
               </div>
           </div>
           <div class="col-sm-3">
@@ -120,7 +123,7 @@
               </div>
               <div class="input-group">
                   <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
-                  <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="record.currCd">
+                  <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly value="PHP">
                   <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="record.localAmt | number:'1.2-2'" (ngModelChange)="record.localAmt = $event" style="margin-left: 2px !important;" readonly>
               </div>
           </div>

@@ -110,10 +110,11 @@ export class MonEndTrialBalComponent implements OnInit {
       
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
+        this.params.eomDate = this.monthlyTotals[0].eomDate.split('T')[0];
         this.canTempClose = true;
         this.canReopen = true;
 
-        if(initial === undefined) {
+        if(initial !== undefined) {
           this.onClickPrint();
         }
       } else {
@@ -267,7 +268,7 @@ export class MonEndTrialBalComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
+    var filename = 'ACIT-' + eomMm + '-' + eomYear + '_'+currDate+'.xls';
     var opts = [{
                 sheetid: 'PHP',
                 headers: true
@@ -290,12 +291,14 @@ export class MonEndTrialBalComponent implements OnInit {
     };
 
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
-                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
+                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], ' +
+                  'totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], ' +
+                  'endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
   }
 
-  checkMonth(ev) {
-    if(ev !== '') {
+  checkMonth(ev, fromPrint?) {
+    if((ev !== '' && fromPrint === undefined) || (ev !== '' && fromPrint !== undefined && this.params.reportId === 'ACITR066G')) {
       this.getAcitMonthEndTrialBal(ev);
     }
   }
@@ -374,9 +377,12 @@ export class MonEndTrialBalComponent implements OnInit {
         this.paramsToggle.push('cedingId');
       }
 
+      if(this.params.reportId == 'ACITR066G') {
+        this.params.destination = 'exl';
+      }
 
-      // this.allDest = this.params.reportId !== 'ACITR066G';
-      this.allDest = this.params.reportId;
+      this.allDest = this.params.reportId !== 'ACITR066G';
+      // this.allDest = this.params.reportId;
     }
   }
 
@@ -537,7 +543,9 @@ export class MonEndTrialBalComponent implements OnInit {
         }
 
         console.log(this.passDataCsv);
-        this.ns.export(name, query, this.passDataCsv);
+        if(this.params.reportId !== 'ACITR066G') {
+          this.ns.export(name, query, this.passDataCsv);
+        }
 
       });
     }

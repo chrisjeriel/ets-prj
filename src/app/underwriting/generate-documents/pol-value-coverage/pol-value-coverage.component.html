@@ -122,10 +122,11 @@
                             </fieldset>
                            </div>
                          </div>
-                         <div class="row" *ngIf="alterationFlag">
+                         <div class="row" *ngIf="alterationFlag || (!alterationFlag && ocTag)">
                            <div class="col-sm-12 forced-col-sm">
                              <fieldset class="scheduler-border" style="padding-bottom: 9px !important;">
-                                <legend class="scheduler-border">Alteration Wordings</legend>
+                                <legend class="scheduler-border" *ngIf="alterationFlag">Alteration Wordings</legend>
+                                <legend class="scheduler-border" *ngIf="!alterationFlag && ocTag">Wordings</legend>
                                 <div class="cust-sm">
                                   <div class="cust-sm col-sm-1"></div>
                                   <div class="row" style="margin-right: 0px; margin-bottom: 0px;">
@@ -229,6 +230,7 @@
                         <select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
                           <option value="POLR010" *ngIf="!alterationFlag">Policy Schedule</option>
                           <option value="POLR010B" *ngIf="alterationFlag">Alteration Letter</option>
+                          <option value="POLR010D" *ngIf="!alterationFlag && ocTag">Policy Schedule (Sub-policy)</option>
                         </select>
                         <div class="col-sm-1"></div>
                       </div>

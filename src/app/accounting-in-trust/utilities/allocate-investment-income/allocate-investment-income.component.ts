@@ -582,7 +582,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    createUserJv : this.ns.getCurrentUser(),
 	    createDateJv : this.ns.toDateTimeString(0),
 	    updateUserJv : this.ns.getCurrentUser(),
-	    updateDateJv : this.ns.toDateTimeString(0)
+	    updateDateJv : this.ns.toDateTimeString(0),
+      remarks: ''
     } 
    
   }

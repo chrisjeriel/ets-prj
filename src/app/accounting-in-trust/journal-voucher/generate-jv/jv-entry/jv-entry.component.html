@@ -178,6 +178,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="input-group" style="margin-bottom: -13px !important">
+                    <label class="form-control-sm col-sm-1" style="height: auto;">Remarks</label>
+                    <div class="col-sm">
+                        <div class="form-row custom-row-inline-inset" style="margin-top: 0px !important;">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="entryData.remarks" name="entryData.remarks" [readonly]="approvedStat">
+                        </div>
+                    </div>
+                </div>                
             </div>
              <div class="form-row">
                 <div class="form-group col-sm">

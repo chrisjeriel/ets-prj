@@ -76,7 +76,8 @@ export class JvEntryComponent implements OnInit {
     approvedDate:'',
     tranData: {},
     memoId: '',
-    memoType: ''
+    memoType: '',
+    remarks: ''
   }
 
   jvDatas: any = {
@@ -451,6 +452,7 @@ export class JvEntryComponent implements OnInit {
     this.jvDatas.createDateJv   = this.ns.toDateTimeString(0);
     this.jvDatas.updateUserJv   = this.ns.getCurrentUser();
     this.jvDatas.updateDateJv   = this.ns.toDateTimeString(0);
+    this.jvDatas.remarks        = this.entryData.remarks;
   }
 
   saveJV(cancelFlag?){

@@ -94,7 +94,8 @@ export class AccSRequestEntryComponent implements OnInit {
   @Output() paytData : EventEmitter<any> = new EventEmitter();
   @Input() rowData   : any = {
     reqId : '',
-    tranTypeCd: ''
+    tranTypeCd: '',
+    tranTypeDesc: ''
   };
 
   paymentData  : any = {};
@@ -250,7 +251,11 @@ export class AccSRequestEntryComponent implements OnInit {
         console.log(this.saveAcsePaytReq);
       }
 
-      this.paytData.emit({reqId: this.saveAcsePaytReq.reqId, tranTypeCd:this.saveAcsePaytReq.tranTypeCd, payeeCd: this.saveAcsePaytReq.payeeCd});
+      this.paytData.emit({
+        reqId: this.saveAcsePaytReq.reqId,
+        tranTypeCd:this.saveAcsePaytReq.tranTypeCd,
+        tranTypeDesc:this.saveAcsePaytReq.tranTypeDesc,
+        payeeCd: this.saveAcsePaytReq.payeeCd});
       this.setLocalAmt();
       console.log(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')));
       console.log(totalReqAmts);
