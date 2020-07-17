@@ -257,14 +257,13 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '2';
       this.params.incRecTag = 'D';
     } 
-    //added july 17, 2020 yele
+    //
     else if(this.params.reportId == 'POLR044YA'){
       this.paramsToggle.push('bookingDate', 'asOf', 'company', 'currCd');
       this.params.dateParam = '10';
       this.params.dateRange = 'A';
-      //this.params.incRecTag = 'D';
     }  
-    //end added july 17, 2020
+    //
     else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
@@ -427,14 +426,13 @@ export class PolicyReportsComponent implements OnInit {
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
     }
-     //added july 17, 2020 yele
+     //
     else if(this.params.reportId == 'POLR044YA'){
       this.paramsToggle.push('bookingDate', 'asOf', 'company', 'currCd');
       this.params.dateParam = '10';
       this.params.dateRange = 'A';
-      //this.params.incRecTag = 'D';
     }  
-    //end added july 17, 2020
+    //
     else if(this.params.reportId == 'POLR044F'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
