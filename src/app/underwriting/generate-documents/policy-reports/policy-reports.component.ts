@@ -257,6 +257,14 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '2';
       this.params.incRecTag = 'D';
     } 
+    //added july 17, 2020 yele
+    else if(this.params.reportId == 'POLR044YA'){
+      this.paramsToggle.push('bookingDate', 'asOf', 'company', 'currCd');
+      this.params.dateParam = '10';
+      this.params.dateRange = 'A';
+      //this.params.incRecTag = 'D';
+    }  
+    //end added july 17, 2020
     else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
@@ -418,7 +426,16 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd','siRange');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044F'){
+    }
+     //added july 17, 2020 yele
+    else if(this.params.reportId == 'POLR044YA'){
+      this.paramsToggle.push('bookingDate', 'asOf', 'company', 'currCd');
+      this.params.dateParam = '10';
+      this.params.dateRange = 'A';
+      //this.params.incRecTag = 'D';
+    }  
+    //end added july 17, 2020
+    else if(this.params.reportId == 'POLR044F'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -714,11 +731,15 @@ export class PolicyReportsComponent implements OnInit {
       "polr044Params.dateParam" :  this.sendData.dateParam,
       "polr044Params.fromDate"  :   this.sendData.fromDate,
       "polr044Params.toDate"    :     this.sendData.toDate,
-      "polr044Params.cedingIdParam" : this.sendData.cedingIdParam,
+      "polr044Params.cedingIdParam" : (this.sendData.cedingIdParam==undefined || this.sendData.cedingIdParam==null)?'':this.sendData.cedingIdParam,
       "polr044Params.lineCdParam" :   this.sendData.lineCdParam,
       "polr044Params.incRecTag" :   this.sendData.incRecTag,
       "polr044Params.reportId"  :   this.sendData.reportId,
+      "polr044Params.currCdParam"  :   (this.sendData.currCdParam==undefined || this.sendData.currCdParam==null)?'':this.sendData.currCdParam,
     }
+
+    console.log(params);
+    console.log(this.sendData.cedingIdParam);
 
     this.printService.print(this.params.destination,this.params.reportId, params);
     if(this.params.reportId == 'POLR044B'){
@@ -996,9 +1017,10 @@ export class PolicyReportsComponent implements OnInit {
 
   getExtractToCsv(){
     console.log(this.params.reportId);
+    console.log(this.params.byAsOf + ' >> as of');
       console.log(this.ns.getCurrentUser() + ' >> current user');
-      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,this.params.currCd,null,null,null,
-           null,null,null,null,null,null,null,null,null,this.params.lineCd)
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,this.params.currCd,this.params.cedingId,null,null,
+           null,this.params.byAsOf,null,null,null,null,null,null,null,this.params.lineCd)
       .subscribe(data => {
         console.log(data);
     
@@ -1228,6 +1250,12 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(commVat2ndRet)) as [VAT on RI 2nd RET],negFmt(currency(commVat1stSurplus)) as [VAT on RI 1st SURPLUS], negFmt(currency(commVat2ndSurplus)) as [VAT on RI 2nd SURPLUS],negFmt(currency(commVatFacul)) as [VAT on RI FACUL],'+
           'negFmt(currency(netDueAmt)) as [NET DUE], negFmt(currency(netDueQuota)) as [NET DUE QUOTA], negFmt(currency(netDue1stRet)) as [NET DUE 1st RET],'+
           'negFmt(currency(netDue2ndRet)) as [NET DUE 2nd RET],negFmt(currency(netDue1stSurplus)) as [NET DUE 1st SURPLUS], negFmt(currency(netDue2ndSurplus)) as [NET DUE 2nd SURPLUS],negFmt(currency(netDueFacul)) as [COMM FACUL]';
+        }else if(this.params.reportId == 'POLR044YA'){
+          this.passDataCsv = data['listPolr044ya'];
+          query = 'SELECT extractUser as [PRINTED BY], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], currency as [CURRENCY], policyId as [POLICY ID],' +
+          'instNo AS [INST NO], policyNo as [POLICY NO/INST NO], isNull(policyRef) as [POLICY REF], checkNullNo(prinId) as [PRIN ID], checkNullNo(contractorId) as [CONTRACTOR ID],'+
+          'isNull(insured) as [INSURED], negFmt(currency(premium)) as [PREMIUM], negFmt(currency(commission)) as [COMMISSION], negFmt(currency(vatOnComm)) as [VAT ON COMM],'+
+          'negFmt(currency(netDue)) as [NET DUE], myFormat(dueDate) as [DUE DATE], myFormat(bookingDate) as [BOOKING DATE], paramDate as [AS OF]';
         }else if(this.params.reportId == 'POLR044Z'){
           this.passDataCsv = data['listPolr044z'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], checkNullNo(policyId) as [POLICY ID], policyNo as [POLICY NO],'+

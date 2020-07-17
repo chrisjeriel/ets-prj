@@ -674,6 +674,16 @@ export class ClaimReportsComponent implements OnInit {
           'isNull(adjId) as [ADJUSTER ID],isNull(adjName) as [ADJUSTER NAME],cedingId || "-" || cedingName as [COMPANY],policyId as [POLICY ID], policyNo as [POLICY NO],'+
           'isNull(insuredDesc) as [INSURED],isNull(polCoRefNo) as [COMPANY POLICY NO],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
           'negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS]';
+        }else if(this.params.reportId == 'CLMR010ZO'){
+          this.passDataCsv = data['listClmr010zo'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],trtyCedIdName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(clmCount) as [QUANTITY],'+
+          'negFmt(currency(clmAmtQuota)) as [QUOTA SHARE],negFmt(currency(clmAmt1stSurplus)) as [1st SURPLUS],negFmt(currency(clmAmt2ndSurplus)) as [2nd SURPLUS]';
+        }else if(this.params.reportId == 'CLMR010ZP'){
+          this.passDataCsv = data['listClmr010zp'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],'+
+          'currencyCd as [CURRENCY],lineCd as [LINE],trtyCedIdName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(clmCount) as [QUANTITY],'+
+          'negFmt(currency(clmAmtQuota)) as [QUOTA SHARE],negFmt(currency(clmAmt1stSurplus)) as [1st SURPLUS],negFmt(currency(clmAmt2ndSurplus)) as [2nd SURPLUS]';
         }
 
         console.log(this.passDataCsv);
