@@ -1,96 +1,94 @@
-import { Component, OnInit } from '@angular/core';
-import { ExtractedData, AccountingEntriesExtract } from '@app/_models';
-import { AccountingService } from '@app/_services';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ExtractedData } from '@app/_models';
+import { CustEditableNonDatatableComponent } from '@app/_components/common';
+import { AccountingService, NotesService } from '@app/_services';
 
 @Component({
   selector: 'app-acct-entries',
   templateUrl: './acct-entries.component.html',
   styleUrls: ['./acct-entries.component.css']
 })
-export class AcctEntriesComponent implements OnInit {
+export class AcctEntriesComponent  implements OnInit, AfterViewInit {
   
 
   passData: any={
-    tHeader:['Date','Tran Type', 'Ref. No.', 'Account Code','Account Name', 'Particulars', 'SL Type','SL Name', 'Status', 'Debit', 'Credit'],
-    dataTypes:['date','text','text','text','text','text','text','text','text','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,'Total','debit','credit'],
-    uneditable:[true,true,true,true,true,true,true,true,true,true],
+    tHeader:['Date','Tran Class', 'Ref. No.', 'Account Code','Account Name', 'Particulars', 'SL Type','SL Name', 'Tran Status', 'Acct Status', 'Debit', 'Credit'],
+    dataTypes:['date','text','text','text','text','text','text','text','text','text','currency','currency'],
+    total:[null,null,null,null,null,null,null,null,null,'Total','debitAmt','creditAmt'],
+    uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true],
     searchFlag: true,
-    // filters:[
-    //   {}
-    // ],
+    keys:['tranDate','tranClass','refNo','acctCode','acctName','particulars','slTypeName','slName','tranStatusDesc','acctStatusDesc','debitAmt','creditAmt'],
     paginateFlag:true,
     infoFlag:true,
     tableData:[],
     pageLength: 15,
-    widths: [1,1,1,1,'auto','auto',1,1,1,120,120]
-  }
-
-  AccountingEntryData: any = {
-    tableData: this.accountingService.getAccountingEntryExtract(),
-    tHeader: ["Tran Type", "Ref. No.", "Ref. Date", "Payee/Payor","Particulars","Account Code","Account Name","Net Amount"],
-    dataTypes: ["text","text","text","text","text","text","text","currency"],
-    resizable: [true, true, true, true, true, true,true,true],
-    total:[null,null,null,null,null,null,'Total','netAmount'],
-    nData: new AccountingEntriesExtract(null,null,null,null,null,null,null,null),
-    pageLength: 15,
-    widths: [1,220,150,150,150,150,150,150],
-    paginateFlag:true,
-    infoFlag:true,
-    searchFlag:true,
-    filters: [
-      {
-        key: 'tranType',
-        title: 'Tran Type',
-        dataType: 'text'
-      },
-      {
-        key: 'refNo',
-        title: 'Ref. No.',
-        dataType: 'text'
-      },
-      {
-        key: 'refDate',
-        title: 'Ref. Date',
-        dataType: 'date'
-      },
-      {
-        key: 'payeePayor',
-        title: 'Payee/Payor',
-        dataType: 'text'
-      },
-      {
-        key: 'particulars',
-        title: 'Particulars',
-        dataType: 'text'
-      },
-      {
-        key: 'accountCode',
-        title: 'Account Code',
-        dataType: 'text'
-      },
-      {
-        key: 'accountName',
-        title: 'Account Name',
-        dataType: 'text'
-      },
-      {
-        key: 'netAmount',
-        title: 'Net Amount',
-        dataType: 'text'
-      },
-    ]
+    widths:[1,1,1,1,1,'auto',1,1,1,1,110,110]
   }
   dateExtracted: string;
-  constructor(private accountingService: AccountingService) { }
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+
+  params:any = {
+    extractUser : this.ns.getCurrentUser(),
+    entryType: 'A'
+  }
+
+  extractParams:any = {
+    entryType : '',
+    periodType : '',
+    periodFrom : '',
+    periodTo : '',
+    acctParam : '',
+    slTypeParam : '',
+    orTag : false,
+    cvTag : false,
+    jvTag : false,
+    closeTranTag : false,
+    appendTag : 'N',
+    extractDate : '',
+    currCdParam: ''
+  }
+
+  constructor(private as: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
-    this.passData.tableData = [
-      new ExtractedData(new Date(2018,11,2),'AR','2018-00372890','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', null,null ,'New', 282883,282883),
-      new ExtractedData(new Date(2018,11,25),'CV','2018-00372900','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', null,null ,'New', 193039,193039),
-      new ExtractedData(new Date(2019,0,21),'JV','2018-00000093','1-01-03-01','BPI Savings Account No 0074-0073-92', 'Payment for', null,null ,'New', 1500000,1500000),
-
-    ];
     this.dateExtracted = new Date().toISOString().slice(0, 16);
+    this.retrieveData();
+
   }
+
+  ngAfterViewInit(){
+    this.table.overlayLoader = true;
+  }
+
+  retrieveData(){
+    this.as.getAcseAcctEntriesExt(this.params).subscribe(a=>{
+      this.passData.tableData = a['acseAcctEntriesExt'];
+      if(this.passData.tableData.length != 0){
+        if(this.passData.tableData.some(a=>a.extractId==2)){
+
+        }else{
+          let row = this.passData.tableData[0];
+          this.extractParams = {
+            
+            periodType : row.periodType == 'T' ? 'Transaction Date' : 'Posting Date',
+            periodFrom : this.ns.toDateTimeString(row.periodFrom),
+            periodTo : this.ns.toDateTimeString(row.periodTo),
+            acctParamCode : row.acctParamCode,
+            acctParamName: row.acctParamName,
+            slTypeParam : row.slTypeParam,
+            slTypeParamName : row.slTypeParamName,
+            orTag : row.orTag =='Y',
+            cvTag : row.cvTag =='Y',
+            jvTag : row.jvTag =='Y',
+            closeTranTag : row.closeTranTag =='Y',
+            appendTag : row.appendTag =='Y',
+            extractDate : this.ns.toDateTimeString(row.extractDate),
+            currCdParam: ''
+          }
+        }
+      }
+      this.table.refreshTable();
+    })
+  }
+
 }

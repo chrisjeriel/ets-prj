@@ -3583,4 +3583,12 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseRefNoLOV',{params});	
     }
 
+    getAcitAcctEntriesExt(param){
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAcctEntriesExt',{params:param});
+    }
+
+    getAcseAcctEntriesExt(param){
+    	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseAcctEntriesExt',{params:param});
+    }
+
 }

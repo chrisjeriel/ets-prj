@@ -714,8 +714,8 @@ export class PolicyReportsComponent implements OnInit {
       "polr044Params.dateParam" :  this.sendData.dateParam,
       "polr044Params.fromDate"  :   this.sendData.fromDate,
       "polr044Params.toDate"    :     this.sendData.toDate,
-      "polr044Params.cedingIdParam" : this.sendData.cedingIdParam,
-      "polr044Params.lineCdParam" :   this.sendData.lineCdParam,
+      "polr044Params.cedingIdParam" : this.sendData.cedingId,
+      "polr044Params.lineCdParam" :   this.sendData.lineCd,
       "polr044Params.incRecTag" :   this.sendData.incRecTag,
       "polr044Params.reportId"  :   this.sendData.reportId,
     }
