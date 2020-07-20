@@ -238,34 +238,36 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   serviceFeeMainData: any = {
     tableData     : [],
-    tHeader       : ['Main Company Distribution','Percent Share (%)','Service Fee', 'VAT', 'WhTax', 'Net Due'],
-    dataTypes     : ['text','percent','currency','currency','currency','currency'],
-    keys          : ['groupName','groupShrPct','totalSfee','totalVat','totalWhtax','totalDue'],
+    tHeaderWithColspan: [{header:'', span:2},{header: 'Gross Quarterly Computed Service Fee', span: 4}, {header: '', span: 4}],
+    tHeader       : ['Main Company Distribution','Percent Share (%)','1st Quarter','2nd Quarter','3rd Quarter','4th Quarter','Net Service Fee', 'VAT', 'WhTax', 'Net Due'],
+    dataTypes     : ['text','percent','currency','currency','currency','currency','currency','currency','currency','currency'],
+    keys          : ['groupName','groupShrPct','grossShrAmt1','grossShrAmt2','grossShrAmt3','grossShrAmt4','netSfee','totalVat','totalWhtax','totalDue'],
     paginateFlag  : true,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
-    uneditable    : [true,true,true,true,true,true],
-    total         : [null,'Total','totalSfee','totalVat','totalWhtax','totalDue'],
-    widths        : ['400','100','auto','auto','auto','auto'],
+    uneditable    : [true,true,true,true,true,true,true,true,true,true],
+    total         : [null,'Total','grossShrAmt1','grossShrAmt2','grossShrAmt3','grossShrAmt4','netSfee','totalVat','totalWhtax','totalDue'],
+    widths        : ['200','100','130','130','130','130','130','130','130','130'],
     pageID        : 'serviceFeeMainData',
     pageLength    : 3,
   };
 
   serviceFeeSubData: any = {
     tableData     : [],
-    tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded','Total Net Prem','Percent Share (%)','Service Fee','VAT','WhTax','Net Due'],
-    dataTypes     : ['text','currency','currency','percent','currency','currency','currency','currency'],
-    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','actualShrAmt','vatAmt','whtaxAmt','netDue'],
+    tHeaderWithColspan: [{header:'', span:4},{header: 'Gross Quarterly Computed Service Fee', span: 4}, {header: '', span: 4}],
+    tHeader       : ['Sub-Distribution of Pool & Munich Re','Net Prem Ceded','Total Net Prem','Percent Share (%)','1st Quarter','2nd Quarter','3rd Quarter','4th Quarter','Net Service Fee','VAT','WhTax','Net Due'],
+    dataTypes     : ['text','currency','currency','percent','currency','currency','currency','currency','currency','currency','currency','currency'],
+    keys          : ['cedingName','premWrtnCede','netPremWrtn','actualShrPct','grossShrAmt1','grossShrAmt2','grossShrAmt3','grossShrAmt4','netSfee','vatAmt','whtaxAmt','netDue'],
     paginateFlag  : false,
     infoFlag      : true,
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
-    uneditable    : [true,true,true,true,true,true,true,true],
-    total         : [null,null,null,'Total','actualShrAmt','vatAmt','whtaxAmt','netDue'],
-    widths        : ['400','auto','auto','100','auto','auto','auto','auto'],
+    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true],
+    total         : [null,null,null,'Total','grossShrAmt1','grossShrAmt2','grossShrAmt3','grossShrAmt4','netSfee','vatAmt','whtaxAmt','netDue'],
+    widths        : ['200','130','130','100','130','130','130','130','130','130','130','130'],
     pageID        : 'serviceFeeSubData',
     pageLength    : 'unli'
   };
@@ -1504,9 +1506,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.serviceFeeMainData.tableData.forEach(a => {
             this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
             this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
+            this.sfeeAmts.totalDue += numParser(a.totalDue);
           });
 
-          this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
+          this.sfeeAmts.totalDue -= numParser(this.sfeeAmts.mreSfeeAmt);
+
+          // this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
 
           this.servFeeMainTbl.refreshTable();
           this.servFeeSubTbl.refreshTable();
