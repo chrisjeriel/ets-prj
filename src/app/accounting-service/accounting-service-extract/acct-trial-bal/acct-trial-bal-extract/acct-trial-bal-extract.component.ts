@@ -18,8 +18,8 @@ export class AcctTrialBalExtractComponent implements OnInit {
   @Output() accCodeChange : EventEmitter<any> = new EventEmitter();
 
   params: any = {
-      reportId : 'ACSER009',
-      reportName : 'ACSER009',
+      reportId : 'ACSER008',
+      reportName : 'ACSER008',
       type : 'T',
       periodFrom : '',
       periodTo : '',
@@ -52,7 +52,7 @@ export class AcctTrialBalExtractComponent implements OnInit {
     let param:any = JSON.parse(JSON.stringify(this.params));
     param.forceExtract = forceExtract != undefined ? 'Y' : 'N';
     this.loading = true;
-    this.ps.extractReport({ reportId: param.reportId, acser009Params:param }).subscribe((data:any)=>{
+    this.ps.extractReport({ reportId: param.reportId, acser008Params:param }).subscribe((data:any)=>{
         this.modalMode = "";
         this.loading = false;
         if (data.errorList.length > 0) {
