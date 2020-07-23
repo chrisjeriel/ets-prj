@@ -125,11 +125,11 @@ export class AcctEntriesExtractComponent implements OnInit {
 
         if(selector == 'slType'){
           this.passDataLov.selector = 'slType';
-          this.passDataLov.from = 'acit';
+          this.passDataLov.from = 'acse';
           this.lov.openLOV();
         }else if(selector == 'acitChartAcct'){
-          this.passDataLov.selector = 'acitChartAcct';
-          this.passDataLov.from = 'acit';
+          this.passDataLov.selector = 'acseChartAcct';
+          this.passDataLov.from = 'acse';
           this.lov.openLOV();
         }
       }
@@ -143,7 +143,7 @@ export class AcctEntriesExtractComponent implements OnInit {
             this.params.slTypeParam = '';
             this.slTypeName = '';
           }
-        }else if (data.selector == "acitChartAcct"){
+        }else if (data.selector == "acseChartAcct"){
           if(data.data != null){
             this.params.acctParam = data.data.glAcctId;
             this.accountNo = data.data.shortCode;

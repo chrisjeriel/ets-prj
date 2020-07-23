@@ -226,7 +226,7 @@ export class AcseChartAcctComponent implements OnInit {
   }
 
   showAccCode(){
-    this.passLov.selector = 'acitChartAcct';
+    this.passLov.selector = 'acseChartAcct';
     this.passLov.params = {glAcctCategory: this.searchParams.glAcctCategory};
     this.accCodelov.openLOV();
   }

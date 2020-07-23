@@ -108,17 +108,17 @@ export class UnbalanceEntriesComponent implements OnInit {
         arNo:''
       }
 
-    this.route.navigate(['/accounting-in-trust', { slctd: JSON.stringify(record), action: 'edit', tranStat: this.selectedRow.tranStatus }], { skipLocationChange: true });
+    this.route.navigate(['/accounting-in-trust', { exitLink: '/accounting-entries',tab:'UnbalanceTab' ,slctd: JSON.stringify(record), action: 'edit', tranStat: this.selectedRow.tranStatus }], { skipLocationChange: true });
     }else if(this.selectedRow.tranClass == 'CV'){
-      this.route.navigate(['/generate-cv',{ link:'/accounting-entries',tab:'Unbalance',tranId : this.selectedRow.tranId}], { skipLocationChange: true });
+      this.route.navigate(['/generate-cv',{ exitLink:'/accounting-entries',tab:'UnbalanceTab',tranId : this.selectedRow.tranId}], { skipLocationChange: true });
 
     }else if(this.selectedRow.tranClass == 'JV'){
       // this.route.navigate(['generate-jv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
 
-      this.route.navigate(['/generate-jv', {      link:'/accounting-entries',tab:'Unbalance',
+      this.route.navigate(['/generate-jv', {      exitLink:'/accounting-entries',tab:'UnbalanceTab',
                                                   tranId            : this.selectedRow.tranId,
-                                                  tranTypeCd        : this.selectedRow.trantypeCd,
-                                                  exitLink          : '/journal-voucher'}], 
+                                                  tranTypeCd        : this.selectedRow.trantypeCd
+                                                  }], 
                                                 { skipLocationChange: true });
     }else{
       //do something

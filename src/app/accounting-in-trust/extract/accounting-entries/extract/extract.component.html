@@ -227,7 +227,7 @@
     	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
     </div>
     <div footer class="w-100 text-center">
-        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();extract('f');"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();onClickExtract('f');"><a>Yes</a></button>
         <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>No</a></button>
         <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>Ok</a></button>
     </div>
