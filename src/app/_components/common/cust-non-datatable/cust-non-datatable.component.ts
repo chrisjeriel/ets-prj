@@ -680,7 +680,7 @@ export class CustNonDatatableComponent implements OnInit {
         }
         else{
             for (var i = this.displayData.length - 1; i >= 0; i--) {
-                if(this.displayData[i][data] !== null){
+                if(this.displayData[i] != null && this.displayData[i][data] != null ){
                     sum += this.displayData[i][data];
                 }            
             }

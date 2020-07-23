@@ -31,7 +31,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
   warningMsg: any = null;
 
   searchParams: any = {
-        statusArr:['2'],
+        statusArr:['2','3'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
         altNo:0        
@@ -134,7 +134,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
     this.underwritingService.newGetParListing(this.searchParams).subscribe(data => {
       var polList = data['policyList'];
 
-      polList = polList.filter(p => p.statusDesc.toUpperCase() === 'IN FORCE' && p.altNo == 0)
+      polList = polList.filter(p => true)
                        .map(p => { p.riskName = p.project.riskName; return p; });
 
                       
@@ -299,7 +299,7 @@ export class PolCreateAlterationPARComponent implements OnInit {
 
   showWarningMdl() {
     this.searchParams = {
-        statusArr:['2'],
+        statusArr:['2','3'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,   
         altNo:0        
