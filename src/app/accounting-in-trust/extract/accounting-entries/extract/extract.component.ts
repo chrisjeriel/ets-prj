@@ -346,7 +346,7 @@ export class ExtractComponent implements OnInit {
 
         var name = this.params.reportId;
         var query = '';
-        if(this.params.reportId == 'ACITR058'){
+        //if(this.params.reportId == 'ACITR058'){
           this.passDataCsv = data['listAcitr058'];
           query = 'SELECT extractId as [EXTRACT ID], extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], tranId as [TRAN ID], myFormat(tranDate) as [TRAN DATE],' +
           'isNull(tranClass) as [TRAN CLASS], isNull(refNo) as [REF NO], checkNullNo(tranTypeCd) as [TRAN TYPE CD], isNull(currCd) as [CURRENCY],' +
@@ -359,10 +359,10 @@ export class ExtractComponent implements OnInit {
           'isNull(slTypeParamName) as [SL TYPE PARAM NAME], isNull(orTag) as [OR TAG], isNull(cvTag) as [CV TAG], isNull(jvTag) as [JV TAG], isNull(closeTranTag) as [CLOSE TRAN TAG],' +
           'isNull(appendTag) as [APPEND TAG], isNull(currCdParam) as [CURR CD PARAM], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(tranStatusDesc) AS [TRAN STATUS DESC],' +
           'isNull(acctStatusDesc) AS [ACCT STATUS DESC]';
-        }
+       // }
 
         console.log(this.passDataCsv);
-        this.ns.export(name, query, this.passDataCsv);
+        this.ns.export('ACITR058', query, this.passDataCsv);
       });
   }
 

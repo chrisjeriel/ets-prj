@@ -95,7 +95,7 @@
 						<div class="form-row custom-row-inline-inset mid">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Destination</label>
-								<select class="form-control form-control-sm cust-sm" [(ngModel)]="destination">
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
 									<option value="screen">Screen</option>
 			    					<option value="printPdf">Printer</option>
 			    					<option value="exl">Excel</option>
@@ -103,7 +103,7 @@
 							</div>
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Printer Name</label>
-								<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="destination != 'printPdf'" >
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="params.destination != 'printPdf'" >
 									<option *ngFor="let printer of printerList" [value]="printer">{{printer}}</option>
 								</select>
 							</div>

@@ -18,8 +18,8 @@ export class AcctTrialBalExtractComponent implements OnInit {
   @Output() accCodeChange : EventEmitter<any> = new EventEmitter();
 
   params: any = {
-      reportId : 'ACSER009',
-      reportName : 'ACSER009',
+      reportId : 'ACSER008',
+      reportName : 'ACSER008',
       type : 'T',
       periodFrom : '',
       periodTo : '',
@@ -52,7 +52,7 @@ export class AcctTrialBalExtractComponent implements OnInit {
     let param:any = JSON.parse(JSON.stringify(this.params));
     param.forceExtract = forceExtract != undefined ? 'Y' : 'N';
     this.loading = true;
-    this.ps.extractReport({ reportId: param.reportId, acser009Params:param }).subscribe((data:any)=>{
+    this.ps.extractReport({ reportId: param.reportId, acser008Params:param }).subscribe((data:any)=>{
         this.modalMode = "";
         this.loading = false;
         if (data.errorList.length > 0) {
@@ -104,6 +104,63 @@ export class AcctTrialBalExtractComponent implements OnInit {
     if(field == 'currCd') {
       this.currCdLov.checkCode(this.params.currCdParam, ev);
     }
+  }
+
+  onClickPrint(){
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+  }
+
+   getExtractToCsv(){
+    console.log(this.params.reportId);
+      console.log(this.ns.getCurrentUser() + ' >> current user');
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACSER008')
+      .subscribe(data => {
+        console.log(data);
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
+
+
+        var name = this.params.reportId;
+        var query = '';
+        //if(this.params.reportId == 'ACSER008'){
+          this.passDataCsv = data['listAcser008'];
+          query = 'checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
+          'isNull(acctCode) as [ACCT CODE],isNull(acctName) as [ACCT NAME],isNull(currCd) as [CURRENCY],checkNullNo(slTypeCd) as [SL TYPE CD],'+
+          'isNull(slTypeName) as [SL TYPE NAME],checkNullNo(slCd) as [SL CD],isNull(slName) as [SL NAME],negFmt(currency(totalCredit)) as [TOTAL CREDIT],'+
+          'negFmt(currency(totalDebit)) as [TOTAL DEBIT],myFormat(periodFrom) as [PERIOD FROM],myFormat(periodTo) as [PERIOD TO],isNull(currCdParam) as [CURR CD PARAM],'+
+          'isNull(extType) as [EXT TYPE]';
+        //}
+
+        console.log(this.passDataCsv);
+        this.ns.export('ACSER008', query, this.passDataCsv);
+      });
   }
 
 }

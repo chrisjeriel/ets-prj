@@ -363,10 +363,10 @@ export class AcctEntriesExtractComponent implements OnInit {
           'isNull(slTypeParamName) as [SL TYPE PARAM NAME], isNull(orTag) as [OR TAG], isNull(cvTag) as [CV TAG], isNull(jvTag) as [JV TAG], isNull(closeTranTag) as [CLOSE TRAN TAG],' +
           'isNull(appendTag) as [APPEND TAG], isNull(currCdParam) as [CURR CD PARAM], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(tranStatusDesc) AS [TRAN STATUS DESC],' +
           'isNull(acctStatusDesc) AS [ACCT STATUS DESC]';
-       // }
+        //}
 
         console.log(this.passDataCsv);
-        this.ns.export(name, query, this.passDataCsv);
+        this.ns.export('ACSER007', query, this.passDataCsv);
       });
   }
 
