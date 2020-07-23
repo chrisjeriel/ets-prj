@@ -1,7 +1,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NotesService, PrintService } from '@app/_services';
+import { NotesService, PrintService, MaintenanceService } from '@app/_services';
 import { LovComponent, ModalComponent, SucessDialogComponent } from '@app/_components/common';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
@@ -15,7 +15,7 @@ export class AcctEntriesExtractComponent implements OnInit {
 
     postingDateFlag: any = '1';
 
-    constructor(private titleService: Title, private ns: NotesService, private ps: PrintService) { }
+    constructor(private titleService: Title, private ns: NotesService, private ps: PrintService, private ms: MaintenanceService) { }
     params: any = {
       reportId : 'ACSER007',
       reportName : 'ACSER007',
@@ -60,6 +60,9 @@ export class AcctEntriesExtractComponent implements OnInit {
     modalMode: string = "";
 
     loading: boolean = false;
+
+    passDataCsv : any[] =[];
+
     @ViewChild('polReportsModal') polReportsModal: ModalComponent;
     @ViewChild('appDialog') appDialog: SucessDialogComponent;
 
@@ -241,6 +244,14 @@ export class AcctEntriesExtractComponent implements OnInit {
           this.dialogMessage = 'Please select a destination.';
           this.appDialog.open();
         }
+
+          if(this.params.destination == 'exl'){
+            this.passDataCsv = [];
+            this.getExtractToCsv();
+            return;
+          }
+
+
         // else{
         //   this.params.tranPostDate = this.dateRadio;
         //   this.params.printedBy = this.ns.getCurrentUser();
@@ -304,6 +315,59 @@ export class AcctEntriesExtractComponent implements OnInit {
         // }
       }
 
+  getExtractToCsv(){
+    console.log(this.params.reportId);
+      console.log(this.ns.getCurrentUser() + ' >> current user');
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACSER007')
+      .subscribe(data => {
+        console.log(data);
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
 
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
+
+
+        var name = this.params.reportId;
+        var query = '';
+       // if(this.params.reportId == 'ACSER007'){
+          this.passDataCsv = data['listAcser007'];
+          query = 'SELECT extractId as [EXTRACT ID], extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], tranId as [TRAN ID], myFormat(tranDate) as [TRAN DATE],' +
+          'isNull(tranClass) as [TRAN CLASS], isNull(refNo) as [REF NO], checkNullNo(tranTypeCd) as [TRAN TYPE CD], isNull(currCd) as [CURRENCY],' +
+          'isNull(payee) as [PAYEE], isNull(particulars) as [PARTICULARS], isNull(tranStatus) as [TRAN STATUS], isNull(acctStatus) as [ACCT STATUS],' +
+          'checkNullNo(glAcctId) as [GL ACCT ID], isNull(acctCode) as [ACCT CODE], isNull(acctName), checkNullNo(slTypecd) as [SL TYPE CD],' +
+          'isNull(slTypeName) as [SL TYPE NAME], checkNullNo(slCd) as [SL CD], slName as [SL NAME], negFmt(currency(creditAmt)) as [CREDIT AMT],'+
+          'negFmt(currency(debitAmt)) as [DEBIT AMT], negFmt(currency(localCreditAmt)) as [LOCAL CREDIT AMT], negFmt(currency(localDebitAmt)) as [LOCAL DEBIT AMT],'+
+          'isNull(entryType) as [ENTRY TYPE], isNull(periodType) as [PERIOD TYPE], myFormat(periodFrom) as [PERIOD FROM], myFormat(periodTo) as [PERIOD TO],'+
+          'checkNullNo(acctParam) as [ACCT PARAM], isNull(acctParamName) as [ACCT PARAM NAME], isNull(acctParamCode) as [ACCT PARAM CODE], isNull(slTypeParam) as [SL TYPE PARAM],'+
+          'isNull(slTypeParamName) as [SL TYPE PARAM NAME], isNull(orTag) as [OR TAG], isNull(cvTag) as [CV TAG], isNull(jvTag) as [JV TAG], isNull(closeTranTag) as [CLOSE TRAN TAG],' +
+          'isNull(appendTag) as [APPEND TAG], isNull(currCdParam) as [CURR CD PARAM], isNull(tranTypeName) as [TRAN TYPE NAME], isNull(tranStatusDesc) AS [TRAN STATUS DESC],' +
+          'isNull(acctStatusDesc) AS [ACCT STATUS DESC]';
+       // }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+      });
+  }
 
 }
