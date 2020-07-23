@@ -94,6 +94,8 @@ export class PolCreatePARComponent implements OnInit {
 
   sub:any;
 
+  disabledConvert:boolean = false;
+
   constructor(private underwritingService: UnderwritingService, public modalService: NgbModal, private router: Router,
               private titleService: Title, private quoteService: QuotationService, private ns: NotesService, private mtnService: MaintenanceService) {
 
@@ -525,8 +527,9 @@ export class PolCreatePARComponent implements OnInit {
     // console.log(this.validate(this.prepareParams()));
     // this.cancelFlag = cancelFlag !== undefined;
     this.loading = true;
-
+    this.disabledConvert = true;
     if(this.validate(this.prepareParam())){
+      this.disabledConvert = true;
       this.underwritingService.savePolicyDetails(this.prepareParam()).subscribe(data => {
         this.loading = false;
         if(data['returnCode'] == 0) {
@@ -538,13 +541,15 @@ export class PolCreatePARComponent implements OnInit {
           this.policyNo = data['policyNo'];
 
           $('#convSuccessModal > #modalBtn').trigger('click');
-        } 
+        }
+        this.disabledConvert = false; 
         
         // else if (data['coInsStatus'] === 1) {
         //   $('#convWarningModal > #modalBtn').trigger('click');
         // }
       });
     } else {
+
       this.loading = false;
       this.dialogMessage = "Please complete all the required fields.";
       $('#createPol #successModalBtn').trigger('click');
