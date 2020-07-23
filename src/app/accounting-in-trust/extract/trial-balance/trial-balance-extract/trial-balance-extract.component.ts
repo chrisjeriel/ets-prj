@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { NotesService, PrintService } from '@app/_services';
+import { NotesService, PrintService, MaintenanceService } from '@app/_services';
 import { SucessDialogComponent, ModalComponent } from '@app/_components/common';
 import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
 
@@ -11,7 +11,7 @@ import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn
 })
 export class TrialBalanceExtractComponent implements OnInit {
 
-  constructor(private titleService: Title, private ns : NotesService, private ps: PrintService) { }
+  constructor(private titleService: Title, private ns : NotesService, private ps: PrintService, private ms: MaintenanceService) { }
 
 
   @Output() accCodeChange : EventEmitter<any> = new EventEmitter();
@@ -34,6 +34,8 @@ export class TrialBalanceExtractComponent implements OnInit {
    dialogIcon: string = "";
    dialogMessage: string = "";
    modalMode: string = "";
+
+   passDataCsv : any[] =[];
 
    @ViewChild('polReportsModal') polReportsModal: ModalComponent;
    @ViewChild('appDialog') appDialog: SucessDialogComponent;
@@ -150,7 +152,7 @@ export class TrialBalanceExtractComponent implements OnInit {
         var query = '';
         //if(this.params.reportId == 'ACITR059'){
           this.passDataCsv = data['listAcitr059'];
-          query = 'checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
+          query = 'SELECT checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
           'isNull(acctCode) as [ACCT CODE],isNull(acctName) as [ACCT NAME],isNull(currCd) as [CURRENCY],checkNullNo(slTypeCd) as [SL TYPE CD],'+
           'isNull(slTypeName) as [SL TYPE NAME],checkNullNo(slCd) as [SL CD],isNull(slName) as [SL NAME],negFmt(currency(totalCredit)) as [TOTAL CREDIT],'+
           'negFmt(currency(totalDebit)) as [TOTAL DEBIT],myFormat(periodFrom) as [PERIOD FROM],myFormat(periodTo) as [PERIOD TO],isNull(currCdParam) as [CURR CD PARAM],'+
@@ -160,5 +162,5 @@ export class TrialBalanceExtractComponent implements OnInit {
         console.log(this.passDataCsv);
         this.ns.export('ACITR059', query, this.passDataCsv);
       });
-
+  }
 }
