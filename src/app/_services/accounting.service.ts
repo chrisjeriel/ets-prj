@@ -3595,4 +3595,7 @@ export class AccountingService {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitTrialBalExt?extractUser='+params);
     }
 
+    getAcseTrialBalExt(params){
+    	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseTrialBalExt?extractUser='+params);
+    }
 }
