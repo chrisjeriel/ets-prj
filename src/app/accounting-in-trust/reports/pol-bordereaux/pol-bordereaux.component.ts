@@ -582,13 +582,13 @@ export class PolBordereauxComponent implements OnInit {
         }else if(this.params.reportId == 'POLR052E'){
           this.passDataCsv = data['listPolr052e'];
           query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],debitMemoNo as [DEBIT MEMO NO],cedingName as [COMPANY],'+
-          'policyNo as [POLICY NO],instNo as [INST NO],negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(vatriComm)) as [VAT on RI COMM],'+
+          'policyNo as [POLICY NO],instNo as [INST NO], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) as [TRAN TYPE DESC], isNull(currencyCd) as [CURRENCY],negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(vatriComm)) as [VAT on RI COMM],'+
           'negFmt(currency(premAmt)) as [PREMIUM]';
         }else if(this.params.reportId == 'POLR052F'){
           this.passDataCsv = data['listPolr052f'];
-          query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],currencyCd as [CURRENCY],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo || " / " || instNo AS [POLICY NO/INST NO],'+
+          query = 'SELECT extractUser as [EXTRACT USER],lineCd as [LINE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],policyNo AS [POLICY NO/INST NO], instNo as [INST NO],'+
           'debitMemoNo as [DEBIT MEMO NO],cedingId as [CEDING ID], cedingName as [COMPANY],isNull(policyRef) as [POLICY REF NO],insuredDesc as [INSURED],myFormat(inceptDate) as [INCEPTION DATE],myFormat(expDate) as [EXPIRY DATE],myFormat(effDate) as [EFF DATE],'+
-          'negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMMISSION],negFmt(currency(vatriComm)) as [VAT on RI],'+
+          'isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) as [TRAN TYPE DESC], isNull(currencyCd) as [CURRENCY],negFmt(currency(dueFrom)) as [DUE FROM ],negFmt(currency(commAmt)) as [COMMISSION],negFmt(currency(vatriComm)) as [VAT on RI],'+
           'negFmt(currency(premAmt)) as [PREMIUM]';
         }else if(this.params.reportId == 'POLR052G'){
           this.passDataCsv = data['listPolr052g'];
