@@ -144,9 +144,6 @@ export class NotesService {
     };
 
     alasql.fn.truncDate = function(str) {
-      // var parts = parseFloat(currency).toFixed(2).split(".");
-      // var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
-      //     (parts[1] ? "." + parts[1] : "");
       return str==null ? '' : str.substr(0,10);
     };
 
