@@ -143,6 +143,13 @@ export class NotesService {
       return currency;
     };
 
+    alasql.fn.truncDate = function(str) {
+      // var parts = parseFloat(currency).toFixed(2).split(".");
+      // var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+      //     (parts[1] ? "." + parts[1] : "");
+      return str==null ? '' : str.substr(0,10);
+    };
+
      var into = "INTO XLSXML('" + fileName + "', ?)";
      alasql.promise(query + ' ' + into + ' FROM ?', [opts,tableData]);
   }

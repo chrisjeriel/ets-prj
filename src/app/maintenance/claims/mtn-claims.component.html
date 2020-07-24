@@ -1,38 +1,3 @@
-<!-- <div class="cust-tabs-container">
-    <h4>Maintenance</h4>
-    <ngb-tabset>
-        <ngb-tab class="ngb-tab" title="Claims">
-            <ng-template ngbTabContent style="padding-top: 10px !important;">
-                <div class="row px-5">
-                   <div class="col-sm">
-          						<button [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
-          						<br />
-          						<button [routerLink]="['/maintenance-clm-event']" class="button btn btn-link ">Claim Event</button>
-          						<br />
-                   </div>
-                   <div class="col-sm">
-                      <button [routerLink]="['/maintenance-clm-cash-call']" class="button btn btn-link ">Claim Cash Call</button>
-          						<br />
-                      <button  [routerLink]="['/maintenance-loss-code']" class="button btn btn-link">Loss Code</button>
-          						<br />
-                   </div>
-                   <div class="col-sm">
-                   		<button [routerLink]="['/claim-status']" class="button btn btn-link">Claim Status</button>
-						          <br />
-                      <button [routerLink]="['/maintenance-clm-event']" class="button btn btn-link ">Claim Event</button>
-                      <br />
-                   </div>
-                   <div class="col-sm">
-	                   	<button [routerLink]="['/maintenance-clm-event-type']" class="button btn btn-link">Claim Event Type</button>
-	                   	<button [routerLink]="['/mtn-clm-stat-reason']" class="button btn btn-link ">Claim Status Reason</button>
-	                   	<br />
-                   </div>
-                </div>
-            </ng-template>
-        </ngb-tab>
-    </ngb-tabset>
-</div> -->
-
 <div class="cust-tabs-container">
   <h4>Maintenance</h4>
   <ngb-tabset>
@@ -42,8 +7,8 @@
           <div class="col-sm-3">
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
               <p-accordionTab header="A">
-                <button [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
-                <br />
+                <button  *ngIf="modules.indexOf('MTN201')!= -1" [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
+                <br *ngIf="modules.indexOf('MTN201')!= -1"/>
               </p-accordionTab>
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
@@ -52,16 +17,16 @@
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
               <p-accordionTab header="C">
-                <button [routerLink]="['/maintenance-clm-cash-call']" class="button btn btn-link ">Claim Cash Call</button>
-                <br />
-                <button [routerLink]="['/maintenance-clm-event']" class="button btn btn-link ">Claim Event</button>
-                <br />
-                <button [routerLink]="['/maintenance-clm-event-type']" class="button btn btn-link">Claim Event Type</button>
-                <br />
-                <button [routerLink]="['/claim-status']" class="button btn btn-link">Claim Status</button>
-                <br />
-                <button [routerLink]="['/mtn-clm-stat-reason']" class="button btn btn-link ">Claim Status Reason</button>
-                <br />
+                <button  *ngIf="modules.indexOf('MTN206')!= -1" [routerLink]="['/maintenance-clm-cash-call']" class="button btn btn-link ">Claim Cash Call</button>
+                <br *ngIf="modules.indexOf('MTN206')!= -1"/>
+                <button  *ngIf="modules.indexOf('MTN205')!= -1" [routerLink]="['/maintenance-clm-event']" class="button btn btn-link ">Claim Event</button>
+                <br *ngIf="modules.indexOf('MTN205')!= -1"/>
+                <button  *ngIf="modules.indexOf('MTN204')!= -1" [routerLink]="['/maintenance-clm-event-type']" class="button btn btn-link">Claim Event Type</button>
+                <br *ngIf="modules.indexOf('MTN204')!= -1"/>
+                <button  *ngIf="modules.indexOf('MTN202')!= -1" [routerLink]="['/claim-status']" class="button btn btn-link">Claim Status</button>
+                <br *ngIf="modules.indexOf('MTN202')!= -1"/>
+                <button  *ngIf="modules.indexOf('MTN207')!= -1" [routerLink]="['/mtn-clm-stat-reason']" class="button btn btn-link ">Claim Status Reason</button>
+                <br *ngIf="modules.indexOf('MTN207')!= -1"/>
               </p-accordionTab>
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
@@ -100,8 +65,8 @@
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
               <p-accordionTab header="L">
-                <button  [routerLink]="['/maintenance-loss-code']" class="button btn btn-link">Loss Code</button>
-                <br />
+                <button   *ngIf="modules.indexOf('MTN203')!= -1" [routerLink]="['/maintenance-loss-code']" class="button btn btn-link">Loss Code</button>
+                <br *ngIf="modules.indexOf('MTN203')!= -1"/>
               </p-accordionTab>
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">

@@ -43,6 +43,11 @@ export class TrialBalanceExtractComponent implements OnInit {
    currencyDesc:String = '';
    @ViewChild(MtnCurrencyCodeComponent) currCdLov: MtnCurrencyCodeComponent;
 
+   rType:any;
+
+   selectedPrinter:any;
+   printerList = [];
+
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Trial Balance");
   }
@@ -152,6 +157,7 @@ export class TrialBalanceExtractComponent implements OnInit {
         var query = '';
         //if(this.params.reportId == 'ACITR059'){
           this.passDataCsv = data['listAcitr059'];
+          this.passDataCsv.forEach(a=>{a.extType = a.extType == 'N' ? 'Net' : 'Total Debit & Total Credits'});
           query = 'SELECT checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
           'isNull(acctCode) as [ACCT CODE],isNull(acctName) as [ACCT NAME],isNull(currCd) as [CURRENCY],checkNullNo(slTypeCd) as [SL TYPE CD],'+
           'isNull(slTypeName) as [SL TYPE NAME],checkNullNo(slCd) as [SL CD],isNull(slName) as [SL NAME],negFmt(currency(totalCredit)) as [TOTAL CREDIT],'+

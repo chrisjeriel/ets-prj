@@ -2,7 +2,7 @@
 	<div header>List of Values</div>
 	<div body>
         <div style="position: relative;">
-            <button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainRisk()">Maintain Risk</button>
+            <button class="cust-btn" style="position:absolute; left: 0px; max-width: 200px !important;" (click)="maintainRisk()" *ngIf="hasAccess">Maintain Risk</button>
             <app-cust-non-datatable [passData]="riskListing" (rowClick)="onRowClick($event)" ></app-cust-non-datatable>
         </div>
 	</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService, UserService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -54,13 +54,17 @@ export class LovComponent implements OnInit {
 
   preventDefault: boolean = false;
 
+  showDedMtn:Boolean = false;
+
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService, private ns: NotesService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, 
+    private securityService : SecurityService, private ns: NotesService, private us: UserService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
+     this.us.accessibleModules.subscribe(a=>{this.showDedMtn = a.indexOf('MTN113') != -1})
   }
 
   // pinaikli ko lang, pabalik sa dati pag may mali - YELE

@@ -63,6 +63,8 @@ export class ExtractComponent implements OnInit {
     @ViewChild('polReportsModal') polReportsModal: ModalComponent;
     @ViewChild('appDialog') appDialog: SucessDialogComponent;
 
+    rType:any;
+
   	@ViewChild(MtnCurrencyCodeComponent) currCdLov: MtnCurrencyCodeComponent;
 
       ngOnInit() {
