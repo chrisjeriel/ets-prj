@@ -1264,8 +1264,8 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044u'];
           query = 'SELECT extractUser as [EXTRACT USER],extractDate as [EXTRACT DATE],isNull(lineCdParam) as [LINE CD PARAM],isNull(cedingIdParam) as [CEDING ID PARAM],'+
           'isNull(dateParam) as [DATE PARAM],isNull(dateRange) as [DATE RANGE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],isNull(incRecTag) as [INC REC TAG],'+
-          'uwYear as [UW YEAR],myFormat(transactDate) as [TRANSACT DATE],currencyCd as [CURRENCY CD],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME], trtyCedId as [TRTY CED ID],'+
-          'isNull(trtyCedName) as [TRTY CED NAME],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(lossAmt)) as [LOSS AMT],'+
+          'uwYear as [UW YEAR],myFormat(transactDate) as [TRANSACT DATE],currencyCd as [CURRENCY CD],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME], checkNullNo(retLayer) as [RET LAYER], trtyCedId as [TRTY CED ID],'+
+          'isNull(trtyCedName) as [TRTY CED NAME],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(riCommVat)) as [RI COMM VAT],negFmt(currency(lossAmt)) as [LOSS AMT],'+
           'negFmt(currency(paidLoss)) as [PAID LOSS],negFmt(currency(incurredLoss)) as [INCURRED LOSS],negFmt(currency(lossRatio)) as [LOSS RATIO]';
         }
         console.log(this.passDataCsv);
