@@ -2023,4 +2023,26 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
     }
 
+    getMtnPremPlan(params){
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPremPlan", {params:params});
+    }
+
+    saveMtnPremPlan(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPremPlan', JSON.stringify(params), header);
+    }
+
+    copyMtnPremPlan(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnPremPlan', JSON.stringify(params), header);
+    }
+
 }
