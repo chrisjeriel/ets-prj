@@ -678,14 +678,22 @@ export class ClaimReportsComponent implements OnInit {
           'negFmt(currency(approvedAmt)) as [APPROVED AMOUNT],lossAbbr as [NATURE OF LOSS]';
         }else if(this.params.reportId == 'CLMR010ZO'){
           this.passDataCsv = data['listClmr010zo'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],trtyCedIdName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(clmCount) as [QUANTITY],'+
-          'negFmt(currency(clmAmtQuota)) as [QUOTA SHARE],negFmt(currency(clmAmt1stSurplus)) as [1st SURPLUS],negFmt(currency(clmAmt2ndSurplus)) as [2nd SURPLUS]';
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],isNull(lineCd) as [LINE CD],'+
+          'checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],checkNullNo(policyId) as [POLICY ID],isNull(policyNo) as [POLICY NO],negFmt(currency(tsiAmt)) as [TSI AMT],'+
+          'isNull(trtyCedId) as [TRTY CED ID],isNull(trtyCedIdName) as [TRTY CED ID NAME],negFmt(currency(clmAmtTotal)) as [CLM AMT TOTAL],negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA],'+
+          'negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1],negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2],negFmt(currency(clmAmt1stSurplus)) as [CLM AMT 1ST SURPLUS],'+
+          'negFmt(currency(clmAmt2ndSurplus)) as [CLM AMT 2ND SURPLUS],negFmt(currency(clmAmtFacul)) as [CLM AMT FACUL],checkNullNo(siRange) as [SI RANGE],'+
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM],negFmt(currency(amtRangeTo)) as [AMT RANGE TO],isNull(dateParam) as [DATE PARAM],isNull(dateRange) as [DATE RANGE],'+
+          'myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
         }else if(this.params.reportId == 'CLMR010ZP'){
           this.passDataCsv = data['listClmr010zp'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],trtyCedIdName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(clmCount) as [QUANTITY],'+
-          'negFmt(currency(clmAmtQuota)) as [QUOTA SHARE],negFmt(currency(clmAmt1stSurplus)) as [1st SURPLUS],negFmt(currency(clmAmt2ndSurplus)) as [2nd SURPLUS]';
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],isNull(lineCd) as [LINE CD],'+
+          'checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],checkNullNo(policyId) as [POLICY ID],isNull(policyNo) as [POLICY NO],negFmt(currency(tsiAmt)) as [TSI AMT],'+
+          'isNull(trtyCedId) as [TRTY CED ID],isNull(trtyCedIdName) as [TRTY CED ID NAME],negFmt(currency(clmAmtTotal)) as [CLM AMT TOTAL],negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA],'+
+          'negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1],negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2],negFmt(currency(clmAmt1stSurplus)) as [CLM AMT 1ST SURPLUS],'+
+          'negFmt(currency(clmAmt2ndSurplus)) as [CLM AMT 2ND SURPLUS],negFmt(currency(clmAmtFacul)) as [CLM AMT FACUL],checkNullNo(siRange) as [SI RANGE],'+
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM],negFmt(currency(amtRangeTo)) as [AMT RANGE TO],isNull(dateParam) as [DATE PARAM],isNull(dateRange) as [DATE RANGE],'+
+          'myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
         }
 
         console.log(this.passDataCsv);
