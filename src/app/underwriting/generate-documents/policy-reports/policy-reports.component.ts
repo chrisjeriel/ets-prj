@@ -1210,14 +1210,22 @@ export class PolicyReportsComponent implements OnInit {
           this.export(tab1,tab2);
         }else if(this.params.reportId == 'POLR044R'){
           this.passDataCsv = data['listPolr044r'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(polCount) as [QUANTITY],'+
-          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],isNull(lineCd) as [LINE CD],'+
+          'checkNullNo(policyId) as [POLICY ID],isNull(policyNo) as [POLICY NO],negFmt(currency(tsiAmt)) as [TSI AMT],isNull(cedingId) as [CEDING ID],'+
+          'isNull(cedingName) as [CEDING NAME],negFmt(currency(premTotal)) as [PREM TOTAL],negFmt(currency(premQuota)) as [PREM QUOTA],'+
+          'negFmt(currency(premQuotaRet1)) as [PREM QUOTA RET1],negFmt(currency(premQuotaRet2)) as [PREM QUOTA RET2],negFmt(currency(prem1stSurplus)) as [PREM 1ST SURPLUS],'+
+          'negFmt(currency(prem2ndSurplus)) as [PREM 2ND SURPLUS],negFmt(currency(premFacul)) as [PREM FACUL],checkNullNo(siRange) as [SI RANGE],'+
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM],negFmt(currency(amtRangeTo)) as [AMT RANGE TO],isNull(dateParam) as [DATE PARAM],'+
+          'isNull(dateRange) as [DATE RANGE],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],isNull(incRecTag) as [INC REC TAG]';
         }else if(this.params.reportId == 'POLR044S'){
           this.passDataCsv = data['listPolr044s'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
-          'currencyCd as [CURRENCY],lineCd as [LINE],cedingName as [COMPANY],negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI BAND],negFmt(polCount) as [QUANTITY],'+
-          'negFmt(currency(premQuota)) as [QUOTA SHARE],negFmt(currency(prem1stSurplus)) as [1st SURPLUS],negFmt(currency(prem2ndSurplus)) as [2nd SURPLUS]';
+          query = 'SELECT isNull(extractUser) as [EXTRACT_USER],myFormat(extractDate) as [EXTRACT_DATE],isNull(currencyCd) as [CURRENCY_CD],isNull(lineCd) as [LINE_CD],'+
+          'checkNullNo(policyId) as [POLICY_ID],isNull(policyNo) as [POLICY_NO],negFmt(currency(tsiAmt)) as [TSI_AMT],isNull(cedingId) as [CEDING_ID],'+
+          'isNull(cedingName) as [CEDING_NAME],checkNullNo(polCount) as [POL_COUNT],negFmt(currency(siTotal)) as [SI_TOTAL],negFmt(currency(siQuota)) as [SI_QUOTA],'+
+          'negFmt(currency(siQuotaRet1)) as [SI_QUOTA_RET1],negFmt(currency(siQuotaRet2)) as [SI_QUOTA_RET2],negFmt(currency(si1stSurplus)) as [SI_1ST_SURPLUS],'+
+          'negFmt(currency(si2ndSurplus)) as [SI_2ND_SURPLUS],negFmt(currency(siFacul)) as [SI_FACUL],checkNullNo(siRange) as [SI_RANGE],'+
+          'negFmt(currency(amtRangeFrom)) as [AMT_RANGE_FROM],negFmt(currency(amtRangeTo)) as [AMT_RANGE_TO],isNull(dateParam) as [DATE_PARAM],'+
+          'isNull(dateRange) as [DATE_RANGE],myFormat(fromDate) as [FROM_DATE],myFormat(toDate) as [TO_DATE],isNull(incRecTag) as [INC_REC_TAG]';
         }else if(this.params.reportId == 'POLR044V'){
           this.passDataCsv = data['listPolr044v'];
           query = 'SELECT extractUser as [EXTRACT USER], dateFromTo as [AS OF], cedingId || "-" || cedingName as [COMPANY], policyNo as [POLICY NO],' +
