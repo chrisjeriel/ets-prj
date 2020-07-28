@@ -9,6 +9,8 @@
               <p-accordionTab header="A">
                 <button  *ngIf="modules.indexOf('MTN201')!= -1" [routerLink]="['/mtn-adjuster-list']" class="button btn btn-link">Adjuster</button>
                 <br *ngIf="modules.indexOf('MTN201')!= -1"/>
+                <button *ngIf="modules.indexOf('MTN208')!= -1" [routerLink]="['/maintenance-clm-adj-rate']" class="button btn btn-link">Adjuster's Rate</button>
+                <br *ngIf="modules.indexOf('MTN208')!= -1"/>
               </p-accordionTab>
             </p-accordion>
             <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">

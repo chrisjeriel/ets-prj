@@ -1119,8 +1119,8 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044J'){
           this.passDataCsv = data['listPolr044j'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
-          'cedingName AS [COMPANY], negFmt(currency(ret1PremAmt)) AS [1st RET PREM], negFmt(currency(ret1CommAmt)) AS [1st RET COMM],'+
-          'negFmt(currency(ret1VatRiComm)) AS [1st RET VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET NET DUE], negFmt(currency(ret2CommAmt)) AS [2nd RET COMM],'+
+          'cedingName AS [COMPANY],isNull(tranType) as [TRAN TYPE],isNull(tranTypeDesc) as [TRAN TYPE DESC], negFmt(currency(ret1PremAmt)) AS [1st RET PREM], negFmt(currency(ret1CommAmt)) AS [1st RET COMM],'+
+          'negFmt(currency(ret1VatRiComm)) AS [1st RET VAT on RI], negFmt(currency(ret1NetDue)) AS [1st RET NET DUE],negFmt(currency(ret2PremAmt)) AS [2nd RET PREM], negFmt(currency(ret2CommAmt)) AS [2nd RET COMM],'+
           'negFmt(currency(ret2VatRiComm)) AS [2nd RET VAT on RI], negFmt(currency(ret2NetDue)) AS [2nd RET NET DUE]';
         }else if(this.params.reportId == 'POLR044JA'){
           this.passDataCsv = data['listPolr044ja'];
@@ -1132,7 +1132,7 @@ export class PolicyReportsComponent implements OnInit {
         }else if(this.params.reportId == 'POLR044K'){
           this.passDataCsv = data['listPolr044k'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY],lineCd AS [LINE],'+
-          'trtyCedIdName ||" - "||(CASE WHEN retLayer = "0" THEN treatyIdDesc ELSE retLayerDesc END) AS [COMPANY],negFmt(currency(premAmt)) AS [PREM AMT],'+
+          'trtyCedIdName ||" - "||(CASE WHEN retLayer = "0" THEN treatyIdDesc ELSE retLayerDesc END) AS [COMPANY],isNull(tranType) as [TRAN TYPE],isNull(tranTypeDesc) as [TRAN TYPE DESC],negFmt(currency(premAmt)) AS [PREM AMT],'+
           'negFmt(currency(commAmt)) AS [COMM AMT], negFmt(currency(vatRiComm)) as [VAT on RI], negFmt(currency(dueToTrty)) AS [DUE TO TREATY],'+
           'negFmt(currency(dueToCedant)) AS [DUE TO CEDANT]';
         }else if(this.params.reportId == 'POLR044KA'){
