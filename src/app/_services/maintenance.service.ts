@@ -2023,4 +2023,23 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
     }
 
+    getMtnAdjRate(adjRateId?){
+		const params = new HttpParams()
+			.set('adjRateId', (adjRateId == null || adjRateId == undefined ? '' : adjRateId));
+
+		return this.http.get(environment.prodApiUrl + '/maintenance-service/retrieveMtnAdjusterRate',{params});	
+	}
+
+	saveMtnAdjusterRate(params){
+		let header : any = {
+             headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+             })
+         };
+
+         console.log(params);
+         return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdjusterRate',params,header);
+	}
+
+
 }

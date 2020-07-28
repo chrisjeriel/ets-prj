@@ -460,6 +460,22 @@ export class ClaimReportsComponent implements OnInit {
     this.ns.lovLoader(data.ev, 0);
   }
 
+  export(tab1,tab2) {
+    var currDate = this.ns.toDateTimeString(0).replace(':', '.');
+    var filename = this.params.reportId + '_' + currDate + '.xls';
+    var opts = [{
+                sheetid: 'Sheet1',
+                headers: true
+               },
+               {
+                sheetid: 'Sheet2',
+                headers: true
+               }];
+
+    alasql('SELECT INTO XLSX("'+filename+'",?) FROM ?', [opts, [tab1, tab2]]);
+
+  }
+
   getExtractToCsv(){
     console.log(this.params.reportId);
       console.log(this.ns.getCurrentUser() + ' >> current user');
@@ -493,21 +509,82 @@ export class ClaimReportsComponent implements OnInit {
           return (o==null || o=='')?'': Number(o);
         };
 
+        function checkNull(obj) {
+          for (var key in obj) {
+              if (obj[key] == null){
+                 obj[key] = ' ';
+              }
+          }
+          return obj;
+        }
+
 
         var name = this.params.reportId;
         var query = '';
         if(this.params.reportId == 'CLMR010A'){
-          this.passDataCsv = data['listClmr010a'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],negFmt(currency(minAmt)) as [MINIMUM AMOUNT],currencyCd AS [CURRENCY],'+
-          'lineCd as [LINE],claimNo AS [CLAIM NO],insuredDesc as [INSURED NAME],myFormat(lossDate) as [LOSS DATE],checkNullNo(uwYear) as [U/W YEAR],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
-          'negFmt(currency(intlResAmt)) as [INITIAL RESERVE], lossAbbr as [NATURE OF LOSS],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME],'+
-          'isNull(trtyCedId) as [TREATY CED ID],treatyCompany as [TREATY COMPANY], checkNullNo(retLayer) as [RET LAYER],isNull(retName) as [RET NAME],negFmt(currency(osAmt)) as OUTSTANDING,negFmt(currency(pdAmt)) as [PAID]';
+          // this.passDataCsv = data['listClmr010a'];
+          // query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],negFmt(currency(minAmt)) as [MINIMUM AMOUNT],currencyCd AS [CURRENCY],'+
+          // 'lineCd as [LINE],claimNo AS [CLAIM NO],insuredDesc as [INSURED NAME],myFormat(lossDate) as [LOSS DATE],checkNullNo(uwYear) as [U/W YEAR],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
+          // 'negFmt(currency(intlResAmt)) as [INITIAL RESERVE], lossAbbr as [NATURE OF LOSS],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME],'+
+          // 'isNull(trtyCedId) as [TREATY CED ID],treatyCompany as [TREATY COMPANY], checkNullNo(retLayer) as [RET LAYER],isNull(retName) as [RET NAME],negFmt(currency(osAmt)) as OUTSTANDING,negFmt(currency(pdAmt)) as [PAID]';
+          var tab1 : any[] =[];
+          var tab2 : any[] =[];
+          var res1 =  data['listClmr010a'];
+          var res2 =  data['listClmr010a2'];
+
+          res1.forEach(e => {
+            checkNull(e);
+          });
+
+          res2.forEach(e => {
+            checkNull(e);
+          });
+
+          res1.forEach(e => {
+              tab1.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+           
+          res2.forEach(e => {
+              tab2.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+
+          console.log(tab1);
+          console.log(tab2);
+
+          this.export(tab1,tab2);
+
         }else if(this.params.reportId == 'CLMR010AP'){
-          this.passDataCsv = data['listClmr010ap'];
-          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],negFmt(currency(minAmt)) as [MINIMUM AMOUNT],currencyCd AS [CURRENCY],'+
-          'lineCd as [LINE],claimNo AS [CLAIM NO],insuredDesc as [INSURED NAME],myFormat(lossDate) as [LOSS DATE],checkNullNo(uwYear) as [U/W YEAR],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
-          'negFmt(currency(intlResAmt)) as [INITIAL RESERVE], lossAbbr as [NATURE OF LOSS],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME],'+
-          'isNull(trtyCedId) as [TREATY CED ID],treatyCompany as [TREATY COMPANY], checkNullNo(retLayer) as [RET LAYER],isNull(retName) as [RET NAME],negFmt(currency(osAmt)) as OUTSTANDING,negFmt(currency(pdAmt)) as [PAID]';
+          // this.passDataCsv = data['listClmr010ap'];
+          // query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],negFmt(currency(minAmt)) as [MINIMUM AMOUNT],currencyCd AS [CURRENCY],'+
+          // 'lineCd as [LINE],claimNo AS [CLAIM NO],insuredDesc as [INSURED NAME],myFormat(lossDate) as [LOSS DATE],checkNullNo(uwYear) as [U/W YEAR],negFmt(currency(insuredClm)) as [INSURED CLAIM],'+
+          // 'negFmt(currency(intlResAmt)) as [INITIAL RESERVE], lossAbbr as [NATURE OF LOSS],checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME],'+
+          // 'isNull(trtyCedId) as [TREATY CED ID],treatyCompany as [TREATY COMPANY], checkNullNo(retLayer) as [RET LAYER],isNull(retName) as [RET NAME],negFmt(currency(osAmt)) as OUTSTANDING,negFmt(currency(pdAmt)) as [PAID]';
+
+          var tab1 : any[] =[];
+          var tab2 : any[] =[];
+          var res1 =  data['listClmr010ap'];
+          var res2 =  data['listClmr010ap2'];
+
+          res1.forEach(e => {
+            checkNull(e);
+          });
+
+          res2.forEach(e => {
+            checkNull(e);
+          });
+
+          res1.forEach(e => {
+              tab1.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+           
+          res2.forEach(e => {
+              tab2.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+
+          console.log(tab1);
+          console.log(tab2);
+
+          this.export(tab1,tab2);
         }else if(this.params.reportId == 'CLMR010B'){
           this.passDataCsv = data['listClmr010b'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE],currencyCd AS [CURRENCY],'+
