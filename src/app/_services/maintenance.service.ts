@@ -2023,4 +2023,18 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
     }
 
+    getMtnAcitChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitChartAcctLov", {params});
+    }
+
+    getMtnAcseChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcctLov", {params});
+    }
+
 }

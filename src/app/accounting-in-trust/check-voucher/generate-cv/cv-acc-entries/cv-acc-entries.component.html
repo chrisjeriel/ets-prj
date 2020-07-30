@@ -39,7 +39,7 @@
 	<legend class="scheduler-border">CV Accounting Entries</legend>
     <div class="input-group" style="margin-bottom: 0 !important;">
         <div class="col-sm" style="padding: 0">
-            <app-cust-editable-non-datatable [passData]="cvAcctEntData" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="cvAcctEntData.tableData=$event;computeTotals()" (tickChckbx)="tickChckbx($event)">
+            <app-cust-editable-non-datatable [passData]="cvAcctEntData" (newClick)="selected=$event" (clickLOV)="clickLov($event)" (tableDataChange)="cvAcctEntData.tableData=$event;computeTotals($event)" (tickChckbx)="tickChckbx($event)">
                 <ng-container controls-r>
                     <button class="cust-btn" style="margin-right: 0px !important;" (click)="printAe()">Print AE</button>
                 </ng-container>

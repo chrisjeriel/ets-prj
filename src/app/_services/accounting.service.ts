@@ -57,9 +57,9 @@ export class AccountingService {
 	passDataAccEntries: any = {
 	    tableData: [],
 	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
-	    uneditable:[true,true,true,true,true,true,false,false],
+	    uneditable:[false,true,true,true,true,true,false,false],
 	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
-	    dataTypes: ['text','text','text','text','currency','currency','currency','currency'],
+	    dataTypes: ['lovInput','text','text','text','currency','currency','currency','currency'],
 	    nData: {
 	        tranId: '',
 	        entryId: '',

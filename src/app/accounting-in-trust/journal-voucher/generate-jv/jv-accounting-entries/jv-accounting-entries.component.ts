@@ -627,19 +627,34 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
       this.lovRow.edited = true;
-    }else if(data.selector == 'acitChartAcct'){
-      let firstRow = data.data.pop();
-      this.lovRow.glAcctId = firstRow.glAcctId;
-      this.lovRow.glShortCd = firstRow.shortCode;
-      this.lovRow.glShortDesc = firstRow.shortDesc;
-      this.lovRow.edited = true;
+    }else if(data.selector == 'acitChartAcct' || data.selector == 'acitChartAcctLov'){
+      if(data.hasOwnProperty('lovInput') && data.lovInput) {
+        var x = data;
+        this.passData.tableData[x.ev.index].glAcctId = x.data == null ? '' : x.data.glAcctId;
+        this.passData.tableData[x.ev.index].glShortCd = x.data == null ? '' : x.data.shortCode;
+        this.passData.tableData[x.ev.index].glShortDesc = x.data == null ? '' : x.data.shortDesc;
+        this.passData.tableData[x.ev.index].slTypeCd = x.data == null ? '' : x.data.slTypeCd;
+        this.passData.tableData[x.ev.index].slTypeName = x.data == null ? '' : x.data.slTypeName;
+        this.passData.tableData[x.ev.index].edited = true;
+        data.lovInput = undefined;
+      } else {
+        let firstRow = data.data.pop();
+        this.lovRow.glAcctId = firstRow.glAcctId;
+        this.lovRow.glShortCd = firstRow.shortCode;
+        this.lovRow.glShortDesc = firstRow.shortDesc;
+        this.lovRow.slTypeCd = firstRow.slTypeCd;
+        this.lovRow.slTypeName = firstRow.slTypeName;
+        this.lovRow.edited = true;
 
-      this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
-      for(let row of data.data){
-        this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
-        this.passData.tableData[this.passData.tableData.length - 1].glAcctId = row.glAcctId;
-        this.passData.tableData[this.passData.tableData.length - 1].glShortCd = row.shortCode;
-        this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
+        this.passData.tableData = this.passData.tableData.filter(a=>a.glAcctId != '');
+        for(let row of data.data){
+          this.passData.tableData.push(JSON.parse(JSON.stringify(this.passData.nData)));
+          this.passData.tableData[this.passData.tableData.length - 1].glAcctId = row.glAcctId;
+          this.passData.tableData[this.passData.tableData.length - 1].glShortCd = row.shortCode;
+          this.passData.tableData[this.passData.tableData.length - 1].glShortDesc = row.shortDesc;
+          this.passData.tableData[this.passData.tableData.length - 1].slTypeCd = row.slTypeCd;
+          this.passData.tableData[this.passData.tableData.length - 1].slTypeName = row.slTypeName;
+        }
       }
     }  
     this.table.markAsDirty();
@@ -647,21 +662,30 @@ export class JvAccountingEntriesComponent implements OnInit {
   }
 
   tableDataChange(data){
-    this.debitTotal = 0;
-    this.creditTotal = 0;
+    console.log(data);
+    if(data !== undefined && data.key == 'glShortCd') {
+      this.lovRow = data.lastEditedRow;
+      if(data.hasOwnProperty('lovInput')) {
+        data.ev['index'] = data.index;
+        this.lov.checkCdOthers('acitChartAcct', data.ev);
+      }
+    } else {
+      this.debitTotal = 0;
+      this.creditTotal = 0;
 
-    for (var i = 0; i < this.passData.tableData.length; i++) {
-      this.debitTotal  += this.passData.tableData[i].foreignDebitAmt;
-      this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
-      this.passData.tableData[i].debitAmt    = this.passData.tableData[i].foreignDebitAmt * this.jvData.currRate;
-      this.passData.tableData[i].creditAmt  = this.passData.tableData[i].foreignCreditAmt * this.jvData.currRate;
-    }
-     this.debitTotal  = this.debitTotal;
-     this.creditTotal = this.creditTotal;
-     this.variance = this.debitTotal - this.creditTotal;
-     this.variance = Math.round(this.variance * 100) / 100;
-    if(this.variance === 0){
-      this.notBalanced = false;
+      for (var i = 0; i < this.passData.tableData.length; i++) {
+        this.debitTotal  += this.passData.tableData[i].foreignDebitAmt;
+        this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
+        this.passData.tableData[i].debitAmt    = this.passData.tableData[i].foreignDebitAmt * this.jvData.currRate;
+        this.passData.tableData[i].creditAmt  = this.passData.tableData[i].foreignCreditAmt * this.jvData.currRate;
+      }
+       this.debitTotal  = this.debitTotal;
+       this.creditTotal = this.creditTotal;
+       this.variance = this.debitTotal - this.creditTotal;
+       this.variance = Math.round(this.variance * 100) / 100;
+      if(this.variance === 0){
+        this.notBalanced = false;
+      }
     }
   }
 
