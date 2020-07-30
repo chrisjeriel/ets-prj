@@ -30,7 +30,7 @@ export class AdjusterRateComponent implements OnInit {
             adjRateId: 		'',
 			adjRate: 		'',
 			effDateFrom: 	'',
-			activeTag: 		'N',
+			activeTag: 		'Y',
 			remarks: 		'',
             isNew		  	: true
         },
