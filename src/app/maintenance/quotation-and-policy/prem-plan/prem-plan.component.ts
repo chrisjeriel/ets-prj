@@ -94,7 +94,7 @@ export class PremPlanComponent implements OnInit {
   }
 
   checkCode(ev, fromCopy?){
-  	this.fromCopy = fromCopy != undefined && this.fromCopy;
+  	this.fromCopy = fromCopy != undefined && fromCopy;
     this.ns.lovLoader(ev, 1);
     if(fromCopy){
     	this.lineLov.checkCode(this.copyParams.toLineCd.toUpperCase(), ev);
@@ -115,7 +115,7 @@ export class PremPlanComponent implements OnInit {
   }
 
   showLineLOV(fromCopy?){
-  	this.fromCopy = fromCopy != undefined && this.fromCopy;
+  	this.fromCopy = fromCopy != undefined && fromCopy;
   	this.lineLov.modal.openNoClose();
   }
 
@@ -174,7 +174,14 @@ export class PremPlanComponent implements OnInit {
   			this.searchParams.planYear = this.copyParams.toPlanYear;
   			this.search();
   			this.copyModal.closeModal()
-  		} else {
+  		} else if(data['returnCode']==20000){
+  			this.dialogIcon = "error-message";
+  			for(let msg of data['errorList']){
+  			  this.dialogMessage = msg.errorMessage;
+  			}
+  			this.successDialog.open();
+
+  		}else {
   			this.dialogIcon = "error";
   			this.successDialog.open();
   		}
