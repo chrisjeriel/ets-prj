@@ -109,8 +109,9 @@ export class MeTrialBalProcComponent implements OnInit {
 
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
-        
-        if(initial === undefined) {
+        this.params.eomDate = this.monthlyTotals[0].eomDate.split('T')[0];
+
+        if(initial !== undefined) {
           this.onClickPrint();
         }
       }
@@ -286,6 +287,13 @@ export class MeTrialBalProcComponent implements OnInit {
       return num
     };
 
+    if(phpList.length == 0) {
+      phpList = [{}];
+    }
+    if(usdList.length == 0) {
+      usdList = [{}];
+    }
+
     console.log('entered here in export method');
     console.log(this.monthlyTotals);
     console.log(phpList);
@@ -296,8 +304,8 @@ export class MeTrialBalProcComponent implements OnInit {
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
   }
 
-  checkMonth(ev) {
-    if(ev !== '') {
+  checkMonth(ev, fromPrint?) {
+    if((ev !== '' && fromPrint === undefined) || (ev !== '' && fromPrint !== undefined && this.params.reportId === 'ACSER024E')) {
       this.getAcseMonthEndTrialBal(ev);
     }
   }
@@ -368,8 +376,12 @@ export class MeTrialBalProcComponent implements OnInit {
         this.paramsToggle.push('currCd');
       }
 
-      // this.allDest = this.params.reportId !== 'ACSER024E';
-      this.allDest = this.params.reportId;
+      if(this.params.reportId == 'ACSER024E') {
+        this.params.destination = 'exl';
+      }
+
+      this.allDest = this.params.reportId !== 'ACSER024E';
+      //this.allDest = this.params.reportId;
     }
   }
 
@@ -512,7 +524,10 @@ export class MeTrialBalProcComponent implements OnInit {
         }
 
         console.log(this.passDataCsv);
-        this.ns.export(name, query, this.passDataCsv);
+        if(this.params.reportId !== 'ACSER024E') {
+          this.ns.export(name, query, this.passDataCsv);  
+        }
+        
 
       });
     }
