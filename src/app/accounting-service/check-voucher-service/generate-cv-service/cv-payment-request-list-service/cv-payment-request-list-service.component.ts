@@ -117,6 +117,7 @@ export class CvPaymentRequestListServiceComponent implements OnInit {
       this.cvInfo.cvDate = this.ns.toDateTimeString(this.cvInfo.cvDate); 
       this.cvInfo.cvStatusUp = (this.cvInfo.cvStatus == 'C')?true:false;
       this.passDataLov.payeeCd = this.cvInfo.payeeCd;
+      this.passDataLov.payeeClassCd = this.cvInfo.payeeClassCd;
       this.passDataLov.currCd  = this.cvInfo.currCd;
       this.passDataPaytReqList.tableData = recPr;
       this.paytReqTbl.refreshTable();

@@ -290,6 +290,14 @@ export class MonEndTrialBalComponent implements OnInit {
       return num
     };
 
+    if(phpList.length == 0) {
+      phpList = [{}];
+    }
+
+    if(usdList.length == 0) {
+      usdList = [{}];
+    }
+
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
                   'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], ' +
                   'totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], ' +
