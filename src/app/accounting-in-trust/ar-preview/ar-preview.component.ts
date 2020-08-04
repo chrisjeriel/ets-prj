@@ -419,21 +419,36 @@ export class ArPreviewComponent implements OnInit {
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
       this.lovRow.edited = true;
-    }else if(data.selector == 'acitChartAcct'){
+    }else if(data.selector == 'acitChartAcct' || data.selector == 'acitChartAcctLov'){
+      if(data.hasOwnProperty('lovInput') && data.lovInput) {
+        var x = data;
+        this.accEntriesData.tableData[x.ev.index].glAcctId = x.data == null ? '' : x.data.glAcctId;
+        this.accEntriesData.tableData[x.ev.index].glShortCd = x.data == null ? '' : x.data.shortCode;
+        this.accEntriesData.tableData[x.ev.index].glShortDesc = x.data == null ? '' : x.data.shortDesc;
+        this.accEntriesData.tableData[x.ev.index].slTypeCd = x.data == null ? '' : x.data.slTypeCd;
+        this.accEntriesData.tableData[x.ev.index].slTypeName = x.data == null ? '' : x.data.slTypeName;
+        this.accEntriesData.tableData[x.ev.index].edited = true;
+        data.lovInput = undefined;
+      } else {
+        let firstRow = data.data.pop();
+        this.lovRow.glAcctId = firstRow.glAcctId;
+        this.lovRow.glShortCd = firstRow.shortCode;
+        this.lovRow.glShortDesc = firstRow.shortDesc;
+        this.lovRow.slTypeCd = firstRow.slTypeCd;
+        this.lovRow.slTypeName = firstRow.slTypeName;
 
-      let firstRow = data.data.pop();
-      this.lovRow.glAcctId = firstRow.glAcctId;
-      this.lovRow.glShortCd = firstRow.shortCode;
-      this.lovRow.glShortDesc = firstRow.shortDesc;
-
-      this.accEntriesData.tableData = this.accEntriesData.tableData.filter(a=>a.glAcctId != '');
-      for(let row of data.data){
-        this.accEntriesData.tableData.push(JSON.parse(JSON.stringify(this.accEntriesData.nData)));
-        this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
-        this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortCd = row.shortCode;
-        this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
-        this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].edited = true;
+        this.accEntriesData.tableData = this.accEntriesData.tableData.filter(a=>a.glAcctId != '');
+        for(let row of data.data){
+          this.accEntriesData.tableData.push(JSON.parse(JSON.stringify(this.accEntriesData.nData)));
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortCd = row.shortCode;
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].slTypeCd = row.slTypeCd;
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].slTypeName = row.slTypeName;
+          this.accEntriesData.tableData[this.accEntriesData.tableData.length - 1].edited = true;
+        }
       }
+      
       this.acctEntryTbl.refreshTable();
     }
   }
@@ -462,17 +477,14 @@ export class ArPreviewComponent implements OnInit {
   }
 
   tickChckbx(data){
-    console.log(data)
     if(data.checked && data.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')){
       this.warnDeleteAuto.openNoClose();
         this.acctEntryTbl.selected = this.acctEntryTbl.selected.filter(a=>(data.updateLevel != 'L' && data.updateLevel != 'N'));
-        console.log(this.acctEntryTbl.selected);
     }
     this.accEntriesData.btnDisabled = this.acctEntryTbl.selected.filter(a=>a.checked && a.autoTag == 'Y' && (data.updateLevel == 'L' || data.updateLevel == 'N')).length > 0;
   }
 
   computeTotals(){   
-    console.log(this.accEntriesData.tableData)
     this.totals.credit = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
     this.totals.debit  = this.accEntriesData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat( b.foreignDebitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
@@ -483,6 +495,12 @@ export class ArPreviewComponent implements OnInit {
       for(var i = 0; i < this.accEntriesData.tableData.length; i++){
         this.accEntriesData.tableData[i].debitAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignDebitAmt;
         this.accEntriesData.tableData[i].creditAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignCreditAmt;
+      }
+    } else if(data.key == 'glShortCd') {
+      this.lovRow = data.lastEditedRow;
+      if(data.hasOwnProperty('lovInput')) {
+        data.ev['index'] = data.index;
+        this.lov.checkCdOthers('acitChartAcct', data.ev);
       }
     }
   }

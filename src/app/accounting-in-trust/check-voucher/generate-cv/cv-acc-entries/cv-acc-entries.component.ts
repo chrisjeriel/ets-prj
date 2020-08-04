@@ -176,35 +176,58 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
       this.lovRow.slName = data.data.slName;
       this.lovRow.slCd = data.data.slCd;
       this.lovRow.edited = true;
-    } else if(data.selector == 'acitChartAcct') {
+    } else if(data.selector == 'acitChartAcct' || data.selector == 'acitChartAcctLov') {
+      if(data.hasOwnProperty('lovInput') && data.lovInput) {
+        var x = data;
+        this.cvAcctEntData.tableData[x.ev.index].glAcctId = x.data == null ? '' : x.data.glAcctId;
+        this.cvAcctEntData.tableData[x.ev.index].glShortCd = x.data == null ? '' : x.data.shortCode;
+        this.cvAcctEntData.tableData[x.ev.index].glShortDesc = x.data == null ? '' : x.data.shortDesc;
+        this.cvAcctEntData.tableData[x.ev.index].slTypeCd = x.data == null ? '' : x.data.slTypeCd;
+        this.cvAcctEntData.tableData[x.ev.index].slTypeName = x.data == null ? '' : x.data.slTypeName;
+        this.cvAcctEntData.tableData[x.ev.index].edited = true;
+        data.lovInput = undefined;
+      } else {
+        let firstRow = data.data.pop();
+        this.lovRow.glAcctId = firstRow.glAcctId;
+        this.lovRow.glShortCd = firstRow.shortCode;
+        this.lovRow.glShortDesc = firstRow.shortDesc;
+        this.lovRow.slTypeCd = firstRow.slTypeCd;
+        this.lovRow.slTypeName = firstRow.slTypeName;
 
-      let firstRow = data.data.pop();
-      this.lovRow.glAcctId = firstRow.glAcctId;
-      this.lovRow.glShortCd = firstRow.shortCode;
-      this.lovRow.glShortDesc = firstRow.shortDesc;
-
-      this.cvAcctEntData.tableData = this.cvAcctEntData.tableData.filter(a=>a.glAcctId != '');
-      for(let row of data.data) {
-        this.cvAcctEntData.tableData.push(JSON.parse(JSON.stringify(this.cvAcctEntData.nData)));
-        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glAcctId = row.glAcctId;
-        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortCd = row.shortCode;
-        this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortDesc = row.shortDesc;
+        this.cvAcctEntData.tableData = this.cvAcctEntData.tableData.filter(a=>a.glAcctId != '');
+        for(let row of data.data) {
+          this.cvAcctEntData.tableData.push(JSON.parse(JSON.stringify(this.cvAcctEntData.nData)));
+          this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glAcctId = row.glAcctId;
+          this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortCd = row.shortCode;
+          this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].glShortDesc = row.shortDesc;
+          this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].slTypeCd = row.slTypeCd;
+          this.cvAcctEntData.tableData[this.cvAcctEntData.tableData.length - 1].slTypeName = row.slTypeName;
+        }
       }
+      
       this.table.refreshTable();
     }
 
     this.table.markAsDirty();
   }
 
-  computeTotals() {   
-    this.cvAcctEntData.tableData.forEach(e => {
-      e.creditAmt = Number(this.cvData.currRate) * Number(e.foreignCreditAmt);
-      e.debitAmt = Number(this.cvData.currRate) * Number(e.foreignDebitAmt);
-    });
+  computeTotals(data?) {
+    if(data !== undefined && data.key == 'glShortCd') {
+      this.lovRow = data.lastEditedRow;
+      if(data.hasOwnProperty('lovInput')) {
+        data.ev['index'] = data.index;
+        this.lov.checkCdOthers('acitChartAcct', data.ev);
+      }
+    } else {
+      this.cvAcctEntData.tableData.forEach(e => {
+        e.creditAmt = Number(this.cvData.currRate) * Number(e.foreignCreditAmt);
+        e.debitAmt = Number(this.cvData.currRate) * Number(e.foreignDebitAmt);
+      });
 
-    this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
-    this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat(b.foreignDebitAmt)),0);
-    this.totals.variance = this.totals.debit - this.totals.credit;
+      this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
+      this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat(b.foreignDebitAmt)),0);
+      this.totals.variance = this.totals.debit - this.totals.credit;
+    }
   }
 
   tickChckbx(data) {

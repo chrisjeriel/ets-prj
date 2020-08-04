@@ -58,9 +58,9 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
    acctEntriesData: any = {
   	tableData: [],
     tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
-    uneditable:[true,true,true,true,true,true,false,false],
+    uneditable:[false,true,true,true,true,true,false,false],
     keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
-    dataTypes: ['text','text','text','text','currency','currency','currency','currency'],
+    dataTypes: ['lovInput','text','text','text','currency','currency','currency','currency'],
     nData: {
         tranId: '',
         entryId: '',
@@ -357,20 +357,37 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       this.lovRow.slCd = data.data.slCd;
       this.lovRow.edited = true;
       this.acctEntriesTbl.refreshTable();
-    }else if(data.selector == 'acseChartAcct'){
+    }else if(data.selector == 'acseChartAcct' || data.selector == 'acseChartAcctLov'){
 
-      let firstRow = selected.pop();
-      this.lovRow.glAcctId = firstRow.glAcctId;
-      this.lovRow.glShortCd = firstRow.shortCode;
-      this.lovRow.glShortDesc = firstRow.shortDesc;
-
-      this.acctEntriesData.tableData = this.acctEntriesData.tableData.filter(a=>a.glAcctId != '');
-      for(let row of data.data){
-        this.acctEntriesData.tableData.push(JSON.parse(JSON.stringify(this.acctEntriesData.nData)));
-        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
-        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortCd = row.shortCode;
-        this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
+      if(data.hasOwnProperty('lovInput') && data.lovInput) {
+        var x = data;
+        this.acctEntriesData.tableData[x.ev.index].glAcctId = x.data == null ? '' : x.data.glAcctId;
+        this.acctEntriesData.tableData[x.ev.index].glShortCd = x.data == null ? '' : x.data.shortCode;
+        this.acctEntriesData.tableData[x.ev.index].glShortDesc = x.data == null ? '' : x.data.shortDesc;
+        this.acctEntriesData.tableData[x.ev.index].slTypeCd = x.data == null ? '' : x.data.slTypeCd;
+        this.acctEntriesData.tableData[x.ev.index].slTypeName = x.data == null ? '' : x.data.slTypeName;
+        this.acctEntriesData.tableData[x.ev.index].edited = true;
+        data.lovInput = undefined;
       }
+      else {
+        let firstRow = selected.pop();
+        this.lovRow.glAcctId = firstRow.glAcctId;
+        this.lovRow.glShortCd = firstRow.shortCode;
+        this.lovRow.glShortDesc = firstRow.shortDesc;
+        this.lovRow.slTypeCd = firstRow.slTypeCd;
+        this.lovRow.slTypeName = firstRow.slTypeName;
+
+        this.acctEntriesData.tableData = this.acctEntriesData.tableData.filter(a=>a.glAcctId != '');
+        for(let row of data.data){
+          this.acctEntriesData.tableData.push(JSON.parse(JSON.stringify(this.acctEntriesData.nData)));
+          this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glAcctId = row.glAcctId;
+          this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortCd = row.shortCode;
+          this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].glShortDesc = row.shortDesc;
+          this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].slTypeCd = row.slTypeCd;
+          this.acctEntriesData.tableData[this.acctEntriesData.tableData.length - 1].slTypeName = row.slTypeName;
+        }
+      }
+
       this.acctEntriesTbl.refreshTable();
     }
   }
@@ -385,6 +402,13 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         this.acctEntriesData.tableData[i].creditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
       }
       this.computeTotals();
+    } else if(data.key == 'glShortCd') {
+      this.lovCheckbox = true;
+      this.lovRow = data.lastEditedRow;
+      if(data.hasOwnProperty('lovInput')) {
+        data.ev['index'] = data.index;
+        this.lovMdl.checkCdOthers('acseChartAcct', data.ev);
+      }
     }
   }
 

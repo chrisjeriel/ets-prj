@@ -2061,5 +2061,18 @@ export class MaintenanceService{
          console.log(params);
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdjusterRate',params,header);
 	}
+    getMtnAcitChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitChartAcctLov", {params});
+    }
+
+    getMtnAcseChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcctLov", {params});
+    }
 
 }

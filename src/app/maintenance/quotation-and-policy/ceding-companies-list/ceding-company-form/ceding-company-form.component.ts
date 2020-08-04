@@ -481,6 +481,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   setCedingcompany(data){
     this.companyData.serviceFeeGrp = data.cedingId;
     this.companyData.serviceFeeGrpName = data.cedingName; 
+    this.form.control.markAsDirty();
     this.ns.lovLoader(data.ev, 0);
   }
 
