@@ -471,10 +471,15 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
 
 
   checkCode(ev, field){
-    this.ns.lovLoader(ev, 1);
-
     if(field === 'company') {
-        this.cedingLov.checkCode(String(this.companyData.serviceFeeGrp).padStart(3, '0'), ev);            
+        if(this.companyData.serviceFeeGrp.length ==0){
+          this.companyData.serviceFeeGrp = '';
+          this.companyData.serviceFeeGrpName = '';
+        }else{
+          this.ns.lovLoader(ev, 1);
+          this.cedingLov.checkCode(String(this.companyData.serviceFeeGrp).padStart(3, '0'), ev); 
+        }
+                   
     } 
   }
 

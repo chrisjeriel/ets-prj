@@ -1202,9 +1202,10 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
 
-    getMtnPrintableName(employeeId){
+    getMtnPrintableName(employeeId,activeTag?){
     	const params = new HttpParams()
     		.set('employeeId', (employeeId === null || employeeId === undefined ? '' : employeeId))
+    		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPrintableName", {params});
     }
    

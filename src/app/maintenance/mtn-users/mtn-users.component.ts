@@ -102,7 +102,7 @@ selected: any = null;
         this.passDataAttention.tableData.pop();
       }*/
       setTimeout(()=>{    //<<<---    using ()=> syntax
-           this.userService.retMtnUsers('').subscribe((data: any) =>{
+           this.userService.retMtnUsers('',null,'Y').subscribe((data: any) =>{
                  // for(var i = 0; i < data.usersList.length; i++){
                  // 	this.usersListing.tableData.push(data.usersList[i]);
                  // }
@@ -123,7 +123,7 @@ selected: any = null;
         singleSearchLov: true
       });
     } else {
-      this.userService.retMtnUsers(code).subscribe(data => {
+      this.userService.retMtnUsers(code,null,'Y').subscribe(data => {
         data['usersList'] = data['usersList'].filter(a=>this.hideUser.indexOf(a.userId)==-1)
         if(data['usersList'].length > 0) {
           data['usersList'][0]['ev'] = ev;
