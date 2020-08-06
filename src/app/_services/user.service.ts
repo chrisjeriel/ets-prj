@@ -49,10 +49,11 @@ export class UserService {
         return this.http.get(environment.prodApiUrl + '/user-service/userLogin', {params});
     }
 
-    retMtnUsers(userId?: string, userGrp?: string){
+    retMtnUsers(userId?: string, userGrp?: string, activeTag?:string){
          const params = new HttpParams()
             .set('userId',userId ===undefined || userId===null ? '' : userId)
-            .set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp);
+            .set('userGrp',userGrp ===undefined || userGrp===null ? '' : userGrp)
+            .set('activeTag',activeTag ===undefined || activeTag===null ? '' : activeTag);
             
         return this.http.get(environment.prodApiUrl + '/user-service/retMtnUsers', {params});
     }

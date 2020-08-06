@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input} from '@angular/core';
-import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService } from '@app/_services';
+import { MaintenanceService, UnderwritingService, QuotationService, AccountingService, SecurityService, NotesService, UserService } from '@app/_services';
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
@@ -53,14 +53,19 @@ export class LovComponent implements OnInit {
   dialogMessage: string = '';
 
   preventDefault: boolean = false;
+  tempTableData: any[] = [];
+
+  showDedMtn:Boolean = false;
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
-    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, private securityService : SecurityService, private ns: NotesService) { }
+    private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, 
+    private securityService : SecurityService, private ns: NotesService, private us: UserService) { }
 
   ngOnInit() {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
+     this.us.accessibleModules.subscribe(a=>{this.showDedMtn = a.indexOf('MTN113') != -1})
   }
 
   // pinaikli ko lang, pabalik sa dati pag may mali - YELE
@@ -719,38 +724,125 @@ export class LovComponent implements OnInit {
                 }
             });
           }
-        }
-    else if (selector == 'refNoAcse') {
-          this.passData.refNo = ev.target.value;
-          if(this.passData.refNo == '') {
-            this.selectedData.emit({
-              selector: selector,
-              data: null,
-              ev: ev
-            });
-          } else {
-            this.accountingService.getRefNoAcseLov(this.passData.params).subscribe((data: any) => {
-                let filtered:any[] = data.refNoList.filter(a=>a.tranNo==this.passData.refNo)
-                if(filtered.length > 0) {
-                  filtered[0].ev = ev;
-                  this.selectedData.emit({
-                      selector: selector,
-                      data : filtered[0],
-                      ev: ev
-                    }
-                    );
-                } else {
-                  this.selectedData.emit({
-                    selector: selector,
-                    data: null,
-                    ev: ev
-                  });
-                  this.passData.selector = 'refNo';
-                  this.modal.openNoClose();
+        } else if (selector == 'refNoAcse') {
+      this.passData.refNo = ev.target.value;
+      if(this.passData.refNo == '') {
+        this.selectedData.emit({
+          selector: selector,
+          data: null,
+          ev: ev
+        });
+      } else {
+        this.accountingService.getRefNoAcseLov(this.passData.params).subscribe((data: any) => {
+            let filtered:any[] = data.refNoList.filter(a=>a.tranNo==this.passData.refNo)
+            if(filtered.length > 0) {
+              filtered[0].ev = ev;
+              this.selectedData.emit({
+                  selector: selector,
+                  data : filtered[0],
+                  ev: ev
                 }
-            });
-          }
-        }
+                );
+            } else {
+              this.selectedData.emit({
+                selector: selector,
+                data: null,
+                ev: ev
+              });
+              this.passData.selector = 'refNo';
+              this.modal.openNoClose();
+            }
+        });
+      }
+    } else if (selector == 'acitChartAcct') {
+      console.log(ev);
+      this.passData.glShortCd = ev.target.value;
+      if(this.passData.glShortCd == '') {
+        this.selectedData.emit({
+          selector: selector,
+          data: null,
+          ev: ev,
+          lovInput: true
+        });
+      } else {
+        this.mtnService.getMtnAcitChartAcctLov({glShortCd: this.passData.glShortCd}).subscribe((data: any) => {
+            let filtered: any[] = data.list;
+            if(filtered.length == 1) {
+              filtered[0].ev = ev;
+              this.selectedData.emit({
+                selector: selector,
+                data : filtered[0],
+                ev: ev,
+                lovInput: true
+              });
+            } else if(filtered.length == 0) {
+              this.selectedData.emit({
+                selector: selector,
+                data: null,
+                ev: ev,
+                lovInput: true
+              });
+              this.passData.selector = selector;
+              this.modal.openNoClose();
+            } else {
+              this.selectedData.emit({
+                selector: selector,
+                data: null,
+                ev: ev,
+                lovInput: true
+              });
+              this.passData.selector = 'acitChartAcctLov';
+              this.tempTableData = filtered.sort((a, b) => a.shortCode.localeCompare(b.shortCode));
+              this.modal.openNoClose();
+            }
+            this.ns.lovLoader(ev, 0);
+        });
+      }
+    } else if (selector == 'acseChartAcct') {
+      console.log(ev);
+      this.passData.glShortCd = ev.target.value;
+      if(this.passData.glShortCd == '') {
+        this.selectedData.emit({
+          selector: selector,
+          data: null,
+          ev: ev,
+          lovInput: true
+        });
+      } else {
+        this.mtnService.getMtnAcseChartAcctLov({glShortCd: this.passData.glShortCd}).subscribe((data: any) => {
+            let filtered: any[] = data.list;
+            if(filtered.length == 1) {
+              filtered[0].ev = ev;
+              this.selectedData.emit({
+                selector: selector,
+                data : filtered[0],
+                ev: ev,
+                lovInput: true
+              });
+            } else if(filtered.length == 0) {
+              this.selectedData.emit({
+                selector: selector,
+                data: null,
+                ev: ev,
+                lovInput: true
+              });
+              this.passData.selector = selector;
+              this.modal.openNoClose();
+            } else {
+              this.selectedData.emit({
+                selector: selector,
+                data: null,
+                ev: ev,
+                lovInput: true
+              });
+              this.passData.selector = 'acseChartAcctLov';
+              this.tempTableData = filtered.sort((a, b) => a.shortCode.localeCompare(b.shortCode));
+              this.modal.openNoClose();
+            }
+            this.ns.lovLoader(ev, 0);
+        });
+      }
+    }
   }
 
   openModal(){
@@ -1121,6 +1213,13 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acitChartAcctLov'){
+      this.passTable.tHeader = ['Account Code','Account Name'];
+      this.passTable.widths =[250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortCode','shortDesc'];
+      this.passTable.tableData = this.tempTableData;
+      setTimeout(() => { this.table.refreshTable(); }, 0);
     }else if(this.passData.selector == 'slType'){
       this.passTable.tHeader = ['SL Type Code','SL Type Name'];
       this.passTable.widths =[250,500]
@@ -1440,7 +1539,8 @@ export class LovComponent implements OnInit {
           {key: 'currCd', search: this.passData.currCd},
         ]
         this.accountingService.getPaytReqList(params).subscribe((a:any)=>{
-          var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.paytReqType == this.passData.paytReqType);
+          // var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.paytReqType == this.passData.paytReqType);
+          var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.payeeClassCd == this.passData.payeeClassCd && (this.passData.paytReqType == 'O' ? true : e.paytReqType == this.passData.paytReqType));
           this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
           for(var i of this.passTable.tableData){
             if(i.processing !== null && i.processing !== undefined){
@@ -1455,7 +1555,8 @@ export class LovComponent implements OnInit {
           {key: 'currCd', search: this.passData.currCd},
         ]
         this.accountingService.getAcsePaytReqList(params).subscribe((a:any) => {
-          var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd &&  e.paytReqType == Number(this.passData.paytReqType));
+          // var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.paytReqType == Number(this.passData.paytReqType));
+          var rec = a['acsePaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.payeeClassCd == this.passData.payeeClassCd && (this.passData.paytReqType == '5' ? true : e.paytReqType == this.passData.paytReqType));
           this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
           for(var i of this.passTable.tableData){
             if(i.processing !== null && i.processing !== undefined){
@@ -1613,12 +1714,27 @@ export class LovComponent implements OnInit {
       this.passTable.widths =[250,500]
       this.passTable.dataTypes = [ 'text','text'];
       this.passTable.keys = [ 'shortCode','shortDesc'];
-      this.passData.params.activeTag = 'Y';
-      this.passData.params.lov = 'Y';
+      if(this.passData.params == undefined) {
+        this.passData.params = {
+          activeTag: 'Y',
+          lov: 'Y'
+        }
+      } else {
+        this.passData.params.activeTag = 'Y';
+        this.passData.params.lov = 'Y';
+      }
+      
       this.mtnService.getMtnAcseChartAcct(this.passData.params).subscribe(a=>{
         this.passTable.tableData = a["list"].sort((a, b) => a.shortCode.localeCompare(b.shortCode)).map(e => {e.newRec=1; return e;});
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'acseChartAcctLov'){
+      this.passTable.tHeader = ['Account Code','Account Name'];
+      this.passTable.widths =[250,500]
+      this.passTable.dataTypes = [ 'text','text'];
+      this.passTable.keys = [ 'shortCode','shortDesc'];
+      this.passTable.tableData = this.tempTableData;
+      setTimeout(() => { this.table.refreshTable(); }, 0);
     }else if(this.passData.selector == 'mtnReport'){
       this.passTable.tHeader = ['Report ID','Report Title']
       //this.passTable.widths = [250,500]

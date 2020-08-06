@@ -162,6 +162,34 @@
                                                 <label class="form-control-sm col-sm-2 labels" style="margin-bottom: 8px !important;">Approved By</label>
                                                 <input type="text" name="approvedBy" class="form-control form-control-sm col-sm-7" [ngModel]="polHoldCoverParams.approvedBy" readonly tabindex="-1">
                                             </div>
+
+                                            <div class="input-group ig-row"  style="margin-bottom: -6px !important">
+                                                <label class="form-control-sm col-sm-2">Premium Amount</label>
+                                                <input name="input16" type="text" class="form-control form-control-sm warn text-right r-only" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'"
+[readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'"  numbers-only [(ngModel)]="polHoldCoverParams.premAmt" (change)="setNetDue();" autocomplete="off">
+                                                <label class="form-control-sm col-sm-2">Total No. of Days</label>
+                                                <input name="input17" type="text" class="form-control form-control-sm col-sm-7 r-only" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'"
+[readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" numbers-only [(ngModel)]="polHoldCoverParams.totalNoDays" autocomplete="off">
+                                            </div>
+                                            <div class="input-group ig-row"  style="margin-bottom: -6px !important">
+                                                <label class="form-control-sm col-sm-2">Comm Amount</label>
+                                                <input name="input18" type="text" class="form-control form-control-sm warn text-right r-only" [readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'"
+[readonly]="this.policyInfo.policyNo === '' || isIncomplete || isForViewing || polHoldCoverParams.status == '4'" numbers-only [(ngModel)]="polHoldCoverParams.commAmt" (change)="setDefVatRiComm();setNetDue();" autocomplete="off">
+                                                <label class="form-control-sm col-sm-2">Currency</label>
+                                                <input name="input19" type="text" class="form-control form-control-sm col-sm-7"  readonly [(ngModel)]="polHoldCoverParams.currCd">
+                                            </div>
+                                            <div class="input-group ig-row"  style="margin-bottom: -6px !important">
+                                                <label class="form-control-sm col-sm-2">VAT on R/I Comm</label>
+                                                <input name="input20" type="text" class="form-control form-control-sm warn text-right " readonly [(ngModel)]="polHoldCoverParams.vatRiComm">
+                                                <label class="form-control-sm col-sm-2">Currency Rt</label>
+                                                <input name="input21" type="text" class="form-control form-control-sm col-sm-7"  readonly [(ngModel)]="polHoldCoverParams.currRt" appCurrencyRate>
+                                            </div>
+                                            <div class="input-group ig-row"  style="margin-bottom: -6px !important">
+                                                <label class="form-control-sm col-sm-2">Net Due</label>
+                                                <input name="input22" type="text" class="form-control form-control-sm warn text-right " readonly [(ngModel)]="polHoldCoverParams.netDue">
+                                                <label class="form-control-sm col-sm-2"></label>
+                                                 <input name="input21" type="text" class="form-control form-control-sm col-sm-7"  readonly style="opacity: 0">
+                                            </div>
                                         <!-- </div> -->
                                     </div>
                                 </div>

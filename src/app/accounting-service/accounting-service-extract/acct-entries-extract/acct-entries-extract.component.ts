@@ -63,6 +63,8 @@ export class AcctEntriesExtractComponent implements OnInit {
 
     passDataCsv : any[] =[];
 
+    rType:any;
+
     @ViewChild('polReportsModal') polReportsModal: ModalComponent;
     @ViewChild('appDialog') appDialog: SucessDialogComponent;
 

@@ -251,8 +251,16 @@ export class MeTrialBalProcComponent implements OnInit {
   }
 
   export() {
-    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
-    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    var eomMm;
+    var eomYear;
+    if(this.monthlyTotals.length > 0) {
+      eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+      eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    } else {
+      eomMm = String(new Date(this.params.eomDate).getMonth() + 1).padStart(2, '0');
+      eomYear = String(new Date(this.params.eomDate).getFullYear()).padStart(2, '0');
+    }
+    
     var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
     var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
@@ -265,7 +273,7 @@ export class MeTrialBalProcComponent implements OnInit {
     var sec = String(today.getSeconds()).padStart(2,'0');
     var ms = today.getMilliseconds()
     var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
-    var filename = 'ACSE-' + eomMm + '-' + eomYear + '_'+currDate+'.xls'
+    var filename = 'ACSE-' + eomMm + '-' + eomYear + '_'+currDate+'.xls';
     var opts = [{
                 sheetid: 'PHP',
                 headers: true
@@ -290,17 +298,15 @@ export class MeTrialBalProcComponent implements OnInit {
     if(phpList.length == 0) {
       phpList = [{}];
     }
+
     if(usdList.length == 0) {
       usdList = [{}];
     }
 
-    console.log('entered here in export method');
-    console.log(this.monthlyTotals);
-    console.log(phpList);
-    console.log(usdList);
-
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
-                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
+                  'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], ' +
+                  'totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], ' +
+                  'endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
   }
 
@@ -381,7 +387,6 @@ export class MeTrialBalProcComponent implements OnInit {
       }
 
       this.allDest = this.params.reportId !== 'ACSER024E';
-      //this.allDest = this.params.reportId;
     }
   }
 
@@ -528,7 +533,6 @@ export class MeTrialBalProcComponent implements OnInit {
           this.ns.export(name, query, this.passDataCsv);  
         }
         
-
       });
     }
 

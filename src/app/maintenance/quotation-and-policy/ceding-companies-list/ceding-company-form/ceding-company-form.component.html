@@ -148,6 +148,19 @@
 										</div>
 									</div>
 								</div>
+								<div class="row">
+									<div class="col-sm-12" style="padding-left: 10px;">
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Service Fee Group</label>
+											<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="companyData.serviceFeeGrp" (change)="checkCode($event, 'company')" name="serviceFeeGrp">
+											<div class="text-search-ico" ><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
+											<span>&nbsp;</span>
+											<input type="text" class="form-control form-control-sm col-sm-6 cap-input" [(ngModel)]="companyData.serviceFeeGrpName" readonly name="serviceFeeGrpName">
+										</div>
+									</div>
+									<div class="col-sm-1">
+									</div>
+								</div>
 							</fieldset>
 						</div>
 						<div class="col-sm-2"></div>
@@ -253,3 +266,5 @@
 			<button class="cust-btn" (click)="modal.closeModal()">Return</button>
 		</div>
 	</app-modal>
+
+	<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>

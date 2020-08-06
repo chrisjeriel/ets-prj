@@ -1202,9 +1202,10 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnBankAcct", {params});
     }
 
-    getMtnPrintableName(employeeId){
+    getMtnPrintableName(employeeId,activeTag?){
     	const params = new HttpParams()
     		.set('employeeId', (employeeId === null || employeeId === undefined ? '' : employeeId))
+    		.set('activeTag', (activeTag === null || activeTag === undefined ? '' : activeTag))
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPrintableName", {params});
     }
    
@@ -2023,6 +2024,27 @@ export class MaintenanceService{
     	return this.http.get(environment.prodApiUrl + "/maintenance-service/checkOkDeleteRetPerCede", {params:params,responseType:'text'});
     }
 
+    getMtnPremPlan(params){
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnPremPlan", {params:params});
+    }
+
+    saveMtnPremPlan(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnPremPlan', JSON.stringify(params), header);
+    }
+
+    copyMtnPremPlan(params){
+    	let header : any = {
+            headers: new HttpHeaders({
+                 'Content-Type': 'application/json'
+            })
+        };
+    	return this.http.post(environment.prodApiUrl + '/maintenance-service/copyMtnPremPlan', JSON.stringify(params), header);
+    }
     getMtnAdjRate(adjRateId?){
 		const params = new HttpParams()
 			.set('adjRateId', (adjRateId == null || adjRateId == undefined ? '' : adjRateId));
@@ -2040,6 +2062,18 @@ export class MaintenanceService{
          console.log(params);
          return this.http.post(environment.prodApiUrl + '/maintenance-service/saveMtnAdjusterRate',params,header);
 	}
+    getMtnAcitChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
 
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcitChartAcctLov", {params});
+    }
+
+    getMtnAcseChartAcctLov(param){
+    	const params = new HttpParams()
+    				.set('glShortCd', (param.glShortCd === null || param.glShortCd === undefined ? '' : param.glShortCd))
+
+    	return this.http.get(environment.prodApiUrl + "/maintenance-service/retrieveMtnAcseChartAcctLov", {params});
+    }
 
 }

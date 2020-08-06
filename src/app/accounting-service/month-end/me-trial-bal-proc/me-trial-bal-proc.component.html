@@ -130,7 +130,6 @@
           <div class="col-sm-3"></div>
           <label class="form-control-sm col-sm-3 cust-lbl">End of Month Date</label>
           <div class="dp-cont col-sm-3" style="margin-left: 0 !important;">
-            <!-- <datepicker [type]="'date'" [(value)]="params.eomDate" [disabled]="paramsToggle.indexOf('eomDate') == -1"></datepicker> -->
             <datepicker [type]="'date'" [value]="params.eomDate" (valueChange)="params.eomDate=$event; checkMonth($event, true);" [disabled]="paramsToggle.indexOf('eomDate') == -1"></datepicker>
           </div>
           <div class="col-sm-3"></div>

@@ -1302,7 +1302,7 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(mioTsiAmt)) as [MIO TSI AMT],negFmt(currency(hundredMioPremAmt)) as [HUNDRED MIO PREM AMT], negFmt(currency(hundredMioTsiAmt)) as [HUNDRED MIO TSIAMT]';
         }else if(this.params.reportId == 'POLR044U'){
           this.passDataCsv = data['listPolr044u'];
-          query = 'SELECT extractUser as [EXTRACT USER],extractDate as [EXTRACT DATE],uwYear as [UW YEAR],transactDate as [TRANSACT DATE],currencyCd as [CURRENCY CD],'+
+          query = 'SELECT extractUser as [EXTRACT USER],extractDate as [EXTRACT DATE],uwYear as [UW YEAR],truncDate(transactDate) as [TRANSACT DATE],currencyCd as [CURRENCY CD],'+
           'checkNullNo(treatyId) as [TREATY ID], isNull(treatyName) as [TREATY NAME], checkNullNo(retLayer) as [RET LAYER],isNull(retLayerDesc) as [RET LAYER DESC], trtyCedId as [TRTY CED ID],'+
           'isNull(trtyCedName) as [TRTY CED NAME],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(commAmt)) as [COMM AMT],negFmt(currency(riCommVat)) as [RI COMM VAT],negFmt(currency(lossAmt)) as [LOSS AMT],'+
           'negFmt(currency(paidLoss)) as [PAID LOSS],negFmt(currency(incurredLoss)) as [INCURRED LOSS],negFmt(currency(lossRatio)) as [LOSS RATIO],'+

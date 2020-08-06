@@ -254,8 +254,16 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   export() {
-    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
-    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    var eomMm;
+    var eomYear;
+    if(this.monthlyTotals.length > 0) {
+      eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+      eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    } else {
+      eomMm = String(new Date(this.params.eomDate).getMonth() + 1).padStart(2, '0');
+      eomYear = String(new Date(this.params.eomDate).getFullYear()).padStart(2, '0');
+    }
+    
     var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
     var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
@@ -293,6 +301,7 @@ export class MonEndTrialBalComponent implements OnInit {
     if(phpList.length == 0) {
       phpList = [{}];
     }
+
     if(usdList.length == 0) {
       usdList = [{}];
     }
