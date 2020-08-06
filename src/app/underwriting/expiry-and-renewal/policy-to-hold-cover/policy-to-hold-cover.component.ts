@@ -2,13 +2,14 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { PolicyHoldCoverInfo } from '../../../_models/PolicyToHoldCover';
 import { Title } from '@angular/platform-browser';
-import { NotesService, UnderwritingService, PrintService } from '@app/_services';
+import { NotesService, UnderwritingService, PrintService, MaintenanceService } from '@app/_services';
 import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { PrintModalComponent } from '@app/_components/common/print-modal/print-modal.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { NgForm }   from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router'; // ARNEILLE DATE: Apr.10, 2019 
+import { DecimalPipe } from '@angular/common';
 
 @Component({
 	selector: 'app-policy-to-hold-cover',
@@ -27,7 +28,7 @@ export class PolicyToHoldCoverComponent implements OnInit {
 	@ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
 
 	constructor(private titleService: Title, private noteService: NotesService, private us: UnderwritingService, public modalService: NgbModal, private router: Router,
-			    private activatedRoute: ActivatedRoute, private ps:PrintService) { }
+			    private activatedRoute: ActivatedRoute, private ps:PrintService, private mtnService : MaintenanceService, private decPipe: DecimalPipe) { }
 
 	policyListingData: any = {
 		tableData: [],
@@ -153,6 +154,8 @@ export class PolicyToHoldCoverComponent implements OnInit {
 			this.fromHcMonitoring = params['tableInfo'];
 		});
 
+		this.getVatOnRIDefault();
+
 		if(this.fromHcMonitoring === '' || this.fromHcMonitoring === null || this.fromHcMonitoring === undefined){
 		}else{
 			this.policyInfo.policyNo 					= JSON.parse(this.fromHcMonitoring).policyNo;
@@ -244,6 +247,15 @@ export class PolicyToHoldCoverComponent implements OnInit {
 					this.polHoldCoverParams.updateDate				= this.noteService.toDateTimeString(rec.updateDate);
 					this.statusDesc 								= rec.statusDesc;
 					this.holdCoverNo 								= rec.holdCovNo;
+
+					this.polHoldCoverParams.totalNoDays		 = rec.totalNoDays;
+					this.polHoldCoverParams.premAmt			 = rec.premAmt;
+					this.polHoldCoverParams.commAmt			 = rec.commAmt;
+					this.polHoldCoverParams.vatRiComm		 = rec.vatRiComm;
+					this.polHoldCoverParams.netDue			 = rec.netDue;
+					this.polHoldCoverParams.currCd			 = rec.currCd;
+					this.polHoldCoverParams.currRt			 = rec.currRt;
+					this.setAmtFmt();
 				//}
 			}
 
@@ -418,6 +430,10 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.polHoldCoverParams.updateUser = this.userName;
 		this.polHoldCoverParams.createDate = this.noteService.toDateTimeString(0);
 		this.polHoldCoverParams.updateDate = this.noteService.toDateTimeString(0);
+		this.polHoldCoverParams.premAmt			= this.getUnfmtdAmt(this.polHoldCoverParams.premAmt);
+		this.polHoldCoverParams.commAmt			= this.getUnfmtdAmt(this.polHoldCoverParams.commAmt);
+		this.polHoldCoverParams.vatRiComm		= this.getUnfmtdAmt(this.polHoldCoverParams.vatRiComm);
+		this.polHoldCoverParams.netDue			= this.getUnfmtdAmt(this.polHoldCoverParams.netDue);
 	}
 
 	onRowClick(data){
@@ -450,6 +466,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 		this.modalService.dismissAll();
 		this.polHoldCoverParams.policyId = this.policyInfo.policyId;
 		this.polHoldCoverParams.lineCd = this.policyInfo.policyNo.split('-')[0];
+		this.polHoldCoverParams.currCd = this.policyInfo.currencyCd;
+		this.polHoldCoverParams.currRt = this.policyInfo.currencyRt;
+		
 		this.tempPolNo = this.policyInfo.policyNo.split('-');
 		//if selected policy is already in hold cover
 		if(this.policyInfo.statusDesc === 'On Hold Cover'){
@@ -523,7 +542,9 @@ export class PolicyToHoldCoverComponent implements OnInit {
 										createUser: '',
 										createDate: '',
 										updateUser: '',
-										updateDate: ''
+										updateDate: '',
+										currRt : this.policyInfo.currencyRt,
+										currCd : this.policyInfo.currencyCd
 									}
 	}
 
@@ -767,4 +788,43 @@ export class PolicyToHoldCoverComponent implements OnInit {
       this.retrievePolListing();
     }
 
+
+
+    setNetDue(){
+		this.polHoldCoverParams.netDue = (this.polHoldCoverParams.premAmt == '' || this.polHoldCoverParams.premAmt == null || this.polHoldCoverParams.premAmt == undefined ||
+								this.polHoldCoverParams.commAmt == '' || this.polHoldCoverParams.commAmt == null || this.polHoldCoverParams.commAmt == undefined ||
+								this.polHoldCoverParams.vatRiComm == '' || this.polHoldCoverParams.vatRiComm == null || this.polHoldCoverParams.vatRiComm == undefined)
+								?'': this.getUnfmtdAmt(this.polHoldCoverParams.premAmt) - this.getUnfmtdAmt(this.polHoldCoverParams.commAmt) -this.getUnfmtdAmt(this.polHoldCoverParams.vatRiComm);
+		this.setAmtFmt();
+	}
+
+	setAmtFmt(){
+		this.polHoldCoverParams.premAmt 		= this.decPipe.transform(Number(String(this.polHoldCoverParams.premAmt).replace(/\,/g,'')),'0.2-2');
+		this.polHoldCoverParams.commAmt		= this.decPipe.transform(Number(String(this.polHoldCoverParams.commAmt).replace(/\,/g,'')),'0.2-2');
+		this.polHoldCoverParams.vatRiComm 	= this.decPipe.transform(Number(String(this.polHoldCoverParams.vatRiComm).replace(/\,/g,'')),'0.2-2');
+		this.polHoldCoverParams.netDue 		= this.decPipe.transform(Number(String(this.polHoldCoverParams.netDue).replace(/\,/g,'')),'0.2-2');
+	}
+
+	getUnfmtdAmt(amt){
+		return 	(String(amt).includes(","))?Number(String(amt).replace(/\,/g,'')):amt;
+	}
+
+	vatOnRi:any;
+	getVatOnRIDefault(){
+		this.mtnService.getMtnParameters('N','VAT_ON_RI')
+		.subscribe(data => {
+			console.log(data);
+			this.vatOnRi = (data['parameters'][0].paramValueN)/100;
+		});
+	}
+
+	setTotalNoDays(){
+		var fromDate =  new Date(this.periodFromDate).getTime();
+		var toDate =  new Date(this.periodToDate).getTime();
+		this.polHoldCoverParams.totalNoDays = Math.abs((fromDate - toDate)/(1000*60*60*24));
+	}
+
+	setDefVatRiComm(){
+		this.polHoldCoverParams.vatRiComm = (this.polHoldCoverParams.commAmt == '' || this.polHoldCoverParams.commAmt == undefined || this.polHoldCoverParams.commAmt == null)?'':Number(this.vatOnRi) * this.getUnfmtdAmt(this.polHoldCoverParams.commAmt);
+	}
 }

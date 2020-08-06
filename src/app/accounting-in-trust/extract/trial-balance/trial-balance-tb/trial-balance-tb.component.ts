@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { AccountingService } from '@app/_services';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { AccountingService, NotesService } from '@app/_services';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AccTBTotDebCred, AccTBNet} from '@app/_models';
+import { CustNonDatatableComponent } from '@app/_components/common';
 
 @Component({
   selector: 'app-trial-balance-tb',
@@ -16,96 +17,55 @@ export class TrialBalanceTbComponent implements OnInit {
   dataTypes: any[] = [];
   @Input() accountCode: string;
 
-  passDataTotal: any = {
-    tableData: [/*{accCode:null,accDesc:null,slType:null,debit:null,credit:null}*/],
-    tHeader: ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'],
-    resizable: [true, true, true, true, true],
-    dataTypes: ['text','text','text','text','currency','currency'],
-    total:[null,null,null,'Total','debit','credit'],
-    searchFlag: true,
-    pagination: true,
-    pageStatus: true,
-    pageLength: 10,
-    widths: [100,'auto',150,'auto','auto'],
-      filters: [
-             {
-                key: 'accCode',
-                title: 'Account Code',
-                dataType: 'text'
-            },
-            {
-                key: 'accDesc',
-                title: 'Account Description',
-                dataType: 'text'
-            },
-            {
-                key: 'slType',
-                title: 'SL Type',
-                dataType: 'text'
-            },
-            {
-                key: 'debit',
-                title: 'Debit',
-                dataType: 'text'
-            },
-            {
-                key: 'credit',
-                title: 'Credit',
-                dataType: 'text'
-            },
-        ],
-  };
-
-   passDataNet: any = {
+   passData: any = {
     tableData: [/*{accCode:null,accDesc:null,slType:null,drBal:null,crBal:null}*/],
     tHeader: ['Account Code','Account Name','SL Type','SL Name','DR Balance','CR Balance'],
     resizable: [true, true, true, true, true],
     dataTypes: ['text','text','text','text','currency','currency'],
-    total:[null,null,null,'Total','drBal','crBal'],
+    total:[null,null,null,'Total','totalDebit','totalCredit'],
     searchFlag: true,
     pagination: true,
     pageStatus: true,
     pageLength: 10,
-    widths: [100,'auto',150,'auto','auto'],
-      filters: [
-             {
-                key: 'accCode',
-                title: 'Account Code',
-                dataType: 'text'
-            },
-            {
-                key: 'accDesc',
-                title: 'Account Description',
-                dataType: 'text'
-            },
-            {
-                key: 'slType',
-                title: 'SL Type',
-                dataType: 'text'
-            },
-            {
-                key: 'drBal',
-                title: 'DR Balance',
-                dataType: 'text'
-            },
-            {
-                key: 'crBal',
-                title: 'CR Balance',
-                dataType: 'text'
-            },
-        ],
+    keys:['acctCode','acctName','slTypeName','slName','totalDebit','totalCredit'],
+    colSize: ['50px','auto','auto','1px','100px','100px'],
+    minColSize: ['50px','auto','auto','1px','100px','100px'],
   };
 
-  constructor(private accountingService: AccountingService,private titleService: Title) { }
+  extractParams:any = {
+    periodFrom:'',
+    periodTo: '',
+    extractType:'',
+    extractDate: ''
+  }
+
+  @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+
+  constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService) { }
 
   ngOnInit() {
   	this.titleService.setTitle("Acc | Trial Balance | Extract");
   	//this.accountCode = 'Total Debits and Credits' ;
-  	this.passDataTotal.tableData = this.accountingService.getAccTBTotDebCred();
-  	this.passDataNet.tableData = this.accountingService.getAccTBNet();
+    this.getData();
   }
 
-  test(){
-    console.log(this.accountCode);
+  getData(){
+    this.accountingService.getAcitTrialBalExt(this.ns.getCurrentUser()).subscribe(data=>{
+      if(data['list'].length == 0){
+        this.accountCode= 'N';
+      }else{
+        this.accountCode = data['list'][0].type;
+        this.extractParams.periodFrom = this.ns.toDateTimeString(data['list'][0].periodFrom);
+        this.extractParams.periodTo = this.ns.toDateTimeString(data['list'][0].periodTo);
+        this.extractParams.extractType = this.accountCode == 'T' ? 'Total Debit & Total Credits' : 'Net';
+        this.extractParams.extractDate = this.ns.toDateTimeString(data['list'][0].extractDate);
+        this.passData.tableData = data['list'];
+        if(this.accountCode == 'T'){
+          this.passData.tHeader = ['Account Code','Account Name','SL Type','SL Name','Debit','Credit'];
+        }
+        this.table.refreshTable();
+      }
+    })
   }
+
 }

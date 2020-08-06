@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import { UserService } from '@app/_services';
 
 @Component({
   selector: 'app-system',
@@ -8,10 +9,12 @@ import { Title } from '@angular/platform-browser';
 })
 export class SystemComponent implements OnInit {
 
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title, private us : UserService) { }
 
+  modules:any[] = [];
   ngOnInit() {
   	this.titleService.setTitle("Mtn | System");
+  	this.us.accessibleModules.subscribe(data=>{this.modules = data})
   }
 
 }

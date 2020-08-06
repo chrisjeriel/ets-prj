@@ -254,8 +254,16 @@ export class MonEndTrialBalComponent implements OnInit {
   }
 
   export() {
-    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
-    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    var eomMm;
+    var eomYear;
+    if(this.monthlyTotals.length > 0) {
+      eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+      eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    } else {
+      eomMm = String(new Date(this.params.eomDate).getMonth() + 1).padStart(2, '0');
+      eomYear = String(new Date(this.params.eomDate).getFullYear()).padStart(2, '0');
+    }
+    
     var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
     var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
@@ -527,7 +535,7 @@ export class MonEndTrialBalComponent implements OnInit {
           'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066E'){
           this.passDataCsv = data['listAcitr066e'];
-          query = 'SELECT checkNullNo(eomMM) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
+          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
           'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
@@ -535,7 +543,7 @@ export class MonEndTrialBalComponent implements OnInit {
           'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066F'){
           this.passDataCsv = data['listAcitr066f'];
-          query = 'SELECT checkNullNo(eomMM) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
+          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
           'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+

@@ -110,7 +110,7 @@ export class MeTrialBalProcComponent implements OnInit {
       if(this.monthlyTotals.length > 0) {
         this.tranDate = this.monthlyTotals[0].eomDate.split('T')[0];
         this.params.eomDate = this.monthlyTotals[0].eomDate.split('T')[0];
-        
+
         if(initial !== undefined) {
           this.onClickPrint();
         }
@@ -251,8 +251,16 @@ export class MeTrialBalProcComponent implements OnInit {
   }
 
   export() {
-    var eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
-    var eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    var eomMm;
+    var eomYear;
+    if(this.monthlyTotals.length > 0) {
+      eomMm = String(this.monthlyTotals[0].eomMm).padStart(2, '0');
+      eomYear = String(this.monthlyTotals[0].eomYear).padStart(2, '0');
+    } else {
+      eomMm = String(new Date(this.params.eomDate).getMonth() + 1).padStart(2, '0');
+      eomYear = String(new Date(this.params.eomDate).getFullYear()).padStart(2, '0');
+    }
+    
     var phpList = this.monthlyTotals.filter(a => a.currCd == 'PHP');
     var usdList = this.monthlyTotals.filter(a => a.currCd == 'USD');
 
@@ -379,7 +387,6 @@ export class MeTrialBalProcComponent implements OnInit {
       }
 
       this.allDest = this.params.reportId !== 'ACSER024E';
-      // this.allDest = this.params.reportId;
     }
   }
 
@@ -503,14 +510,14 @@ export class MeTrialBalProcComponent implements OnInit {
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
-          'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+          'isNull(tbBase) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACSER024D'){
           this.passDataCsv = data['listAcser024d'];
           query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR], shortCode as [ACCT CODE], shortDesc  as [ACCT NAME],'+
           'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT], negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
           'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
           'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT AMT],'+
-          'negFmt(currency(tbBase)) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+          'isNull(tbBase) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACSER024E'){
           console.log('entered acser024e');
           this.export();
@@ -523,9 +530,9 @@ export class MeTrialBalProcComponent implements OnInit {
 
         console.log(this.passDataCsv);
         if(this.params.reportId !== 'ACSER024E') {
-          this.ns.export(name, query, this.passDataCsv);
+          this.ns.export(name, query, this.passDataCsv);  
         }
-
+        
       });
     }
 

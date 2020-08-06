@@ -210,6 +210,8 @@ import { PolCreateAltOcComponent } from './underwriting/policy-issuance/pol-crea
 import { PolOcInformationComponent } from './underwriting/inquiry/pol-oc-information/pol-oc-information.component';
 import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/posting-amt-limit/posting-amt-limit.component';
 import { BatchMoveBookingDateComponent } from './underwriting/utilities/batch-move-booking-date/batch-move-booking-date.component';
+import { PremPlanComponent } from './maintenance/quotation-and-policy/prem-plan/prem-plan.component';
+import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjuster-rate.component';
 
 
 const appRoutes: Routes = [
@@ -858,6 +860,8 @@ const appRoutes: Routes = [
     { path: 'pol-oc-information', component: PolOcInformationComponent},
     { path: 'posting-amt-limit', component: PostingAmtLimitComponent},
     { path: 'update-booking-date', component: BatchMoveBookingDateComponent},
+    { path: 'prem-plan', component: PremPlanComponent},
+    { path: 'maintenance-clm-adj-rate', component: AdjusterRateComponent, canDeactivate: [UnsavedChangesGuard] },
 
     // otherwise redirect to home
     { path: '**', redirectTo: '' }

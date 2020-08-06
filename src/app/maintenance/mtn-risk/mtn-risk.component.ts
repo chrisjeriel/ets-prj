@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
-import { MaintenanceService } from '@app/_services';
+import { MaintenanceService, UserService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,7 +42,9 @@ export class MtnRiskComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
 
-  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router) { }
+  hasAccess:Boolean = false;
+
+  constructor(private maintenanceService: MaintenanceService, private modalService: NgbModal, private router: Router, private us: UserService) { }
 
   ngOnInit() {
   	/*this.maintenanceService.getMtnRiskListing('','','','','','','','','','','').subscribe(data =>{
@@ -64,6 +66,8 @@ export class MtnRiskComponent implements OnInit {
 
   		this.table.refreshTable();
   	});*/
+    this.us.accessibleModules.subscribe(a=>{this.hasAccess = a.indexOf('MTN103') != -1})
+
     if(this.lovCheckBox){
       this.riskListing.checkFlag = true;
     }

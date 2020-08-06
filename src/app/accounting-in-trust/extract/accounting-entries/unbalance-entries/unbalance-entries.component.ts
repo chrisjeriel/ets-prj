@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { UnbalanceEntries } from '@app/_models';
 import { Router } from '@angular/router';
+import { CustEditableNonDatatableComponent } from '@app/_components/common';
+import { AccountingService, NotesService } from '@app/_services';
+
 
 @Component({
   selector: 'app-unbalance-entries',
@@ -8,76 +11,115 @@ import { Router } from '@angular/router';
   styleUrls: ['./unbalance-entries.component.css']
 })
 export class UnbalanceEntriesComponent implements OnInit {
-  passData: any ={
-  	tableData: [],
-  	tHeader: ['Tran Type', 'Ref. No.', 'Tran Date', 'Payee/Payor', 'Particulars', 'Status',  'Total Debit', 'Total Credit', 'Variance'],
-    colSize: ['1px','1px','1px','auto','auto','1px','150px','150px','150px'],
-  	dataTypes: ['text','text','date','text','text','text','currency','currency','currency'],
-  	pagination: true,
-  	pageStatus: true,
-  	filters:[
-  		{
-  			key:'tranType',
-  			title:'Tran Type',
-  			dataType: 'text'
-  		},
-  		{
-  			key:'refNo',
-  			title:'Ref. No.',
-  			dataType: 'text'
-  		},
-  		{
-  			key:'tranDate',
-  			title:'Tran Date',
-  			dataType: 'datespan'
-  		},
-  		{
-  			key:'payeePayor',
-  			title:'Payee/Payor',
-  			dataType: 'text'
-  		},
-  		{
-  			key:'particulars',
-  			title:'Particulars',
-  			dataType: 'text'
-  		},
-  		{
-  			key:'status',
-  			title:'Status',
-  			dataType: 'text'
-  		},
-  	],
-  	pageLength: 14
 
+
+  passData: any={
+    tHeader:['Date','Tran Class', 'Ref. No.', 'Particulars', 'Tran Status', 'Acct Status', 'Debit', 'Credit'],
+    dataTypes:['date','text','text','text','text','text','currency','currency'],
+    total:[null,null,null,null,null,'Total','debitAmt','creditAmt'],
+    uneditable:[true,true,true,true,true,true,true,true,true],
+    searchFlag: true,
+    keys:['tranDate','tranClass','refNo','particulars','tranStatusDesc','acctStatusDesc','debitAmt','creditAmt'],
+    paginateFlag:true,
+    infoFlag:true,
+    tableData:[],
+    pageLength: 15,
+    widths:[1,1,1,'auto',1,1,110,110],
+    genericBtn : 'View Transaction Details'
   }
+
   tranType:string;
   dateExtracted:string;
   periodFrom: string;
   periodTo: string;
-  constructor( private route: Router) { }
+  selectedRow:any = {};
+
+  @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
+
+  params:any = {
+    extractUser : this.ns.getCurrentUser(),
+    entryType : 'U'
+  }
+
+  extractParams:any = {
+    entryType : '',
+    periodType : '',
+    periodFrom : '',
+    periodTo : '',
+    acctParam : '',
+    slTypeParam : '',
+    arTag : false,
+    cvTag : false,
+    jvTag : false,
+    closeTranTag : false,
+    appendTag : 'N',
+    extractDate : '',
+    currCdParam: ''
+  }
+
+  constructor(private as: AccountingService, private ns: NotesService,private route : Router) { }
 
   ngOnInit() {
-  	this.passData.tableData = [
-  		new UnbalanceEntries('AR','2018-00372890',new Date(2018,11,2),'UCPBGEN','Payment for','New',29930,29900,30),
-      new UnbalanceEntries('CV','2018-00372900',new Date(2018,11,25),'BPI/MS','Payment for','New',193038.99,193039,0.01),
-      new UnbalanceEntries('JV','2018-00000093',new Date(2019,0,21),'SM PRIME HOLDINGS','Payment for','New',1525850,1500000,25850)
-  	];
-    this.dateExtracted = new Date().toISOString().slice(0, 16);
-    this.periodFrom = '2018-12-01';
-    this.periodTo = '2018-12-31';
+    this.retrieveData();
   }
 
   onRowClick(data){
-    this.tranType = data.tranType;
+    this.selectedRow = data;
+  }
+
+  retrieveData(){
+    this.as.getAcitAcctEntriesExt(this.params).subscribe(a=>{
+      this.passData.tableData = a['acitAcctEntriesExt'];
+      if(this.passData.tableData.length != 0){
+        if(this.passData.tableData.some(a=>a.extractId==2)){
+
+        }else{
+          let row = this.passData.tableData[0];
+          this.extractParams = {
+            
+            periodType : row.periodType == 'T' ? 'Transaction Date' : 'Posting Date',
+            periodFrom : this.ns.toDateTimeString(row.periodFrom),
+            periodTo : this.ns.toDateTimeString(row.periodTo),
+            acctParamCode : row.acctParamCode,
+            acctParamName: row.acctParamName,
+            slTypeParam : row.slTypeParam,
+            slTypeParamName : row.slTypeParamName,
+            arTag : row.arTag =='Y',
+            cvTag : row.cvTag =='Y',
+            jvTag : row.jvTag =='Y',
+            closeTranTag : row.closeTranTag =='Y',
+            appendTag : row.appendTag =='Y',
+            extractDate : this.ns.toDateTimeString(row.extractDate),
+            currCdParam: ''
+          }
+        }
+      }
+      this.table.refreshTable();
+    })
   }
 
   viewTranDetails(){
-    if(this.tranType == 'AR'){
-      this.route.navigate(['accounting-in-trust',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'CV'){
-      this.route.navigate(['generate-cv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
-    }else if(this.tranType == 'JV'){
-      this.route.navigate(['generate-jv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+    console.log(this.selectedRow)
+    if(this.selectedRow.tranClass == 'AR'){
+      // this.route.navigate(['accounting-in-trust',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+
+      let record = {
+        tranId: this.selectedRow.tranId,
+        arNo:''
+      }
+
+    this.route.navigate(['/accounting-in-trust', { exitLink: '/accounting-entries',tab:'UnbalanceTab' ,slctd: JSON.stringify(record), action: 'edit', tranStat: this.selectedRow.tranStatus }], { skipLocationChange: true });
+    }else if(this.selectedRow.tranClass == 'CV'){
+      this.route.navigate(['/generate-cv',{ exitLink:'/accounting-entries',tab:'UnbalanceTab',tranId : this.selectedRow.tranId}], { skipLocationChange: true });
+
+    }else if(this.selectedRow.tranClass == 'JV'){
+      // this.route.navigate(['generate-jv',{link:'/accounting-entries',tab:'Unbalance'}],{ skipLocationChange: true });
+
+      this.route.navigate(['/generate-jv', {      exitLink:'/accounting-entries',tab:'UnbalanceTab',
+                                                  tranId            : this.selectedRow.tranId,
+                                                  tranTypeCd        : this.selectedRow.trantypeCd
+                                                  }], 
+                                                { skipLocationChange: true });
     }else{
       //do something
     }

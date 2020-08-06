@@ -10,6 +10,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { HttpClient, HttpParams, HttpRequest, HttpEvent, HttpEventType, HttpResponse } from '@angular/common/http';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-ceding-company-form',
@@ -26,6 +27,7 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
   //@ViewChild(CustNonDatatableComponent) histTable: CustNonDatatableComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
 	@ViewChild('myForm') form : any;
+  @ViewChild('ceding') cedingLov: CedingCompanyComponent;
 
 	private sub: any;
 	private currentUser: string = JSON.parse(window.localStorage.currentUser).username;
@@ -465,6 +467,31 @@ export class CedingCompanyFormComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+
+  checkCode(ev, field){
+    if(field === 'company') {
+        if(this.companyData.serviceFeeGrp.length ==0){
+          this.companyData.serviceFeeGrp = '';
+          this.companyData.serviceFeeGrpName = '';
+        }else{
+          this.ns.lovLoader(ev, 1);
+          this.cedingLov.checkCode(String(this.companyData.serviceFeeGrp).padStart(3, '0'), ev); 
+        }
+                   
+    } 
+  }
+
+  setCedingcompany(data){
+    this.companyData.serviceFeeGrp = data.cedingId;
+    this.companyData.serviceFeeGrpName = data.cedingName; 
+    this.form.control.markAsDirty();
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  showCedingCompanyLOV() {
+    this.cedingLov.modal.openNoClose();
   }
 
 }

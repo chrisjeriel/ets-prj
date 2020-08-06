@@ -1,3 +1,5 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<!-- <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"> -->
 <div class="row">
 	<div class="col-sm-2"></div>
 	<div class="col-sm" style="padding:0">
@@ -10,14 +12,14 @@
 					<div class="form-row custom-row-inline-inset first-row" >
 						<div class="input-group ">
 							<div class=" col-sm-2 ">
-								<input class="form-control-sm" type="radio" name="entryType" id="All" checked="checked" >	
+								<input class="form-control-sm" type="radio" name="entryType" id="All" checked="checked" value="A" [(ngModel)]="params.entryType" (change)="onChangeEntryType()">	
 							</div>
 							<label class="form-control-sm col-sm-6 text-left" for="All">&nbsp;All</label>
 							
 						</div>
 						<div class="input-group ">
-							<div class=" col-sm-2 ">
-								<input class="form-control-sm" type="radio" name="entryType" id="Unbalance">
+						<div class=" col-sm-2 ">
+								<input class="form-control-sm" type="radio" name="entryType" id="Unbalance" value="U" [(ngModel)]="params.entryType" (change)="onChangeEntryType()">
 							</div>
 							<label class="form-control-sm col-sm-6 text-left" for="Unbalance">&nbsp;Unbalance</label>
 						</div>
@@ -30,21 +32,25 @@
 							<div class="input-group">
 								<label class="col-sm-1"></label>
 								<div class=" col-sm-1 ">
-									<input class="form-control-sm" type="radio" name="period" id="transaction" [value]="'1'" [(ngModel)]="postingDateFlag">	
+									<input class="form-control-sm" type="radio" name="period" id="transaction" [value]="'T'" [(ngModel)]="params.periodType" >	
 								</div>
-								<label class="form-control-sm col-sm text-left" for="All">&nbsp;Transaction Date</label>
+								<label class="form-control-sm col-sm text-left" for="transaction">&nbsp;Transaction Date</label>
 								<div class=" col-sm-1 ">
-									<input class="form-control-sm" type="radio" name="period" id="posting" [value]="'2'" [(ngModel)]="postingDateFlag">	
+									<input class="form-control-sm" type="radio" name="period" id="posting" [value]="'P'" [(ngModel)]="params.periodType" (change)="onChangePeriodType()">	
 								</div>
-								<label class="form-control-sm col-sm text-left" for="All">&nbsp;Posting Date</label>
+								<label class="form-control-sm col-sm text-left" for="posting">&nbsp;Posting Date</label>
 								<label class="col-sm-1"></label>
 							</div>
 							<div class="input-group" >
 								<label class="col-sm-1"></label>
 								<label class="form-control-sm col-sm-1" for="from" style="padding-left: 0px">From</label>
-								<input class="form-control-sm form-control col-sm" type="date" id="from" value="2018-12-01">		
+								<div class="col-sm dp-cont">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.periodFrom?.split('T')[0]" (valueChange)="params.periodFrom=$event;"></datepicker>
+								</div>		
 								<label class="form-control-sm col-sm-1" for="to">To</label>
-								<input class="form-control-sm form-control col-sm" type="date" id="to" value="2018-12-31">	
+								<div class="col-sm dp-cont">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.periodTo?.split('T')[0]" (valueChange)="params.periodTo=$event;"></datepicker>
+								</div>		
 								<label class="col-sm-1"></label>
 							</div>
 						</div>
@@ -60,15 +66,21 @@
 					<div class="form-row custom-row-inline-inset mid" >
 						<div class="input-group ">
 							<label class="form-control-sm col-sm-2">Account</label>
-							<input class="form-control-sm form-control col-sm-3" type="text" id="from">		
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<input class="form-control-sm form-control col-sm" type="text" id="from" value="ALL ACCOUNTS" style="margin-left: 8px">
+							<input class="form-control-sm form-control col-sm-2" type="text"  [(ngModel)]="accountNo" [disabled]="disableList.indexOf('accountNo') != -1" >		
+							<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLov('acitChartAcct')"></i></a></div>
+							<input class="form-control-sm form-control col-sm" type="text"  placeholder="ALL ACCOUNTS" style="margin-left: 8px" [(ngModel)]="accountDesc" readonly="">
 						</div>
 						<div class="input-group ">
 							<label class="form-control-sm col-sm-2">SL Type</label>
-							<input class="form-control-sm form-control col-sm-3" type="text" id="from">		
-							<div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
-							<input class="form-control-sm form-control col-sm" style="margin-left: 8px" type="text" id="from" value="ALL SL TYPES">
+							<input class="form-control-sm form-control col-sm-2" type="text"  [(ngModel)]="params.slTypeParam" [disabled]="disableList.indexOf('slTypeParam') != -1" (change)="checkCode($event, 'slType')">		
+							<div class="text-search-ico"><a><i class="fa fa-search" (click)="showLov('slType')"></i></a></div>
+							<input class="form-control-sm form-control col-sm" style="margin-left: 8px" type="text"  placeholder="ALL SL TYPES" [(ngModel)]="slTypeName" readonly="" >
+						</div>
+						<div class="input-group ">
+							<label class="form-control-sm col-sm-2">Currency</label>
+							<input class="form-control-sm form-control col-sm-2" type="text"  [ngModel]="params.currCdParam" (ngModelChange)="params.currCdParam = $event.toUpperCase()" (change)="checkCode($event, 'currCd')">		
+							<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrLOV()"></i></a></div>
+							<input class="form-control-sm form-control col-sm" style="margin-left: 8px" type="text"  placeholder="ALL CURRENCIES" [(ngModel)]="currencyDesc" readonly="">
 						</div>
 					</div>
 				</fieldset>
@@ -83,19 +95,19 @@
 						<div class="form-row custom-row-inline-inset period">
 							<div class="input-group check-row">
 								<div class="col-sm">
-									<input type="checkbox" class="form-control-sm " name="" id="ar" checked="checked">
+									<input type="checkbox" class="form-control-sm " name="" id="ar" checked="checked" [(ngModel)]="params.arTag">
 								</div>
 								<label for="ar" class="form-control-sm text-left col-sm">AR</label>
 							</div>
 							<div class="input-group check-row">
 								<div class="col-sm">
-									<input type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
+									<input type="checkbox" class="form-control-sm " name="" id="cv" checked="checked" [(ngModel)]="params.cvTag">
 								</div>
 								<label for="cv" class="form-control-sm text-left col-sm">CV</label>
 							</div>
 							<div class="input-group check-row">
 								<div class="col-sm">
-									<input type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
+									<input type="checkbox" class="form-control-sm " name="" id="jv" checked="checked" [(ngModel)]="params.jvTag">
 								</div>
 								<label for="jv" class="form-control-sm text-left col-sm">JV</label>
 							</div>
@@ -106,19 +118,20 @@
 						<div class="form-row custom-row-inline-inset period">
 							<div class="input-group check-row">
 								<div class="col-sm-3">
-									<input type="checkbox" class="form-control-sm " name="" id="icto" checked="checked" [disabled]="postingDateFlag=='2'">
+									<input type="checkbox" class="form-control-sm " name="" id="icto" checked="checked" 
+									 [(ngModel)]="params.closeTranTag" [disabled]="disableList.indexOf('closeTranTag') != -1 || params.periodType=='P'" >
 								</div>
 								<label for="icto" class="form-control-sm text-left col-sm">Closed Transactions Only</label>
 							</div>
 							<div class="input-group check-row">
 								<div class="col-sm-3">
-									<input type="radio" class="form-control-sm " name="Other" id="NewExtract" checked="checked">
+									<input type="radio" class="form-control-sm " name="Other" id="NewExtract" checked="checked" [(ngModel)]="params.appendTag" value="N">
 								</div>
 								<label for="NewExtract" class="form-control-sm text-left col-sm">New Extract Table</label>
 							</div>
 							<div class="input-group check-row">
 								<div class="col-sm-3">
-									<input type="radio" class="form-control-sm " name="Other" id="Append">
+									<input type="radio" class="form-control-sm " name="Other" id="Append" [(ngModel)]="params.appendTag" value="Y">
 								</div>
 								<label for="Append" class="form-control-sm text-left col-sm">Append to Existing Extract Table</label>
 							</div>
@@ -132,7 +145,7 @@
 				<div class="col-sm" style="margin-bottom: 5px;">
 					<div class="col-md-13 text-center">
 						<div class="cust-btn-container">
-							<button class="cust-btn" type="button"><a>Extract</a></button>
+							<button class="cust-btn" type="button" (click)="onClickExtract()"><a>Extract</a></button>
 						</div>
 					</div>
 				</div>
@@ -140,94 +153,84 @@
 		</fieldset>
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border">Printing Parameters</legend>
-			<div class="form-row custom-row-inline-inset period" style="margin-top: -2px !important">
+			<div class="form-row custom-row-inline-inset">
 				<div class="col-sm-2"></div>
-				<div class="col-sm" style="display: flex;padding: 0">
-					<div class="col-sm" style="padding:0;margin-right: 2px;">
-						<fieldset class="scheduler-border col-sm">
-							<legend class="scheduler-border">Report Type</legend>
-							<div class="form-row custom-row-inline-inset first-row" >
-								<div class="input-group " style="margin-bottom: -10px !important;">
-									<div class=" col-sm-2 ">
-										<input class="form-control-sm" type="radio" name="reportType" id="All" checked="checked">	
+				<div class="col-sm-4">
+					<fieldset class="scheduler-border" >
+						<legend class="scheduler-border">Report Type</legend>
+							<div class="form-row custom-row-inline-inset period">
+								<div class="input-group check-row">
+									<div class="col-sm-3">
+										<input value="S" [(ngModel)]="rType" id="rType1" type="radio" style="vertical-align: middle;" name="typeRadio" checked>
 									</div>
-									<label class="form-control-sm col-sm-6 text-left" for="All">&nbsp;Summary</label>
+									<label for="rType1" class="form-control-sm col-sm text-left">Summary</label>
 								</div>
-								<div class="input-group " style="margin-bottom: -10px !important;">
-									<div class=" col-sm-2 ">
-										<input class="form-control-sm" type="radio" name="reportType" id="Unbalance">
+								<div class="input-group check-row">
+									<div class="col-sm-3">
+										<input value="D" [(ngModel)]="rType" id="rType2" type="radio" style="vertical-align: middle;" name="typeRadio">
 									</div>
-									<label class="form-control-sm col-sm-6 text-left" for="Unbalance">&nbsp;Detailed</label>
+									<label for="rType2" class="form-control-sm col-sm text-left">Detailed</label>
 								</div>
 							</div>
-						</fieldset>
-						<fieldset class="scheduler-border col-sm" style="margin-top: -12px !important;">
-							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-							<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;margin-bottom: 3px !important;">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Extracted By</label>
-									<input class="form-control-sm form-control col-sm" type="text" id="from" value="cuaresma">	
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Date Extracted</label>
-									<input class="form-control-sm form-control col-sm" type="datetime-local" id="from" value="2018-01-17T10:38">	
-								</div>
+							
+					</fieldset>
+				</div>
+				<div class="col-sm-4"> 
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-bottom: 3px !important">
+						<div class="form-row custom-row-inline-inset mid">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Destination</label>
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+									<option value="screen">Screen</option>
+			    					<option value="printPdf">Printer</option>
+			    					<option value="exl">Excel</option>
+								</select>
 							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm" style="padding:0;margin-left: 2px;">
-						<fieldset class="scheduler-border col-sm">
-							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Destination</label>
-									<select class="form-control form-control-sm cust-sm col-sm">
-										<option>Printer</option>
-									</select>
-								</div>
-
-								<div class="input-group">
-									<label class="col-sm-4"></label>
-									<div class=" col-sm-1 ">
-										<input class="form-control-sm" type="radio" name="optradio" id="All" checked="checked">	
-									</div>
-									<label class="form-control-sm col-sm text-left" for="All">&nbsp;PDF</label>
-									<div class=" col-sm-1 ">
-										<input class="form-control-sm" type="radio" name="optradio" id="All">	
-									</div>
-									<label class="form-control-sm col-sm text-left" for="All">&nbsp;Excel</label>
-									<label class="col-sm-1"></label>
-								</div>
-
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Printer Name</label>
-									<select class="form-control form-control-sm cust-sm col-sm">
-										<option>EPSON 3600I</option>
-									</select>
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">No of Copies</label>
-									<input class="form-control-sm form-control col-sm text-right" type="text" id="from">	
-								</div>
-							</div>	
-						</fieldset>
-					</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Printer Name</label>
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="params.destination != 'printPdf'" >
+									<option *ngFor="let printer of printerList" [value]="printer">{{printer}}</option>
+								</select>
+							</div>
+						</div>
+						
+					</fieldset>
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
-
 			<div class="form-row">
 				<div class="col-sm" style="margin-bottom: 5px;">
 					<div class="col-md-13 text-center">
 						<div class="cust-btn-container">
-							<button class="cust-btn" type="button"><a>Print</a></button>
+							<button class="cust-btn" type="button" (click)="onClickPrint()"><a>Print</a></button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</fieldset>
+
+
 	</div>
 	
 	<div class="col-sm-2"></div>
 </div>
+
+
+<app-lov [passData]="passDataLov" (selectedData)="setData($event)"></app-lov>
+<app-mtn-currency-code  #currencyModal id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
+
+<app-modal class="d-none" id="extract" #polReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();onClickExtract('f');"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 

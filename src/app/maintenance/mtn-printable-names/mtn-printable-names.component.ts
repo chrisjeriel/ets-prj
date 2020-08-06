@@ -39,7 +39,7 @@ export class MtnPrintableNamesComponent implements OnInit {
   openModal(){
   	setTimeout(()=>{
      if(!this.fromInput) {
-     this.maintenanceService.getMtnPrintableName(null).subscribe((data:any) => {
+     this.maintenanceService.getMtnPrintableName(null,'Y').subscribe((data:any) => {
      	for( var i = 0 ; i < data.printableNames.length; i++){
      		this.passData.tableData.push(data.printableNames[i]);
      	}
@@ -54,7 +54,7 @@ export class MtnPrintableNamesComponent implements OnInit {
   }
 
   retrievePrintable(){
-  	this.maintenanceService.getMtnPrintableName('').subscribe((data:any) => {
+  	this.maintenanceService.getMtnPrintableName('','Y').subscribe((data:any) => {
   		for( var i = 0 ; i < data.printableNames.length; i++){
   			this.passData.tableData.push(data.printableNames[i]);
   		}
