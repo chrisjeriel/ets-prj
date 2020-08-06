@@ -515,12 +515,12 @@ export class MeTrialBalProcComponent implements OnInit {
           'isNull(tbBase) as [TB BASE], myFormat(paramDate) AS [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACSER024E'){
           console.log('entered acser024e');
-          //this.export();
-          this.passDataCsv = this.monthlyTotals;
-          query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
-                  'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
-                  'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
-                  'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
+          this.export();
+          // this.passDataCsv = this.monthlyTotals;
+          // query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
+          //         'longDesc AS [GL ACCOUNT NAME], negFmt(currency(begDebitAmt)) AS [BEG DEBIT AMT], negFmt(currency(begCreditAmt)) AS [BEG CREDIT AMT],'+
+          //         'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
+          //         'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
         }
 
         console.log(this.passDataCsv);
