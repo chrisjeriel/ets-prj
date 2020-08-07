@@ -1,4 +1,3 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NotesService, PrintService, MaintenanceService } from '@app/_services';
@@ -357,7 +356,7 @@ export class AcctEntriesExtractComponent implements OnInit {
           query = 'SELECT extractId as [EXTRACT ID], extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], tranId as [TRAN ID], myFormat(tranDate) as [TRAN DATE],' +
           'isNull(tranClass) as [TRAN CLASS], isNull(refNo) as [REF NO], checkNullNo(tranTypeCd) as [TRAN TYPE CD], isNull(currCd) as [CURRENCY],' +
           'isNull(payee) as [PAYEE], isNull(particulars) as [PARTICULARS], isNull(tranStatus) as [TRAN STATUS], isNull(acctStatus) as [ACCT STATUS],' +
-          'checkNullNo(glAcctId) as [GL ACCT ID], isNull(acctCode) as [ACCT CODE], isNull(acctName), checkNullNo(slTypecd) as [SL TYPE CD],' +
+          'checkNullNo(glAcctId) as [GL ACCT ID], isNull(acctCode) as [ACCT CODE], isNull(acctName) as [ACCT NAME], checkNullNo(slTypecd) as [SL TYPE CD],' +
           'isNull(slTypeName) as [SL TYPE NAME], checkNullNo(slCd) as [SL CD], slName as [SL NAME], negFmt(currency(creditAmt)) as [CREDIT AMT],'+
           'negFmt(currency(debitAmt)) as [DEBIT AMT], negFmt(currency(localCreditAmt)) as [LOCAL CREDIT AMT], negFmt(currency(localDebitAmt)) as [LOCAL DEBIT AMT],'+
           'isNull(entryType) as [ENTRY TYPE], isNull(periodType) as [PERIOD TYPE], myFormat(periodFrom) as [PERIOD FROM], myFormat(periodTo) as [PERIOD TO],'+
