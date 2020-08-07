@@ -85,6 +85,8 @@ export class BordereauxComponent implements OnInit {
 
 	paramsToggle: Array<string> = [];
 
+	passDataCsv : any[] =[];
+
 
 	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService,
 		        private printService: PrintService, public modalService: NgbModal) { }
@@ -429,11 +431,11 @@ export class BordereauxComponent implements OnInit {
   }
 
   print() {
-  	// if(this.params.destination == 'exl'){
-   //    this.passDataCsv = [];
-   //    this.getExtractToCsv();
-   //    return;
-   //  }
+  	if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
 
   	if(this.params.destination === '' || this.params.destination === undefined){
   	  this.dialogIcon = "warning-message";
@@ -521,6 +523,84 @@ export class BordereauxComponent implements OnInit {
     setTimeout(()=>{
       $('.currCd').focus().blur();
     }, 0);
+  }
+
+  getExtractToCsv(){
+    console.log(this.params.reportId);
+      console.log(this.ns.getCurrentUser() + ' >> current user');
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId)
+      .subscribe(data => {
+        console.log(data);
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+        
+        if(this.params.reportId == 'CLMR052A'){
+          this.passDataCsv = data['listClmr052a'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],'+
+			'isNull(lineCd) as [LINE CD],checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],'+
+			'negFmt(insuredClm) as [INSURED CLM],isNull(insuredDesc) as [INSURED DESC],negFmt(approvedAmt) as [APPROVED AMT],'+
+			'negFmt(reserveAmt) as [RESERVE AMT],checkNullNo(adjId) as [ADJ ID],isNull(adjName) as [ADJ NAME],'+
+			'isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],checkNullNo(policyId) as [POLICY ID],'+
+			'isNull(policyNo) as [POLICY NO],isNull(polCoRefNo) as [POL CO REF NO],myFormat(inceptDate) as [INCEPT DATE],'+
+			'myFormat(expiryDate) as [EXPIRY DATE],negFmt(mrePctShr) as [MRE PCT SHR],negFmt(nrePctShr) as [NRE PCT SHR],'+
+			'negFmt(ret1Lines) as [RET1 LINES],negFmt(ret2Lines) as [RET2 LINES],isNull(lossCd) as [LOSS CD],'+
+			'isNull(lossAbbr) as [LOSS ABBR],myFormat(lossDate) as [LOSS DATE],checkNullNo(histNo) as [HIST NO],'+
+			'isNull(histCategory) as [HIST CATEGORY],isNull(histCatDesc) as [HIST CAT DESC],'+
+			'negFmt(reserveQuota) as [RESERVE QUOTA],negFmt(reserve1stRet) as [RESERVE 1ST RET],negFmt(reserve2ndRet) as [RESERVE 2ND RET],'+
+			'negFmt(reserve1stSurplus) as [RESERVE 1ST SURPLUS],negFmt(reserve2ndSurplus) as [RESERVE 2ND SURPLUS],negFmt(reserveFacul) as [RESERVE FACUL],'+
+			'negFmt(mreQuota) as [MRE QUOTA],negFmt(mre1stSurplus) as [MRE 1ST SURPLUS],negFmt(mre2ndSurplus) as [MRE 2ND SURPLUS],'+
+			'negFmt(mreFacul) as [MRE FACUL],negFmt(mreTotal) as [MRE TOTAL],negFmt(nreQuota) as [NRE QUOTA],'+
+			'negFmt(nre1stSurplus) as [NRE 1ST SURPLUS],negFmt(nre2ndSurplus) as [NRE 2ND SURPLUS],negFmt(nreFacul) as [NRE FACUL],'+
+			'negFmt(nreTotal) as [NRE TOTAL],myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
+        }else if(this.params.reportId == 'CLMR052B'){
+          this.passDataCsv = data['listClmr052b'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],'+
+			'isNull(lineCd) as [LINE CD],checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],'+
+			'negFmt(insuredClm) as [INSURED CLM],isNull(insuredDesc) as [INSURED DESC],negFmt(approvedAmt) as [APPROVED AMT],'+
+			'negFmt(reserveAmt) as [RESERVE AMT],checkNullNo(adjId) as [ADJ ID],isNull(adjName) as [ADJ NAME],'+
+			'isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],checkNullNo(policyId) as [POLICY ID],'+
+			'isNull(policyNo) as [POLICY NO],isNull(polCoRefNo) as [POL CO REF NO],myFormat(inceptDate) as [INCEPT DATE],'+
+			'myFormat(expiryDate) as [EXPIRY DATE],negFmt(mrePctShr) as [MRE PCT SHR],negFmt(nrePctShr) as [NRE PCT SHR],'+
+			'negFmt(ret1Lines) as [RET1 LINES],negFmt(ret2Lines) as [RET2 LINES],isNull(lossCd) as [LOSS CD],'+
+			'isNull(lossAbbr) as [LOSS ABBR],myFormat(lossDate) as [LOSS DATE],checkNullNo(histNo) as [HIST NO],'+
+			'isNull(histCategory) as [HIST CATEGORY],isNull(histCatDesc) as [HIST CAT DESC],'+
+			'negFmt(reserveQuota) as [RESERVE QUOTA],negFmt(reserve1stRet) as [RESERVE 1ST RET],negFmt(reserve2ndRet) as [RESERVE 2ND RET],'+
+			'negFmt(reserve1stSurplus) as [RESERVE 1ST SURPLUS],negFmt(reserve2ndSurplus) as [RESERVE 2ND SURPLUS],negFmt(reserveFacul) as [RESERVE FACUL],'+
+			'negFmt(mreQuota) as [MRE QUOTA],negFmt(mre1stSurplus) as [MRE 1ST SURPLUS],negFmt(mre2ndSurplus) as [MRE 2ND SURPLUS],'+
+			'negFmt(mreFacul) as [MRE FACUL],negFmt(mreTotal) as [MRE TOTAL],negFmt(nreQuota) as [NRE QUOTA],'+
+			'negFmt(nre1stSurplus) as [NRE 1ST SURPLUS],negFmt(nre2ndSurplus) as [NRE 2ND SURPLUS],negFmt(nreFacul) as [NRE FACUL],'+
+			'negFmt(nreTotal) as [NRE TOTAL],myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+      });
   }
  
 }

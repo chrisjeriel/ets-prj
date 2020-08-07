@@ -533,22 +533,21 @@ export class MonEndTrialBalComponent implements OnInit {
           this.passDataCsv = data['listAcitr066d'];
           query = 'SELECT cedingId as [CEDING ID], cedingName as [COMPANY], checkNullNo(grpNo) as [GROUP NO], checkNullNo(itemNo) as [ITEM NO], itemName as [ITEM NAME],negFmt(currency(currGrandTotal)) as [CURR GRAND TOTAL],'+
           'negFmt(currency(prevGrandTotal)) as [PREV GRAND TOTAL],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
-        }else if(this.params.reportId == 'ACITR066E'){
-          this.passDataCsv = data['listAcitr066e'];
-          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
-          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
-          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
-          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
-          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
-        }else if(this.params.reportId == 'ACITR066F'){
-          this.passDataCsv = data['listAcitr066f'];
-          query = 'SELECT checkNullNo(eomMm) as [EOM MM], checkNullNo(eomYear) as [EOM YEAR],'+ 
-          'isNull(shortCode) as [ACCT CODE],isNull(shortDesc) as [ACCT NAME],'+
-          'negFmt(currency(begDebitAmt)) as [BEG DEBIT AMT],negFmt(currency(begCreditAmt)) as [BEG CREDIT AMT],negFmt(currency(totalDebitAmt)) as [TOTAL DEBIT AMT],'+
-          'negFmt(currency(totalCreditAmt)) as [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) as [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) as [TRANS CREDIT BAL],'+
-          'negFmt(currency(transBalance)) as [TRANS BALANCE], negFmt(currency(endDebitAmt)) as [END DEBIT AMT], negFmt(currency(endCreditAmt)) as [END CREDIT BAL],'+
-          'isNull(tbBase) as [TB BASE],myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId.startsWith('ACITR066E') || this.params.reportId.startsWith('ACITR066F')){
+          this.passDataCsv = data['listAcitr066ef'];
+          query = 'SELECT checkNullNo(eomMm) as [EOM MM],checkNullNo(eomYear) as [EOM YEAR],isNull(currCd) as [CURR CD],isNull(currRt) as [CURR RT],'+
+          'checkNullNo(glAcctId) as [GL ACCT ID],isNull(shortCode) as [SHORT CODE],isNull(shortDesc) as [SHORT DESC],'+
+          'isNull(longDesc) as [LONG DESC],checkNullNo(slTypeCd) as [SL TYPE CD],isNull(slTypeName) as [SL TYPE NAME],'+
+          'checkNullNo(slCd) as [SL CD],isNull(slName) as [SL NAME],negFmt(begDebitAmt) as [BEG DEBIT AMT],'+
+          'negFmt(begCreditAmt) as [BEG CREDIT AMT],negFmt(transDebitBal) as [TRANS DEBIT BAL],negFmt(transCreditBal) as [TRANS CREDIT BAL],'+
+          'negFmt(transBalance) as [TRANS BALANCE],negFmt(endDebitAmt) as [END DEBIT AMT],negFmt(endCreditAmt) as [END CREDIT AMT],'+
+          'negFmt(localBegDebitAmt) as [LOCAL BEG DEBIT AMT],negFmt(localBegCreditAmt) as [LOCAL BEG CREDIT AMT],'+
+          'negFmt(localTransDebitBal) as [LOCAL TRANS DEBIT BAL],negFmt(localTransCreditBal) as [LOCAL TRANS CREDIT BAL],'+
+          'negFmt(localTransBalance) as [LOCAL TRANS BALANCE],negFmt(localEndDebitAmt) as [LOCAL END DEBIT AMT],negFmt(localEndCreditAmt) as [LOCAL END CREDIT AMT],'+
+          'isNull(postTag) as [POST TAG],isNull(eomUser) as [EOM USER],isNull(tbBase) as [TB BASE],'+
+          'checkNullNo(glAcctCategory) as [GL ACCT CATEGORY],checkNullNo(glAcctControl) as [GL ACCT CONTROL],'+
+          'checkNullNo(glAcctSub1) as [GL ACCT SUB1],checkNullNo(glAcctSub2) as [GL ACCT SUB2],checkNullNo(glAcctSub3) as [GL ACCT SUB3],'+
+          'isNull(parentGlId) as [PARENT GL ID]';
         }else if(this.params.reportId == 'ACITR066G'){
           //this.passDataCsv = this.monthlyTotals;
           // query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR], currCd AS [CURRENCY], shortCode AS [GL ACCOUNT NO.], ' +
