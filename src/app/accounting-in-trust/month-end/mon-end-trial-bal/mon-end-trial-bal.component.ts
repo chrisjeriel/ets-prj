@@ -555,6 +555,20 @@ export class MonEndTrialBalComponent implements OnInit {
           //         'negFmt(currency(totalDebitAmt)) AS [TOTAL DEBIT AMT], negFmt(currency(totalCreditAmt)) AS [TOTAL CREDIT AMT], negFmt(currency(transDebitBal)) AS [TRANS DEBIT BAL], negFmt(currency(transCreditBal)) AS [TRANS CREDIT BAL],'+
           //         'negFmt(currency(transBalance)) AS [TRANS BALANCE], negFmt(currency(endDebitAmt)) AS [END DEBIT AMT], negFmt(currency(endCreditAmt)) AS [END CREDIT AMT]';
           this.export();
+        }else if(this.params.reportId == 'ACITR066H'){
+          this.passDataCsv = data['listAcitr066h'];
+          query = 'SELECT checkNullNo(eomMm) AS [EOM MM],checkNullNo(eomYear) AS [EOM YEAR],isNull(currCd) AS [CURR CD],negFmt(currRt) AS [CURR RT],'+
+          'checkNullNo(glAcctId) AS [GL ACCT ID],isNull(shortCode) AS [SHORT CODE],isNull(shortDesc) AS [SHORT DESC],'+
+          'isNull(longDesc) AS [LONG DESC],checkNullNo(slTypeCd) AS [SL TYPE CD],isNull(slTypeName) AS [SL TYPE NAME],'+
+          'checkNullNo(slCd) AS [SL CD],isNull(slName) AS [SL NAME],negFmt(begDebitAmt) AS [BEG DEBIT AMT],'+
+          'negFmt(begCreditAmt) AS [BEG CREDIT AMT],negFmt(transDebitBal) AS [TRANS DEBIT BAL],negFmt(transCreditBal) AS [TRANS CREDIT BAL],'+
+          'negFmt(transBalance) AS [TRANS BALANCE],negFmt(endDebitAmt) AS [END DEBIT AMT],negFmt(endCreditAmt) AS [END CREDIT AMT],'+
+          'negFmt(localBegDebitAmt) AS [LOCAL BEG DEBIT AMT],negFmt(localBegCreditAmt) AS [LOCAL BEG CREDIT AMT],'+
+          'negFmt(localTransDebitBal) AS [LOCAL TRANS DEBIT BAL],negFmt(localTransCreditBal) AS [LOCAL TRANS CREDIT BAL],'+
+          'negFmt(localTransBalance) AS [LOCAL TRANS BALANCE],negFmt(localEndDebitAmt) AS [LOCAL END DEBIT AMT],'+
+          'negFmt(localEndCreditAmt) AS [LOCAL END CREDIT AMT],isNull(postTag) AS [POST TAG],isNull(eomUser) AS [EOM USER],'+
+          'isNull(tbBase) AS [TB BASE],checkNullNo(glAcctCategory) AS [GL ACCT CATEGORY],checkNullNo(glAcctControl) AS [GL ACCT CONTROL],'+
+          'checkNullNo(glAcctSub1) AS [GL ACCT SUB1],checkNullNo(glAcctSub2) AS [GL ACCT SUB2],checkNullNo(glAcctSub3) AS [GL ACCT SUB3]';
         }
 
         console.log(this.passDataCsv);

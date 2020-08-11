@@ -609,7 +609,7 @@ export class ClaimReportsComponent implements OnInit {
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(dateFrom) AS [FROM DATE], myFormat(dateTo) AS [TO DATE], checkNullNo(eventCd) as [EVENT CD],'+
           'isNull(eventDesc) as [EVENT DESC], currencyCd AS [CURRENCY],'+
           'checkNullNo(claimId) as [CLAIM ID], claimNo as [CLAIM NO],checkNullNo(policyId) as [POLICY ID], policyNo as [POLICY NO],'+
-          'cedingId as [CEDING ID],cedingName as [WRITING COMPANY], lineCd as [CLASS TYPE],myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD OF INS],'+
+          'cedingId as [CEDING ID],cedingName as [WRITING COMPANY], lineCd as [CLASS TYPE], checkNullNo(uwYear) as [UW YEAR], myFormat(distDate) as [DIST DATE], myFormat(inceptDate) || " to " || myFormat(expiryDate) as [PERIOD OF INS],'+
           'insuredDesc as [NAME OF INSURED], myFormat(lossDate) as [LOSS DATE],site as [LOCATION],negFmt(currency(tsiAmt)) as [TREATY CESSION],negFmt(pctShare) as [% OF TOTAL],'+
           'negFmt(currency(polQuCedRet1)) as [QUOTA 1st LAYER],negFmt(currency(polQuCedRet2)) as [QUOTA 2nd LAYER],negFmt(currency(polQuMre)) as [QUOTA MRe],'+
           'negFmt(currency(polQuNre)) as [QUOTA NRe],negFmt(currency(pol1spMre)) as [1SP MRe],negFmt(currency(pol1spNre)) as [1SP NRe],negFmt(currency(pol2spMre)) as [2SP MRe],'+

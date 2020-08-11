@@ -532,6 +532,20 @@ export class MeTrialBalProcComponent implements OnInit {
         }else if(this.params.reportId.indexOf("ACSER024D")==0){
           this.passDataCsv = data['listAcser024cd'];
           query = 'SELECT checkNullNo(eomMm) AS [MONTH], checkNullNo(eomYear) AS [YEAR],currCd AS [CURRENCY], negFmt(currency(currRt)) AS [CURRENCY RT], isNull(glAcctId) AS [GL ACCT ID], isNull(shortCode) AS [SHORT CODE], isNull(shortDesc) AS [SHORT DESC], isNull(longDesc) AS [LONG DESC], isNull(slTypeCd) AS [SL TYPE CD], isNull(slTypeName) AS [SL TYPE NAME], isNull(slCd) AS [SL CD], isNull(slName) AS [SL NAME], isNull(begDebitAmt) AS [BEG DEBIT AMT], isNull(begCreditAmt) AS [BEG CREDIT AMT], isNull(transDebitBal) AS [TRANS DEBIT BAL], isNull(transCreditBal) AS [TRANS CREDIT BAL], isNull(transBalance) AS [TRANS BALANCE], isNull(endDebitAmt) AS [END DEBIT AMT], isNull(endCreditAmt) AS [END CREDIT AMT], isNull(localBegDebitAmt) AS [LOCAL BEG DEBIT AMT], isNull(localBegCreditAmt) AS [LOCAL BEG CREDIT AMT], isNull(localTransDebitBal) AS [LOCAL TRANS DEBIT BAL], isNull(localTransCreditBal) AS [LOCAL TRANS CREDIT BAL], isNull(localTransBalance) AS [LOCAL TRANS BALANCE], isNull(localEndDebitAmt) AS [LOCAL END DEBIT AMT], isNull(localEndCreditAmt) AS [LOCAL END CREDIT AMT], isNull(postTag) AS [POST TAG], isNull(eomUser) AS [EOM USER], isNull(tbBase) AS [TB BASE], isNull(glAcctCategory) AS [GL ACCT CATEGORY], isNull(glAcctControl) AS [GL ACCT CONTROL], isNull(glAcctSub1) AS [GL ACCT SUB1], isNull(glAcctSub2) AS [GL ACCT SUB2], isNull(glAcctSub3) AS [GL ACCT SUB3], isNull(parentGlId) AS [PARENT GL ID]';
+        }else if(this.params.reportId == 'ACSER024F'){
+          this.passDataCsv = data['listAcser024f'];
+          query = 'SELECT checkNullNo(eomMm) AS [EOM MM],checkNullNo(eomYear) AS [EOM YEAR],isNull(currCd) AS [CURR CD],negFmt(currRt) AS [CURR RT],'+
+          'checkNullNo(glAcctId) AS [GL ACCT ID],isNull(shortCode) AS [SHORT CODE],isNull(shortDesc) AS [SHORT DESC],'+
+          'isNull(longDesc) AS [LONG DESC],checkNullNo(slTypeCd) AS [SL TYPE CD],isNull(slTypeName) AS [SL TYPE NAME],'+
+          'checkNullNo(slCd) AS [SL CD],isNull(slName) AS [SL NAME],negFmt(begDebitAmt) AS [BEG DEBIT AMT],'+
+          'negFmt(begCreditAmt) AS [BEG CREDIT AMT],negFmt(transDebitBal) AS [TRANS DEBIT BAL],negFmt(transCreditBal) AS [TRANS CREDIT BAL],'+
+          'negFmt(transBalance) AS [TRANS BALANCE],negFmt(endDebitAmt) AS [END DEBIT AMT],negFmt(endCreditAmt) AS [END CREDIT AMT],'+
+          'negFmt(localBegDebitAmt) AS [LOCAL BEG DEBIT AMT],negFmt(localBegCreditAmt) AS [LOCAL BEG CREDIT AMT],'+
+          'negFmt(localTransDebitBal) AS [LOCAL TRANS DEBIT BAL],negFmt(localTransCreditBal) AS [LOCAL TRANS CREDIT BAL],'+
+          'negFmt(localTransBalance) AS [LOCAL TRANS BALANCE],negFmt(localEndDebitAmt) AS [LOCAL END DEBIT AMT],'+
+          'negFmt(localEndCreditAmt) AS [LOCAL END CREDIT AMT],isNull(postTag) AS [POST TAG],isNull(eomUser) AS [EOM USER],'+
+          'isNull(tbBase) AS [TB BASE],checkNullNo(glAcctCategory) AS [GL ACCT CATEGORY],checkNullNo(glAcctControl) AS [GL ACCT CONTROL],'+
+          'checkNullNo(glAcctSub1) AS [GL ACCT SUB1],checkNullNo(glAcctSub2) AS [GL ACCT SUB2],checkNullNo(glAcctSub3) AS [GL ACCT SUB3]';
         }
 
         console.log(this.passDataCsv);
