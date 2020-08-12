@@ -3598,4 +3598,8 @@ export class AccountingService {
     getAcseTrialBalExt(params){
     	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseTrialBalExt?extractUser='+params);
     }
+
+    getAcitJVMultiOffsetLov(param){
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitJVMultiOffsetLov',{params: param});	
+	}
 }

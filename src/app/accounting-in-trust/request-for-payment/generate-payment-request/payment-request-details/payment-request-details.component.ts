@@ -1490,7 +1490,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     } else {
       var x = force === undefined ? 'N' : 'Y';
       this.acctService.getAcctPrqServFee(x, 'generate', this.requestData.reqId, this.qtrParam, this.yearParam,
-                                         +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2), this.requestData.currCd,
+                                         Number(String(this.sfeeAmts.totalSfeeAmt).replace(/\,/g,'')), this.requestData.currCd,
                                          this.requestData.currRate, this.ns.getCurrentUser()).subscribe(data => {
         this.sfeeReturnCode = data['returnCode'];
 

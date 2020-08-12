@@ -14,6 +14,8 @@ import { Subject } from 'rxjs';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { NegativeAmountPipe } from '@app/_pipes/negative-amount.pipe';
 import { NgForm } from '@angular/forms';
+import { ModalComponent } from '@app/_components/common/modal/modal.component';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
 
 @Component({
   selector: 'app-jv-multiple-offsetting',
@@ -34,18 +36,21 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   @ViewChild('unappTbl') unappTbl: CustEditableNonDatatableComponent;
   @ViewChild('invPoTbl') invPoTbl: CustEditableNonDatatableComponent;
   @ViewChild('invPlTbl') invPlTbl: CustEditableNonDatatableComponent;
+  @ViewChild('lrdTbl') lrdTbl: CustEditableNonDatatableComponent;
   @ViewChild('othTbl') othTbl: CustEditableNonDatatableComponent;
   @ViewChild('lov') lov: LovComponent;
   @ViewChild('cedingLov') cedingLov: MtnPayeeCedingComponent;
   @ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn: CancelButtonComponent;
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
+  @ViewChild(ModalComponent) modal: ModalComponent;
+  @ViewChild('lovTbl') lovTbl : CustNonDatatableComponent;
 
   passDataIpb: any = {};
   passDataClm: any = {
     tableData: [],
-    tHeader: ['Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cumulative Payment','Paid Amount',' Paid Amount(PHP)'],
-    dataTypes: ['text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
+    tHeader: ['Company', 'Claim No', 'Hist No','Hist Category', 'Hist Type', 'Payment For', 'Insured', 'Ex-Gratia', 'Curr','Curr Rate', 'Hist Amount','Cumulative Payment','Paid Amount',' Paid Amount(PHP)'],
+    dataTypes: ['text', 'text', 'sequence-2', 'text', 'text', 'text', 'text','checkbox', 'text', 'percent', 'currency','currency', 'currency', 'currency'],
     nData: {
       showMG: 1,
       claimNo: '',
@@ -67,21 +72,23 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     paginateFlag: true,
     infoFlag: true,
     pageID: 'multOffClaims',
-    disableAdd: true,
+    disableAdd: false,
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
-    uneditable: [true,true,true,true,false,true,true,true,true,true,true,false,true],
-    total: [null, null,null, null, null,null, null, null, 'Total', 'reserveAmt', 'paytAmt', 'clmPaytAmt', 'localAmt'],
-    widths: [100,1,100,125,78,115,62,50,64,110,110,110,110],
-    keys:['claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','paytAmt','clmPaytAmt','localAmt']
+    uneditable: [true,true,true,true,true,false,true,true,true,true,true,true,false,true],
+    total: [null,null, null,null, null, null,null, null, null, 'Total', 'reserveAmt', 'paytAmt', 'clmPaytAmt', 'localAmt'],
+    widths: [1,100,1,100,125,78,115,62,50,64,110,110,110,110],
+    keys:['cedingAbbr', 'claimNo','histNo','histCategoryDesc','histTypeDesc','paymentFor','insuredDesc','exGratia','currCd','currRate','reserveAmt','paytAmt','clmPaytAmt','localAmt']
   };
+
   passDataTrty: any = {};
+
   passDataUnapp: any = {
   	tableData: [],
-    tHeaderWithColspan: [{header:'', span:1},{header: 'Unapplied Collection Info', span: 10}, {header: 'Payment Details', span: 2}, {header: '', span: 2}],
-  	tHeader: ['Return', 'Type', 'Item', 'Reference No', 'Description', 'Curr', 'Curr Rate', 'Unapplied Amt', 'Previous Payment','Balance','Payment Amount','Payment Amount(PHP)','Total Payment', 'Remaining Bal'],
-  	dataTypes: ['checkbox','text', 'text', 'text', 'text', 'text', 'percent', 'currency',  'currency', 'currency',  'currency', 'currency', 'currency', 'currency'],
+    tHeaderWithColspan: [{header:'', span:1},{header: 'Unapplied Collection Info', span: 11}, {header: 'Payment Details', span: 2}, {header: '', span: 2}],
+  	tHeader: ['Company', 'Return', 'Type', 'Item', 'Reference No', 'Description', 'Curr', 'Curr Rate', 'Unapplied Amt', 'Previous Payment','Balance','Payment Amount','Payment Amount(PHP)','Total Payment', 'Remaining Bal'],
+  	dataTypes: ['text', 'checkbox','text', 'text', 'text', 'text', 'text', 'percent', 'currency',  'currency', 'currency',  'currency', 'currency', 'currency', 'currency'],
   	nData: {
   	  showMG: 1,
   	  tranId:'',
@@ -102,23 +109,25 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       newPaytAmt :'',
       newBalance:'',
       unappliedId: '',
-      returnTag: 'N'
+      returnTag: 'N',
+      cedingAbbr: ''
   	},
   	magnifyingGlass: ['transdtlName'],
   	checkFlag: true,
   	addFlag: true,
   	deleteFlag: true,
-  	disableAdd: true,
+  	disableAdd: false,
   	searchFlag: true,
   	infoFlag: true,
   	paginateFlag: true,
   	pageLength: 10,
   	pageID: 'multOffUnapplied',
-  	uneditable: [false,true,true,true,true,true,true,true,true,true,false,true,true,true],
-  	total: [null,null, null, null, null, null, 'Total', 'unappliedAmt', 'prevPaytAmt', 'prevBalance','actualBalPaid','localAmt','newPaytAmt','newBalance'],
-  	keys: ['returnTag','transdtlName','itemName','refNo','remarks','currCd','currRate','unappliedAmt','prevPaytAmt','prevBalance','actualBalPaid','localAmt','newPaytAmt','newBalance'],
-  	widths: [1,100,100,85,110,1,65,105,85,90,100,130,90,90],
+  	uneditable: [true, false,true,true,true,true,true,true,true,true,true,false,true,true,true],
+  	total: [null,null,null, null, null, null, null, 'Total', 'unappliedAmt', 'prevPaytAmt', 'prevBalance','actualBalPaid','localAmt','newPaytAmt','newBalance'],
+  	keys: ['cedingAbbr','returnTag','transdtlName','itemName','refNo','remarks','currCd','currRate','unappliedAmt','prevPaytAmt','prevBalance','actualBalPaid','localAmt','newPaytAmt','newBalance'],
+  	widths: [1,1,100,100,85,110,1,65,105,85,90,100,130,90,90],
   };
+
   passDataInvPo: any = {
     tableData: [],
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'],
@@ -161,12 +170,13 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     },
     keys: ['invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 
            'invtAmt' , 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue'],
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true ],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     checkFlag: true,
     pageID: 'multOffInvtout',
     widths: [120,150,127,130,1,83,85,1,1,1,85,120,120,120,120,120,120],
     disableAdd: false
   };
+
   passDataInvPl: any = {
     tableData: [],
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment'],
@@ -207,7 +217,8 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     pageID: 'multOffInvtplace',
     widths: [140,150,127,130,90,83,85,1,1,1,85,120]
   };
-  passDataLrd: any = {
+
+  /*passDataLrd: any = {
   	address: '',
   	membershipDate: '',
   	bussTypeCd: '',
@@ -215,31 +226,60 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	tin: '',
   	activetag: '',
   	cedingRep: '',
-	contactNo: '',
-	emailAdd: '',
-	php: {
-	  currCd: 'PHP',
-	  currRate: '',
-	  totalLossresdep: '',
-	  localAmt: '',
-	  offsetPayt: 0,
-	  netLossresdep: 0
-	},
-	usd: {
-	  currCd: 'USD',
-	  currRate: '',
-	  totalLossresdep: '',
-	  localAmt: '',
-	  offsetPayt: 0,
-	  netLossresdep: 0
-	}
-	
-  };
+  	contactNo: '',
+  	emailAdd: '',
+  	php: {
+  	  currCd: 'PHP',
+  	  currRate: '',
+  	  totalLossresdep: '',
+  	  localAmt: '',
+  	  offsetPayt: 0,
+  	  netLossresdep: 0
+  	},
+  	usd: {
+  	  currCd: 'USD',
+  	  currRate: '',
+  	  totalLossresdep: '',
+  	  localAmt: '',
+  	  offsetPayt: 0,
+  	  netLossresdep: 0
+  	}
+  };*/
+
+  passDataLrd: any = {
+    tableData: [],
+    tHeader: ['Company','Currency','Total Loss Reserve Deposit','Offset Payment','Net Loss Reserve Deposit'],
+    dataTypes: ['text','text','currency','currency','currency'],
+    nData: {
+      showMG: 1,
+      tranId: '',
+      cedingId: '',
+      cedingAbbr: '',
+      totalLossresdep: 0,
+      offsetPayt: 0,
+      netLossresdep: 0
+    },
+    total: [null,'Total','totalLossresdep','offsetPayt','netLossresdep'],
+    checkFlag: true,
+    addFlag: true,
+    deleteFlag: true,
+    pageLength: 10,
+    widths: [1,1,120,120,120],
+    magnifyingGlass: ['cedingAbbr'],
+    keys: ['cedingAbbr', 'currCd', 'totalLossresdep', 'offsetPayt', 'netLossresdep'],
+    uneditable: [true,true,true,false,true],
+    paginateFlag: true,
+    infoFlag: true,
+    disableAdd: false,
+    pageID: 'multOffLossReserve',
+  }
+
   passDataOth: any = {
     tableData: [],
-    tHeader: ['Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
-    dataTypes: ['text','text','text','text','percent','currency','currency'],
-    nData: {
+    tHeader: ['Company', 'Item','Reference No.','Description','Curr','Curr Rate','Amount','Amount (PHP)'],
+    dataTypes: ['text', 'text','text','text','text','percent','currency','currency'],
+    nData: {  
+      showMG: 1,
       tranId: '',
       billId: '',
       itemNo: '',
@@ -249,19 +289,23 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       currCd: '',
       currRate: '',
       currAmt: 0,
-      localAmt: 0
+      localAmt: 0,
+      cedingId: '',
+      cedingAbbr: ''
     },
-    total: [null,null,null,null,'Total','currAmt','localAmt'],
+    total: [null,null,null,null,null,'Total','currAmt','localAmt'],
     checkFlag: true,
     addFlag: true,
     deleteFlag: true,
     pageLength: 10,
-    widths: [210,160,'auto',80,100,120,120],
-    keys: ['itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
-    uneditable: [false,false,false,true,true,false,true],
+    widths: [1,210,160,'auto',80,100,120,120],
+    magnifyingGlass: ['cedingAbbr'],
+    keys: ['cedingAbbr','itemName', 'refNo', 'remarks', 'currCd', 'currRate', 'currAmt', 'localAmt'],
+    uneditable: [true,false,false,false,true,true,false,true],
     paginateFlag: true,
     infoFlag: true,
-    disableAdd: true
+    disableAdd: false,
+    pageID: 'multOffOthers',
   }
 
   passLov: any = {
@@ -304,6 +348,17 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   lrdLoader: boolean = false;
   withExtCed: boolean = false;
   subscription: Subscription = new Subscription();
+  modalOpen: boolean = false;
+
+  passDataLov: any = {
+    tableData: [],
+    pageLength: 10,
+    searchFlag: true,
+    pageStatus: true,
+    pagination: true,
+    fixedCol: false,
+    pageID: 'multiOffsetLov',
+  }
 
   constructor(private ns: NotesService, private as: AccountingService, private ngb: NgbModal,
   			  private dp: DatePipe, private ms: MaintenanceService, private dcp: DecimalPipe,
@@ -312,10 +367,42 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   ngOnInit() {
   	this.passDataIpb = this.as.getInwardPolicyKeys('JV');
   	this.passDataIpb.nData['soaNo'] = null;
+    this.passDataIpb.nData['cedingAbbr'] = null;
+    this.passDataIpb.tHeaderWithColspan = this.passDataIpb.tHeaderWithColspan.slice();
+    this.passDataIpb.tHeader = this.passDataIpb.tHeader.slice();
+    this.passDataIpb.dataTypes = this.passDataIpb.dataTypes.slice();
+    this.passDataIpb.keys = this.passDataIpb.keys.slice();
+    this.passDataIpb.total = this.passDataIpb.total.slice();
+    this.passDataIpb.widths = this.passDataIpb.widths.slice();
+    this.passDataIpb.uneditable = this.passDataIpb.uneditable.slice();
+    this.passDataIpb.tHeaderWithColspan[1].span = 13;
+    this.passDataIpb.tHeader.splice(0, 0, 'Company');
+    this.passDataIpb.dataTypes.splice(0, 0, 'text');
+    this.passDataIpb.keys.splice(0, 0, 'cedingAbbr');
+    this.passDataIpb.total.splice(0, 0, null);
+    this.passDataIpb.widths.splice(0, 0, 1);
+    this.passDataIpb.uneditable.splice(0, 0, true);
 
   	this.passDataTrty = this.as.getTreatyKeys('JV');
   	this.passDataTrty.nData.currRate = this.jvDetail.currRate;
     this.passDataTrty.nData.currCd = this.jvDetail.currCd;
+    this.passDataTrty.tHeaderWithColspan = this.passDataTrty.tHeaderWithColspan.slice();
+    this.passDataTrty.tHeader = this.passDataTrty.tHeader.slice();
+    this.passDataTrty.dataTypes = this.passDataTrty.dataTypes.slice();
+    this.passDataTrty.keys = this.passDataTrty.keys.slice();
+    this.passDataTrty.total = this.passDataTrty.total.slice();
+    this.passDataTrty.widths = this.passDataTrty.widths.slice();
+    this.passDataTrty.uneditable = this.passDataTrty.uneditable.slice();
+    this.passDataTrty.tHeaderWithColspan[1].span = 7;
+    this.passDataTrty.tHeader.splice(0, 0, 'Company');
+    this.passDataTrty.dataTypes.splice(0, 0, 'text');
+    this.passDataTrty.keys.splice(0, 0, 'cedingAbbr');
+    this.passDataTrty.total.splice(0, 0, null);
+    this.passDataTrty.widths.splice(0, 0, 1);
+    this.passDataTrty.uneditable.splice(0, 0, true);
+
+    this.passDataLrd.nData.currCd = this.jvDetail.currCd;
+
     this.passDataOth.nData.currRate = this.jvDetail.currRate;
     this.passDataOth.nData.currCd = this.jvDetail.currCd;
 
@@ -327,24 +414,24 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       this.passDataIpb.deleteFlag = false;
       this.passDataIpb.checkFlag = false;	
       this.passDataIpb.tHeaderWithColspan = this.passDataIpb.tHeaderWithColspan.slice(1);
-	    this.passDataIpb.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataIpb.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
 	    this.passDataClm.addFlag = false;
 	    this.passDataClm.deleteFlag = false;
 	    this.passDataClm.checkFlag = false;
-	    this.passDataClm.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataClm.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
 	    this.passDataTrty.addFlag = false;
 	    this.passDataTrty.deleteFlag = false;
 	    this.passDataTrty.checkFlag = false;
 	    this.passDataTrty.tHeaderWithColspan = this.passDataTrty.tHeaderWithColspan.slice(1);
-	    this.passDataTrty.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataTrty.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
 	    this.passDataUnapp.addFlag = false;
 	    this.passDataUnapp.deleteFlag = false;
 	    this.passDataUnapp.checkFlag = false;
 	    this.passDataUnapp.tHeaderWithColspan = this.passDataUnapp.tHeaderWithColspan.slice(1);
-	    this.passDataUnapp.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true];
+	    this.passDataUnapp.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true];
 
 	    this.passDataInvPo.addFlag = false;
 	    this.passDataInvPo.deleteFlag = false;
@@ -354,9 +441,15 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    this.passDataInvPl.deleteFlag = false;
 	    this.passDataInvPl.checkFlag = false;
 
+      this.passDataLrd.addFlag = false;
+      this.passDataLrd.deleteFlag = false;
+      this.passDataLrd.checkFlag = false;
+      this.passDataLrd.uneditable = [true,true,true,true,true];
+
 	    this.passDataOth.addFlag = false;
 	    this.passDataOth.deleteFlag = false;
 	    this.passDataOth.checkFlag = false;
+      this.passDataOth.uneditable = [true,true,true,true,true,true,true,true];
 
 	    this.readOnly = true;
     }
@@ -378,9 +471,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	this.ipbTbl.overlayLoader = true;
   	  } else {
   	  	setTimeout(() => {
-	      this.ipbTbl.refreshTable();
-	      this.ipbTbl.overlayLoader = true;
-	    }, 0);
+  	      this.ipbTbl.refreshTable();
+  	      this.ipbTbl.overlayLoader = true;
+  	    }, 0);
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
@@ -394,14 +487,11 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	      return a;
 	    });
 
-	    if(data['ipbList'].length > 0) {
-	      this.passDataIpb.disableAdd = false;
-	      this.ipbTbl.onRowClick(null, this.passDataIpb.tableData[0]);
-	      this.multOffDetails.cedingId = data['ipbList'][0].cedingId;
-	      this.multOffDetails.cedingName = data['ipbList'][0].cedingName;
-	    }
+      this.passDataIpb.disableAdd = false;
 
-	    this.passDataIpb.disableAdd = this.multOffDetails.cedingId == '' || this.multOffDetails.cedingId == null;
+	    if(data['ipbList'].length > 0) {
+	      this.ipbTbl.onRowClick(null, this.passDataIpb.tableData[0]);
+	    }
 
 	    this.ipbTbl.refreshTable();
 	  });
@@ -427,11 +517,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    if(data['clmList'].length > 0) {
 	      this.passDataClm.disableAdd = false;
 	      this.clmTbl.onRowClick(null, this.passDataClm.tableData[0]);
-	      this.multOffDetails.cedingId = data['clmList'][0].cedingId;
-	      this.multOffDetails.cedingName = data['clmList'][0].cedingName;
 	    }
-
-	    this.passDataClm.disableAdd = this.multOffDetails.cedingId == '' || this.multOffDetails.cedingId == null;
 
 	    this.clmTbl.refreshTable();
 	  });
@@ -460,11 +546,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	if(data['trtyList'].length > 0) {
   	  	  this.passDataTrty.disableAdd = false;
   	  	  this.trtyTbl.onRowClick(null, this.passDataTrty.tableData[0]);
-  	  	  this.multOffDetails.cedingId = data['trtyList'][0].cedingId;
-	      this.multOffDetails.cedingName = data['trtyList'][0].cedingName;
   	  	}
-
-  	  	this.passDataTrty.disableAdd = this.multOffDetails.cedingId == '' || this.multOffDetails.cedingId == null;
 
   	  	this.trtyTbl.refreshTable();
   	  });
@@ -473,10 +555,10 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  if(initial == undefined) {
   	  	this.unappTbl.overlayLoader = true;
   	  } else {
-  	  	setTimeout(() => {
-	      this.unappTbl.refreshTable();
-	      this.unappTbl.overlayLoader = true;
-	    }, 0);
+    	  	setTimeout(() => {
+  	      this.unappTbl.refreshTable();
+  	      this.unappTbl.overlayLoader = true;
+  	    }, 0);
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
@@ -490,11 +572,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	if(data['unappList'].length > 0) {
   	  	  this.passDataUnapp.disableAdd = false;
   	  	  this.unappTbl.onRowClick(null, this.passDataUnapp.tableData[0]);
-  	  	  this.multOffDetails.cedingId = data['unappList'][0].cedingId;
-	      this.multOffDetails.cedingName = data['unappList'][0].cedingName;
   	  	}
-
-  	  	this.passDataUnapp.disableAdd = this.multOffDetails.cedingId == '' || this.multOffDetails.cedingId == null;
 
   	  	this.unappTbl.refreshTable();
   	  });
@@ -524,9 +602,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	this.invPlTbl.overlayLoader = true;
   	  } else {
   	  	setTimeout(() => {
-	      this.invPlTbl.refreshTable();
-	      this.invPlTbl.overlayLoader = true;
-	    }, 0);
+  	      this.invPlTbl.refreshTable();
+  	      this.invPlTbl.overlayLoader = true;
+  	    }, 0);
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
@@ -539,63 +617,78 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	this.invPlTbl.refreshTable();
   	  });
   	} else if(from == 'lrdTab') {
-  	  this.resetLrd();
-  	  var retParams = {
-  	  	cedingId: this.multOffDetails.cedingId
-  	  }
+  	  // this.resetLrd();
+  	  // var retParams = {
+  	  // 	cedingId: this.multOffDetails.cedingId
+  	  // }
 
-  	  params['cedingId'] = this.multOffDetails.cedingId;
+  	  // params['cedingId'] = this.multOffDetails.cedingId;
 
-  	  var sub$ = forkJoin(this.as.getAcitJVMultiOffset(params),
-  	  					          this.as.getAcitJVCedRepLoss(retParams)).pipe(map(([rec, ret]) => { return { rec, ret }; }));
+  	  // var sub$ = forkJoin(this.as.getAcitJVMultiOffset(params),
+  	  // 					          this.as.getAcitJVCedRepLoss(retParams)).pipe(map(([rec, ret]) => { return { rec, ret }; }));
 
-  	  this.lrdLoader = true;
-  	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
-  	  	this.lrdLoader = false;
-  	  	this.withExtCed = data['existing'] !== null;
-  	  	if(data['existing'] !== null) {
-	        this.multOffDetails.cedingId = data['existing']['cedingId'];
-	        this.multOffDetails.cedingName = data['existing']['cedingName'];
-	      }
-  	  	var a = data['lrdList'];
+  	  // this.lrdLoader = true;
+  	  // this.as.getAcitJVMultiOffset(params).subscribe(data => {
+  	  // 	this.lrdLoader = false;
+  	  // 	this.withExtCed = data['existing'] !== null;
+  	  // 	if(data['existing'] !== null) {
+	    //     this.multOffDetails.cedingId = data['existing']['cedingId'];
+	    //     this.multOffDetails.cedingName = data['existing']['cedingName'];
+	    //   }
+  	  // 	var a = data['lrdList'];
 
-  	  	if(data['lrdList'].length > 0) {
-  	  	  this.multOffDetails.cedingId = a[0].cedingId;
-	        this.multOffDetails.cedingName = a[0].cedingName;
+  	  // 	if(data['lrdList'].length > 0) {
+  	  // 	  this.multOffDetails.cedingId = a[0].cedingId;
+	    //     this.multOffDetails.cedingName = a[0].cedingName;
 
-          var b = a.filter(a => a.currCd == this.jvDetail.currCd);
-          this.infoData.emit(b.length == 0 ? null : b[0]);
-	      }
+     //      var b = a.filter(a => a.currCd == this.jvDetail.currCd);
+     //      this.infoData.emit(b.length == 0 ? null : b[0]);
+	    //   }
 	    
-	      this.setLrd(a); 
-  	  });
+	    //   this.setLrd(a); 
+  	  // });
+
+      this.passDataLrd.tableData = [];
+      if(initial == undefined) {
+        this.lrdTbl.overlayLoader = true;
+      } else {
+          setTimeout(() => {
+          this.lrdTbl.refreshTable();
+          this.lrdTbl.overlayLoader = true;
+        }, 0);
+      }
+
+      this.as.getAcitJVMultiOffset(params).subscribe(data => {
+        this.passDataLrd.tableData = data['lrdList'].map(a => {
+          a.offsetPayt = a.lossresdepAmt;
+          a.netLossresdep = +(parseFloat(a.totalLossresdep) + parseFloat(a.lossresdepAmt)).toFixed(2);
+          return a;
+        });
+
+        if(data['lrdList'].length > 0) {
+          this.lrdTbl.onRowClick(null, this.passDataLrd.tableData[0]);
+        }
+
+        this.lrdTbl.refreshTable();
+      });
   	} else if(from == 'othTab') {
   	  this.passDataOth.tableData = [];
   	  if(initial == undefined) {
   	  	this.othTbl.overlayLoader = true;
   	  } else {
-  	  	setTimeout(() => {
-	      this.othTbl.refreshTable();
-	      this.othTbl.overlayLoader = true;
-	    }, 0);
+    	  	setTimeout(() => {
+  	      this.othTbl.refreshTable();
+  	      this.othTbl.overlayLoader = true;
+  	    }, 0);
   	  }
 
   	  this.as.getAcitJVMultiOffset(params).subscribe(data => {
-  	  	this.withExtCed = data['existing'] !== null;
-  	  	if(data['existing'] !== null) {
-	      this.multOffDetails.cedingId = data['existing']['cedingId'];
-	      this.multOffDetails.cedingName = data['existing']['cedingName'];
-	    }
   	  	this.passDataOth.tableData = data['othList'];
 
   	  	if(data['othList'].length > 0) {
   	  	  this.passDataOth.disableAdd = false;
   	  	  this.othTbl.onRowClick(null, this.passDataOth.tableData[0]);
-  	  	  this.multOffDetails.cedingId = data['othList'][0].cedingId;
-	      this.multOffDetails.cedingName = data['othList'][0].cedingName;
   	  	}
-
-  	  	this.passDataOth.disableAdd = this.multOffDetails.cedingId == '' || this.multOffDetails.cedingId == null;
 
   	  	this.othTbl.refreshTable();
   	  });
@@ -610,97 +703,99 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 		|| (ev.activeId == 'unappTab' && this.unappTbl.form.first.dirty)
 		|| (ev.activeId == 'invPoTab' && this.invPoTbl.form.first.dirty)
 		|| (ev.activeId == 'invPlTab' && this.invPlTbl.form.first.dirty)
-		|| (ev.activeId == 'lrdTab' && this.form.dirty)
+		// || (ev.activeId == 'lrdTab' && this.form.dirty)
+    || (ev.activeId == 'lrdTab' && this.lrdTbl.form.first.dirty)
 		|| (ev.activeId == 'othTab' && this.othTbl.form.first.dirty)) {
-	  ev.preventDefault();
+  	  ev.preventDefault();
 
-	  const subject = new Subject<boolean>();
-	  const modal = this.ngb.open(ConfirmLeaveComponent,{
-	  	centered: true, 
-	    backdrop: 'static', 
-	    windowClass : 'modal-size'
-	  });
-	  modal.componentInstance.subject = subject;
+  	  const subject = new Subject<boolean>();
+  	  const modal = this.ngb.open(ConfirmLeaveComponent,{
+  	  	centered: true, 
+  	    backdrop: 'static', 
+  	    windowClass : 'modal-size'
+  	  });
+  	  modal.componentInstance.subject = subject;
 
-	  subject.subscribe(a=>{
-	    if(a) {
-	      switch(ev.activeId) {
-	      	case 'ipbTab':
-	      	  this.ipbTbl.markAsPristine();
-	      	break;
+  	  subject.subscribe(a=>{
+  	    if(a) {
+  	      switch(ev.activeId) {
+  	      	case 'ipbTab':
+  	      	  this.ipbTbl.markAsPristine();
+  	      	break;
 
-	      	case 'clmTab':
-	      	  this.clmTbl.markAsPristine();
-	      	break;
+  	      	case 'clmTab':
+  	      	  this.clmTbl.markAsPristine();
+  	      	break;
 
-	      	case 'trtyTab':
-	      	  this.trtyTbl.markAsPristine();
-	      	break;
+  	      	case 'trtyTab':
+  	      	  this.trtyTbl.markAsPristine();
+  	      	break;
 
-	      	case 'unappTab':
-	      	  this.unappTbl.markAsPristine();
-	      	break;
+  	      	case 'unappTab':
+  	      	  this.unappTbl.markAsPristine();
+  	      	break;
 
-	      	case 'invPoTab':
-	      	  this.invPoTbl.markAsPristine();
-	      	break;
+  	      	case 'invPoTab':
+  	      	  this.invPoTbl.markAsPristine();
+  	      	break;
 
-	      	case 'invPlTab':
-	      	  this.invPlTbl.markAsPristine();
-	      	break;
+  	      	case 'invPlTab':
+  	      	  this.invPlTbl.markAsPristine();
+  	      	break;
 
-	      	case 'lrdTab':
-	      	  this.form.control.markAsPristine();
-	      	break;
+  	      	case 'lrdTab':
+  	      	  // this.form.control.markAsPristine();
+              this.lrdTbl.markAsPristine();
+  	      	break;
 
-	      	case 'othTab':
-	      	  this.othTbl.markAsPristine();
-	      	break;
-	      }
-	      
-	      this.currentTab = ev.nextId;
-	      this.tabset.select(ev.nextId);
-	    }
-	  });
-	} else {
-	  this.currentTab = ev.nextId;
-	  this.getAcitJVMultiOffset(ev.nextId, true);
-	}
+  	      	case 'othTab':
+  	      	  this.othTbl.markAsPristine();
+  	      	break;
+  	      }
+  	      
+  	      this.currentTab = ev.nextId;
+  	      this.tabset.select(ev.nextId);
+  	    }
+  	  });
+  	} else {
+  	  this.currentTab = ev.nextId;
+  	  this.getAcitJVMultiOffset(ev.nextId, true);
+  	}
   }
 
-  showLov(ev, from) {
+  showLov(ev?, from?) {
   	if(from == 'ipb') {
-  	  this.passLov.selector = 'acitSoaDtl';
+  	  this.passLov.selector = 'multOffSoa';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
-	  this.passLov.currCd = this.jvDetail.currCd;
+	    this.passLov.currCd = this.jvDetail.currCd;
       this.passLov.hide = this.passDataIpb.tableData.filter((a)=>{return a.soaNo !== null && !a.deleted}).map(a=>{return a.soaNo.toString()});
   	} else if(from == 'clm') {
-  	  this.passLov.selector = 'clmResHistPaytsOffset';
+  	  this.passLov.selector = 'multOffClm';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
   	  this.passLov.currCd = this.jvDetail.currCd;
-	  this.passLov.params = {
-	    qsoaId: '',
-	    currCd: this.jvDetail.currCd,
-	    cedingId: this.multOffDetails.cedingId
-	  }
-	  this.passLov.hide = this.passDataClm.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return JSON.stringify({claimId: a.claimId, histNo:a.histNo})}); 
+  	  this.passLov.params = {
+  	    qsoaId: '',
+  	    currCd: this.jvDetail.currCd,
+  	    cedingId: this.multOffDetails.cedingId
+  	  }
+  	  this.passLov.hide = this.passDataClm.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return JSON.stringify({claimId: a.claimId, histNo:a.histNo})}); 
   	}else if(from == 'trty') {
-  	  this.passLov.selector = 'osQsoa';
-	  this.passLov.params = {
-	    qsoaId: '',
-	    currCd: this.jvDetail.currCd,
-	    cedingId: this.multOffDetails.cedingId
-	  }
-	  this.passLov.hide = this.passDataTrty.tableData.filter(a => !a.deleted).map(a => a.qsoaId);
+  	  this.passLov.selector = 'multOffTrty';
+  	  this.passLov.params = {
+  	    qsoaId: '',
+  	    currCd: this.jvDetail.currCd,
+  	    cedingId: this.multOffDetails.cedingId
+  	  }
+  	  this.passLov.hide = this.passDataTrty.tableData.filter(a => !a.deleted).map(a => a.qsoaId);
   	} else if(from == 'unapp') {
-  	  this.passLov.selector = 'unappliedColl';
+  	  this.passLov.selector = 'multOffUnapp';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
-	  this.passLov.params = {
-	    unappliedId: '',
-	    cedingId: this.multOffDetails.cedingId,
-	    currCd: this.jvDetail.currCd
-	  }
-	  this.passLov.hide = this.passDataUnapp.tableData.filter((a)=>{return a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
+  	  this.passLov.params = {
+  	    unappliedId: '',
+  	    cedingId: this.multOffDetails.cedingId,
+  	    currCd: this.jvDetail.currCd
+  	  }
+	     this.passLov.hide = this.passDataUnapp.tableData.filter((a)=>{return a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
   	} else if(from == 'invPo') {
   	  this.passLov.selector = 'acitArInvPullout';
   	  this.passLov.searchParams = [{key:'invtStatus', search: 'M%'},
@@ -711,13 +806,30 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  this.passLov.searchParams = [{key:'invtStatus', search: 'F%'},
   	  							   {key:'currCd', search: this.jvDetail.currCd}];
       this.passLov.hide = this.passDataInvPl.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
-  	}
+  	} else if(from == 'lrd') {
+      this.passLov.selector = 'multOffLrd';
+      this.passLov.cedingId = '';
+      this.passLov.params = {
+        unappliedId: '',
+        cedingId: '',
+        currCd: this.jvDetail.currCd
+      }
+      this.passLov.hide = this.passDataLrd.tableData.filter((a)=>{return a.cedingId !== '' && !a.deleted}).map(a=>{return a.cedingId});
+    } else if(from == 'oth') {
+      this.passLov.selector = 'multOffOth';
+      this.passLov.cedingId = this.multOffDetails.cedingId;
+      this.passLov.params = {
+        unappliedId: '',
+        cedingId: this.multOffDetails.cedingId,
+        currCd: this.jvDetail.currCd
+      }
+    }
 
   	this.lov.openLOV();
   }
 
   setLov(ev) {
-  	if(ev.selector == 'acitSoaDtl') {
+  	if(ev.selector == 'multOffSoa') {
   	  this.passDataIpb.tableData = this.passDataIpb.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {
 	    this.passDataIpb.tableData.push(JSON.parse(JSON.stringify(this.passDataIpb.nData)));
@@ -755,10 +867,12 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    this.passDataIpb.tableData[len].remainingBal    = a.prevNetDue - (a.cumPayment + a.prevBalance);
 	    this.passDataIpb.tableData[len].insuredDesc     = a.insuredDesc;
 	    this.passDataIpb.tableData[len].overdueInt      = a.balOverdueInt;
+      this.passDataIpb.tableData[len].cedingId        = a.cedingId;
+      this.passDataIpb.tableData[len].cedingAbbr      = a.cedingAbbr;
 	  }
 
 	  this.ipbTbl.refreshTable();
-  	} else if(ev.selector == 'clmResHistPaytsOffset') {
+  	} else if(ev.selector == 'multOffClm') {
   	  this.passDataClm.tableData = this.passDataClm.tableData.filter(a => a.showMG != 1);
   	  for(var  i = 0; i < ev.data.length; i++){
   	    this.passDataClm.tableData.push(JSON.parse(JSON.stringify(this.passDataClm.nData)));
@@ -784,10 +898,13 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	    this.passDataClm.tableData[len].paytAmt 			= a.cumulativeAmt;
   	    this.passDataClm.tableData[len].clmPaytAmt 			= a.reserveAmt;
   	    this.passDataClm.tableData[len].localAmt 			= a.reserveAmt * this.jvDetail.currRate;
+        this.passDataClm.tableData[len].cedingId      = a.cedingId;
+        this.passDataClm.tableData[len].cedingAbbr      = a.cedingAbbr;
+        this.passDataClm.tableData[len].exGratia      = a.exGratia == null ? 'N' : a.exGratia;
   	  }
 
   	  this.clmTbl.refreshTable();
-  	} else if(ev.selector == 'osQsoa') {
+  	} else if(ev.selector == 'multOffTrty') {
   	  ev['data'].forEach(a => {
         if(this.passDataTrty.tableData.some(b => b.qsoaId != a.qsoaId)) {
     	  a.currCd = this.jvDetail.currCd;
@@ -808,7 +925,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  this.passDataTrty.tableData = this.passDataTrty.tableData.filter(a => a.qsoaId != '');
 
       this.trtyTbl.refreshTable();
-  	} else if(ev.selector == 'unappliedColl') {
+  	} else if(ev.selector == 'multOffUnapp') {
   	  this.passDataUnapp.tableData = this.passDataUnapp.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {
   	  	this.passDataUnapp.tableData.push(JSON.parse(JSON.stringify(this.passDataUnapp.nData)));
@@ -836,10 +953,45 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	    this.passDataUnapp.tableData[len].newPaytAmt     = +(parseFloat(a.balUnapldAmt) + parseFloat(a.totalApldAmt)).toFixed(2);
   	    this.passDataUnapp.tableData[len].newBalance     = 0;
   	    this.passDataUnapp.tableData[len].unappliedId    = a.unappliedId;
+        this.passDataUnapp.tableData[len].cedingId       = a.cedingId;
+        this.passDataUnapp.tableData[len].cedingAbbr     = a.cedingAbbr;
   	  }
 
   	  this.unappTbl.refreshTable();
-  	} else if(ev.selector == 'acitArInvPullout') {
+  	} else if(ev.selector == 'multOffLrd') {
+      this.passDataLrd.tableData = this.passDataLrd.tableData.filter(a => a.showMG != 1);
+      for (var i = 0; i < ev.data.length; i++) {
+        this.passDataLrd.tableData.push(JSON.parse(JSON.stringify(this.passDataLrd.nData)));
+        var len = this.passDataLrd.tableData.length - 1;
+        var a = ev.data[i];
+        
+        this.passDataLrd.tableData[len].showMG          = 0;
+        this.passDataLrd.tableData[len].edited          = true;        
+        this.passDataLrd.tableData[len].cedingId        = a.cedingId;
+        this.passDataLrd.tableData[len].cedingAbbr      = a.cedingAbbr;
+        this.passDataLrd.tableData[len].currCd          = a.currCd;
+        this.passDataLrd.tableData[len].currRate        = a.currRate;
+        this.passDataLrd.tableData[len].totalLossresdep = a.totalLossresdep;
+        this.passDataLrd.tableData[len].offsetPayt      = 0;
+        this.passDataLrd.tableData[len].netLossresdep   = a.totalLossresdep;
+      }
+
+      this.lrdTbl.refreshTable();
+    } else if(this.currentTab == 'othTab') {
+      this.passDataOth.tableData = this.passDataOth.tableData.filter(a => a.showMG != 1);
+      for (var i = 0; i < ev.data.length; i++) {
+        this.passDataOth.tableData.push(JSON.parse(JSON.stringify(this.passDataOth.nData)));
+        var len = this.passDataOth.tableData.length - 1;
+        var a = ev.data[i];
+        
+        this.passDataOth.tableData[len].showMG          = 0;
+        this.passDataOth.tableData[len].edited          = true;        
+        this.passDataOth.tableData[len].cedingId        = a.payeeCd;
+        this.passDataOth.tableData[len].cedingAbbr      = a.cedingAbbr;
+      }
+
+      this.othTbl.refreshTable();
+    } else if(ev.selector == 'acitArInvPullout') {
   	  if(this.currentTab == 'invPoTab') {
   	  	this.passDataInvPo.tableData = this.passDataInvPo.tableData.filter(a => a.showMG != 1);
   	  	for(var i = 0; i < ev.data.length; i++) {
@@ -976,19 +1128,25 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  this.trtyTbl.refreshTable();
   	} else if(from == 'unapp') {
   	  this.passDataUnapp.tableData.forEach(a => {
-	    a.localAmt = a.actualBalPaid * this.jvDetail.currRate;
-	    a.newPaytAmt = a.actualBalPaid + a.prevPaytAmt;
-	    a.newBalance = a.unappliedAmt - a.newPaytAmt;
-	  });
+  	    a.localAmt = a.actualBalPaid * this.jvDetail.currRate;
+  	    a.newPaytAmt = a.actualBalPaid + a.prevPaytAmt;
+  	    a.newBalance = a.unappliedAmt - a.newPaytAmt;
+  	  });
 
   	  this.unappTbl.refreshTable();
   	} else if(from == 'oth') {
-  	  this.passDataOth.tableData.forEach(a => {
-	    a.localAmt = a.currAmt * this.jvDetail.currRate;
-	  });
+    	  this.passDataOth.tableData.forEach(a => {
+    	    a.localAmt = a.currAmt * this.jvDetail.currRate;
+    	  });
 
   	  this.othTbl.refreshTable();
-  	}
+  	} else if(from == 'lrd') {
+        this.passDataLrd.tableData.forEach(a => {
+          a.netLossresdep = a.totalLossresdep + a.offsetPayt;
+        });
+
+      this.lrdTbl.refreshTable();
+    }
   }
 
   onRowClick(data){
@@ -1077,7 +1235,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	} else if(from == 'invPo' || from == 'invPl') {
   	  proceed = true;
   	} else if(from == 'lrd') {
-  	  var a = this.passDataLrd.php.netLossresdep;
+  	  /*var a = this.passDataLrd.php.netLossresdep;
   	  var b = this.passDataLrd.usd.netLossresdep;
   	  var aa = (a.indexOf('(') !== -1 ? -1 : 1) * Number(a.replace(/\(|\)|\,/g, ''));
   	  var bb = (b.indexOf('(') !== -1 ? -1 : 1) * Number(b.replace(/\(|\)|\,/g, ''));
@@ -1092,14 +1250,44 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	this.dialogIcon = "error-message";
   	  	this.successDialog.open();
   	  	return;
-  	  }
+  	  }*/
+
+      for(var i = 0; i < this.passDataLrd.tableData.length; i++) {
+        var a = this.passDataLrd.tableData[i];
+
+        if(a.edited && !a.deleted && isNaN(a.offsetPayt)) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "Invalid Payment Amount";
+          this.successDialog.open();
+          return;
+        }
+
+        if(a.showMG !== undefined && a.showMG == 1) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "Please check field values.";
+          this.successDialog.open();
+          return;
+        }
+
+        if(a.offsetPayt < 0 && a.netLossresdep < 0) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "You cannot allocate more than the current total Loss Reserve Deposit.";
+          this.successDialog.open();
+          return;
+        }
+      }
 
   	  proceed = true;
   	} else if(from == 'oth') {
   	  for(var i = 0; i < this.passDataOth.tableData.length; i++) {
   	  	var a = this.passDataOth.tableData[i];
 
-  	  	if(a.edited && !a.deleted && isNull(a.itemName)) {
+        if(a.edited && !a.deleted && isNull(a.cedingAbbr)) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "Company required";
+          this.successDialog.open();
+          return;
+        } else if(a.edited && !a.deleted && isNull(a.itemName)) {
   	  	  this.dialogIcon = "error-message";
   	  	  this.dialogMessage = "Item required";
   	  	  this.successDialog.open();
@@ -1167,7 +1355,8 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	      break;
 
   	      case 'lrdTab':
-  	    	this.form.control.markAsPristine();
+  	    	// this.form.control.markAsPristine();
+          this.lrdTbl.markAsPristine();
   	      break;
 
   	      case 'othTab':
@@ -1206,7 +1395,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    e.balPaytAmt = e.paytAmt;
 	    e.newPaytAmt = e.totalPayt;
 	    e.newBalance = e.remainingBal;
-	    e.cedingId = this.multOffDetails.cedingId;
+	    // e.cedingId = this.multOffDetails.cedingId;
 	   	e.createUser = this.ns.getCurrentUser();
 	    e.createDate = this.ns.toDateTimeString(0);
 	    e.updateUser = this.ns.getCurrentUser();
@@ -1229,11 +1418,11 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     } else if(this.currentTab == 'clmTab') {
       this.params.saveClm = this.passDataClm.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
-      	e.cedingId = this.multOffDetails.cedingId;
+      	// e.cedingId = this.multOffDetails.cedingId;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+  	    e.createDate = this.ns.toDateTimeString(0);
+  	    e.updateUser = this.ns.getCurrentUser();
+  	    e.updateDate = this.ns.toDateTimeString(0);
 
 	    return e;
       });
@@ -1243,13 +1432,13 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       this.params.saveTrty = this.passDataTrty.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
       	e.quarterEnding = this.ns.toDateTimeString(e.quarterEnding);
-      	e.cedingId = this.multOffDetails.cedingId;
+      	// e.cedingId = this.multOffDetails.cedingId;
       	e.actualBalPaid = e.balanceAmt;
       	e.balanceAmt = e.netQsoaAmt;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+  	    e.createDate = this.ns.toDateTimeString(0);
+  	    e.updateUser = this.ns.getCurrentUser();
+  	    e.updateDate = this.ns.toDateTimeString(0);
 
       	return e;
       });
@@ -1258,11 +1447,11 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     } else if(this.currentTab == 'unappTab') {
       this.params.saveUnapp = this.passDataUnapp.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
-      	e.cedingId = this.multOffDetails.cedingId;
+      	// e.cedingId = this.multOffDetails.cedingId;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+  	    e.createDate = this.ns.toDateTimeString(0);
+  	    e.updateUser = this.ns.getCurrentUser();
+  	    e.updateDate = this.ns.toDateTimeString(0);
 
       	return e;
       });
@@ -1272,9 +1461,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       this.params.saveInvPo = this.passDataInvPo.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+  	    e.createDate = this.ns.toDateTimeString(0);
+  	    e.updateUser = this.ns.getCurrentUser();
+  	    e.updateDate = this.ns.toDateTimeString(0);
 
       	return e;
       });
@@ -1284,43 +1473,43 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       this.params.saveInvPl = this.passDataInvPl.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
       	e.createUser = this.ns.getCurrentUser();
-	    e.createDate = this.ns.toDateTimeString(0);
-	    e.updateUser = this.ns.getCurrentUser();
-	    e.updateDate = this.ns.toDateTimeString(0);
+  	    e.createDate = this.ns.toDateTimeString(0);
+  	    e.updateUser = this.ns.getCurrentUser();
+  	    e.updateDate = this.ns.toDateTimeString(0);
 
       	return e;
       });
 
       this.params.delInvPl = this.passDataInvPl.tableData.filter(a => a.deleted);
     } else if(this.currentTab == 'lrdTab') {
-      var a = this.passDataLrd.php;
+      /*var a = this.passDataLrd.php;
       var b = this.passDataLrd.usd;
       var ap = a.offsetPayt.replace(/\(|\)|\,/g, '');
-	  var bp = b.offsetPayt.replace(/\(|\)|\,/g, '');
-	  var php = {
-	  	tranId: this.jvDetail.tranId,
-	  	cedingId: this.multOffDetails.cedingId,
-	  	currCd: 'PHP',
-	  	currRate: a.currRate,
-	  	lossresdepAmt: ap,
-	  	localAmt: ap * a.currRate,
-	  	createUser: this.ns.getCurrentUser(),
-		createDate: this.ns.toDateTimeString(0),
-		updateUser: this.ns.getCurrentUser(),
-		updateDate: this.ns.toDateTimeString(0),
-	  };
-	  var usd = {
-	  	tranId: this.jvDetail.tranId,
-	  	cedingId: this.multOffDetails.cedingId,
-	  	currCd: 'USD',
-	  	currRate: b.currRate,
-	  	lossresdepAmt: bp,
-	  	localAmt: bp * b.currRate,
-	  	createUser: this.ns.getCurrentUser(),
-		createDate: this.ns.toDateTimeString(0),
-		updateUser: this.ns.getCurrentUser(),
-		updateDate: this.ns.toDateTimeString(0),
-	  };
+  	  var bp = b.offsetPayt.replace(/\(|\)|\,/g, '');
+  	  var php = {
+  	  	tranId: this.jvDetail.tranId,
+  	  	cedingId: this.multOffDetails.cedingId,
+  	  	currCd: 'PHP',
+  	  	currRate: a.currRate,
+  	  	lossresdepAmt: ap,
+  	  	localAmt: ap * a.currRate,
+  	  	createUser: this.ns.getCurrentUser(),
+    		createDate: this.ns.toDateTimeString(0),
+    		updateUser: this.ns.getCurrentUser(),
+    		updateDate: this.ns.toDateTimeString(0),
+  	  };
+  	  var usd = {
+  	  	tranId: this.jvDetail.tranId,
+  	  	cedingId: this.multOffDetails.cedingId,
+  	  	currCd: 'USD',
+  	  	currRate: b.currRate,
+  	  	lossresdepAmt: bp,
+  	  	localAmt: bp * b.currRate,
+  	  	createUser: this.ns.getCurrentUser(),
+    		createDate: this.ns.toDateTimeString(0),
+    		updateUser: this.ns.getCurrentUser(),
+    		updateDate: this.ns.toDateTimeString(0),
+  	  };
 
       if(Number(ap) !== 0 && !isNaN(ap) && this.form.control.controls['php-offset-payt'].dirty) {
       	this.params.saveLrd.push(php);
@@ -1336,11 +1525,26 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 
       if(Number(bp) == 0 && !isNaN(bp) && this.form.control.controls['usd-offset-payt'].dirty) {
       	this.params.delLrd.push(usd);
-      }
+      }*/
+
+      this.params.saveLrd = this.passDataLrd.tableData.filter(a => a.edited && !a.deleted).map(e => {
+        e.tranId = this.jvDetail.tranId;
+        // e.cedingId = this.multOffDetails.cedingId;
+        e.lossresdepAmt = e.offsetPayt;
+        e.localAmt = e.offsetPayt * e.currRate;
+        e.createUser = this.ns.getCurrentUser();
+        e.createDate = this.ns.toDateTimeString(0);
+        e.updateUser = this.ns.getCurrentUser();
+        e.updateDate = this.ns.toDateTimeString(0);
+
+      return e;
+      });
+
+      this.params.delLrd = this.passDataLrd.tableData.filter(a => a.deleted);
     } else if(this.currentTab == 'othTab') {
       this.params.saveOth = this.passDataOth.tableData.filter(a => a.edited && !a.deleted).map(e => {
       	e.tranId = this.jvDetail.tranId;
-      	e.cedingId = this.multOffDetails.cedingId;
+      	// e.cedingId = this.multOffDetails.cedingId;
       	e.createUser = this.ns.getCurrentUser();
 	      e.createDate = this.ns.toDateTimeString(0);
 	      e.updateUser = this.ns.getCurrentUser();
