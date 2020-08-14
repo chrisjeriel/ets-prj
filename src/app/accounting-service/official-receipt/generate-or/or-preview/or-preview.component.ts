@@ -58,7 +58,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
    acctEntriesData: any = {
   	tableData: [],
     tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
-    uneditable:[false,true,true,true,true,true,false,false],
+    uneditable:[false,true,true,true,false,false,false,false],
     keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
     dataTypes: ['lovInput','text','text','text','currency','currency','currency','currency'],
     nData: {
@@ -395,12 +395,17 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   acctEntriesTableDataChange(data){
     console.log('yeet');
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
-      for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
-        this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
-        this.acctEntriesData.tableData[i].foreignCreditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0:this.acctEntriesData.tableData[i].foreignCreditAmt;
-        this.acctEntriesData.tableData[i].debitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
-        this.acctEntriesData.tableData[i].creditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
-      }
+      // for(var i = 0; i < this.acctEntriesData.tableData.length; i++){
+      //   this.acctEntriesData.tableData[i].foreignDebitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0:this.acctEntriesData.tableData[i].foreignDebitAmt;
+      //   this.acctEntriesData.tableData[i].foreignCreditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0:this.acctEntriesData.tableData[i].foreignCreditAmt;
+      //   this.acctEntriesData.tableData[i].debitAmt = isNaN(this.acctEntriesData.tableData[i].foreignDebitAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignDebitAmt;
+      //   this.acctEntriesData.tableData[i].creditAmt = isNaN(this.acctEntriesData.tableData[i].foreignCreditAmt) ? 0: this.record.currRate * this.acctEntriesData.tableData[i].foreignCreditAmt;
+      // }
+
+      data.lastEditedRow.foreignDebitAmt = isNaN(data.lastEditedRow.foreignDebitAmt) ? 0 : data.lastEditedRow.foreignDebitAmt;
+      data.lastEditedRow.foreignCreditAmt = isNaN(data.lastEditedRow.foreignCreditAmt) ? 0 : data.lastEditedRow.foreignCreditAmt;
+      data.lastEditedRow.debitAmt = isNaN(data.lastEditedRow.foreignDebitAmt) ? 0 : this.record.currRate * data.lastEditedRow.foreignDebitAmt;
+      data.lastEditedRow.creditAmt = isNaN(data.lastEditedRow.foreignCreditAmt) ? 0 : this.record.currRate * data.lastEditedRow.foreignCreditAmt;
       this.computeTotals();
     } else if(data.key == 'glShortCd') {
       this.lovCheckbox = true;
@@ -414,8 +419,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
   computeTotals(){   
     console.log(this.acctEntriesData.tableData)
-    this.totals.credit = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
-    this.totals.debit  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
+    this.totals.credit = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
+    this.totals.debit  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat( b.foreignDebitAmt)),0);
     this.totals.variance = this.totals.debit - this.totals.credit;
   }
 
@@ -502,6 +507,14 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
             this.whTaxData.checkFlag        = false;
             this.whTaxData.magnifyingGlass  = [];
 
+            // this.acctEntriesData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
+            // this.acctEntriesData.addFlag         = false;
+            // this.acctEntriesData.deleteFlag      = false;
+            // this.acctEntriesData.checkFlag       = false;
+            // this.acctEntriesData.magnifyingGlass = [];
+          }
+
+          if(a && this.currentTab == 'acctEntries'){
             this.acctEntriesData.uneditable      = [true,true,true,true,true,true,true,true,true]; 
             this.acctEntriesData.addFlag         = false;
             this.acctEntriesData.deleteFlag      = false;

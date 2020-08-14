@@ -165,7 +165,7 @@ export class ArPreviewComponent implements OnInit {
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
     if(this.record.arStatDesc.toUpperCase() != 'NEW' || this.record.reopenTag == 'Y'){
-      this.accEntriesData.uneditable = [true, true, true, true, true, true ];
+      this.accEntriesData.uneditable = [true, true, true, true, true, true, true, true];
       this.accEntriesData.addFlag = false;
       this.accEntriesData.deleteFlag =  false;
       this.accEntriesData.checkFlag = false;
@@ -492,10 +492,13 @@ export class ArPreviewComponent implements OnInit {
 
   acctEntriesTableDataChange(data){
     if(data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt'){
-      for(var i = 0; i < this.accEntriesData.tableData.length; i++){
-        this.accEntriesData.tableData[i].debitAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignDebitAmt;
-        this.accEntriesData.tableData[i].creditAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignCreditAmt;
-      }
+      // for(var i = 0; i < this.accEntriesData.tableData.length; i++){
+      //   this.accEntriesData.tableData[i].debitAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignDebitAmt;
+      //   this.accEntriesData.tableData[i].creditAmt = this.record.currRate * this.accEntriesData.tableData[i].foreignCreditAmt;
+      // }
+
+      data.lastEditedRow.debitAmt = this.record.currRate * data.lastEditedRow.foreignDebitAmt;
+      data.lastEditedRow.creditAmt = this.record.currRate * data.lastEditedRow.foreignCreditAmt;
     } else if(data.key == 'glShortCd') {
       this.lovRow = data.lastEditedRow;
       if(data.hasOwnProperty('lovInput')) {

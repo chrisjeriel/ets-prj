@@ -127,7 +127,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         a.showMG = 1;
 
         if(a.updateLevel == 'N') {
-          a.uneditable = ['glShortCd','foreignDebitAmt','foreignCreditAmt'];
+          a.uneditable = ['glShortCd','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'];
           a.showMG = 0;
         } else if(a.updateLevel == 'L') {
           a.uneditable = ['glShortCd'];
@@ -218,11 +218,14 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
         data.ev['index'] = data.index;
         this.lov.checkCdOthers('acitChartAcct', data.ev);
       }
-    } else {
-      this.cvAcctEntData.tableData.forEach(e => {
-        e.creditAmt = Number(this.cvData.currRate) * Number(e.foreignCreditAmt);
-        e.debitAmt = Number(this.cvData.currRate) * Number(e.foreignDebitAmt);
-      });
+    } else if(data !== undefined && (data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt')) {
+      // this.cvAcctEntData.tableData.forEach(e => {
+      //   e.creditAmt = Number(this.cvData.currRate) * Number(e.foreignCreditAmt);
+      //   e.debitAmt = Number(this.cvData.currRate) * Number(e.foreignDebitAmt);
+      // });
+
+      data.lastEditedRow.creditAmt = Number(this.cvData.currRate) * Number(data.lastEditedRow.foreignCreditAmt);
+      data.lastEditedRow.debitAmt = Number(this.cvData.currRate) * Number(data.lastEditedRow.foreignDebitAmt);
 
       this.totals.credit = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
       this.totals.debit  = this.cvAcctEntData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat(b.foreignDebitAmt)),0);
