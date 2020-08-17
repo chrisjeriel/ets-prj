@@ -48,6 +48,7 @@ export class MtnPayeeCedingTreatyComponent implements OnInit {
       pageID: '1232141',
       keys:['payeeCd','payeeName','payeeAddress']
   };
+  @Input() exclude: any[] = [];
 
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal, private maintenanceService: MaintenanceService) { }
 
@@ -87,7 +88,10 @@ export class MtnPayeeCedingTreatyComponent implements OnInit {
 
     this.maintenanceService.getMtnPayeeCeding(1,'Y').subscribe((data: any) => {
          for(var i=0;i< data.payeeCeding.length;i++){
-           this.passData.tableData.push(data.payeeCeding[i]);
+           // this.passData.tableData.push(data.payeeCeding[i]);
+           if(!this.exclude.includes(String(data.payeeCeding[i].payeeCd).padStart(3, '0'))) {
+             this.passData.tableData.push(data.payeeCeding[i]);
+           }
          }
          this.table.refreshTable(); 
      });

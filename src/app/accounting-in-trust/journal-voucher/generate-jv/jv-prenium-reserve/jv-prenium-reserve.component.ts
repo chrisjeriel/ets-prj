@@ -62,13 +62,14 @@ export class JvPreniumReserveComponent implements OnInit {
 			updateDate : this.ns.toDateTimeString(0)
 		},
 		checkFlag: true,
-		uneditable: [true,false,false,false,false,false,false,false],
+		uneditable: [true,true,false,false,false,false,false,false],
 		keys:['quarterEnding', 'currCd', 'currRate', 'releaseAmt', 'interestRate' ,'interestAmt','whtaxRate', 'whtaxAmt'],
 		widths:[150,80,95,210,105,125,105,125]
 	}
 
 	premResData: any  = {
 		cedingName: '',
+		currCd: '',
 		deletePremResRel : [],
 		savePremResRel : []
 	}
@@ -85,10 +86,17 @@ export class JvPreniumReserveComponent implements OnInit {
 	intRate: number;
 	whtaxRate: number;
 	cedingFlag: boolean = false;
+	exc: any[] = [];
 
 	constructor(private accService: AccountingService, private titleService: Title, private ns: NotesService, private maintenanceService: MaintenanceService) { }
 
 	ngOnInit() {
+		this.maintenanceService.getMtnParameters('V', 'QS_CEDING_ID').subscribe(data => {
+		  if(data['parameters'].length > 0) {
+		    this.exc = [data['parameters'][0].paramValueV];
+		  }
+		});
+
 		this.getIntRate();
 		this.getWhtxRate();
 		this.titleService.setTitle("Acct-IT | JV QSOA");
@@ -177,9 +185,12 @@ export class JvPreniumReserveComponent implements OnInit {
 	}
 
 	quarterEndModal(data){
+		console.log(data);
 		if(data.key === 'quarterEnding'){
 			$('#quarterEnd > #modalBtn').trigger('click');
 			this.dataIndex = data.index;
+			this.premResData.currCd = data.data.currCd;
+			console.log(this.premResData.currCd);
 		}else if(data.key == 'currCd'){
 			this.currLov.modal.openNoClose();
 			this.dataIndex = data.index;
@@ -224,19 +235,24 @@ export class JvPreniumReserveComponent implements OnInit {
 				this.totalWhtaxAmt 	  += isNaN(this.passData.tableData[i].whtaxAmt) ? 0 : parseInt(this.passData.tableData[i].whtaxAmt);
     		}
     	}
+
+    	if(data.key == 'releaseAmt' || data.key == 'interestRate' || data.key == 'whtaxRate') {
+    		data.lastEditedRow.interestAmt = data.lastEditedRow.releaseAmt * (data.lastEditedRow.interestRate/100);
+    		data.lastEditedRow.whtaxAmt = data.lastEditedRow.interestAmt * (data.lastEditedRow.whtaxRate/100);
+    	}
     }
 
     setQuarter(data){
-    	
+    	console.log(data);
     	this.passData.tableData[this.dataIndex].colMG.push('quarterEnding');
     	this.passData.tableData[this.dataIndex].edited = true;
     	this.passData.tableData[this.dataIndex].quarterEnding = this.ns.toDateTimeString(data.premRes.quarterEnding);
     	this.passData.tableData[this.dataIndex].releaseAmt = data.premRes.fundsHeld;
     	this.passData.tableData[this.dataIndex].localAmt = data.premRes.fundsHeld * this.jvDetail.currRate;
     	this.passData.tableData[this.dataIndex].interestRate = this.intRate;
-    	this.passData.tableData[this.dataIndex].interestAmt = data.premRes.fundsHeld * this.intRate;
+    	this.passData.tableData[this.dataIndex].interestAmt = data.premRes.fundsHeld * (this.intRate/100);
     	this.passData.tableData[this.dataIndex].whtaxRate = this.whtaxRate;
-    	this.passData.tableData[this.dataIndex].whtaxAmt = this.passData.tableData[this.dataIndex].interestAmt * this.whtaxRate;
+    	this.passData.tableData[this.dataIndex].whtaxAmt = this.passData.tableData[this.dataIndex].interestAmt * (this.whtaxRate/100);
 		this.passData.tableData[this.dataIndex].premResQuota = data.premRes.premResQuota;
 		this.passData.tableData[this.dataIndex].premRes1surplus = data.premRes.premRes1surplus;
 		this.passData.tableData[this.dataIndex].premRes2surplus = data.premRes.premRes2surplus;
