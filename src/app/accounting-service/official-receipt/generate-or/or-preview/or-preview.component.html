@@ -190,7 +190,7 @@
                   <!-- <button class="cust-btn cust-button" (click)="viewTranDetails()">Print AE</button> -->
                    <app-cust-editable-non-datatable [passData]="acctEntriesData" (newClick)="onRowClick($event)" (clickLOV)="acctEntriesLOV($event)" (tableDataChange)="acctEntriesTableDataChange($event)" #acctEntriesTbl>
                      
-                     <ng-container controls-l *ngIf="record?.from.toLowerCase() == 'jv' && genTaxData.checkFlag">
+                     <ng-container controls-l *ngIf="record?.from.toLowerCase() == 'jv' && genTaxData.checkFlag && record?.statusType != 'A' && record?.statusType != 'X' && record?.statusType != 'P'">
                          <label class="form-control-sm">For Approval</label> 
                          <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="record.statusType === 'F'" (change)="record.forApproval = (record.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
                      </ng-container>

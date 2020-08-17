@@ -1,4 +1,4 @@
-<app-modal id="cedingCompanyTreaty" class="d-none" (modalOpened)="openModal()" #modal>
+<app-modal id="cedingCompanyTreaty" class="d-none" (modalOpened)="openModal()" #payeeCedant>
     <div header>List of Values</div>
     <div body>
         <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)"></app-cust-non-datatable>

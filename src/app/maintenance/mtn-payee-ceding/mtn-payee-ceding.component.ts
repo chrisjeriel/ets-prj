@@ -13,7 +13,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 export class MtnPayeeCedingComponent implements OnInit {
 
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
-  @ViewChild('modal') modal: ModalComponent;
+  @ViewChild('payeeCedant') modal: ModalComponent;
   @Input() lovCheckBox: boolean = false;
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   selected: any = null;
@@ -46,7 +46,7 @@ export class MtnPayeeCedingComponent implements OnInit {
               dataType: 'text'
           },          
       ],
-      pageID: '1232141',
+      pageID: 'mtnPayeeCedingLov'+(Math.floor(Math.random() * (999999 - 100000)) + 100000).toString(),
       keys:['payeeCd','payeeName','payeeAddress']
   };
 
@@ -58,7 +58,7 @@ export class MtnPayeeCedingComponent implements OnInit {
   	}
   }
 
-  onRowClick(data){  	
+  onRowClick(data){
     // if(Object.is(this.selected, data)){
    if(Object.entries(data).length === 0 && data.constructor === Object){
       this.selected = null;
@@ -91,12 +91,9 @@ export class MtnPayeeCedingComponent implements OnInit {
 
   openModal(){
     this.passData.tableData = [];
-
+    this.table.overlayLoader = true;
     this.maintenanceService.getMtnPayeeCeding(1,null).subscribe((data: any) => {
-    	console.log(data)
-         for(var i=0;i< data.payeeCeding.length;i++){
-           this.passData.tableData.push(data.payeeCeding[i]);
-         }
+         this.passData.tableData = data.payeeCeding;
          this.table.refreshTable(); 
      });
   }

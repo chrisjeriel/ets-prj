@@ -140,16 +140,17 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.creditTotal = 0;
       for (var i = 0; i < data.list.length; i++) {
         if(data.list[i].updateLevel == 'N') {
-          data.list[i].uneditable = ['glShortCd','foreignDebitAmt','foreignCreditAmt'];
+          data.list[i].uneditable = ['glShortCd','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'];
           data.list[i].showMG = 0;
         } else if(data.list[i].updateLevel == 'L') {
           data.list[i].uneditable = ['glShortCd'];
           data.list[i].colMG = ['glShortCd'];
           data.list[i].showMG = 1;
-        } else {
-          data.list[i].uneditable = ['glShortDesc','debitAmt','creditAmt'];
-          data.list[i].showMG = 1;
-        }
+        } 
+        // else {
+        //   data.list[i].uneditable = ['glShortDesc','debitAmt','creditAmt'];
+        //   data.list[i].showMG = 1;
+        // }
 
         if(this.jvDetails.statusType == 'A' || this.jvDetails.statusType == 'X' || this.jvDetails.statusType == 'P') {
           data.list[i].showMG = 0;
@@ -669,16 +670,20 @@ export class JvAccountingEntriesComponent implements OnInit {
         data.ev['index'] = data.index;
         this.lov.checkCdOthers('acitChartAcct', data.ev);
       }
-    } else {
+    } else if(data !== undefined && (data.key == 'foreignDebitAmt' || data.key == 'foreignCreditAmt')) {
       this.debitTotal = 0;
       this.creditTotal = 0;
+
+      data.lastEditedRow.debitAmt = data.lastEditedRow.foreignDebitAmt * this.jvData.currRate;
+      data.lastEditedRow.creditAmt = data.lastEditedRow.foreignCreditAmt * this.jvData.currRate;
 
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal  += this.passData.tableData[i].foreignDebitAmt;
         this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
-        this.passData.tableData[i].debitAmt    = this.passData.tableData[i].foreignDebitAmt * this.jvData.currRate;
-        this.passData.tableData[i].creditAmt  = this.passData.tableData[i].foreignCreditAmt * this.jvData.currRate;
+        // this.passData.tableData[i].debitAmt    = this.passData.tableData[i].foreignDebitAmt * this.jvData.currRate;
+        // this.passData.tableData[i].creditAmt  = this.passData.tableData[i].foreignCreditAmt * this.jvData.currRate;
       }
+
        this.debitTotal  = this.debitTotal;
        this.creditTotal = this.creditTotal;
        this.variance = this.debitTotal - this.creditTotal;

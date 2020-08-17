@@ -57,7 +57,7 @@ export class AccountingService {
 	passDataAccEntries: any = {
 	    tableData: [],
 	    tHeader: ['Account Code','Account Name','SL Type','SL Name','Local Debit','Local Credit','Debit','Credit'],
-	    uneditable:[false,true,true,true,true,true,false,false],
+	    uneditable:[false,true,true,true,false,false,false,false],
 	    keys:['glShortCd','glShortDesc','slTypeName','slName','debitAmt','creditAmt','foreignDebitAmt','foreignCreditAmt'],
 	    dataTypes: ['lovInput','text','text','text','currency','currency','currency','currency'],
 	    nData: {
@@ -3598,4 +3598,8 @@ export class AccountingService {
     getAcseTrialBalExt(params){
     	return this.http.get(environment.prodApiUrl + '/acct-serv-service/retrieveAcseTrialBalExt?extractUser='+params);
     }
+
+    getAcitJVMultiOffsetLov(param){
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitJVMultiOffsetLov',{params: param});	
+	}
 }

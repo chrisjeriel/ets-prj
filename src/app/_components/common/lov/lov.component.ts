@@ -6,7 +6,7 @@ import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { map } from 'rxjs/operators';
-
+import { MtnPayeeCedingComponent } from '@app/maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
 
 
 @Component({
@@ -20,6 +20,7 @@ export class LovComponent implements OnInit {
   @ViewChild('lovTbl') table : CustNonDatatableComponent;
   @ViewChild(ModalComponent) modal : ModalComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
+  @ViewChild('cedingLov') cedingLov: MtnPayeeCedingComponent;
   
   passTable: any = {
         tableData: [],
@@ -56,6 +57,8 @@ export class LovComponent implements OnInit {
   tempTableData: any[] = [];
 
   showDedMtn:Boolean = false;
+  multOffCedingId: any = '';
+  multOffCedingName: any = '';
 
   constructor(private modalService: NgbModal, private mtnService : MaintenanceService, private underwritingService: UnderwritingService,
     private quotationService: QuotationService, private router: Router, private accountingService: AccountingService, 
@@ -65,7 +68,7 @@ export class LovComponent implements OnInit {
   	  // if(this.lovCheckBox){
      //    this.passTable.checkFlag = true;
      //  }
-     this.us.accessibleModules.subscribe(a=>{this.showDedMtn = a.indexOf('MTN113') != -1})
+     this.us.accessibleModules.subscribe(a=>{this.showDedMtn = a.indexOf('MTN113') != -1});
   }
 
   // pinaikli ko lang, pabalik sa dati pag may mali - YELE
@@ -87,7 +90,7 @@ export class LovComponent implements OnInit {
           if(processingCount > 1){
             this.dialogMessage = 'Some of the items were not selected because they\'re currently being processed in other transactions.';
             this.passData.data = data.filter(a=>{return a.checked});
-          }else if(this.passData.selector.indexOf('acitSoaDtl') == 0){
+          }else if(this.passData.selector.indexOf('acitSoaDtl') == 0 || this.passData.selector.indexOf('multOffSoa') == 0){
             this.dialogMessage = 'This policy installment is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
           }else if(this.passData.selector.indexOf('clmResHistPayts') == 0 || this.passData.selector == 'acitArClmRecover'){
@@ -102,10 +105,10 @@ export class LovComponent implements OnInit {
           }else if(this.passData.selector == 'acitArInvPullout'){
             this.dialogMessage = 'This Investment is being processed for payment in another transaction. Please finalize the transaction with Request No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
-          }else if(this.passData.selector == 'osQsoa'){
+          }else if(this.passData.selector == 'osQsoa' || this.passData.selector == 'multOffTrty'){
             this.dialogMessage = 'This QSOA is being processed for payment in another transaction. Please finalize the transaction with Reference No. '+ ref + ' first.';
             this.passData.data = data.filter(a=>{return a.checked});
-          }else if(this.passData.selector == 'unappliedColl'){
+          }else if(this.passData.selector == 'unappliedColl' || this.passData.selector == 'multOffUnapp'){
             var refArr = ref.split('-');
 
             if(Number(refArr[1]) == 0) {
@@ -214,6 +217,7 @@ export class LovComponent implements OnInit {
     }
 
     this.passData.data = null;
+    this.resetMultOffCedant();
   }
 
 
@@ -1274,6 +1278,37 @@ export class LovComponent implements OnInit {
         }
         this.table.refreshTable();
       })
+    }else if(this.passData.selector == 'multOffSoa'){
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.checkFlag = true;
+      if(this.multOffCedingId == '') {
+        this.passTable.tableData = [];
+        setTimeout(() => { this.table.refreshTable(); }, 0);
+      } else {
+        this.table.overlayLoader = true;
+        var multiOffsetParam = {
+          from: 'ipb',
+          currCd: this.passData.currCd == undefined ? '' : this.passData.currCd,
+          policyId: this.passData.policyId == undefined ? '' : this.passData.policyId,
+          instNo: this.passData.instNo == undefined ? '' : this.passData.instNo,
+          cedingId: this.multOffCedingId == undefined ? '' : this.multOffCedingId,
+          payeeNo: this.passData.payeeNo == undefined ? '' : this.passData.payeeNo,
+          zeroBal: this.passData.zeroBal == undefined ? '' : this.passData.zeroBal
+        };
+
+        this.accountingService.getAcitJVMultiOffsetLov(multiOffsetParam).subscribe((a:any)=>{
+          this.passTable.tableData = a.soaList.filter((data)=>{return this.passData.hide.indexOf(data.soaNo)==-1});
+          for(var i of this.passTable.tableData) {
+            if(i.processing !== null && i.processing !== undefined) {
+              i.preventDefault = true;
+            }
+          }
+          this.table.refreshTable();
+        });
+      }
     }else if(this.passData.selector == 'acitSoaDtlJVOverdue'){
       this.passTable.tHeader = ['Policy No.', 'Inst No.', 'Co Ref No', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
       this.passTable.widths =[300,300,1,200,200,200,200]
@@ -1458,6 +1493,30 @@ export class LovComponent implements OnInit {
         }
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'multOffClm'){
+      var histTypes = [4,5,7,8,9,10];
+      var clmStatus = ['TC', 'CD', 'DN', 'CP'];
+      this.passTable.tHeader = ['Claim No','Hist No.', 'Hist. Category', 'Hist. Type', 'Reserve', 'Cummulative Payment'];
+      this.passTable.widths =[300,300,300,300,300,300]
+      this.passTable.dataTypes = [ 'text','sequence-2', 'text', 'text', 'currency', 'currency',];
+      this.passTable.keys = [ 'claimNo','histNo', 'histCategoryDesc', 'histTypeDesc', 'reserveAmt', 'cumulativeAmt'];
+      this.passTable.checkFlag = true;
+      if(this.multOffCedingId == '') {
+        this.passTable.tableData = [];
+        setTimeout(() => { this.table.refreshTable(); }, 0);
+      } else {
+        console.log(this.passData.hide);
+        this.table.overlayLoader = true;
+        this.accountingService.getClmResHistPayts(this.multOffCedingId,this.passData.payeeNo, this.passData.currCd).subscribe((data:any) => {
+          this.passTable.tableData = data.clmpayments.filter((data)=> {return !this.passData.hide.includes(JSON.stringify({claimId: data.claimId, histNo: data.histNo})) && histTypes.includes(data.histType) && !clmStatus.includes(data.clmStatCd)});
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
+          }
+          this.table.refreshTable();
+        });
+      }
     }else if(this.passData.selector == 'acitArClmCashCall'){
       this.passTable.tHeader = ['Claim No.','Co. Claim No.', 'Policy No.', 'Loss Date'];
       this.passTable.widths =[300,300,300,150]
@@ -1817,6 +1876,32 @@ export class LovComponent implements OnInit {
 
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'multOffTrty') {
+      this.passTable.tHeader    = ['Quarter Ending', 'QSOA Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.minColSize = ['1px', '120px', '120px', '120px'];
+      this.passTable.dataTypes  = ['date','currency','currency','currency'];
+      this.passTable.keys       = ['quarterEnding','netQsoaAmt','cumPayt','remainingBal'];
+      this.passTable.checkFlag  = true;
+
+      if(this.multOffCedingId == '') {
+        this.passTable.tableData = [];
+        setTimeout(() => { this.table.refreshTable(); }, 0);
+      } else {
+        this.passData.params.cedingId = this.multOffCedingId;
+        this.table.overlayLoader = true;
+        this.accountingService.getAcitOsQsoa(this.passData.params).subscribe(data => {
+          var tblData = data['osQsoaList'].map(a => { a.quarterEnding = this.ns.toDateTimeString(a.quarterEnding); return a; });
+          this.passTable.tableData = tblData.filter(a => this.passData.hide.indexOf(a.qsoaId) == -1);
+
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
+          }
+
+          this.table.refreshTable();
+        });
+      }
     }else if(this.passData.selector == 'unappliedColl'){
       this.passTable.tHeader = ['Item','Type','Reference No','Total Unapplied', 'Total Applied', 'Unapplied Balance'];
       this.passTable.minColSize = ['100px', '100px', '160px', '120px', '120px', '120px'];
@@ -1835,6 +1920,31 @@ export class LovComponent implements OnInit {
         
         this.table.refreshTable();
       });
+    }else if(this.passData.selector == 'multOffUnapp'){
+      this.passTable.tHeader = ['Item','Type','Reference No','Total Unapplied', 'Total Applied', 'Unapplied Balance'];
+      this.passTable.minColSize = ['100px', '100px', '160px', '120px', '120px', '120px'];
+      this.passTable.dataTypes = ['text','text','text','currency', 'currency', 'currency'];
+      this.passTable.keys = ['itemName', 'transdtlName', 'refNo', 'totalUnapldAmt', 'totalApldAmt', 'balUnapldAmt'];
+      this.passTable.checkFlag = true;
+
+      if(this.multOffCedingId == '') {
+        this.passTable.tableData = [];
+        setTimeout(() => { this.table.refreshTable(); }, 0);
+      } else {
+        this.passData.params.cedingId = this.multOffCedingId;
+        this.table.overlayLoader = true;
+        this.accountingService.getAcitUnappliedColl(this.passData.params).subscribe((data:any) => {
+          this.passTable.tableData = data.unappliedColl.filter((a)=>{return this.passData.hide.indexOf(a.unappliedId)==-1});
+
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
+          }
+          
+          this.table.refreshTable();
+        });
+      }
     } else if(this.passData.selector == 'acitTranType') {
 
       this.passTable.tHeader    = ['Tran Type Cd', 'Tran Type Name'];
@@ -1873,6 +1983,42 @@ export class LovComponent implements OnInit {
         this.passTable.tableData = [{paytModeName: 'Bank Transfer', paytMode: 'BT'}, {paytModeName: 'Cash', paytMode: 'CA'}, {paytModeName: 'Check', paytMode: 'CK'}];
         this.table.refreshTable();
       },0);
+    }else if(this.passData.selector == 'multOffLrd') {
+      this.passTable.tHeader    = ['Company', 'Currency', 'Total Loss Reserve Deposit'];
+      this.passTable.minColSize = ['1px', '1px', '120px'];
+      this.passTable.dataTypes  = ['text','text','currency'];
+      this.passTable.keys       = ['cedingAbbr','currCd','totalLossresdep'];
+      this.passTable.checkFlag  = true;
+
+      this.accountingService.getAcitJVCedRepLoss(this.passData.params).subscribe(data => {
+        this.passTable.tableData = data['cedRepLossList'].filter(a => this.passData.hide.indexOf(a.cedingId) == -1);
+
+        /*for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }*/
+
+        this.table.refreshTable();
+      });
+    }else if(this.passData.selector == 'multOffOth') {
+      this.passTable.tHeader    = ['Co No','Name','Address'];
+      this.passTable.minColSize = ['1px', '1px', '120px'];
+      this.passTable.dataTypes  = ['text','text','text'];
+      this.passTable.keys       = ['payeeCd','payeeName','payeeAddress'];
+      this.passTable.checkFlag  = true;
+
+      /*this.accountingService.getAcitJVCedRepLoss(this.passData.params).subscribe(data => {
+        this.passTable.tableData = data['cedRepLossList'].filter(a => this.passData.hide.indexOf(a.cedingId) == -1);
+
+        this.table.refreshTable();
+      });*/
+
+      this.mtnService.getMtnPayeeCeding(1, null).subscribe((data: any) => {
+        this.passTable.tableData = data.payeeCeding;
+        
+        this.table.refreshTable(); 
+      });
     }
 
     this.modalOpen = true;
@@ -1908,4 +2054,22 @@ export class LovComponent implements OnInit {
       });
     }
   }
+
+  showCedingLov(ev) {
+    this.cedingLov.modal.openNoClose();
+  }
+
+  setCeding(ev) {
+    if(ev !== null) {
+      this.multOffCedingId = ev.payeeCd;
+      this.multOffCedingName = ev.payeeName;
+      this.openModal();
+    }
+  }
+
+  resetMultOffCedant() {
+    this.multOffCedingId = '';
+      this.multOffCedingName = '';
+  }
+  
 }
