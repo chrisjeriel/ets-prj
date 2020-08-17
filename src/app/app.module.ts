@@ -518,6 +518,7 @@ import { JvMultipleOffsettingComponent } from './accounting-in-trust/journal-vou
 import { BatchMoveBookingDateComponent } from './underwriting/utilities/batch-move-booking-date/batch-move-booking-date.component';
 import { PremPlanComponent } from './maintenance/quotation-and-policy/prem-plan/prem-plan.component';
 import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjuster-rate.component';
+import { JvRiskMgtAllocComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-risk-mgt-alloc/jv-risk-mgt-alloc.component';
 
 
 @NgModule({
@@ -1041,6 +1042,7 @@ import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjust
         BatchMoveBookingDateComponent,
         PremPlanComponent,
         AdjusterRateComponent,
+        JvRiskMgtAllocComponent,
     ],
 
   	providers: [
