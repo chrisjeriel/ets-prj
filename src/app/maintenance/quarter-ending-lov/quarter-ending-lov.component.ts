@@ -18,6 +18,7 @@ export class QuarterEndingLovComponent implements OnInit {
   @Input() cedingId;
   @Input() quarterDates: string[]; //array of already added quarter dates
   @Input() overrideModal: boolean = false; //override the close modal of this component
+  @Input() currCd = 'PHP';
 
   constructor(private maintenanceService: MaintenanceService, private accService: AccountingService) { }
 
@@ -123,7 +124,7 @@ export class QuarterEndingLovComponent implements OnInit {
       this.quarterval = date.getFullYear() + '-' + pad(date.getMonth()+1) + '-' + pad(date.getDate()) + 'T' + pad(date.getHours()) + ':' + pad(date.getMinutes()) + ':' + pad(date.getSeconds());
       this.quarterEnd = pad(date.getMonth()+1) + '/' + pad(date.getDate()) +  '/' + date.getFullYear();
       if(this.tranClass !== undefined){
-        this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
+        this.accService.getQuarterPrem(this.quarterEnd,this.cedingId,this.currCd).subscribe((data:any) => {
           console.log(data)
           this.sendData = data;
           this.selectedData.emit(this.sendData)
@@ -145,7 +146,7 @@ export class QuarterEndingLovComponent implements OnInit {
         this.successDiag.open();
       }else{
         if(this.tranClass !== undefined){
-          this.accService.getQuarterPrem(this.quarterEnd,this.cedingId).subscribe((data:any) => {
+          this.accService.getQuarterPrem(this.quarterEnd,this.cedingId,this.currCd).subscribe((data:any) => {
             console.log(data)
             this.sendData = data;
             this.selectedData.emit(this.sendData)
