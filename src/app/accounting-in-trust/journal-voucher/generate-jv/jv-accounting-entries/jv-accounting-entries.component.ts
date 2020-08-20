@@ -146,11 +146,10 @@ export class JvAccountingEntriesComponent implements OnInit {
           data.list[i].uneditable = ['glShortCd'];
           data.list[i].colMG = ['glShortCd'];
           data.list[i].showMG = 1;
-        } 
-        // else {
-        //   data.list[i].uneditable = ['glShortDesc','debitAmt','creditAmt'];
-        //   data.list[i].showMG = 1;
-        // }
+        } else {
+          data.list[i].uneditable = [];
+          data.list[i].showMG = 1;
+        }
 
         if(this.jvDetails.statusType == 'A' || this.jvDetails.statusType == 'X' || this.jvDetails.statusType == 'P') {
           data.list[i].showMG = 0;
@@ -177,7 +176,7 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.creditTotal = 0;
     this.variance = 0;
 
-    var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+    var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd) && !a.deleted);
 
     if(slCheck.length > 0) {
       this.dialogMessage = "SL Name required for entries with SL Type";

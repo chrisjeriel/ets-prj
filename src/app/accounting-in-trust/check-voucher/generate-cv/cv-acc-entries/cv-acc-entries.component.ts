@@ -251,7 +251,7 @@ export class CvAccEntriesComponent implements OnInit, OnDestroy {
     this.params.delList  = [];
     var isEmpty = 0;
 
-    var slCheck = this.cvAcctEntData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+    var slCheck = this.cvAcctEntData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd) && !a.deleted);
 
     if(slCheck.length > 0) {
       this.dialogMessage = "SL Name required for entries with SL Type";

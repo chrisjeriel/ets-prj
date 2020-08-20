@@ -524,7 +524,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   }
 
   onClickSave(){
-    var slCheck = this.acctEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+    var slCheck = this.acctEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd) && !a.deleted);
 
     if(slCheck.length > 0) {
       this.dialogMessage = "SL Name required for entries with SL Type";

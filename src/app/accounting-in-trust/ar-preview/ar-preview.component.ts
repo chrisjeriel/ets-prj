@@ -230,7 +230,7 @@ export class ArPreviewComponent implements OnInit {
   }
 
   onClickSave(){
-    var slCheck = this.accEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd));
+    var slCheck = this.accEntriesData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd) && !a.deleted);
 
     if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
