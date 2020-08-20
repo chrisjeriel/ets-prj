@@ -3602,4 +3602,18 @@ export class AccountingService {
     getAcitJVMultiOffsetLov(param){
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitJVMultiOffsetLov',{params: param});	
 	}
+
+	getAcitJVRiskMgtAlloc(param){
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitJVRiskMgtAlloc',{params: param});	
+	}
+
+	saveAcitJVRiskMgtAlloc(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVRiskMgtAlloc',params,header);
+    }
 }
