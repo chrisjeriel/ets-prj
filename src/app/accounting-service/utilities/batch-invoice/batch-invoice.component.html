@@ -62,10 +62,15 @@
 											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice($event)" (newClick)="onTableClick($event)">
 												<ng-container controls-l>
 														<button class="cust-btn" style="margin-right: 0px !important;" (click)="addInvoice()">Add</button>
-														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
+														<!-- <input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
 														<label class="form-control-sm">Untag All</label> 
 														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="tag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()"> 
-														<label class="form-control-sm">Tag All</label> 
+														<label class="form-control-sm">Tag All</label> --> 
+														<input class="form-control-sm " type="checkbox" name="cbxG" [(ngModel)]="checkAllGVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllG')"> 
+														<label class="form-control-sm">Tag All G</label>
+
+														<input class="form-control-sm " type="checkbox" name="cbxP" [(ngModel)]="checkAllPVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllP')"> 
+														<label class="form-control-sm">Tag All P</label>
 								                </ng-container>
 											</app-cust-editable-non-datatable>
 									</div>
@@ -94,23 +99,27 @@
 									<fieldset class="scheduler-border">
 										<div class="input-group cust-ig" style="margin-top: 10px !important">
 											<label class="form-control-sm col-sm-3">Destination</label>
-											<select class="form-control form-control-sm cust-sm col-sm">
-											    <option>Printer</option>
-											</select>
+											    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName();">
+							                        <option value="screen">Screen</option>
+							                        <option value="dlPdf">PDF</option>
+				    								<option value="printPdf">Printer</option>
+							                    </select>
 											<div class="col-sm-1"></div>
 										</div>
 										<div class="input-group cust-ig">
 											<label class="form-control-sm col-sm-3">Printer Name</label>
-											<select class="form-control form-control-sm cust-sm col-sm">
-											    <option>Default</option>
-											</select> 
+											<select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printPdf'">
+						                        <ng-container *ngFor="let printer of printData.printers">
+						                            <option [value]="printer">{{ printer }}</option>    
+						                        </ng-container>
+						                    </select>
 											<div class="col-sm-1"></div>
 										</div>
 										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
-											<div class="col-sm-3"></div>
+											<div class="col-sm-4"></div>
 											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="printInvoiceBool" (click)="printInvoice()"><a>Print Invoice</a></button>
-											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="stopInvoiceBool" (click)="stopInvoice()"><a>Stop Printing</a></button>
-											<div class="col-sm-1"></div>
+											<!-- <button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="stopInvoiceBool" (click)="stopInvoice()"><a>Stop Printing</a></button>
+											<div class="col-sm-1"></div> -->
 									    </div>
 
 									</fieldset>
@@ -134,6 +143,8 @@
 	<div header>Confirmation</div>
 	<div body>
 	  <div style="text-align: center">
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">Please check the downloaded PDF file under</p>
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">C:\ETS\REPORTS2\Output\PDF</p><br>
 	  	<p style="margin: 0px">Was the printing of Invoice successful?</p>
 	  </div>
 	</div>
@@ -279,7 +290,7 @@
 	</div>                
 </app-modal>
 
-<<!-- app-modal class="d-none" id="add">
+<!-- app-modal class="d-none" id="add">
 	<div header>Add Invoice Details</div>
 	<div body>
 		<div class="max-size" style="width: 1000px">
