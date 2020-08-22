@@ -44,6 +44,7 @@ export class CvEntryComponent implements OnInit {
   @ViewChild('override') overrideLogin: OverrideLoginComponent;
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
+  @ViewChild('servfeeInfoMdl') servfeeInfoMdl : ModalComponent;
 
   @Output() cvData : EventEmitter<any> = new EventEmitter();
   @Input() passData: any = {
@@ -138,6 +139,7 @@ export class CvEntryComponent implements OnInit {
   disbTypeList: any[] = [];
   fromBankLov: any = '';
   checkClassList: any[] = [];
+  showServfeeInfoMdl: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private modalService: NgbModal, private ns: NotesService, 
               private mtnService: MaintenanceService,private activatedRoute: ActivatedRoute,  private router: Router, private decPipe: DecimalPipe, private ps : PrintService) { }
@@ -746,13 +748,18 @@ export class CvEntryComponent implements OnInit {
       this.printData.printCv = false;
       this.printData.printCheck = false;
       this.printData.reportType = 0;
+
+      if(this.showServfeeInfoMdl) {
+        this.servfeeInfoMdl.openNoClose();
+      }
     });
   }
 
   onYesConfirmed(){
     console.log(this.fromBtn);
     this.spoiled = false;
-    if(this.fromBtn.toLowerCase() == 'print'){
+    if(this.fromBtn.toLowerCase() == 'print') {
+      this.showServfeeInfoMdl = this.saveAcitCv.paytReqType == 'S' && this.saveAcitCv.cvStatus != 'P' && this.printData.printCheck;
       this.onClickYesConfirmed('P');
     }else if(this.fromBtn.toLowerCase() == 'cancel-req'){
       if(this.saveAcitCv.cancelReason == '' || this.saveAcitCv.cancelReason == null){

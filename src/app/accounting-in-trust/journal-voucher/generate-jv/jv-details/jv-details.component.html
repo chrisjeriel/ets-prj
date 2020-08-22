@@ -58,6 +58,7 @@
                     <div *ngSwitchCase="9">Investment Pull Out</div>
                     <div *ngSwitchCase="10">Investment (Placement)</div>
                     <div *ngSwitchCase="11">Offsetting of Investment Pull-Out Against Treaty Balance</div>
+                    <div *ngSwitchCase="32">Risk Management Expense Allocation</div>
                     <div *ngSwitchCase="67">Offsetting of Unapplied Collection Against Receivable In-Trust</div>
                     <div *ngSwitchCase="68">Offsetting of Unapplied Collection Against Treaty Balance</div>
                 </ng-container>
@@ -108,6 +109,10 @@
 
                             <ng-container *ngSwitchCase="11">
                                 <app-jv-treaty-pull-out [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-treaty-pull-out>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="32">
+                                <app-jv-risk-mgt-alloc [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-risk-mgt-alloc>
                             </ng-container>
 
                             <ng-container *ngSwitchCase="67">

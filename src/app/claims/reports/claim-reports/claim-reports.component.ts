@@ -229,7 +229,7 @@ export class ClaimReportsComponent implements OnInit {
       }else if(this.params.reportId == 'CLMR010C'){
         this.paramsToggle= ['line', 'clmAdj', 'currency','clmStat',
                              'byDate', 'byMonthYear', 'asOf', 'extTypeTag','clmStat','lossDate'];
-      } else if(this.params.reportId == 'CLMR010G'){
+      } else if(this.params.reportId == 'CLMR010G' || this.params.reportId == 'CLMR010HA' || this.params.reportId == 'CLMR010IA'){
         this.paramsToggle.push('clmEvent')
       } else if(this.params.reportId =='CLMR010NE'){
         this.paramsToggle = ['line', 'company', 'currency', 'byMonthYear', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate']

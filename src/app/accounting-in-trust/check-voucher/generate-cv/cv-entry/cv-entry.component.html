@@ -335,3 +335,15 @@
 
 <app-override-login [approvalCd]="approvalCd" (isSuccess)="onOkOverride($event)" #override></app-override-login>
 <app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>
+
+<app-modal class="d-none" #servfeeInfoMdl>
+    <div header>Information</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+            <p class="col-sm-12">Invoices, ORs and JVs for the allocation of Service Fee were successfully generated.<br />Please check the said transactions in Accounting Service.</p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="showServfeeInfoMdl=false; servfeeInfoMdl.closeModal()">Ok</button>
+    </div>
+</app-modal>
