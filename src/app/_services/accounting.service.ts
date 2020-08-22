@@ -2875,6 +2875,15 @@ export class AccountingService {
           return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
     }
 
+    pdfMerge(params) {  
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          });
+
+          return this.http.post(environment.prodApiUrl + '/util-service/pdfMerge', params, {headers: headers, responseType: 'blob' as 'json' });
+    }
+
     getAcseBudgetExpense(budgetYear?,itemNo?){
 		const params = new HttpParams()
 			.set('budgetYear', (budgetYear == null || budgetYear == undefined ? '' : budgetYear))

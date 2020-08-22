@@ -243,6 +243,9 @@ export class ClaimReportsComponent implements OnInit {
       } else if(this.params.reportId == 'CLMR010ZO' || this.params.reportId == 'CLMR010ZP'){
         this.paramsToggle.push('siRange');
       }
+       else if(this.params.reportId == 'CLMR010HA' || this.params.reportId == 'CLMR010IA'){
+        this.paramsToggle.push('clmEvent')
+      }
 
       setTimeout(()=> {
       	this.ns.lovLoader(data.ev, 0);
@@ -334,6 +337,7 @@ export class ClaimReportsComponent implements OnInit {
     this.sendData.destination = this.params.destination;
     this.sendData.currCdParam = this.params.currCd;
     this.sendData.extTypeTag = this.params.extTypeTag;
+    this.sendData.clmEvent = this.params.clmEvent;
   }
 
   extract(cancel?){
@@ -409,7 +413,8 @@ export class ClaimReportsComponent implements OnInit {
       "clmr010Params.lineCdParam" :   this.sendData.lineCdParam,
       "clmr010Params.reportId"  :   this.sendData.reportId,
       "clmr010Params.currCdParam"  :   this.sendData.currCdParam,
-      "clmr010Params.extTypeTag"  :   this.sendData.extTypeTag
+      "clmr010Params.extTypeTag"  :   this.sendData.extTypeTag,
+      "clmr010Params.clmEvent"  :   this.sendData.clmEvent
     }
 
     console.log(this.sendData);
