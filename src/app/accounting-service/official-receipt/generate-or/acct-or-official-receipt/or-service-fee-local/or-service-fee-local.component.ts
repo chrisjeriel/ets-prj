@@ -39,8 +39,8 @@ export class OrServiceFeeLocalComponent implements OnInit {
 
   passData: any = {
 		tableData:[],
-		tHeader: ['Quarter Ending','Curr','Curr Rate','Amount','Amount(PHP)'],
-		widths:[1,1,100,100,100],
+		tHeader: ['Quarter Ending','VAT Tag','Curr','Curr Rate','Amount','Amount(PHP)'],
+		widths:[1,100,1,100,100,100],
 		nData: {
 			tranId: '',
 			billId: '',
@@ -55,24 +55,32 @@ export class OrServiceFeeLocalComponent implements OnInit {
 			updateUser: '',
 			updateDate: '',
       taxAllocation: [],
-			showMG: 1
+			showMG: 1,
+      vatTag: ''
 		},
-		total:[null,null,'Total','servFeeAmt','localAmt'],
-		dataTypes: ['reqDate','text','percent','currency','currency'],
+		total:[null,null,null,'Total','servFeeAmt','localAmt'],
+		dataTypes: ['reqDate','reqSelect','text','percent','currency','currency'],
 		addFlag:true,
 		deleteFlag: true,
 		checkFlag: true,
 		infoFlag:true,
 		paginateFlag: true,
 		magnifyingGlass:['quarterEnding'],
-		keys: ['quarterEnding', 'currCd', 'currRate', 'servFeeAmt', 'localAmt'],
-		uneditable: [true,true,true,true,true]
+		keys: ['quarterEnding', 'vatTag', 'currCd', 'currRate', 'servFeeAmt', 'localAmt'],
+		uneditable: [false,false,true,true,false,false],
+    opts:[
+          {
+            selector: 'vatTag',
+            vals: [],
+            prev: []
+          }
+      ]
 	}
 
   passDataGenTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -89,22 +97,23 @@ export class OrServiceFeeLocalComponent implements OnInit {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'genTaxTbl'
       }
 
   passDataWhTax : any = {
         tableData: [],
-        tHeader : ["Tax Code","Description","Rate","Amount"],
-        dataTypes: ["text","text","percent","currency"],
+        tHeader : ["Tax Code","Description","Base Amount","Rate","Amount"],
+        dataTypes: ["text","text","currency","percent","currency"],
         addFlag: true,
         deleteFlag: true,
         checkFlag: true,
@@ -121,15 +130,16 @@ export class OrServiceFeeLocalComponent implements OnInit {
             taxName: '',
             taxRate: '',
             taxAmt: 0,
+            taxBaseAmt: 0,
             createUser: '',
             createDate: '',
             updateUser: '',
             updateDate: '',
             showMG: 1
         },
-        keys: ['taxCd', 'taxName', 'taxRate', 'taxAmt'],
-        widths: [1,150,120,120],
-        uneditable: [true,true,true,true],
+        keys: ['taxCd', 'taxName', 'taxBaseAmt', 'taxRate', 'taxAmt'],
+        widths: [1,150,120,120,120],
+        uneditable: [true,true,true,true,true],
         pageID: 'whTaxTbl'
       }
 
@@ -160,8 +170,21 @@ export class OrServiceFeeLocalComponent implements OnInit {
   @Input() paymentType;
 
   ngOnInit() {
+    this.ms.getMtnParameters('V', 'ALLOW_EDIT_TAX_ALLOC').subscribe(data => {
+      if(data['parameters'].length > 0 && data['parameters'][0]['paramValueV'] == 'Y') {
+        this.passDataGenTax.uneditable = [true,true,false,true,false];
+        this.passDataWhTax.uneditable = [true,true,false,true,false];
+      }
+    });
+
+    this.ms.getRefCode('VAT_TAG').subscribe(data => {
+      this.passData.opts[0].vals = data['refCodeList'].map(a => a.code);
+      this.passData.opts[0].prev = data['refCodeList'].map(a => a.description);
+    });
+
   	this.passData.nData.currCd = this.record.currCd;
   	this.passData.nData.currRate = this.record.currRate;
+    this.passData.nData.vatTag = this.record.vatTag == null || this.record.vatTag == '' ? 3 : this.record.vatTag;
     this.checkPayeeVsVat(); //Check the payee's VAT_TAG if its gonna have a VAT or not in his payments.
     this.addDefaultTaxes();
   	if(this.record.orStatDesc.toUpperCase() != 'NEW' || this.inquiryFlag){
@@ -169,8 +192,16 @@ export class OrServiceFeeLocalComponent implements OnInit {
   		this.passData.deleteFlag = false;
   		this.passData.checkFlag = false;
   		this.passData.uneditable = [true,true,true,true,true,true];
+      this.passDataGenTax.addFlag = false;
+      this.passDataGenTax.checkFlag = false;
+      this.passDataGenTax.deleteFlag = false;
+      this.passDataWhTax.checkFlag = false;
+      this.passDataWhTax.addFlag = false;
+      this.passDataWhTax.deleteFlag = false;
+      this.passDataGenTax.uneditable = [true,true,true,true,true];
+      this.passDataWhTax.uneditable = [true,true,true,true,true];
   	}
-	this.retrieveOrServFee();
+	 this.retrieveOrServFee();
   }
 
   ngOnDestroy(){
