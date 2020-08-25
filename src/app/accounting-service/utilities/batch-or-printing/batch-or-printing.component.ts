@@ -101,7 +101,7 @@ export class BatchOrPrintingComponent implements OnInit {
     destination : 'screen'
   };
 
-  constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService, private ps : PrintService) { }
+  constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService, public ps : PrintService) { }
 
   ngOnInit() {
     this.getPrinters();
@@ -286,10 +286,16 @@ export class BatchOrPrintingComponent implements OnInit {
 
         if(this.printData.destination == 'dlPdf'){
           selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : vOrType , userId : JSON.parse(window.localStorage.currentUser).username });
+          var param = {
+            tranId: tranIdArray[i].tranId,
+            reportName: vOrType,
+            userId: JSON.parse(window.localStorage.currentUser).username,
+            fileName: tranIdArray[i].orNo
+          };
           this.batchData.reportRequest = selectedBatchData;
           console.log(this.batchData);
-          this.printPDF(this.batchData);
-          this.loading = true; 
+          this.printPDF(param);
+          this.ps.printLoader = true;
         }
         else if(this.printData.destination == 'screen'){
           window.open(environment.prodApiUrl + '/util-service/generateReport?reportName='+ vOrType + '&userId=' + 
@@ -314,29 +320,31 @@ export class BatchOrPrintingComponent implements OnInit {
     }  
   }      
 
-  printPDF(batchData: any){  
-   let result: boolean;    
-   this.accountingService.pdfMerge(JSON.stringify(batchData))
-     .pipe(
-           finalize(() => this.finalPrint(result) )
-      )
-          .subscribe(data => {
-           var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
-           var downloadURL = window.URL.createObjectURL(data);
-           console.log(newBlob);
-           const iframe = document.createElement('iframe');
-           iframe.style.display = 'none';
-           iframe.src = downloadURL;
-           document.body.appendChild(iframe);
-           iframe.contentWindow.print();
-           result= false;
-    },
-     error => {
-           result =true;
-           this.dialogIcon= "error-message";
-           this.dialogMessage = "Error generating batch OR PDF file(s)";
-           this.successDiag.open();
-   });     
+  printPDF(batchData: any){
+   let result: boolean;
+   this.ps.downloadPDF(batchData);
+
+   // this.accountingService.pdfMerge(JSON.stringify(batchData))
+   //   .pipe(
+   //         finalize(() => this.finalPrint(result) )
+   //    )
+   //        .subscribe(data => {
+   //         var newBlob = new Blob([data as BlobPart], { type: "application/pdf" });
+   //         var downloadURL = window.URL.createObjectURL(data);
+   //         console.log(newBlob);
+   //         const iframe = document.createElement('iframe');
+   //         iframe.style.display = 'none';
+   //         iframe.src = downloadURL;
+   //         document.body.appendChild(iframe);
+   //         iframe.contentWindow.print();
+   //         result= false;
+   //  },
+   //   error => {
+   //         result =true;
+   //         this.dialogIcon= "error-message";
+   //         this.dialogMessage = "Error generating batch OR PDF file(s)";
+   //         this.successDiag.open();
+   // });     
 
 }
 
