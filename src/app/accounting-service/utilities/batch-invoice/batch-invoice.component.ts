@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BatchOR } from '@app/_models';
-import { AccountingService,NotesService,MaintenanceService } from '@app/_services';
+import { AccountingService,NotesService,MaintenanceService, PrintService } from '@app/_services';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute,Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { MtnCurrencyComponent } from '@app/maintenance/mtn-currency/mtn-currency
 import { DecimalPipe } from '@angular/common';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
 import { finalize } from 'rxjs/operators';
+import { environment } from '@environments/environment';
 
 
 
@@ -168,9 +169,19 @@ export class BatchInvoiceComponent implements OnInit {
         printInvoiceList: []
     };
 
-  constructor(private accountingService: AccountingService, public modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService) { }
+  checkAllGVal :any = '';
+  checkAllPVal :any = '';
+
+  printData : any = {
+    selPrinter  : '',
+    printers    : [],
+    destination : 'screen'
+  };
+  
+  constructor(private accountingService: AccountingService, public modalService: NgbModal,private decimal : DecimalPipe,private router: Router,private ns: NotesService,private ms: MaintenanceService, private ps : PrintService) { }
 
   ngOnInit() {
+    this.getPrinters();
     this.getInvNoDigits();
     this.getCurr();
   }
@@ -514,6 +525,8 @@ export class BatchInvoiceComponent implements OnInit {
         this.stopInvoiceBool = false;
         this.boolRadioTag = false;
         this.radioTagVal = null;
+        this.checkAllGVal = null;
+        this.checkAllPVal = null;
     });
   }
 
@@ -577,6 +590,37 @@ export class BatchInvoiceComponent implements OnInit {
     }
   }
 
+  // printInvoice(){
+  //   this.lastInvNo = null;
+  //   let invoiceIdArray=[];
+  //   this.changeStatData.printInvoiceList = [];
+    
+  //   for(var i=0; i < this.PassData.tableData.length;i++){
+  //     if (this.PassData.tableData[i].invoiceNo !== null && this.PassData.tableData[i].printCheck === 'Y'){
+  //       invoiceIdArray.push({ invoiceId: this.PassData.tableData[i].invoiceId, invoiceNo: this.PassData.tableData[i].invoiceNo });
+  //     }
+  //   }
+
+  //   if(invoiceIdArray.length === 0){
+  //     this.errorInvBool = false;
+  //     this.dialogMessage = 'Please choose records to be printed.';
+  //     this.dialogIcon = 'error-message';
+  //     this.successDiag.open();
+  //   } else {
+  //     let selectedBatchData = [];
+  //      this.batchData.reportRequest = [];
+
+  //     for(let i=0;i<invoiceIdArray.length ;i++){ 
+  //       selectedBatchData.push({ invoiceId :  invoiceIdArray[i].invoiceId , reportName : 'ACSER_INVOICE' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+  //       this.changeStatData.printInvoiceList.push({invoiceId :  invoiceIdArray[i].invoiceId, invoiceNo:invoiceIdArray[i].invoiceNo,updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+  //     }
+  //     this.batchData.reportRequest = selectedBatchData;
+
+  //     this.printPDF(this.batchData);
+  //     this.loading = true;
+  //   }  
+  // }
+
   printInvoice(){
     this.lastInvNo = null;
     let invoiceIdArray=[];
@@ -594,23 +638,60 @@ export class BatchInvoiceComponent implements OnInit {
       this.dialogIcon = 'error-message';
       this.successDiag.open();
     } else {
+
+
+      // let selectedBatchData = [];
+      //  this.batchData.reportRequest = [];
+
+      // for(let i=0;i<invoiceIdArray.length ;i++){ 
+      //   selectedBatchData.push({ invoiceId :  invoiceIdArray[i].invoiceId , reportName : 'ACSER_INVOICE' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+      //   this.changeStatData.printInvoiceList.push({invoiceId :  invoiceIdArray[i].invoiceId, invoiceNo:invoiceIdArray[i].invoiceNo,updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+      // }
+      // this.batchData.reportRequest = selectedBatchData;
+
+      // this.printPDF(this.batchData);
+      // this.loading = true;
+
       let selectedBatchData = [];
-       this.batchData.reportRequest = [];
+      this.batchData.reportRequest = [];
 
       for(let i=0;i<invoiceIdArray.length ;i++){ 
-        selectedBatchData.push({ invoiceId :  invoiceIdArray[i].invoiceId , reportName : 'ACSER_INVOICE' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+
+        console.log(invoiceIdArray[i]);
+
+        if(this.printData.destination == 'dlPdf'){
+          selectedBatchData.push({ invoiceId :  invoiceIdArray[i].invoiceId , reportName : 'ACSER_INVOICE' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+          this.batchData.reportRequest = selectedBatchData;
+          console.log(this.batchData);
+          this.printPDF(this.batchData);
+          this.loading = true; 
+        }
+        else if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACSER_INVOICE' + '&userId=' + 
+                        this.ns.getCurrentUser() + '&invoiceId=' + invoiceIdArray[i].invoiceId, '_blank');
+        }else if(this.printData.destination == 'printPdf'){
+          let params = {
+            invoiceId: invoiceIdArray[i].invoiceId,
+            printerName: this.printData.selPrinter,
+            pageOrientation: 'LANDSCAPE',
+            paperSize: 'LETTER',
+            reportName : 'ACSER_INVOICE'
+          };
+          this.loading = true;
+          this.ps.directPrint(params).subscribe(data => {
+            console.log(data);
+            this.loading = false;
+          });
+        }
+
         this.changeStatData.printInvoiceList.push({invoiceId :  invoiceIdArray[i].invoiceId, invoiceNo:invoiceIdArray[i].invoiceNo,updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
-      this.batchData.reportRequest = selectedBatchData;
-
-      this.printPDF(this.batchData);
-      this.loading = true;
     }  
   }
 
   printPDF(batchData: any){  
    let result: boolean;    
-   this.accountingService.batchPrint(JSON.stringify(batchData))
+   this.accountingService.pdfMerge(JSON.stringify(batchData))
      .pipe(
            finalize(() => this.finalPrint(result) )
       )
@@ -970,6 +1051,34 @@ validateInvLastPrinted(data){
     this.acitInvItems.invoiceDelItemList = this.deletedData;     
  }
      
+checkAllGenPrin(from?){
+  if(this.PassData.tableData.length === 0){
+  } else {
+      for(var i=0; i < this.PassData.tableData.length;i++){
+        if (this.PassData.tableData[i].invoiceNo === null){
+           if(from == 'checkAllG'){
+            this.PassData.tableData[i].invoiceNocheck = (this.checkAllGVal)?'Y':'N';
+           }else if(from == 'checkAllP'){
+            this.PassData.tableData[i].printCheck = (this.checkAllPVal)?'Y':'N';
+           } 
+        } else {
+          if(from == 'checkAllP'){
+            this.PassData.tableData[i].printCheck = (this.checkAllPVal)?'Y':'N';
+          } 
+        }
+    }
+  } 
+}
 
+clearPrinterName(){
+  (this.printData.destination != 'printPdf')?this.printData.selPrinter='':''
+}
+
+getPrinters(){
+  this.ps.getPrinters()
+  .subscribe(data => {
+    this.printData.printers = data;
+  });
+}
 
 }

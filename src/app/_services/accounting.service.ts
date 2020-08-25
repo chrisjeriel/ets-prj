@@ -2356,10 +2356,11 @@ export class AccountingService {
         return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveSoaAgingZeroLOV",{params});
 	}
 
-	getQuarterPrem(quarterEnd,cedingId){
+	getQuarterPrem(quarterEnd,cedingId,currCd?){
 		const params = new HttpParams()
 			.set('quarterEnd', (quarterEnd == null || quarterEnd == undefined ? '' : quarterEnd))
 			.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
 		return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveQuarterPremRes",{params});
 	}
 	 
@@ -2872,6 +2873,15 @@ export class AccountingService {
           });
 
           return this.http.post(environment.prodApiUrl + '/util-service/mergePDF', params, {headers: headers, responseType: 'blob' as 'json' });
+    }
+
+    pdfMerge(params) {  
+          const headers = new HttpHeaders({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          });
+
+          return this.http.post(environment.prodApiUrl + '/util-service/pdfMerge', params, {headers: headers, responseType: 'blob' as 'json' });
     }
 
     getAcseBudgetExpense(budgetYear?,itemNo?){

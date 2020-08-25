@@ -500,7 +500,7 @@ export class ClmGenInfoClaimComponent implements OnInit, OnDestroy {
     var ld = this.claimData.lossDate.split('T');
     var d = ld[0] == '' ? new Date() : ld[1] == '' ? new Date(ld[1]) : new Date(ld.join('T'));
 
-    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lossDateFrom >= d && d <= a.lossDateTo };
+    this.clmEventFilter = function(a) { return a.activeTag == 'Y' && a.eventTypeCd == eventTypeCd && a.lossDateFrom <= d && d <= a.lossDateTo };
     this.clmEventLOV.modal.openNoClose();
   }
 

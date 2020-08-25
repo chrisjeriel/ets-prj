@@ -44,10 +44,16 @@
 								<div class="col-sm-12">
 										<app-cust-editable-non-datatable #batchOR [passData]="passData" (genericBtn)="viewOR()" (newClick)="onTableClick($event)">
 											<ng-container controls-l>
-													<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
+													<!-- <input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
 													<label class="form-control-sm">Untag All</label> 
 													<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="tag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()"> 
-													<label class="form-control-sm">Tag All</label> 
+													<label class="form-control-sm">Tag All</label> -->
+													
+													<input class="form-control-sm " type="checkbox" name="cbxG" [(ngModel)]="checkAllGVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllG')"> 
+													<label class="form-control-sm">Tag All G</label>
+
+													<input class="form-control-sm " type="checkbox" name="cbxP" [(ngModel)]="checkAllPVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllP')"> 
+													<label class="form-control-sm">Tag All P</label>
 							                </ng-container>
 										</app-cust-editable-non-datatable>
 									<!-- <div class="input-group cust-ig" style="margin-top: 35px !important;">
@@ -91,7 +97,7 @@
 											</div>
 										</div>
 										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
-											<div class="col-sm-7"></div> 
+											<div class="col-sm-4"></div>
 											<button type="button" class="cust-btn col-sm" [disabled]="genORBool" (click)="generateOR()"><a>Generate OR</a></button>
 										</div>
 									
@@ -101,23 +107,27 @@
 									<fieldset class="scheduler-border">
 										<div class="input-group cust-ig" style="margin-top: 10px !important">
 											<label class="form-control-sm col-sm-3">Destination</label>
-											<select class="form-control form-control-sm cust-sm col-sm">
-											    <option>Printer</option>
-											</select>
+											    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName();">
+							                        <option value="screen">Screen</option>
+							                        <option value="dlPdf">PDF</option>
+				    								<option value="printPdf">Printer</option>
+							                    </select>
 											<div class="col-sm-1"></div>
 										</div>
 										<div class="input-group cust-ig">
 											<label class="form-control-sm col-sm-3">Printer Name</label>
-											<select class="form-control form-control-sm cust-sm col-sm">
-											    <option>Default</option>
-											</select> 
+											<!-- yele -->
+											<select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printPdf'">
+						                        <ng-container *ngFor="let printer of printData.printers">
+						                            <option [value]="printer">{{ printer }}</option>    
+						                        </ng-container>
+						                    </select>
+						                    <!-- end yele -->
 											<div class="col-sm-1"></div>
 										</div>
 										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
-											<div class="col-sm-3"></div>
+											<div class="col-sm-4"></div>
 											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="printORBool" (click)="printOR()"><a>Print OR</a></button>
-											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="stopPrintBool" (click)="stopPrintOR()"><a>Stop Printing</a></button>
-											<div class="col-sm-1"></div>
 									    </div>
 
 									</fieldset>
@@ -142,6 +152,8 @@
 	<div header>Confirmation</div>
 	<div body>
 	  <div style="text-align: center">
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">Please check the downloaded PDF file under</p>
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">C:\ETS\REPORTS2\Output\PDF</p><br>
 	  	<p style="margin: 0px">Was the printing of OR successful?</p>
 	  </div>
 	</div>
@@ -172,7 +184,6 @@
       </div>
   	</div>
 </app-modal>
-
 
 
 

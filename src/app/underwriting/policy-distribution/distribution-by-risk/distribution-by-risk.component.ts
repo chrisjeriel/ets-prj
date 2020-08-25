@@ -299,7 +299,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   }
   //NECO 05/31/2019
     retrieveRiskDistribution(){
+      $('.globalLoading').css('display','block');
       this.polService.getRiskDistribution(this.params.policyId, this.params.line, this.params.lineClassCd).subscribe((data: any)=>{
+        $('.globalLoading').css('display','none');
         this.distAlt = data.distAlt;
         this.undistAlt = data.undistAlt;
         this.riskDistributionData = data.distWrisk;
@@ -528,7 +530,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
           seciiPremTag: this.riskDistributionData.seciiPremTag,
           trtyLimitSec2: this.riskDistributionData.trtyLimitSec2 == null ?'' : this.riskDistributionData.trtyLimitSec2.toString().replace(/[,]/g,''),
         };
+        $('.globalLoading').css('display','block');
         this.polService.saveDistRisk(params).subscribe((data: any)=>{
+        $('.globalLoading').css('display','none');
         if(data.returnCode === 0){
           this.dialogIcon = 'error';
           this.successDiag.open();

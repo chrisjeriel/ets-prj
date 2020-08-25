@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter, OnDestroy, ViewChild } from '@angular/core';
 import { BatchOR } from '@app/_models';
-import { AccountingService,MaintenanceService, NotesService } from '@app/_services';
+import { AccountingService,MaintenanceService, NotesService, PrintService } from '@app/_services';
 import { ActivatedRoute,Router } from '@angular/router';
 import { NgbTabChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
@@ -88,14 +88,23 @@ export class BatchOrPrintingComponent implements OnInit {
   orNonVatIdArray=[];
   orVatIdArray=[];
 
-
   genOrData: any = {
         orNoList: []
   };
 
-  constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService) { }
+  checkAllGVal :any = '';
+  checkAllPVal :any = '';
+
+  printData : any = {
+    selPrinter  : '',
+    printers    : [],
+    destination : 'screen'
+  };
+
+  constructor(private accountingService: AccountingService,private router: Router, private route: ActivatedRoute,private ms: MaintenanceService,private ns: NotesService, private ps : PrintService) { }
 
   ngOnInit() {
+    this.getPrinters();
     this.retrievePaymentType();
     this.getInvNoDigits();
   }
@@ -133,6 +142,8 @@ export class BatchOrPrintingComponent implements OnInit {
         this.stopPrintBool = false;
         this.boolRadioTag = false;
         this.radioTagVal = null;
+        this.checkAllGVal = null;
+        this.checkAllPVal = null;
     });
   }
 
@@ -171,6 +182,25 @@ export class BatchOrPrintingComponent implements OnInit {
     }
   }
 
+  checkAllGenPrin(from?){
+   if(this.passData.tableData.length === 0){
+   } else {
+      for(var i=0; i < this.passData.tableData.length;i++){
+        if (this.passData.tableData[i].orNo === null){
+           if(from == 'checkAllG'){
+            this.passData.tableData[i].orNocheck = (this.checkAllGVal)?'Y':'N';
+           }else if(from == 'checkAllP'){
+            this.passData.tableData[i].printCheck = (this.checkAllPVal)?'Y':'N';
+           } 
+        } else {
+          if(from == 'checkAllP'){
+            this.passData.tableData[i].printCheck = (this.checkAllPVal)?'Y':'N';
+          } 
+        }
+      }
+    } 
+  }
+
   onTableClick(data){
     console.log(data);
     this.selectedrecord = data;
@@ -187,6 +217,43 @@ export class BatchOrPrintingComponent implements OnInit {
       }
     }
   }
+
+  //original
+  // printOR(){
+  //   this.lastOrNo = null;
+  //   let tranIdArray=[];
+  //   this.changeStatData.printOrList = [];
+  //   for(var i=0; i < this.passData.tableData.length;i++){
+  //     if (this.passData.tableData[i].orNo !== null && this.passData.tableData[i].printCheck === 'Y'){
+  //       tranIdArray.push({ tranId: this.passData.tableData[i].tranId, orNo: this.passData.tableData[i].orNo, orType: this.passData.tableData[i].orType });
+  //     }
+  //   }
+
+  //   if(tranIdArray.length === 0){
+  //     this.dialogMessage = 'Please choose records to be printed.';
+  //     this.dialogIcon = 'error-message';
+  //     this.successDiag.open();
+  //   } else {
+  //     let selectedBatchData = [];
+  //      this.batchData.reportRequest = [];
+
+  //     for(let i=0;i<tranIdArray.length ;i++){ 
+
+  //       console.log(tranIdArray[i]);
+  //       if (tranIdArray[i].orType === 'VAT'){
+  //         selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_VAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+  //       }else if (tranIdArray[i].orType === 'NON-VAT'){
+  //          selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_NVAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+  //       }
+  //       this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
+  //     }
+
+  //     this.batchData.reportRequest = selectedBatchData;
+  //     console.log(this.batchData);
+  //     this.printPDF(this.batchData);
+  //     this.loading = true;
+  //   }  
+  // }
 
   printOR(){
     this.lastOrNo = null;
@@ -209,23 +276,47 @@ export class BatchOrPrintingComponent implements OnInit {
       for(let i=0;i<tranIdArray.length ;i++){ 
 
         console.log(tranIdArray[i]);
+        var vOrType = '';
+
         if (tranIdArray[i].orType === 'VAT'){
-          selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_VAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+          vOrType = 'ACSER_OR_VAT';
         }else if (tranIdArray[i].orType === 'NON-VAT'){
-           selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : 'ACSER_OR_NVAT' , userId : JSON.parse(window.localStorage.currentUser).username }); 
+          vOrType = 'ACSER_OR_NVAT';
         }
+
+        if(this.printData.destination == 'dlPdf'){
+          selectedBatchData.push({ tranId :  tranIdArray[i].tranId , reportName : vOrType , userId : JSON.parse(window.localStorage.currentUser).username });
+          this.batchData.reportRequest = selectedBatchData;
+          console.log(this.batchData);
+          this.printPDF(this.batchData);
+          this.loading = true; 
+        }
+        else if(this.printData.destination == 'screen'){
+          window.open(environment.prodApiUrl + '/util-service/generateReport?reportName='+ vOrType + '&userId=' + 
+                        this.ns.getCurrentUser() + '&tranId=' + tranIdArray[i].tranId, '_blank');
+        }else if(this.printData.destination == 'printPdf'){
+          let params = {
+            tranId: tranIdArray[i].tranId,
+            printerName: this.printData.selPrinter,
+            pageOrientation: 'LANDSCAPE',
+            paperSize: 'LETTER',
+            reportName : vOrType
+          };
+          this.loading = true;
+          this.ps.directPrint(params).subscribe(data => {
+            console.log(data);
+            this.loading = false;
+          });
+        }
+
         this.changeStatData.printOrList.push({tranId :  tranIdArray[i].tranId, orNo: tranIdArray[i].orNo, updateDate : this.ns.toDateTimeString(0) , updateUser : JSON.parse(window.localStorage.currentUser).username });
       }
-
-      this.batchData.reportRequest = selectedBatchData;
-      this.printPDF(this.batchData);
-      this.loading = true;
     }  
   }      
 
   printPDF(batchData: any){  
    let result: boolean;    
-   this.accountingService.batchPrint(JSON.stringify(batchData))
+   this.accountingService.pdfMerge(JSON.stringify(batchData))
      .pipe(
            finalize(() => this.finalPrint(result) )
       )
@@ -468,6 +559,14 @@ retrieveInvSeriesNo(orType,orFrom,orTo,usedTag,length,action){
   }
 
 
+clearPrinterName(){
+  (this.printData.destination != 'printPdf')?this.printData.selPrinter='':''
+}
 
-
+getPrinters(){
+  this.ps.getPrinters()
+  .subscribe(data => {
+    this.printData.printers = data;
+  });
+}
 }

@@ -405,11 +405,17 @@ export class BudgetDetailsComponent implements OnInit {
 
         if(this.printParams.reportId == 'ACSER004'){
           this.passDataCsv = data['listAcser004'];
-          query = 'SELECT checkNullNo(budgetYear) as [BUDGET YEAR], checkNullNo(itemNo) as [ITEM NO], itemName as [ACCOUNT TITLES], isNull(slName) as [SL NAME],'+
-          'negFmt(currency(currAsofBudget)) as [BUDGET CURRENT DATE], negFmt(currency(currAsofExpense)) as [EXPENSES CURRENT DATE],' +
-          'negFmt(currency(saveOvrdrft)) as [SAVING OVERDRAFT], negFmt(saveOvrdrftPct) as [% SAVING OVERDRAFT],negFmt(currency(prevAsofExpense)) as [EXPENSES LAST YEAR],'+
-          'negFmt(overunderPct) as [% OVER UNDER], negFmt(currency(currTotalBudget)) as [CURRENT TOTAL BUDGET], negFmt(asofVsTotalExp) as [CURR EXPENSES VS TOTAL BUDGET],'+
-          'myFormat(paramDate) AS [PARAM DATE]';
+          // query = 'SELECT checkNullNo(budgetYear) as [BUDGET YEAR], checkNullNo(itemNo) as [ITEM NO], itemName as [ACCOUNT TITLES], isNull(slName) as [SL NAME],'+
+          // 'negFmt(currency(currAsofBudget)) as [BUDGET CURRENT DATE], negFmt(currency(currAsofExpense)) as [EXPENSES CURRENT DATE],' +
+          // 'negFmt(currency(saveOvrdrft)) as [SAVING OVERDRAFT], negFmt(saveOvrdrftPct) as [% SAVING OVERDRAFT],negFmt(currency(prevAsofExpense)) as [EXPENSES LAST YEAR],'+
+          // 'negFmt(overunderPct) as [% OVER UNDER], negFmt(currency(currTotalBudget)) as [CURRENT TOTAL BUDGET], negFmt(asofVsTotalExp) as [CURR EXPENSES VS TOTAL BUDGET]';
+          query = 'SELECT checkNullNo(budgetYear) AS [BUDGET YEAR],checkNullNo(itemNo) AS [ITEM NO],isNull(itemName) AS [ITEM NAME],'+
+          'checkNullNo(glAcctId) AS [GL ACCT ID],isNull(glAcctName) AS [GL ACCT NAME],checkNullNo(slTypeCd) AS [SL TYPE CD],'+
+          'isNull(slTypeName) AS [SL TYPE NAME],checkNullNo(slCd) AS [SL CD],isNull(slName) AS [SL NAME],'+
+          'negFmt(currAsofBudget) AS [CURR ASOF BUDGET],negFmt(currAsofExpense) AS [CURR ASOF EXPENSE],negFmt(saveOvrdrft) AS [SAVE OVRDRFT],'+
+          'negFmt(saveOvrdrftPct) AS [SAVE OVRDRFT PCT],negFmt(prevAsofBudget) AS [PREV ASOF BUDGET],negFmt(prevAsofExpense) AS [PREV ASOF EXPENSE],'+
+          'negFmt(overunderPct) AS [OVERUNDER PCT],negFmt(currTotalBudget) AS [CURR TOTAL BUDGET],negFmt(currTotalExpense) AS [CURR TOTAL EXPENSE],'+
+          'negFmt(prevTotalBudget) AS [PREV TOTAL BUDGET],negFmt(prevTotalExpense) AS [PREV TOTAL EXPENSE],negFmt(asofVsTotalExp) AS [ASOF VS TOTAL EXP]';
         }
 
         console.log(this.passDataCsv);
