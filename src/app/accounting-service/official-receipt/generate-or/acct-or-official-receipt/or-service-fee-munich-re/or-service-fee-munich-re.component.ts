@@ -58,7 +58,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 			showMG: 1,
       vatTag: ''
 		},
-		total:[null,null,null,'Total','servFeeAmt','localAmt'],
+		total:[null,null,null,'Total','netDue','netDueLocal'],
 		dataTypes: ['reqDate','reqSelect','text','percent','currency','currency'],
 		addFlag:true,
 		deleteFlag: true,
@@ -66,8 +66,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
 		infoFlag:true,
 		paginateFlag: true,
 		magnifyingGlass:['quarterEnding'],
-		keys: ['quarterEnding','vatTag','currCd', 'currRate', 'servFeeAmt', 'localAmt'],
-		uneditable: [true,false,true,true,true,true],
+		keys: ['quarterEnding','vatTag','currCd', 'currRate', 'netDue', 'netDueLocal'],
+		uneditable: [true,false,true,true,false,true],
     opts:[
       {
         selector: 'vatTag',
@@ -416,6 +416,8 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
               this.passData.tableData[this.quarterEndingIndex].showMG = 0;
               this.passData.tableData[this.quarterEndingIndex].servFeeAmt = servFeeData.servFeeDist.actualShrAmt / this.record.currRate;
               this.passData.tableData[this.quarterEndingIndex].localAmt = servFeeData.servFeeDist.actualShrAmt;
+              this.passData.tableData[this.quarterEndingIndex].netDue = servFeeData.servFeeDist.netDue / this.record.currRate;
+              this.passData.tableData[this.quarterEndingIndex].netDueLocal = servFeeData.servFeeDist.netDue;
               this.quarterEndingDates = this.passData.tableData.map(a=>{return a.quarterEnding});
               this.lovMdl.modal.closeModal();
               for(var i of this.passData.tableData){
@@ -495,14 +497,14 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
   }
 
   onTableDataChange(data){
-    if(data.key == 'servFeeAmt'){
+    if(data.key == 'netDue'){
       for(var i of this.passData.tableData){
-        i.localAmt = i.servFeeAmt * i.currRate;
+        i.netDueLocal = i.netDue * i.currRate;
         for(var j of i.taxAllocation){
           if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
             i.taxAmt = 0;
           }else if(j.taxRate !== null && j.taxRate !== 0){
-            j.taxAmt = i.localAmt * (j.taxRate / 100);
+            j.taxAmt = i.netDueLocal * (j.taxRate / 100);
           }
           j.edited = true;
         }
@@ -558,7 +560,7 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
       }
   	}
   	this.passData.tableData.filter(a=>{return !a.deleted}).forEach(b=>{
-  		totalLocalAmt += b.localAmt;
+  		totalLocalAmt += b.netDueLocal;
   	});
   	let params: any = {
       tranId: this.record.tranId,

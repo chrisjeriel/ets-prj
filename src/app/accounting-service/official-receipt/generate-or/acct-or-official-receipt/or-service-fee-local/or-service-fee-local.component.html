@@ -37,7 +37,7 @@
   <div footer class="w-100">
     <div class="col-md-13 text-center">
         <div class="cust-btn-container" >
-            <button type="button" class="cust-btn" (click)="onClickSave();" *ngIf="passData.checkFlag"><a>Save</a></button>
+            <button type="button" class="cust-btn" (click)="onClickSave(true);" *ngIf="record.orStatDesc.toUpperCase() == 'NEW'"><a>Save</a></button>
             <button type="button" class="cust-btn" (click)="confirmLeaveTaxAlloc() ? taxCancelBtn.clickCancel() : taxAllocMdl.closeModal()"><a>Return</a></button>
         </div>
     </div>

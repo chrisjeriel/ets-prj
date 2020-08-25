@@ -58,16 +58,16 @@ export class OrServiceFeeLocalComponent implements OnInit {
 			showMG: 1,
       vatTag: ''
 		},
-		total:[null,null,null,'Total','servFeeAmt','localAmt'],
+		total:[null,null,null,'Total','netDue','netDueLocal'],
 		dataTypes: ['reqDate','reqSelect','text','percent','currency','currency'],
-		addFlag:true,
-		deleteFlag: true,
-		checkFlag: true,
+		addFlag: false,
+		deleteFlag: false,
+		checkFlag: false,
 		infoFlag:true,
 		paginateFlag: true,
 		magnifyingGlass:['quarterEnding'],
-		keys: ['quarterEnding', 'vatTag', 'currCd', 'currRate', 'servFeeAmt', 'localAmt'],
-		uneditable: [false,false,true,true,false,false],
+		keys: ['quarterEnding', 'vatTag', 'currCd', 'currRate', 'netDue', 'netDueLocal'],
+		uneditable: [true,false,true,true,false,true],
     opts:[
           {
             selector: 'vatTag',
@@ -156,6 +156,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
 	deletedData: any = [];
   deletedTaxData: any = [];
   quarterEndingDates: string[] = [];
+  fromTaxMdl: boolean = false;
 
   passLov: any = {
     selector: '',
@@ -491,16 +492,14 @@ export class OrServiceFeeLocalComponent implements OnInit {
   }
 
   onTableDataChange(data){
-    if(data.key == 'servFeeAmt'){
+    if(data.key == 'netDue'){
       for(var i of this.passData.tableData){
-        console.log(i.servFeeAmt);
-        console.log(i.currRate);
-        i.localAmt = i.servFeeAmt * i.currRate;
+        i.netDueLocal = i.netDue * i.currRate;
         for(var j of i.taxAllocation){
           if(j.taxCd == 'VAT' && this.record.vatTag == 2){ //if Payee is ZERO VAT
             i.taxAmt = 0;
           }else if(j.taxRate !== null && j.taxRate !== 0){
-            j.taxAmt = i.localAmt * (j.taxRate / 100);
+            j.taxAmt = i.netDueLocal * (j.taxRate / 100);
           }
           j.edited = true;
         }
@@ -508,7 +507,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
     }
   }
 
-  onClickSave(){
+  onClickSave(saveTax?){
   	if(this.record.dcbStatus == 'C' || this.record.dcbStatus == 'T'){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'O.R. cannot be saved. DCB No. is '; 
@@ -518,6 +517,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
       this.dialogIcon = 'error';
       this.successDiag.open();
     }else{
+      this.fromTaxMdl = saveTax !== undefined;
       this.confirm.confirmModal();
     }
   }
@@ -555,7 +555,7 @@ export class OrServiceFeeLocalComponent implements OnInit {
   	  }
   	}
   	this.passData.tableData.filter(a=>{return !a.deleted}).forEach(b=>{
-  		totalLocalAmt += b.localAmt;
+  		totalLocalAmt += b.netDueLocal;
   	});
   	let params: any = {
       tranId: this.record.tranId,
@@ -568,7 +568,8 @@ export class OrServiceFeeLocalComponent implements OnInit {
       updateDate: this.ns.toDateTimeString(0),
       saveServFee: this.savedData,
       delServFee: this.deletedData,
-      delOrItemTaxes: this.deletedTaxData.flat()
+      delOrItemTaxes: this.deletedTaxData.flat(),
+      fromTaxMdl: this.fromTaxMdl ? 'Y' : 'N'
     }
 
     this.as.saveAcseOrServFee(params).subscribe(
