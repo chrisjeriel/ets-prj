@@ -474,6 +474,10 @@ export class JvEntryComponent implements OnInit {
         this.dialogMessage = 'JV No Series unavailable';
         this.dialogIcon = "error-message";
         this.successDiag.open();
+      } else if(data['returnCode'] == 101) {
+        this.dialogMessage = 'There is already an existing JV for Risk Management Charges this month. See ' + data['tranNo'];
+        this.dialogIcon = "error-message";
+        this.successDiag.open();
       }
     });
   }
