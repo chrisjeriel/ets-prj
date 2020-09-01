@@ -1,0 +1,35 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Utilities / Cancel Transactions</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab id="or">
+			<ng-template ngbTabTitle>
+				<div>Official Receipt</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-cancel-ar-cv-jv-service [tranClass] ="tranClass"></app-cancel-ar-cv-jv-service>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="cv">
+			<ng-template ngbTabTitle>
+				<div>Check Voucher</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-cancel-ar-cv-jv-service [tranClass] ="tranClass"></app-cancel-ar-cv-jv-service>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="jv">
+			<ng-template ngbTabTitle>
+				<div>Journal Voucher</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-cancel-ar-cv-jv-service [tranClass] ="tranClass"></app-cancel-ar-cv-jv-service>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

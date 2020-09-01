@@ -1,0 +1,145 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Accounting In-Trust / Transaction Type</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Transaction Type Maintenance">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12" style="margin-top: 20px">
+						<fieldset class="scheduler-border">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<div class="col-sm-2"></div>
+										<label class="form-control-sm col-sm-2 text-right labels">Transaction Class</label>
+										<select class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="params.tranClass" (ngModelChange)="params.tranClass=$event;retrieveTranType()">
+											<option value="AR">AR</option>
+											<option value="PRQ">PR</option>
+											<option value="JV">JV</option>
+											<option value="CM">CM</option>
+											<option value="DM">DM</option>
+										</select>
+										<input type="text" class="form-control form-control-sm col-sm-4" style="margin-left: 4px;" readonly [(ngModel)]="params.tranName">
+										<div class="col-sm-3"></div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+							<div class="row" style="margin-top: 15px">
+								<div class="col-sm-12">
+									<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (genericBtn)="deleteCurr($event)" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;"  #tranType></app-cust-editable-non-datatable>
+								</div>
+								<div class="form-control-sm col-sm-1"></div>
+								<label class="form-control-sm col-sm-1">Remarks</label>
+								<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="params.remarks" (ngModelChange)="table.indvSelect.remarks=$event;table.indvSelect.edited=true">
+							</div>
+							<div class="form-row" style="margin-top: 13px !important;">
+							    <div class="form-group col-sm">
+							        <div class="col-md-12 text-center">
+							            <div class="cust-btn-container">
+							                <button type="button" class="cust-btn" style="min-width: 110px;" (click)="onClickCancel()"><a>Cancel</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 110px;" (click)="onClickSave()"><a>Save</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 110px;" (click)="onClickAcctEntries()" [disabled]="acctEntryBut" [class.cust-btn-disabled]="acctEntryBut"><a>Accounting Entries</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 110px;" (click)="onClickAmounDtl()" [disabled]="acctEntryBut" [class.cust-btn-disabled]="acctEntryBut"><a> Amount Details</a></button>
+							                <button type="button" class="cust-btn" style="min-width: 110px;" (click)="print()"><a>Print</a></button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-12">
+					    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+					        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+					            <div class="input-group" style="margin-bottom: -15px !important;">
+					                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.createUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.createDate"></datepicker>
+					                </div>
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+					                <input type="text" class="form-control form-control-sm col-sm-2" readonly [(ngModel)]="params.updateUser">
+					                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+					                <div class="col-sm-2" style="padding: 0px">
+					                    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="params.updateDate"></datepicker>
+					                </div>
+					            </div>
+					        </div>
+					    </fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal class="d-none" id="uploadAcct" #AcctEntries>
+    <div header>Default Accounting Entries</div>  
+    <div body>
+        <div class="row">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-3 text-right labels">Transaction Type</label>
+					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranTypeName">
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 20px">
+				<app-cust-editable-non-datatable [passData]="acctEntries" (clickLOV)="openAcctEntryLov($event)" (newClick)="acctEntriesClick($event)" (genericBtn)="onClickDelete($event)" (onDelete)="table.onClickDelete('force');acctEntTbl.disableGeneric=true;"#acctEntTbl></app-cust-editable-non-datatable>
+			</div>
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2">Remarks</label>
+					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="paramsAcctEntries.remarks" (ngModelChange)="acctEntTbl.indvSelect.remarks=$event;acctEntTbl.indvSelect.edited=true">
+				</div>
+			</div>
+		</div>
+    </div>
+    <div footer class="text-center">
+		<div class="input-group">
+			<button type="button" class="cust-btn" (click)="onClickSaveAcctEnt()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="acctEntryMdl.closeModal();paramsAcctEntries.remarks=''"><a>Cancel</a></button>
+		</div>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="amountDetails" #amountDetails>
+    <div header>Default Amount Details</div>  
+    <div body>
+        <div class="row">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-3 text-right labels">Transaction Type</label>
+					<input type="text" class="form-control form-control-sm col-sm-4" readonly [(ngModel)]="params.tranTypeName">
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 20px">
+				<app-cust-editable-non-datatable [passData]="amountDtl" (clickLOV)="clickLov($event)" (newClick)="defAmtClick($event)" #amtDtlTbl></app-cust-editable-non-datatable>
+			</div>
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2">Remarks</label>
+					<input type="text" class="form-control form-control-sm col-sm-8" [ngModel]="paramsAmtDtl.remarks" (ngModelChange)="amtDtlTbl.indvSelect.remarks=$event;amtDtlTbl.indvSelect.edited=true">
+				</div>
+			</div>
+		</div>
+    </div>
+    <div footer class="text-center">
+		<div class="input-group">
+			<button type="button" class="cust-btn" (click)="onClickSaveAmounDtl()"><a>Save</a></button>
+			<button type="button" class="cust-btn" (click)="amountDetailsMdl.closeModal();paramsAmtDtl.remarks=''"><a>Cancel</a></button>
+		</div>
+    </div>
+</app-modal>
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" #amtDtlLov></app-lov>
+<app-lov [passData]="passLov" (selectedData)="setLovAcct($event)" #acctEntryLov></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()" #tranTypeSave></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/maintenance-acct'" #tranTypeCancel></app-cancel-button>
+<app-confirm-save (onYes)="saveAmtDtl()" #amtDetailSave></app-confirm-save>
+<app-confirm-save (onYes)="saveDefAcctEntries()" #acctEntrySave></app-confirm-save>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>

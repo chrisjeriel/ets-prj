@@ -1,0 +1,4 @@
+td, th{
+    min-width: 20px;
+    max-width: 40px;
+}

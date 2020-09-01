@@ -1,0 +1,94 @@
+<form #myForm="ngForm">
+<div class="cust-tabs-container">
+    <h4>Maintenance / Accounting / General Taxes</h4>
+    <ngb-tabset>
+        <ngb-tab title="General Tax Charges Maintenance">
+            <ng-template ngbTabContent>
+
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;padding-top: 10px !important;">
+                    <div class="row">
+                        <div class="col-sm" id="mtn-gentax">
+	                	  <app-cust-editable-non-datatable #gentax [passData]="passTable" (genericBtn)="delete()" (onDelete)="table.onClickDelete('force');" (newClick)="onTableClick($event)" (clickLOV)="clickLOV($event);" (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+                        </div>
+                    </div>
+                    <div  class="input-group">
+                        <label class="form-control-sm col-sm-1">Remarks</label>
+                        <input name="remarks" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.remarks" (ngModelChange)="info.remarks=$event;onChangeRemarks()" [disabled]="boolRemarks">
+                    </div>
+	                <div class="w-100 text-center my-2" style="margin-top: 0px !important">
+                    	<button class="cust-btn" (click)="cnclBtn.clickCancel()">Cancel</button>
+                    	<button class="cust-btn" (click)="onClickSave()">Save</button>
+                        <button class="cust-btn" (click)="onClickRange()" [disabled]="boolRange">Range</button>
+                        <button class="cust-btn" (click)="onClickHistory()" [disabled]="boolHistory">History</button>
+                        <button class="cust-btn" (click)="print()" [disabled]="boolPrint">Print</button>
+                    </div>
+                </fieldset>
+                <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                    <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-1">Created By</label>
+                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createUser" readonly>
+                        <label class="form-control-sm col-sm-1">Created Date</label>
+                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateUser" readonly>
+                        <label class="form-control-sm col-sm-1">Last Update</label>
+                        <input  name="updateDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="info?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+                    </div>
+
+                </fieldset>           
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+</form>
+
+<app-confirm-save (onYes)="onClickSaveCancel()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error'?cnclBtn.onNo():null;"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveCancel('cancel')" [url]="'/maintenance-acct'" ></app-cancel-button>
+<app-print-modal-mtn-acct id="printModal" (selectedData)="printPreview($event);"></app-print-modal-mtn-acct>
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" [lovCheckBox]="lovCheckbox">
+
+<app-modal class="d-none" id="taxRange" #mdl>
+    <div header>Tax Range</div>
+    <div body style="width: 700px ! important">
+                    <div class="input-group" style="margin-top: 10px !important;">
+                        <label class="form-control-sm col-sm-2">Tax</label>
+                        <input name="employeeNo" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="info?.taxCd" readonly>
+                        <input name="employeeName" type="text" class="form-control form-control-sm col-sm-7 ml-2" [ngModel]="info?.taxName" readonly>
+                   </div>
+                   <div class="input-group" style="margin-top: 1px !important;">
+                            <div class="col-sm" id="mtn-gentax-range" style="padding: 0">
+                              <app-cust-editable-non-datatable #gentaxrange [passData]="passTableRange" (genericBtn)="deleteRange()" (onDelete)="tableRange.onClickDelete('force');" (newClick)="onTableRangeClick($event)" ></app-cust-editable-non-datatable>
+                            </div>
+                   </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modal.closeModal();this.passTableRange.disableGeneric = true "><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="saveGenTaxRange();"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
+<app-confirm-save #saveRange (onYes)="onClickSaveRange()"></app-confirm-save>
+
+<app-modal class="d-none" id="hist" #mdlHist>
+    <div header>Tax Charges Maintenance History</div>
+    <div body>
+                   <div class="input-group" style="margin-top: 1px !important;">
+                            <div class="col-sm" id="mtn-gentax-hist" style="padding: 0">
+                              <app-cust-editable-non-datatable #gentaxhist [passData]="passTableHist" (newClick)="onTableHistClick($event)"></app-cust-editable-non-datatable>
+                            </div>
+                   </div>
+                    <div  class="input-group">
+                        <label class="form-control-sm col-sm-1">Remarks</label>
+                        <input name="remarksHist" type="text" class="form-control form-control-sm col-sm" [ngModel]="infoHist?.remarks" (ngModelChange)="infoHist.remarks=$event;onChangeRemarksHist()" [disabled]="boolRemarksHist">
+                    </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div>
+            <button class="cust-btn" type="button" (click)="modalHist.closeModal();infoHist = null;"><a>Cancel</a></button> 
+            <button class="cust-btn" type="button" (click)="saveGenTaxHist();" [disabled]="boolSaveHist"><a>Save</a></button>
+        </div>
+    </div>
+</app-modal>
+<app-confirm-save #saveHist (onYes)="onClickSaveHist()"></app-confirm-save>

@@ -1,0 +1,58 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Inquiry / Cancelled Transactions</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Inquire</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">Filter Options</legend>
+						<div class="container-fluid">
+							<div class="form-row custom-row-inline-inset">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2 labels">Transaction Type</label>
+									<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.tranclass" (ngModelChange)="params.tranclass=$event;">
+										<option value="">All</option>
+										<option value="AR">Acknowledgement Receipt</option>
+										<option value="CV">Check Voucher</option>
+										<option value="JV">Journal Voucher</option>
+									</select>
+									<div class="input-group col-sm-5">
+										<label class="form-control-sm col-sm-1 labels">Period:</label>
+										<label class="form-control-sm col-sm-1 labels" style="margin-left: 10px;">From:</label>
+										<div class="col-sm-4 dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelFrom" (valueChange)="params.cancelFrom = $event;"></datepicker>
+										</div>
+										<label class="form-control-sm col-sm-1 labels">To:</label>
+										<div class="col-sm-4 dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" name="entryData.preparedDate" [value]="params.cancelTo" (valueChange)="params.cancelTo = $event;"></datepicker>
+										</div>
+									</div>
+									<div class="input-group col-sm-2">
+										<div class="cust-btn-container">
+					    		        	<button type="button" class="cust cust-btn" (click)="onClickSearch()"><a>Search</a></button>
+					    		      	</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border">
+						<legend class="scheduler-border">List of Cancelled/Deleted Transactions</legend>
+						<div style="position: relative;">
+							<button class="cust-btn" style="margin-top: 10px;margin-bottom: 5px; max-width: 200px !important;" (click)="viewTranDetails()" [disabled]="viewTran" [class.cust-btn-disabled]="viewTran">View Transaction Details</button>
+							<app-cust-editable-non-datatable [passData]="cancelledTransactionsData" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+						</div>
+					</fieldset>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+		</ngb-tabset>
+</div>

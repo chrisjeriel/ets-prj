@@ -1,0 +1,49 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Check Voucher / Generate CV</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab id="idko">
+				<ng-template ngbTabTitle>
+					<div>CV Entry</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-entry-service (cvData)="passData=$event;" [passData]="passData"></app-cv-entry-service>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab [disabled]="passData?.tranId == ''">
+				<ng-template ngbTabTitle>
+					<div>Payment Requests List</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-cv-payment-request-list-service [passData]="passData">></app-cv-payment-request-list-service>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab [disabled]="passData?.tranId == ''">
+				<ng-template ngbTabTitle>
+					<div>CV Preview</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- <app-cv-preview-service ></app-cv-preview-service> -->
+					<app-or-preview [record]="passData"></app-or-preview>
+				</ng-template>
+			</ngb-tab>
+
+			<ngb-tab [disabled]="passData?.tranId == ''">
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-acct-attachment [record]="passData"></app-acct-attachment>
+				</ng-template>
+			</ngb-tab>
+			
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

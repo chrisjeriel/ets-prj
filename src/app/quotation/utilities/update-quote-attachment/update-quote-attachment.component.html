@@ -1,0 +1,121 @@
+<style type="text/css">
+    .float-sm-center {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .txt-content-rght {
+        text-align: right
+    }
+
+    .mrgn-fieldset {
+        margin-top: 17px;
+    }
+
+    .fieldset-height {
+        height: 104%;
+    }
+
+    .input-group {
+        margin-bottom: -14px !important;
+    }
+</style>
+
+<div class="cust-tabs-container">
+    <h4>Quotation / Utilities / Update Quote Attachment</h4>
+    <ngb-tabset>
+        <ngb-tab id="quoteListing" class="ngb-tab" title="Update Quote Attachment">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+                
+                <div style="margin-top: 10px !important;">
+                    <fieldset class="scheduler-border">
+                    	<div class="form-row custom-row-inline-inset">
+                			<div class="input-group" style="margin-bottom: -14px !important;">
+                				<label class="form-control-sm col-sm-2">Quotation No</label>
+                				<input name="input1" type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="3" appRequired ngbTooltip="Line" (change)="search('lineCd',$event)" [(ngModel)]="quoteInfo.quotationNoArr[0]" mask="SSS">
+                				<input name="input2" type="text" class="form-control form-control-sm cap-input col-sm-1 warn" maxlength="4" appRequired ngbTooltip="Year" style="margin-left: 3px;"  (change)="search('year',$event)" [(ngModel)]="quoteInfo.quotationNoArr[1]" numbers-only>
+                				<input name="input3" type="text" class="form-control form-control-sm cap-input col-sm-2 warn text-right" maxlength="5" appRequired ngbTooltip="Sequence No" style="margin-left: 3px;"  (change)="search('seqNo',$event)" [(ngModel)]="quoteInfo.quotationNoArr[2]" numbers-only>
+                				<input name="input4" type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="2" appRequired ngbTooltip="Revision No" style="margin-left: 3px;"  (change)="search('revNo',$event)" [(ngModel)]="quoteInfo.quotationNoArr[3]" numbers-only>
+                				<input name="input5" type="text" class="form-control form-control-sm cap-input col-sm-1 warn text-right" maxlength="3" appRequired ngbTooltip="Company No" style="margin-left: 3px;"  (change)="search('cedingId',$event)" [(ngModel)]="quoteInfo.quotationNoArr[4]" numbers-only>
+                				<span>&nbsp;</span>
+                				<div (click)="showQuoteLov()"><a><i class="fa fa-search"></i></a></div>
+                				<div class="form-group" style="margin-bottom: 0px !important;margin-top: -3px !important;">
+                					<div class="cust-btn-container" style="margin-left: 15px;">
+                						<button type="button" class="cust-btn" style="z-index: 3 !important" (click)="clearAll()">Clear</button>
+                					</div>
+                				</div>
+                			</div>
+                		</div>
+                	</fieldset>
+                </div>
+
+                <div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Quotation Info</legend>
+                        <div class="form-row custom-row-inline-inset">
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="quoteInfo.cedingName"
+                                    disabled="disabled">
+                                <label class="form-control-sm col-sm-1">Insured</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-4"
+                                    [ngModel]="quoteInfo.insuredDesc" disabled="disabled">
+                            </div>
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-2">Risk</label>
+                                <input type="text" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="quoteInfo.riskName" disabled="disabled">
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div>
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Attached Files</legend>
+                        <div class="row">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-10" style="padding-top: 8px; padding-bottom: 15px;">
+                                <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="passData.tableData=$event" (uploadedFiles)="uploads($event)"></app-cust-editable-non-datatable>
+                            </div>
+                            <div class="col-sm-1"></div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-13 text-center">
+                            <div class="cust-btn-container" style="margin-top: 10px">
+                                <button type="button" class="cust-btn" [routerLink]="['']"><a>Cancel</a></button>
+                                <button type="button" [disabled]="quoteInfo.riskName == '' || quoteInfo.riskName == undefined" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <app-confirm-save (onYes)="onSaveAttachment()"></app-confirm-save>
+                <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+                <app-cancel-button [url]="'/quotation-processing'" ></app-cancel-button>
+
+                <!-- <app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+                <app-cancel-button (onYes)="onClickCancelSave()" [url]="'/'" ></app-cancel-button> -->
+
+
+
+
+                <app-modal class="d-none" #quoteMdl>
+                    <div header>List Of Values</div>
+                    <div body class="container-flex">
+                       <app-loading-table [passData]="passDataQuoteLOV" (searchToDb)="searchQuery($event)"></app-loading-table>
+                    </div>
+                    <div footer class="d-flex justify-content-center w-100">                    
+                        <button type="button" class="cust-btn" (click)="quoteMdl.closeModal();"><a>Cancel</a></button>
+                		<button type="button" [disabled]="quoteTable?.indvSelect == ''" class="cust-btn" (click)="onClickOkQuoteLov()"><a>Ok</a></button>
+                    </div>
+                </app-modal>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>

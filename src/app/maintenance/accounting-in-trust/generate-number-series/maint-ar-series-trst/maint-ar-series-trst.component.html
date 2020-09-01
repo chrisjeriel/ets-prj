@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Series Option</legend>
+			<div class="input-group" style="margin-top: 5px">
+				<label class="form-control-sm col-sm-2">From</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.arFrom" (change)="checkGenerate()">
+				<label class="form-control-sm col-sm-1">To</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.arTo" (change)="checkGenerate()">
+				<div class="col-sm text-center">
+					<button class="cust-btn" style="min-width: 100px;margin-left: -25px" (click)="onClickGenerate()" [disabled]="checkGenerate()">Generate</button>
+					<button class="cust-btn" style="min-width: 100px;" (click)="retrieveARSeries()">Search</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Generated Series</legend>
+			<div class="row" style="margin-top: 5px">
+				<div class="col-sm-12">
+					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+
+<app-modal class="d-none" #arModal>
+    <div header>Confirmation</div>
+    <div body>
+    	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Are you sure you want to generate these transactional <br> number series starting from <b>{{ params.arFrom }}</b> to <b>{{ params.arTo }}</b> ?</span> 
+    </div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="arModal.closeModal();generateAR();">Yes</button>
+        <button class="cust-btn" (click)="arModal.closeModal()">No</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #arErrorModal>
+    <div header>Warning</div>
+    <div body>
+    	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">
+    		Existing number series was already created for <br>
+			the specified transaction numbers <b>{{params.arFrom}}</b> to <b>{{params.arTo}}</b>.<br>
+			Please adjust your From-To range values.
+    	</span>
+    </div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="arErrorModal.closeModal()">Ok</button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="null"></app-sucess-dialog>
+<app-confirm-save (onYes)="generateAR()"></app-confirm-save>
+<app-cancel-button (onYes)="generateAR('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

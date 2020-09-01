@@ -1,0 +1,12 @@
+label{
+    margin: 0;
+    padding-left: 0px;
+}
+.alignment{
+    padding-right:20px;
+}
+
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
+}

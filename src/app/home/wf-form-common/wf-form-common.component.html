@@ -1,0 +1,257 @@
+<style type="text/css">
+	select {
+		position: absolute;
+    	margin-top: 16px;
+    	z-index: 20;
+    	font-size: 13px;
+    	font-weight: 500;
+	}
+
+</style>
+
+<form #myForm="ngForm">
+<div>
+	<fieldset class="scheduler-border">
+		<select name="select1"  [(ngModel)]="mode" (change)="switchScreen();">
+            <option value="note"><a>Notes</a></option>
+            <option value="reminder"><a>Reminders</a></option>
+		</select>
+		<legend class="scheduler-border">Notes & Reminders </legend>
+		<div class="row">
+			<div style="padding-top: 8px; padding-bottom: 10px;" class="col-sm-6">
+	        	<div>
+			        <div *ngIf="mode == 'reminder'" layout="row" layout-wrap layout-align="center center">
+			            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>&nbsp;</b></p>
+			        </div>
+			        <div *ngIf="mode == 'note'" layout="row" layout-wrap layout-align="center center">
+			            <p style="font-size: 15px; text-align: center; margin-bottom: 15px"><b>&nbsp;</b></p>
+			        </div>
+			        <div *ngIf="mode == 'reminder'" layout="row" layout-wrap layout-align="center center">
+			            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+			                <fieldset class="scheduler-border col-sm" style="width: 550px">
+			                		<div class="form-row custom-row-inline-inset">
+										<div class="input-group">
+											<div class="input-group col-sm-6" style="padding: 0px;">
+												<label class="form-control-sm col-sm-4">Reminder Date</label>
+												<div class="col-sm dp-cont" style="margin-left: 0px !important;">
+													<datepicker [type]="'date'" [showIcon]="true" [minDate]="currDate" [value]="reminderDate?.split('T')[0]" (valueChange)="reminderDate=$event+'T'+reminderDate.split('T')[1];"></datepicker>
+												</div>
+												<div class="col-sm-3 dp-cont">
+													<datepicker [type]="'time'" [value]="reminderDate?.split('T')[1]" (valueChange)="reminderDate=reminderDate.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+												</div>
+											</div>
+											<div class="input-group col-sm-6" style="padding: 0px;">
+												<label class="form-control-sm col-sm-4">Alarm Time</label>
+												<div class="col-sm-4 p-cont">
+													<datepicker [type]="'time'" [value]="alarmTime?.split('T')[1]" (valueChange)="alarmTime=alarmTime.split('T')[0]+'T'+$event" [textAlign]="'center'"></datepicker>	
+												</div>
+											</div>
+										</div>
+										<div class="input-group" style="margin: -2px 0 0 0;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+											<input name="input1" type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleReminder">
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input2" [checked]="impTag" (change)="impTag = !impTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input3" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+											</div>
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input4" [checked]="urgTag" (change)="urgTag = !urgTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input5" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+											</div>
+										</div>
+										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputReminder">Reminder</label>
+											<textarea name="input20" id="inputReminder" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="reminder"> </textarea>
+										</div>
+										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
+											<input name="input6" style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="relatedRecordTxt">
+										</div>
+									</div>
+			                </fieldset>
+			            </div>
+			        </div>
+			        <div *ngIf="mode == 'note'" layout="row" layout-wrap layout-align="center center">
+			            <div class="form-row" style="justify-content: center;margin: 0 0 0 0px">
+			                <fieldset class="scheduler-border col-sm" style="width: 550px">
+			                		<div class="form-row custom-row-inline-inset">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Title</label>
+											<input name="input7" type="text" id="inputMeeting" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="titleNote">
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input8" [checked]="impTag" (change)="impTag = !impTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input9" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -20px;" value="Important" disabled class="form-control  form-control-sm white-bg">
+											</div>
+											<div class="input-group col-sm-3">
+												<div class="input-group-prepend" style="height: 22px !important;">
+													<div class="input-group-text white-bg">
+														<input name="input10" [checked]="urgTag" (change)="urgTag = !urgTag" type="checkbox">
+													</div>
+												</div>
+												<input name="input11" type="text" style="font-size: 11px !important; margin-left: 0 !important; margin-right: -14px;" value="Urgent" disabled class="form-control form-control-sm white-bg">
+											</div>
+										</div>
+										<div class="input-group" style="margin: -8px 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputReminder">Notes</label>
+											<textarea name="input21" id="inputNotes" class="form-control form-control-sm cust-sm col-sm-10" rows="4" style="font-size: 11px;" appRequired [(ngModel)]="notes"> </textarea>
+										</div>
+										<div class="input-group" style="margin: 0 0 -20px 0 ! important;">
+											<label class="form-control-sm col-sm-2" for="inputTitle">Related Record</label>
+											<input name="input12" style="font-weight: bold;" type="text" id="relatedRecord" readonly class="form-control form-control-sm cust-sm col-sm-10" [(ngModel)]="relatedRecordTxt">
+										</div>
+									</div>
+			                </fieldset>
+			            </div>
+			        </div>
+
+			        <div layout="row" layout-wrap layout-align="center center">
+			            <div class="form-row" style="justify-content: center; margin: 15px 0 0 0px">
+			        	    <fieldset class="scheduler-border col-sm" style="width: 550px">
+			                	<div class="form-row custom-row-inline-inset">
+										<div class="input-group">
+											<input name="input13" id="radio1" class="form-control-sm" type="radio" name="reminderOption" value="1" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio1">Assign to me</label>
+										</div>
+										<!-- <div class="input-group" style="margin: -10px 0 0 0;">
+											<input id="radio2" class="form-control-sm" type="radio" name="reminderOption" value="2" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio2">Assign to</label>
+										</div>
+										<div class="input-group" style="margin: -10px 0 0 0;">
+											<input type="text" id="inputAssignTo" class="form-control form-control-sm cust-sm col-sm-2"  style="margin: 0 0 0 65px;" [disabled]="disableAssignTo" [(ngModel)]="userInfo.userId" appRequired>
+											<div id="search" class="text-search-ico" style="margin-top: -3px;"><a [ngClass]="{'disabled-a': disableAssignTo}" ><i id=searchicon class="fa fa-search" (click)="showUsersLOV('1');"></i></a></div>
+											<input id="inputAssignToUsername" type="text" class="form-control form-control-sm cust-sm col-sm" style="margin: 0 0 0 8px;" [disabled]="disableAssignTo" readonly [(ngModel)]="userInfo.userName">
+										</div> -->
+										<div class="input-group" style="margin: -15px 0 0 0;">
+											<input name="input14" id="radio3" class="form-control-sm" type="radio" name="reminderOption" value="3" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio3">Assign to user</label>
+										</div>
+										<div class="input-group" style="margin: -10px 0 0 0;">
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUsersLOV('0');" [disabled]="disableAssignToMany"><a>Users</a></button>
+											<input name="input15" type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToMany" appRequired>
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group" style="margin: 10px 0 0 0;">
+											<input name="input16" id="radio4" class="form-control-sm" type="radio" name="reminderOption" value="4" style="margin: 0 0 0 65px" (change)="handleRadioBtnChange($event)" [(ngModel)]="boolValue">
+											<label class="form-control-sm" for="radio4">Assign to group</label>
+										</div>
+										<div class="input-group" style="margin: -10px 0 0 0; padding-bottom: 9px;">
+											 <button type="button" class="cust-btn col-sm-2" style="height: 22px; padding-top: 3px; margin: 0 0 0 65px;z-index: 20 !important;" (click)="showUserGrpLOV();"  [disabled]="disableAssignToGroup"><a>Groups</a></button>
+											<input name="input17" type="text" class="form-control form-control-sm cust-sm col-sm" disabled style="margin: 0 0 0 4px;" [(ngModel)]="userInfoToGroup" appRequired>
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group" style="margin: 5px 0 0px 0 ! important;justify-content: center;" >
+											 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="clearFields();"><a>Clear</a></button>
+											 <button style="z-index: 20 !important;" type="button" class="cust-btn" (click)="onClickSave();" [disabled]=disablebtnBool><a>Save</a></button>
+										</div>
+							 	</div>
+			                </fieldset>
+			            </div>
+			        </div>
+
+			        <div layout="row" layout-wrap layout-align="center center">
+			            <div class="form-row" style="justify-content: center; margin: 15px 0 0 0px">
+					      <fieldset class="scheduler-border col-sm" style="width: 550px! important;padding: 0 ! important; margin-top: -8px ! important">
+					        <div class="row col-sm" style="margin: 0px 0 0px 0 ! important">
+					            <div class="input-group">
+									<label class="form-control-sm " style="margin: 0 0 0 -7px" >Created By</label>
+									<label class="form-control-sm col-sm-3" style="margin: 0 0 0 10px">Date Created</label>
+									<label class="form-control-sm col-sm-3" style="margin: 0 0 0 12px">Last Update By</label>
+									<label class="form-control-sm col-sm-3" style="margin: 0 0 0 -15px">Last Update</label>
+								</div>
+								<div class="input-group" style="margin: 0px 0 12px 0 ! important">
+									<input name="input18" type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="otherInfo.createUser">
+									<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="createInfo.dateCreated  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px"> -->
+									<div class="col-sm dp-cont">
+							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="otherInfo.createDate"></datepicker>
+							        </div>
+									<input name="input19" type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [(ngModel)]="otherInfo.updateUser" style="margin: 0 0 0 5px">
+									<div class="col-sm dp-cont">
+							          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="otherInfo.updateDate"></datepicker>
+							        </div>
+									<!-- <input type="text" class="form-control form-control-sm cust-sm col-sm-3" disabled [ngModel]="updateInfo.lastUpdate  | date:'MM-dd-yyyy hh:mm:ss a'" style="margin: 0 0 0 5px"> -->
+								</div>
+					        </div>
+					      </fieldset>
+					    </div>
+					</div>
+			    </div>
+			    
+
+				<app-modal style="z-index: 99999;" class="d-none" (modalOpened)="openModal()" id="usersToManyMdl">
+					<div header>List of Values</div>
+					<div body>
+						<app-cust-non-datatable [passData]="usersListing"></app-cust-non-datatable>
+					</div>
+					<div footer>
+				        <div class="d-flex justify-content-center">
+				            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); cancel();"><a>Cancel</a></button>  
+				            <button class="cust-btn" type="button" (click)="modalService.dismissAll(); confirm();"><a>Ok</a></button>
+				        </div>
+				    </div>
+				</app-modal>
+
+				
+				<app-modal style="z-index: 99999;" class="d-none" (modalOpened)="openModalGrp()" #userGrpListingModal>
+					<div header>List of Values</div>
+					<div body>
+						<app-cust-non-datatable #userGrpTable [passData]="userGrpListing"></app-cust-non-datatable>
+					</div>
+					<div footer>
+				        <div class="d-flex justify-content-center">
+				            <button class="cust-btn" type="button" (click)="userGrpListingModal.closeModal();"><a>Cancel</a></button>  
+				            <button class="cust-btn" type="button" (click)="confirmUserGrp();"><a>Ok</a></button>
+				        </div>
+				    </div>
+				</app-modal>
+
+				<!-- <app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)" (cancelMdl)="open(content,this.mode);"></app-mtn-users> TRBT#PROD_GRADE -->
+				<app-mtn-users id="usersLOV" (selectedData)="setPreparedBy($event)"></app-mtn-users>
+				<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiag(onOkVar,this.mode);"></app-sucess-dialog> TRBT#PROD_GRADE -->
+				<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+			</div>
+			<div class="col-sm-6" style="padding-top: 8px; padding-bottom: 10px;">
+				<app-cust-editable-non-datatable #recipientsTable id="recipientsTable" [passData]="recipientsData" (newClick)="checkDirty($event)" (genericBtn)="onClickDelete()"  class="d-block py-2" (tableDataChange)="recipientsData.tableData=$event;">
+				</app-cust-editable-non-datatable>
+			</div>
+		</div> <!-- End of row class -->
+	</fieldset>
+</div>
+</form>
+    
+
+<app-modal class="d-none" id="warningModal" #warnMdl>
+    <div header *ngIf="from=='save'">Save</div>
+    <div header *ngIf="from=='delete'">Delete</div>
+    <div header *ngIf="from=='confirm'">Confirmation</div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+            <div class="custom-row-inline-inset" style="text-align: center">                
+                <p *ngIf = "from=='delete'">
+                  Are you sure you want to delete these item(s)?
+              	</p>
+              	<p *ngIf = "from =='save'">
+                  Are you sure you want to save changes?
+              	</p>
+              	<p *ngIf = "from =='confirm'">
+                  There are some unsaved changes. Do you want to proceed?
+              	</p>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+    	<button  class="cust-btn" type="button" (click)="onYesWarnMdl();"><a>Yes</a></button>
+    	<button  class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>No</a></button>
+    </div>
+</app-modal>

@@ -1,0 +1,56 @@
+<div>
+    <div class="form-row custom-row-inline-inset">
+         <div class="col-sm-12 text-align">
+            <div class="input-group" style="padding-right: 0px">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important" [(ngModel)]="jvDetails.cedingName" [disabled]="jvDetail.statusType == 'A' || jvDetail.statusType == 'X' || jvDetail.statusType == 'P'">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="showCedingCompanyLOV($event)"></i></a></div>
+                    </div>
+                </div>
+                <div class="col-sm-2"></div>
+            </div>
+         </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="margin-top: 3px" >
+            <div class="input-group" style="margin-bottom: 0px !important;">
+                <fieldset class="scheduler-border col-sm">
+                    <legend class="scheduler-border">Unapplied Collection</legend>
+                        <div style="position: relative;margin-top: 10px">
+                            <app-cust-editable-non-datatable #tbl [passData]="passDataUnapplied" (clickLOV)="unappliedLOV($event)" (tableDataChange)="update($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                        </div>
+                </fieldset>
+             </div>
+        </div>
+    </div>  
+    <div class="row">
+        <div class="col-sm-12">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Treaty Balance</legend>
+                 <div class="col-sm-12" style="margin-top: 15px; padding: 0;">
+                    <app-cust-editable-non-datatable #inwTbl [passData]="passData" (clickLOV)="showOsQsoaMdl()" (tableDataChange)="updateTreatyBal($event)"></app-cust-editable-non-datatable>
+                 </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="form-row" style="margin-top: 13px !important;">
+        <div class="form-group col-sm"> 
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickCancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-mtn-payee-ceding id="cedingCompany" (selectedData)="setCedingcompany($event)"></app-mtn-payee-ceding>
+<app-lov #lov [passData]="passLov" (selectedData)="setLOV($event)"></app-lov>
+<app-lov #qsoaMdl [passData]="passLov" (selectedData)="setQsoaLOV($event)"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

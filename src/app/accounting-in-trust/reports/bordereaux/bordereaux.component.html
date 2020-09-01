@@ -1,0 +1,259 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Reports / Bordereaux</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Policy Bordereaux">
+    		<ng-template ngbTabContent>
+    			<app-pol-bordereaux></app-pol-bordereaux>
+    		</ng-template>
+  		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Claims Bordereaux">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10">
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-sm-12">
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset">
+										<div class="input-group cust-ig" style="padding-top: 4px">
+											<label class="form-control-sm col-sm-2">Report Name</label>
+											<input type="text" class="form-control form-control-sm col-sm-2 report" [ngModel]="params.reportId"
+											 (ngModelChange)="params.reportId = $event.toUpperCase()" (change)="checkCode($event, 'report'); clearFields(); paramChange();" appRequired>
+											<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
+											<input id=line type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.reportName" readonly style="margin-left:2px">
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-sm-6" style="padding-right: 4px">
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset">
+										<div class="input-group pl-4 ">
+											<div class="col-sm-4 d-flex">
+												<div class="col-sm-1">
+													<input type="checkbox" id="osX" [ngModel]="params.osPaidTag == 'O'" (ngModelChange)="params.osPaidTag = $event ? 'O' : ''; params.dateRange = 'A'; paramChange();" [disabled]="params.reportId == null || disableOutstanding">
+												</div>
+												<label for="osX" class="form-control-sm col-sm text-left">Outstanding</label>
+											</div>
+										</div>
+										<div class="input-group pl-8">
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="os1" name="Outstanding" value="4" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableOutstanding">
+												</div>
+												<label for="os1" class="form-control-sm col-sm text-left">Loss Date</label>
+											</div>
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="os3" name="Outstanding" value="10" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableOutstanding">
+												</div>
+												<label for="os3" class="form-control-sm col-sm text-left">Booking Month</label>
+											</div>
+										</div>
+										<div class="input-group pl-8">
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="os2" name="Outstanding" value="9" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableOutstanding">
+												</div>
+												<label for="os2" class="form-control-sm col-sm text-left">Claim File Date</label>
+											</div>
+
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="os4" name="Outstanding" value="5" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableOutstanding">
+												</div>
+												<label for="os4" class="form-control-sm col-sm text-left">Accounting Date</label>
+											</div>
+										</div>
+										<!-- <div class="input-group pl-8">
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="os3" name="Outstanding" value="10" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'O'">
+												</div>
+												<label for="os3" class="form-control-sm col-sm text-left">Booking Month</label>
+											</div>
+										</div> -->
+										<div class="input-group mt-3">
+											<div class="col-sm-3 d-flex pr-0">
+												<!-- <div class="col-sm-1">
+													<input type="radio" id="dp2" name="dateParam" value="A" [(ngModel)]="params.dateRange" (ngModelChange)="resetDateParams();" [disabled]="params.osPaidTag == 'P'">
+												</div> -->
+												<label for="dp2" class="form-control-sm col-sm text-right">As of</label>
+											</div>
+											<div class="dp-cont col-sm-4">
+												<datepicker [type]="'date'" [disabled]="params.reportId == null || disableOutstanding" [value]="params.dateToAsOf?.split('T')[0]" (valueChange)="params.dateToAsOf=$event; paramChange();"></datepicker>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div class="col-sm-6" style="padding-left: 4px">
+								<fieldset class="scheduler-border" style="padding-bottom: 16px !important;">
+									<div class="custom-row-inline-inset">
+										<div class="input-group pl-4 mt-2">
+											<div class="col-sm-5 d-flex">
+												<div class="col-sm-1">
+													<input type="checkbox" id="lpX" [ngModel]="params.osPaidTag == 'P'" (ngModelChange)="params.osPaidTag = $event ? 'P' : ''; params.dateRange = 'D'; paramChange();" [disabled]="params.reportId == null || disableLosses">
+												</div>
+												<label for="lpX" class="form-control-sm col-sm text-left">Losses Paid</label>
+											</div>
+										</div>
+										<div class="input-group pl-8">
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="lp1" name="lossPaid" value="7" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableLosses">
+												</div>
+												<label for="lp1" class="form-control-sm col-sm text-left">Tran Date</label>
+											</div>
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="lp2" name="lossPaid" value="8" [(ngModel)]="params.dateParam" (ngModelChange)="paramChange();" [disabled]="params.reportId == null || disableLosses">
+												</div>
+												<label for="lp2" class="form-control-sm col-sm text-left">Posting Date</label>
+											</div>
+										</div>
+										<!-- <div class="input-group pl-8" style="padding-bottom: 11px">
+											<div class="col-sm-6 d-flex">
+												<div class="col-sm-1">
+													<input type="radio" id="lp2" name="lossPaid" value="8" [(ngModel)]="params.dateParam" [disabled]="params.osPaidTag != 'P'">
+												</div>
+												<label for="lp2" class="form-control-sm col-sm text-left">Posting Date</label>
+											</div>
+										</div> -->
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">From</label>
+											<div class="dp-cont col-sm-4">
+												<datepicker [type]="'date'" [disabled]="params.reportId == null || disableLosses" [value]="params.dateFrom?.split('T')[0]" (valueChange)="params.dateFrom=$event; paramChange();"></datepicker>
+											</div>
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">To</label>
+											<div class="dp-cont col-sm-4">
+												<datepicker [type]="'date'" [disabled]="params.reportId == null || disableLosses" [value]="params.dateTo?.split('T')[0]" (valueChange)="params.dateTo=$event; paramChange();"></datepicker>
+											</div>
+										</div>
+									</div>
+								</fieldset>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-sm-12">
+								<fieldset class="scheduler-border">
+									<div class="input-group pl-4 mt" style="margin: 10px 0px -37px 0px !important">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8 d-flex">
+											<div class="col-sm-1">
+												<input type="radio" id="extType1" name="last" value="L" [(ngModel)]="params.extTypeTag" (ngModelChange)="paramChange();">
+											</div>
+											<label for="extType1" class="form-control-sm col-sm text-left pl-0">Loss</label>
+											<div class="col-sm-1">
+												<input type="radio" id="extType2" name="last" value="E" [(ngModel)]="params.extTypeTag" (ngModelChange)="paramChange();">
+											</div>
+											<label for="extType2" class="form-control-sm col-sm text-left pl-0">Expense</label>
+											<div class="col-sm-1">
+												<input type="radio" id="extType3" name="last" value="LE" [(ngModel)]="params.extTypeTag" (ngModelChange)="paramChange();">
+											</div>
+											<label for="extType3" class="form-control-sm col-sm text-left pl-0">Loss + Expense</label>
+										</div>
+										<div class="col-sm-2"></div>
+									</div>
+									<div class="input-group mt-4">
+										<label class="form-control-sm col-sm-2">Line</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()" (change)="checkCode($event, 'line'); paramChange();" mask="SSS" [disabled]="params.reportId == null || params.reportId.length == 0">
+										<div class="text-search-ico" [ngStyle]="{'visibility': params.reportId != null && params.reportId.length != 0 ? 'visible' : 'hidden'}"><a><i class="fa fa-search" (click)="showLineLOV()"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-7" style="margin-left: 2px !important;" [(ngModel)]="lineDesc" readonly placeholder="ALL LINES">
+									</div>
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2">Ceding Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company'); paramChange();"
+										[disabled]="params.reportId == null || disableCompany">
+										<div class="text-search-ico" [ngStyle]="{'visibility': params.reportId != null && !disableCompany ? 'visible' : 'hidden'}"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()" ></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-7" style="margin-left: 2px !important;" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+									</div>
+									<div class="input-group cust-ig" style="padding-bottom: 5px !important;">
+										<label class="form-control-sm col-sm-2">Currency</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.currCd" (ngModelChange)="params.currCd = $event.toUpperCase()" (change)="checkCode($event, 'currency'); paramChange();" mask="SSS" [disabled]="params.reportId == null || params.reportId.length == 0">
+										<div class="text-search-ico" [ngStyle]="{'visibility': params.reportId != null && params.reportId.length != 0 ? 'visible' : 'hidden'}"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+										<input type="text" class="form-control form-control-sm col-sm-7" style="margin-left: 2px !important;" [(ngModel)]="params.currency" readonly placeholder="ALL CURRENCIES">
+									</div>
+									<!-- <div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Company</label>
+										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company')"
+										[disabled]="params.reportId == null || disableCompany">
+										<div class="text-search-ico" *ngIf="params.reportId != null || !disableCompany"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
+										<span>&nbsp;</span>
+										<input id=line type="text" class="form-control form-control-sm col-sm-7 cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+									</div> -->
+								</fieldset>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-sm-12">
+								<fieldset class="scheduler-border">
+									<div class="row" style="margin: 9px 0px 9px 0px">
+									<div class="col-sm-1"></div>
+									<div class="col-sm">
+										<div class="input-group" style="margin-bottom: 0px !important;">
+											<label class="form-control-sm col-sm-3" style="margin-bottom: -6px !important;">Destination</label>
+											<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination" appRequired [disabled]="params.reportId == null || params.reportId.length == 0">
+												<option value="screen">Screen</option>
+						    					<option value="dlPdf">PDF</option>
+						    					<option value="printPdf">Printer</option>
+						    					<option value="exl">Excel</option>
+											</select>
+											<div class="col-sm-2"></div>
+										</div>
+									</div>
+									<div class="col-sm-1">
+									</div>
+								</div>
+								</fieldset>
+							</div>
+						</div>
+						<div class="row" style="margin-top: 15px;">
+							<div class="col-sm-12 text-center cust-btn-container" style="margin-bottom: 7px !important; z-index: 3 !important;">
+								<button class="cust-btn" (click)="extract();" [disabled]="params.reportId == null || params.reportId.length == 0">Extract</button>
+								<button class="cust-btn" (click)="print();" [disabled]="disablePrint">Print</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+    		<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-mtn-line (selectedData)="setLine($event)" #lineLov></app-mtn-line>
+<app-mtn-type-of-cession (selectedData)="setCession($event)" #cessionLov></app-mtn-type-of-cession>
+
+<app-modal class="d-none" id="extract" #acitReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();forceExtract();extract();"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="acitReportsModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-cancel-button (onYes)="extract(true)"></app-cancel-button>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
+<app-lov [passData]="passLov" (selectedData)="setReport($event)">
+<app-ceding-company id="cedingCompanyLOV"  (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-mtn-currency-code #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency-code>

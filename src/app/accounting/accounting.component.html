@@ -1,0 +1,55 @@
+<div class="cust-tabs-container">
+	<h4>Accounting / In-Trust/ Acknowledgement Receipt</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="AR Entry">
+			<ng-template ngbTabContent>
+				<app-ar-entry></app-ar-entry>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab >
+			<ng-template ngbTabTitle>
+				<div>AR Details</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-ar-details></app-ar-details>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Inward Policy Balances</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-inward-policy-balances></app-inward-policy-balances>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Claim Recovery</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-claim-recovery></app-claim-recovery>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>QSOA</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-qsoa></app-qsoa>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab>
+			<ng-template ngbTabTitle>
+				<div>Attachments</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Exit">
+			<ng-template ngbTabContent>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

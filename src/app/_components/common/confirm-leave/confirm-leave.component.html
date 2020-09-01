@@ -1,0 +1,34 @@
+<!-- <app-modal class="d-none" [id]="'confirm-modal'">
+    <div header>Confirmation</div>
+    <div body>Leave with unsaved changes?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="action(true)">Yes</button>
+        <button class="cust-btn" (click)="action(false)">No</button>
+    </div>
+</app-modal>
+
+<div id="confirm-save">
+	<button id="modalBtn2" class="d-none" (click)="confirmModal();"></button>
+</div>
+ -->
+<div #content>
+    <div class="modal-header">
+        <span>
+        	<div header>Confirmation</div>
+        </span>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div  class="col">
+                <div body>Leave with unsaved changes?</div>
+	        </div>
+	    </div>
+    </div>
+    <div class="modal-footer">
+        <div footer class="cust-btn-container">
+            <button class="cust-btn" (click)="action(true)">Yes</button>
+            <button class="cust-btn" (click)="action(false)">No</button>
+        </div>
+    </div>
+</div>
+

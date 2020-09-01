@@ -1,0 +1,122 @@
+th, td{
+    white-space: nowrap;
+    /*min-width: 0px;
+    max-width: 1px;*/
+    min-width: 30px;
+    max-width: 150px;
+    overflow: hidden;
+}
+.table-scroll{
+    overflow: auto;
+    max-width: 100%
+}
+#cust-table-container {
+    position: relative !important;
+}
+
+
+.expire{
+    position: absolute !important;
+	right: 250px;
+	top: 25px;
+	font-size: 11px;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    z-index: 9999 !important;
+}
+.print{
+    position: absolute;
+    top: 25px;
+    z-index: 9999 !important;
+}
+.expireIn{
+    height: calc(1.5rem + 1px) !important;
+    padding: 0.1rem 0.25rem !important;
+    font-size: 12px !important;
+    line-height: .7 !important;
+    border-radius: 0.2rem !important;
+    margin-bottom: -5px !important;
+    overflow: visible;
+    outline: none;
+    border-style: none;
+    border: 1px solid gray;
+    width: 50px;
+}
+
+.cust-filter {
+	position: absolute !important;
+	right: 1px;
+	top: 1px;
+	font-size: 14px;
+	color: white !important;
+	text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 200 !important;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+}
+
+.cust-filter:hover {
+  	background: linear-gradient(to bottom, #4080df 0%, #2d5986 100%);
+}
+
+.dropdown-menu {
+	padding: 0px !important;
+	padding-bottom: 10px !important;
+}
+
+.dropdown-item{
+	width: 300px;
+	height: 200px;
+	overflow: auto;
+}
+
+div.input-group-text {
+	font-size: 9px;
+	font-weight: bold;
+	width: 100px;
+}
+
+input.form-control {
+	font-size: 11px !important;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+	background-color: white !important;
+	color: gray !important;
+}
+
+
+.dropdown-item.active, .dropdown-item:hover {
+	background-color: white !important;
+	color: gray !important;
+}
+
+div.input-group {
+	margin-bottom: 2px !important;
+}
+
+.cust-tbl-submit {
+	border-radius: 2px !important;
+	font-size: 12px !important;
+}
+
+.cust-tbl-label {
+	font-size: 11px;
+	font-weight: bold;
+}
+
+.unclickable {
+	pointer-events: none;
+}
+
+.number{
+    float:right;
+}
+
+.checkbox {
+    width: 6px;
+}

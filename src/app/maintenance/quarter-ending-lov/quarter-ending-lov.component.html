@@ -1,0 +1,28 @@
+<app-modal class="d-none" (modalOpened)="openModal()" id="quarterEnd" #modal>
+	<div header>Quarter Ending</div>	
+	<div body>
+		 <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3 text-right labels">Month End</label>
+                <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarter">
+                	<option *ngFor="let quarter of quarters" [value]="quarter">{{slicer(quarter)}}</option>
+                </select>
+                <!-- <dropdown [(ngModel)]="quarter" [options]="quarterOptions" [editable]="true" (valueChange)="quarterData($event)"></dropdown> -->
+                <label class="form-control-sm col-sm-2 text-right labels">Year</label>
+                <!-- <dropdown [(ngModel)]="quarterYear" [options]="yearOptions" [editable]="true" (valueChange)="yearData($event)"></dropdown>  -->
+                <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="quarterYear">
+                    <option *ngFor="let year of yearOptions" [value]="year">{{year}}</option>
+                </select>
+
+            </div>
+        </div>
+	</div>
+	<div footer class="text-center w-100">
+        <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="modal.closeModal()">Close
+                </button>
+        <button class="cust-btn" style="height: 24px !important;margin-left: 6px;" (click)="onClickOk()">OK
+                </button>
+	</div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

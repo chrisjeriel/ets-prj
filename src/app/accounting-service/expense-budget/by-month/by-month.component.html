@@ -1,0 +1,67 @@
+<!-- NOTE: THIS IS BUDGET BY MONTH -->
+
+<fieldset class="scheduler-border">
+	 <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	 	<div class="container-fluid">
+	 		<div class="row" style="padding-top: 5px;">
+			    <div class="col-sm-12" style="padding: 0">
+
+					<form #myForm="ngForm">
+			    		<div class="row">
+			    			<div class="col-sm-5"></div>
+				    		<div class="input-group col-sm" style="margin: 0px">
+				    			<label class="form-control-sm">Year</label>
+				    			<select class="form-control form-control-sm cust-sm col-sm-2" id="selectYear" [ngModel]="selectedYear" (ngModelChange)="retrieveAcseBudExpMonthly($event, true); form.control.markAsPristine()" style="z-index: 50 !important;" name="year">
+				    				<option *ngFor="let years of yearArray" [value]="years">{{years}}</option>
+								</select>
+				    		</div>
+			    		</div>
+
+					</form>
+			    	   	<div>
+			    	   		<app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)"></app-cust-editable-non-datatable>
+			    	   	</div>
+			    	   	<div class="form-row">
+			    	   	    <div class="form-group col-sm">
+			    	   	      <div class="col-md-13 text-center" style="margin-left: -5em;">
+			    	   	        <br>
+			    	   	        <div class="cust-btn-container">
+			    	   	          <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+			    	   	          <button type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+			    	   	          <button type="button" class="cust-btn" (click)="onClickPrint();"><a>Print</a></button>
+			    	   	        </div>
+			    	   	      </div>
+			    	   	    </div>
+			    	   	</div>
+			    </div>
+	        </div>
+	 	</div>	
+	 	
+</fieldset> 
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+padding-right: 0px !important;">
+  <fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+    <div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+      <div class="form-row" style="margin-bottom: -10px;">
+        <div class="input-group">
+          <label class="form-control-sm col-sm-1">Created By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.createUser" disabled>
+          <label class="form-control-sm col-sm-1">Date Created</label>
+          <div class="col-sm" style="padding: 0px">
+              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.createDate"></datepicker>
+          </div>
+          <label class="form-control-sm col-sm-1">Last Update By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.updateUser" disabled>
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <div class="col-sm" style="padding: 0px">
+              <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.updateDate"></datepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/'"></app-cancel-button>

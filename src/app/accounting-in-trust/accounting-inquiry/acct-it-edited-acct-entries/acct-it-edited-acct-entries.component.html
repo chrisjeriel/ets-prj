@@ -1,0 +1,239 @@
+<div class="cust-tabs-container">
+  <h4>Accounting In-Trust / Inquiry / Edited Accounting Entries</h4>
+  <ngb-tabset>
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        <div>Inquire</div>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">Filter Options</legend>
+          <div class="container-fluid">
+            <div class="form-row custom-row-inline-inset">
+              <div class="input-group">
+                <label class="form-control-sm col-sm-2">Transaction Class</label>
+                <select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="filters.tranClass">
+                  <option value="">All</option>
+                  <option value="CV">Check Voucher</option>
+                  <option value="AR">Acknowledgement Receipt</option>
+                  <option value="JV">Journal Voucher</option>
+                </select>
+                <div class="input-group col-sm-5">
+                  <label class="form-control-sm col-sm-3">Transaction Period:</label>
+                  <label class="form-control-sm col-sm-1">From:</label>
+                  <div class="col-sm dp-cont">
+                    <datepicker [type]="'date'" [required]="false"  [value]="filters.tranDateFrom" (valueChange)="filters.tranDateFrom = $event;"></datepicker>
+                  </div>
+                  <label class="form-control-sm col-sm-1">To:</label>
+                  <div class="col-sm dp-cont">
+                    <datepicker [type]="'date'" [required]="false"  [value]="filters.tranDateTo" (valueChange)="filters.tranDateTo = $event;"></datepicker>
+                  </div>
+                </div>
+                <div class="col-sm-1">
+                  <button class="cust-btn" (click)="retrieveAcctEntInq()">Search</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="scheduler-border">
+          <legend class="scheduler-border">List of Transactions with Edited Accounting Entries</legend>
+          <div class="custom-row-inline-inset" style="position: relative;">
+
+            <app-cust-editable-non-datatable [passData]="passDataListOfEditedTransactions" (genericBtn)="showModal(content)" (newClick)="onRowClick($event)" #mainTbl>
+            </app-cust-editable-non-datatable>
+          </div>
+        </fieldset>
+
+      </ng-template>
+    </ngb-tab>
+
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        <div>Exit</div>
+      </ng-template>
+      <ng-template ngbTabContent>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+
+
+<app-modal class="d-none">
+  <div header>Edited Entries</div>
+  <div body>
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Transaction Info</legend>
+      <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-6">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-3">Transaction Class</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3" [ngModel]="information.tranClassDesc" readonly>
+            <label class="form-control-sm col-sm-2">Tran Date</label>
+            <div class="col-sm" style="padding: 0px">
+                  <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="information.tranDate"></datepicker>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-3">Reference Number</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3" [ngModel]="information.refNo" readonly>
+            <label class="form-control-sm col-sm-2">Tran Status</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.status" readonly>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-3">Payor/Payee</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.payee" readonly>
+          </div>
+        </div>
+
+        <div class="col-sm-6">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-2">Amount</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-1" [ngModel]="information.currCd" readonly>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="information.amount | number: '1.2-2'" style="margin-left:3px !important;"
+             readonly>
+            <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Edited By</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.editedBy" readonly>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-2">Local Amount</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-1" value="PHP" readonly>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="information.localAmt | number: '1.2-2'" readonly style="margin-left:3px !important;">
+            <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Date Edited</label>
+            <div class="col-sm" style="padding: 0px">
+                  <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="information.editDate"></datepicker>
+            </div>
+          </div>
+          <div class="input-group">
+            <label class="form-control-sm col-sm-2">Particulars</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.particulars" readonly>
+          </div>
+        </div>
+
+        <div class="col-sm-12">
+          <div class="input-group">
+            <label class="form-control-sm col-sm-2" style="margin-left: -43px !important;">Reason</label>
+            <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.reason" readonly>
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Old Accounting Entries</legend>
+      <div class="custom-row-inline-inset">
+        <app-cust-editable-non-datatable [passData]="passDataOldAcctEntries" #oldTbl>
+        </app-cust-editable-non-datatable>
+      </div>
+    </fieldset>
+
+    <fieldset class="scheduler-border">
+      <legend class="scheduler-border">Latest Accounting Entries</legend>
+      <div class="custom-row-inline-inset">
+        <app-cust-editable-non-datatable [passData]="passDataLatestAcctEntries" #latestTbl>
+        </app-cust-editable-non-datatable>
+      </div>
+    </fieldset>
+  </div>
+  <div footer class="d-flex justify-content-center w-100">
+      <button type="button" class="cust-btn"><a>Print</a></button>
+      <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Return</a></button>
+  </div>
+</app-modal>
+
+
+<!-- <ng-template #content>
+              <div class="modal-header">
+                <span class="modal-title" id="modal-basic-title">Edited Entries</span>
+              </div>
+              <div class="modal-body" style="max-width: 1090px !important;">
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Transaction Info</legend>
+                  <div class="form-row custom-row-inline-inset">
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Transaction Class</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3" [ngModel]="information.tranClassDesc" readonly>
+                        <label class="form-control-sm col-sm-2">Tran Date</label>
+                        <div class="col-sm" style="padding: 0px">
+                              <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="information.tranDate"></datepicker>
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Reference Number</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3" [ngModel]="information.refNo" readonly>
+                        <label class="form-control-sm col-sm-2">Tran Status</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.status" readonly>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-3">Payor/Payee</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.payee" readonly>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Amount</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-1" [ngModel]="information.currCd" readonly>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="information.amount | number: '1.2-2'" style="margin-left:3px !important;"
+                         readonly>
+                        <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Edited By</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.editedBy" readonly>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Local Amount</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-1" value="PHP" readonly>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm-3 text-right" [ngModel]="information.localAmt | number: '1.2-2'" readonly style="margin-left:3px !important;">
+                        <label class="form-control-sm col-sm-2" style="margin-left: -15px !important;">Date Edited</label>
+                        <div class="col-sm" style="padding: 0px">
+                              <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="information.editDate"></datepicker>
+                        </div>
+                      </div>
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2">Particulars</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.particulars" readonly>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2" style="margin-left: -43px !important;">Reason</label>
+                        <input tabindex="-1" type="text" class="form-control form-control-sm col-sm" [ngModel]="information.reason" readonly>
+                      </div>
+                    </div>
+
+                  </div>
+                </fieldset>
+
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Old Accounting Entries</legend>
+                  <div class="custom-row-inline-inset">
+                    <app-cust-non-datatable [passData]="passDataOldAcctEntries" >
+                    </app-cust-non-datatable>
+                  </div>
+                </fieldset>
+
+                <fieldset class="scheduler-border">
+                  <legend class="scheduler-border">Latest Accounting Entries</legend>
+                  <div class="custom-row-inline-inset">
+                    <app-cust-non-datatable [passData]="passDataLatestAcctEntries" >
+                    </app-cust-non-datatable>
+                  </div>
+                </fieldset>
+
+              </div>
+              <div class="modal-footer w-100" style="text-align: center;padding: 0px !important;">
+                <div class="form-group col-sm">
+                  <div class="col-md-13 text-center" style="padding: 0px !important">
+                    <br>
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn"><a>Print</a></button>
+                      <button type="button" class="cust-btn" (click)="modalService.dismissAll();"><a>Return</a></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </ng-template> -->

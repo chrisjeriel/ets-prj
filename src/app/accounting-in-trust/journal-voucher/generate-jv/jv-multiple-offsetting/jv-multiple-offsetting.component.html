@@ -1,0 +1,297 @@
+<div class="cust-tabs-container" style="margin-top: 10px ! important">
+    <ngb-tabset (tabChange)="onTabChange($event)">
+        <ngb-tab id="ipbTab">
+            <ng-template ngbTabTitle>
+            	<div>Inward Policy Balances</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #ipbTbl [passData]="passDataIpb" (clickLOV)="showLov($event, 'ipb')" (tableDataChange)="onTblDataChange($event, 'ipb')" (newClick)="onRowClick($event)">
+                    			<ng-container controls-r>
+									<button class="cust-btn" style="margin-right: 0px !important;" (click)="onClickExport()">Export to Excel</button>
+								</ng-container>
+                    		</app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center"  *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('ipb')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="clmTab">
+            <ng-template ngbTabTitle>
+                <div>Claims/Recoveries/Overpayments</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #clmTbl [passData]="passDataClm" (clickLOV)="showLov($event, 'clm')" (tableDataChange)="onTblDataChange($event, 'clm')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center"  *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('clm')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="trtyTab">
+            <ng-template ngbTabTitle>
+                <div>Treaty Balances</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #trtyTbl [passData]="passDataTrty" (clickLOV)="showLov($event, 'trty')" (tableDataChange)="onTblDataChange($event, 'trty')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('trty')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="unappTab">
+            <ng-template ngbTabTitle>
+                <div>Unapplied Collections</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #unappTbl [passData]="passDataUnapp" (clickLOV)="showLov($event, 'unapp')" (tableDataChange)="onTblDataChange($event, 'unapp')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('unapp')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="invPoTab">
+            <ng-template ngbTabTitle>
+                <div>Investment Pull-out</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #invPoTbl [passData]="passDataInvPo" (clickLOV)="showLov($event, 'invPo')" (tableDataChange)="onTblDataChange($event, 'invPo')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('invPo')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="invPlTab">
+            <ng-template ngbTabTitle>
+                <div>Investment Placement</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #invPlTbl [passData]="passDataInvPl" (clickLOV)="showLov($event, 'invPl')" (tableDataChange)="onTblDataChange($event, 'invPl')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('invPl')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="lrdTab">
+            <ng-template ngbTabTitle>
+                <div>Loss Reserve Deposit</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+            	<div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-8">
+                            <app-cust-editable-non-datatable #lrdTbl [passData]="passDataLrd" (clickLOV)="showLov($event, 'lrd')" (tableDataChange)="onTblDataChange($event, 'lrd')" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+                        <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+                            <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+                            <button type="button" class="cust-btn" (click)="onClickSave('lrd')"><a>Save</a></button>
+                        </div>
+                    </div>
+                    <!-- <div class="input-group mb">
+                    	<ng-container *ngIf="lrdLoader">
+	                    	<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999;">
+	                    	<div style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);"></div>
+	                    </ng-container>
+                    	<div class="col-sm-2"></div>
+					    <div class="col-sm-8">
+					        <div class="input-group">
+					            <label class="form-control-sm col-sm-2">Address</label>
+					            <textarea class="form-control form-control-sm col-sm-9" style="font-size: 11px; min-height: 38px; margin-bottom: 17px;" [ngModel]="passDataLrd.address" readonly></textarea>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group">
+					            <label class="form-control-sm col-sm-2">Membership Date</label>
+					            <div class="dp-cont col-sm-3" style="margin-left: 0px !important">
+					                <datepicker [type]="'date'" [disabled]="true" [value]="passDataLrd.membershipDate"></datepicker>
+					            </div>
+					            <label class="form-control-sm col-sm-3">Business Type</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="passDataLrd.bussTypeName" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group">
+					            <label class="form-control-sm col-sm-2">Tax Identification No.</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="passDataLrd.tin" readonly>
+					            <label class="form-control-sm col-sm-3">Status</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.activeTag === 'Y' ? 'Active' : 'Inactive'" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group">
+					            <label class="form-control-sm col-sm-2">Primary Contact Person</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="passDataLrd.cedingRep" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group mb">
+					            <label class="form-control-sm col-sm-2">Contact No.</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="passDataLrd.contactNo" readonly>
+					            <label class="form-control-sm col-sm-3">Email Address</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="passDataLrd.emailAdd" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group">
+					        	<label class="form-control-sm col-sm-2">Currency</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.currCd" readonly>
+					            <label class="form-control-sm col-sm-3">Currency</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.currCd" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <div class="input-group">
+					        	<label class="form-control-sm col-sm-2">Total Reserve Deposit</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.totalLossresdep" readonly>
+					            <label class="form-control-sm col-sm-3">Total Reserve Deposit</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.totalLossresdep" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					        <form #form="ngForm">
+					        	<div class="input-group">
+						        	<label class="form-control-sm col-sm-2">Offset Payment</label>
+						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly || jvDetail.currCd !== 'PHP'" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.offsetPayt" (change)="jvDetail.currCd !== 'PHP' ? null : updateLrd($event, 'php')" name="php-offset-payt">
+						            <label class="form-control-sm col-sm-3">Offset Payment</label>
+						            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [readOnly]="multOffDetails.cedingId == '' || readOnly || jvDetail.currCd !== 'USD'" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.offsetPayt" (change)="jvDetail.currCd !== 'USD' ? null : updateLrd($event, 'usd')" name="usd-offset-payt">
+						            <span clas="col-sm-1"></span>
+						        </div>
+					        </form>
+					        <div class="input-group">
+					        	<label class="form-control-sm col-sm-2">Net Loss Reserve Deposit</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.php.netLossresdep" readonly>
+					            <label class="form-control-sm col-sm-3">Net Loss Reserve Deposit</label>
+					            <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [ngModel]="multOffDetails.cedingId == '' ? '' : passDataLrd.usd.netLossresdep" readonly>
+					            <span clas="col-sm-1"></span>
+					        </div>
+					    </div>
+					    <div class="col-sm-2"></div>
+                    </div>
+                    <div class="input-group" style="margin-top: 1.5em !important; margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('lrd')"><a>Save</a></button>
+		                </div>
+                    </div> -->
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="othTab">
+            <ng-template ngbTabTitle>
+                <div>Others</div>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 1em">
+                	<!-- <div class="input-group mb">
+                    	<span class="col-sm-2"></span>
+                    	<label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Ceding Company</label>
+                    	<input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffDetails.cedingName" [readOnly]="true">
+                        <div *ngIf="jvDetail.statusType !== 'A' && jvDetail.statusType !== 'X' && jvDetail.statusType !== 'P'" class="mg"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+                        <span class="col-sm-3"></span>
+                    </div> -->
+                    <div class="input-group mb">
+                    	<div class="col-sm-12">
+                    		<app-cust-editable-non-datatable #othTbl [passData]="passDataOth" (tableDataChange)="onTblDataChange($event, 'oth')" (newClick)="onRowClick($event)" (clickLOV)="showLov($event, 'oth')"></app-cust-editable-non-datatable>
+                    	</div>
+                    </div>
+                    <div class="input-group" style="margin-bottom: 15px !important; z-index: 1;">
+	                    <div class="cust-btn-container col-sm-12 text-center" *ngIf="!readOnly">
+		                    <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+		                    <button type="button" class="cust-btn" (click)="onClickSave('oth')"><a>Save</a></button>
+		                </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+<app-mtn-payee-ceding #cedingLov (selectedData)="setLov($event)" [lovCheckBox]="true"></app-mtn-payee-ceding>
+<app-lov #lov [passData]="passLov" (selectedData)="setLov($event)"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon !== 'error-message' ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/journal-voucher'"></app-cancel-button>

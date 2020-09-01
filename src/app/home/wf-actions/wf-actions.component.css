@@ -1,0 +1,10 @@
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+
+a.disabled-a {
+  pointer-events: none;
+  cursor: default;
+}

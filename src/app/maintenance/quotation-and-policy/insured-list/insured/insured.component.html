@@ -1,0 +1,185 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy / Insured List</h4>
+	<!-- <ngb-tabset  #tabset (tabChange)="onTabChange($event)"> TRBT#PROD_GRADE -->
+	<ngb-tabset  #tabset>
+		<ngb-tab class="ngb-tab" title="Insured">
+			<ng-template ngbTabContent>
+				<form #myForm="ngForm" autocomplete="off">
+					<div class="form-row">
+						<div class="input-group">
+							<div class="col-sm"></div>
+							<div class="col-sm-8">
+								<fieldset class="scheduler-border">
+				                    <legend class="scheduler-border">Corporate Tag</legend>
+				                    <div class="form-row custom-row-inline-inset">
+				                    	<div class="input-group">
+				                    		<div class="col-sm"></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="I" [ngModel]="insuredRecord.corpTag"(ngModelChange)="insuredRecord.corpTag=$event;;" (change)="checkCorpTag();;"><label class="form-control-sm">Individual</label></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="C" [ngModel]="insuredRecord.corpTag"(ngModelChange)="insuredRecord.corpTag=$event;;" (change)="checkCorpTag();;"><label class="form-control-sm">Corporate</label></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="corpTag" value="J" [ngModel]="insuredRecord.corpTag"(ngModelChange)="insuredRecord.corpTag=$event;;" (change)="checkCorpTag();;"><label class="form-control-sm">Joint</label></div>	
+				                    		<div class="col-sm"></div>
+				                    	</div>
+				                    </div>
+				                </fieldset>
+				                <fieldset class="scheduler-border">
+				                    <legend class="scheduler-border">VAT Type</legend>
+				                    <div class="form-row custom-row-inline-inset">
+				                    	<div class="input-group">
+				                    		<div class="col-sm"></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="3" [ngModel]="insuredRecord.vatTag"(ngModelChange)="insuredRecord.vatTag=$event;;"><label class="form-control-sm">VAT Rate</label></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="1" [ngModel]="insuredRecord.vatTag"(ngModelChange)="insuredRecord.vatTag=$event;;"><label class="form-control-sm">VAT Exempt</label></div>
+				                    		<div class="col-sm-3 text-center"><input type="radio" name="vatType" value="2" [ngModel]="insuredRecord.vatTag"(ngModelChange)="insuredRecord.vatTag=$event;;"><label class="form-control-sm">Zero VAT</label></div>
+				                    		<div class="col-sm"></div>
+				                    	</div>
+				                    </div>
+				                </fieldset>
+				                <fieldset class="scheduler-border">
+				                	<legend class="scheduler-border">Basic Info</legend>
+				                	<div class="form-row custom-row-inline-inset">
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Insured No</label>
+	                        						<input name="input1" type="text" class="form-control form-control-sm col-sm text-right" [ngModel]="insuredRecord.insuredId"(ngModelChange)="insuredRecord.insuredId=$event;;" readonly>
+	                        						<input name="input2" type="checkbox" style="margin-top: 5px !important;margin-left: 5px !important;" [ngModel]="insuredRecord.activeTag"(ngModelChange)="insuredRecord.activeTag=$event;;" class=" " ><label class="form-control-sm col-sm-1">Active</label>
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<!-- <div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Insured Type</label>
+	                        						<select name="select1" class="form-control form-control-sm cust-sm col-sm warn "  appRequired [ngModel]="insuredRecord.insuredType"(ngModelChange)="insuredRecord.insuredType=$event;;">
+	                        							<option value="P">Principal</option>
+	                        							<option value="C">Contractor</option>
+	                        						</select>
+				                				</div> -->
+				                			</div>
+				                		</div>
+				                		<div class="input-group">
+				                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Name</label>
+	                        				<input name="input3" type="text" class="form-control form-control-sm col-sm name warn "  style="margin-right: 10px !important" appRequired maxlength="500" [ngModel]="insuredRecord.insuredName"(ngModelChange)="insuredRecord.insuredName=$event;;">
+				                		</div>
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Abbreviation</label>
+	                        						<input name="input4" type="text" class="form-control form-control-sm col-sm warn "  appRequired maxlength="50" [ngModel]="insuredRecord.insuredAbbr"(ngModelChange)="insuredRecord.insuredAbbr=$event;;">
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Old Insured No</label>
+	                        						<input name="input5" type="text" class="form-control form-control-sm col-sm text-right " (blur)="fmtOnBlur()"  maxlength="10" [ngModel]="insuredRecord.oldInsId"(ngModelChange)="insuredRecord.oldInsId=$event;;" numbers-only>
+				                				</div>
+				                			</div>
+				                		</div>
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Last Name</label>
+	                        						<input name="input8" type="text" class="form-control form-control-sm col-sm ind-name "  appRequired readonly  maxlength="248" [ngModel]="insuredRecord.lastName"(ngModelChange)="insuredRecord.lastName=$event;;" (keyup)="concatName()">
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">First Name</label>
+	                        						<input name="input6" type="text" class="form-control form-control-sm col-sm ind-name "  readonly  maxlength="248" [ngModel]="insuredRecord.firstName"(ngModelChange)="insuredRecord.firstName=$event;;" (keyup)="concatName()">
+	                        						<label class="form-control-sm">M.I.</label>
+	                        						<input name="input7" type="text" class="form-control form-control-sm col-sm-1 cap-input ind-name  midInit"  readonly  maxlength="3" [ngModel]="insuredRecord.middleInitial"(ngModelChange)="insuredRecord.middleInitial=$event;;" (keyup)="concatName()">
+				                				</div>
+				                			</div>
+				                		</div>
+				                		<div class="input-group">
+				                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Address</label>
+	                        				<input name="input9" type="text" class="form-control form-control-sm col-sm warn "  style="margin-right: 10px !important"  appRequired maxlength="100" [ngModel]="insuredRecord.addrLine1"(ngModelChange)="insuredRecord.addrLine1=$event;;">
+				                		</div>
+				                		<div class="input-group">
+				                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+	                        				<input name="input10" type="text" class="form-control form-control-sm col-sm "  style="margin-right: 10px !important" maxlength="100" [ngModel]="insuredRecord.addrLine2"(ngModelChange)="insuredRecord.addrLine2=$event;;">
+				                		</div>
+				                		<div class="input-group">
+				                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important"></label>
+	                        				<input name="input11" type="text" class="form-control form-control-sm col-sm "  style="margin-right: 10px !important" maxlength="100" [ngModel]="insuredRecord.addrLine3"(ngModelChange)="insuredRecord.addrLine3=$event;;">
+	                        				<label class="form-control-sm">Zip Code</label>
+	                        				<input name="input12" type="text" class="form-control form-control-sm col-sm-1 warn "  style="margin-right: 10px !important" maxlength="12" [ngModel]="insuredRecord.zipCd"(ngModelChange)="insuredRecord.zipCd=$event;;" numbers-only>
+				                		</div>
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Contact No</label>
+	                        						<input name="input13" type="text" class="form-control form-control-sm col-sm "  maxlength="50" [ngModel]="insuredRecord.contactNo"(ngModelChange)="insuredRecord.contactNo=$event;;">
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Email Address</label>
+	                        						<input name="input14" type="text" class="form-control form-control-sm col-sm "  maxlength="50" [ngModel]="insuredRecord.emailAdd"(ngModelChange)="insuredRecord.emailAdd=$event;;">
+				                				</div>
+				                			</div>
+				                		</div>
+				                	</div>
+				                </fieldset>
+				                <fieldset class="scheduler-border">
+				                	<legend class="scheduler-border">Other Info</legend>
+				                	<div class="form-row custom-row-inline-inset">
+				                		<div class="input-group">
+				                			<label class="form-control-sm col-sm-2" style="margin-left: 33px !important">Remarks</label>
+	                        				<input name="input15" type="text" class="form-control form-control-sm col-sm "  style="margin-right: 10px !important" maxlength="4000" [ngModel]="insuredRecord.remarks"(ngModelChange)="insuredRecord.remarks=$event;;">
+				                		</div>
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Created By</label>
+	                        						<input name="input16" type="text" class="form-control form-control-sm col-sm" maxlength="10" [ngModel]="insuredRecord.createUser"(ngModelChange)="insuredRecord.createUser=$event;;" readonly>
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Date Created</label>
+	                        						<div class="col-sm dp-cont">
+							                            <datepicker [value]="insuredRecord.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+							                        </div>
+				                				</div>
+				                			</div>
+				                		</div>
+				                		<div class="input-group">
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Last Update By</label>
+	                        						<input name="input17" type="text" class="form-control form-control-sm col-sm" maxlength="10" [ngModel]="insuredRecord.updateUser"(ngModelChange)="insuredRecord.updateUser=$event;;" readonly>
+				                				</div>
+				                			</div>
+				                			<div class="col-sm-6">
+				                				<div class="form-row">
+				                					<label class="form-control-sm col-sm-5">Last Update</label>
+	                        						<div class="col-sm dp-cont">
+							                            <datepicker [value]="insuredRecord.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+							                        </div>
+				                				</div>
+				                			</div>
+				                		</div>
+				                	</div>
+				                </fieldset>
+				                <div class="form-row" style="margin-top: 10px !important;">
+	                                <div class="form-group col-sm">
+	                                    <div class="text-center">
+	                                        <div class="cust-btn-container">
+	                                            <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                                            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+
+							</div>
+							<div class="col-sm"></div>
+						</div>
+					</div>
+				</form>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-confirm-save (onYes)="onSaveMtnInsured()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/maintenance-insured'" ></app-cancel-button>

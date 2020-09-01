@@ -1,0 +1,10 @@
+.refresh {
+	    position: absolute;
+    top: 14px;
+    z-index: 1000 ! important;
+}
+
+.btnDisabled{
+    background: gray !important;
+    cursor: context-menu;
+}

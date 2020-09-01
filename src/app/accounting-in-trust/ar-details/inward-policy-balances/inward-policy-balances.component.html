@@ -1,0 +1,66 @@
+
+  <div style="margin: 30px 0px -30px 0px;">
+      <div class="input-group" style="margin-top: -27px">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-sm-12">
+              <div class="input-group" style="margin-bottom: 0px !important;">
+                <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted"
+                  appCurrency placeholder="" [ngModel]="allotedAmt" (ngModelChange)="allotedAmt = parseCurrency($event); computeTotalBalAndVariance();" readonly>
+                <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
+                  Transactions</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right"
+                  numbers-only placeholder="" readonly [ngModel]="totalBal | number: '1.2-2'">
+              </div>
+              <div class="input-group" style="margin-bottom: 0px !important;">
+                <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only
+                  placeholder="" readonly [ngModel]="variance | number: '1.2-2'">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="openSoaLOV($event)" (newClick)="onRowClick($event)" (tableDataChange)="onTableDataChange($event)">
+                <ng-container controls-r>
+                    <button class="cust-btn" style="margin-right: 0px !important;" (click)="export()">Export to Excel</button>
+                  </ng-container>
+              </app-cust-editable-non-datatable>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+<div class="form-row" style="margin-top: 10px !important">
+        <div class="form-group col-sm">
+          <div class="col-md-13 text-center">
+            <br>
+            <div class="cust-btn-container">
+              <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="cancel();"><a>Cancel</a></button>
+              <button *ngIf="passData.checkFlag" type="button" class="cust-btn" (click)="onClickSave();"><a>Save</a></button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+<app-modal class="d-none" >
+  <div header>Warning</div>
+  <div body>
+    <div style="text-align: center">
+      <p style="margin: 0px">Net payments must remain the same.</p>
+      <p style="margin: 0px"><strong>Original Net Amount: {{originalNet | number: '1.2-2'}}</strong></p>
+      <p style="margin: 0px"><strong>Altered Net Amount: {{newAlteredAmt | number: '1.2-2'}}</strong></p>
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="netMdl.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-lov [passData]="passLov" (selectedData)="setSelectedData($event)" #lov>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSave('cancel')" [url]="'/acct-ar-listings'" ></app-cancel-button>

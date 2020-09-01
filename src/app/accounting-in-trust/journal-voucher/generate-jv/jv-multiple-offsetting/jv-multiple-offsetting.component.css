@@ -1,0 +1,20 @@
+.cust-border {
+	border-bottom: 1px solid rgb(224,227,231);
+	border-left: 1px solid rgb(224,227,231);
+	border-right: 1px solid rgb(224,227,231);
+}
+
+.input-group {
+    margin-bottom: -14px !important;
+}
+
+.mg {
+	margin-left: -19px !important;
+	margin-right: 10px !important;
+	z-index: 200;
+	font-size: 14px;
+}
+
+.input-group.mb {
+	margin-bottom: 0 !important;
+}

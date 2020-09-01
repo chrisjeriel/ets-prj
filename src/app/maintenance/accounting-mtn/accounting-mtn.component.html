@@ -1,0 +1,166 @@
+<div class="cust-tabs-container">
+      <h4>Maintenance</h4>
+      <ngb-tabset>
+            <ngb-tab class="ngb-tab" title="Accounting">
+            <ng-template ngbTabContent style="padding-top: 10px !important;">
+            	<div class="input-group" style="margin-top: 10px !important; margin-bottom: 8px !important;">
+                        <div class="col-sm-3">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                  	            <p-accordionTab header="A">
+                  	            </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="B">
+                                          <button *ngIf="modules.indexOf('MTN300')!= -1" [routerLink]="['/mtn-bank']" class="button btn btn-link">Bank</button>
+                                          <br  *ngIf="modules.indexOf('MTN300')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN301')!= -1" [routerLink]="['/mtn-bank-acct']" class="button btn btn-link">Bank Account</button>
+                                          <br  *ngIf="modules.indexOf('MTN301')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN302')!= -1" [routerLink]="['/mtn-booking-mth']" class="button btn btn-link">Booking Month</button>
+                                          <br  *ngIf="modules.indexOf('MTN302')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN303')!= -1" [routerLink]="['/mtn-bus-type']" class="button btn btn-link">Business Type</button>
+                                          <br  *ngIf="modules.indexOf('MTN303')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="C">
+                                          <button *ngIf="modules.indexOf('MTN304')!= -1" [routerLink]="['/chart-of-accounts']" class="button btn btn-link">Chart of Accounts</button>
+                                          <br  *ngIf="modules.indexOf('MTN304')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN305')!= -1" [routerLink]="['/acse-chart-of-accounts']" class="button btn btn-link">Chart of Accounts - Service</button>
+                                          <br  *ngIf="modules.indexOf('MTN305')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="D">
+                                          <button *ngIf="modules.indexOf('MTN306')!= -1" [routerLink]="['/mtn-dcb-user']" class="button btn btn-link">DCB User</button>
+                                          <br  *ngIf="modules.indexOf('MTN306')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN307')!= -1" [routerLink]="['/mtn-acit-dcb-no']" class="button btn btn-link">DCB No</button>
+                                          <br  *ngIf="modules.indexOf('MTN307')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN308')!= -1" [routerLink]="['/mtn-acse-dcb-no']" class="button btn btn-link">DCB No - Service</button>
+                                          <br  *ngIf="modules.indexOf('MTN308')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="E">
+                                          <button *ngIf="modules.indexOf('MTN309')!= -1" [routerLink]="['/mtn-employee']" class="button btn btn-link">Employee</button>
+                                          <br  *ngIf="modules.indexOf('MTN309')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="F">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="G">
+                                          <button *ngIf="modules.indexOf('MTN310')!= -1" [routerLink]="['/mtn-gen-taxes']" class="button btn btn-link">General Taxes</button>
+                                          <br  *ngIf="modules.indexOf('MTN310')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN311')!= -1" [routerLink]="['/generate-number-series']" class="button btn btn-link">Generate Number Series</button>
+                                          <br  *ngIf="modules.indexOf('MTN311')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN312')!= -1" [routerLink]="['/generate-number-series-service']" class="button btn btn-link">Generate Number Series - Service</button>
+                                          <br  *ngIf="modules.indexOf('MTN312')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                        </div>
+                        <div class="col-sm-3">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="H">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="I">
+                                          <button *ngIf="modules.indexOf('MTN313')!= -1" [routerLink]="['/mtn-invt-sec-type']" class="button btn btn-link">Investment Security Type</button>
+                                          <br  *ngIf="modules.indexOf('MTN313')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="J">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="K">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="L">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="M">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="N">
+                                    </p-accordionTab>
+                              </p-accordion>
+                        </div>
+                        <div class="col-sm-3">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="O">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="P">
+                                          <button *ngIf="modules.indexOf('MTN314')!= -1" [routerLink]="['/mtn-payee']" class="button btn btn-link">Payee</button>
+                                          <br  *ngIf="modules.indexOf('MTN314')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN315')!= -1" [routerLink]="['/mtn-payee-class']" class="button btn btn-link">Payee Class</button>
+                                          <br  *ngIf="modules.indexOf('MTN315')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="Q">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="R">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="S">
+                                          <button *ngIf="modules.indexOf('MTN316')!= -1" [routerLink]="['/mtn-sl']" class="button btn btn-link">Subsidiary Ledger</button>
+                                          <br  *ngIf="modules.indexOf('MTN316')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN317')!= -1" [routerLink]="['/mtn-sl-type']" class="button btn btn-link">Subsidiary Ledger Type</button>
+                                          <br  *ngIf="modules.indexOf('MTN317')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="T">
+                                          <button *ngIf="modules.indexOf('MTN318')!= -1" [routerLink]="['/mtn-acit-tran-type']" class="button btn btn-link">Transaction Type</button>
+                                          <br  *ngIf="modules.indexOf('MTN318')!= -1"/>
+                                          <button *ngIf="modules.indexOf('MTN319')!= -1" [routerLink]="['/mtn-acse-tran-type']" class="button btn btn-link">Transaction Type - Service</button>
+                                          <br  *ngIf="modules.indexOf('MTN319')!= -1"/>
+                                          
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="U">
+                                    </p-accordionTab>
+                              </p-accordion>
+                        </div>
+                        <div class="col-sm-3">
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="V">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+                                    <p-accordionTab header="W">
+                                          <button *ngIf="modules.indexOf('MTN320')!= -1" [routerLink]="['/mtn-withholding-tax']" class="button btn btn-link">Withholding Tax</button>
+                                          <br  *ngIf="modules.indexOf('MTN320')!= -1"/>
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="X">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="Y">
+                                    </p-accordionTab>
+                              </p-accordion>
+                              <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+                                    <p-accordionTab header="Z">
+                                    </p-accordionTab>
+                              </p-accordion>
+                        </div>
+            	</div>
+            </ng-template>
+            </ngb-tab>
+      </ngb-tabset>
+</div>

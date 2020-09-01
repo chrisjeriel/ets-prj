@@ -1,0 +1,112 @@
+<form #myForm="ngForm">
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">JV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right;text-align: right;" readonly [(ngModel)]="jvDetails.jvYear" name="jvDetails.jvYear">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right; margin-left: 2px;text-align: right;" readonly [(ngModel)]="jvDetails.jvNo" name="jvDetails.jvNo">
+                <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.jvStatus" readonly name="jvDetails.jvStatus">
+                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly name="jvDetails.refnoTranId">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
+                readonly name="jvDetails.jvType">
+                <label class="form-control-sm col-sm-1">Ref No Date</label>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [type]="'date'" [value]="jvDetails.refnoDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.currCd" readonly name="jvDetails.currCd">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt = $event" style="margin-left: 2px !important;" readonly name="jvDetails.jvAmt">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly [(ngModel)]="jvDetails.currCd" name="jvDetails.currCd">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;"
+                readonly name="jvDetails.localAmt">
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">JV Accounting Entries</legend>
+     <div class="row">
+        <div class="col-sm-12" style="margin-top: 14px">
+            <app-cust-editable-non-datatable [passData]="passData" (clickLOV)="clickLov($event)"  (tableDataChange)="tableDataChange($event)" (newClick)="onRowclick($event)">
+                <ng-container controls-l *ngIf="jvDetails.statusType != 'A' && jvDetails.statusType != 'X' && jvDetails.statusType != 'P'">
+                    <label class="form-control-sm">For Approval</label> 
+                    <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="jvDetails.statusType === 'F'" (change)="onClickApproval()" [disabled]="notBalanced">
+                </ng-container>
+                <ng-container controls-r>
+                    <button class="cust-btn" style="margin-right: 0px !important;" (click)="onClickPrintAe()">Print AE</button>
+                </ng-container>
+            </app-cust-editable-non-datatable>
+        </div>
+     </div>
+     <div class="input-group" style="margin-top: 7px;">
+         <label class="form-control-sm cust-sm col-sm-8" style="margin-left: 3px !important;"></label>
+         <label class="form-control-sm col-sm-2" >Variance</label>
+         <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" disabled="disabled" name="jvDetails.variance">
+     </div>
+     <!-- <div class="form-row custom-row-inline-inset">
+         <div class="col-sm-12">
+             <div class="input-group">
+                <label class="form-control-sm col-sm">Total Debit and Credit</label>
+                <input type="text" [ngModel]="debitTotal | number:'1.2-2'" (ngModelChange)="debitTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly style="margin-right: 4px !important" name="jvDetails.debitTotal">
+                <input type="text" [ngModel]="creditTotal | number:'1.2-2'" (ngModelChange)="creditTotal = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.creditTotal">
+            </div>
+            <div class="input-group">
+                <div class="col-sm-10"></div>
+                <input type="text" [ngModel]="variance | number:'1.2-2'" (ngModelChange)="variance = $event" class="form-control form-control-sm cust-sm col-sm-2" readonly name="jvDetails.variance">
+            </div>
+        </div>
+     </div> -->
+     <div class="form-row" style="margin-top: 13px !important;">
+         <div class="form-group col-sm">
+             <div class="col-md-12 text-center">
+                 <div class="cust-btn-container">
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickCancel()"><a>Cancel</a></button>
+                     <button type="button" class="cust-btn" [disabled]="readOnly" [class.cust-btn-disabled]="readOnly" (click)="onClickSave()"><a>Save</a></button>
+                 </div>
+             </div>
+         </div>
+     </div> 
+</fieldset>
+<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important; ">
+    <div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.createUser" [ngModel]="rowData?.createUser" disabled>
+            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="rowData?.createDate"></datepicker>
+            </div>
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" name="rowData.updateUser" [ngModel]="rowData?.updateUser" disabled>
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="rowData?.updateDate"></datepicker>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</form>
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveAcctEntries()"></app-confirm-save>
+<app-cancel-button (onYes)="saveAcctEntries()" [url]="'/journal-voucher'" ></app-cancel-button>

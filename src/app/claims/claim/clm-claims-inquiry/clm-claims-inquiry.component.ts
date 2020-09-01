@@ -1,0 +1,502 @@
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+//import { UnderwritingPolicyInquiryInfo } from '@app/_models';
+import { ClaimsService, NotesService, UserService } from '@app/_services';
+import { Title } from '@angular/platform-browser';
+import { Router } from '@angular/router';
+import { CustNonDatatableComponent } from '@app/_components/common/cust-non-datatable/cust-non-datatable.component';
+import { LoadingTableComponent } from '@app/_components/loading-table/loading-table.component';
+
+@Component({
+	selector: 'app-clm-claims-inquiry',
+	templateUrl: './clm-claims-inquiry.component.html',
+	styleUrls: ['./clm-claims-inquiry.component.css']
+})
+export class ClmClaimsInquiryComponent implements OnInit, AfterViewInit {
+	@ViewChild(LoadingTableComponent) table: LoadingTableComponent;
+	passData: any = {
+	    tHeader: ["Claim No", "Co Claim No","Loss Date", "Report Date", "Status", "Policy No", "Type of Cession", "Line Class", "Ceding Company", "Insured",
+	    		  "Co Ref No", "Adjuster", "Adjuster Ref No", "Risk",  "Reported By", "Creation Date", 
+	    		  "Processed By", "Loss Cause", "Loss Period", "Event Type", "Event", "Loss Details", "Remarks", "Section I",
+	    		  "Section II", "Section III", 'Currency', 'Total Reserved', 'Total Payment'],
+
+		sortKeys : ['CLAIM_NO','CO_CLM_NO','LOSS_DATE','REPORT_DATE','CLM_STATUS','POLICY_NO','CESSION_DESC','LINE_CLASS_DESC','CEDING_NAME','INSURED_DESC',
+					'CO_REF_NO','ADJ_NAME','ADJ_REF_NO','RISK_NAME','REPORTED_BY','CREATE_DATE',
+					'PROCESSED_BY','LOSS_ABBR','LOSS_PD_ABBR','EVENT_TYPE_DESC','EVENT_DESC','LOSS_DTL','REMARKS','SECI_SI_TAG','SECII_SI_TAG','SECIII_SI_TAG',
+					'CURRENCY_CD','T_LOSS_EXP_RES','T_LOSS_EXP_PD'],
+
+		dataTypes: ["text", "text","date", "date", "text", "text", "text", "text", "text", 
+					"text", "text", "text", "text", "text",  "text", "date", "text", "text", 
+					"text", "text", "text", "text", "text", "checkbox", "checkbox", "checkbox", 
+					"text", "currency", "currency"],
+
+	    keys: ['claimNo', 'coClmNo', 'lossDate', 'reportDate', 'clmStatus','policyNo', 'cessionDesc', 'lineClassDesc', 'cedingName','insuredDesc',
+	    	   'coRefNo', 'adjName', 'adjRefNo', 'riskName', 'reportedBy', 'createDate', 'processedBy', 
+	    	   'lossAbbr', 'lossPdAbbr', 'eventTypeDesc', 'eventDesc', 'lossDtl', 'remarks', 'secISiTag', 'secIISiTag', 'secIIISiTag', 
+	    	   'currencyCd', 'totalLossExpRes', 'totalLossExpPd'],
+	    infoFlag: true,
+	    searchFlag: true,
+	    pageLength: 10,
+	    tableData: [],
+	    pagination: true,
+	    pageStatus: true,
+	    // printBtn: true,
+	    filters: [
+	       {
+	            key: 'claimNo',
+	            title:'Claim No.',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'coClaimNo',
+	            title:'Co Claim No',
+	            dataType: 'text'
+	        },
+	        {
+	             keys: {
+	                  from: 'lossDateFrom',
+	                  to: 'lossDateTo'
+	              },
+	              title: 'Loss Date',
+	              dataType: 'datespan'
+	        },
+	        {
+	             keys: {
+	                  from: 'reportDateFrom',
+	                  to: 'reportDateTo'
+	              },
+	              title: 'Report Date',
+	              dataType: 'textspan'
+	        },
+	        {
+	            key: 'clmStatus',
+	            title:'Status',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'policyNo',
+	            title:'Policy No.',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'cessionDesc',
+	            title:'Type of Cession',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lineClassDesc',
+	            title:'Line Class',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'cedingName',
+	            title:'Ceding Company',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'insuredDesc',
+	            title:'Insured',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'coRefNo',
+	            title:'Co Ref No',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'adjName',
+	            title:'Adjuster',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'adjRefNo',
+	            title:'Adjuster Ref No',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'riskName',
+	            title:'Risk',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'reportedBy',
+	            title:'Reported By',
+	            dataType: 'text'
+	        },
+	        {
+	             keys: {
+	                  from: 'createDateFrom',
+	                  to: 'createDateTo'
+	              },
+	              title: 'Creation Date',
+	              dataType: 'textspan'
+	        },
+	        {
+	            key: 'adjName',
+	            title:'Adjuster',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'processedBy',
+	            title:'Processed By',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossAbbr',
+	            title:'Loss Cause',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossPdAbbr',
+	            title:'Loss Period',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'eventTypeDesc',
+	            title:'Event Type',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'eventDesc',
+	            title:'Event',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'lossDtl',
+	            title:'Loss Details',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'Remarks',
+	            dataType: 'text'
+	        },
+	        /*{
+	            key: 'remarks',
+	            title:'SECTION I',
+	            dataType: 'checkbox'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'SECTION II',
+	            dataType: 'checkbox'
+	        },
+	        {
+	            key: 'remarks',
+	            title:'SECTION III',
+	            dataType: 'checkbox'
+	        },*/
+	        {
+	            key: 'currencyCd',
+	            title:'Currency',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'totalLossExpRes',
+	            title:'Total Reserved',
+	            dataType: 'text'
+	        },
+	        {
+	            key: 'totalLossExpPd',
+	            title:'Total Payment',
+	            dataType: 'text'
+	        },
+	    ],
+	    exportFlag: true
+	 };
+
+  	searchParams: any = {
+        'paginationRequest.count':10,
+        'paginationRequest.position':1,   
+        fromInq:'Y'
+    };
+  	selected: any = {
+  		claimNo: '',
+  		clmStatus: '',
+  		policyNo: '',
+  		coClaimNo: '',
+  		cessionDesc: '',
+  		lineClassDesc: '',
+  		cedingName:'',
+  		adjusters:'',
+  		adjRefNo:'',
+  		riskName: '',
+  		lossDate: '',
+  		reportDate: '',
+  		reportedBy: '',
+  		createDate: '',
+  		processedBy: '',
+  		lossDesc: '',
+  		lossPeriod: '',
+  		eventTypeDesc: '',
+  		eventDesc: '',
+  		lossDtl: '',
+  		currencyCd: '',
+  		totalLossExpRes: '',
+  		totalLossExpPd: '',
+  		remarks: '',
+  		secISiTag: '',
+  		secIISiTag: '',
+  		secIIISiTag: ''
+  	};
+
+  	loading: boolean = false;
+
+  	claimId: string = '';
+  	claimNo: string = '';
+  	policyNo: string = '';
+
+  	report: any = {
+  		date: null,
+  		time: null
+  	}
+
+  	create: any = {
+  		date: null,
+  		time: null
+  	}
+
+  	lossDate: string = null;
+
+	constructor(private claimsService: ClaimsService, private titleService: Title, private ns : NotesService, private router: Router, private userService: UserService) { }
+
+  	ngOnInit() {
+    	this.titleService.setTitle("Clm | Claim Inquiry");
+    	this.userService.emitModuleId("CLM008");
+
+    	if(this.ns.listParams != null){
+    		this.searchParams = this.ns.listParams;
+    	}
+    	console.log(this.ns.listParams);
+    	this.retrieveClaimlist();
+	}
+
+	ngAfterViewInit(){
+		if(this.ns.listParams != null){
+    		this.table.setPreviousParams(this.ns.listParams);
+    	}
+	}
+
+
+	retrieveClaimlist() {
+		this.ns.setListParams(this.searchParams); 
+		this.claimsService.newGetClaimsListingLength(this.searchParams).subscribe(data=>{
+		  this.passData.count = data;
+		  this.table.setLength(1);
+		})
+		console.log(this.searchParams)
+		this.claimsService.newGetClaimsListing(this.searchParams).subscribe((data:any)=>{
+         
+	       	 if(data != null){
+	        	// this.passData.count = data['length'];
+		         for(var i of data.claimsList){
+		           for(var j of i.clmAdjusterList){
+		             if(i.adjName === null){
+		               i.adjName = j.adjName;
+		               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
+		             }else{
+		               i.adjName = i.adjName + '/' + j.adjName;
+		               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
+		             }
+		           }
+		         }
+		         this.table.placeData(data.claimsList,1);
+		       }
+	       });
+	}
+
+	searchQuery(searchParams){
+        for(let key of Object.keys(searchParams)){
+            this.searchParams[key] = searchParams[key]
+        }
+        console.log(searchParams)
+
+        this.passData.btnDisabled = true;
+        this.retrieveClaimlist();
+
+   }
+
+	onRowClick(data){
+		let rowData = data;
+		this.loading = true;
+		if(data === null || (data !== null && Object.keys(data).length === 0)){
+			this.selected = {
+				claimNo: '',
+				clmStatus: '',
+				policyNo: '',
+				coClaimNo: '',
+				cessionDesc: '',
+				lineClassDesc: '',
+				cedingName:'',
+				adjusters:'',
+				adjRefNo:'',
+				riskName: '',
+				lossDate: '',
+				reportDate: '',
+				reportedBy: '',
+				createDate: '',
+				processedBy: '',
+				lossDesc: '',
+				lossPeriod: '',
+				eventTypeDesc: '',
+				eventDesc: '',
+				lossDtl: '',
+				currencyCd: '',
+				totalLossExpRes: '',
+				totalLossExpPd: '',
+				remarks: '',
+		  		secISiTag: 'N',
+		  		secIISiTag: 'N',
+		  		secIIISiTag: 'N',
+		  		sectionIPrem: '',
+		  		sectionIIPrem: '',
+		  		sectionIIIPrem: '',
+		  		allowMaxSi: ''
+			};
+			this.create = {
+				date: null,
+				time: null
+			}
+			this.report = {
+				date: null,
+				time: null
+			}
+			this.loading = false;
+		}else{
+			console.log(data);
+			this.claimId = data.claimId;
+			this.claimNo = data.claimNo;
+			this.policyNo = data.policyNo;
+			this.selected = data;
+			this.selected.lossDate = this.ns.toDateTimeString(this.selected.lossDate);
+			this.create.date = this.ns.toDateTimeString(this.selected.createDate).split('T')[0];
+			this.create.time = this.ns.toDateTimeString(this.selected.createDate).split('T')[1];
+			this.report.date = this.ns.toDateTimeString(this.selected.reportDate).split('T')[0];
+			this.report.time = this.ns.toDateTimeString(this.selected.reportDate).split('T')[1];
+			/*this.claimId = data.claimId;
+			this.claimNo = data.claimNo;
+			this.policyNo = data.policyNo;
+			this.claimsService.getClmGenInfo(rowData.claimId, rowData.claimNo).subscribe(
+				(genData: any)=>{
+					this.selected = genData.claim === null ? {} : genData.claim;
+					this.selected.totalLossExpRes = rowData.totalLossExpRes;
+					this.selected.totalLossExpPd = rowData.totalLossExpPd;
+					this.selected.lossDate = this.ns.toDateTimeString(this.selected.lossDate);
+					this.create.date = this.ns.toDateTimeString(this.selected.createDate).split('T')[0];
+					this.create.time = this.ns.toDateTimeString(this.selected.createDate).split('T')[1];
+					this.report.date = this.ns.toDateTimeString(this.selected.reportDate).split('T')[0];
+					this.report.time = this.ns.toDateTimeString(this.selected.reportDate).split('T')[1];
+					if(genData.claim !== null){
+						this.selected.adjusters = '';
+						console.log(genData.claim.clmAdjusterList);
+						for(var i = 0; i < genData.claim.clmAdjusterList.length; i++){
+							if(i+1 === genData.claim.clmAdjusterList.length){
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName === null ? '' : genData.claim.clmAdjusterList[i].adjName;
+							}else{
+								this.selected.adjusters += genData.claim.clmAdjusterList[i].adjName === null ? '' : genData.claim.clmAdjusterList[i].adjName + ' / ';
+							}
+						}
+					}
+					this.loading = false;
+				},
+				(error: any)=>{
+					this.loading = false;
+				}
+			);*/
+		}
+	}
+
+	navigateToGenInfo() {  
+	    let line = this.policyNo.split('-')[0];
+	    this.router.navigate(
+	                    ['/claims-claim', {
+	                        from: 'edit',
+	                        readonly: true,
+	                        claimId: this.claimId,
+	                        claimNo: this.claimNo,
+	                        line: line,
+	                        exitLink: '/claims-inquiry'
+	                    }],
+	                    { skipLocationChange: true }
+	      );
+  	}
+
+  	export(){
+        //do something
+    let paramsCpy = JSON.parse(JSON.stringify(this.searchParams));
+    
+    delete paramsCpy['paginationRequest.count'];
+    delete paramsCpy['paginationRequest.position'];
+
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+    var yyyy = today.getFullYear();
+    var hr = String(today.getHours()).padStart(2,'0');
+    var min = String(today.getMinutes()).padStart(2,'0');
+    var sec = String(today.getSeconds()).padStart(2,'0');
+    var ms = today.getMilliseconds()
+    var currDate = yyyy+'-'+mm+'-'+dd+'T'+hr+'.'+min+'.'+sec+'.'+ms;
+    var filename = 'ClaimsList_'+currDate+'.xls'
+    var mystyle = {
+        headers:true, 
+        column: {style:{Font:{Bold:"1"}}}
+      };
+
+      alasql.fn.datetime = function(dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString();
+      };
+
+       alasql.fn.currency = function(currency) {
+            var parts = parseFloat(currency).toFixed(2).split(".");
+            var num = parts[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,") + 
+                (parts[1] ? "." + parts[1] : "");
+                num = num == 'NaN' ? '' : num;
+            return num;
+      };
+
+
+      this.claimsService.newGetClaimsListing(paramsCpy).subscribe((data:any)=>{
+       	 if(data != null){
+	         for(var i of data.claimsList){
+	           for(var j of i.clmAdjusterList){
+	             if(i.adjName === null){
+	               i.adjName = j.adjName;
+	               j.adjRefNo !== null ? i.adjRefNo = j.adjRefNo : null;
+	             }else{
+	               i.adjName = i.adjName + '/' + j.adjName;
+	               j.adjRefNo !== null ? i.adjRefNo = i.adjRefNo + '/' + j.adjRefNo : null;
+	             }
+	           }
+	         }
+
+
+
+	       }
+
+         var toAlaSQLData: any[] = [];
+         for(var i  of data.claimsList){
+         	i.totalLossExpRes = i.totalLossExpRes === null || i.totalLossExpRes === undefined || (i.totalLossExpRes !== null && i.totalLossExpRes !== undefined && i.totalLossExpRes.length === 0) ? 0 : i.totalLossExpRes;
+         	i.totalLossExpPd = i.totalLossExpPd === null || i.totalLossExpPd === undefined || (i.totalLossExpPd !== null && i.totalLossExpPd !== undefined && i.totalLossExpPd.length === 0) ? 0 : i.totalLossExpPd;
+         	i.coClaimNo = i.coClaimNo === null || i.coClaimNo === undefined || (i.coClaimNo !== null && i.coClaimNo !== undefined && i.coClaimNo.length === 0) ? '' : i.coClaimNo;
+         	i.coRefNo = i.coRefNo === null || i.coRefNo === undefined || (i.coRefNo !== null && i.coRefNo !== undefined && i.coRefNo.length === 0) ? '' : i.coRefNo;
+         	i.reportedBy = i.reportedBy === null || i.reportedBy === undefined || (i.reportedBy !== null && i.reportedBy !== undefined && i.reportedBy.length === 0) ? '' : i.reportedBy;
+         	i.eventTypeDesc = i.eventTypeDesc === null || i.eventTypeDesc === undefined || (i.eventTypeDesc !== null && i.eventTypeDesc !== undefined && i.eventTypeDesc.length === 0) ? '' : i.eventTypeDesc;
+         	i.eventDesc = i.eventDesc === null || i.eventDesc === undefined || (i.eventDesc !== null && i.eventDesc !== undefined && i.eventDesc.length === 0) ? '' : i.eventDesc;
+         	i.secISiTag = i.secISiTag === null || i.secISiTag === undefined || (i.secISiTag !== null && i.secISiTag !== undefined && i.secISiTag.length === 0) ? 'N' : i.secISiTag;
+         	i.secIISiTag = i.secIISiTag === null || i.secIISiTag === undefined || (i.secIISiTag !== null && i.secIISiTag !== undefined && i.secIISiTag.length === 0) ? 'N' : i.secIISiTag;
+         	i.secIIISiTag = i.secIIISiTag === null || i.secIIISiTag === undefined || (i.secIIISiTag !== null && i.secIIISiTag !== undefined && i.secIIISiTag.length === 0) ? 'N' : i.secIIISiTag;
+         	i.remarks = i.remarks === null || i.remarks === undefined || (i.remarks !== null && i.remarks !== undefined && i.remarks.length === 0) ? '' : i.remarks;
+         	i.adjName = i.adjName === null || i.adjName === undefined || (i.adjName !== null && i.adjName !== undefined && i.adjName.length === 0) ? '' : i.adjName;
+         	toAlaSQLData.push(i);
+         }
+         alasql('SELECT claimNo AS ClaimNo,clmStatus AS Status, policyNo AS PolicyNo, coClaimNo AS CoClaimNo, cessionDesc AS TypeOfCession, lineClassDesc AS LineClass, cedingName AS CedingCompany, insuredDesc AS Insured,'+
+   			        'coRefNo AS CoRefNo, adjName AS Adjuster, adjRefNo AS AdjusterRefNo, riskName AS Risk, datetime(lossDate) AS LossDate, datetime(reportDate) AS ReportDate, reportedBy AS ReportedBy, datetime(createDate) AS CreationDate, processedBy AS ProcessedBy,'+ 
+   					'lossAbbr AS LossCause, lossPeriod AS LossPeriod, eventTypeDesc AS EventType, eventDesc AS Event, lossDtl AS LossDetails, remarks AS Remarks, secISiTag AS SectionI, secIISiTag AS SectionII, secIIISiTag AS SectionIII,'+
+   					'currencyCd AS Currency, currency(totalLossExpRes) AS TotalReserve, currency(totalLossExpPd) AS TotalPayment'+
+         	     ' INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,toAlaSQLData]);
+       });
+
+      
+  }
+}

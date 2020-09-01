@@ -1,0 +1,52 @@
+
+<div class="cust-tabs-container">
+    <h4>Claims / Inquiry</h4>
+    <ngb-tabset>
+        <ngb-tab title="Claim Payment Request Inquiry">
+            <ng-template ngbTabContent>
+                <div>
+                    <div class="col-sm-12" style="padding: 0">
+                        <app-loading-table #inqTable [passData]="passData" (rowClick)="selected=$event" (newRowDblClick)="toPaytReq($event)" (searchToDb)="searchQuery($event)" (export)="getRecords()"></app-loading-table>
+                     </div>
+                     <div class="col-sm" style="margin-top: 50px !important; margin-bottom: 10px ! important;padding: 0">
+                            <div class="input-group">
+                                <div class="col-sm-3" style="padding: 0">
+                                    <div class="input-group">
+                                        <label class="form-control-sm">Created By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
+                                    </div>
+                                </div>
+                                 <div class="col-sm-3" style="padding: 0">
+                                    <div class="input-group">
+                                        <label class="form-control-sm">Date Created</label>
+                                        <div class="col-sm dp-cont" style="padding: 0px">
+                                            <!-- <datepicker [type]="'date'" [disabled]="true" [value]="selected?.createDate"></datepicker> -->
+                                            <datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="false" [disabled]="true"></datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                                 <div class="col-sm-3" style="padding: 0">
+                                     <div class="input-group">
+                                        <label class="form-control-sm">Last Update By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
+                                    </div>
+                                </div>
+                                 <div class="col-sm-3" style="padding: 0">
+                                    <div class="input-group">
+                                        <label class="form-control-sm">Last Update</label>
+                                        <div class="col-sm dp-cont" style="padding: 0px">
+                                            <datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="false" [disabled]="true"></datepicker>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+
+
+

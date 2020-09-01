@@ -1,0 +1,143 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm p-0">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Extract Parameters</legend>
+				<div class="form-row custom-row-inline-inset">
+					<div class="col-sm-1"></div>
+					<div class="col-sm-10" style="    margin-top: -5px !important;">
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Period</legend>
+								<div class="form-row custom-row-inline-inset">
+									<div class="input-group" style="margin-bottom: -14px !important;">
+									    <label class="form-control-sm col-sm-1">From</label>
+									    <div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="params.periodFrom?.split('T')[0]" (valueChange)="params.periodFrom=$event;"></datepicker>
+										</div>	
+									    <label class="form-control-sm col-sm-1">To</label>
+									    <div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="params.periodTo?.split('T')[0]" (valueChange)="params.periodTo=$event;"></datepicker>
+										</div>	
+									</div>
+								</div>
+						</fieldset>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Type</legend>
+									<div class="input-group">
+										<div class="col-sm-2"></div>
+										<div class="col-sm-8 d-flex">
+											<div class="testcon col-sm-1">
+										    	<input type="radio" name="type" value="T" [(ngModel)]="params.type" class="form-control-sm" id="totalRadio">
+										    </div>
+										    <label class="form-control-sm col-sm" style="text-align: left !important;" for="totalRadio">Total Debit & Total Credits</label>
+										    <div class="testcon col-sm-1">
+										    	<input type="radio" name="type" class="form-control-sm" value="N" [(ngModel)]="params.type" id="netRadio">
+											</div>
+										    <label class="form-control-sm col-sm text-left" for="netRadio">Net</label>
+									    </div>
+									    <div class="col-sm-2"></div>
+									</div>
+					    </fieldset>
+
+				    	<fieldset class="scheduler-border">
+				    		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div class="form-row custom-row-inline-inset">
+				    			<div class="input-group ">
+				    				<div class="col-sm-12 d-flex">
+					    				<label class="form-control-sm col-sm-1">Currency</label>
+					    				<input class="form-control-sm form-control col-sm-2" type="text"  [ngModel]="params.currCdParam" (ngModelChange)="params.currCdParam = $event.toUpperCase()" (change)="checkCode($event, 'currCd')">		
+					    				<div class="text-search-ico"><a><i class="fa fa-search" (click)="showCurrLOV()"></i></a></div>
+					    				<input class="form-control-sm form-control col-sm" style="margin-left: 8px" type="text"  placeholder="ALL CURRENCIES" [(ngModel)]="currencyDesc" readonly="">
+					    			</div>
+				    			</div>
+				    		</div>
+				    	</fieldset>
+		                <div class="form-row" style="    margin-bottom: -10px !important;">
+		    		        <div class="form-group col-sm">
+		    		            <div class="col-md-12 text-center">
+		    		                <div class="cust-btn-container" style="margin-top: 10px;">
+		    		                    <!-- <button type="button" class="cust-btn" (click)="extract()"><a>Extract</a></button> TRBT#PROD_GRADE -->
+		    		                    <button type="button" class="cust-btn" (click)="onClickExtract()"><a>Extract</a></button>
+		    		                </div>
+		    		            </div>
+		    		        </div>
+		    		    </div>
+					</div>
+					<div class="col-sm-1"></div>
+				</div>
+		</fieldset>
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Printing Parameters</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-4">
+					<fieldset class="scheduler-border" >
+						<legend class="scheduler-border">Report Type</legend>
+							<div class="form-row custom-row-inline-inset period">
+								<div class="input-group check-row">
+									<div class="col-sm-3">
+										<input value="S" [(ngModel)]="rType" id="rType1" type="radio" style="vertical-align: middle;" name="typeRadio" checked>
+									</div>
+									<label for="rType1" class="form-control-sm col-sm text-left">Summary</label>
+								</div>
+								<div class="input-group check-row">
+									<div class="col-sm-3">
+										<input value="D" [(ngModel)]="rType" id="rType2" type="radio" style="vertical-align: middle;" name="typeRadio">
+									</div>
+									<label for="rType2" class="form-control-sm col-sm text-left">Detailed</label>
+								</div>
+							</div>
+							
+					</fieldset>
+				</div>
+				<div class="col-sm-4"> 
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-bottom: 3px !important">
+						<div class="form-row custom-row-inline-inset mid">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Destination</label>
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+									<option value="screen">Screen</option>
+			    					<option value="printPdf">Printer</option>
+			    					<option value="exl">Excel</option>
+								</select>
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Printer Name</label>
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="params.destination != 'printPdf'" >
+									<option *ngFor="let printer of printerList" [value]="printer">{{printer}}</option>
+								</select>
+							</div>
+						</div>
+						
+					</fieldset>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+			<div class="form-row">
+				<div class="col-sm" style="margin-bottom: 5px;">
+					<div class="col-md-13 text-center">
+						<div class="cust-btn-container">
+							<button class="cust-btn" type="button" (click)="onClickPrint()"><a>Print</a></button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+<app-modal class="d-none" id="extract" #polReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();onClickExtract('f');"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-mtn-currency-code  #currencyModal id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>

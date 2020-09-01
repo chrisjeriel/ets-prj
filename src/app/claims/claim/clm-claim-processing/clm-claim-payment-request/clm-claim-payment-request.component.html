@@ -1,0 +1,86 @@
+<div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Claim Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+      <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+        <div class="col-sm-1"></div>
+        <label class="form-control-sm col-sm-1">Claim No</label>
+        <input type="text" readonly [ngModel]="claimInfo.claimNo" class="form-control form-control-sm cust-sm col-sm-3">
+        <label class="form-control-sm col-sm-1">Insured</label>
+        <input type="text" readonly [ngModel]="claimInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5">
+        <div class="col-sm-1"></div>
+      </div>
+      <div class="input-group" style="margin-bottom: -13px !important;">
+        <div class="col-sm-1"></div>
+        <label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
+        <input type="text" readonly [ngModel]="claimInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-3">
+        <label class="form-control-sm col-sm-1">Risk</label>
+        <input type="text" readonly [ngModel]="claimInfo.riskName" class="form-control form-control-sm cust-sm col-sm-5">
+        <div class="col-sm-1"></div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<div>
+  <fieldset class="scheduler-border">
+    <legend class="scheduler-border">Payment Request No</legend>
+    <div class="custom-row-inline-inset">
+      <div class="row">
+        <div class="col-sm-12">
+          <app-cust-editable-non-datatable [passData]="passData" (newClick)="onRowClick($event)" (clickLOV)="openPayee($event)">
+          </app-cust-editable-non-datatable>
+        </div>
+      </div>
+      <div class="form-row" style="margin-top: 10px;">
+        <div class="input-group" style="margin-right: 5px !important;">
+          <label class="form-control-sm col-sm-1">Processed By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" readonly>
+          <label class="form-control-sm col-sm-1">Processed Date</label>
+          <div class="col-sm dp-cont">
+            <datepicker [value]="selected?.createDate" [showSeconds]="true" [disabled]="true"></datepicker>
+          </div>
+          <label class="form-control-sm col-sm-1">Last Updated By</label>
+          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" readonly>
+          <label class="form-control-sm col-sm-1">Last Update</label>
+          <div class="col-sm dp-cont">
+            <datepicker [value]="selected?.updateDate" [showSeconds]="true" [disabled]="true"></datepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</div>
+<div class="form-row" style="margin-top: 15px !important;margin-left: -4px !important;">
+  <div class="form-group col-sm">
+    <div class="col-md-13 text-center">
+      <div class="cust-btn-container">
+        <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="disableGenerateBtn" *ngIf="!isInquiry"><a>Generate Request</a></button>
+        <button type="button" class="cust-btn" (click)="canMdl.openNoClose()" [disabled]="disableCancelBtn" *ngIf="!isInquiry"><a>Cancel Request</a></button>
+        <button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-cancel-button (onYes)="null" [url]="'/clm-claim-processing'" ></app-cancel-button>
+<app-lov [passData]="passLOV" (selectedData)="setPayee($event)"></app-lov>
+<app-sucess-dialog [icon]="diagIcon" [message]="diagmessage"></app-sucess-dialog>
+
+<app-modal class="d-none" #genMdl>
+  <div header>Confirmation</div>
+  <div body>Are you sure you want to generate payment request?</div>
+  <div footer>
+    <button class="cust-btn" (click)="generateRequest();genMdl.closeModal()">Yes</button>
+    <button class="cust-btn" (click)="genMdl.closeModal()">No</button>
+  </div>
+</app-modal>
+
+<app-modal class="d-none" #canMdl>
+  <div header>Confirmation</div>
+  <div body>Are you sure you want to cancel payment request?</div>
+  <div footer>
+    <button class="cust-btn" (click)="cancelRequest();canMdl.closeModal()">Yes</button>
+    <button class="cust-btn" (click)="canMdl.closeModal()">No</button>
+  </div>
+</app-modal>

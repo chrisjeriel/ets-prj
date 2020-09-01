@@ -1,0 +1,31 @@
+.header-buttons div{
+	margin-bottom: 1px !important;
+}
+
+.header-buttons div button{
+   width: 95%!important;
+    max-width: 100% !important;
+}
+
+.header-buttons{
+   
+    margin-top: 12px;
+}
+
+.main-row .col-sm-6{
+	height: 100%;
+}
+
+.main-row{
+	height: 588px;
+}
+
+.label-center {
+	text-align: center !important;
+}
+
+.cust-border {
+	border-bottom: 1px solid rgb(224,227,231);
+	border-left: 1px solid rgb(224,227,231);
+	border-right: 1px solid rgb(224,227,231);
+}

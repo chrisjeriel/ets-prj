@@ -1,0 +1,265 @@
+<div id="reminderDiv" class="reminder-container" style="border: 1px solid #c5c3c3; margin-bottom: .75em; padding: 1em; max-height: 400px; overflow: auto; overflow-y:scroll  ">
+	<div>
+		<div class="row">
+			<div class="col-md-12">
+				<!-- <div class="input-group">
+					<div class="col-sm-4 text-center">
+						<div class="selectdiv ">
+			        		<select  [(ngModel)]="selectedReminder" (change)="tabSelectedRemindersController($event);">
+					            <option value="atm"><a>Assigned To Me</a></option>
+					            <option value="mr"><a>My Reminders</a></option>
+			        		</select>
+			        	</div>
+					</div>
+					<div class="col-sm-8">
+						<h4 class="text-center" style="margin-top: 5px ! important">Reminders</h4>
+					</div>
+				</div> -->
+				<div class="input-group">
+					<div class="col-sm-12">
+						<h4 class="text-center" style="margin-top: 5px !important">Reminders</h4>
+					</div>
+				</div>
+				<div class="input-group" style="margin-top: 10px !important;">
+					<div class="col-sm-5 text-left">
+			        	<div class="input-group">
+							<label class="form-control-sm col-sm-4">Type</label>
+							<select class="form-control form-control-sm cust-sm" name="selNotes" [(ngModel)]="selectedReminder" (change)="tabSelectedRemindersController($event);">
+					            <option value="atm"><a>Assigned To Me</a></option>
+					            <option value="mn"><a>My Reminders</a></option>
+			        		</select>
+						</div>
+					</div>
+					<div class="col-sm-3"></div>
+					<div class="col-sm-4 text-right">
+			        	<div class="input-group">
+							<label class="form-control-sm col-sm-4">Status</label>
+							<select name="status" class="form-control form-control-sm cust-sm" [(ngModel)]="paramStatus" (change)="dpDownStatus($event);">
+					            <option value="A"><a>Assigned</a></option>
+					            <option value="C"><a>Completed</a></option>
+					            <option value="D"><a>Deleted</a></option>
+			        		</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row"  *ngIf="loadingFlag">       
+    				<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 8px !important">
+				</div>
+				<ul class="timeline">
+			        <li *ngFor="let reminder of reminderList; let i = index">
+			        	<div>
+							<div class="float-left a-date">
+								<a href="#">
+									<img class="spanBadge" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'N'" src="app/resources/images/wfm-icons/ex-yellow.png"/>
+									<img class="spanBadge" *ngIf="reminder.impTag == 'N' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/ex-orange.png"/>
+									<img class="spanBadge" *ngIf="reminder.impTag == 'Y' && reminder.urgTag == 'Y'" src="app/resources/images/wfm-icons/ex-red.png"/>
+									{{ reminder.reminderDate | date:'MMM dd, yyyy hh:mm a' }}<br>
+									<div class="span-div"><span>{{ reminder.alarmTime | date:'hh:mm a' }}</span></div>
+								</a>
+							</div>
+
+							<div class="float-right" style="margin-top: -5px; margin-right: 5px;" *ngIf="reminderBool">
+								<button title="Complete" class="btn-action"(click)="updateReminderModal(reminder, 'C')"><a href="#"><fa name="check"></fa></a></button>
+								<button title="View" class="btn-action" (click)="showReminderModal(reminder, true)"><a href="#"><fa name="eye"></fa></a></button>
+							</div>
+
+							<div class="float-right" style="margin-top: -5px; margin-right: 5px;" *ngIf="!reminderBool">
+								<button title="Complete" class="btn-action" (click)="updateReminderModal(reminder, 'C')"><a href="#"><fa name="check"></fa></a></button>
+								<button title="View" class="btn-action" (click)="showReminderModal(reminder, true)"><a href="#"><fa name="eye"></fa></a></button>
+  							    <button title="Edit" class="btn-action" (click)="showReminderModal(reminder, false)"><a href="#"><fa name="pencil"></fa></a></button>
+								<button title="Delete" class="btn-action" (click)="updateReminderModal(reminder, 'D')"><a href="#"><fa name="trash"></fa></a></button> 
+							</div>
+						</div>
+<!-- 
+						<a>&nbsp;</a> -->
+						<p><b>{{ reminder.title }}</b></p>
+						<p>{{ reminder.reminder }}</p>
+						
+						<div *ngIf="reminder.module != ''">
+					    	<p *ngIf="reminder.module == 'Quotation'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToQuoteGenInfo('detail', reminder);">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Policy'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToPolGenInfo('detail', reminder.details);">{{ reminder.details }}</a></p>
+					    	<p *ngIf="reminder.module == 'Claim'" style="font-size: 12px; margin-bottom: 0px !important;">Created on <b>{{ reminder.module }}</b> - <a href="#" (click)="redirectToclaimGenInfo('detail', reminder);">{{ reminder.details }}</a></p>
+					    </div>
+
+						<div  *ngIf="reminderBool">
+						<p style="font-size: 12px">Assigned by <b>{{ reminder.createUser }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    </div>
+
+					    <div  *ngIf="!reminderBool">
+						<p style="font-size: 12px">Assigned to <b>{{ reminder.assignedTo }}</b> - {{ reminder.createDate  | date:'MM-dd-yyyy hh:mm:ss a' }} </p> 
+					    </div>
+
+					    <div *ngIf="reminder.relatedRecordList != null" style="width: 98% !important;">
+					    	<p>
+						    	<ngb-accordion #acc="ngbAccordion">
+								  	<ngb-panel>
+			                            <ng-template ngbPanelTitle>
+			                                <fa name="list-ul"></fa>&nbsp;Related Records
+			                            </ng-template>
+			                            <ng-template ngbPanelContent>
+			                            	<div *ngFor="let relRecord of reminder.relatedRecordList;">
+			                            		<button *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" (click)="redirectToQuoteGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Quotation {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'QUOTATION' && relRecord.referenceNo != reminder.details" />
+
+			                                	<button *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" (click)="redirectToPolGenInfo('related',relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Policy {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'POLICY' && relRecord.referenceNo != reminder.details" />
+
+			                                	<button *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" (click)="redirectToclaimGenInfo('related', relRecord);" class="button btn btn-link">&nbsp;&nbsp;&nbsp;&nbsp;Claim {{'[' + relRecord.referenceNo + ']'}}</button>
+			                                	<br *ngIf="relRecord.module == 'CLAIM' && relRecord.referenceNo != reminder.details" />
+			                            	</div>
+			                            </ng-template>
+			                    	</ngb-panel>
+							    </ngb-accordion>
+						    </p>
+					    </div>
+
+			        </li>
+			        <li *ngIf="reminderNull">
+			        	<div>
+			        		<p class="text-center">No records retrieved.</p>
+			        	</div>
+			        </li>
+			    </ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-modal class="d-none" #confirmModal>
+    <div header>Confirmation</div>
+    <div body *ngIf="updateMode == 'C'">Are you sure you want to mark this reminder as Completed?</div>
+    <div body *ngIf="updateMode == 'D'">Are you sure you want to delete this reminder?</div>
+    <div body *ngIf="updateMode == 'U'">Are you sure you want to update this reminder?</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="onClickSave();confirmModal.closeModal();">Yes</button>
+        <button class="cust-btn" (click)="confirmModal.closeModal();">No</button>
+    </div>
+</app-modal>
+
+
+<app-wf-reminder-form id="reminderModal" (onYes)="saveReminder($event)"></app-wf-reminder-form>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onOkSuccessDiagReminder(onOkVar);"></app-sucess-dialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <table class="table table-striped">
+	  <thead>
+	  <tr>
+	    <th scope="col">#</th>
+	    <th scope="col">Country</th>
+	    <th scope="col">Area</th>
+	    <th scope="col">Population</th>
+	  </tr>
+	  </thead>
+	  <tbody>
+	  <tr *ngFor="let country of countries; index as i">
+	    <th scope="row">{{ i + 1 }}</th>
+	    <td>
+	      <img [src]="'https://upload.wikimedia.org/wikipedia/commons/' + country.flag" class="mr-2" style="width: 20px">
+	      {{ country.name }}
+	    </td>
+	    <td>{{ country.area | number }}</td>
+	    <td>{{ country.population | number }}</td>
+	  </tr>
+	  </tbody>
+	</table> -->
+
+<!-- 
+				<ul class="timeline">
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									21 Sept, 2014 12:30 PM<br>
+									<div class="span-div"><span>11:30 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Client meeting on April 21st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.Scrum planning on April 4th regarding the sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									4 April, 2014 4:00 PM<br>
+									<div class="span-div" ><span>3:00 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Scrum planning on April 4th regarding the sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									21 March, 2014 1:00 PM<br>
+									<div class="span-div" ><span>12:30 PM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Board meeting on March 21st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
+					</li>
+					<li>
+						<div>
+							<div class="float-left a-date">
+								<a href="#">
+									1 March, 2014 12:30 PM<br>
+									<div class="span-div" ><span>11:30 AM</span></div>
+								</a>
+							</div>
+							<div class="float-right">
+								<button class="btn-action"><a href="#"><fa name="check"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="pencil"></fa></a></button>
+								<button class="btn-action"><a href="#"><fa name="trash"></fa></a></button>
+							</div>
+						</div>
+						<a>&nbsp;</a>
+						<p>Client meeting on March 1st regarding sales results for the previous year, Monica please examine sales trends in them marketing and products. Below please find the current status of the sale.</p>
+					</li>
+				</ul> -->
+
+
+
+

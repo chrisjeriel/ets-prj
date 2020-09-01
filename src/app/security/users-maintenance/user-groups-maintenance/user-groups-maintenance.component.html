@@ -1,0 +1,120 @@
+<div>
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	<div class="row">
+		<div class="col-sm-12 cust-margin">
+			<app-cust-editable-non-datatable #userGroups [passData]="passDataUserGroup" (newClick)="onRowClickUserGroup($event)" (genericBtn)="deleteUserGrp()" (onDelete)="userGroups.onClickDelete('force');" ></app-cust-editable-non-datatable>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-sm" style="margin-bottom: 8px;">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="userGroupAccess();"><a>User Group Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="userListingModal();"><a>Users Listing</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+	    <div class="form-group col-sm">
+	        <div class="col-md-13 text-center">
+	            <div class="cust-btn-container" style="margin-top: 10px">
+	                <!-- <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
+	                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSaveConfirmation();"><a>Save</a></button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</fieldset>
+<div class="row">
+	<div class="col-sm-12">
+	    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+	        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+	            <div class="input-group" style="margin-bottom: -15px !important;">
+	                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userGroupData.createUser" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userGroupData.createDate" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userGroupData.updateUser" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userGroupData.updateDate" disabled>
+	            </div>
+	        </div>
+	    </fieldset>
+	</div>
+</div>
+</div>
+
+<app-modal class="d-none" id="userGroupAccess">
+    <div header>User Group Access</div>
+    <div body>
+        <div class="row">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" [(ngModel)]="userGroupData.userGrpDesc">
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 20px">
+				<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userGroupTransactions (newClick)="onRowClickTrans($event, 'USER_GROUP')" (clickLOV)="clickLOV($event,'transactions')" [passData]="PassDataModuleTrans" (genericBtn)="onClickTransDelete();" (onDelete)="userGroupTransactions.onClickDelete('a');tranDelete()"></app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+			</div>
+			<div class="col-sm-12">
+				<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userGroupModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule"></app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+			</div>
+		</div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSaveTranModules();"><a>Save</a></button>
+    </div> 
+</app-modal>
+
+<app-modal class="d-none" id="userListingModal">
+    <div header>Users Listing</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" readonly class="form-control form-control-sm col-sm-6" [(ngModel)]="userGroupData.userGrpDesc">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userListing [passData]="passDataUserListing"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+    </div> 
+</app-modal> 
+
+
+<app-confirm-save #confirm (onYes)="onClickSaveMain();"></app-confirm-save>
+<app-confirm-save #groupConfirm (onYes)="saveTranModule();"></app-confirm-save>
+<app-lov #lovComponent id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSaveMain()" [url]="''" ></app-cancel-button>

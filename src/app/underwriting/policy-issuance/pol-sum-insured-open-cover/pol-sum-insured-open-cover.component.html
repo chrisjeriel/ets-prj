@@ -1,0 +1,249 @@
+<!-- <style type="text/css">
+	.input-group {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+    .input-group label {
+        padding: 0px !important;
+        margin: 0px !important;
+    }
+
+	.input-ig-row {
+        margin-left: 2px !important;
+    }
+    .ig-row {
+        margin : -3px !important;
+        /*margin-bottom: -14px ! important;*/
+    }
+    .ig-row label {
+        margin-right: 5px !important;
+    }
+</style> -->
+<!-- <div>
+	<fieldset class="scheduler-border cust-fs-padlr-offset"> 
+		<legend class="scheduler-border">Open Cover Details</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-bottom: 1px ! important;">
+				<div class="input-group ig-row">
+					<label class="form-control-sm col-sm-2" for="inputOCPolNo" >Open Cover Pol No</label>
+				    <input type="text" id="inputOCPolNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [value]="policyInfo.policyNo" readonly>
+				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="" [value]="policyInfo.insured" readonly>
+				    <div class="col-sm-1"></div>
+				</div>
+				<div class="input-group ig-row">
+					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="" [value]="policyInfo.riskName" readonly>
+				    <div class="col-sm-1"></div>
+				</div>
+			</div>
+	</fieldset>
+</div> -->
+<fieldset class="scheduler-border" *ngIf="!policyInfo.fromSummary">
+	<legend class="scheduler-border">Open Cover Details</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+		<div class="input-group" style="margin-bottom: -13px !important; margin-top: 7px !important">
+			<label class="form-control-sm col-sm-2">Open Cover Pol. No.</label>
+			<input type="text" [value]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+			 readonly>
+			<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+			<input type="text" [value]="policyInfo.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+		</div>
+		<div class="input-group" style="margin-bottom: -13px !important;">
+			<label class="col-sm-1"></label>
+			<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+			<input type="text" [value]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
+		</div>
+	</div>
+</fieldset>
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+<!-- <div>
+	<div class="row">
+		<div class="col-sm" style="margin-top: 16px;">
+			<fieldset class="scheduler-border">
+				<div class="form-row custom-row-inline-inset" style="margin-bottom: 10px ! important;margin-top: 20px ! important;">
+					<div class="input-group  ig-row" >
+						<div class="col-sm-1"></div>
+						<label class="form-control-sm col-sm-2" for="xx">Currency</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.currencyCd" readonly>
+						<label class="form-control-sm col-sm-2" for="xx">Exch. Rt.</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.currencyRt" readonly appCurrencyRate>
+						<div class="col-sm-1"></div>
+					</div>
+					<div class="input-group  ig-row" style="margin-top: -7px">
+						<label class="form-control-sm col-sm-3" for="xx">Max Sum Insured</label>
+						<input type="text" id="xxx" class="form-control form-control-sm cust-sm txt-content-rght" [ngModel]="coverageInfo.totalSi" readonly appCurrency>
+						<div class="col-sm-1"></div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-sm"style="padding-left: 0px;">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Share Details</legend>
+				<form #myForm="ngForm">
+					<div class="form-row custom-row-inline-inset" style="margin-top: 17px !important; margin-bottom: 9px ! important;">
+						<div class="input-group ig-row" >
+							<div class="col-sm-2"></div>
+							<label class="form-control-sm col-sm-2">Share(%)</label>
+                            <input id="share" [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctShare" (ngModelChange)="cmptValue($event);" (blur)="checkPctShareRange();" name="pctShare" appOtherRates appRequired>
+                            <label class="form-control-sm col-sm-1">PML(%)</label>
+                            <input [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.pctPml" name="pctPml" (blur)="checkPMLRange();" appOtherRates>
+                            <div class="col-sm-2"></div> 
+						</div>
+						<div class="input-group ig-row" style="margin-top: -7px">
+							<div class="col-sm-2"></div>
+	                        <label class="form-control-sm col-sm-2">100% Value</label>
+	                        <input id="value" [readonly]="inqFlag" type="text" class="form-control form-control-sm" [(ngModel)]="coverageInfo.totalValue" name="totalValue" appCurrency appRequired (ngModelChange)="cmptShrPct($event);" (blur)="checkTotalValueRange();">
+	                        <div class="col-sm-2"></div>
+                    	</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+</div> -->
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8" style="padding-left: 0px !important; padding-right: 5px !important;min-width: 820px !important; ">
+      <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Section Covers</legend>
+        <div class="test row" style="margin-top: 12px !important; ">
+          <div class="col-sm-12" style="margin-top: 2px !important;padding-left: 5px; padding-right: 5px"> 
+            <fieldset class="scheduler-border" style="padding-bottom: 10px !important; padding-left: 7px !important; padding-right: 7px!important;">
+              <app-cust-editable-non-datatable  #sectionTable [passData]="passDataSectionCover" (newClick)="onrowClick($event)" class="d-block py-2" (tableDataChange)="passDataSectionCover.tableData=$event;update($event);" (clickLOV)="sectionCoversLOV($event)"></app-cust-editable-non-datatable>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" style="padding-left: 5px;padding-right: 5px">
+            <fieldset class="scheduler-border" style="padding-bottom: 0px !important;padding-left: 7px !important;padding-right: 7px !important;margin-bottom: 5px !important">
+              <legend class="scheduler-border">Deductibles</legend>
+                <app-cust-editable-non-datatable #deductiblesTable [passData]="passDataDeductibles" (tableDataChange)="passDataDeductibles.tableData=$event;sectionTable.indvSelect.deductiblesSec=$event" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
+            </fieldset>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="col-sm-4" style="padding: 0px !important">
+        <div class="row">
+           <div class="col-sm-12 forced-col-sm">
+             <fieldset class="scheduler-border">
+               <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+               <div class="cust-sm">
+                 <div class="input-group" style="margin-top: -7px;">
+                   &nbsp;
+                 </div>
+                 <div class="input-group" style="margin-bottom: -13px !important">
+                   <label class="form-control-sm col-sm-4">Currency</label>
+                   <input type="text" name="coverageInfo.currencyCd" class="form-control form-control-sm" [(ngModel)]="coverageInfo.currencyCd" readonly tabindex="-1">
+                   <label class="form-control-sm col-sm-3">Exch. Rt.</label>
+                   <input type="text" class="form-control form-control-sm req" [ngModel]="coverageInfo.currencyRt | number:'1.6-6'" (ngModelChange)="coverageInfo.currencyRt = $event" readonly appCurrencyRate tabindex="-1" name="coverageInfo.currencyRt">
+                 </div>
+                 <div class="input-group" style="margin-bottom: -13px !important">
+                  <label class="form-control-sm col-sm-4">Max Sum Insured</label>
+                  <input type="text" class="form-control form-control-sm req" [ngModel]="coverageInfo.totalSi  | number:'1.2-2'" (ngModelChange)="coverageInfo.totalSi = $event;" readonly appCurrency tabindex="-1" name="coverageInfo.totalSi">
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 forced-col-sm">
+             <fieldset class="scheduler-border" style="padding-bottom: 7px !important;padding-top: 5px !important">
+               <legend class="scheduler-border">Total Per Section</legend>
+               <div class="cust-sm totalPerSection" >
+                <app-cust-editable-non-datatable #totalPerSection [passData]="passDataTotalPerSection"></app-cust-editable-non-datatable>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12 forced-col-sm">
+            <fieldset class="scheduler-border">
+               <legend class="scheduler-border">Share Details</legend>
+               <form #shareForm="ngForm">
+	               <div class="cust-sm">
+	                <div class="input-group" style="margin-top: -14px;">
+	                  &nbsp;
+	                </div>
+	                <div class="input-group" style="margin-bottom: -13px !important">
+	                 <label class="form-control-sm col-sm-5">Share(%) of 100% Value</label>
+	                 <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageInfo.pctShare" (ngModelChange)="pctShare($event)" (blur)="checkPctShare()" style="text-align: right !important" appRequired appOtherRates name="coverageInfo.pctShare" [readonly]="inqFlag">
+	               </div>
+	               <div class="input-group" style="margin-bottom: -6px !important">
+	                 <label class="form-control-sm  col-sm-5" style="margin-bottom: 1px;">100% Value</label>
+	                 <input type="text" class="form-control form-control-sm calc col-sm" [(ngModel)]="coverageInfo.totalValue"  style="text-align: right !important" (ngModelChange)="totalValue($event)" (blur)="checktotalValue()" appRequired appCurrency name="coverageInfo.totalValue" [readonly]="inqFlag">
+	                 
+	               </div>
+	               <div class="input-group" style="margin-bottom: -6px !important">
+	                 <label class="form-control-sm  col-sm-5">PML(%)</label>
+	                 <input type="text" class="form-control form-control-sm req col-sm" [(ngModel)]="coverageInfo.pctPml" (ngModelChange)="coverageInfo.pctPml = $event" appOtherRates name="coverageInfo.pctPml" [readonly]="inqFlag">
+	                 
+	               </div>
+	             </div>
+	         </form>
+           </fieldset>
+          </div>
+        </div>
+    </div>
+    </div>
+</div>
+
+<ng-container *ngIf="!inqFlag">
+	<div class="form-row" >
+			<div class="form-group col-sm">
+				<div class="col-md-13 text-center">
+					<br>
+					<div class="cust-btn-container">
+						<button  type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
+						<button  type="button" class="cust-btn" (click)="onClickSave()" ><a>Save</a></button>
+					</div>
+				</div>
+			</div>
+	</div>
+</ng-container>
+
+<app-sucess-dialog [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success' && !cancelFailed  ? this.cancel.onNo():null" [message]="dialogMessage"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/open-cover-list'" ></app-cancel-button>
+
+<app-modal hidden [btnTitle]="'Confirmation'" id="confirmationModal">
+    <div header>Confirmation Message</div>
+    <div body style="text-align: center">
+       <p class="no-margin">{{promptMessage}}</p>
+       <p class="no-margin" *ngIf="promptType.toUpperCase() === 'PCTSHARE'"><strong>Share (%): {{coverageInfo.pctShare}}</strong></p>
+       <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
+       		<div class="row">
+       			<div class="col-sm-6" style="text-align: right; padding-right: 0px">
+       				<p class="no-margin"><strong>Max SI of the Policy:</strong></p>
+       			</div>
+       			<div class="col-sm-6" style="text-align: left">
+       				<p class="no-margin"><strong>&nbsp; {{coverageInfo.totalSi | number: '1.2-2'}}</strong></p>
+       			</div>
+       		</div>
+       		<div class="row">
+       			<div class="col-sm-6" style="text-align: right; padding-right: 0px">
+       				<p class="no-margin"><strong>100% Value: </strong></p>
+       			</div>
+       			<div class="col-sm-6" style="text-align: left">
+       				<p class="no-margin"><strong>&nbsp; {{coverageInfo.totalValue | number: '1.2-2'}}</strong></p>
+       			</div>
+       		</div>
+       		<!-- <p class="no-margin"><strong>Max SI of the Policy: &nbsp; {{coverageInfo.totalSi}}</strong></p>
+       		<p class="no-margin"><strong>100% Value: &nbsp; {{coverageInfo.totalValue}}</strong></p> -->
+       </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="line" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
+
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>

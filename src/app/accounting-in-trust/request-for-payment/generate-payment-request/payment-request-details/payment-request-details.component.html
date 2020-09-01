@@ -1,0 +1,334 @@
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+    <legend class="scheduler-border">Request Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-8">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Request No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3 dirty" [ngModel]="requestData?.paytReqNo" readonly>
+                <label class="form-control-sm col-sm-2 no-margin">Request Date</label>
+                <div class="col-sm-3 dp-cont" style="margin-left: 0px !important">
+                  <datepicker type="datetime" [showIcon]="false" [disabled]="true" [value]="requestData?.reqDate"></datepicker>
+                </div>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="requestData?.reqStatusDesc" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1">Payee</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" maxlength="500" [ngModel]="requestData?.payee" readonly>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Amount</label>
+                 <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.reqAmt | number:'1.2-2'" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" value="PHP" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="requestData?.localAmt | number:'1.2-2'" readonly>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<div class="cust-tabs-container" style="margin-top:10px !important">
+    <ngb-tabset #tabset (tabChange)="onTabChange($event)">
+      <ngb-tab>
+        <ng-template ngbTabTitle>
+          <div>{{ requestData?.tranTypeDesc }}</div>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <ng-container [ngSwitch]="true">
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 1 || requestData?.tranTypeCd == 2 || requestData?.tranTypeCd == 3">
+                    <app-cust-editable-non-datatable id="cedTbl" (clickLOV)="showLOV($event,'lovCedTbl')" (newClick)="onRowClick($event)" [passData]="cedingCompanyData" (tableDataChange)="cedingCompanyData.tableData=$event;addDirty('cedTbl');conLocAmt();" #cedCompTbl>
+                      <ng-container controls-r>
+                        <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                      </ng-container>
+                    </app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 4">
+                    <!-- <div class="row">
+                      <div class="col-sm-12">
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm-7 labels">Alloted Policy Balance Payments</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right alloted" [(ngModel)]="allotedAmt" (change)="reCompInw();onChangeAllotedAmt();">
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Total Balance for Selected Policy
+                            Transactions</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="totalBal | number: '1.2-2'" readonly>
+                        </div>
+                        <div class="input-group" style="margin-bottom: 0px !important;">
+                          <label class="form-control-sm col-sm labels" style="padding-left:0px !important; margin:0px !important;">Variance</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-1 text-right" numbers-only [ngModel]="variance | number: '1.2-2'"readonly>
+                        </div>
+                      </div>
+                    </div> -->
+                    <app-cust-editable-non-datatable id="inwTbl" [passData]="inwardPolBalData" (newClick)="onRowClick($event)" (clickLOV)="showLOV($event,'lovInwardTbl')" #inwardTbl (tableDataChange)="inwardPolBalData.tableData=$event;addDirty('inwTbl');reCompInw();">
+                      <ng-container controls-r>
+                        <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                      </ng-container>
+                    </app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
+                    <div class="row pt-1" >
+                        <div class="col-sm-2" style="margin-right: -30px !important;"></div>
+                        <!-- <div class="col-sm-8 input-group">
+                          <label class="form-control-sm col-sm-2">Service Fee</label>
+                          <input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" [(ngModel)]="requestData.reqAmt" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
+                          <label class="form-control-sm col-sm-2">Period As Of</label>
+                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="qtrParam" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <option value="1">First Quarter</option>
+                            <option value="2">Second Quarter</option>
+                            <option value="3">Third Quarter</option>
+                            <option value="4">Fourth Quarter</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="yearParam" style="margin-left: 2px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                          <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                        </div> -->
+
+                        <div class="col-sm-4" style="padding: 0;">
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-6">Period As Of</label>
+                            <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="qtrParam" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                              <option value="1">First Quarter</option>
+                              <option value="2">Second Quarter</option>
+                              <option value="3">Third Quarter</option>
+                              <option value="4">Fourth Quarter</option>
+                            </select>
+                            <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="yearParam" style="margin-left: 2px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                              <ng-container *ngFor="let y of yearParamOpts">
+                                <option [value]="y">{{ y }}</option>
+                              </ng-container>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-4" style="padding: 0;">
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total Service Fee</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="sfeeAmts.totalSfeeAmt" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
+                            <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">MRe Service Fee</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.mreSfeeAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total VAT</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalVatAmt | number: '1.2-2'" readonly appCurrency>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Total WhTax</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalWhTaxAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">NET CV AMOUNT</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalDue | number: '1.2-2'" readonly appCurrency style="font-weight: bold;">
+                          </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="input-group" style="margin-top: 3px">
+                      <div class="col-sm-1"></div>
+                      <div class="col-sm-12">
+                        <app-cust-editable-non-datatable #servFeeMainTbl [passData]="serviceFeeMainData"></app-cust-editable-non-datatable>
+                      </div>
+                      <div class="col-sm-1"></div>
+                    </div>
+                    <div class="input-group" style="margin-top: 8px; margin-bottom: 0 !important;">
+                      <div class="col-sm-12">
+                        <app-cust-editable-non-datatable #servFeeSubTbl [passData]="serviceFeeSubData"></app-cust-editable-non-datatable>
+                      </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 6">
+                  <div class="input-group">
+                    <div class="col-sm">
+                      <app-cust-editable-non-datatable id="trtyTbl" [passData]="treatyBalanceData" #treatyTbl (newClick)="onRowClick($event)" (tableDataChange)="treatyBalanceData.tableData=$event;addDirty('trtyTbl');onChangeCurr('tbd');" (clickLOV)="showLOV($event,'lovOsQsoaTbl')">
+                        <ng-container controls-r>
+                          <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                        </ng-container>
+                      </app-cust-editable-non-datatable>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 7">
+                    <app-cust-editable-non-datatable id="invtTbl" [passData]="investmentData" #invtTbl (newClick)="onRowClick($event)" (tableDataChange)="investmentData.tableData=$event;addDirty('invtTbl');" (clickLOV)="showLOV($event,'lovInvtTbl')" >
+                      <ng-container controls-r>
+                        <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                      </ng-container>
+                    </app-cust-editable-non-datatable>
+                </ng-container>
+                <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 8">
+                    <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr('oth');">
+                      <ng-container controls-r>
+                        <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                      </ng-container>
+                    </app-cust-editable-non-datatable>
+                </ng-container>
+              </ng-container>
+              <div class="input-group" style="margin-bottom: 0 !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+                <div class="form-group col-sm"> 
+                  
+                  <div class="text-center">
+                    <div class="cust-btn-container">
+                      <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                      <button type="button" class="cust-btn" (click)="onClickSave()" [disabled]="requestData?.tranTypeCd == 5 && serviceFeeSubData.tableData.length == 0"><a>Save</a></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab *ngIf="requestData?.tranTypeCd == 4 || requestData?.tranTypeCd == 6" id="unColTabId">
+        <ng-template ngbTabTitle>
+          <div>Unapplied Collection</div>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable id="unColTbl" [passData]="unappliedColData" #unappliedTbl (newClick)="onRowClick($event)" (tableDataChange)="unappliedColData.tableData=$event;onChangeCurr('unc');addDirty('unColTbl');unappliedColChange($event);" (clickLOV)="showUnappliedLov($event)">
+                <ng-container controls-r>
+                  <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                </ng-container>
+              </app-cust-editable-non-datatable>
+            </div>
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+      <ngb-tab *ngIf="requestData?.tranTypeCd == 4 || requestData?.tranTypeCd == 6 || requestData?.tranTypeCd == 7" id="othTabId">
+      <!-- <ngb-tab *ngIf="requestData?.tranTypeCd != 8" id="othTabId"> -->
+        <ng-template ngbTabTitle>
+          <div>Others</div>
+        </ng-template>
+        <ng-template ngbTabContent>
+          <div class="input-group cust-border" style="padding-top: 0.6em">
+            <div class="col-sm-12">
+              <app-cust-editable-non-datatable id="othTbl" [passData]="othersData" #othersTbl (newClick)="onRowClick($event)" (tableDataChange)="othersData.tableData=$event;addDirty('othTbl');onChangeCurr('oth');">
+                <ng-container controls-r>
+                  <button type="button" class="cust-btn" (click)="onClickExport()"><a>Export to Excel</a></button>
+                </ng-container>
+              </app-cust-editable-non-datatable>
+            </div>
+            <div class="form-row col-sm-12" style="margin-top: 40px !important;" *ngIf="requestData?.tranTypeCd > 3 && (requestData?.reqStatus == 'N' || requestData?.reqStatus == 'F')">
+              <div class="form-group col-sm-12">
+                <div class="text-center">
+                  <div class="cust-btn-container">
+                    <button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-tab>
+    </ngb-tabset>
+  </div>
+
+  <div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;padding-right: 0px !important;">
+    <fieldset class="scheduler-border" style="margin-top: 10px !important; padding-bottom: 8px !important;">
+      <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+        <label class="form-control-sm col-sm-1">Created By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedTblData?.createUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="selectedTblData?.createDate"></datepicker>
+        </div>
+        <label class="form-control-sm col-sm-1">Last Update By</label>
+        <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedTblData?.updateUser" readonly>
+        <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+        <div class="col-sm dp-cont">
+          <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true" [value]="selectedTblData?.updateDate"></datepicker>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+
+
+<app-mtn-clm-history-lov #mtnClmHistLov (selectedData)="setData($event,'lovCedTbl')" [limitClmHistTbl]="limitClmHistTbl" [limitData]="limitData" [lovCheckBox]="true"></app-mtn-clm-history-lov>
+
+<app-quarter-ending-lov #trtyLov (selectedData)="setData($event,'lovTrtyTbl')"></app-quarter-ending-lov>
+
+<app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
+<app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
+<app-lov #osQsoaLov  [passData]="passData" (selectedData)="setData($event,'lovOsQsoaTbl')"></app-lov>
+<app-lov #unappliedLov [passData]="passData" (selectedData)="setUnapplied($event)"></app-lov>
+
+<app-confirm-save  #conClm (onYes)="onSaveCPC()"></app-confirm-save>
+<app-sucess-dialog #sucClm [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel();"></app-sucess-dialog>
+<app-cancel-button #canClm (onYes)="onClickSaveCPC('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conInw (onYes)="onSaveInw()"></app-confirm-save>
+<app-sucess-dialog #sucInw [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInw();"></app-sucess-dialog>
+<app-cancel-button #canInw (onYes)="onClickSaveInw('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conTrty (onYes)="onSaveTrty()"></app-confirm-save>
+<app-sucess-dialog #sucTrty [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelTrty();"></app-sucess-dialog>
+<app-cancel-button #canTrty (onYes)="onClickSaveTrty('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conInvt (onYes)="onSaveInvt()"></app-confirm-save>
+<app-sucess-dialog #sucInvt [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelInvt();"></app-sucess-dialog>
+<app-cancel-button #canInvt (onYes)="onClickSaveInvt('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conOth (onYes)="onSaveOth()"></app-confirm-save>
+<app-sucess-dialog #sucOth [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelOth();"></app-sucess-dialog>
+<app-cancel-button #canOth (onYes)="onClickSaveOth('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conUnCol (onYes)="onSaveUnCol()"></app-confirm-save>
+<app-sucess-dialog #sucUnCol [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelUncol();"></app-sucess-dialog>
+<app-cancel-button #canUnCol (onYes)="onClickSaveUnCol('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+<app-confirm-save  #conServFee (onYes)="onSaveServFee()"></app-confirm-save>
+<app-sucess-dialog #sucServFee [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancelServFee();"></app-sucess-dialog>
+<app-cancel-button #canServFee (onYes)="onClickSaveServFee('cancel')" [url]="'/payt-req'" ></app-cancel-button>
+
+
+<app-modal class="d-none" id="warnMdl" #warnMdl>
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ warnMsg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal #servfeeMdl class="d-none">
+    <div header>{{ sfeeReturnCode == 4 ? 'Confirmation' : 'Message' }}</div>
+    <div body style="text-align: center">
+      <p class="cust-p" *ngIf="sfeeReturnCode == 1">Batch Production for month end <b>{{ sfeeMdlRefNo }}</b><br />
+        {{ sfeeMdlMonthNum == 1 ? 'was' : 'were' }} not yet closed.</p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 2">A Check Voucher was already made for Payment of Service Fee<br />
+        for this quarter with Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 3">Payment of Service Fee for this quarter was already finalized.<br />
+        Check Ref. no. <b>{{ sfeeMdlRefNo }}</b></p>
+      <p class="cust-p" *ngIf="sfeeReturnCode == 4">A request was already made for this quarter amounting<br />
+        to {{ sfeeMdlAmount | number:'1.2-2' }} with Ref. no. <b>{{ sfeeMdlRefNo }}</b>.<br /><br />
+        Generating a new request will cancel the previous one.<br/>
+        Would you like to continue?</p>
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="sfeeReturnCode !== 4">
+        <button *ngIf="sfeeReturnCode == 4" class="cust-btn" type="button" (click)="getAcctPrqServFee(true, true); servfeeMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="servfeeMdl.closeModal();"><a>{{ sfeeReturnCode == 4 ? 'No' : 'Ok' }}</a></button>
+    </div>
+</app-modal>

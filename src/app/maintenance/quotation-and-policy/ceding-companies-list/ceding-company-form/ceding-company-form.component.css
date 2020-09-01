@@ -1,0 +1,32 @@
+.cust-span {
+	font-size: 10px;
+	font-weight: bold;
+	position: absolute;
+    margin-top: 4px; 
+}
+
+.cust-div {
+	padding: 0px !important;
+}
+
+.cust-ig {
+	margin-bottom: -14px !important;
+}
+
+.cust-checkbox-pos{
+	margin-top: -13px;
+}
+
+.cust-btn-extend{
+	max-width: 100%;
+	width: 43%;
+	margin-top: -9px;
+	z-index: 99 !important;
+}
+
+.text-search-ico {
+    margin-left: -15px;
+    margin-right: 2px;
+    z-index: 200;
+    font-size: 14px;
+}

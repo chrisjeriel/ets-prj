@@ -1,0 +1,111 @@
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+
+.drp-dwn-cstmz {
+    height:26px; 
+    padding: 0px;
+}
+.float-sm-center{
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+}
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+
+.spec-ico {
+	margin-left: -50px;
+}
+
+.input-group label {
+	padding-left: 0px;
+}
+
+#close{
+	font-size: 27px;
+}
+
+.close{
+	color: #fff;
+	float: right;
+	opacity: 1;
+	line-height: .9;
+	padding-left: 5px !important;
+}
+
+#closes:hover {
+	color: #fff;
+	opacity: 1;
+}
+
+.modal-footer {
+	padding: 10px;
+}
+
+h6#modal-basic-title.modal-title {
+	margin: 5px 0px 5px 5px;
+}
+
+h4 {
+	font-size: 14px !important;
+}
+
+.ig-cust {
+	margin-bottom: -14px !important;
+}
+
+.ig-mrgn {
+	margin-left: 2px !important;
+}
+
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
+
+.white-bg {
+	background: white !important;
+}
+
+.dp-cont {
+	margin-left: 0 !important;
+}
+
+.offsetFormGroup {
+	margin-bottom: 0px !important;
+}
+
+.custom-row-inline-inset {
+	margin-top: 10px !important;
+}
+
+label.cust-lbl-left-offset {
+	margin-left: 20px !important;
+}
+
+.input-group {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.input-group label {
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.input-ig-row {
+    margin-left: 2px !important;
+}
+.ig-row {
+    margin : -3px !important;
+    /*margin-bottom: -14px ! important;*/
+}
+.ig-row label {
+    margin-right: 5px !important;
+}

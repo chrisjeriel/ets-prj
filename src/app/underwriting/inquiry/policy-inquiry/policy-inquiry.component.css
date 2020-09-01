@@ -1,0 +1,27 @@
+
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 99999;
+	font-size: 14px;
+}
+
+.spec-ico {
+	margin-left: -50px;
+}
+.mrgn-fieldset{
+    margin-top: 17px;
+}
+/* .pi-fldst-hght{
+    height: 100px !important;
+} */
+input {
+	margin-left: -3px !important;
+}
+
+.custom-row-inline-inset{
+	margin-top: 2px !important;
+}
+
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}

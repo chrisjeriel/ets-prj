@@ -1,0 +1,14 @@
+.cust-span {
+	font-size: 10px;
+	font-weight: bold;
+	position: absolute;
+    margin-top: 4px; 
+}
+
+.cust-div {
+	padding: 0px !important;
+}
+
+.cust-ig {
+	margin-bottom: -14px !important;
+}

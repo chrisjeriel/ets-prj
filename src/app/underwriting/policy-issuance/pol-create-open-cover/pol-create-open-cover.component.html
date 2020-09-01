@@ -1,0 +1,124 @@
+<div class="cust-tabs-container">
+    <h4>Policy / Issuance</h4>
+    <ngb-tabset>
+        <ngb-tab class="ngb-tab" title="Create Open Cover">
+            <ng-template ngbTabContent>
+                <form #myForm="ngForm">
+                <div class="row">
+                    <div class="col-sm-2"></div>
+                    <div class="col-sm-8">
+                        <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+                        <div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+                        <fieldset class="scheduler-border" style="padding-top: 6px !important;padding-bottom: 7px !important;margin-top: 18px !important;">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm" style="padding: 13px 4em 5px 3em;">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Quotation No</label>
+                                            <input type="text" class="form-control form-control-sm cap-input col-sm-2" [ngModel]="tempQuoteNo[0]" (ngModelChange)="tempQuoteNo[0] = $event.toUpperCase()" (change)="searchQuoteNoFields($event, 'line');" ngbTooltip="Line" name="line" appRequired maxlength="3" mask="SSS">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input col-sm" ngbTooltip="Year" [(ngModel)]="tempQuoteNo[1]" (change)="searchQuoteNoFields($event, 'year');" name="year" appRequired numbers-only maxlength="4">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[2]" (change)="searchQuoteNoFields($event, 'seqNo');" ngbTooltip="Sequence No" name="seqNo" appRequired numbers-only maxlength="5">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[3]" (change)="searchQuoteNoFields($event, 'revNo');" ngbTooltip="Revision No" name="revNo" appRequired numbers-only maxlength="2">
+                                            <input type="text" class="form-control form-control-sm input-ig-row cap-input" [(ngModel)]="tempQuoteNo[4]" (change)="searchQuoteNoFields($event, 'cedingId');" ngbTooltip="Company No" name="cedingId" appRequired numbers-only maxlength="3">
+                                            <span>&nbsp;</span>
+                                            <div class="text-search-ico"><a><i class="fa fa-search" (click)="showLOV();"></i></a></div>
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Option No</label>
+                                            <input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="optionData.optionId" name="optId" appRequired (change)="checkCode($event)" [readonly]="noDataFound || quoteData.quoteNo.length === 0">
+                                            <div class="text-search-ico-inner" [class.d-none]="noDataFound || quoteData.quoteNo.length === 0"><a><i class="fa fa-search" (click)="showOptionLOV()"></i></a></div>
+                                            <input type="text" class="form-control form-control-sm col-sm-3" [ngStyle]="{'margin-left': noDataFound || quoteData.quoteNo.length === 0 ? '3px' : '7px', 'text-align': 'right'}" [ngModel]="optionData.condition | number: '1.10-10'" name="condition" readonly tabindex="-1">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Ceding Company</label>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.cedingName" name="cedingName" readonly tabindex="-1">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Insured</label>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.insuredDesc" name="insuredDesc" readonly tabindex="-1">
+                                        </div>
+                                        <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Risk</label>
+                                            <input type="text" class="form-control form-control-sm" [ngModel]="quoteData.riskName" name="riskName" readonly tabindex="-1">
+                                        </div>
+                                        <!-- <div class="input-group ig-row">
+                                            <label class="form-control-sm col-sm-2">Inception Date</label>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="inceptDate.date" name="inceptDate" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="inceptDate.time" name="inceptTime" appRequired>
+                                            <label class="form-control-sm col-sm-1" style="margin-left: 25px !important;">Expiry Date</label>
+                                            <input type="date" class="form-control form-control-sm col-sm-3" [(ngModel)]="expiryDate.date" name="expiryDate" appRequired>
+                                            <input type="time" class="form-control form-control-sm input-ig-row col-sm-2" [(ngModel)]="expiryDate.time" name="expiryTime" appRequired>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+               </form>
+                <div class="form-row">
+                    <div class="form-group col-sm">
+                        <div class="col-md-13 text-center">
+                            <div class="cust-btn-container" style="margin-top:10px">
+                                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+                                <button type="button" (click)="prepareParams()" class="cust-btn"><a>Convert</a></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</div>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="polLovMdl" #polLovMdl>
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-loading-table [passData]="passDataLOV" #polLov (rowClick)="onRowClick($event);" (searchToDb)="searchQuery($event)"></app-loading-table>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); btnDisabled = true;"><a>Cancel</a></button>
+        <button  class="cust-btn" type="button" (click)="modalService.dismissAll(); setDetails();" [disabled]="btnDisabled" [class.cust-btn-disabled]="btnDisabled"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal hidden [btnTitle]="'List Of Values'" id="optionLovMdl">
+    <div header>List Of Values</div>
+    <div body>
+       <!-- <app-cust-non-datatable [passData]="passDataLOV" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable> -->
+       <app-cust-non-datatable [passData]="passDataOptionLOV" #optLov (rowClick)="onRowClickOption($event);"></app-cust-non-datatable>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); setOption();" [disabled]="btnDisabled" [class.cust-btn-disabled]="btnDisabled"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-modal hidden [btnTitle]="'Convert'" id="convertPopup">
+    <div header>Success Mesage</div>
+    <div body>
+        <div class="custom-row-inline-inset" style="text-align: center">
+            <p>Quotation No <strong>{{quoteData.quoteNo}}</strong></p>
+            <p>was successfully converted to Open Cover Policy No</p>
+            <br/>
+            <p><strong>{{openPolicyInfo.openPolNo}}</strong></p>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();toOpenCoverPolGenInfo();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-confirm-save (onYes)="convertion();"></app-confirm-save>
+
+<app-sucess-dialog id="dialogPopup" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="convertion('cancel')" [url]="'/'" ></app-cancel-button>

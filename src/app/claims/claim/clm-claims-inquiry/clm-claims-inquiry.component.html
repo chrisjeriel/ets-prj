@@ -1,0 +1,169 @@
+<div class="cust-tabs-container">
+	<h4>Claims / Inquiry</h4>
+	<ngb-tabset>
+		<ngb-tab title="Claim Inquiry">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="navigateToGenInfo()" (searchToDb)="searchQuery($event)" (add)="onClickAdd($event)" (export)="export()"></app-loading-table>
+					</div>
+				</div>
+				<div class="row" style="margin-bottom:10px !important; margin-top: -19px;">
+					<div class="col-sm-6">
+						<!-- <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:152%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+						<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading"> -->
+						                <!-- <div style="position: fixed;width: 86%;height: 70%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div> -->
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 31px 20px 27px 0px;">
+								<div class="input-group" style="margin-top: 10px !important;">
+									<label class="form-control-sm col-sm-2">Claim No</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.claimNo">
+									<label class="form-control-sm col-sm-2">Status</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.clmStatus">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Policy No</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.policyNo">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Co Claim No</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coClmNo">
+								</div>
+								<div class="input-group cust-ig" >
+									<label class="form-control-sm col-sm-2">Type of Cession</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.cessionDesc">
+									<label class="form-control-sm col-sm-2">Line Class</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lineClassDesc">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Ceding Company</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.cedingName">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Co Ref No</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.coRefNo">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Adjuster</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.adjName">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Adjuster Ref No</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.adjRefNo">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Risk</label>
+									<textarea  readonly class="form-control form-control-sm col-sm" readonly style="font-size: 11px; min-height: 38px;">{{ selected?.riskName }}</textarea>
+								</div>
+								<div class="input-group cust-ig" *ngIf="selected.reasonCd != null && selected.reasonCd != undefined" style="margin-top: 3px !important; margin-bottom: -34px !important;">
+			                        <label class="form-control-sm col-sm-2" style="margin-bottom: 0;"></label>
+			                        <i style="font-size: 13px; color: red;">{{selected?.reasonCd+' - '+selected?.reasonDesc}}</i>
+			                    </div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 31px 20px 27px 0px;">
+								<div class="input-group" style="margin-top: 10px !important;">
+									<label class="form-control-sm col-sm-2">Loss Date</label>
+									<!-- <input readonly [value]="ns.toDateTimeString(selected?.lossDate)" type="datetime-local" class="form-control form-control-sm cust-sm col-sm-4"> -->
+									<div class="col-sm-4" style="padding: 0px">
+									    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="selected?.lossDate"></datepicker>
+									</div>
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Report Date</label>
+									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[0]" >
+									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.reportDate)?.split('T')[1]" style="margin-left: 3px;" > -->
+									<div class="col-sm" style="padding: 0px">
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="report.date"></datepicker>
+									</div>
+									<div class="col-sm dp-cont">
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="report.time"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-2">Reported By</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.reportedBy">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Creation Date</label>
+									<!-- <input readonly type="date" class="form-control form-control-sm cust-sm col-sm-2" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[0]" >
+									<input readonly type="time" class="form-control form-control-sm cust-sm col-sm" [value]="ns.toDateTimeString(selected?.createDate)?.split('T')[1]" style="margin-left: 3px;" > -->
+									<div class="col-sm" style="padding: 0px">
+									    <datepicker [type]="'date'" [required]="false" [disabled]="true" [value]="create.date"></datepicker>
+									</div>
+									<div class="col-sm dp-cont">
+									    <datepicker [type]="'time'" [required]="false" [disabled]="true" [value]="create.time"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-2">Processed By</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.processedBy">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Loss Cause</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lossAbbr">
+									<label class="form-control-sm col-sm-2">Loss Period</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.lossPdAbbr">
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-2">Event Type</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.eventTypeDesc">
+									<label class="form-control-sm col-sm-2">Event</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.eventDesc">
+								</div>
+								<div class="input-group cust-ig" style="margin-bottom: 1px !important;">
+									<label class="form-control-sm col-sm-2">Loss Details</label>
+									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 45px; margin-bottom: 17px !important;">{{ selected?.lossDtl }}</textarea>
+								</div>
+								<div class="input-group cust-ig" style="margin-bottom: 1px !important;">
+									<label class="form-control-sm col-sm-2">Remarks</label>
+									<textarea  readonly class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 45px; margin-bottom: 17px !important;">{{ selected?.remarks }}</textarea>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 18px !important; margin-right: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 25px 18px -20px 0px !important">
+								<div class="input-group" style="margin-bottom: 1px !important;">
+									<label class="form-control-sm col-sm-1" style="padding-right:3px">Section I</label>
+									<input type="checkbox" [checked]="selected?.secISiTag === 'Y'" class="checkbox" style="pointer-events: none;" tabindex="-1">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIPrem | number: '1.2-2'" appCurrency  readonly>
+									<label class="form-control-sm col-sm-2">Section II</label>
+									<input type="checkbox" style="pointer-events: none;" tabindex="-1" [checked]="selected?.secIISiTag === 'Y'" class="checkbox">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIIPrem | number: '1.2-2'" appCurrency readonly>
+									<label class="form-control-sm col-sm-2">Section III</label>
+									<input type="checkbox" style="pointer-events: none;" tabindex="-1" [checked]="selected?.secIIISiTag === 'Y'" class="checkbox">
+									<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="selected?.sectionIIIPrem | number: '1.2-2'" appCurrency readonly>
+								</div>
+								<div class="input-group cust-ig">
+									<label class="form-control-sm col-sm-5">Allowable Maximum Claim</label>
+									<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selected?.allowMaxSi | number: '1.2-2'" appCurrency readonly>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+					<div class="col-sm-6">
+						<fieldset class="scheduler-border" style="padding-bottom: 1px !important; margin-left: -5px !important;">
+							<legend class="scheduler-border" style="visibility: hidden; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+							<div style="margin: 36px 18px 18px 0px !important">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2">Currency</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm-1" [ngModel]="selected?.currencyCd">
+									<label class="form-control-sm col-sm-2">Total Reserve</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="selected?.totalLossExpRes | number: '1.2-2'">
+									<label class="form-control-sm col-sm-2">Total Payment</label>
+									<input readonly type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="selected?.totalLossExpPd | number: '1.2-2'">
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

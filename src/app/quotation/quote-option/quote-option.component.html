@@ -1,3 +1,106 @@
-<p>
-  quote-option works!
-</p>
+    <div>
+	 <fieldset class="scheduler-border">
+		<legend class="scheduler-border">Quotation Info</legend>
+		<div class="form-row custom-row-inline-inset">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+				<input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+				 disabled="disabled" [(ngModel)]="quoteNoData">
+				<label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder=""
+				 disabled="disabled"  [ngModel]="insured">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" placeholder=""
+				 disabled="disabled" [(ngModel)]="riskName">
+			</div>
+		</div>
+	</fieldset>
+
+	<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+		<legend class="scheduler-border">Options</legend>
+        <div class="row">
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+            	<fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+            		<legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	                <app-cust-editable-non-datatable #optionsTable [passData]="optionsData" (tableDataChange)="optionsData.tableData=$event;updateCovers();" (newClick)="updateSectionCvrs($event);updateOptDed($event)" class="d-block py-2" (genericBtn)="renumber()">
+	                </app-cust-editable-non-datatable>
+	            </fieldset>
+            </div> 
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 241px">
+					<legend class="scheduler-border">Deductibles</legend>
+					<app-cust-editable-non-datatable #optDeductibleTable  id="deductibleTable" (tableDataChange)="optionsDeductiblesData.tableData=$event;optionsTable.indvSelect.deductiblesList = $event;" [passData]="optionsDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'option')" class="d-block py-2"></app-cust-editable-non-datatable>
+				</fieldset>
+			</div>
+        </div>
+	</fieldset>
+
+	<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+		<legend class="scheduler-border">Section Covers</legend>
+        <div class="row">
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+            	<fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 100%">
+            		<legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	                <!-- <app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (clickLOV)="clickCoverCodeLOV($event)" (newClick)="selectedCover=$event;updateCovDed($event)" class="d-block py-2">
+                	</app-cust-editable-non-datatable> TRBT#PROD_GRADE-->
+                	<app-cust-editable-non-datatable #otherRatesTable [passData]="otherRatesData" (tableDataChange)="updateCovers()" (newClick)="selectedCover=$event;updateCovDed($event)" class="d-block py-2">
+                	</app-cust-editable-non-datatable>
+	            </fieldset>
+            </div> 
+	            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+	            <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;">
+					<legend class="scheduler-border">Deductibles</legend>
+					<app-cust-editable-non-datatable #covDeductibleTable  id="deductibleTable" (tableDataChange)="coversDeductiblesData.tableData=$event;otherRatesTable.indvSelect.deductiblesList=$event" [passData]="coversDeductiblesData" (clickLOV)="clickDeductiblesLOV($event,'cover')" class="d-block py-2"></app-cust-editable-non-datatable>	
+				</fieldset>
+				<div class="input-group" style="margin-bottom: 5px !important;margin-top: 5px; margin-left: -4px;">
+					<label class="form-control-sm col-sm-2">Remarks</label>
+					<text-editor class="col-sm-9 px-0" [editorContent]="optionsTable.indvSelect?.remarks" (fetchContent)="optionsTable.indvSelect.remarks = $event;optionsTable.indvSelect.edited = true" [edtrOpnrPos]="2"  [readonly]="inquiryFlag || optionsTable.indvSelect == null">
+					</text-editor>
+				</div>
+			</div>
+        </div>
+	</fieldset>
+
+	<div class="form-row">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container" style="margin-top: 10px;">
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+					<button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+
+<!-- <ng-container *ngIf="showModal">
+	<app-modal class="d-none" id="deductiblesModal">
+		<div *ngIf="fromCovers" header>Deductibles Per Section Cover</div>
+		<div *ngIf="!fromCovers" header>Deductibles Per Quote Option</div>
+		<div body>
+			<div class="d-flex">
+				<label class="form-control-sm col-sm-1" for="inputInname">Option No</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1 text-right" readonly="readonly" [(ngModel)]="selectedOption.optionId">
+				<label class="form-control-sm col-sm-2 text-right" for="inputInname" *ngIf="fromCovers">Cover Code Name</label>
+				<input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-4" readonly="readonly" [(ngModel)]="selectedCover.coverCdDesc" *ngIf="fromCovers ">
+			</div>
+			<fieldset class="scheduler-border" style="padding:0.5em !important" >
+				<app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+			</fieldset>
+		</div>
+		<div footer>
+			<button class="cust-btn" (click)="showModal=false;deductiblesModal.closeModal()">Cancel</button>
+			<button class="cust-btn" (click)="onClickSaveDeductibles()">Save</button>
+		</div>
+	</app-modal>
+</ng-container> -->
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true" #deductibleLOV></app-lov>
+
+<app-confirm-save id="options" (onYes)="saveQuoteOptionAll()"></app-confirm-save>
+<app-sucess-dialog id="quote-option" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveQuoteOptionAll('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+<!-- <app-confirm-save id="deductibles" (onYes)="saveQuoteDeductibles()"></app-confirm-save> TRBT#PROD_GRADE -->

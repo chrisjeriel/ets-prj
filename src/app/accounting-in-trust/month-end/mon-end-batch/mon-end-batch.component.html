@@ -1,0 +1,89 @@
+<div class="cust-tabs-container">
+  <h4>Accounting In-Trust / Month End / Batch Processing</h4>
+  <ngb-tabset (tabChange)="onTabChange($event)">
+    <ngb-tab class="ngb-tab" title="Process Month End">
+      <ng-template ngbTabContent>
+        <div class="d-flex">
+        	<div class="col-sm-1"></div>
+        	<fieldset class="scheduler-border col-sm-10">
+        		<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        		<div class="row justify-content-sm-center pt-1">
+        			<div class="col-sm-4 d-flex">
+				        <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0">Production Date</label>
+                <div class="dp-cont col-sm-6">
+                  <datepicker [type]="'date'" [value]="eomDate" (valueChange)="eomDate=$event; msg=1; checkMonth($event);" [disabled]="processing"></datepicker>
+                </div>
+				    </div>
+        		</div>
+        		<div class="input-group">
+        			<label class="col-sm-2"></label>
+        			<textarea #txtArea class="form-control form-control-sm col-sm-8" style="font-size: 11px; min-height: 300px; margin-bottom: 17px !important;" [(ngModel)]="extLog" readonly tabindex="-1">Report Summary</textarea>
+        		</div>
+    			<div class="form-group col-sm text-center" style="height: 2em; margin-bottom: 5px;">
+              <ng-container *ngIf="processing">
+                <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;{{ msg == 0 ? 'Processing' : 'Please wait' }}</span>    
+              </ng-container>
+              <ng-container *ngIf="!processing">
+      		      <div class="cust-btn-container">
+      		        <button type="button" class="cust-btn" (click)="msg=0; onClickGenerate()" [disabled]="eomDate == null || eomDate == ''" style="width: 100%;"><a>Generate</a></button>
+      		        <button type="button" class="cust-btn" style="width: 100%;"><a>Data Check Report</a></button>
+                  <button type="button" class="cust-btn" style="width: 100%;" (click)="printModal.openNoClose()"><a>Print Reports</a></button>
+      		      </div>
+              </ng-container>
+    		    </div>
+        	</fieldset>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab class="ngb-tab" title="Exit" id="Exit">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+
+<app-modal #eomProdMdl class="d-none">
+    <div header>Confirmation</div>
+    <div body>
+      <div class="custom-row-inline-inset" style="text-align: center">
+        <p>{{ eomMessage }}</p>
+      </div>
+    </div>
+    <div footer class="w-100 text-right" [class.text-center]="returnCode == 2">
+        <button *ngIf="returnCode !== 2" class="cust-btn" type="button" (click)="msg=0; onClickGenerate(true); eomProdMdl.closeModal();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="eomProdMdl.closeModal()"><a>{{ returnCode == 2 ? 'Ok' : 'No' }}</a></button>
+    </div>
+</app-modal>
+
+<app-modal #printModal class="d-none">
+  <div header>Print</div>
+  <div body>
+    <fieldset class="scheduler-border">
+      <div class="custom-row-inline-inset">
+        <div class="input-group" style="margin-bottom: -14px !important;">
+          <label class="form-control-sm col-sm-3 labels">Report</label>
+          <select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8">
+            <option value="ACITR063A">Monthly Production Report</option>
+            <option value="ACITR066H">Month End JV List</option>
+          </select>
+          <div class="col-sm-1"></div>
+        </div>
+        <div class="input-group" style="margin-bottom: -14px !important;">
+          <label class="form-control-sm col-sm-3 labels">Destination</label>
+          <select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8">
+            <option *ngIf="printReport !== 'ACITR066H'" value="screen">Screen</option>
+            <option *ngIf="printReport !== 'ACITR066H'" value="dlPdf">PDF</option>
+            <option *ngIf="printReport !== 'ACITR066H'" value="printPdf">Printer</option>
+            <option *ngIf="printReport == 'ACITR066H'" value="exl">Excel</option>
+          </select>
+          <div class="col-sm-1"></div>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <div footer class="cust-btn-container">
+    <button class="cust-btn" type="button" (click)="printModal.closeModal();"><a>Cancel</a></button>
+    <button class="cust-btn" type="button" (click)="print();printModal.closeModal();"><a>Print</a></button>
+  </div>
+</app-modal>

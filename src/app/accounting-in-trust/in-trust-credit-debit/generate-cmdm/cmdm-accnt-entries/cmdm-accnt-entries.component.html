@@ -1,0 +1,122 @@
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important;">
+    <legend class="scheduler-border">CM/DM Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-7">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Memo No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="passData.cmdmNo" disabled="disabled">
+                <div class="col-sm d-flex px-0">
+                    <label class="form-control-sm col-sm-4">Memo Date</label>
+                    <div class="col-sm dp-cont">
+                        <datepicker [value]="passData.memoDate" [showIcon]="false" [showSeconds]="false" [disabled]="true"></datepicker> 
+                    </div>   
+                </div>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="passData.status" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2">Tran Type</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm" [ngModel]="passData.tranTypeName" disabled="disabled">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Ref. No.</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-left: 3px !important;" [ngModel]="passData.refNo" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Ref. Date</label>
+                <div class="col-sm dp-cont">
+                    <datepicker [value]="passData.refNoDate" [showIcon]="false" [showSeconds]="false" [disabled]="true"></datepicker> 
+                </div>   
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;" [ngModel]="passData.currCd" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="passData.cmdmAmt | number:'1.2-2'" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"  [ngModel]="passData.localCurrCd" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;" [ngModel]="passData.localAmt | number:'1.2-2'" disabled="disabled">
+            </div>
+        </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">CM/DM Accounting Entries</legend>
+    <div class="custom-row-inline-inset">
+        <div class="row">
+            <div class="col-sm-12 table-cust">
+                <div style="position: relative;">
+                    
+                    <app-cust-editable-non-datatable [passData]="passTable" (clickLOV)="clickLov($event)" (newClick)="selected=$event" (tickChckbx)="tickChckbx($event)" (tableDataChange)="computeTotals()">
+                        <ng-container controls-r>
+                            <button class="cust-btn">Print AE</button>
+                        </ng-container>
+                    </app-cust-editable-non-datatable>
+                </div>
+            </div>
+        </div>
+        <div class="w-100">
+            <div class="input-group">
+                <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+                <label class="form-control-sm col-sm-2" >Total Debit and Credit</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.debit | number:'1.2-2'" disabled="disabled">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.credit | number:'1.2-2'" disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm cust-sm col-sm-6" style="margin-left: 3px !important;"></label>
+                <label class="form-control-sm col-sm-2" >Variance</label>
+                <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
+            </div>
+        </div>
+        <div class="w-100 text-center">
+            <button class="cust-btn">Cancel</button>
+            <button class="cust-btn" (click)="onClickSave()" [disabled]="passData.status != 'New'">Save</button>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 15px !important; ">
+    <div class="col-sm-12">
+        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" disabled>
+                <label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -5px !important;">Date Created</label>
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
+                </div>
+                <!-- <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createDate" disabled> -->
+                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+                <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" disabled>
+                <label class="form-control-sm col-sm-1 text-right labels" style="margin-left: -17px !important;">Last Update</label>
+                <!-- <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateDate" disabled> -->
+                <div class="col-sm-2 dp-cont">
+                    <datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker> 
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>
+
+<app-lov [passData]="passLov" (selectedData)="setLov($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+
+
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():this.btnCancelMainEnabled = false"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon != 'error' ? this.cancelBtn.onClickNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<!-- <app-cancel-button (onYes)="save('cancel')"  (no)="onClickCancel()" ></app-cancel-button> TRBT#PROD_GRADE -->
+<app-cancel-button (onYes)="save()" ></app-cancel-button>
+
+<app-modal class="d-none" #warnDeleteAuto>
+    <div header>Warning</div>
+    <div body>Deleting of automatically generated accounting entries are not allowed.</div>
+    <div footer class="w-100 text-right">
+        <button class="cust-btn" (click)="warnDeleteAuto.closeModal()">Ok</button>
+    </div>
+</app-modal>

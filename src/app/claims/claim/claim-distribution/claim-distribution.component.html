@@ -1,0 +1,226 @@
+<div class="row">
+	<div class="col-sm-12">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Claim Info</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-1">Claim No</label>
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="claimInfo.claimNo" readonly> 
+					<label class="form-control-sm col-sm-1">Insured</label>
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-5" [ngModel]="claimInfo.insuredDesc" readonly>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="input-group" style="margin-bottom: -13px !important;">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="claimInfo.policyNo" readonly>
+					<label class="form-control-sm col-sm-1">Risk</label>
+					<input type="text"  class="form-control form-control-sm cust-sm col-sm-5" [ngModel]="claimInfo.riskName" readonly>
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+
+<div class="row" style="margin-top: 10px;">
+	<div class="col-sm-12">
+		<div class="cust-tabs-container">
+			<ngb-tabset #tabset  (tabChange)="onTabChange($event)" [destroyOnHide]="false">
+				<ngb-tab title="Distribution" id="reserve" >
+					<ng-template ngbTabContent>
+						<div class="input-group cust-border">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-2">
+		                    	<div class="input-group mt-4">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
+			                    </div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
+		                    	</div>	
+		                    	<div class="input-group">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<app-cust-editable-non-datatable #reserveDistTable [passData]="reserveDistPassData" (newClick)="clickRow($event)" (searchToDb)="getClmHist($event)" class="d-block my-2">
+								</app-cust-editable-non-datatable>
+							</div>
+							<div class="input-group" style="margin-left: -13px !important;">
+								<label class="form-control-sm col-sm-1">Processed By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Processed Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
+							</div>
+						</div>
+					</ng-template>
+				</ngb-tab>
+				<!-- <ngb-tab title="Payment Distribution" id="payment">
+					<ng-template ngbTabContent>
+						<div class="input-group cust-border">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-2">
+		                    	<div class="input-group mt-4">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
+			                    </div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
+		                    	</div>	
+		                    	<div class="input-group">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<app-cust-editable-non-datatable #paymentDistTable [passData]="paymentDistPassData" class="d-block my-2" (newClick)="clickRow($event)"></app-cust-editable-non-datatable>
+							</div>
+							<div class="input-group" style="margin-left: -13px !important;">
+								<label class="form-control-sm col-sm-1">Processed By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Processed Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
+							</div>
+						</div>
+					</ng-template>
+				</ngb-tab> -->
+				<ngb-tab title="Loss Incurred Distribution" id="cummReserve">
+					<ng-template ngbTabContent>
+						<div class="input-group cust-border">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-2">
+		                    	<div class="input-group mt-4">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'L'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Loss</label>
+			                    </div>
+								<div class="input-group">
+									<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'A'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Adjuster's Expenses</label>
+		                    	</div>	
+		                    	<div class="input-group">
+		                    		<label class="form-control-sm col-sm-3" style="text-align: left !important;"></label>
+				                    <input class="form-control-sm exclude" type="radio" [ngModelOptions]="{standalone: true}" [value]="'O'"
+				                        style="margin-top: 2px !important;" [ngModel]="histTypeFilter" (ngModelChange)="filterTable($event);">
+				                    <label class="form-control-sm col-sm-8" style="text-align: left !important;">Other Expenses</label>
+						        </div>
+							</div>
+							<div class="col-sm-7">
+								<app-cust-editable-non-datatable #cummResDistTable [passData]="cummDistPassData" class="d-block my-2" (newClick)="clickRowCumm($event)"></app-cust-editable-non-datatable>
+							</div>
+							<div class="input-group" style="margin-left: -13px !important;">
+								<label class="form-control-sm col-sm-1">Processed By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Processed Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.createDate" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update By</label>
+								<input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" disabled="disabled">
+								<label class="form-control-sm col-sm-1">Last Update</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateDate" disabled="disabled">
+							</div>
+						</div>
+					</ng-template>
+				</ngb-tab>
+			</ngb-tabset>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<fieldset class="scheduler-border" style="margin-top: 2px !important;">
+			<legend class="scheduler-border">Treaty Distribution</legend>
+			<div class="input-group">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<app-cust-editable-non-datatable #treatyTable [passData]="treatyDistPassData" class="d-block my-2"></app-cust-editable-non-datatable>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+
+<div class="row" style="margin-top: 10px !important; margin-bottom: 15px !important; position: relative; z-index: 0;">
+	<div class="col-sm-12 d-flex justify-content-center">
+		<button class="cust-btn" (click)="cedantModal.openNoClose()">View Cedant Dist</button>
+		<!-- <button class="cust-btn">Print</button> -->
+		<button class="cust-btn" (click)="cancel()">Cancel</button>
+		<button class="cust-btn " [disabled]="(currTab=='cummReserve' && cummDistPassData.tableData.length == 0 )||((selected == null || selected == undefined) && (currTab=='payment' || currTab=='reserve'))" (click)="confirmRedsitribute()" *ngIf="!isInquiry && currTab=='reserve'">Redistribute</button>
+	</div>
+</div>
+
+
+<app-modal class="d-none" [btnTitle]="'View Cedant Dist'" (modalOpened)="getPoolDist()" [disabled]="selected==null || selected==undefined" #cedantModal>
+	<div header>Cedant Distribution</div>
+	<div body>
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important; margin-bottom: -5px !important; padding-top: 34px !important;">
+			<div class="row" style="padding-top: 5px;">
+				<div class="col-sm" style="margin-top: -28px;">
+					<app-cust-editable-non-datatable #poolTable [passData]="poolDistPassData" class="d-block mb-4"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+			<!-- <div class="row">
+				<div class="col-sm" style="margin-top: -15px; margin-left: -14px;">
+					<div class="input-group" style="margin-bottom: -18px !important;">
+						<label class="form-control-sm col-sm-2"></label>
+						<label class="form-control-sm col-sm label-center">1st Retention</label>
+						<label class="form-control-sm col-sm label-center">2nd Retention</label>
+						<label class="form-control-sm col-sm label-center">Total</label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-2">SI Amount</label>
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret1 | number:'1.2-2'" style="margin-left: 3px;">
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.ret2 | number:'1.2-2'" style="margin-left: 3px;">
+						<input type="text" class="form-control form-control-sm txt-content-rght col-sm text-right" [ngModel]="poolSum?.total | number:'1.2-2'" style="margin-left: 3px;">
+					</div>
+				</div>
+			</div> -->
+		</fieldset>
+	</div>
+	<div footer class="d-flex justify-content-center" style="width: 100% !important;">
+		<button class="cust-btn" type="button" (click)="cedantModal.closeModal()"><a>Return</a></button>
+	</div>
+</app-modal>
+
+<app-modal #confirmRedist class="d-none">
+	<div header>Confirmation</div>
+	<div body>Are you sure you want to redistribute?</div>
+	<div footer class="w-100 text-right">
+		<button class="cust-btn" (click)="redistribute()">Yes</button>
+		<button class="cust-btn" (click)="confirmRedist.closeModal()">No</button>
+	</div>
+</app-modal>
+
+<app-sucess-dialog [icon]="diagIcon" [message]="dialogMsg"></app-sucess-dialog>

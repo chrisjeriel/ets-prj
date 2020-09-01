@@ -1,0 +1,209 @@
+<div>
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	<div class="row">
+		<div class="col-sm-12 cust-margin">
+			<app-cust-editable-non-datatable #usersList [passData]="passDataUsers" (newClick)="onRowClickUsers($event)" (onDelete)="usersList.onClickDelete('force');" (genericBtn)="deleteUser();" (tableDataChange)="updateUsers($event);" (clickLOV)="clickLOV($event,'userGrp')"></app-cust-editable-non-datatable>
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-sm" style="margin-bottom: 8px;">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="changePassword();"><a>Change Password</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="onClickConfirmation('resetPassword')"><a>Reset Password</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="userAccess()"><a>User Access</a></button>
+					<button type="button" class="cust-btn btn" [disabled]="btnDisabled" (click)="userGroupAccess()"><a>User Group Access</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-row">
+	    <div class="form-group col-sm">
+	        <div class="col-md-13 text-center">
+	            <div class="cust-btn-container" style="margin-top: 10px">
+	                <!-- <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+	                <button [class.d-none]="inquiryFlag" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button> TRBT#PROD_GRADE -->
+	                <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+	                <button type="button" class="cust-btn" (click)="onClickSaveConfirmation();"><a>Save</a></button>
+	            </div>
+	        </div>
+	    </div>
+	</div>
+</fieldset>
+<div class="row">
+	<div class="col-sm-12">
+	    <fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 12px !important;">
+	        <div class="form-row custom-row-inline-inset" style="margin-left: -27px;">
+	            <div class="input-group" style="margin-bottom: -15px !important;">
+	                <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userData.createUser" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userData.createDate" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userData.updateUser" disabled>
+	                <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+	                <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="userData.updateDate" disabled>
+	            </div>
+	        </div>
+	    </fieldset>
+	</div>
+</div>
+</div>
+
+<app-modal class="d-none" id="resetPassword">
+    <div header>Success</div>
+    <div body>
+	     Password reset successful!
+	</div>
+	<div footer class="w-100 text-center">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+	</div>
+</app-modal>
+
+<app-modal class="d-none" id="changePassword">
+    <!-- <div header>Change Password</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+	        	<fieldset class="scheduler-border">
+	        		<div class="">
+	        			<div class="input-group">
+		        			<label class="form-control-sm col-sm" style="text-align: left !important">Set your password here.</label>
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">Old Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">New Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+		        		<div class="input-group">
+		        			<label class="form-control-sm col-sm-5">Repeat Password</label>
+		        			<input type="text" class="form-control form-control-sm col-sm">
+		        		</div>
+	        		</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Save</a></button>
+    </div>  -->
+    <div header>Change Password</div>
+    <div body>
+       <fieldset class="scheduler-border" style="padding-bottom: 4px !important;">
+                <div class="custom-row-inline-inset" style="text-align: center">
+                    <div class="input-group" style="margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-3">Old Password</label>
+                        <input type="password" [(ngModel)]="changePass.oldPassword" class="form-control form-control-sm">
+                    </div>
+                    <div class="input-group" style="margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-3">New Password</label>
+                        <input type="password" [(ngModel)]="changePass.newPassword" class="form-control form-control-sm">
+                    </div>
+                    <div class="input-group" style="margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-3">Repeat Password</label>
+                        <input type="password" [(ngModel)]="changePass.confirmPassword" class="form-control form-control-sm">
+                    </div>
+                </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+  	  <button type="button" class="cust-btn" (click)="modalService.dismissAll()"><a>Return</a></button>
+      <button type="button" class="cust-btn" (click)="onClickConfirmation('changePassword')"><a>Save</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="userAccess" >
+    <div header>User Access</div>
+    <div body>
+        <div class="row">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User ID</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly [(ngModel)]="userData.userId">
+				</div>
+			</div>
+			<div class="col-sm-12" style="margin-top: 20px">
+				<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userTransactions (genericBtn)="onClickTransDelete();" (clickLOV)="clickLOV($event,'transactions')" (newClick)="onRowClickTrans($event, 'USER')" [passData]="PassDataModuleTrans" (onDelete)="userTransactions.onClickDelete('a');tranDelete()"></app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+			</div>
+			<div class="col-sm-12">
+				 <fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (newClick)="rowClick($event)"></app-cust-editable-non-datatable>
+	        					<!-- <app-cust-editable-non-datatable #userModules (clickLOV)="clickLOV($event,'modules')" [passData]="PassDataModule" (genericBtn)="onClickModuleDelete();" (onDelete)="userModules.onClickDelete('a');" (newClick)="rowClick($event)"></app-cust-editable-non-datatable> -->
+	        				</div>
+	        			</div>
+	        	</fieldset>
+			</div>
+		</div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Cancel</a></button>
+        <button type="button" class="cust-btn" (click)="onClickSaveTranModules();"><a>Save</a></button>
+    </div> 
+</app-modal>
+
+<app-modal class="d-none" id="userGroupAccess">
+    <div header>User Group Access</div>
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+			<div class="col-sm-12">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-4">User Group</label>
+		        	<input type="text" class="form-control form-control-sm col-sm-6" readonly readonly [(ngModel)]="userData.userGrpDesc">
+				</div>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module Transaction</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userGroupTransactions (newClick)="onRowClickTrans($event, 'USER_GROUP')" [passData]="PassDataModuleTransUserGroup"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+	        	<fieldset class="scheduler-border">
+	        		<legend class="scheduler-border">Module</legend>
+	        			<div class="row model-align">
+	        				<div class="col-sm-12">
+	        					<app-cust-editable-non-datatable #userGroupModules [passData]="PassDataModuleUserGroup"> </app-cust-editable-non-datatable>
+	        				</div>
+	        			</div>
+	        	</fieldset>
+        	</div>
+        </div> 
+    </div>
+  	<div footer class="d-flex justify-content-center w-100">                    
+        <button type="button" class="cust-btn" (click)="clearPopupData(); modalService.dismissAll();"><a>Return</a></button>
+    </div> 
+</app-modal>
+
+<app-confirm-save #confirm (onYes)="onClickSaveMain();"></app-confirm-save>
+<app-confirm-save #userAcess (onYes)="saveUserAccess();"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-lov #lovComponent [passData]="passLOVData" (selectedData)="setSelected($event)"></app-lov>
+<app-lov #userGrp [passData]="passLOVData" (selectedData)="setSelectedUser($event)"></app-lov>
+<app-cancel-button (onYes)="onClickSaveMain('cancel')" [url]="''" ></app-cancel-button>
+
+<app-modal #warningConfirmation class="d-none">
+  <div header>Confirmation Message</div>
+  <div body>
+     {{ confirmationMessage }}
+  </div>
+  <div footer class="w-100 text-center">
+
+  	<button type="button" class="cust-btn" (click)="(confirmMethod == 'resetPassword') ? confirmResetPassword() : confirmChangePassword();warningConfirmation.closeModal();" ><a>Yes</a></button>
+  	<button type="button" class="cust-btn" (click)="warningConfirmation.closeModal();" ><a>No</a></button>
+  </div>
+</app-modal>

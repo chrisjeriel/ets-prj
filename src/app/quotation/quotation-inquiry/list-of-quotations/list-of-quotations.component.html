@@ -1,0 +1,133 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12" style="padding: 0">
+            <app-loading-table [passData]="passData" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()"></app-loading-table>
+         </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6" style="padding-left: 0px">
+            <fieldset class="scheduler-border">
+                <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-2 text-right">Quotation No</label>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.quotationNo === undefined ? '' : quoteList.quotationNo" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Policy No</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.policyNo === undefined ? '' : quoteList.policyNo" readonly> 
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-2 text-right">Type of Cession</label>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.cessionDesc === undefined ? '' : quoteList.cessionDesc" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Line Class</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.lineClassCdDesc === undefined ? '' : quoteList.lineClassCdDesc" readonly> 
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-2 text-right">Ceding Company</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="pad(quoteList?.cedingId, 'cedingId')">
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.cedingName === undefined ? '' : quoteList.cedingName" readonly style="margin-left: 2px !important;">
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-2 text-right" >Quote Date</label>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.issueDate | date: 'MM/dd/yyyy'" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Valid Until</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.expiryDate | date: 'MM/dd/yyyy'" readonly> 
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <label class="form-control-sm col-sm-2 text-right">Requested By</label>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.reqBy === undefined ? '' : quoteList.reqBy" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Status</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.status === undefined ? '' : quoteList.status" readonly> 
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                        <label class="form-control-sm col-sm-2 text-right">Prepared By</label>
+                        <input type="text" class="form-control form-control-sm col-sm-4" [value]="quoteList.preparedBy === undefined ? '' : quoteList.preparedBy" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Approved By</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-4" [value]="quoteList.approvedBy === undefined ? '' : quoteList.approvedBy" readonly> 
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-6" style="padding: 0">
+            <fieldset class="scheduler-border">
+                <!--<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>-->
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Principal</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="pad(quoteList?.prinId, 'insured')">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.principalName === undefined ? '' : quoteList.principalName" readonly style="margin-left: 2px !important;">
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Contractor</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly [ngModel]="pad(quoteList?.contractorId, 'insured')">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.contractorName === undefined ? '' : quoteList.contractorName" readonly style="margin-left: 2px !important;">
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <!-- <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Insured</label>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.insuredDesc === undefined ? '' : quoteList.insuredDesc" readonly>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div> -->
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Risk</label>
+                        <input type="text" class="form-control form-control-sm col-sm-2" readonly [value]="quoteList.riskId === undefined ? '' : quoteList.riskId">
+                        <input type="text" class="form-control form-control-sm col-sm-6" [value]="quoteList.riskName === undefined ? '' : quoteList.riskName" readonly style="margin-left: 2px !important;">
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Site</label>
+                        <input type="text" class="form-control form-control-sm col-sm-8" [value]="quoteList.site === undefined ? '' : quoteList.site" readonly>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -14px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Object</label>
+                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.objectDesc === undefined ? '' : quoteList.objectDesc" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">Currency</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.currencyCd === undefined ? '' : quoteList.currencyCd" readonly> 
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+                <div class="form-row custom-row-inline-inset">
+                    <div class="input-group alignment" style="margin-right: 0px; margin-bottom: -10px !important;">
+                        <div class="col-sm-1"></div>
+                        <label class="form-control-sm col-sm-2 text-right">Sum Insured</label>
+                        <input type="text" class="form-control form-control-sm col-sm-3" [value]="quoteList.sumInsured === undefined ? '' : quoteList.sumInsured | number: '1.2-2'" readonly>
+                        <label class="form-control-sm col-sm-2 text-right">1st Option Rate</label>
+                        <input type="text" name="" class="form-control form-control-sm col-sm-3" [value]="quoteList.firstOptionRt === undefined ? '' : quoteList.firstOptionRt | number: '1.10-10'" readonly> 
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>
+
+<!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType"></app-print-modal>
+<app-sucess-dialog id="listQuotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog> -->

@@ -1,0 +1,3 @@
+<select (change)="selected()" [(ngModel)]="itemSelected" class="form-control form-control-sm cust-sm">
+  <option *ngFor="let options of optionsData" value="{{ options }}"> {{ options }}</option>
+</select>

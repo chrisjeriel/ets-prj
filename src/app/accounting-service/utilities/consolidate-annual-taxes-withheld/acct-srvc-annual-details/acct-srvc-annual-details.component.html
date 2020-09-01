@@ -1,0 +1,28 @@
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+  <div class="form-row custom-row-inline-inset">
+    <div class="input-group">
+        <label class="form-control-sm col-sm-1" style="margin-left: -46px !important;">Month</label>
+        <app-select [optionsData]= "optionsData" class="col-sm-2" style="margin-left: -14px !important;"></app-select>
+        <label class="form-control-sm col-sm-1" style="margin-left: -61px !important;z-index: -1 !important;">Payee</label>
+        <input type="text" class="form-control form-control-sm col-sm">
+        <div class="text-search-ico" style="margin-left: -18px !important;"><a><i
+                    class="fa fa-search"></i></a></div>
+        <label class="form-control-sm col-sm-1" style="margin-left: -20px !important;">Last Name</label>
+        <input type="text" class="form-control form-control-sm col-sm">
+        <label class="form-control-sm col-sm-1" style="margin-left: -20px !important; z-index: -1 !important;">First Name</label>
+        <input type="text" class="form-control form-control-sm col-sm">
+        <div class="cust-btn-container" style="margin-left: 6px !important;">
+            <button type="button" class="cust-btn"><a>Search</a></button>
+            <button type="button" class="cust-btn"><a>Summary</a></button>
+        </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Monthly Tax Details</legend>
+  <div class="custom-row-inline-inset">
+    <app-cust-non-datatable [passData]="passDataMonthlyTaxDetails"></app-cust-non-datatable>
+  </div>
+</fieldset>

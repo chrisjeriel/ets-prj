@@ -1,0 +1,39 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Journal Voucher / Generate JV</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab class="ngb-tab" title="JV Entry">
+				<ng-template ngbTabContent>
+					<app-jv-entry [record]="record" (onChange)="checkTabs($event);" (emitData)="jvInfo($event)" [jvData]="jvData" (disableTab)= "disableTab = $event"></app-jv-entry>	
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab [disabled]="jvTypeFlag || disableTab">
+				<ng-template ngbTabTitle>
+					<div>JV Details</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<app-jv-details [jvType]="jvType" [jvData]="jvData" (cedingData)="cedingOutput($event)" [cedingInput]="cedingParams"></app-jv-details>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab class="ngb-tab" title="Accounting Entries" [disabled]="disableTab">
+				<ng-template ngbTabContent>
+					<app-jv-accounting-entries [jvData]="jvData" [jvType]="jvType" (emitData)="jvData.statusType = statusType"></app-jv-accounting-entries>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab [disabled]=" disableTab">
+				<ng-template ngbTabTitle>
+					<div>Attachments</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+					<!-- <app-jv-attachments [jvData]="jvData"></app-jv-attachments> -->
+					<app-acc-attachments [record]="jvData"></app-acc-attachments>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  			</ngb-tab>
+	</ngb-tabset>
+</div>

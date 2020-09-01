@@ -1,0 +1,46 @@
+.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
+.input-group {
+	margin-bottom: -14px !important;
+	margin-top:0px !important;
+}
+.custom-row-inline-inset{
+	/* margin-bottom: 0px !important; */
+	/* margin-top: 0px !important; */
+	margin-top: 10px !important;
+}
+.form-row{
+	margin-top: 7px !important;
+}
+input{
+	margin-left: 2px !important;
+}
+fieldset{
+	margin-bottom: -3px !important;
+}
+
+.ig-cust {
+	margin-bottom: -7px !important;
+}
+.offsetFormGroup {
+	margin-bottom: 0px !important;
+}
+
+.cust-lbl-left-offset {
+	padding-left: 0px !important;
+}
+
+.cust-fs-padlr-offset {
+	padding-right: 0px !important;
+	padding-left: 0px !important;
+}
+
+.input-group label {
+	line-height: .9;
+}

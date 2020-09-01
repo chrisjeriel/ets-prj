@@ -1,0 +1,12 @@
+<div class="cust-tabs-container">
+	<h4>Quotation</h4>
+    <ngb-tabset>
+        <ngb-tab title="Hold Cover Monitoring">
+            <ng-template ngbTabContent>
+                <app-cust-non-datatable [passData]="passData" (rowClick)="onRowClick($event)" (newRowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" ></app-cust-non-datatable>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+<!-- <app-sucess-dialog id="listHoldCover" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="print();"></app-sucess-dialog>
+<app-print-modal id="listHoldCoverList" (selectedData)= "showPrintPreview($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType"></app-print-modal>
+ -->

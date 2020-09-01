@@ -1,0 +1,30 @@
+<!-- <app-cust-editable-non-datatable [passData]="PaymentForAdvancesData"></app-cust-editable-non-datatable> -->
+<div>
+	<div class="form-row custom-row-inline-inset" style="padding-top: 50px !important; padding-bottom: 50px !important">
+		 <div class="col-sm-1"></div>
+		 <div class="col-sm-10">
+		 	   <div class="input-group">
+                    <label class="form-control-sm col-sm-2">Payee</label>
+                    <input type="text" class="form-control form-control-sm" [ngModel]="pmmscData?.companyName" readonly>
+                </div>
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-2">Address</label>
+                   <textarea class="form-control form-control-sm col-sm" style="font-size: 11px; min-height: 38px; margin-bottom: 17px !important;" [ngModel]="pmmscData?.addrLine1" readonly></textarea>
+                </div>
+                <div class="input-group">
+                	<label class="form-control-sm col-sm-2">Tax Identification No.</label>
+                	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="pmmscData?.tinNo" readonly>
+                	<label class="form-control-sm col-sm-2">Business Type</label>
+                	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="pmmscData?.bussTypeName" readonly>
+                </div>
+               <div class="input-group">
+                	<label class="form-control-sm col-sm-2">Contact No.</label>
+                	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="pmmscData?.contactNo" readonly>
+                	<label class="form-control-sm col-sm-2">Email Address</label>
+                	<input type="text" class="form-control form-control-sm col-sm" [ngModel]="pmmscData?.emailAdd" readonly>
+                </div>
+
+		 </div>
+		  <div class="col-sm-10"></div>
+	</div>
+</div>

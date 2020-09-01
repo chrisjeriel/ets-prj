@@ -1,3 +1,195 @@
-<p>
-  coverage works!
-</p>
+<div  >
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Quotation Info</legend>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="quotationInfo.quotationNo"
+                       disabled="disabled">
+                <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="quotationInfo.insuredDesc"
+                       disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="quotationInfo.riskName"
+                       disabled="disabled">
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- <fieldset class="scheduler-border">
+<legend class="scheduler-border">Section Covers</legend>
+<app-cust-editable-table [checkFlag]="true" [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData"
+[tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes" [magnifyingGlass]="magnifyingGlass" [opts]="selOptions"></app-cust-editable-table>
+</fieldset> -->
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Section Covers</legend>
+        <div class="row">
+            <div class="col-sm-1">
+            </div>
+            <div class="col-sm" style="padding-top: 8px; padding-bottom: 15px;">
+                 <app-cust-editable-non-datatable  [passData]="passData" (tableDataChange)="update($event);" (clickLOV)="sectionCoversLOV($event)">
+                </app-cust-editable-non-datatable>
+                <!-- <app-cust-editable-non-datatable  [passData]="passData" (onDataChange)="passData.tableData=$event;" (newClick)="update($event);" (clickLOV)="sectionCoversLOV($event)">
+                </app-cust-editable-non-datatable> -->
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+       
+    </fieldset>
+    <div class="row" *ngIf="refresh">
+        <div class="col-sm-4 mrgn-fieldset">
+            <fieldset class="scheduler-border fieldset-height">
+                <div class="custom-row-inline-inset" style="margin-top: 0px !important;">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <br>
+                            <div class="input-group">
+                                <label class="form-control-sm">Currency</label>
+                                <input type="text" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageData.currencyCd" readonly tabindex="-1">
+                                <label class="form-control-sm">Exch. Rt.</label>
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required
+                                       placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                                        [ngModel]="coverageData.currencyRt | number:'1.6-6'"  (ngModelChange)="coverageData.currencyRt = $event"appCurrencyRate readonly tabindex="-1">
+                            </div>
+                            <div class="input-group">&nbsp;
+                                <label class="form-control-sm" style="margin-left: 1px;">Total SI</label>
+                                <input type="text" class="form-control form-control-sm cust-sm txt-content-rght req" required placeholder="0.00" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.totalSi | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event"  appCurrency readonly tabindex="-1">
+                            </div>
+                        </div>
+                        <div class="col-sm-1"></div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-4" *ngIf="lineCd == 'CAR' || lineCd == 'EAR' || lineCd == 'EEI'">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">SI per Section</legend>
+                <div class="custom-row-inline-inset">
+                    <div class="row">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-3">Section I</label>
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionISi | number:'1.2-2' "  (ngModelChange)="coverageData.sectionISi = $event" readonly tabindex="-1">
+                            </div>
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-3">Section II</label>
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event" readonly tabindex="-1">
+                            </div>
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-3">Section III</label>
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event" readonly tabindex="-1">
+                            </div>
+                        </div>
+                        <div class="col-sm-1"> &nbsp;</div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-4" *ngIf="lineCd != 'CAR' && lineCd != 'EAR' && lineCd != 'EEI' ">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">SI per Section</legend>
+                <div class="custom-row-inline-inset">
+                    <div class="row" style="margin-top: 25px !important; margin-bottom: 27px !important;">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <div class="input-group">
+                                <label class="form-control-sm col-sm-3">Section I</label>
+                                <input type="text" class="form-control form-control-sm txt-content-rght req"  placeholder="0.00"
+                                       onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [ngModel]="coverageData.sectionISi | number:'1.2-2' "  (ngModelChange)="coverageData.sectionISi = $event"  appCurrency readonly tabindex="-1">
+                            </div>
+                        </div>
+                        <div class="col-sm-1"> &nbsp;</div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+        <div class="col-sm-4 mrgn-fieldset">
+            <fieldset class="scheduler-border fieldset-height">
+                <form #remarksform="ngForm">
+                    <div class="form-row custom-row-inline-inset">
+                            <label for="inputEmail4" class="form-control-sm top-label">Remarks</label>
+                            <textarea [readonly]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" class="form-control form-control-sm" style="font-size: 11px;" [(ngModel)]="coverageData.remarks" name="remarks"></textarea>
+                    </div>
+                </form> 
+            </fieldset>
+        </div>
+    </div> 
+
+    <div class="form-row">
+        <div class="form-group col-sm">
+            <div class="col-md-13 text-center">
+                <div class="cust-btn-container" style="margin-top: 10px;">
+                    <button [class.d-none]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.status.toUpperCase() === '3'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<app-mtn-section-covers id="sectionCoversLOV" (selectedData)="selectedSectionCoversLOV($event)" [lineCd]="lineCd" [hideSectionCoverArray]="hideSectionCoverArray" [lovCheckBox]="true"></app-mtn-section-covers>
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>
+
+<app-modal class="d-none" id="copyYear" #alop>
+    <div header>&nbsp;</div> 
+    <div body class="container-flex text-center">
+        <div class="form-row custom-row-inline-inset">
+            <ng-container>
+                <span class="fa fa-exclamation-triangle fa-2x" style="vertical-align: middle;"></span>
+            </ng-container>
+            <ng-container>
+                <span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">ALOP has existing Details. Are you sure you want to delete ALOP?</span>
+            </ng-container>
+            <span class="col-sm-2"></span>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="saveData();alopMdl.closeModal();"><a>Yes</a></button>
+        <button type="button" class="cust-btn" (click)="alopMdl.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
+<app-modal #infoCov hidden [btnTitle]="'Confirmation'" id="confirmationModal">
+    <div header>Confirmation Message</div>
+    <div body style="text-align: center">
+       <p class="no-margin">{{promptMessage}}</p>
+       <div *ngIf="promptType.toUpperCase() === 'TOTALVAL'">
+          <div class="row">
+            <div class="col-sm-6" style="text-align: right; padding-right: 0px">
+              <p class="no-margin"><strong>Total SI of the Quotation:</strong></p>
+            </div>
+            <div class="col-sm-6" style="text-align: left">
+              <p class="no-margin"><strong>&nbsp; {{coverageData.totalSi | number: '1.2-2'}}</strong></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6" style="text-align: right; padding-right: 0px">
+              <p class="no-margin"><strong>100% Value: </strong></p>
+            </div>
+            <div class="col-sm-6" style="text-align: left">
+              <p class="no-margin"><strong>&nbsp; {{totalValue | number: '1.2-2'}}</strong></p>
+            </div>
+          </div>
+          <!-- <p class="no-margin"><strong>Max SI of the Policy: &nbsp; {{coverageInfo.totalSi}}</strong></p>
+          <p class="no-margin"><strong>100% Value: &nbsp; {{coverageInfo.totalValue}}</strong></p> -->
+       </div>
+    </div>
+    <div footer class="text-center w-100">
+        <div class="col-sm-12 text-center">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>

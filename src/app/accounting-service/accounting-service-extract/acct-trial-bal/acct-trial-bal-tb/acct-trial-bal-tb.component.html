@@ -1,0 +1,33 @@
+ <div>
+ 	 <fieldset class="scheduler-border">
+ 	 	<legend class="scheduler-border">Extraction Info</legend>
+ 	 	<div class="form-row custom-row-inline-inset">
+ 	 	<div class="col-sm-1"></div>
+    	<div class="input-group col-sm">
+		 	<label class="form-control-sm col-sm-1" >Period: From</label>
+		 	<div class="col-sm dp-cont">
+		 		<datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.periodFrom?.split('T')[0]" [disabled]="true"></datepicker>
+		 	</div>		
+       		<label class="form-control-sm col-sm-1" >To</label>
+       		<div class="col-sm dp-cont">
+       			<datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.periodTo?.split('T')[0]" [disabled]="true"></datepicker>
+       		</div>		
+		 	<label class="form-control-sm col-sm-2"  >Extract Type</label>
+		 	<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="extractParams.extractType" readonly>
+		 	<label class="form-control-sm col-sm-1" >Date Extracted</label>
+		 	<div class="col-sm dp-cont">
+       			<datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.extractDate?.split('T')[0]" [disabled]="true"></datepicker>
+       		</div>	
+	     </div>
+	     <div class="col-sm-1"></div>
+		</div>
+ 	 </fieldset>
+ 	 <fieldset class="scheduler-border" style="padding: 0px"> 
+ 	 	 <legend class="scheduler-border">Extracted Data</legend>  
+ 	 	 	<div class="row">
+	 	 	  <div class="col-sm-12" style="margin-top: 0px" >
+	 	 	 	 <app-cust-non-datatable [passData]="passData"></app-cust-non-datatable>
+	 	 	 </div>
+    	 	</div>	
+ 	 </fieldset>
+</div>

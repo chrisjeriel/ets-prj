@@ -1,0 +1,25 @@
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+  <div class="form-row custom-row-inline-inset">
+      <div class="col-sm-2"></div>
+      <div class="col-sm-8">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1">Income</label>
+            <input type="text" class="form-control form-control-sm col-sm text-right" value="15,264,827.21" numbers-only>
+            <label class="form-control-sm col-sm-1">Tax</label>
+            <input type="text" class="form-control form-control-sm col-sm text-right" value="700,708.72" numbers-only>
+            <div class="cust-btn-container" style="margin-left: 6px !important;">
+                <button type="button" class="cust-btn"><a>Export to CSV</a></button>
+                <button type="button" class="cust-btn"><a>Export to DAT File</a></button>
+            </div>
+        </div>
+      </div>
+      <div class="col-sm-2"></div>
+  </div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+  <legend class="scheduler-border">Consolidated Annual Taxes</legend>
+  <app-cust-non-datatable [passData]="passDataConsolidatedAnnualTaxes"></app-cust-non-datatable>
+</fieldset>

@@ -1,0 +1,289 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+</div>
+<div class="cust-tabs-container">
+	<h4>Policy / Generate Documents</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Policy Reports">
+			<ng-template ngbTabContent>
+				<div class="row top-row">
+					<div class="col-sm-1"></div>
+					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
+						<div class="row">
+							<div class="col-sm">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Report Name</label>
+									<input type="text" class="form-control form-control-sm col-sm-2 reports" [ngModel]="params.reportId"
+									 (ngModelChange)="params.reportId = $event.toUpperCase();" (change)="checkCode($event, 'report')" appRequired>
+									<div class="text-search-ico"><a><i class="fa fa-search" (click)="getReports()"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.reportName" readonly>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+
+					</fieldset>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="row" style="margin-top: 10px;">
+					<div class="col-sm-1"></div>
+					<fieldset class="scheduler-border col-sm-3" style="margin-right: 5px !important;">
+						<div class="form-row custom-row-inline-inset">
+							<div class="input-group" style="    margin-top: 10px;">
+								<input id="radio" class="form-control-sm" type="radio" name="basisDate" value="1" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+									 [disabled]="paramsToggle.indexOf('issueDate') == -1">
+								<label class="form-control-sm" for="radio">Issue Date</label>
+							</div>
+							<div class="input-group">
+								<input id="radio6" class="form-control-sm" type="radio" name="basisDate" value="2" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+									[disabled]="paramsToggle.indexOf('effectiveDate') == -1">
+								<label class="form-control-sm" for="radio6">Effective Date</label>
+							</div>
+							<div class="input-group" >
+								<input id="radio9" class="form-control-sm" type="radio" name="basisDate" value="3" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+									[disabled]="paramsToggle.indexOf('createDate') == -1">
+								<label class="form-control-sm" for="radio9">Create Date</label>
+							</div>
+							<div class="input-group" >
+								<input id="radio7" class="form-control-sm" type="radio" name="basisDate" value="5" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+									[disabled]="paramsToggle.indexOf('accountingDate') == -1">
+								<label class="form-control-sm" for="radio7">Accounting Date</label>
+							</div>
+							<div class="input-group" >
+								<input id="radio8" class="form-control-sm" type="radio" name="basisDate" value="10" style="margin: 0 0 0 45px" [ngModel]="params.dateParam" (ngModelChange)="params.dateParam = $event;checkReport()"
+									[disabled]="paramsToggle.indexOf('bookingDate') == -1">
+								<label class="form-control-sm" for="radio8">Booking Date</label>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="scheduler-border col-sm">
+						<div class="form-row custom-row-inline-inset">
+							<div class="input-group">
+								<input id="radio2" class="form-control-sm" type="radio" name="dateRadio" value="1" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange" (click)="removeDates()"
+									[disabled]="paramsToggle.indexOf('byDate') == -1" >
+								<label class="form-control-sm" for="radio2">By Date</label>
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">From</label>
+								<div class="col-sm-3 dp-cont">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [required]="true"></datepicker>
+								</div>
+								<label class="form-control-sm col-sm-2">To</label>
+								<div class="col-sm-3 dp-cont">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateTo?.split('T')[0]" (valueChange)="params.byDateTo=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [required]="true"></datepicker>
+								</div>
+							</div>
+							<div class="input-group">
+								<input id="radio3" class="form-control-sm" type="radio" name="dateRadio" value="2" style="margin: 0 0 0 15px" [ngModel]="params.dateRange" (ngModelChange)="params.dateRange = $event;checkMonthYear()" (click)="removeDates()" [disabled]="paramsToggle.indexOf('byMonthYear') == -1">
+								<label class="form-control-sm" for="radio3">By Month/Year</label>
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">From</label>
+								<select class="form-control form-control-sm cust-sm col-sm-3" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
+									<option value="1"> January </option>
+									<option value="2"> February </option>
+									<option value="3"> March </option>
+									<option value="4"> April </option>
+									<option value="5"> May </option>
+									<option value="6"> June </option>
+									<option value="7"> July </option>
+									<option value="8"> August </option>
+									<option value="9"> September </option>
+									<option value="10"> October </option>
+									<option value="11"> November </option>
+									<option value="12"> December </option>
+								</select>
+								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
+								<label class="form-control-sm col-sm-1">To</label>
+								<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.byMonthTo" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1 ||disableTo" appRequired>
+									<option value="1"> January </option>
+									<option value="2"> February </option>
+									<option value="3"> March </option>
+									<option value="4"> April </option>
+									<option value="5"> May </option>
+									<option value="6"> June </option>
+									<option value="7"> July </option>
+									<option value="8"> August </option>
+									<option value="9"> September </option>
+									<option value="10"> October </option>
+									<option value="11"> November </option>
+									<option value="12"> December </option>
+								</select>
+								<input type="text" class="form-control form-control-sm col-sm-1" style="margin-left: 3px !important;" [(ngModel)]="params.byMonthToYear" [disabled]="params.dateRange != 2 || disableTo" appRequired>
+							</div>
+							<div class="input-group">
+								<input id="radio4" class="form-control-sm" type="radio" name="dateRadio" value="3" style="margin: 0 0 0 15px" [(ngModel)]="params.dateRange"  (click)="removeDates()"
+									[disabled]="paramsToggle.indexOf('asOf') == -1">
+							</div>
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2" for="radio4" style="text-align: left !important;text-indent: 30px !important;">As of</label>
+								<div class="col-sm-3 dp-cont" style="margin-top: 5px;">
+									<datepicker [type]="'date'" [showIcon]="true" [value]="params.byAsOf?.split('T')[0]" (valueChange)="params.byAsOf=$event;" [disabled]="params.dateRange != 3 || paramsToggle.indexOf('asOf') == -1" [required]="true">
+									</datepicker>
+								</div>
+								<div class="col-sm-2"></div>
+								<div class="col-sm-2" style="padding-left: 0">
+									<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="rangeLOV.openNoClose();retrieveRange();" style="margin-top: 5px;" [disabled]="paramsToggle.indexOf('siRange') == -1"  ><a>SI Range</a></button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="row top-row" style="margin-top: 10px;">
+					<div class="col-sm-1"></div>
+					<fieldset class="scheduler-border col-sm" style="padding: 0 0 0 0px !important;">
+						<div class="row">
+							<div class="col-sm-1">
+
+							</div>
+							<div class="col-sm">
+								<div class="input-group" style="margin-bottom: 0px !important;padding-top: 10px;">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: -6px !important;">Line</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.lineCd" (ngModelChange)="params.lineCd = $event.toUpperCase()"  (change)="checkCode($event, 'line')"
+									[disabled]="paramsToggle.indexOf('line') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('line') > -1"><a><i class="fa fa-search" (click)="getLine()"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.lineName" readonly placeholder="ALL LINES">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Company</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company')"
+									[disabled]="paramsToggle.indexOf('company') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('company') > -1"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row" style="margin-bottom: 10px;">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm">
+								<div class="input-group">
+									<label class="form-control-sm col-sm-2" style="margin-bottom: 0px !important;">Currency</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.currCd" (ngModelChange)="params.currCd = $event.toUpperCase()" (change)="checkCode($event, 'currCd')"
+									[disabled]="paramsToggle.indexOf('currCd') == -1">
+									<div class="text-search-ico" *ngIf="paramsToggle.indexOf('currCd') > -1"><a><i class="fa fa-search" (click)="showCurrencyModal()"></i></a></div>
+									<span>&nbsp;</span>
+									<input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currdesc" readonly placeholder="ALL CURRENCIES">
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-1">
+							</div>
+							<div class="col-sm-10">
+								<div class="input-group align-rad" style="padding-top: 10px;padding-bottom: 10px;">
+									<input id="radirt1" class="form-control-sm" type="radio" name="incRecTag" value="P" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('policy') == -1">
+									<label class="form-control-sm" for="radirt1">Policy</label>
+									<input id="radirt2" class="form-control-sm" type="radio" name="incRecTag" value="E" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('alteration') == -1">
+									<label class="form-control-sm" for="radirt2">Alteration</label>
+									<input id="radirt3" class="form-control-sm" type="radio" name="incRecTag" value="B" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('policyAlteration') == -1">
+									<label class="form-control-sm" for="radirt3">Policy & Alteration</label>
+									<input id="radirt4" class="form-control-sm" type="radio" name="incRecTag" value="D" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('distributed') == -1">
+									<label class="form-control-sm" for="radirt4">Distributed Only</label>
+									<input id="radirt6" class="form-control-sm" type="radio" name="incRecTag" value="U" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('undistributed') == -1">
+									<label class="form-control-sm" for="radirt6">Undistributed</label>
+									<input id="radirt5" class="form-control-sm" type="radio" name="incRecTag" value="A" style="margin: 0 0 0 15px" [(ngModel)]="params.incRecTag"
+										[disabled]="paramsToggle.indexOf('alldistribution') == -1">
+									<label class="form-control-sm" for="radirt5">All(Including Undistributed)</label>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+					</fieldset>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="row top-row" style="margin-top: 10px;">
+					<div class="col-sm-1"></div>
+					<fieldset class="scheduler-border col-sm" style="padding-bottom: 13px !important;">
+						<div class="row">
+							<div class="col-sm-1"></div>
+							<div class="col-sm">
+								<div class="input-group" style="margin-bottom: 0px !important;">
+									<label class="form-control-sm col-sm-3" style="margin-bottom: -6px !important;">Destination</label>
+									<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+										<option value="screen">Screen</option>
+				    					<option value="dlPdf">PDF</option>
+				    					<option value="printPdf">Printer</option>
+				    					<option value="exl">Excel</option>
+									</select>
+									<div class="col-sm-2"></div>
+								</div>
+							</div>
+							<div class="col-sm-1">
+							</div>
+						</div>
+					</fieldset>
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="col-md-13 text-center" style="margin-top: 10px; margin-bottom: 5px;">
+					<div class="cust-btn-container">
+						<button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
+						<button type="button" class="cust-btn" (click)="extract();" [disabled]="extractDisabled"><a>Extract</a></button>
+						<button type="button" class="cust-btn" (click)="print();"><a>Print</a></button>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal class="d-none" id="extract" #polReportsModal>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();forceExtract();extract();"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="polReportsModal.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="range" #Range>
+	<div header>SI Range</div>
+	<div body>
+		<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="deleteCurr()" (onDelete)="table.onClickDelete('force');passData.disableGeneric=true;" (newClick)="onRowClick($event)" (tableDataChange)="update($event)"></app-cust-editable-non-datatable>
+	</div>
+	<div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="siClickCancel();"><a>Cancel</a></button>
+            <button class="cust-btn" type="button" (click)="tableFlag=true; onClickSave();"><a>Save</a></button>
+        </div>
+    </div>
+    <app-cancel-button (onYes)="tableFlag=false; fromSiRangeMdl=true; saveRange(true);" (no)="table.markAsPristine(); rangeLOV.closeModal();"></app-cancel-button>
+    <app-sucess-dialog #success [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!='error' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+</app-modal>
+
+<app-mtn-currency-code  #currencyModal id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency-code>
+<app-lov [passData]="passLov" (selectedData)="setReport($event)">
+<app-mtn-line id="lineCdLOV" (selectedData)="setLine($event)"></app-mtn-line>
+<app-confirm-save (onYes)="saveRange()"></app-confirm-save>
+<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null : fromSiRangeMdl ? afterCancelSave() : modalService.dismissAll();"></app-sucess-dialog>

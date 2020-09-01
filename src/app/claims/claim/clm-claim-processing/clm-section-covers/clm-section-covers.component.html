@@ -1,0 +1,106 @@
+<form #myForm="ngForm">
+<div class="row">
+	<div class="col-sm-12">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Claim Info</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 10px !important;">
+				<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-1">Claim No</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" readonly [ngModel]="claimInfo.claimNo" name="claimNo">
+					<label class="form-control-sm col-sm-1">Insured</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" readonly [ngModel]="claimInfo.insuredDesc" name="insuredDesc">
+					<div class="col-sm-1"></div>
+				</div>
+				<div class="input-group" style="margin-bottom: -13px !important;">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-1" style="height: auto;">Policy No</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-3" readonly [ngModel]="claimInfo.policyNo" name="policyNo">
+					<label class="form-control-sm col-sm-1">Risk</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm-5" readonly [ngModel]="claimInfo.riskName" name="riskName">
+					<div class="col-sm-1"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<fieldset class="scheduler-border" style="margin-right: -5px !important;">
+			<legend class="scheduler-border">SI per Section</legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 10px !important;">
+				<div class="input-group cust-ig">
+					<div class="col-sm-2 text-right pr-0">
+						<!-- <input type="checkbox" [ngModel]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';validate();getSum();" name="secISiTag" [class.unclickable]="isInquiry" > -->
+						<input type="checkbox" [ngModel]="coverageData.secISiTag === 'Y'" (change)="coverageData.secISiTag = (coverageData.secISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secISiTag';  " name="secISiTag" [class.unclickable]="isInquiry" >
+					</div>
+					<label class="form-control-sm col-sm-2">Section I</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionISi = $event;" readonly name="sectionISi">
+					<div class="col-sm-3"></div>
+				</div>
+				<div class="input-group cust-ig">
+					<div class="col-sm-2 text-right pr-0">
+						<input type="checkbox" [ngModel]="coverageData.secIISiTag === 'Y'" (change)="coverageData.secIISiTag = (coverageData.secIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag='secIISiTag';"  name="secIISiTag" [class.unclickable]="isInquiry" >
+					</div>
+					<label class="form-control-sm col-sm-2">Section II</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIISi = $event;" readonly name="sectionIISi">
+					<div class="col-sm-3"></div>
+				</div>
+				<div class="input-group cust-ig">
+					<div class="col-sm-2 text-right pr-0">
+						<input type="checkbox" [ngModel]="coverageData.secIIISiTag === 'Y'" (change)="coverageData.secIIISiTag = (coverageData.secIIISiTag === 'Y') ? 'N' : 'Y';getSum()" (click)="secTag = 'secIIISiTag';  " name="secIIISiTag" [class.unclickable]="isInquiry" >
+					</div>
+					<label class="form-control-sm col-sm-2">Section III</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.sectionIIISi | number:'1.2-2'" (ngModelChange)="coverageData.sectionIIISi = $event;" readonly name="sectionIIISi">
+					<div class="col-sm-3"></div>
+				</div>
+				<br/>
+				<br/>
+				<div class="input-group cust-ig">
+					<label class="form-control-sm col-sm-4">Allowable Maximum Claim</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.allowMaxSi | number:'1.2-2'" (ngModelChange)= "coverageData.allowMaxSi =$event" readonly name="allowMaxSi">
+					<div class="col-sm-3"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-6">
+		<fieldset class="scheduler-border" style="margin-left: -5px !important; padding-top: 37px !important; padding-bottom: 37px !important;">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<div class="form-row custom-row-inline-inset" style="margin-top: 10px !important;">
+				<div class="input-group cust-ig">
+					<div class="col-sm-2"></div>
+					<label class="form-control-sm col-sm-2">Currency</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="coverageData.currencyCd" readonly name="currencyCd">
+					<label class="form-control-sm col-sm">Exch. Rt.</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm-2 text-right" [ngModel]="coverageData.currencyRt | number:'1.10-10'" (ngModelChange)="coverageData.currencyRt =$event" readonly name="currencyRt">
+					<div class="col-sm-3"></div>
+				</div>
+				<div class="input-group cust-ig">
+					<div class="col-sm-1"></div>
+					<label class="form-control-sm col-sm-3">Total Sum Insured</label>
+					<input type="text"class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="coverageData.totalSi | number:'1.2-2'" (ngModelChange)="coverageData.totalSi = $event" readonly name="totalSi">
+					<div class="col-sm-3"></div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+</div>
+</form>
+<div class="row">
+	<div class="col-sm-12">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+			<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+		</fieldset>
+	</div>
+</div>
+<div class="row" style="margin-top: 10px !important;" *ngIf="!isInquiry">
+	<div class="col-sm-12 d-flex justify-content-center" style=" z-index: 0 !important;">
+		<button class="cust-btn" (click)="cancel()">Cancel</button>
+		<button class="cust-btn" (click)="onClickSave()">Save</button>
+	</div>
+</div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/clm-claim-processing'" ></app-cancel-button>

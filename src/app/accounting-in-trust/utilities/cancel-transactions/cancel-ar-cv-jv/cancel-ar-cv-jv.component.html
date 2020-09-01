@@ -1,0 +1,94 @@
+<fieldset class="scheduler-border" style="margin-bottom: 15px !important; padding-left: 30px !important; padding-right: 30px !important;">
+	<legend class="scheduler-border">Records for Cancellation</legend>
+	<div class="row">
+		<div class="col-sm-12" style="padding: 0">
+			<app-cust-non-datatable #cancelTranTbl [passData]="passDataCancelTrans" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (tableDataChange)="passDataCancelTrans.tableData=$event;"></app-cust-non-datatable>
+		</div>
+	</div>
+	<div class="row" style="margin-bottom: 15px !important;">
+		<div class="col-sm-12">
+			<div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 5px">
+				<div class="input-group">
+					<div class="col-sm-3" style="padding: 0">
+						<div class="input-group">
+							<label class="form-control-sm">Created By</label>
+							<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
+						</div>
+					</div>
+					<div class="col-sm-3" style="padding: 0">
+						<div class="input-group">
+							<label class="form-control-sm">Date Created</label>
+							<div class="dp-cont col-sm">
+								<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3" style="padding: 0">
+						<div class="input-group">
+							<label class="form-control-sm">Last Update By</label>
+							<input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
+						</div>
+					</div>
+					<div class="col-sm-3" style="padding: 0">
+						<div class="input-group">
+							<label class="form-control-sm">Last Update</label>
+							<div class="dp-cont col-sm">
+								<datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">	
+	<div class="row">
+		<div class="input-group col-sm-12" style=" margin-top: 10px !important;margin-bottom: -1px !important;">
+			<div class="col-sm-1"></div>
+			<label class="form-control-sm col-sm-2">Reason for Cancellation</label>
+			<textarea class="form-control form-control-sm-5" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;" [(ngModel)]="reason" appRequired></textarea>
+			<div class="col-sm-2"></div>
+		</div>
+	</div>
+	<div class="form-row" style="margin-bottom: -7px !important;">
+		<div class="form-group col-sm">
+			<div class="col-md-12 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</fieldset>		
+
+<app-confirm-save  #con></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<app-modal class="d-none" #mdl >
+    <div header> {{(mdlType == 1)?'Warning':'Confirmation'}}</div>
+    <div body class="container-flex text-center">
+        <div class="input-group">
+            <pre style="font-family: inherit !important;width: inherit !important; margin-bottom: 0px !important;"><p style="margin-bottom: 0px !important;">{{ msg }}</p></pre>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button *ngIf= "mdlType == 2" class="cust-btn" type="button" (click)="onClickYes();mdl.closeModal();">Yes</button>
+        <button class="cust-btn" type="button" (click)="mdl.closeModal()">{{(mdlType == 1)?'Ok':'No'}}</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #specCancelMdl>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Would you like to fully <strong>CANCEL</strong> this AR or <strong>RE-OPEN</strong> it for update of details?</p>
+	  </div>
+	</div>
+	<div footer class="w-100 text-center">
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();onClickYes('reopen');"><a>Full Cancel</a></button>
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();onClickYes();"><a>Re-open</a></button>
+      <button class="cust-btn" type="button" (click)="specCancelMdl.closeModal();"><a>Return</a></button>
+  	</div>
+</app-modal>

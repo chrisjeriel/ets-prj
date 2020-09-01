@@ -1,0 +1,77 @@
+.text-left {
+	text-align: left !important;
+}
+
+.contain {
+	margin-left: 55px !important
+}
+
+.top {
+	margin-top: -20px !important
+}
+
+.left-contain {
+	margin-left: 30px !important
+}
+
+.bottom {
+	margin-bottom: 15px !important
+}
+
+
+input[type="radio"]{
+    vertical-align: text-bottom;
+}
+
+
+
+
+
+
+.printing-params .text-left{
+	text-align: left !important;
+}
+
+.printing-params .first-row label{
+	padding-left: 7px;
+	margin-bottom: 0;
+}
+
+.printing-params .period label{
+	padding-left: 0px;
+	margin-bottom: 0;
+}
+
+.printing-params .first-row div{
+	padding-right: 5px;
+	text-align: right;
+
+}
+
+.printing-params .first-row{
+	margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+
+.printing-params label{
+	padding-left: 0px;
+}
+
+.printing-params .text-search-ico{
+    margin-left: -18px;
+    z-index: 200;
+    font-size: 14px;
+}
+
+.printing-params .mid .input-group{
+	margin-bottom: -13px !important;
+}
+
+.printing-params .check-row div{
+	text-align: right;
+	padding-right: 4px !important;
+}
+
+.printing-params input[type="radio"], input[type="checkbox"]{
+	vertical-align: text-top;
+}

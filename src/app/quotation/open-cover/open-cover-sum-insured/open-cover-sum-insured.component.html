@@ -1,0 +1,91 @@
+<div>
+	<fieldset class="scheduler-border">
+	    <legend class="scheduler-border">Quotation Info</legend>
+	    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+	        <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+	            <label class="col-sm-1"></label>
+	            <label class="form-control-sm col-sm-1" for="xx">Quotation No</label>
+	            <input type="text" id="xx" [ngModel]="quoteData.openQuotationNo" class="form-control form-control-sm cust-sm col-sm-2"
+	                   placeholder="" readonly>
+	            <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+	            <input type="text" id="xx" [ngModel]="quoteData.insured" class="form-control form-control-sm cust-sm col-sm-5" placeholder=""
+	                   readonly>
+	        </div>
+	        <div class="input-group" style="margin-bottom: -13px !important;">
+	            <label class="col-sm-1"></label>
+	            <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+	            <input type="text" id="xx" [ngModel]="quoteData.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder=""
+	                   readonly>
+	        </div>
+	    </div>
+	</fieldset>
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading">
+</div>
+	<div class="row" style="margin-top: -6px;">
+		<div class="col-sm-6" style="padding-right: 7px;">
+			<fieldset class="scheduler-border ">
+				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4">Currency</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyCd" readonly>
+            			<label class="form-control-sm col-sm" >Exch. Rt.</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.currencyRt" readonly appCurrencyRate>
+            			<label class="col-sm-2"></label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">Max Sum Insured</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.maxSi" [readonly]="inquiryFlag" appCurrency>
+            			<label class="col-sm-2"></label>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-6" style="padding-left: 7px;">
+			<fieldset class="scheduler-border ">
+				<legend class="scheduler-border"  style="visibility: hidden;color: rgb(56, 142, 60);  padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+				<div class="custom-row-inline-inset">
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" >Share (%)</label>
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctShare" [readonly]="inquiryFlag">
+            			<label class="form-control-sm col-sm" >PML (%)</label>
+            			<input appOtherRates type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.pctPml" [readonly]="inquiryFlag">
+            			<label class="col-sm-2"></label>
+					</div>
+					<div class="input-group">
+						<label class="form-control-sm col-sm-4" style="padding-left: 0px;">100% Value</label>
+            			<input type="text" id="inputInname" class="form-control form-control-sm cust-sm" [(ngModel)]="coverageOcData.totalValue" [readonly]="inquiryFlag" appCurrency>
+            			<label class="col-sm-2"></label>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</div>
+
+<div class="form-row" *ngIf="!inquiryFlag">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center" style="margin-top: 3px;">
+			<div class="cust-btn-container">
+
+
+
+
+				<button type="button" class="cust-btn" 	(click)="cancel()"><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+
+<app-mtn-currency id="currencyModal" (selectedData)="setCurrency($event)"></app-mtn-currency>
+
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="sum-insured" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/open-cover-processing'" ></app-cancel-button>
+

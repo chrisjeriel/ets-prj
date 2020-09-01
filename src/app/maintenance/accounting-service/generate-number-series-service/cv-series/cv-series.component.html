@@ -1,0 +1,62 @@
+<div class="row">
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Series Option</legend>
+			<div class="input-group" style="margin-top: 5px">
+				<label class="form-control-sm col-sm-1" style="margin-left: 15px;">CV Year</label>
+				<input type="text" class="form-control form-control-sm col-sm-1" [(ngModel)]="params.cvYear" (change)="checkField()">
+				<label class="form-control-sm col-sm-1">From</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cvFrom" (change)="checkField()">
+				<label class="form-control-sm col-sm-1" style="margin-left: -25px;">To</label>
+				<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cvTo" (change)="checkField()">
+				<div class="col-sm text-center">
+					<button class="cust-btn" style="min-width: 100px;margin-left: -25px" (click)="onClickGenerate()" [disabled]="checkField()">Generate</button>
+					<button class="cust-btn" style="min-width: 100px;" (click)="retrieveCV()">Search</button>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-2"></div>
+	<div class="col-sm-8">
+		<fieldset class="scheduler-border">
+			<legend class="scheduler-border">Generated Series</legend>
+			<div class="row" style="margin-top: 5px">
+				<div class="col-sm-12">
+					<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-sm-2"></div>
+</div>
+
+<app-modal class="d-none" #cvModal>
+    <div header>Confirmation</div>
+    <div body>
+    	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">Are you sure you want to generate these transactional <br> number series starting from <b>{{ params.cvFrom }}</b> to <b>{{ params.cvTo }}</b> ?</span> 
+    </div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="cvModal.closeModal();generateCV();">Yes</button>
+        <button class="cust-btn" (click)="cvModal.closeModal()">No</button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #cvErrorModal>
+    <div header>Confirmation</div>
+    <div body>
+    	<span style="vertical-align: middle; margin-left: 5px;font-size: 1em;">
+    		Existing number series was already created for <br>
+			the specified transaction numbers <b>{{params.cvFrom}}</b> to <b>{{params.cvTo}}</b>.<br>
+			Please adjust your From-To range values.
+    	</span>
+    </div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="cvErrorModal.closeModal()">Ok</button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag && dialogIcon!=='error-message' ? this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-confirm-save (onYes)="generateCV()"></app-confirm-save>
+<app-cancel-button (onYes)="generateCV('cancel')" [url]="'/journal-voucher'" ></app-cancel-button>

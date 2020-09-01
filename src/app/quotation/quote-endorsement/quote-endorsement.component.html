@@ -1,0 +1,173 @@
+<div>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Quotation Info</legend>
+        <div class="form-row custom-row-inline-inset">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+                <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="(OpenCover) ? ocQuoteData.openQuotationNo : quotationInfo.quotationNo"
+                    disabled="disabled">
+                <label class="form-control-sm col-sm-1" for="inputInname">Insured</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" [ngModel]="(OpenCover) ? ocQuoteData.insured : quotationInfo.insuredDesc"
+                    disabled="disabled">
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2" for="inputRisk">Risk</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-9" [ngModel]="(OpenCover) ? ocQuoteData.riskName : quotationInfo.riskName"
+                    disabled="disabled">
+            </div>
+        </div>
+    </fieldset>
+
+    <fieldset class="scheduler-border" *ngIf="!OpenCover">
+        <legend class="scheduler-border">Options</legend>
+        <!--<app-cust-table [checkFlag]="false" [tableData]="quoteOptionTableData" [tHeader]="quoteOptionTHeader" [dataTypes]="quoteOptionDataType" (rowClick)="clickRow($event)"></app-cust-table>-->
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style=" margin-bottom: -0.4%;">
+                <app-cust-non-datatable [passData]="quoteOptionsData" (rowClick)="clickRow($event)"></app-cust-non-datatable>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </fieldset>
+
+    <!-- <fieldset class="scheduler-border" style="position: relative;">
+        <legend class="scheduler-border">Endorsements</legend>
+        <div class="row">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-10" style="margin-top: 0.7em; margin-bottom: -0.4%;">
+                <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event">
+                    <ng-container controls-l>
+                        <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null" (click)="clickModal($event)">Copy Endt</button>
+                        <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button>
+                    </ng-container>
+                </app-cust-editable-non-datatable>
+                <app-cust-editable-non-datatable #endorsment id="endorsmentOCTable" [passData]="endorsementOCData" (clickLOV)="clickEndtLOV($event)" *ngIf="OpenCover">
+                </app-cust-editable-non-datatable>
+            </div>
+            <div class="col-sm-1"></div>
+        </div>
+    </fieldset> -->
+
+    <fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
+        <legend class="scheduler-border">Endorsements</legend>
+        <div class="row">
+            <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;">
+                <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
+                    <legend class="scheduler-border" style="visibility: hidden; padding-top: 25px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+                        <app-cust-editable-non-datatable #endorsment id="endorsmentTable" [passData]="endorsementData" (clickLOV)="clickEndtLOV($event)" *ngIf="!OpenCover" (newClick)="selectedEndt=$event;updateDed($event)" class="d-block py-2" style="height: 278px" >
+                            <ng-container controls-l>
+                                <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED' || quoteOptionsData.tableData.length < 2" class="cust-btn" [class.cust-btn-disabled]="opId===null || quoteOptionsData.tableData.length < 2" [disabled]="opId===null || quoteOptionsData.tableData.length < 2" (click)="clickModal($event)">Copy Endt</button>
+                                <!-- <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" class="cust-btn" [class.cust-btn-disabled]="opId===null || selectedEndt===null" (click)="showDeductiblesOptions()"  style="margin-right: 0px !important;" >Deductibles</button> -->
+                            </ng-container>
+                        </app-cust-editable-non-datatable>
+                </fieldset>
+            </div> 
+                <div class="col-sm-6" style="padding-left: 2px; padding-right: 2px;"> 
+                <fieldset class="scheduler-border" style="padding-right: 5px !important;padding-left: 5px !important;height: 356px">
+                    <legend class="scheduler-border">Deductibles</legend>
+                    <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (tableDataChange)="table.indvSelect.deductiblesList=$event; table.markAsDirty();" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)" class="d-block py-2"></app-cust-editable-non-datatable>
+                </fieldset>
+            </div>
+        </div>
+    </fieldset>
+
+    <div class="form-row">
+        <div class="form-group col-sm">
+            <div class="col-md-13 text-center">
+                <div class="cust-btn-container" style="padding-top: 13px">
+                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+                    <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'APPROVED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="idMdl">
+    <div header>Copy Endorsement</div>
+    <div body>
+        <div>
+            <div class="custom-row-inline-inset">
+                <div class="input-group">
+                    <label class="form-control-sm col-sm-7">Copy from Option No</label>
+                    <input type="text" class="form-control form-control-sm col-sm-3" [ngModel]="currentSelectedOption" readonly>
+                    <label class="form-control-sm col-sm"></label>
+                </div>
+            </div>
+            <app-cust-editable-non-datatable #copyTable [passData]="copyEndtTable" (newClick)="copyEndtRowClick($event)"></app-cust-editable-non-datatable>
+        </div>
+    </div>
+    <div footer style="margin: auto;">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        <button *ngIf="copyEndtOkBtn" class="cust-btn" type="button" (click)="modalService.dismissAll(); beginCopyEndt();"><a>Ok</a></button>
+        <button *ngIf="!copyEndtOkBtn" class="cust-btn cust-btn-disabled" type="button"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<!-- <<<<<<< HEAD
+<app-modal hidden [btnTitle]="'Copy Endt'" class="copy-endt" id="confirmCopy">
+    <div header>Success</div>
+    <div body>
+        <div>
+            <p><strong style="color:#557a95">Option {{ currentSelectedOption }}</strong> has been copied to <strong style="color:#557a95">Option No/s </strong> <strong style="color:#557a95" *ngFor="let i of copyEndtParams">{{ i.optionNo }}<span *ngIf="copyEndtParams.length > 1">,</span></strong> </p>
+        </div>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+     </div>
+</app-modal>
+
+<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [line]="line"></app-mtn-endt-code>
+======= -->
+<app-mtn-endt-code id="edntCodeLOV" (selectedData)="selectedEndtLOV($event)" [hide]="hideEndt" [line]="line" [lovCheckBox]="true"></app-mtn-endt-code>
+
+
+<!-- <app-modal class="d-none" id="successMdl">
+    <div header>Success</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-check-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">Saved successfully!</span>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="warningMdl">
+    <div header>Warning</div>
+    <div body class="container-flex text-center">
+        <span class="fa fa-info-circle fa-3x" style="vertical-align: middle;"></span>
+        <span style="vertical-align: middle; margin-left: 15px;">Please complete all the required fields.</span>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Okay</a></button>
+    </div>
+</app-modal> -->
+
+<app-confirm-save id="endtSave" (onYes)="saveData()"></app-confirm-save>
+<app-sucess-dialog id="quote-endorsment" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="cancelLink" ></app-cancel-button>
+
+
+<!-- <ng-container *ngIf="showModal">
+    <app-modal class="d-none" id="deductiblesModal" #deductiblesModal>
+        <div header>Deductibles Per Endorsement</div>
+        <div body>
+            <div class="d-flex">
+                <label class="form-control-sm col-sm-1" for="inputInname">Option No</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-1 text-right" readonly="readonly" [(ngModel)]="optionTable.indvSelect.optionId">
+                <label class="form-control-sm col-sm-2 text-right" for="inputInname">Endorsement Code</label>
+                <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-4" readonly="readonly" [ngModel]="table.indvSelect.endtCode +' - '+table.indvSelect.endtTitle" >
+            </div>
+            <fieldset class="scheduler-border" style="padding:0.5em !important" >
+                <app-cust-editable-non-datatable #deductibleTable  id="deductibleTable" (onDataChange)="deductibleTable.tableData=$event" [passData]="deductiblesData" (clickLOV)="clickDeductiblesLOV($event)"></app-cust-editable-non-datatable>
+            </fieldset>
+        </div>
+        <div footer>
+            <button class="cust-btn" (click)="showModal=false;deductiblesModal.closeModal()">Cancel</button>
+            <button class="cust-btn" (click)="onClickSaveDeductibles()">Save</button>
+        </div>
+    </app-modal>
+</ng-container> -->
+<app-lov id="lov" [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<!-- <app-confirm-save id="deductibles" (onYes)="saveQuoteDeductibles()"></app-confirm-save> -->

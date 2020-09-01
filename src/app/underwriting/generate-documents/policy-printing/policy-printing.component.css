@@ -1,0 +1,31 @@
+.scheduler-border {
+	padding-top: 3px !important;
+	margin: 0 !important;
+}
+
+	.input-group {
+		padding: 0px !important;
+		margin: 0px !important;
+	}
+
+	.input-group label {
+		padding: 0px !important;
+		margin: 0px !important;
+	}
+
+	.ig-row {
+		margin: -3px !important;
+	}
+
+	.ig-row label {
+		margin-right: 5px !important;
+	}
+
+	.input-radio {
+		margin-bottom: -10px !important;
+	}
+
+	.input-ig-row {
+		margin-left: 2px !important;
+	}
+

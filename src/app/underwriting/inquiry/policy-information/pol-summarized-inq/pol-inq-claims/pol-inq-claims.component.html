@@ -1,0 +1,14 @@
+<fieldset class="scheduler-border" style="padding-top: 5px !important;">
+	<legend class="scheduler-border">Claim Listing</legend>
+	<div class="row" style="margin-bottom: 5px;margin-top: 5px !important">
+		<div class="col-sm-1"></div>
+		<div class="col-sm-10">
+			<app-loading-table #claim [passData]="passData">
+			</app-loading-table>
+		</div>
+		<div class="col-sm-1"></div>
+	</div>
+</fieldset>
+<div class="w-100 text-center" style="margin-top: 12px !important;">
+	<button class="cust-btn" [disabled]="table?.indvSelect == null" (click)="goToClaims()">Claim Info</button>
+</div>

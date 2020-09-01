@@ -1,0 +1,241 @@
+import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges, DoCheck, ViewChild, AfterViewInit, Renderer2 } from '@angular/core';
+import { NotesService } from '@app/_services'
+import { NgForm } from '@angular/forms';
+import { Calendar } from 'primeng/calendar';
+// import Cleave from 'cleave.js';
+
+@Component({
+  selector: 'datepicker',
+  templateUrl: './datepicker.component.html',
+  styleUrls: ['./datepicker.component.css']
+})
+export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterViewInit {
+
+  constructor(private ns: NotesService, private renderer: Renderer2) { }
+
+  private datepickerVal: any = null;
+  private minimumDate: any = null;
+  private maximumDate: any = null;
+  private defaultDate: any = null;
+  private ev: any = null;
+  private inputStyleClass: string = 'form-control form-control-sm dp-mask';
+  private icon: string = 'fa fa-calendar';
+  // private mask: any = null;
+  
+  private spanStyle: any = {
+  	width: '100%',
+  	position: 'absolute',
+  	display: 'contents',
+    // 'background-color': 'red'
+  }
+
+  private inputStyle: any = {
+  	position: 'relative',
+  	backgroundColor: 'transparent',
+  }
+
+  @ViewChild('dtPckrForm') dtPckrForm:  NgForm;
+
+  @Input() value: string = null;
+  @Output() valueChange = new EventEmitter<any>();
+  @Output() onFocus = new EventEmitter<any>();
+
+  @Input() type: string = 'datetime';
+  @Input() showIcon: boolean = true;
+  @Input() showSeconds: boolean = false;
+  @Input() disabled: boolean = false;
+  @Input() required: boolean = false;
+  @Input() textAlign: string = 'left';  
+  @Input() minDate: string = '1970-01-01';
+  @Input() maxDate: string = '2120-12-31';
+  @Input() disabledDates: any[] = null;
+  @Input() disabledDays: any[] = null;
+  @Input() tabindex: any = null;
+  @Input() formName: string = 'dp' + (Math.floor(Math.random() * (999999 - 100000)) + 100000).toString();
+  @Input() table: boolean = false;
+  @Input() defDateOnNull: string = '';
+
+  @ViewChild(Calendar) cal: Calendar;
+
+  markAsPristine(){
+    this.renderer.removeClass(this.cal.el.nativeElement,'ng-dirty');
+  }
+
+  ngOnInit() {
+    this.minimumDate = new Date(this.minDate);
+    this.maximumDate = new Date(this.maxDate);
+    this.defaultDate = this.defDateOnNull == '' ? null : new Date(this.defDateOnNull);
+  	this.inputStyle['textAlign'] = this.textAlign;
+
+  	if(this.required) {
+  		this.inputStyle['backgroundColor'] = '#fffacd85';
+  	}
+
+  	if(this.type != 'time') {
+  		this.spanStyle['position'] = 'relative';
+  		this.spanStyle['display'] = 'block';
+  		this.inputStyle['position'] = 'absolute';
+  	}
+
+  	if(this.table) {
+  		this.spanStyle['minWidth'] = this.type == 'time' ? '1px' : '9em';
+  		this.inputStyleClass += ' tbl-dp';
+  	}
+
+  	if(this.table && !this.showIcon) {
+  		this.spanStyle['display'] = 'block';
+  		this.spanStyle['position'] = 'relative';
+  		this.spanStyle['marginTop'] = '-6px';  	
+  	}
+  }
+
+  ngAfterViewInit() {
+    if(!this.table) {
+      this.ns.formGroup.addControl(this.formName, this.dtPckrForm.form);  
+    }
+
+    /*if(this.type == 'date') {
+      this.mask = new Cleave(this.cal.el.nativeElement.children[0].firstElementChild, {
+        date: true,
+        delimeter: '/',
+        datePattern: ['m', 'd', 'Y']
+      });
+    }*/
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if(changes.value && changes.value.currentValue) {
+      if(typeof changes.value.currentValue != 'string') {
+        return;
+      }
+
+    	if(this.type == 'time') {
+    		if(this.value != '' && this.value != null && this.value != 'undefined') {
+	    		var d = new Date();
+	    		var hrs = Number(changes.value.currentValue.split(':')[0]);
+	    		var mins = Number(changes.value.currentValue.split(':')[1]);
+	    		d.setHours(hrs, mins, 0);
+	    		this.datepickerVal = d;
+    		} else {
+  				this.datepickerVal = null;
+  			}
+    	} else {
+    		this.datepickerVal = changes.value.currentValue == '' || changes.value.currentValue == null ? null : new Date(changes.value.currentValue);
+    	}
+    }
+
+    if(changes.minDate && changes.minDate.currentValue) {
+    	this.minimumDate = changes.minDate.currentValue == '' || changes.minDate.currentValue == undefined || changes.minDate.currentValue == null ? null : new Date(changes.minDate.currentValue);
+    }
+
+    if(changes.maxDate && changes.maxDate.currentValue) {
+      this.maximumDate = changes.maxDate.currentValue == '' || changes.maxDate.currentValue == undefined || changes.maxDate.currentValue == null ? null : new Date(changes.maxDate.currentValue);
+    }
+
+    if(changes.defDateOnNull && changes.defDateOnNull.currentValue) {
+      this.defaultDate = changes.defDateOnNull.currentValue == '' || changes.defDateOnNull.currentValue == undefined || changes.defDateOnNull.currentValue == null ? null : new Date(changes.defDateOnNull.currentValue);
+    }
+  }
+
+  ngDoCheck() {
+    if(this.value == '' || this.value == null) {
+      this.datepickerVal = null;
+    }
+
+  	if(this.datepickerVal != null && this.type == 'time' && this.ns.toDateTimeString(this.datepickerVal).split('T')[1].substring(0, 5) != this.value.substring(0, 5)) {
+  		if(this.value != '' && this.value != null && this.value != 'undefined') {
+  			var d = new Date();
+  			var hrs = Number(this.value.split(':')[0]);
+  			var mins = Number(this.value.split(':')[1]);
+  			d.setHours(hrs, mins, 0);
+
+  			this.datepickerVal = d;
+  		} else {
+  			this.datepickerVal = null;
+  		}  		
+  	} else if(this.datepickerVal != null && this.type == 'date' && this.ns.toDateTimeString(this.datepickerVal).split('T')[0] != this.value) {
+  		this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
+  	} else if(this.datepickerVal != null && this.type == 'datetime' && this.ns.toDateTimeString(this.datepickerVal) != this.value) {
+      if(new Date(this.value).getSeconds() == 0) {
+        this.value = this.value == '' || this.value == null ? null : this.value.substring(0, 16) + ':00';
+      }
+      
+      this.datepickerVal = this.value == '' || this.value == null ? null : new Date(this.value);
+    }
+  	
+  	if(this.minimumDate != null && this.ns.toDateTimeString(this.minimumDate).split('T')[0] != this.minDate) {
+  		this.minimumDate = this.minDate == '' || this.minDate == undefined ? null : new Date(this.minDate);
+  	}
+
+    if(this.maximumDate != null && this.ns.toDateTimeString(this.maximumDate).split('T')[0] != this.maxDate) {
+      this.maximumDate = this.maxDate == '' || this.maxDate == undefined ? null : new Date(this.maxDate);
+    }
+
+    if(this.defaultDate != null && this.ns.toDateTimeString(this.defaultDate).split('T')[0] != this.defDateOnNull) {
+      this.defaultDate = this.defDateOnNull == '' || this.defDateOnNull == undefined ? null : new Date(this.defDateOnNull);
+    }
+  }
+
+  valueUpdated() {
+  	var dateString = this.ns.toDateTimeString(this.type == 'datetime' && this.datepickerVal != null ? this.datepickerVal : this.datepickerVal == null ? '' : this.datepickerVal.setSeconds(0));
+  	switch (this.type) {
+  		case "datetime":  	
+  			dateString = this.datepickerVal == null ? '' : dateString;
+  			break;
+
+  		case "date":  			
+  			dateString = this.datepickerVal == null ? '' : dateString.split('T')[0];
+  			break;
+
+  		case "time":
+  			dateString = this.datepickerVal == null ? '' : dateString.split('T')[1];
+  			break;
+  	}
+
+    this.renderer.addClass(this.cal.el.nativeElement,'ng-dirty');
+
+  	this.valueChange.emit(dateString);
+  }
+
+  onClearClick() {
+  	if(this.datepickerVal == null && this.required) {
+  		$(this.ev.target).css('boxShadow', 'rgb(255, 51, 51) 0px 0px 5px');
+  	} else if(this.datepickerVal != null && this.required) {
+  		$(this.ev.target).css('boxShadow', 'none');
+  	}
+  }
+
+  onBlur(ev) {
+   setTimeout(() => {
+     this.ev = ev;
+     if(this.datepickerVal == null && this.required) {
+       $(ev.target).css('boxShadow', 'rgb(255, 51, 51) 0px 0px 5px');
+     } else if(this.datepickerVal != null && this.required) {
+       $(ev.target).css('boxShadow', 'none');
+     }
+   }, 0);
+  }
+
+  onSelect() {
+    if(this.ev != null) {
+      $(this.ev.target).focus();
+      $(this.ev.target).blur();
+    }
+  }
+
+  focused() {
+  	/*setTimeout(() => { 
+  		$('.ui-datepicker-title').addClass('input-group').attr('style', 'padding: 0 15px 5px !important');
+  		$('.ui-datepicker-month').addClass('form-control form-control-sm cust-sm col-sm-7');
+  		$('.ui-datepicker-year').addClass('form-control form-control-sm cust-sm col-sm-5');
+  	}, 0);*/ //REMOVED BECAUSE OF STYLE BUG
+
+  	this.onFocus.emit();
+  }
+
+  onTodayClick() {
+    setTimeout(() => {
+      this.value = this.ns.toDateTimeString(0);
+    }, 0);
+  }
+}

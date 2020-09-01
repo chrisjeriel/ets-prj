@@ -1,0 +1,26 @@
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Utilities / Change Transaction Status to New</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Official Receipt">
+			<ng-template ngbTabContent>
+				<app-or-change-tran-stat></app-or-change-tran-stat>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Check Voucher">
+			<ng-template ngbTabContent>
+				<app-cv-change-tran-stat></app-cv-change-tran-stat>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Journal Voucher">
+			<ng-template ngbTabContent>
+				<app-jv-change-tran-stat></app-jv-change-tran-stat>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+	</ngb-tabset>
+</div>

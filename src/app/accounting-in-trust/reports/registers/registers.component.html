@@ -1,0 +1,31 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Reports / Registers</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Acknowledgement Receipt">
+			<ng-template ngbTabContent>
+				<app-ar-register></app-ar-register>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Check Voucher">
+			<ng-template ngbTabContent>
+				<app-cv-register></app-cv-register>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Checks">
+			<ng-template ngbTabContent>
+				<app-checks-register></app-checks-register>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Journal Voucher">
+			<ng-template ngbTabContent>
+				<app-jv-register></app-jv-register>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="Exit">
+			<ng-template ngbTabTitle>
+				<div>Exit</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>

@@ -1,0 +1,103 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Premium Plan">
+			<ng-template ngbTabContent>
+				<div class="row">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="margin-top: 11px !important;">
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-8 input-group">
+									<label class="form-control-sm col-sm-1">Line Code</label>
+									<input type="text" class="form-control form-control-sm not-form col-sm-1 mr-1 cap-input" [(ngModel)]="searchParams.lineCd" (change)="checkCode($event)">
+									<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV()"><a><i class="fa fa-search"></i></a></div>&nbsp;
+									<input type="text" class="form-control form-control-sm not-form col-sm" [(ngModel)]="searchParams.lineDesc" readonly>
+									<label class="form-control-sm col-sm-1">Currency</label>
+									<select class="form-control form-control-sm not-form col-sm-1 cust-sm" [(ngModel)]="searchParams.currencyCd">
+										<option *ngFor="let curr of currencyList" [value]="curr.currencyCd">{{curr.currencyCd}}</option>
+									</select>
+									<label class="form-control-sm col-sm-1">Year</label>
+									<input type="text" class="form-control form-control-sm not-form col-sm-1" [(ngModel)]="searchParams.planYear">
+									<div class="col-sm-1 cust-btn-container" style="z-index: 1 !important">
+										<button type="button" class="cust-btn" (click)="search()"><a>Search</a></button>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 5px !important">
+							<div class="row" style="margin-top: 12px;">
+								<div class="col-sm-2"></div>
+								<div class="col-sm-8">
+									<app-cust-editable-non-datatable [passData]="passData"  (genericBtn)="copyModal.openNoClose()" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+								</div>
+							</div>
+							<div class="form-row mt-2">
+								<div class="form-group col-sm">
+									<div class="col-md-13 text-center">
+										<div class="cust-btn-container">
+										<button type="button" class="cust-btn" (click)="cancelBtn.clickCancel()"><a>Cancel</a></button>
+							            <button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+				<div class="row" style="margin-top: 12px">
+					<div class="col-sm-12">
+						<fieldset class="scheduler-border" style="padding-top: 4px !important;">
+							<div class="custom-row-inline-inset">
+								<div class="input-group" style="margin-bottom: -14px !important;">
+									<label class="form-control-sm col-sm-1 no-margin">Created By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update By</label>
+									<input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly>
+									<label class="form-control-sm col-sm-1 no-margin">Last Update</label>									
+									<div class="col-sm-2 dp-cont">
+										<datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+									</div>
+								</div>
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-confirm-save (onYes)="save()"></app-confirm-save>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancel ? cancelBtn.onNo() : null"></app-sucess-dialog>
+<app-cancel-button (onYes)="save(true)" [url]="'/maintenance-qu-pol'" ></app-cancel-button>
+
+<app-modal class="d-none" #copyModal>
+    <div header>Copy Setup</div>
+    <div body style="min-width: 420px !important;" class="pr-5">
+        <div class="input-group">
+        	<label class="form-control-sm col-sm-3">Line Code</label>
+        	<input type="text" class="form-control form-control-sm not-form col-sm-2 mr-1 cap-input" [(ngModel)]="copyParams.toLineCd" (change)="checkCode($event,true)">
+        	<div class="text-search-ico" style="padding-left: 1px" (click)="showLineLOV(true)"><a><i class="fa fa-search"></i></a></div>&nbsp;
+        	<input type="text" class="form-control form-control-sm not-form col-sm" [(ngModel)]="copyParams.toLineDesc" readonly>
+        </div>
+        <div class="input-group">
+        	<label class="form-control-sm col-sm-3">Currency</label>
+        	<select class="form-control form-control-sm not-form col-sm cust-sm" [(ngModel)]="copyParams.toCurrencyCd">
+        		<option *ngFor="let curr of currencyList" [value]="curr.currencyCd">{{curr.currencyCd}}</option>
+        	</select>
+        	<label class="form-control-sm col-sm">Year</label>
+        	<input type="text" class="form-control form-control-sm not-form col-sm" [(ngModel)]="copyParams.toPlanYear">
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+        <button class="cust-btn" type="button" (click)="copyModal.closeModal()"><a>Return</a></button>
+        <button class="cust-btn" type="button" (click)="copy()"><a>Copy</a></button>
+    </div>
+</app-modal>
+
+<app-mtn-line (selectedData)="setLine($event)"></app-mtn-line>

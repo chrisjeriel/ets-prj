@@ -1,0 +1,58 @@
+<!-- <button id="printModalBtn" class="cust-btn d-none" (click)="open(content)"><a>{{ btnTitle }}</a></button> -->
+<button id="printModalBtn" class="cust-btn d-none" (click)="open()"><a></a></button>
+<app-modal id="showPrintMenu" class="d-none" [modalSize]="'success-modal-size'" #modal>
+	   <div header>Print</div>
+	    <div body style="width: 300px">
+                        <div class="container-fluid">
+                             <fieldset class="scheduler-border" style="padding-left : 10px ! important; padding-right : 10px ! important; padding-bottom: 10px ! important">
+                                <div class="custom-row-inline-inset">
+
+                                 <ng-container >
+                                    <div class="input-group" style="margin-bottom : -12px ! important">
+                                    	<div class="col-sm-4" style="padding: 0">
+                                    		<div *ngIf="default"  class="input-group" style="margin-bottom : -14px ! important">
+                                    			 <label class="form-control-sm" for="xx">Report</label>
+                                    		</div>
+                                    		<div class="input-group" style="margin-bottom : -14px ! important">
+                                    			 <label class="form-control-sm" for="xx">Destination</label>
+                                    		</div>
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : -14px ! important">
+                                    			<label class="form-control-sm" for="xx">Wordings</label>
+                                    		</div>
+                                    	</div>
+                                    	<div class ="col-sm" style="padding: 0">
+                                    		<div *ngIf="default" class="input-group" style="margin-bottom : 0px ! important">
+                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedReport" (change)="tabSelectedReportController($event);" appRequired [disabled]="reports">
+		                                           <option *ngFor="let report of reportsList" [value]="report.val">{{report.desc}}</option>
+                                        		</select>
+                                    		</div>
+                                    		<div class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
+                                    			<select class="form-control form-control-sm cust-sm" [(ngModel)]="printType" appRequired>
+		                                            <option value="SCREEN">Screen</option>
+		                                            <option value="PDF">PDF</option>
+		                                            <option value="PRINTER">Printer</option>
+                                        		</select>
+                                    		</div>
+                                    		<div *ngIf="printDefaultType" class="input-group" style="margin-bottom : 0px ! important;  margin-top: 3px">
+                                    			<input type="text" id="title" class="form-control form-control-sm" appRequired [disabled]="wordings" readonly [(ngModel)]="titleText" >
+												<div class="text-search-ico" *ngIf="!wordings"><a><i class="fa fa-search" (click)="reportsParamsLOV()"></i></a></div>
+                                    		</div>
+                                    	</div>	
+                                    </div>
+                                    <div *ngIf="printDefaultType" class="input-group" style="margin-top : 13px ! important">
+                                       <textarea id="word" [disabled] = "wordings" [readonly]="wordings" class="form-control form-control-sm col-sm req" style="font-size: 11px; min-height: 180px; margin-bottom: 0px;" [(ngModel)]="wordingText" appRequired></textarea>
+                                    </div>
+                                 </ng-container>
+                                </div>
+                            </fieldset>
+    
+                        </div>
+        </div>
+        <div footer class="text-center w-100">
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();okBtnClick($event);" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled"><a>Print</a></button>
+                        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+        </div>
+</app-modal>
+<app-mtn-reports-params id="reportsParamLOV" (selectedData)="setReportsParams($event)" [reportId]="this.reportId" (cancel)="cancel($event)"></app-mtn-reports-params>
+<!-- <app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel(event)"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();cancel($event)"></app-sucess-dialog>

@@ -1,0 +1,381 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div style="position: fixed;width: 100%;height: 100%;z-index: 991;background-color: rgba(255, 255, 255, 0.5);" *ngIf="loading"></div>
+<div class="cust-tabs-container">
+	<h4>Accounting Service / Utilities/ Batch Invoice Printing</h4>
+		<ngb-tabset (tabChange)="onTabChange($event)">
+			<ngb-tab>
+				<ng-template ngbTabTitle>
+					<div>Batch Invoice Printing</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+						<fieldset class="scheduler-border">
+							<legend class="scheduler-border">Filter Options</legend>
+							<div class="form-row custom-row-inline-inset">
+								<div class="col-sm">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-5">Tran Class</label>
+											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="searchtranTypeClass" name="searchtranTypeClass" (change)="onChangeSearchTranClass()" (ngModelChange)="searchtranTypeClass=$event;">
+												<option>OR</option>
+												<option value="PRQ">CV</option>
+												<option>JV</option>
+											</select>
+									</div>
+								</div>
+								<div class="col-sm-3">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-3">Tran Type</label>
+											<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [(ngModel)]="jvTypeCd" name="jvTypeCd">
+												<option *ngFor="let jv of jvTypes" [value]="jv.tranTypeCd">{{jv.tranTypeName}}</option>
+											</select>
+									</div>
+								</div>
+								<div class="col-sm">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-5">Tran No</label>
+											<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "jvNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+											<!-- option *ngFor="let payt of paymentTypes" [value]="payt.tranTypeCd">{{payt.tranTypeName}}</option> -->		
+									</div>
+								</div>
+								<div class="col-sm-4">
+									<div class="input-group cust-ig">
+										<label class="form-control-sm col-sm-3">Tran Date: </label>
+										<label class="form-control-sm col-sm-2">From </label>
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="fromDate.split('T')[0]" (valueChange)="fromDate=$event"></datepicker>
+										</div>
+										<label class="form-control-sm col-sm-1">To </label>
+										<div class="col-sm dp-cont">
+											<datepicker [type]="'date'" [showIcon]="true" [value]="toDate.split('T')[0]" (valueChange)="toDate=$event"></datepicker>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-1">
+									<div class="input-group cust-ig">
+										<button type="button" class="cust-btn" [disabled]="boolSearch" (click)="onClickSearch()"><a>Search</a></button>
+									</div> 
+								</div>
+							</div>
+						</fieldset>
+						<fieldset class="scheduler-border" style="margin-top: 5px !important;margin-bottom: 5px !important"> 
+								<div class="form-row custom-row-inline-inset">
+									<div class="col-sm-12">
+											<app-cust-editable-non-datatable #batchInvoice [passData]="PassData" (genericBtn)="viewInvoice($event)" (newClick)="onTableClick($event)">
+												<ng-container controls-l>
+														<button class="cust-btn" style="margin-right: 0px !important;" (click)="addInvoice()">Add</button>
+														<!-- <input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="untag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()">
+														<label class="form-control-sm">Untag All</label> 
+														<input class="form-control-sm " type="radio" name="opttagradio" id="untag" value="tag" [(ngModel)]="radioTagVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="onRadioTagChange()"> 
+														<label class="form-control-sm">Tag All</label> --> 
+														<input class="form-control-sm " type="checkbox" name="cbxG" [(ngModel)]="checkAllGVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllG')"> 
+														<label class="form-control-sm">Tag All G</label>
+
+														<input class="form-control-sm " type="checkbox" name="cbxP" [(ngModel)]="checkAllPVal" style="margin-left: 15px" [disabled]="boolRadioTag" (change)="checkAllGenPrin('checkAllP')"> 
+														<label class="form-control-sm">Tag All P</label>
+								                </ng-container>
+											</app-cust-editable-non-datatable>
+									</div>
+								</div>
+						</fieldset>
+						<div class="input-group" style="margin-top: 10px !important;">
+							<div class="col-sm-2"></div>
+							<div class="col-sm">
+										<fieldset class="scheduler-border">
+											<div class="input-group cust-ig" style="margin-top: 20px !important;">
+												<label class="form-control-sm col-sm-3 text">Start With:</label>
+												<div class="col-sm">
+													<div class="row">
+														<label class="form-control-sm col-sm-4 text">Invoice No.</label>
+														<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "invoiceNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' (change)="validateInvoiceNo($event)" maxlength="this.invNoDigits" >
+													</div>
+												</div>
+											</div>
+											<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 20px !important">
+												<div class="col-sm-7"></div> 
+												<button type="button" class="cust-btn col-sm" [disabled]="genInvoiceBool" (click)="generateInvoice()"><a>Generate Invoice </a></button>
+											</div>
+									  </fieldset>
+							</div>
+							<div class="col-sm">
+									<fieldset class="scheduler-border">
+										<div class="input-group cust-ig" style="margin-top: 10px !important">
+											<label class="form-control-sm col-sm-3">Destination</label>
+											    <select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.destination" (ngModelChange)="printData.destination=$event;clearPrinterName();">
+							                        <option value="screen">Screen</option>
+							                        <option value="dlPdf">PDF</option>
+				    								<option value="printPdf">Printer</option>
+							                    </select>
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group cust-ig">
+											<label class="form-control-sm col-sm-3">Printer Name</label>
+											<select class="form-control form-control-sm cust-sm col-sm-8" [ngModel]="printData.selPrinter" (ngModelChange)="printData.selPrinter=$event;" [disabled]="printData.destination != 'printPdf'">
+						                        <ng-container *ngFor="let printer of printData.printers">
+						                            <option [value]="printer">{{ printer }}</option>    
+						                        </ng-container>
+						                    </select>
+											<div class="col-sm-1"></div>
+										</div>
+										<div class="input-group cust-ig" style="margin-bottom: 10px !important;margin-top: 5px !important">
+											<div class="col-sm-4"></div>
+											<button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="printInvoiceBool" (click)="printInvoice()"><a>Print Invoice</a></button>
+											<!-- <button type="button" class="cust-btn col-sm" style="z-index : 9px ! important" [disabled]="stopInvoiceBool" (click)="stopInvoice()"><a>Stop Printing</a></button>
+											<div class="col-sm-1"></div> -->
+									    </div>
+
+									</fieldset>
+							</div>
+							<div class="col-sm-2"></div>
+						</div>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+				<ng-template ngbTabContent>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+</div>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="onClickSuccess()"></app-sucess-dialog>
+
+<app-modal class="d-none" #printModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">Please check the downloaded PDF file under</p>
+	  	<p *ngIf="printData.destination == 'dlPdf'" style="margin: 0px">C:\ETS\REPORTS2\Output\PDF</p><br>
+	  	<p style="margin: 0px">Was the printing of Invoice successful?</p>
+	  </div>
+	</div>
+	<div footer>
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printMdl.closeModal();updateOrStatus();"><a>Yes</a></button> <!-- removed printMdl.closeModal(); and updateOrStatus(); it does not exists in TypeScript -->
+          <button class="cust-btn" type="button" (click)=" printMdl.closeModal();printConfirmModal.open();"><a>No</a></button> <!-- removed printMdl.closeModal(); it does not exists in TypeScript -->
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+<app-modal class="d-none" #printConfirmModal>
+	<div header>Confirmation</div>
+	<div body>
+	  <div style="text-align: center">
+	  	<p style="margin: 0px">Indicate the last successfully printed Invoice Number:</p>
+	  </div>
+	  <!-- <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] = "lastOrNo"  onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'> PROD#ERROR -->
+	  <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [(ngModel)] = "lastInvNo" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'  (change)="validateInvLastPrinted($event)">
+	</div>
+	<div footer class="text-center w-100">
+      <div class="d-flex justify-content-center text-center">
+        <div class="col-sm-12 text-center">
+          <button class="cust-btn" type="button" (click)="printConfirmModal.closeModal();failedOrPrint();"><a>OK</a></button> <!-- failedOrPrint(); does not exists in TypeScript -->
+        </div>
+      </div>
+  	</div>
+</app-modal>
+
+
+<app-modal class="d-none" #viewInvoiceModal>
+	<div header>View Invoice Details</div>
+	<div body>
+		<div class="max-size" style="width: 1000px">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Invoice Info</legend>
+				<div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+					<div class="input-group" style="margin-top: 20px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Invoice No</label>
+								<input type="text" class="form-control form-control-sm col-sm-4 text-right" [ngModel]="selectedrecord?.invoiceNo"  readonly (ngModelChange)="selectedrecord.invoiceNo=$event;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'>
+								<label class="form-control-sm col-sm-2">Issue Date</label>
+								<div class="col-sm-2 dp-cont" style="margin-left: 0px !important">
+									<datepicker [type]="'date'" [required]="true" name="date" [value]="invoiceDate.date" [disabled]="inquiryFlag" (valueChange)="invoiceDate.date = $event;"></datepicker>
+								</div>
+								<div class="col-sm-2 dp-cont">
+									<datepicker [type]="'time'" [required]="true" name="time" [value]="invoiceDate.time" [disabled]="inquiryFlag" (valueChange)="invoiceDate.time = $event;"></datepicker>
+								</div>
+
+								<!-- <input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="12/01/2018" style="margin-right: 3px !important;" value="12-01-2018" readonly>
+								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="10:45 AM" readonly> -->
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Status</label>
+								<input type="text" class="form-control form-control-sm col-sm-4" [ngModel]="selectedrecord?.invoiceStatDesc" readonly name="invoiceStat">
+								<label class="form-control-sm col-sm">Auto</label> 
+                            	<input type="checkbox" name="autoTag" style="margin-top: 5px;margin-left: 8px" [checked]="selectedrecord?.autoTag === 'Y'" (change)="selectedrecord.autoTag = (selectedrecord.autoTag === 'Y') ? 'N' : 'Y'" disabled name="autoTag">
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Tran class</label>
+									<select class="form-control form-control-sm cust-sm col-sm-2 cust-sm required" [ngModel]="selectedrecord?.tranClass" name="tranTypeClass" (change)="onChangeTranClass()" (ngModelChange)="selectedrecord.tranClass=$event;" appRequired>
+												<option>OR</option>
+												<option value="PRQ">CV</option>
+												<option>JV</option>
+									</select>
+
+							    <label class="form-control-sm col-sm-2">Tran type</label>
+									<select class="form-control form-control-sm cust-sm col-sm cust-sm required" [ngModel]="selectedrecord?.tranTypeCd" name="tranTypeCd" [disabled]="inquiryFlag" appRequired (ngModelChange)="selectedrecord.tranTypeCd=$event;" >
+										<option *ngFor="let tran of tranTypes" [value]="tran.tranTypeCd">{{tran.tranTypeName}}</option>
+									</select>
+							</div>
+						</div>
+
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Tran No</label>
+				
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-9 required preparedName" style="margin-right: 2px !important" appRequired = "true" name="jvNo" [ngModel]="selectedrecord?.tranNo" (ngModelChange)="selectedrecord.tranNo=$event;" disabled>
+	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 10px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickJVModal()"></i></a></div>
+								<label class="form-control-sm col-sm-2">Tran Date</label>
+								<input class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.tranDate | date:'MM/dd/yyyy hh:mm a'" (ngModelChange)="selectedrecord.tranDate=$event;" readonly>
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
+						<!-- <input type="text" class="form-control form-control-sm col-sm" placeholder="UCPBGEN" readonly> -->
+						<input type="text" class="form-control form-control-sm cust-sm col-sm required preparedName" style="margin-right: 2px !important" appRequired name="jvPayee" [ngModel]="selectedrecord?.payor" (ngModelChange)="selectedrecord.payor=$event;" [disabled]="inquiryFlag">
+	                            <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 5px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="onClickPayeeModal()"></i></a></div>
+					</div>
+					<div class="input-group" style="margin-top: -6px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
+						<textarea class="form-control form-control-sm required" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"  appRequired name="particulars" [ngModel]="selectedrecord?.particulars" (ngModelChange)="selectedrecord.particulars=$event;"></textarea>
+					</div> 
+					<div class="input-group" style="margin-top: 5px; margin-left: 80px">
+						<div class="col-sm-12" style="padding-right: 0">
+							<app-cust-editable-non-datatable #invoiceItems [passData]="passDataInvoiceItems" (genericBtn)="deleteItemInvoice();"
+							(newClick)="onTableItemInvoiceClick($event)"  (onDelete)="invtable.onClickDelete('force');onClickDelInvt();"  (tableDataChange)="update($event);"></app-cust-editable-non-datatable>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-1 required currCd" style="margin-right: -1px !important;" [ngModel]="selectedrecord?.currCd" appRequired name="currCd" (ngModelChange)="selectedrecord.currCd=$event;" (change)="checkCode($event)">
+                        <div *ngIf="!inquiryFlag" style="margin-left: -19px !important;margin-right: 6px !important;z-index: 200;font-size: 14px;"><a><i class="fa fa-search" (click)="currLov.modal.openNoClose()"></i></a></div>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 required text-right" style="margin-left: 3px !important;" style="text-align: right;margin-left: 3px;"  appRequired (change)="validateCurr($event,'invoiceAmt')" appCurrency name="invoiceAmt" [ngModel]="selectedrecord?.invoiceAmt | number: '1.2-2'" [readonly]="inquiryFlag">
+
+						<label class="form-control-sm col-sm-2">Curreny Rate</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-2 required" style="margin-right: 2px !important; text-align: right;" appCurrencyRate appRequired name="currRate" (change)="validateCurr($event,'currecyRt')" [readonly]="inquiryFlag" [ngModel]="selectedrecord?.currRate | number: '1.6-6'" [disabled]="true">
+						<label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
+						<input type="text" class="form-control form-control-sm cust-sm col-sm-1" style="margin-right: 2px !important;" value="PHP" readonly tabindex="-1" name="localCurr">
+                        <input type="text" class="form-control form-control-sm cust-sm col-sm-2" style="text-align: right;" tabindex="-1" readonly appCurrency name="localAmt" [ngModel]="selectedrecord?.localAmt | number: '1.2-2'">
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="scheduler-border" style="margin-top: 8px !important; margin-bottom: 10px !important;">
+				<div class="custom-row-inline-inset">
+					<div class="form-row" style="margin-bottom: -10px;">
+	                        <label class="form-control-sm col-sm-1">Created By</label>
+	                        <input name="createUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.createUser" readonly>
+	                        <label class="form-control-sm col-sm-1">Created Date</label>
+	                        <input name="createDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.createDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+	                        <label class="form-control-sm col-sm-1">Last Update By</label>
+	                        <input name="updateUser" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.updateUser" readonly>
+	                        <label class="form-control-sm col-sm-1">Last Update</label>
+	                        <input  name="updateDate" type="text" class="form-control form-control-sm col-sm" [ngModel]="selectedrecord?.updateDate | date:'MM/dd/yyyy hh:mm a'" readonly>
+					</div>
+			    </div>
+			</fieldset>
+		</div>
+	</div>
+	<div footer style="width: 100%; text-align: center;">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();cancelInvoice();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();saveInvoice();"><a>Save</a></button>
+	</div>                
+</app-modal>
+
+<!-- app-modal class="d-none" id="add">
+	<div header>Add Invoice Details</div>
+	<div body>
+		<div class="max-size" style="width: 1000px">
+			<fieldset class="scheduler-border">
+				<legend class="scheduler-border">Invoice Info</legend>
+				<div class="form-row custom-row-inline-inset" style="margin-top: -5px !important;">
+					<div class="input-group" style="margin-top: 20px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Invoice No</label>
+								<input type="text" class="form-control form-control-sm col-sm-4" placeholder="">
+								<label class="form-control-sm col-sm-2">Issue Date</label>
+								<input type="date" class="form-control form-control-sm cust-sm col-sm" placeholder="" style="margin-right: 3px !important;" value="" >
+								<input type="text" class="form-control form-control-sm col-sm-2" placeholder="" >
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-7">Status</label>
+								<input type="text" class="form-control form-control-sm col-sm" placeholder="" >
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<div class="col-sm-7" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">Tran type</label>
+								<input type="text" class="form-control form-control-sm col-sm" placeholder="">
+								<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+							</div>
+						</div>
+						<div class="col-sm-5" style="padding: 0px">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-2">JV No</label>
+								<input type="text" class="form-control form-control-sm col-sm-3" placeholder="" >
+								<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+								<label class="form-control-sm col-sm-2">JV Date</label>
+								<input type="datetime-local" class="form-control form-control-sm col-sm" value="" >
+							</div>
+						</div>
+					</div>
+					<div class="input-group" style="margin-top: 0px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Billed To</label>
+						<input type="text" class="form-control form-control-sm col-sm" placeholder="">
+					</div>
+					<div class="input-group" style="margin-top: -6px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Particulars</label>
+						<textarea style="font-size: 12px; margin-bottom: 38px;" class="form-control form-control-sm col-sm" placeholder=""></textarea>
+					</div>
+					<div class="input-group" style="margin-top: -15px">
+						<label class="form-control-sm col-sm-1" style="margin-left: 14px">Amount</label>
+						<input type="text" class="form-control form-control-sm col-sm-1" placeholder="">
+						<div class="text-search-ico" style="margin-top: -2px;"><a><i class="fa fa-search"></i></a></div>
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 8px">
+						<label class="form-control-sm col-sm-2">Curreny</label>
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="">
+						<label class="form-control-sm col-sm-2" style="margin-left: 12px">Local Amount</label>
+						<input type="text" class="form-control form-control-sm col-sm-1" placeholder="" >
+						<input type="text" class="form-control form-control-sm col-sm-2 text-right" placeholder="" style="margin-left: 3px" >
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="scheduler-border" style="margin-top: 8px !important; margin-bottom: 10px !important;">
+				<div class="custom-row-inline-inset">
+					<div class="form-row" style="margin-bottom: -10px;">
+						<div class="input-group">
+							<label class="form-control-sm col-sm" style="margin-left: -105px" >Created By</label>
+							<input type="text" class="form-control form-control-sm col-sm" />
+							<label class="form-control-sm col-sm" style="margin-left: -100px">Date Created</label>
+							<input type="datetime-local" class="form-control form-control-sm col-sm" />
+							<label class="form-control-sm col-sm"  style="margin-left: -90px" >Last Update By</label>
+							<input type="text" class="form-control form-control-sm col-sm" />
+							<label class="form-control-sm col-sm"  style="margin-left: -105px">Last Update</label>
+							<input type="datetime-local" class="form-control form-control-sm col-sm" />
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div footer style="width: 100%; text-align: center;">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+	</div>                
+</app-modal> -->
+<app-mtn-currency #currencyModal (selectedData)="setCurrency($event)" [effDateFrom]="selectedrecord?.tranDate"></app-mtn-currency>
+<app-lov #passLOV [passData]="passLov" (selectedData)="setSelectedData($event)">
+<app-confirm-save #confirmSave (onYes)="null;"></app-confirm-save> <!-- saveInvoiceData() does not exists in TypeScript -->

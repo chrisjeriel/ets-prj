@@ -1,0 +1,50 @@
+/*.text-search-ico {
+	margin-left: -18px;
+	z-index: 200;
+	font-size: 14px;
+}*/
+.text-search-ico {
+	margin-left: -15px;
+	margin-right: 2px;
+	z-index: 200;
+	font-size: 14px;
+}
+.input-group-prepend {
+	height: calc(1.3rem + 1px) !important;
+}
+.input-group {
+	margin-bottom: -14px !important;
+	margin-top:0px !important;
+}
+.custom-row-inline-inset{
+	/* margin-bottom: 0px !important; */
+	margin-top: 0px !important;
+}
+.form-row{
+	margin-top: 7px !important;
+}
+input{
+	margin-left: 2px !important;
+}
+fieldset{
+	margin-bottom: -3px !important;
+}
+
+.ig-cust {
+	margin-bottom: -7px !important;
+}
+
+.white-bg {
+	background: white !important;
+}
+
+.renewal-div span{
+	font-size: 10px;
+	height: fit-content;
+}
+
+.renewal-div{
+	line-height: 8px;
+	flex-wrap: wrap;
+	height: fit-content;
+}

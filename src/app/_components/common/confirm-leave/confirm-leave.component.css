@@ -1,0 +1,47 @@
+#close{
+	font-size: 27px;
+}
+
+.close{
+	color: #fff;
+	float: right;
+	opacity: 1;
+	padding: 0;
+	margin: 0;
+}
+
+#closes:hover {
+	color: #FFFFFF;
+	opacity: 1;
+}
+
+.modal-footer {
+	padding: 10px;
+}
+
+h6#modal-basic-title.modal-title {
+	margin: 5px 0px 5px 5px;
+}
+
+h4 {
+	font-size: 14px !important;
+}
+
+.modal-backdrop{
+	position: fixed !important;
+	top: 0 !important;
+	right: 0 !important;
+	bottom: 0 !important;
+	left: 0 !important;
+}
+
+.mdl-icon {
+	color: #557a95;
+	margin: auto;
+	padding: auto;
+}
+
+.message {
+	vertical-align: middle;
+	font-size: 15px;
+}

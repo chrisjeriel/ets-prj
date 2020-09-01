@@ -1,0 +1,139 @@
+<div class="cust-tabs-container">
+  <h4>Claim / {{isInquiry ? 'Claim Inquiry' : 'Claim Processing'}}</h4>
+  <ngb-tabset #tabset (tabChange)="onTabChange($event)" [activeId]="activeIdString">
+    <ngb-tab title="General Info" id="geninfo">
+      <ng-template ngbTabContent>
+        <app-clm-gen-info-claim (emitClaimInfoId)="getClmInfo($event)" [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-gen-info-claim>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Section Covers" id="secCover">
+      <ng-template ngbTabContent>
+        <app-clm-section-covers [isInquiry]="isInquiry" [claimInfo]="claimInfo" (disableClmHistory)="disableClmHistory = $event"></app-clm-section-covers>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableClmHistory" class="ngb-tab" title="Claim History" id="clmHistoryId">
+      <ng-template ngbTabContent>
+        <app-clm-claim-history #clmHist [claimInfo]="claimInfo" (disableNextTabs)="disableNextTabs = $event.disableNextTabs; disablePaytReq = $event.disablePaytReq" [isInquiry]="isInquiry" (preventHistory)="showWarnMdl($event)"></app-clm-claim-history>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs"  title="Claim Distribution">
+      <ng-template ngbTabContent>
+        <app-claim-distribution [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claim-distribution>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs || disablePaytReq" title="Generate Payment Request" id="paymentRequest">
+      <ng-template ngbTabContent>
+        <app-clm-claim-payment-request [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-clm-claim-payment-request>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab [disabled]="claimInfo.claimId == ''" class="ngb-tab" title="Attachment" id="attachment">
+      <ng-template ngbTabContent>
+        <app-claims-attachment [claimInfo]="claimInfo" [isInquiry]="isInquiry"></app-claims-attachment>
+      </ng-template>
+    </ngb-tab>
+    <!-- <ngb-tab [disabled]="claimInfo.claimId == '' || disableNextTabs" title="Print">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab> -->
+    <ngb-tab id="view-pol-info" title="View Policy Info" *ngIf="contModal == undefined">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id="edit-claim" title="Edit Claim" *ngIf="contModal != undefined">
+      <ng-template ngbTabContent>
+
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id="NotesReminders" *ngIf="claimInfo.claimId != ''">
+        <ng-template ngbTabTitle>
+          <div>Notes & Reminders</div>
+        </ng-template>
+          <ng-template ngbTabContent>
+            <app-wf-form-common [moduleSource]="'Claim'" [claimInfo]="claimInfo"></app-wf-form-common>
+          </ng-template>
+    </ngb-tab>
+    <ngb-tab id="Exit">
+        <ng-template ngbTabTitle>
+          <div>Exit</div>
+        </ng-template>
+          <ng-template ngbTabContent></ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+</div>
+
+
+<app-modal class="d-none" id="warnMdl" #warnModal >
+    <div header>Warning Message</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;"> {{ msg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="warnModal.closeModal(); prevsTab()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+
+<app-modal class="d-none" #conModal >
+    <div header>Confirmation</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+            <p class="form-control-sm" style=" margin: 0px !important; padding: 0px !important;">{{ msg }}</p>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="onClickYes();"><a>Yes</a></button>
+        <button class="cust-btn" type="button" (click)="conModal.closeModal();prevsTab()"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #overMdl >
+    <div header>Override</div>
+    <div body class="container-flex text-center">
+        <fieldset class="scheduler-border" style="padding: 30px !important;"> 
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">User ID</label>
+              <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="userId" required>
+              <div class="col-sm-1"></div>
+            </div>
+            <div class="input-group">
+              <div class="col-sm-1"></div>
+              <label class="form-control-sm col-sm-3" style="margin-left: -36px !important;">Password</label>
+              <input type="password" class="form-control form-control-sm cust-sm col-sm" [(ngModel)] ="password" required>
+              <div class="col-sm-1"></div>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="d-flex justify-content-center w-100">                    
+        <button class="cust-btn" type="button" (click)="overMdl.closeModal();prevsTab();"><a>Cancel</a></button>
+        <button class="cust-btn" type="button" (click)="onOkOver()"><a>Ok</a></button>
+    </div>
+</app-modal>
+
+<app-sucess-dialog #sucMdl [icon]="dialogIcon" [message]="dialogMessage" (onOk)="sucMdl.modal.closeModal()"></app-sucess-dialog>
+
+<ng-template #recordLock>
+        <div class="modal-header">
+          <span class="modal-title" id="modal-basic-title">Record Locked</span>
+        </div>
+        <div class="modal-body" style="width: 100%">
+          <div class="row" style="padding-right: 10px !important; padding-left: 10px !important">
+              <fieldset class="scheduler-border" style="padding-bottom: 17px !important;">
+                <!-- <div class="custom-row-inline-inset"> -->
+                  <div class="input-group" style="margin-top : 6px ! important; text-align: center;">
+                    <p class="form-control-sm" for="xx" style="padding-left: 20px; padding-right: 15px; font-size: 13px; width: 100%;">{{ lockMessage }}<b>{{ lockUser }}</b>.<br/>You will be redirected to Claims Listing.</p>
+                  </div>
+                <!-- </div> -->
+              </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer" style="justify-content: center;">
+          <div >
+            <button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Ok</a></button>
+          </div>
+        </div>
+</ng-template>

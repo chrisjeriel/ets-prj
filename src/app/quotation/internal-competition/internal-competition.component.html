@@ -1,0 +1,80 @@
+<div>
+	<fieldset class="scheduler-border"> 
+		<legend class="scheduler-border">Quotation Info</legend>
+			<div class="form-row custom-row-inline-inset">
+				<div class="input-group" >
+					<label class="form-control-sm col-sm-2" for="inputQuonum">Quotation No </label>
+				    <input type="text" id="inputQuonum" class="form-control form-control-sm cust-sm col-sm-2" placeholder="CAR-2018-5081-077-0177" disabled="disabled" [(ngModel)]="quotationInfo.quotationNo">
+				    <label class="form-control-sm col-sm-1" for="inputInname" >Insured</label>
+				    <input type="text" id="inputInname" class="form-control form-control-sm cust-sm col-sm-6" placeholder="Insured Name" disabled="disabled" [(ngModel)]="quotationInfo.insuredDesc">
+				</div>
+				<div class="input-group">
+					<label class="form-control-sm col-sm-2" for="inputRisk" >Risk</label>
+				    <input type="text" id="inputRisk" class="form-control form-control-sm cust-sm col-sm-9" placeholder="Risk" disabled="disabled" [(ngModel)]="quotationInfo.riskName">
+				</div>
+			</div>
+	</fieldset>
+</div>
+<div>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Advice Details	</legend>
+		<div style="padding-top: 8px;">
+        	<app-cust-editable-non-datatable [passData]="intCompData" (clickLOV)="clickAdviceLOV($event);" (newClick)="onRowClick($event);"></app-cust-editable-non-datatable>
+		</div>
+	</fieldset>
+</div>
+<div class="form-row">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center">
+			<div class="cust-btn-container" style="margin-top: 10px;">
+			<button type="button" class="cust-btn" [disabled]="custEditableNonDatatableComponent.selected.length==0" [class.cust-btn-disabled]="custEditableNonDatatableComponent.selected.length==0" (click)="onClickPrint()"><a>Print</a></button>
+			<button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'RELEASED'" type="button" class="cust-btn" (click)="onClickCancel()"><a>Cancel</a></button>
+            <button [class.d-none]="inquiryFlag || quotationInfo.statusDesc.toUpperCase() === 'RELEASED'" type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+		</div>
+	</div>
+</div>
+
+<!-- PRINT MODAL -->
+<app-modal id="showPrintMenu2" class="d-none">
+    <div header>Print</div>
+    <div body>
+        <div class="container-fluid">
+             <fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+                <div class="custom-row-inline-inset">
+                    <div class="input-group" style="margin-bottom : -14px ! important">
+                        <label class="form-control-sm" for="xx">Destination</label>
+                        <select class="form-control form-control-sm cust-sm" style="margin-left: 11px" [(ngModel)]="destination" value="SCREEN">
+                            <option value="SCREEN">Screen</option>
+                            <option value="PDF">PDF</option>
+                            <option value="PRINTER">Printer</option>
+                        </select>
+                    </div>
+                    <!-- <div class="input-group" style="margin-bottom : -14px ! important">
+                        <label class="form-control-sm" for="printerName" >Printer Name</label>
+                        <select *ngIf="destination === 'PRINTER'" class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" appRequired [(ngModel)]="printerName">
+                            <option value="Default" selected="selected">Default Printer</option>
+                        </select>
+                        <select *ngIf="destination !== 'PRINTER'" class="form-control form-control-sm cust-sm" id="printerName"  style="margin-left: 2px" disabled>
+                            <option value="Default" selected="selected">Default Printer</option>
+                        </select>
+                    </div>
+                    <div class="input-group" style="margin-bottom : -14px ! important">
+                        <label class="form-control-sm" for="xx">No. of Copies</label>
+                        <input *ngIf="destination === 'PRINTER'" type="text" id="noOfCopies" class="form-control form-control-sm text-right" appRequired style="margin-left: 2px !important;" onkeypress='return  event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' [(ngModel)]="printNoCopies">
+                        <input *ngIf="destination !== 'PRINTER'" type="text" id="noOfCopies" class="form-control form-control-sm text-right" style="margin-left: 2px !important;" readonly >
+                    </div> -->
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div footer class="text-center w-100">
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll(); printMethod();" ><a>Print</a></button>
+        <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+<app-mtn-advice-wordings id="adviceWordingsLOV" (selectedData)="selectedAdviceLOV($event)"></app-mtn-advice-wordings>
+<app-mtn-attention id="attentionLOV" (selectedData)="selectedAttentionLOV($event)" [cedingId]="currentCedingId"></app-mtn-attention>
+
+<app-sucess-dialog id="incomp" [message]="resultMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null" [icon]="messageIcon"></app-sucess-dialog>
+<app-confirm-save (onYes)="saveData()"></app-confirm-save>
+<app-cancel-button (onYes)="saveData('cancel')" [url]="'/quotation-processing'" ></app-cancel-button>

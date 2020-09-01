@@ -1,0 +1,210 @@
+<div class="cust-tabs-container">
+	<h4 *ngIf="!fromSummary">{{title}}</h4>
+	<ngb-tabset #tabset (tabChange)="beforeChange($event);onTabChange($event)" [justify]="fromSummary?'center':'start'">
+
+		<ngb-tab class="ngb-tab" title="General Info">
+			<ng-template ngbTabContent>
+				<app-pol-gen-info (emitPolicyInfoId)="getPolInfo($event)" [alteration]="false" (openTabs)="openTabs=$event"></app-pol-gen-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Item" *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-item [policyInfo]="policyInfo"></app-pol-item>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Coverage" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-coverage [alteration]="false" [policyInfo]="policyInfo" (alopTab)="policyInfo.showPolAlop=$event"></app-pol-coverage>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="ALOP" *ngIf="policyInfo.showPolAlop" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-alop [policyInfo]="policyInfo" [alterFlag]="false"></app-pol-alop>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Inward Pol Balance" *ngIf="!fromSummary" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-inward-pol-balance [policyInfo]="policyInfo" [fromInq]="fromInq"></app-inward-pol-balance>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Endorsement" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-endorsement [policyInfo]="policyInfo"></app-pol-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="CoInsurance" *ngIf="policyInfo.coInsuranceFlag" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-co-insurance [policyInfo]="policyInfo"></app-pol-co-insurance>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Attachment" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-attachment [policyInfo]="policyInfo" [alterationFlag]="true"></app-pol-attachment>
+			</ng-template>
+		</ngb-tab>
+
+
+		<ngb-tab id="print-tab" *ngIf="!fromSummary" [disabled]="!openTabs">
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Print</span>
+				</div>
+				<div class="modal-body">
+					<fieldset class="scheduler-border">
+						<div class="custom-row-inline-inset" style="margin-bottom:-5px !important;">
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="form-control-sm col-sm-3 labels">Report</label>
+								<select [(ngModel)]="printReport" class="form-control form-control-sm cust-sm col-sm-8 print">
+									<option value="POLR010">Policy Schedule</option>
+									<option value="POLR029B" *ngIf="policyInfo.holdCoverTag=='Y'">Policy Hold Cover</option>
+									<option value="POLR010D" *ngIf="policyInfo.openCoverTag=='Y'">Policy Schedule (Sub-policy)</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<label class="form-control-sm col-sm-3 labels">Destination</label>
+								<select [(ngModel)]="printDestination" class="form-control form-control-sm cust-sm col-sm-8 print">
+									<option value="screen">Screen</option>
+									<option value="dlPdf">PDF</option>
+									<option value="printPdf">Printer</option>
+								</select>
+								<div class="col-sm-1"></div>
+							</div>
+							<div class="input-group" style="margin-bottom:3px !important;">
+								<div class="col-sm-2"></div>&nbsp;&nbsp;&nbsp;&nbsp;
+								<div class="col-sm-8">
+									<!-- <input type="checkbox" style="vertical-align: middle">&nbsp;<label>Print as Draft</label>
+									&nbsp;&nbsp;&nbsp;&nbsp; -->
+									<input type="checkbox" style="vertical-align: middle" [(ngModel)]="inclEndt">&nbsp;<label>Include Endorsement</label>
+									<div class="col-sm-1"></div>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-sm">
+						<div class="col-md-13 text-center" style="margin-top: -6px;">
+							<div class="cust-btn-container">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+								<button class="cust-btn" type="button" (click)="print();modalService.dismissAll();"><a>Print</a></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div (click)="showApprovalModal(content)">Print</div>
+			</ng-template>
+
+		</ngb-tab>
+
+		<ngb-tab title="Post Policy" id="post" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs || accessibleModules.indexOf('POL011') == -1">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="NotesReminders" *ngIf="!fromSummary && policyInfo.fromInq != 'true'" [disabled]="!openTabs">
+				<ng-template ngbTabTitle>
+					<div>Notes & Reminders</div>
+				</ng-template>
+    			<ng-template ngbTabContent>
+    				<app-wf-form-common [moduleSource]="'Policy'" [policyInfo]="policyInfo"></app-wf-form-common>
+    			</ng-template>
+  		</ngb-tab>
+		<ngb-tab id="Exit" *ngIf="!fromSummary" [disabled]="!openTabs">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
+  		<ngb-tab title="Premium Coll" *ngIf="fromSummary" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-premium-coll [policyInfo]="policyInfo"></app-premium-coll>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab title="Claims" *ngIf="fromSummary" [disabled]="!openTabs">
+			<ng-template ngbTabContent>
+				<app-pol-inq-claims></app-pol-inq-claims>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<ng-template #contentEditPol>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Confirmation Message</span>
+				</div>
+				<div class="modal-body" style="width: 390px">
+					<div class="row" style="padding-right: 15px! important; padding-left: 15px ! important">
+							<fieldset class="scheduler-border">
+								<div class="custom-row-inline-inset">
+									<div class="input-group" style="margin-top : 0px ! important">
+										<span class="form-control-sm" for="xx" style="padding-left: 40px; padding-right: 35px; font-size: 12px">Selected Policy No is already posted. Modification requires approval.</span>
+									</div>
+									<div class="input-group" style="margin-top : 20px ! important">
+											<div class="input-group" style="margin-bottom : -8px ! important; padding-left: 40px; padding-right: 35px;">
+												<div class="col-sm-8" style="padding:0">
+												  <div class="input-group">
+													<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+												    <input id="status" type="text" tabindex="-1" [(ngModel)]="status" readonly id="xx" class="form-control form-control-sm col-sm" style="margin-left: 5px">
+												  </div>
+											    </div>
+											</div>
+									</div>
+								    <div class="input-group" style="margin-top : 5px ! important; margin-bottom: 20px! important" >
+										<div class="col-sm" style="padding-left : 0px ! important; padding-right : 0px ! important">
+											<div class="input-group" style="padding-left: 40px; padding-right: 35px;">
+													<div class="col-sm-8" style="padding:0">
+													  <div class="input-group">
+														<select class="form-control form-control-sm cust-sm col-sm">
+			                                        		<option *ngFor="let approver of approverList; let i = index" [value]="approver.userId">{{ approver.userId + ' - ' + approver.userName }}</option>
+			                                   			 </select>
+			                                   		  </div>
+													</div>
+													<div class="col-sm-4" style="padding-left:0px;padding-right: 0px">
+														<button class="cust">{{ approveText }}</button>
+												    </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+					</div>
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Return</a></button>
+					</div>
+				</div>
+</ng-template>
+
+<ng-template #recordLock>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Record Locked</span>
+				</div>
+				<div class="modal-body" style="width: 390px">
+					<div class="row" style="padding-right: 10px !important; padding-left: 10px !important">
+							<fieldset class="scheduler-border" style="padding-bottom: 17px !important;">
+								<!-- <div class="custom-row-inline-inset"> -->
+									<div class="input-group" style="margin-top : 0px ! important; text-align: center;">
+										<p class="form-control-sm" for="xx" style="padding-left: 20px; padding-right: 15px; font-size: 13px; width: 100%;">{{ lockMessage }}<b>{{ lockUser }}</b>.<br/>You will be redirected to Policy Listing.</p>
+									</div>
+								<!-- </div> -->
+							</fieldset>
+					</div>
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Ok</a></button>
+					</div>
+				</div>
+</ng-template>
+
+
+<app-pol-post *ngIf="post" [policyInfo]="policyInfo" [alterationFlag]="false" (showPost)="post = $event"></app-pol-post>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>

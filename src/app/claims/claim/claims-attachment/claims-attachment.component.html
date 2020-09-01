@@ -1,0 +1,60 @@
+<div>
+	<fieldset class="scheduler-border claim-info">
+            <legend class="scheduler-border">Claim Info</legend>
+            <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;" style="margin-top: 10px !important;">
+              <div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx">Claim No</label>
+                <input type="text" [ngModel]="claimInfo.claimNo" class="form-control form-control-sm cust-sm col-sm-3" placeholder=""
+                 readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Insured</label>
+                <input type="text" [ngModel]="claimInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+              <div class="input-group" style="margin-bottom: -13px !important;">
+                <div class="col-sm-1"></div>
+                <label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Policy No</label>
+                <input type="text" [ngModel]="claimInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-3  " placeholder="" readonly>
+                <label class="form-control-sm col-sm-1" for="xx">Risk</label>
+                <input type="text" [ngModel]="claimInfo.riskName" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+                <div class="col-sm-1"></div>
+              </div>
+            </div>
+          </fieldset>
+	<fieldset class="scheduler-border">
+		<legend class="scheduler-border">Claim Info</legend>
+		<div class="custom-row-inline-inset">
+			<div class="form-row">
+				<app-cust-editable-non-datatable [passData]="passData" (tableDataChange)="passData.tableData=$event" (uploadedFiles)="uploads($event)" (newClick)="onRowClick($event)" style="width: 100%"></app-cust-editable-non-datatable>
+			</div>
+			<div class="form-row" style="margin-top: -10px;">
+				<div class="input-group" style="margin-left: -20px;">
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.createUser" readonly>
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.createDate" readonly>	
+					<label class="form-control-sm col-sm-1">Last Updated By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.updateUser" readonly>
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<input type="text" class="form-control form-control-sm col-sm" [(ngModel)]="attachRecord.updateDate" readonly>	
+				</div>
+			</div>
+		</div>
+	</fieldset>
+	<div class="form-row" style="margin-top: 5px;" *ngIf="!isInquiry">
+		<div class="form-group col-sm">
+			<div class="col-md-13 text-center">
+				<div class="cust-btn-container">
+					<button type="button" class="cust-btn" (click)="cancel()"><a>Cancel</a></button>
+					<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- <app-sucess-dialog [message]="successMessage"></app-sucess-dialog> TRBT#PROD_GRADE -->
+<app-sucess-dialog></app-sucess-dialog>
+<app-confirm-save #confirmSave (onYes)="onSaveAttachment()"></app-confirm-save>
+<app-sucess-dialog #main id="attchmntMdl" [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag?this.cancelBtn.onNo():null"></app-sucess-dialog>
+<app-cancel-button (onYes)="onClickSavecancel()" [url]="'/clm-claim-processing'" ></app-cancel-button>

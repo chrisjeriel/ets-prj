@@ -1,0 +1,64 @@
+<fieldset class="scheduler-border" style="padding-top: 4px !important; ">
+    <legend class="scheduler-border" style="margin-bottom: -9px !important;">Extraction Info</legend>
+    <div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+        <div class="col-sm-1"> </div>
+        <div class="col-sm-6"> 
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2">Period</label>
+                <input disabled [ngModel]="extractParams.periodType" class="form-control-sm form-control col-sm-3" type="text">
+                <label class="form-control-sm col-sm-3">From</label>
+                <div class="col-sm dp-cont">
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.periodFrom?.split('T')[0]" [disabled]="true"></datepicker>
+                </div> 
+                <label class="form-control-sm col-sm-1">To</label>
+                <div class="col-sm dp-cont">
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.periodTo?.split('T')[0]" [disabled]="true"></datepicker>
+                </div> 
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2">Account Code</label>
+                <input disabled [ngModel]="extractParams.acctParamCode" class="form-control-sm form-control col-sm-2 mr-1" type="text">
+                <input disabled [ngModel]="extractParams.acctParamName" class="form-control-sm form-control col-sm" type="text">
+            </div><div class="input-group">
+                <label class="form-control-sm col-sm-2">SL Type</label>
+                <input disabled [ngModel]="extractParams.slTypeParam" class="form-control-sm form-control col-sm-2 mr-1" type="text">
+                <input disabled [ngModel]="extractParams.slTypeParamName" class="form-control-sm form-control col-sm" type="text">
+            </div>
+        </div>
+        <div class="col-sm-4"> 
+            <div class="input-group col-sm-6 p-0">
+                <label class="form-control-sm col-sm-4">Tran Type</label>
+                <div class="col-sm-1">
+                    <input disabled [ngModel]="extractParams.arTag" type="checkbox" class="form-control-sm " name="" id="ar" checked="checked">
+                </div>
+                <label for="ar" class="form-control-sm text-left col-sm-1">AR</label>
+                <div class="col-sm-1">
+                    <input disabled [ngModel]="extractParams.cvTag" type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
+                </div>
+                <label for="cv" class="form-control-sm text-left col-sm-1">CV</label>
+                <div class="col-sm-1">
+                    <input disabled [ngModel]="extractParams.jvTag" type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
+                </div>
+                <label for="jv" class="form-control-sm text-left col-sm-1">JV</label>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2"></label>
+                <div class="col-sm-1">
+                    <input disabled [ngModel]="extractParams.closeTranTag" type="checkbox" class="form-control-sm " name="" id="closeTranTag" checked="checked">
+                </div>
+                <label for="closeTranTag" class="form-control-sm text-left col-sm">Include Closed Transactions Only</label>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-2">Date Extracted</label>
+                <div class="col-sm-5 dp-cont">
+                    <datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.extractDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>      
+            </div>
+        </div>
+        <div class="col-sm-1"> </div>
+    </div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Extracted Data</legend>
+	<app-cust-editable-non-datatable [passData]="passData"></app-cust-editable-non-datatable>
+</fieldset>

@@ -1,43 +1,224 @@
 <div class="cust-tabs-container">
-	<h4>Quotation / Quotation Processing</h4>
-	<ngb-tabset>
-	  <ngb-tab class="ngb-tab" title="General Info">
-	    <ng-template ngbTabContent>
-	    	<app-general-info></app-general-info>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Coverage">
-	    <ng-template ngbTabContent>
-	    	<app-coverage></app-coverage>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Quote Option">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Endorsement">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Hold Cover">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Internal Competition">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Attachment">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Print">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
-	  <ngb-tab title="Exit">
-	    <ng-template ngbTabContent>
-	    </ng-template>
-	  </ngb-tab>
+	<h4 *ngIf="!inquiryFlag">Quotation / Quotation Processing {{ header }}</h4>
+	<h4 *ngIf="inquiryFlag">Quotation / Quotation Inquiry</h4>
+	<!-- <ngb-tabset (tabChange)="beforeChange($event)"> -->
+		<ngb-tabset #tabset  (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="General Info" [disabled]="accessibleModules.indexOf('QUOTE002') == -1">
+			<ng-template ngbTabContent>
+				<app-general-info #active (checkQuoteId)="checkQuoteInfo($event)" [quoteInfo]="quoteInfo" [inquiryFlag]="inquiryFlag" [intCompTag]="intCompTag"
+					(enblEndtTab)="enblEndtTab=$event" (enblOptTab)="enblOptTab=$event"></app-general-info>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab id="idko" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE003') == -1">
+			<ng-template ngbTabTitle>
+				<div>Coverage</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-coverage #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" (enblEndtTab)="enblOptTab=$event" (showAlop)="quoteInfo.showAlop = $event"></app-coverage>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Item" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE016') == -1"  *ngIf="line=='EEI' || line=='MBI' || line=='CEC' || line=='BPV' || line=='MLP' || line=='DOS'">
+			<ng-template ngbTabContent>
+				<app-quo-item #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" ></app-quo-item>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblOptTab || accessibleModules.indexOf('QUOTE004') == -1">
+			<ng-template ngbTabTitle>
+				<div>Quote Option</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quote-option #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag" (showAlop)="quoteInfo.showAlop = $event" (enblEndtTab)="enblEndtTab=$event"></app-quote-option>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || !enblEndtTab || accessibleModules.indexOf('QUOTE005') == -1">
+			<ng-template ngbTabTitle>
+				<div>Endorsement</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quote-endorsement #active [quotationInfo]="quoteInfo" [endorsementType]="'General'" [inquiryFlag]="inquiryFlag || intCompTag"></app-quote-endorsement>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab *ngIf="(line=='CAR' || line=='EAR') && quoteInfo.showAlop" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE006') == -1"> <!--  -->
+			<ng-template ngbTabTitle>
+				<div>ALOP</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-quo-alop #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag || intCompTag"></app-quo-alop>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE007') == -1">
+			<ng-template ngbTabTitle>
+				<div>Internal Competition</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-internal-competition #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-internal-competition>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE008') == -1">
+			<ng-template ngbTabTitle>
+				<div>Attachment</div>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<app-attachment #active [quotationInfo]="quoteInfo" [inquiryFlag]="inquiryFlag"></app-attachment>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab *ngIf="inquiryFlag" id="Print" [disabled]="quoteInfo.quoteId == ''">
+			<ng-template ngbTabTitle>
+				<div>Print</div>
+			</ng-template>
+			<ng-template ngbTabContent></ng-template>
+		</ngb-tab>
+	
+		<ngb-tab *ngIf="!inquiryFlag" id="approval-tab" [disabled]="quoteInfo.quoteId == '' || accessibleModules.indexOf('QUOTE009') == -1  || !enblEndtTab">
+
+			<ng-template #content>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Approval</span>
+					<div class="close" style="padding-bottom: 5px;">
+					<!-- 	<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+							 id="closes">&times;&nbsp;&nbsp;</span></a> -->
+					</div>
+				</div>
+				<div class="modal-body" style="width: 580px">
+					<div class="row">
+						<div class="col-sm-6" style="padding-right : 10px ! important;">
+							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 10px ! important">
+								<div class="custom-row-inline-inset">
+									<div class="input-group">
+										<div class="col-sm-12" style="padding-left : 0px ! important; padding-right : 0px ! important;">
+											<div class="input-group" >
+												<label class="form-control-sm" for="xx" style="padding-left: 0px">Status</label>
+												<input type="text" tabindex="-1" [(ngModel)]="this.quoteInfo.statusDesc" readonly id="xx" class="form-control form-control-sm col-sm">
+												
+											</div>
+											<div class="w-100 text-center">
+												<button class="cust-btn" (click)="approveQuotation();" [disabled]="quoteInfo.statusDesc == 'Approved' || quoteInfo.statusDesc == 'Released'">{{ approveText }}</button>
+												<button class="cust-btn" (click)="rejectReasonModal.openNoClose();" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Rejected</button>
+											</div>
+										</div>
+									</div>
+
+									
+								</div>
+							</fieldset>
+						</div>
+						<div class="col-sm-6" style="padding-left : 10px ! important;">
+							<fieldset class="scheduler-border" style="padding-left : 20px ! important; padding-right : 20px ! important">
+								<div class="custom-row-inline-inset">
+									 <div class="input-group" style="margin-bottom : -14px ! important; margin-top : 13px ! important">
+										<label class="form-control-sm" for="xx">Report</label>
+										<select [(ngModel)]="selectedReport" class="form-control form-control-sm cust-sm" style="margin-left: 33px" appRequired (change)="tabController($event);">
+											<option *ngFor="let report of reportsList;let i = index" [value]="report.val" [selected]="i==0">{{report.desc}}</option>
+										</select>
+									</div>
+									<div class="input-group" >
+										<label class="form-control-sm" for="xx">Destination</label>
+										<select class="form-control form-control-sm cust-sm" style="margin-left: 11px" [(ngModel)]="printType">
+											<option>SCREEN</option>
+											<option>PDF</option>
+											<option>PRINTER</option>
+											<!-- <option>Google Docs</option> -->
+										</select>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();cancel();"><a>Cancel</a></button>
+						<button class="cust-btn" [class.btnDisabled]="btnDisabled" [disabled]="btnDisabled" type="button" (click)="onClickPrint();"><a>Print</a></button>
+					</div>
+				</div>
+			</ng-template>
+
+			<ng-template ngbTabTitle>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId != ''">Approval</div>
+				<div *ngIf="!inquiryFlag && quoteInfo.quoteId == ''">Approval</div>
+			</ng-template>
+
+		</ngb-tab>
+		<ngb-tab id="NotesReminders">
+				<ng-template ngbTabTitle>
+					<div>Notes & Reminders</div>
+				</ng-template>
+    			<ng-template ngbTabContent>
+    				<app-wf-form-common [moduleSource]="'Quotation'" [quotationInfo]="quoteInfo"></app-wf-form-common>
+    			</ng-template>
+  		</ngb-tab>
+		<ngb-tab id="Exit">
+				<ng-template ngbTabTitle>
+					<div>Exit</div>
+				</ng-template>
+    			<ng-template ngbTabContent></ng-template>
+  		</ngb-tab>
 	</ngb-tabset>
 </div>
+<app-sucess-dialog id="quotation" [icon]="dialogIcon" [message]="dialogMessage" ></app-sucess-dialog>
+
+<!-- <app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal> TRBT#PROD_GRADE-->
+
+<app-print-modal id="printListQuotation" (selectedData)= "onClickPrint($event)" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>
+
+<!-- <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="cancelFlag ? this.cancelBtn.onNo():null"></app-sucess-dialog> TRBT#PROD_GRADE-->
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<!-- 
+<ng-template #confirmLeave>
+	<app-confirm-leave></app-confirm-leave>
+</ng-template>
+<app-print-modal id="printListQuotation" (selectedData)= "showPrintDialog($event)" (onCancel)="cancelModal()" [printDefaultType]="defaultType" [passData]="passData"></app-print-modal>
+ -->
+<app-modal class="d-none" #rejectReasonModal>
+	<div header>Enter reason for rejection</div>
+	<div body class="edtr-cont" style=" margin-bottom: 0px !important; height: 100px;"> 
+		<text-editor [editorContent]="reason" (fetchContent)="reason = $event" >
+		</text-editor>
+	</div>
+	<div footer class="w-100 text-center">
+		<button class="cust-btn" (click)="rejectReasonModal.closeModal();">Cancel</button>
+		<button class="cust-btn" (click)="rejectQuotation();rejectReasonModal.closeModal()" [disabled]="approveText=='For Approval' || this.quoteInfo.statusDesc=='Rejected'">Ok</button>
+	</div>
+</app-modal>
+
+<ng-template #recordLock>
+				<div class="modal-header">
+					<span class="modal-title" id="modal-basic-title">Record Locked</span>
+				</div>
+				<div class="modal-body" style="width: 390px">
+					<div class="row" style="padding-right: 10px !important; padding-left: 10px !important">
+							<fieldset class="scheduler-border" style="padding-bottom: 17px !important;">
+								<!-- <div class="custom-row-inline-inset"> -->
+									<div *ngIf="addParams == undefined" class="input-group" style="margin-top : 5px ! important; text-align: center;">
+										<p class="form-control-sm" for="xx" style="font-size: 13px; width: 100%; height: 100%;padding-bottom: 0px; margin-bottom: 0px;">{{ lockMessage }}<b>{{ lockUser }}</b>. You will be redirected to Quotation Listing.</p>
+									</div>
+									<div *ngIf="addParams != undefined" class="input-group" style="margin-top : 5px ! important; text-align: center;">
+										<p class="form-control-sm" for="xx" style="font-size: 13px; width: 100%; height: 100%;padding-bottom: 0px; margin-bottom: 0px;"><b>{{ lockUser }} </b>{{ lockMessage }} <b>({{ addParams.riskId}})</b>. You will be redirected to Quotation Listing.</p>
+									</div>
+								<!-- </div> -->
+							</fieldset>
+					</div>
+				</div>
+				<div class="modal-footer" style="justify-content: center;">
+					<div >
+						<button class="cust-btn" type="button" (click)="modalService.dismissAll();returnOnModal();"><a>Ok</a></button>
+					</div>
+				</div>
+</ng-template>
+
+<app-modal #confirmReleaseMdl class="d-none">
+	<div header>Confirmation</div>
+	<div body>Are you sure you want to update the status of the quotation(s) from "Approved" to "Released"?</div>
+	<div footer>
+		<button class="cust-btn" (click)="inquiryFlag ?showPrintDialog(printMdlEvent) :showPrintPreview(this.content);confirmReleaseMdl.closeModal()">Yes</button>
+		<button class="cust-btn" (click)="confirmReleaseMdl.closeModal()">No</button>
+	</div>
+</app-modal>
+

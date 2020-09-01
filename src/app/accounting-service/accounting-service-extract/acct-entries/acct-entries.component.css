@@ -1,0 +1,16 @@
+.check-row div{
+	text-align: right;
+	padding-right: 4px !important;
+}
+
+.check-row label{
+	padding-left: 0px !important;
+}
+
+.text-left{
+	text-align: left !important;
+}
+
+.input-group{
+	margin-bottom: -13px !important;
+}

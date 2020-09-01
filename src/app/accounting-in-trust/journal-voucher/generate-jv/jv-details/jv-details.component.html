@@ -1,0 +1,147 @@
+<fieldset class="scheduler-border">
+    <legend class="scheduler-border">JV Info</legend>
+    <div class="form-row custom-row-inline-inset">
+        <div class="col-sm-9">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV No</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right;text-align: right;" [(ngModel)]="jvDetails.jvYear" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm-1"
+                 style="text-align: right; margin-left: 2px;text-align: right;" [(ngModel)]="jvDetails.jvNo" readonly>
+                <label class="form-control-sm col-sm-1" style="    margin-left: -2px !important;">Date</label>
+                <div class="col-sm-2 dp-cont" style="margin-left: 0 !important;">
+                    <datepicker [type]="'date'" [value]="jvDetails.jvDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
+                <label class="form-control-sm col-sm-1">Status</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.jvStatus" readonly>
+                <label class="form-control-sm col-sm-1 text-right">Ref No</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="jvDetails.refnoTranId" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">JV Type</label>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="jvDetails.jvType"
+                readonly>
+                
+                <label class="form-control-sm col-sm-1">Ref No Date</label>
+                <div class="col-sm-2 dp-cont" style="margin-left: 0 !important;">
+                    <datepicker [type]="'date'" [value]="jvDetails.refnoDate?.split('T')[0]" [disabled]="true"></datepicker>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2"  [(ngModel)]="jvDetails.currCd" readonly>
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.jvAmt | number:'1.2-2'" (ngModelChange)="jvDetails.jvAmt =$event" style="margin-left: 2px !important;" readonly>
+            </div>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+                <input type="text"  class="form-control form-control-sm cust-sm col-sm-2" readonly value="PHP">
+                <input type="text" class="form-control form-control-sm cust-sm col-sm text-right" [ngModel]="jvDetails.localAmt | number:'1.2-2'" (ngModelChange)="jvDetails.localAmt = $event" style="margin-left: 2px !important;" readonly>
+            </div>
+        </div>
+    </div>
+</fieldset>
+<div class="cust-tabs-container" style="margin-top: 10px ! important">
+    <ngb-tabset *ngIf="jvType !== 69">
+        <ngb-tab>
+            <ng-template ngbTabTitle>
+               <ng-container [ngSwitch]="jvType">
+                    <div *ngSwitchCase="1">Inward Policy Balances</div>
+                    <div *ngSwitchCase="2">Application of Payments to Policies with Zero Balance</div>
+                    <div *ngSwitchCase="3">Premium Reserve Released (Funds Held Released)</div>
+                    <div *ngSwitchCase="4">Interest on Overdue Accounts - Monthly Setup</div>
+                    <div *ngSwitchCase="5">Offsetting of Claims Against Treaty Balance</div>
+                    <div *ngSwitchCase="6">Offsetting of Outstanding Accounts Against Treaty Balance</div>
+                    <div *ngSwitchCase="7">Offsetting of Receivables In-Trust Against Losses</div>
+                    <div *ngSwitchCase="8">Investment Roll Over</div>
+                    <div *ngSwitchCase="9">Investment Pull Out</div>
+                    <div *ngSwitchCase="10">Investment (Placement)</div>
+                    <div *ngSwitchCase="11">Offsetting of Investment Pull-Out Against Treaty Balance</div>
+                    <div *ngSwitchCase="67">Offsetting of Unapplied Collection Against Receivable In-Trust</div>
+                    <div *ngSwitchCase="68">Offsetting of Unapplied Collection Against Treaty Balance</div>
+                </ng-container>
+            </ng-template>
+            <ng-template ngbTabContent>
+                <div class="input-group cust-border" style="padding-top: 0.6em">
+                    <div class="col-sm-12">
+                        <ng-container [ngSwitch]="jvType">
+                            <ng-container *ngSwitchCase="1">
+                                <app-jv-inward-pol-balance [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-inward-pol-balance>                   
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="2">
+                                <app-jv-app-payments-zero [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-app-payments-zero>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="3">
+                                <app-jv-prenium-reserve [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-prenium-reserve>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="4">
+                                <app-jv-interest-on-overdue-accounts [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-interest-on-overdue-accounts>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="5">
+                                <app-jv-offsetting-against-negative-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-negative-treaty>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="6">
+                                <app-jv-overdue-accounts-against-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-overdue-accounts-against-treaty>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="7">
+                                <app-jv-offsetting-against-losses [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-offsetting-against-losses>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="8">
+                                <app-jv-investment-roll-over [jvDetail]="jvDetails" (infoData)="infoData($event)"></app-jv-investment-roll-over>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="9">
+                                <app-jv-investment-pull-out [jvDetail]="jvDetails" (infoData)="infoData($event)"></app-jv-investment-pull-out>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="10">
+                                <app-jv-investment-placement [jvDetail]="jvDetails" (infoData)="infoData($event)"></app-jv-investment-placement>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="11">
+                                <app-jv-treaty-pull-out [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)" [cedingParams]="cedingInput"></app-jv-treaty-pull-out>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="67">
+                                <app-jv-unapplied-inwpol [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-unapplied-inwpol>
+                            </ng-container>
+
+                            <ng-container *ngSwitchCase="68">
+                                <app-jv-unapplied-treaty [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-unapplied-treaty>
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+    <ng-container *ngIf="jvType == 69">
+        <app-jv-multiple-offsetting [jvDetail]="jvDetails" (emitData)="ceding($event)" (infoData)="infoData($event)"></app-jv-multiple-offsetting>
+    </ng-container>
+</div>
+<fieldset class="scheduler-border" style="margin: 0px !important; margin-top: 27px !important; ">
+	<div class="form-row custom-row-inline-inset" style="margin-left: -27px; margin-bottom: 15px !important;">
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1 text-right labels">Created By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="jvDetails.createUser" disabled>
+            <label class="form-control-sm col-sm-1 text-right labels">Date Created</label>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="jvDetails.createDate"></datepicker>
+            </div>
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update By</label>
+            <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="jvDetails.updateUser" disabled>
+            <label class="form-control-sm col-sm-1 text-right labels">Last Update</label>
+            <div class="col-sm-2" style="padding: 0px">
+                <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="jvDetails.updateDate"></datepicker>
+            </div>
+        </div>
+    </div>
+</fieldset>

@@ -1,0 +1,310 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Quarterly Statement of Account</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="QSOA Inquiry">
+			<ng-template ngbTabContent>	
+				<div>
+					<fieldset class="scheduler-border">
+					 	<legend class="scheduler-border">Filter Options</legend>
+            			<div class="form-row custom-row-inline-inset">
+            				<div class="input-group" style="margin-bottom: -14px ! important">
+            					<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Company</label>
+								<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="filtCedingName" placeholder="All" (change)="onChangeCedingName()">
+								<div class="text-search-ico"><a><i class="fa fa-search" (click)="showFiltCedingCoLOV()"></i></a></div>
+            					<label class="form-control-sm col-sm-1">Period:</label>
+            					<label class="form-control-sm">From</label>
+            					<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtFromQtr">
+									<option value="1">1st Quarter</option>
+									<option value="2">2nd Quarter</option>
+									<option value="3">3rd Quarter</option>
+									<option value="4">4th Quarter</option>
+								</select>
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtFromYear">
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
+								</select>
+								<label class="form-control-sm" style="margin-left: 5px ! important">To</label>
+						   		<select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="filtToQtr">
+									<option value="1">1st Quarter</option>
+									<option value="2">2nd Quarter</option>
+									<option value="3">3rd Quarter</option>
+									<option value="4">4th Quarter</option>
+								</select>
+								<select class="form-control form-control-sm cust-sm col-sm-1" style="margin-left: 3px !important" [(ngModel)]="filtToYear">
+									<ng-container *ngFor="let y of yearParamOpts">
+										<option [value]="y">{{ y }}</option>
+									</ng-container>
+								</select>
+								<button type="button" class="cust col-sm-1" style="margin-left: 20px !important;" (click)="onClickSearch()">Search</button>
+	    					</div>
+	    				</div>
+					 </fieldset> 
+				</div>
+
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">List of QSOA per Company</legend>
+					<div class="custom-row-inline-inset">
+						<app-cust-editable-non-datatable #qsoaListTbl [passData]="qsoaList" (genericBtn)="showCombinedStmtOfAcctMdl()" (newClick)="selectedQsoa=$event; toggleGeneric();">
+						</app-cust-editable-non-datatable>
+						<div class="input-group">
+							<div class="w-100 text-center" style="margin-bottom: 15px">
+								<button class="cust-btn" type="button" (click)="showGenerateMdl()"><a>Regenerate</a></button>
+    							<button class="cust-btn" type="button" (click)="onClickPrint()"><a>Print</a></button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>
+
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal class="d-none" #combinedStmtOfAcctMdl>
+    <div header>
+        <ng-container>Combined Statement of In-Trust Account</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaListDtlTbl [passData]="qsoaDtl"></app-cust-editable-non-datatable>
+        <div class="form-row custom-row-inline-inset" style="margin-top: 15px !important; margin-bottom: 0px !important;">
+        	<fieldset class="scheduler-border col-sm-6">
+        		<div class="input-group">
+        			<label class="form-control-sm col-sm-12" style="text-align: center !important;">
+        				NOTE: Remittances made after this quarter are not included in this statement.
+        			</label>
+        		</div>
+        		<app-cust-editable-non-datatable #qsoaDtlExcludeTbl [passData]="qsoaDtlExclude"></app-cust-editable-non-datatable>
+        	</fieldset>
+        	<div class="col-sm-6">
+        		<div class="input-group">
+        			<div class="col-sm-1"></div>
+        			<label class="form-control-sm col-sm-4" style="text-align: left !important;">BALANCE IN YOUR FAVOR</label>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"	[ngModel]="balanceDebit | number: '1.2-2'" style="max-width: 139px; font-weight: bold; z-index: 3;" disabled>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right" style="margin-left: 3px !important; min-width: 142px; font-weight: bold; z-index: 3;" [ngModel]="balanceCredit | number: '1.2-2'" disabled>
+        		</div>
+        		<div class="input-group" style="margin-bottom: 10px !important; margin-top: -30px !important;">
+        			<div class="col-sm-5"></div>
+        			<div class="col-sm" style="padding-left: 0; padding-right: 0; border-bottom: 1px dashed; margin-right: 1em;">&nbsp;</div>
+        		</div>
+        		<div class="input-group">
+        			<div class="col-sm-1"></div>
+        			<label class="form-control-sm col-sm-4" style="text-align: left !important;">TOTAL DEBITS AND CREDITS</label>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+        			[ngModel]="totalDebit | number: '1.2-2'" style="max-width: 139px; font-weight: bold;" disabled>
+        			<input type="text" class="form-control form-control-sm cust-sm col-sm-3 text-right"
+        			style="margin-left: 3px !important;" style="margin-left: 3px !important;min-width: 142px; font-weight: bold;" [ngModel]="totalCredit | number: '1.2-2'" disabled>
+        		</div>
+        	</div>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" style="max-width: max-content;" (click)="showQsoaAcctReceivableMdl()"><a>Accounts Receivables</a></button>
+    	<button type="button" class="cust-btn" (click)="showQsoaRemittanceMdl()"><a>Remittances</a></button>
+    	<button type="button" class="cust-btn" (click)="combinedStmtOfAcctMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #acctReceivableMdl>
+    <div header>
+        <ng-container>Accounts Receivable</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaAcctReceivableTbl [passData]="qsoaAcctReceivable"></app-cust-editable-non-datatable>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" (click)="acctReceivableMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #acctRemittanceMdl>
+    <div header>
+        <ng-container>Remittances</ng-container>
+    </div>
+    <div body style="min-width: 800px !important;">
+        <div class="input-group">
+        	<div class="col-sm-1"></div>
+        	<label class="form-control-sm col-sm-1" style="margin-left: 15px !important;">Company</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-4" [ngModel]="selectedQsoa?.cedingName" disabled>
+        	<label class="form-control-sm col-sm-2">Quarter Ending</label>
+        	<input type="text" class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="selectedQsoa?.quarterEnding | date:'MM/dd/yyyy'" disabled>
+        	<div class="col-sm-2"></div>
+        </div>
+        <app-cust-editable-non-datatable #qsoaAcctRemittanceTbl [passData]="qsoaAcctRemittance"></app-cust-editable-non-datatable>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button type="button" class="cust-btn" (click)="acctRemittanceMdl.closeModal()"><a>Return</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" id="generateQSOAModal" #generateMdl>
+    <div header>
+        <ng-container>Generate Quarterly Statement of Account</ng-container>
+    </div>
+    <div body style="min-width: 450px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 25px !important; padding-bottom: 20px !important;">
+            <div class="input-group">
+            	<label class="form-control-sm col-sm-2">Company</label>
+            	<input type="text" class="form-control form-control-sm cust-sm col-sm-10" placeholder="All" [(ngModel)]="gnrtCedingName">
+				<div class="text-search-ico"><a><i class="fa fa-search" (click)="showGnrtCedingCoLOV()"></i></a></div>
+            </div>
+            <div class="input-group">
+            	<label class="form-control-sm col-sm-2">Quarter</label>
+            	<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="gnrtQtr">
+					<option value="1">First Quarter</option>
+					<option value="2">Second Quarter</option>
+					<option value="3">Third Quarter</option>
+					<option value="4">Fourth Quarter</option>
+				</select>
+				<div class="col-sm-2"></div>
+				<label class="form-control-sm col-sm-2">Year</label>
+				<select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="gnrtYear">
+					<ng-container *ngFor="let y of yearParamOpts">
+						<option [value]="y">{{ y }}</option>
+					</ng-container>
+				</select>
+            </div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-center">
+    	<button class="cust-btn" type="button" (click)="saveAcitQsoa()"><a>Generate QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="modalService.dismissAll(); viewQsoa();"><a>View QSOA</a></button>
+    	<button class="cust-btn" type="button" (click)="modalService.dismissAll()"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #confMdl>
+    <div header>
+        <ng-container>Confirmation</ng-container>
+    </div>
+    <div body style="min-width: 300px !important;">
+        <fieldset class="scheduler-border" style="padding-top: 5px !important;">
+        	<div class="custom-row-inline-inset" style="text-align: center">
+	            <p *ngIf="confMsg == 1" style="line-height: 1.2">QSOA was already generated for the given<br>
+	            parameters. Do you want to generate a new record<br>
+	            and overwrite the existing one?</p>
+	            <p *ngIf="confMsg == 2" style="line-height: 1.2">QSOA was not yet generated for the given<br>
+	            parameters. Do you want to generate the record?</p>
+        	</div>
+        </fieldset>
+    </div>
+    <div footer class="w-100 text-right">
+    	<button class="cust-btn" type="button" (click)="confMdl.closeModal(); saveAcitQsoa(true);"><a>Yes</a></button>
+    	<button class="cust-btn" type="button" (click)="confMdl.closeModal()"><a>No</a></button>
+    </div>
+</app-modal>
+
+<app-ceding-company #filtCedingCoLOV (selectedData)="setFiltCedingCo($event)" [treaty]="false"></app-ceding-company>
+<app-ceding-company #gnrtCedingCoLOV (selectedData)="setGnrtCedingCo($event)" [treaty]="false"></app-ceding-company>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" class="qsoaLoader" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 9999;display: none">
+<div class="qsoaLoader" style="position: absolute;top:0;left:0;width: 100%;height: 100%;z-index: 9999;background-color: rgba(255, 255, 255, 0.5);display: none">
+</div>
+
+<app-modal #printMdl class="d-none">
+  <div header>Print QSOA</div>
+  <div body style="min-width: 550px;">
+    <div class="row">
+      <fieldset class="scheduler-border col-sm cust-fs">
+        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="input-group" style="margin-bottom: -4px !important;">
+          <label class="form-control-sm col-sm-2 cust-lbl">Company</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'cedingId')">
+          <div class="text-search-ico" style="margin-right: 3px;"><a><i class="fa fa-search" (click)="cedingPrintMdl.modal.openNoClose()"></i></a></div>
+          <span>&nbsp;</span>
+          <input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
+        </div>
+        <div class="input-group">
+          <label class="form-control-sm col-sm-2">Currency</label>
+          <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="params.currCd" (ngModelChange)="params.currCd=$event.toUpperCase()" (change)="checkCode($event, 'currCd')">
+          <div class="text-search-ico" style="margin-right: 3px;"><a><i class="fa fa-search" (click)="currencyMdl.modal.openNoClose()"></i></a></div>
+          <span>&nbsp;</span>
+          <input type="text" class="form-control form-control-sm col-sm cap-input" [(ngModel)]="params.currency" readonly placeholder="ALL CURRENCIES">
+        </div>
+      </fieldset>
+    </div>
+    <div class="row">
+      <fieldset class="scheduler-border col-sm cust-fs">
+        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="input-group">
+            <label class="form-control-sm col-sm-1">Period:</label>
+            <label class="form-control-sm col-sm-1">From</label>
+            <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.printFromQtr">
+                <option value="1">1st Quarter</option>
+                <option value="2">2nd Quarter</option>
+                <option value="3">3rd Quarter</option>
+                <option value="4">4th Quarter</option>
+            </select>
+            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important" [(ngModel)]="params.printFromYear">
+                <ng-container *ngFor="let y of yearParamOpts">
+                    <option [value]="y">{{ y }}</option>
+                </ng-container>
+            </select>
+            <label class="form-control-sm col-sm-1">To</label>
+            <select class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="params.printToQtr">
+                <option value="1">1st Quarter</option>
+                <option value="2">2nd Quarter</option>
+                <option value="3">3rd Quarter</option>
+                <option value="4">4th Quarter</option>
+            </select>
+            <select class="form-control form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important" [(ngModel)]="params.printToYear">
+                <ng-container *ngFor="let y of yearParamOpts">
+                    <option [value]="y">{{ y }}</option>
+                </ng-container>
+            </select>
+        </div>
+      </fieldset>
+    </div>
+    <div class="row">
+      <fieldset class="scheduler-border col-sm cust-fs">
+        <legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+        <div class="input-group">
+          <div class="col-sm-3"></div>
+          <label class="form-control-sm col-sm-3">Destination</label>
+          <select class="form-control form-control-sm cust-sm col-sm-3" [(ngModel)]="params.destination">
+            <option value="screen">Screen</option>
+            <option value="dlPdf">PDF</option>
+            <option value="printPdf">Printer</option>
+            <option *ngIf="allDest" value="exl">Excel</option>
+          </select>
+          <div class="col-sm-3"></div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+  <div footer class="w-100 text-center">
+    <ng-container *ngIf="ps.printLoader">
+      <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Please wait</span>
+    </ng-container>
+    <ng-container *ngIf="!ps.printLoader">
+      <button class="cust-btn" type="button" (click)="printMdl.closeModal();"><a>Cancel</a></button>
+      <button class="cust-btn" type="button"  (click)="print();"><a>Print</a></button>
+    </ng-container>
+  </div>
+</app-modal>
+
+<app-ceding-company #cedingPrintMdl [exclude]="exc" (selectedData)="setCedingPrint($event)"></app-ceding-company>
+<app-mtn-currency-code #currencyMdl (selectedData)="setCurrency($event)"></app-mtn-currency-code>

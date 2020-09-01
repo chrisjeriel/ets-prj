@@ -1,0 +1,30 @@
+.cust {
+	width: 100% !important;
+	font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 99 !important;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    padding-top: 5px;
+    padding-bottom: 2px;
+    margin-left: 3px !important;
+}
+
+.table-cust {
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+.spacing {
+    margin-right: 3px !important;
+}
+
+.bottom {
+    margin-bottom: -12px !important;
+}

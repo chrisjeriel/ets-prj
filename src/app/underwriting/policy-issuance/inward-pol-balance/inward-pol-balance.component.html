@@ -1,0 +1,72 @@
+<fieldset class="scheduler-border" *ngIf="!policyInfo.fromSummary">
+	<legend class="scheduler-border">Policy Record Info</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+		<div class="input-group" style="margin-bottom: -13px !important; margin-top: 3px !important">
+			<label class="col-sm-1"></label>
+			<label class="form-control-sm col-sm-1" for="xx">Policy No</label>
+			<input type="text" [value]="policyInfo.policyNo" class="form-control form-control-sm cust-sm col-sm-2" placeholder=""
+			 readonly>
+			<label class="form-control-sm col-sm-1" for="xx">Insured</label>
+			<input type="text" [value]="policyInfo.insuredDesc" class="form-control form-control-sm cust-sm col-sm-5" placeholder="" readonly>
+		</div>
+		<div class="input-group" style="margin-bottom: -13px !important;">
+			<label class="col-sm-1"></label>
+			<label class="form-control-sm col-sm-1" for="xx" style="height: auto;">Risk</label>
+			<input type="text" [value]="policyInfo.riskName" class="form-control form-control-sm cust-sm col-sm-8" placeholder="" readonly>
+		</div>
+	</div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Inward Policy Balance Info</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-top: -2px !important;">
+		<div class="input-group" style="margin-bottom: -20px !important; margin-top: 3px !important">
+			<label class="col-sm-2"></label>
+			<label class="form-control-sm col-sm-1" for="xx">Currency</label>
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-1" placeholder="" readonly [ngModel]="currency">
+			<div class="col-sm-2"></div>
+			<label class="form-control-sm col-sm-1" for="xx">Total Premium</label>
+			<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" placeholder="" readonly 
+				[ngModel]="totalPrem |  number:'1.2-2'">
+			<label class="col-sm-3"></label>
+		</div>
+	</div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Installment Info</legend>
+	<div class="row" style="margin-bottom: 5px;">
+		<div class="col-sm-{{policyInfo.fromInq?1:2}}"></div>
+		<div class="col-sm-{{policyInfo.fromInq?10:8}}">
+			<app-cust-editable-non-datatable #instllmentTable [passData]="passData" (newClick)="updateOtherCharges($event)" (tableDataChange)="compute()" (genericBtn)="delInst()" (onDelete)="instllmentTable.onClickDelete('f');">
+			</app-cust-editable-non-datatable>
+		</div>
+		<div class="col-sm-1"></div>
+	</div>
+</fieldset>
+
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Other Charges</legend>
+	<div class="row" style="margin-bottom: 5px;">
+		<div class="col-sm-3"></div>
+		<div class="col-sm-6">
+			<app-cust-editable-non-datatable #otherTable [passData]="passData2" (clickLOV)="clickLOV($event)" (tableDataChange)="compute();instllmentTable.indvSelect.otherCharges=$event" (genericBtn)="delOth()" (newClick)="onOtherClick($event)" (onDelete)="otherTable.onClickDelete('f')">
+			</app-cust-editable-non-datatable>
+		</div>
+		<div class="col-sm-3"></div>
+	</div>
+</fieldset>
+<div class="form-row" *ngIf="policyInfo.fromInq!='true'">
+	<div class="form-group col-sm">
+		<div class="col-md-13 text-center">
+			<div class="cust-btn-container">
+				<button type="button" class="cust-btn" (click)="onClickCancel()" ><a>Cancel</a></button>
+				<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<app-lov [passData]="passLOVData" (selectedData)="setSelected($event)" [lovCheckBox]="true"></app-lov>
+<app-sucess-dialog id="inward" [icon]="dialogIcon" (onOk)="cancelFlag && dialogIcon == 'success'  ? this.cancel.onNo():null" [message]="dialogMsg"></app-sucess-dialog>
+<app-confirm-save id="inwardSave" (onYes)="save()"></app-confirm-save>
+<app-cancel-button (onYes)="save('cancel')" [url]="'/policy-listing'" ></app-cancel-button>

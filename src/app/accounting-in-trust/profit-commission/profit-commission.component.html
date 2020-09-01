@@ -1,0 +1,194 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Profit Commission</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Profit Commission Inquiry">
+			<ng-template ngbTabContent>	
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Filter Options</legend>
+					<div class="custom-row-inline-inset">
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1 text-right">Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-4" (change)="checkCode($event)" [(ngModel)]="cedingName" placeholder="All">
+							<div class="text-search-ico" (click)="showCedCompLOV()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm text-right col-sm-1" style="margin-left: 10px">Period:</label>
+							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [value]="dateFrom" (valueChange)="dateFrom=$event; dateTo=valChanged(dateFrom, dateTo)"></datepicker>
+							</div>
+							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [(value)]="dateTo" [minDate]="dateFrom"></datepicker>
+							</div>
+							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
+								<button type="button" class="cust-btn" (click)="searchProfitComm()"><a>Search</a></button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border" style="margin-top: 5px !important; padding-bottom: 10px !important;">
+				  <legend class="scheduler-border">List of Profit Commission Companies</legend>
+					<div class="custom-row-inline-inset" style="margin-bottom: 30px !important;">
+						<app-cust-editable-non-datatable [passData]="passData" (genericBtn)="onClickShowDetails($event)" (newClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)"></app-cust-editable-non-datatable>	
+					</div> 
+					<div class="w-100 text-center">
+		                <button type="button" class="cust-btn" (click)="queryModal.openNoClose()"><a>Regenerate</a></button>
+		                <button type="button" class="cust-btn" [disabled]="disableBtn" (click)="onClickPrint()"><a>Print</a></button>
+          			</div>
+				</fieldset>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>	
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-modal [btnTitle]="'Profit Commisison Statement'" hidden id="modalProfCommStatement" #profitCommMdl>
+    <div header>Profit Commission Statement</div>
+	<div body>
+		<div class="input-group alignment" style="margin-bottom: -13px !important;width: 1000px">
+			<div class="col-sm-1"></div>
+		    <label class="form-control-sm col-sm-1 text-right">Company</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm" [(ngModel)]="cedingCompDesc" readonly>
+		    <label class="form-control-sm col-sm-1 text-right">Month</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="month" readonly>
+		    <label class="form-control-sm col-sm-1 text-right">Year</label>
+		    <input type="text" class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="year" readonly>
+		    <div class="col-sm-1"></div>
+		</div> 
+		<div class="custom-row-inline-inset">
+			<app-cust-editable-non-datatable #profitComm [passData]="passDataProfitComm"></app-cust-editable-non-datatable>	
+		</div> 
+        
+        <div class="input-group" style="margin-bottom: -25px !important;">
+			<label class="form-control-sm col-sm-9" style="padding-left:8.5px !important;text-align: left !important;">PROFIT / (LOSS)</label>
+			<div class="input-group col-sm-3" style="padding: 0px">
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="font-weight: bold;" [ngModel]="0 | number: '1.2-2'" (onModelChange)="income1=$event" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important; font-weight: bold;" [ngModel]="this.diff | number: '1.2-2'" (onModelChange)="this.diff=$event" readonly>
+			</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -3px !important;">
+			<div class="col-sm-9"></div>
+			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">---------------------------------------</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -25px !important;">
+			<label class="form-control-sm col-sm-9" style="padding-left:0px !important;text-align: left !important;"></label>
+				<div class="input-group col-sm-3" style="padding: 0px">
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only [ngModel]="this.income | number: '1.2-2'" (onModelChange)="this.income=$event"style="font-weight: bold;" readonly>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" numbers-only style="margin-left: 2px !important;font-weight: bold;" [ngModel]="this.income | number: '1.2-2'" (onModelChange)="this.income=$event" readonly>
+				</div>
+		</div>
+		<div class="input-group" style="margin-bottom: -3px !important;">
+			<div class="col-sm-9"></div>
+			<div class="col-sm-3" style="padding-left: 0px !important;padding-right: 0px !important">=======================</div>
+		</div>
+	  <div class="row">
+	  	<div class="col-sm-1"></div>
+		<div class="col-sm-5" style="padding-right: 5px;">
+			<fieldset class="scheduler-border" style="padding-bottom: 10px !important; height: 100% !important;">
+				<legend class="scheduler-border">Summary</legend>
+					<div class="custom-row-inline-inset">
+						<ng-container *ngIf="summaryArr.length !== 0">
+							<ng-container *ngFor="let x of summaryArr; let i = index">
+								<div *ngIf="x.year != 0" class="input-group" style="margin-bottom: -25px !important;">
+									<label *ngIf="x.year == 1 && i > 0" class="form-control-sm col-sm-1" style="padding-left:0px !important;text-align: left !important;">{{ i == indx ? 'LESS: ' : ''}}</label>
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x.carryDesc }}</label>
+									<label class="form-control-sm col-sm-4" style="padding-right: 0;">{{ x.carryAmt | number: '1.2-2' | negativeAmount}}</label>
+								</div>
+								<div *ngIf="x.year == 0" class="input-group" style="margin-bottom: -25px !important;">
+									<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;"></label>
+									<label class="form-control-sm col-sm-4" style="padding-right: 0;">-----------------------</label>
+								</div>
+							</ng-container>
+						</ng-container>
+					</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-5" style="padding-left: 5px;">
+			<fieldset class="scheduler-border" style="height: 100% !important;">
+				<legend class="scheduler-border">Note</legend>
+					<div class="custom-row-inline-inset" style="margin-bottom: 26px !important;">
+						<ng-container *ngFor="let x of profCommParams">
+							<div class="input-group" style="margin-bottom: -25px !important;">
+								<label class="form-control-sm col-sm" style="padding-left:0px !important;text-align: left !important;">{{ x }}</label>
+							</div>
+						</ng-container>
+					</div>
+			</fieldset>
+		</div>
+		<div class="col-sm-1"></div>
+	  </div>
+	</div>
+	<div footer class="text-center" style="width: 100% !important;">
+		<div >
+			<button class="cust-btn" type="button" (click)="profitCommMdl.closeModal();"><a>Return</a></button>
+			<button class="cust-btn" type="button" (click)="onClickPrint()"><a>Print</a></button>
+			<button class="cust-btn" type="button" [disabled]="disableGenerateJV" (click)="disableGenerateJV ? null : onClickGenerateJV()"><a>Generate JV</a></button>
+		</div>
+	</div>
+</app-modal>
+
+
+
+<app-modal [btnTitle]="'Compute Profit Commission'" hidden id="modalProfComm" #queryMdl>
+    <div header>Compute Profit Commission</div>
+         <div body style="min-width: 550px !important;">
+            <div>
+                <fieldset class="scheduler-border">
+                    <br />
+                    <div class="form-row custom-row-inline-inset" style="margin-top: -10px !important;margin-bottom: 12px !important;">
+                        <div class="input-group alignment" style="margin-bottom: -13px !important;">
+                            <label class="form-control-sm col-sm-2 text-right">Company</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm" (change)="checkCodeModal($event)" [(ngModel)]="gnrtCedingName" placeholder="All">
+							<div class="text-search-ico" (click)="showCedCompModal()"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm col-sm-1 text-right" style="margin-left: 20px;">As of</label>
+							<div class="dp-cont col-sm-3" style="margin-left: 0">
+								<datepicker type="date" [(value)]="gnrtDate"></datepicker>
+							</div>
+                        </div>
+                     </div>
+                </fieldset>
+            </div>
+          </div>
+          <div footer class="text-center" style="width: 100% !important;">
+                <button type="button" class="cust-btn" (click)="onClickGenerate()" [disabled]="gnrtDate == ''"><a>Generate</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal(); onClickView();" [disabled]="gnrtDate == ''"><a>View</a></button>
+                <button type="button" class="cust-btn" (click)="queryModal.closeModal()"><a>Cancel</a></button>
+          </div>
+</app-modal>
+
+
+<app-ceding-company #cedingComp [exclude]="exc" (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
+<app-ceding-company #cedingCompModal [exclude]="exc" (selectedData)="setSelectedCedCompModal($event);"></app-ceding-company>
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="queryModal.closeModal()"></app-sucess-dialog>
+
+<app-modal class="d-none" #printMdl>
+    <div header>Print</div>  
+    <div body style=" max-width: 450px;">
+        <div class="row">
+	        <div class="input-group" style="margin-bottom: -14px !important;">
+	          <div class="col-sm-2"></div>
+	          <label class="form-control-sm col-sm-3 cust-lbl">Destination</label>
+	          <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="printParams.destination">
+	            <option value="screen">Screen</option>
+	            <option value="dlPdf">PDF</option>
+	            <option value="printPdf">Printer</option>
+	            <!-- <option value="exl">Excel</option> -->
+	          </select>
+	          <div class="col-sm-3"></div>
+	        </div>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+    	<ng-container *ngIf="ps.printLoader">
+	      <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Please wait</span>
+	    </ng-container>
+	    <ng-container *ngIf="!ps.printLoader">
+	    	<button type="button" class="cust-btn" (click)="printMdl.closeModal();"><a>Cancel</a></button>
+	        <button type="button" class="cust-btn" (click)="print()"><a>Print</a></button>
+    	</ng-container>
+    </div>
+</app-modal>

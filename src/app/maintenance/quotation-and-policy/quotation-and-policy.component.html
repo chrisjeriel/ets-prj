@@ -1,0 +1,201 @@
+<div class="cust-tabs-container">
+  <h4>Maintenance</h4>
+  <ngb-tabset>
+    <ngb-tab class="ngb-tab" title="Quotation and Policy">
+      <ng-template ngbTabContent style="padding-top: 10px !important;">
+       <div class="input-group" style="margin-top: 10px !important; margin-bottom: 8px !important;">
+        <div class="col-sm-3">
+          <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+           <p-accordionTab header="A">
+            <button *ngIf="modules.indexOf('MTN125')!= -1" [routerLink]="['/adv-word-mtn']" class="button btn btn-link">Advice Wording</button>
+            <br *ngIf="modules.indexOf('MTN125')!= -1"/>
+            <button *ngIf="modules.indexOf('MTN131')!= -1" [routerLink]="['/mtn-approval-function']" class="button btn btn-link">Approval Function</button>
+            <br *ngIf="modules.indexOf('MTN131')!= -1"/>
+            <button *ngIf="modules.indexOf('MTN132')!= -1" [routerLink]="['/mtn-approver']" class="button btn btn-link ">Approver</button>
+            <br *ngIf="modules.indexOf('MTN132')!= -1"/>
+          </p-accordionTab>
+        </p-accordion>
+        <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+         <p-accordionTab header="B">
+          <button *ngIf="modules.indexOf('MTN123')!= -1" [routerLink]="['/maintenance-location','block']" class="button btn btn-link">Block</button>
+          <br *ngIf="modules.indexOf('MTN123')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="C">
+          <button *ngIf="modules.indexOf('MTN114')!= -1" [routerLink]="['/maintenance-cat-peril']" class="button btn btn-link">CAT Peril</button>
+          <br *ngIf="modules.indexOf('MTN114')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN105')!= -1" [routerLink]="['/ceding-co-list']" class="button btn btn-link">Ceding Company</button>
+          <br *ngIf="modules.indexOf('MTN105')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN121')!= -1" [routerLink]="['/maintenance-location','city']" class="button btn btn-link">City</button>
+          <br *ngIf="modules.indexOf('MTN121')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN124')!= -1" [routerLink]="['/maintenance-cresta-zone']" class="button btn btn-link">CRESTA Zone</button>
+          <br *ngIf="modules.indexOf('MTN124')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN116')!= -1" [routerLink]="['/maintenance-currency']" class="button btn btn-link">Currency</button>
+          <br *ngIf="modules.indexOf('MTN116')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN117')!= -1" [routerLink]="['/maintenance-currency-rate']" class="button btn btn-link">Currency Rate</button>
+          <br *ngIf="modules.indexOf('MTN117')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="D">
+          <button *ngIf="modules.indexOf('MTN113')!= -1" [routerLink]="['/maintenance-deductible']" class="button btn btn-link">Deductible</button>
+          <br *ngIf="modules.indexOf('MTN113')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN122')!= -1" [routerLink]="['/maintenance-location','district']" class="button btn btn-link">District</button>
+          <br *ngIf="modules.indexOf('MTN122')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="E">
+          <button *ngIf="modules.indexOf('MTN115')!= -1" [routerLink]="['/maintenance-endt']" class="button btn btn-link">Endorsement</button>
+          <br *ngIf="modules.indexOf('MTN115')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="F">
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="G">
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+    <div class="col-sm-3">
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="H">
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="I">
+          <button *ngIf="modules.indexOf('MTN107')!= -1" [routerLink]="['/maintenance-insured']" class="button btn btn-link">Insured</button>
+          <br *ngIf="modules.indexOf('MTN107')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN109')!= -1" [routerLink]="['/maintenance-intermediary']" class="button btn btn-link">Intermediary</button>
+          <br *ngIf="modules.indexOf('MTN109')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="J">
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="K">
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="L">
+          <button *ngIf="modules.indexOf('MTN100')!= -1" [routerLink]="['/maintenance-line']" class="button btn btn-link">Line</button>
+          <br *ngIf="modules.indexOf('MTN100')!= -1"/>
+          <button *ngIf="modules.indexOf('MTN101')!= -1" [routerLink]="['/maintenance-line-class']" class="button btn btn-link">Line Class</button>
+          <br *ngIf="modules.indexOf('MTN101')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+        <p-accordionTab header="M">
+        </p-accordionTab>
+      </p-accordion>
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="N">
+          <button *ngIf="modules.indexOf('MTN135')!= -1" [routerLink]="['/mtn-non-renewal-reason']" class="button btn btn-link">Non-renewal Reason</button>
+          <br *ngIf="modules.indexOf('MTN135')!= -1"/>
+        </p-accordionTab>
+      </p-accordion>
+    </div>
+    <div class="col-sm-3">
+      <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+        <p-accordionTab header="O">
+         <button *ngIf="modules.indexOf('MTN111')!= -1" [routerLink]="['/maintenance-object']" class="button btn btn-link">Object</button>
+         <br *ngIf="modules.indexOf('MTN111')!= -1"/>
+         <button *ngIf="modules.indexOf('MTN118')!= -1" [routerLink]="['/maintenance-other-charge']" class="button btn btn-link">Other Charge</button>
+         <br *ngIf="modules.indexOf('MTN118')!= -1"/>
+       </p-accordionTab>
+     </p-accordion>
+     <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+       <p-accordionTab header="P">
+         <button *ngIf="modules.indexOf('MTN127')!= -1" [routerLink]="['/maintenance-policy-wording']" class="button btn btn-link ">Policy Wording</button>
+         <br *ngIf="modules.indexOf('MTN127')!= -1"/>
+         <button *ngIf="modules.indexOf('MTN142')!= -1" [routerLink]="['/posting-amt-limit']" class="button btn btn-link ">Post Amount Limit</button>
+         <br *ngIf="modules.indexOf('MTN142')!= -1"/>
+         <button *ngIf="modules.indexOf('MTN141')!= -1" [routerLink]="['/prem-plan']" class="button btn btn-link">Premium Plan</button>
+         <br *ngIf="modules.indexOf('MTN141')!= -1"/>
+         <button *ngIf="modules.indexOf('MTN120')!= -1" [routerLink]="['/maintenance-location','province']" class="button btn btn-link">Province</button>
+         <br *ngIf="modules.indexOf('MTN120')!= -1"/>
+       </p-accordionTab>
+     </p-accordion>
+     <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+      <p-accordionTab header="Q">
+       <button *ngIf="modules.indexOf('MTN128')!= -1" [routerLink]="['/maintenance-qu-reason']" class="button btn btn-link">Quote Status Reason</button>
+       <br *ngIf="modules.indexOf('MTN128')!= -1"/>
+       <button *ngIf="modules.indexOf('MTN126')!= -1" [routerLink]="['/maintenance-quote-wording']" class="button btn btn-link">Quote Wording</button>
+       <br *ngIf="modules.indexOf('MTN126')!= -1"/>
+     </p-accordionTab>
+   </p-accordion>
+   <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+    <p-accordionTab header="R">
+     <button *ngIf="modules.indexOf('MTN119')!= -1" [routerLink]="['/maintenance-location','region']" class="button btn btn-link">Region</button>
+     <br *ngIf="modules.indexOf('MTN119')!= -1"/>
+     <button *ngIf="modules.indexOf('MTN136')!= -1" [routerLink]="['/maintenance-retention-line']" class="button btn btn-link">Retention Line</button>
+     <br *ngIf="modules.indexOf('MTN136')!= -1"/>
+     <button *ngIf="modules.indexOf('MTN140')!= -1" [routerLink]="['/maintenance-retention-per-pool-member']" class="button btn btn-link">Retention per Cedant</button>
+     <br *ngIf="modules.indexOf('MTN140')!= -1"/>
+     <button *ngIf="modules.indexOf('MTN103')!= -1" [routerLink]="['/maintenance-risk-list']" class="button btn btn-link">Risk</button>
+     <br *ngIf="modules.indexOf('MTN103')!= -1"/>
+     <button *ngIf="modules.indexOf('MTN138')!= -1" [routerLink]="['/mtn-rounding-error']" class="button btn btn-link">Rounding Error Cedant</button>
+     <br *ngIf="modules.indexOf('MTN138')!= -1"/>
+   </p-accordionTab>
+ </p-accordion>
+ <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+  <p-accordionTab header="S">
+   <button *ngIf="modules.indexOf('MTN112')!= -1" [routerLink]="['/maintenance-sec-cov']" class="button btn btn-link">Section Cover</button>
+   <br *ngIf="modules.indexOf('MTN112')!= -1"/>
+   <button *ngIf="modules.indexOf('MTN139')!= -1" [routerLink]="['/maintenance-sec-ii-treaty-limit']" class="button btn btn-link">Section II Treaty Limit</button>
+   <br *ngIf="modules.indexOf('MTN139')!= -1"/>
+   <button *ngIf="modules.indexOf('MTN129')!= -1" [routerLink]="['/maintenance-spoil-reason']" class="button btn btn-link">Spoilage Reason</button>
+   <br *ngIf="modules.indexOf('MTN129')!= -1"/>
+ </p-accordionTab>
+</p-accordion>
+<p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+  <p-accordionTab header="T">
+   <button *ngIf="modules.indexOf('MTN133')!= -1" [routerLink]="['/maintenance-treaty']" class="button btn btn-link">Treaty</button>
+   <br *ngIf="modules.indexOf('MTN133')!= -1"/>
+   <button *ngIf="modules.indexOf('MTN137')!= -1" [routerLink]="['/maintenance-treaty-limit']" class="button btn btn-link">Treaty Limit</button>
+   <br *ngIf="modules.indexOf('MTN137')!= -1"/>
+   <button *ngIf="modules.indexOf('MTN134')!= -1" [routerLink]="['/maintenance-treaty-share']" class="button btn btn-link">Treaty Share</button>
+   <br *ngIf="modules.indexOf('MTN134')!= -1"/>
+   <button *ngIf="modules.indexOf('MTN102')!= -1" [routerLink]="['/maintenance-type-of-cession']" class="button btn btn-link">Type of Cession</button>
+   <br *ngIf="modules.indexOf('MTN102')!= -1"/>
+ </p-accordionTab>
+</p-accordion>
+<p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="0">
+  <p-accordionTab header="U">
+   <button *ngIf="modules.indexOf('MTN130')!= -1" [routerLink]="['/maintenance-usr-amt-limit']" class="button btn btn-link ">User Amount Limit</button>
+   <br *ngIf="modules.indexOf('MTN130')!= -1"/>
+ </p-accordionTab>
+</p-accordion>
+</div>
+<div class="col-sm-3">
+  <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+    <p-accordionTab header="V">
+    </p-accordionTab>
+  </p-accordion>
+  <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+    <p-accordionTab header="W">
+    </p-accordionTab>
+  </p-accordion>
+  <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+    <p-accordionTab header="X">
+    </p-accordionTab>
+  </p-accordion>
+  <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+    <p-accordionTab header="Y">
+    </p-accordionTab>
+  </p-accordion>
+  <p-accordion expandIcon="fa fa-plus-square-o fa-lg" collapseIcon="fa fa-minus-square-o fa-lg" [activeIndex]="-1">
+    <p-accordionTab header="Z">
+    </p-accordionTab>
+  </p-accordion>
+</div>
+</div>
+</ng-template>
+</ngb-tab>
+</ngb-tabset>
+</div>

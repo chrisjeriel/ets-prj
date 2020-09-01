@@ -1,0 +1,91 @@
+<img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="" style="position: absolute;top:50%;left:50%;-ms-transform: translate(-50%,-50%);transform: translate(-50%,-50%);z-index: 999999" *ngIf="loading">
+<div class="cust-tabs-container">
+	<h4>Quotation</h4>
+	<ngb-tabset>
+		<ngb-tab class="ngb-tab" title="Open Cover Processing">
+			<ng-template ngbTabContent style="padding-top: 10px !important;">
+				<div style="position: relative;">
+					<div class="cust-btn-container">
+						<app-modal [btnTitle]="'Add'" id="addModal" class="d-none">
+							<div header>Enter General Info</div>
+							<div body>
+								<fieldset class="scheduler-border">
+									<div class="custom-row-inline-inset">
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Line</label>
+											<input type="text" [(ngModel)]="mtnLineCd" class="form-control form-control-sm col-sm-2 cap-input" (change)="checkCode($event, 'line')" id="mtnLineCd" appRequired>
+											<div class="text-search-ico"(click)="getLineLov($event)"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnLineDesc" readonly tabindex="-1">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Type of Cession</label>
+											<input type="text" class="form-control form-control-sm col-sm-2"[(ngModel)]="mtnCessionId" (change)="checkCode($event, 'typeOfCession')" id="mtnCessionId" appRequired>
+											<div class="text-search-ico" (click)="getCessionLov($event)"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="mtnCessionDesc" readonly tabindex="-1">
+										</div>
+										<div class="input-group">
+											<label class="form-control-sm col-sm-3">Risk</label>
+											<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="riskDetails.riskId" (change)="checkCode($event, 'risk')" id="riskId" appRequired>
+											<div class="text-search-ico" (click)="getRiskLov($event)"><a><i class="fa fa-search"></i></a></div>
+											&nbsp;&nbsp;
+											<input type="text" class="form-control form-control-sm" [(ngModel)]="riskDetails.riskName" readonly tabindex="-1">
+										</div>
+									</div>
+								</fieldset>
+							</div>
+							<div footer class="text-center w-100">
+								<button class="cust-btn" type="button" (click)="modalService.dismissAll(); clearAddFields();" tabindex="2"><a>Cancel</a></button>
+								<button *ngIf="!checkFields()" class="cust-btn" type="button" (click)="nextBtnEvent();" tabindex="1"><a>Next</a></button>
+								<button *ngIf="checkFields()" class="cust-btn cust-btn-disabled" type="button"><a>Next</a></button>
+							</div>
+						</app-modal>
+					</div>
+						<app-cust-non-datatable [passData]="passData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)" (rowDblClick)="onRowDblClick($event)" (searchToDb)="searchQuery($event)"></app-cust-non-datatable>
+				</div>
+			</ng-template>
+		</ngb-tab>
+
+	</ngb-tabset>
+</div>
+
+<!-- MODAL -->
+<!-- <ng-template #content>
+	<div class="modal-header">
+		<span class="modal-title" id="modal-basic-title">List of Values</span>
+		<div class="close" style="padding-bottom: 5px;">
+			<a class="btn-cust" aria-label="Close" (click)="modalService.dismissAll();" aria-hidden="true"><span style="padding-right: 3px;"
+				 id="closes">&times;&nbsp;&nbsp;</span></a>
+		</div>
+	</div>
+	<div class="modal-body">
+		 <app-cust-non-datatable [passData]="passDataRiskLOV"></app-cust-non-datatable>
+	</div>
+	<div class="d-flex justify-content-center">
+		<div class="modal-footer">
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Maintain Risk</a></button>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+			<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+		</div>
+	</div>
+</ng-template> -->
+
+<!-- <angular-editor [(ngModel)]="htmlContent"></angular-editor> -->
+
+<!-- <app-modal hidden [btnTitle]="'Next'" style="margin-bottom: 2px;" id="riskLovId">
+	<div header style="width: 600px !important;">List of Values</div>
+	<div body style="width: 600px !important;">
+		<app-cust-non-datatable [passData]="passDataRiskLOV"></app-cust-non-datatable>
+	</div>
+	<div footer class="text-center" style="width:100% !important;">
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Maintain Risk</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Cancel</a></button>
+		<button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Ok</a></button>
+	</div>
+</app-modal> -->
+
+
+<app-mtn-risk id="riskIdLov" (selectedData)="setRisk($event)"></app-mtn-risk>
+<app-mtn-line id="lineIdLov" (selectedData)="setLine($event)" [openCoverTag]="true"></app-mtn-line>
+<app-mtn-type-of-cession id="cessionIdLov" (selectedData)="setCession($event)"></app-mtn-type-of-cession>

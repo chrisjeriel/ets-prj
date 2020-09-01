@@ -1,0 +1,179 @@
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">A.R. Info</legend>
+	<div class="form-row custom-row-inline-inset">
+		<div class="col-sm-6">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">A.R. No.</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" numbers-only
+				style="z-index: 1 !important;" readonly [ngModel]="record?.formattedArNo.split('-')[1]">
+				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -35px !important;">A.R. Date</label>
+				<div class="col-sm" style="padding: 0px">
+				    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="record?.arDate"></datepicker>
+				</div>
+				<label class="form-control-sm col-sm-2" style="padding-left:0px !important;margin-left: -40px !important;">DCB No.</label>
+				<input type="text" numbers-only class="form-control form-control-sm cust-sm col-sm-3 text-right"
+				style="z-index: 1 !important;" readonly [ngModel]="record.dcbNo">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1" style="padding-left:0px !important;">Payor</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm"
+				placeholder=""   readonly [ngModel]="record.payor">
+			</div>
+		</div>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Payment Type</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" readonly [ngModel]="record.tranTypeName">
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Status</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm" placeholder="" readonly [ngModel]="record.arStatDesc">
+			</div>
+		</div>
+
+		<div class="col-sm-3">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Amount</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" placeholder="" [ngModel]="record.currCd" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				placeholder="" [ngModel]="record.arAmt | number: '1.2-2'" readonly>
+			</div>
+			<div class="input-group">
+				<label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Local Amount</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-2" value="PHP" readonly>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm text-right" style="margin-left: 3px !important;"
+				placeholder="" [ngModel]="record.arAmt * record.currRate | number: '1.2-2'" readonly>
+			</div>
+		</div>
+	</div>
+</fieldset>
+
+<div class="cust-tabs-container" style="margin-top:10px !important">
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab *ngIf="paymentType != '8'">
+			<ng-template ngbTabTitle>
+				<ng-container [ngSwitch]="paymentType">
+					<div *ngSwitchCase="'1'">Inward Policy Balances</div>
+					<div *ngSwitchCase="'2'">Claim Recovery / Overpayment</div>
+					<div *ngSwitchCase="'3'">Negative Treaty Balance</div>
+					<div *ngSwitchCase="'4'">Payment of Claim Cash Call by Company</div>
+					<div *ngSwitchCase="'5'">Investment Pull-Out</div>
+					<div *ngSwitchCase="'6'">Loss Reserve Deposit</div>
+					<!-- <div *ngSwitchCase="'7'">Claim Over Payment</div> -->
+					<div *ngSwitchCase="'7'">Payment For Advances by Service</div>
+				</ng-container>
+			</ng-template>
+			<ng-template ngbTabContent>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12">
+						<!-- <ng-container [ngSwitch]="paymentType.toUpperCase()">
+							<ng-container *ngSwitchCase="'INWARD POLICY BALANCES'">
+								<app-inward-policy-balances></app-inward-policy-balances>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM RECOVERY / OVERPAYMENT'">
+								<app-claim-recovery></app-claim-recovery>
+							</ng-container>
+							<ng-container *ngSwitchCase="'NEGATIVE TREATY BALANCE'">
+								<app-ar-details-qsoa></app-ar-details-qsoa>
+							</ng-container>
+							<ng-container *ngSwitchCase="'PAYMENT OF CLAIM CASH CALL BY COMPANY'">
+								<app-ar-claim-cash-call></app-ar-claim-cash-call>
+							</ng-container>
+							<ng-container *ngSwitchCase="'INVESTMENT PULL-OUT'">
+								<app-ar-details-investments></app-ar-details-investments>
+							</ng-container>
+							<ng-container *ngSwitchCase="'LOSS RESERVE DEPOSIT'">
+								<app-ar-loss-reserve-deposit></app-ar-loss-reserve-deposit>
+							</ng-container>
+							<ng-container *ngSwitchCase="'CLAIM OVER PAYMENT'">
+								<app-ar-claim-over-payment></app-ar-claim-over-payment>
+							</ng-container>
+							<ng-container *ngSwitchCase="'PAYMENT FOR ADVANCES BY SERVICE'">
+								<app-ar-paymentfor-advances></app-ar-paymentfor-advances>
+							</ng-container>
+						</ng-container> -->
+						<ng-container [ngSwitch]="paymentType">
+							<ng-container *ngSwitchCase="'1'">
+								<app-inward-policy-balances [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-inward-policy-balances>
+							</ng-container>
+							<ng-container *ngSwitchCase="'2'">
+								<!-- <app-claim-recovery [record]="record"></app-claim-recovery> -->
+								<app-claim-recovery [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-claim-recovery>
+								
+							</ng-container>
+							<ng-container *ngSwitchCase="'3'">
+								<app-ar-details-qsoa [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-details-qsoa>
+							</ng-container>
+							<ng-container *ngSwitchCase="'4'">
+								<!-- <app-ar-claim-cash-call [record]="record"></app-ar-claim-cash-call> -->
+								<app-ar-claim-cash-call [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-claim-cash-call>
+							</ng-container>
+							<ng-container *ngSwitchCase="'5'">
+								<app-ar-details-investments [record]="record" (emitCreateUpdate)="createUpdate = $event" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investments>
+							</ng-container>
+							<ng-container *ngSwitchCase="'6'">
+								<app-ar-loss-reserve-deposit [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-loss-reserve-deposit>
+							</ng-container>
+							<!-- <ng-container *ngSwitchCase="'7'">
+								<app-ar-claim-over-payment></app-ar-claim-over-payment>
+							</ng-container> -->
+							<ng-container *ngSwitchCase="'7'">
+								<app-ar-paymentfor-advances [record]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-paymentfor-advances>
+							</ng-container>
+						</ng-container>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Investment Income" *ngIf="paymentType == '5'">
+			<ng-template ngbTabContent>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12">
+						<app-ar-details-investment-income [record]="record" (emitCreateUpdate)="createUpdate = $event" (investment)="investmentData = $event" [invData]="investmentData"></app-ar-details-investment-income>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Unapplied Collection" *ngIf="paymentType != '8' && paymentType != '6' && paymentType != '7' && paymentType != '4'">
+			<ng-template ngbTabContent>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12">
+						<app-unapplied-collection [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-unapplied-collection>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+		<ngb-tab class="ngb-tab" title="Others"  *ngIf="paymentType != '6' && paymentType != '7' && paymentType != '4'">
+			<ng-template ngbTabContent>
+				<div class="input-group cust-border" style="padding-top: 0.6em">
+					<div class="col-sm-12">
+						<app-ar-others [arDetails]="record" (emitCreateUpdate)="createUpdate = $event"></app-ar-others>
+					</div>
+				</div>
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+<div class="col-sm-12" style="margin-top: 25px !important;padding-left: 0px !important;
+padding-right: 0px !important;">
+	<fieldset class="scheduler-border" style="margin-top: -12px !important; margin-bottom: 10px !important;">
+		<div style="margin-top: 8px !important; margin-bottom: 17px !important;">
+			<div class="form-row" style="margin-bottom: -10px;">
+				<div class="input-group">
+					<label class="form-control-sm col-sm-1">Created By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.createUser" disabled>
+					<label class="form-control-sm col-sm-1">Date Created</label>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.createDate"></datepicker>
+					</div>
+					<label class="form-control-sm col-sm-1">Last Update By</label>
+					<input type="text" class="form-control form-control-sm col-sm" [ngModel]="createUpdate == null ? '' : createUpdate.updateUser" disabled>
+					<label class="form-control-sm col-sm-1">Last Update</label>
+					<div class="col-sm" style="padding: 0px">
+					    <datepicker [showSeconds]="true" [required]="false" [disabled]="true" [value]="createUpdate == null ? '' : createUpdate.updateDate"></datepicker>
+					</div>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+</div>

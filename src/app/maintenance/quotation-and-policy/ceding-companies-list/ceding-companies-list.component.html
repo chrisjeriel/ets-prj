@@ -1,0 +1,57 @@
+<div class="cust-tabs-container">
+	<h4>Maintenance / Quotation & Policy</h4>
+    <ngb-tabset (tabChange)="onTabChange($event)">
+        <ngb-tab title="Ceding Company List">
+            <ng-template ngbTabContent>
+                <div class="container-fluid" style="padding: 0px">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <app-cust-non-datatable [passData]="maintenanceCedingCoListData" (add)="onClickAdd($event)" (edit)="onClickEdit($event)" (rowClick)="onRowClick($event)" (searchToDb)="searchQuery($event)" (export)="export()" (newRowDblClick)="onRowDblClick($event)"></app-cust-non-datatable>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- <fieldset class="scheduler-border">
+                                <div class="custom-row-inline-inset" style="margin-top: 12px !important; margin-bottom: 0px !important;">
+                                    <div class="input-group">
+                                        <label class="form-control-sm col-sm-1">Created By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createUser" readonly="">
+                                        <label class="form-control-sm col-sm-1">Date Created</label>
+                                        <input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.createDate !== null ? ns.toDateTimeString(selected?.createDate) : ''" readonly="">
+                                        <label class="form-control-sm col-sm-1">Last Update By</label>
+                                        <input type="text" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateUser" readonly="">
+                                        <label class="form-control-sm col-sm-1">Last Update</label>
+                                        <input type="datetime-local" class="form-control form-control-sm col-sm-2" [ngModel]="selected?.updateDate !== null ? ns.toDateTimeString(selected?.updateDate) : ''" readonly="">
+                                    </div>
+                                </div>
+                            </fieldset> -->
+
+                            <fieldset class="scheduler-border" style="margin-top: 10px !important;">
+                                <div class="input-group" style="margin-left: -13px !important;margin-top: 10px !important;">
+                                    <label class="form-control-sm col-sm-1">Created By</label>
+                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.createUser" readonly>
+                                    <label class="form-control-sm col-sm-1 no-margin">Date Created</label>
+                                    <div class="col-sm dp-cont">
+                                        <datepicker [value]="selected?.createDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                                    </div>
+                                    <label class="form-control-sm col-sm-1">Last Update By</label>
+                                    <input type="text" class="form-control form-control-sm col-sm" [ngModel]="selected?.updateUser" readonly>
+                                    <label class="form-control-sm col-sm-1 no-margin">Last Update</label>
+                                    <div class="col-sm dp-cont">
+                                        <datepicker [value]="selected?.updateDate" [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Exit" id="Exit">
+			<ng-template ngbTabContent>
+				
+			</ng-template>
+		</ngb-tab>
+    </ngb-tabset>
+</div>

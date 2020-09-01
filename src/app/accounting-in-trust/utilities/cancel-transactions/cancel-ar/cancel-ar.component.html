@@ -1,0 +1,35 @@
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Records for Cancellation</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-bottom: -8px !important;">
+		<app-cust-editable-non-datatable [passData]="passDataAR" style="width: 100%"></app-cust-editable-non-datatable>
+	</div>
+	<div class="input-group" style="margin-left: -20px;">
+		<label class="form-control-sm col-sm-1">Created By</label>
+		<input type="text" class="form-control form-control-sm col-sm">
+		<label class="form-control-sm col-sm-1">Date Created</label>
+		<input type="date" class="form-control form-control-sm col-sm">	
+		<label class="form-control-sm col-sm-1">Last Updated By</label>
+		<input type="text" class="form-control form-control-sm col-sm">
+		<label class="form-control-sm col-sm-1">Last Update</label>
+		<input type="date" class="form-control form-control-sm col-sm">	
+	</div>
+</fieldset>
+<fieldset class="scheduler-border" style="margin-top: 10px !important;">
+	<div class="row">
+		<div class="input-group col-sm-12" style=" margin-top: 10px !important;margin-bottom: -1px !important;">
+			<div class="col-sm-1"></div>
+			<label class="form-control-sm col-sm-2">Reason for Cancellation</label>
+			<textarea class="form-control form-control-sm-5" style="font-size: 11px; min-height: 55px; margin-bottom: 11px;"></textarea>
+			<div class="col-sm-2"></div>
+		</div>
+	</div>
+	<div class="form-row" style="margin-bottom: -7px !important;">
+        <div class="form-group col-sm">
+            <div class="col-md-12 text-center">
+                <div class="cust-btn-container">
+                    <button type="button" class="cust-btn"><a>Cancel</a></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</fieldset>

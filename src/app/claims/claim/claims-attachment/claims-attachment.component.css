@@ -1,0 +1,11 @@
+.input-group{
+    margin-bottom: -14px !important;
+}
+
+label{
+	line-height: 0.9;
+}
+
+.claim-info label{
+	line-height: 1.5;
+}

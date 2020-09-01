@@ -1,0 +1,221 @@
+<!-- NOTE: THIS IS BUDGET FOR THE YEAR -->
+
+<!-- <<<<<<< HEAD
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">Filter Options</legend>
+	<div class="form-row custom-row-inline-inset" style="margin-bottom: 15px !important;">
+		<div class="col-sm-6">
+			<div class="input-group">
+				<label class="col-sm-2">Select Month</label>
+				<select class="form-control form-control-sm cust-sm col-sm-4">
+					<option>All Month</option>
+					<option>January</option>
+					<option>February</option>
+					<option>March</option>
+					<option>April</option>
+					<option>May</option>
+					<option>June</option>
+					<option>July</option>
+					<option>August</option>
+					<option>September</option>
+					<option>October</option>
+					<option>November</option>
+					<option>December</option>
+				</select>
+				<label class="col-sm-2">Account Code</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-4">
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="input-group">
+				<label class="col-sm-3">Account Name</label>
+				<input type="text" class="form-control form-control-sm cust-sm col-sm-8">
+				<button class="cust-btn"><a>Search</a></button>
+			</div>
+		</div>
+	</div>
+</fieldset>
+<fieldset class="scheduler-border">
+	<legend class="scheduler-border">List of Budget Accounts</legend>
+	<div class="col-sm-12" style="margin-top: 15px !important">
+		<app-cust-editable-non-datatable [passData]="ExpenseBudgetData"></app-cust-editable-non-datatable>
+	</div>
+	<div class="col-sm-12">
+		<div class="form-row custom-row-inline-inset" style="    margin-top: 35px !important;">
+			<div class="input-group">
+				<label class="form-control-sm col-sm-1">Created By</label>
+				<input type="text" appCurrency class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Date Created</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-01T10:45">
+				<label class="form-control-sm col-sm-1">Last Update By</label>
+				<input type="text" class="form-control form-control-sm col-sm" placeholder="cuaresma">
+				<label class="form-control-sm col-sm-1">Last Update</label>
+				<input type="datetime-local" class="form-control form-control-sm col-sm" value="2018-10-02T10:00">
+			</div>
+		</div>
+	</div>
+</fieldset>
+======= -->
+					<!-- <div class="input-group">
+	 		  			<div class="col-sm" style="padding: 0px">
+	 		  				 <fieldset class="scheduler-border">
+	 		  				 	<legend class="scheduler-border">Filter Options</legend>
+	 		  				 		<div class="input-group" style="margin-top: 10px">
+	 		  				 			<label class="form-control-sm" for="xx" style="padding-left:0px !important;">Selected Month</label>
+			                             <select class="form-control form-control-sm cust-sm col-sm-2">
+			                                <option value="All Months">ALL Months</option>
+			                             </select>
+			                             <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Account Code</label>
+			                            <input type="text" placeholder="ALL Account Codes" class="form-control form-control-sm cust-sm col-sm-2">
+			                            <div class="text-search-ico"><a><i class="fa fa-search"></i></a></div>
+			                            <label class="form-control-sm col-sm-1" for="xx" style="padding-left:0px !important;">Account Name</label>
+			                            <input type="text" placeholder="ALL Accounts" class="form-control form-control-sm cust-sm col-sm-4">
+			                             <button class="cust col-sm-1 form-control form-control-sm" style="margin-left: 10px ! important" type="button"><a>Search</a></button>
+				 		  			</div>
+	 		  				 </fieldset>
+	 		  			</div>
+					</div> -->
+	 		  		<fieldset class="scheduler-border">
+	 		  			<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
+	 		  				<div class="container-fluid" style="padding-top: 7px;">
+	 		  					<form #myForm="ngForm">
+		 		  					<div class="row">
+		 		  						<div class="col-sm-4"></div>
+		 		  						<div class="col-sm-4">
+		 		  							<div class="input-group">
+		 		  								<label class="form-control-sm cust-sm col-sm-5">Year</label>
+			 		  								<select name="select1" class="form-control form-control-sm cust-sm col-sm-4" id="selectYear" [ngModel]="budgetYear" (ngModelChange)="budgetYear=$event;getAcseBudgetExpense();form.control.markAsPristine();">
+			 		  									<option *ngFor="let i of budgetYearArr" value="{{ i }}">{{ i }}</option>
+			 		  								</select>
+		 		  							</div>
+		 		  						</div>
+		 		  						<div class="col-sm-4"></div>
+		 		  					</div>
+	 		  					</form>
+	 		  					<div class="row">
+			                        <div class="col-sm-12" style="padding: 0">
+			                            <app-cust-editable-non-datatable #budgetYrTbl [passData]="budgetYrData" (clickLOV)="showLov($event)" (newClick)="onRowClick($event)" (tableDataChange)="budgetYrData.tableData=$event;"></app-cust-editable-non-datatable>
+			                        </div>
+	                    		</div>
+	                    		<div class="row" style="margin-top: -16px;">
+	                    			<div class="form-group col-sm" style="margin-bottom: 8px;">
+	                    				<div class="col-md-13 text-center">
+	                    					<div class="cust-btn-container">
+	                    						<button type="button" class="cust-btn" (click)="can.clickCancel()"><a>Cancel</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickSave()"><a>Save</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickPrint()"><a>Print</a></button>
+	                    						<button type="button" class="cust-btn" (click)="onClickCopy()"><a>Copy</a></button>
+	                    					</div>
+	                    				</div>
+	                    			</div>
+	                    		</div>
+	 		  				</div>	
+	 		  		</fieldset> 
+	 		  		<div class="col-sm-12" style="padding-left: 0px !important;padding-right: 0px !important;">
+			            <fieldset class="scheduler-border" style="margin-top: 10px ! important"> 
+			              <div class="row">
+			                <div class="col-sm-12">
+			                  <div class="col-sm" style="padding: 0; margin-top: 10px; margin-bottom: 22px">
+			                    <div class="input-group">
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Created By</label>
+			                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.createUser" readonly>
+			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Date Created</label>
+			                          <div class="dp-cont col-sm">
+			                            <datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.createDate"></datepicker>
+			                          </div>
+			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Last Update By</label>
+			                          <input type="text" class="form-control form-control-sm col-sm" [ngModel]="otherData?.updateUser" readonly>
+			                        </div>
+			                      </div>
+			                      <div class="col-sm-3" style="padding: 0">
+			                        <div class="input-group">
+			                          <label class="form-control-sm">Last Update</label>
+			                          <div class="dp-cont col-sm">
+			                            <datepicker [type]="'datetime'" [disabled]="true" [value]="otherData?.updateDate"></datepicker>
+			                          </div>
+			                        </div>
+			                      </div>
+			                    </div>
+			                  </div>
+			                </div>
+			              </div>
+			            </fieldset>
+			          </div>
+
+<app-modal class="d-none" id="copyYear" #copyYear>
+    <div header>Copy Expense Budget</div>  
+    <div body style=" max-width: 450px;">
+        <div class="form-row custom-row-inline-inset">
+            <span class="col-sm-2"></span>
+            <div class="input-group">
+                <label class="form-control-sm col-sm-4 text-right labels">Copy from Year:</label>
+                <input type="text" class="form-control form-control-sm col-sm-7" [(ngModel)]="params.originYear">
+            </div>
+        </div>
+    </div>
+    <div footer class="text-center">
+        <button type="button" class="cust-btn" (click)="copyExpenseBudget();copyYear.closeModal();"><a>Copy</a></button>
+        <button type="button" class="cust-btn" (click)="copyYear.closeModal();"><a>Cancel</a></button>
+    </div>
+</app-modal>
+
+<app-modal class="d-none" #printMdl>
+    <div header>Print</div>  
+    <div body style=" max-width: 450px;">
+        <div class="row">
+            <div class="input-group" style="margin-bottom: -14px !important;">
+	          <div class="col-sm-2"></div>
+	          <label class="form-control-sm col-sm-3 cust-lbl">As of</label>
+	          <div class="dp-cont col-sm-4" style="margin-left: 0 !important;">
+	            <datepicker [type]="'date'" [(value)]="printParams.asOfDate"></datepicker>
+	          </div>
+	          <div class="col-sm-3"></div>
+	        </div>
+	        <div class="input-group" style="margin-bottom: -14px !important;">
+	          <div class="col-sm-2"></div>
+	          <label class="form-control-sm col-sm-3 cust-lbl">Destination</label>
+	          <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="printParams.destination" [disabled]="printParams.asOfDate == ''">
+	            <option value="screen">Screen</option>
+	            <option value="dlPdf">PDF</option>
+	            <option value="printPdf">Printer</option>
+	            <option value="exl">Excel</option>
+	          </select>
+	          <div class="col-sm-3"></div>
+	        </div>
+        </div>
+    </div>
+    <div footer class="w-100 text-center">
+    	<ng-container *ngIf="ps.printLoader">
+	      <span class="fa fa-spinner fa-spin" style="font-size: 15px;"></span><span style="font-family: Arial; font-size: 15px;">&nbsp;Please wait</span>
+	    </ng-container>
+	    <ng-container *ngIf="!ps.printLoader">
+	    	<button type="button" class="cust-btn" (click)="printMdl.closeModal();"><a>Cancel</a></button>
+	        <button type="button" class="cust-btn" (click)="print()" [disabled]="printParams.asOfDate == ''"><a>Print</a></button>
+    	</ng-container>
+    </div>
+</app-modal>
+
+<app-lov #budYrLov [passData]="passDataLov" (selectedData)="setData($event)" [lovCheckBox]="lovCheckBox"></app-lov>
+<app-confirm-save  #con (onYes)="onSaveAcseBudgetExpense()"></app-confirm-save>
+<app-sucess-dialog #suc [icon]="dialogIcon" [message]="dialogMessage" (onOk)="checkCancel(); modalService.dismissAll();"></app-sucess-dialog>
+<app-cancel-button #can (onYes)="onClickSave('cancel')" [url]="'/'" ></app-cancel-button>
+<app-override-login [approvalCd]="approvalCd" (isSuccess)="copyExpenseBudget($event)" #override></app-override-login>
+
+<app-modal class="d-none" #conOvrMdl>
+    <div header>Confirmation</div>
+    <div body>{{ conOvrMsg }}</div>
+    <div footer class="cust-btn-container">
+        <button class="cust-btn" (click)="checkUser(); conOvrMdl.closeModal()">Yes</button>
+        <button class="cust-btn" (click)="conOvrMdl.closeModal()">No</button>
+    </div>
+</app-modal>

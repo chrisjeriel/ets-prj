@@ -1,0 +1,203 @@
+<!-- <div class="cust-tabs-container">
+    <h4>Available Components: </h4>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Sample</legend>
+        <app-cust-table [filters]="filters" [tableData]="tableData" [tHeader] = "tHeader" [dataTypes] = "dataTypes" [filterDataTypes] = "filterDataTypes"></app-cust-table>
+        <app-cust-editable-table [addFlag]="true" [editFlag]="false" [deleteFlag]="true" [nData]="nData" [tableData]="tableData2" [tHeader]="tHeader"></app-cust-editable-table>
+    </fieldset>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Modal Sample</legend>
+        <br/>
+        <app-modal>
+        <div header>TESTING</div>
+        <div body>
+            <app-cust-table [tableData]="tableData" [tHeader]="tHeader" [dataTypes]="dataTypes"></app-cust-table>
+        </div>
+        <div footer>
+            <app-modal [btnTitle]="'Yes'">
+                <div header>Success</div>
+                <div body>
+                   Success
+                </div>
+                <div footer>
+                    <button class="cust-btn" type="button" (click)="modalService.dismissAll();"><a>Test</a></button>
+                </div>
+            </app-modal>
+        </div>
+    </app-modal>
+    <button type="button" class="cust-btn" (click)="open()">Open Modal from Parent </button>
+    </fieldset>
+    <br/>
+    <fieldset class="scheduler-border">
+        <legend class="scheduler-border">Table Samples (Non DataTables)</legend>
+        <app-cust-non-datatable [passData] = "passData" [filterDataTypes] = "filterDataTypes2"></app-cust-non-datatable>
+        <br/>
+        <br/>
+        <br/>
+        <app-cust-editable-non-datatable [passData]="passDataEditable"></app-cust-editable-non-datatable>
+    </fieldset>
+</div> -->
+
+
+<!-- <div class="cust-tabs-container">
+
+
+    <div style="height: 600px; width: 600px; border: 1px solid black; position: relative;" >
+        <div class="controlContainer" style="position: absolute; margin-top: -30px;">
+            <button>Sample 1</button>
+            <button>Sample 2</button>
+            <button>Sample 3</button>
+        </div>
+        <div class="tableContriner" style="height: 600px; width: auto; border: 1px solid green;">
+            
+        </div>
+    </div>
+</div>
+
+<button type="button" (click)="testingInternalComp()">Testingo</button> -->
+
+<!-- <div class="row">
+    <div class="col-sm-12">
+        <app-cust-non-datatable [passData]="testingData"></app-cust-non-datatable>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6" style="height: 70px;">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="2" [required]="true">
+            <ng-container icon-1>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>
+        </text-editor>
+    </div>
+    <div class="col-sm-6" style="height: 70px;">
+        <text-editor [editorPlaceholder]="'Type kayo dito...'" [edtrOpnrPos]="1" [editorContent]="testCont" (fetchContent)="testCont = $event" [required]="false">
+            <ng-container icon-3>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>
+            <ng-container icon-2>
+                <a><i class="fa fa-search" (click)="test()"></i></a>
+            </ng-container>             
+        </text-editor>
+    </div>
+</div>
+<br/>
+<div class="row">
+    <div class="form-control-sm col-sm-6 edtr-cont req" style="height: 60px; padding-left: 6px !important;">
+        <text-editor [editorContent]="testCont" (fetchContent)="testCont = $event" [edtrOpnrPos]="2" [readonly]="true">
+            <ng-container icon-1>
+                <a (click)="test()"><i class="fa fa-search"></i></a>
+            </ng-container>
+        </text-editor>
+    </div>
+</div>
+
+<input type="text" [(ngModel)]="testMask" mask="000" class="form-control form-control-sm col-sm-2" (change)="testVal()" />
+<br/>
+<br/>
+<div class="input-group">
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="teest.testMask" (blur)="testblur()" (change)="testVal()">
+</div>
+<br />
+<br />
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [ngModel]="ttt" (ngModelChange)="ttt=$event; testblur()">
+
+
+<br/>
+<br/>
+
+<button class="cust-btn" (click)="clickTesting()">Check</button>
+<app-mtn-insured id="principalLOV" (selectedData)="setPrincipal($event)" [lovCheckBox]="true"></app-mtn-insured>
+<input [readonly]="false" type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="uuu">
+
+<div class="row">
+    <div class="col-sm-12">
+        <input type="file" (change)="uploadTest($event)">
+        <button type="button" (click)="uploadTest($event)">Submit</button>
+    </div>
+</div>
+
+
+ -->
+<div class="row">
+    <fieldset class="scheduler-border d-block w-100">
+        <legend class="scheduler-border">Paul's Domain</legend>
+        <button (click)="openClaimsLov(container)">Summon Claims</button>
+    </fieldset>
+</div>
+
+<ng-template #container class="w-100 h-100" >
+   <app-claim [claimParams]="claimInfo" [contModal]="claimsCont"></app-claim>
+
+</ng-template>
+<!-- 
+<app-special-lov></app-special-lov>
+
+
+
+<br />
+<br />
+<br />
+<br />
+<br />
+
+<p>Test</p>
+
+<div class="container">
+    <br/>
+    <div class="input-group">
+        <div class="col-sm-3">
+            <datepicker [value]="testVal" (outVal)="testVal=$event"></datepicker>
+        </div>
+        <div class="col-sm-3">
+            <datepicker [showIcon]="false" [showSeconds]="true" [disabled]="true"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [showIcon]="true" [type]="'date'" [required]="true" [value]="testDate" (outVal)="testDate=$event" [minDate]="'2019-05-06'"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [type]="'time'" [value]="testTime" (outVal)="testTime=$event"></datepicker>
+        </div>
+        <div class="col-sm-2">
+            <datepicker [type]="'date'" [(value)]="testDate2"></datepicker>
+        </div>
+    </div>
+</div>
+
+<button (click)="test()">Test</button>
+
+
+<br />
+<br />
+<br />
+<div class="input-group">
+    <input class="form-control form-control-sm col-sm-1 not-form" type="text">
+    <div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search"></i></a></div>&nbsp;
+    <input class="form-control form-control-sm col-sm-1" type="text" style="margin-left: 2px;" readonly>
+</div>
+
+<br />
+
+<div class="input-group">
+    <input class="form-control form-control-sm col-sm-1 not-form" type="text">
+    <div class="text-search-ico" style="padding-left: 1px"><a><i class="fa fa-search fa-spinner fa-spin"></i></a></div>&nbsp;
+    <input class="form-control form-control-sm col-sm-1" type="text" style="margin-left: 2px;" readonly>
+</div>
+
+
+<br/>
+<br>
+<div ngbDropdown>
+        <button class="cust-filter" ngbDropdownToggle><a><fa name="filter"></fa></a></button>
+        <div ngbDropdownMenu>
+
+        </div>
+    </div>
+
+<br>
+
+<text-editor [editorContent]="edtr" (fetchContent)="edtr=$event"></text-editor>
+ -->
+
+
+<!-- <input type="text" appCheckForm [data]="ttt" (output)="ttt=$event"> -->
