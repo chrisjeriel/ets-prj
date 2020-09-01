@@ -1274,7 +1274,7 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044y'];
           query = 'SELECT isNull(extractUser) AS [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY],'+
           'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) AS [POLICY NO],isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],'+
-          'isNull(lineCd) as [LINE], checkNullNo(prinId) as [PRIN ID], isNull(principalName), checkNullNo(contractorId) as [CONTRACTOR ID], isNull(contractorName) AS [CONTRACTOR NAME],'+
+          'isNull(lineCd) as [LINE], checkNullNo(prinId) as [PRIN ID], isNull(principalName) as PRINCIPAL NAME, checkNullNo(contractorId) as [CONTRACTOR ID], isNull(contractorName) AS [CONTRACTOR NAME],'+
           'myFormat(effDate) AS [EFFECTIVE DATE], myFormat(expiryDate) AS [EXPIRY DATE], myFormat(acctDate) AS [ACCT DATE],'+
           'checkNullNo(distId) AS [DIST ID], checkNullNo(histNo) AS [HIST NO], checkNullNo(instNo) AS [INST NO],'+
           'negFmt(currency(tsiAmt)) as [SUM INSURED],negFmt(currency(tsiQuota)) as [SI QUOTA],negFmt(currency(tsi1stRet)) as [SI 1st RET],'+
