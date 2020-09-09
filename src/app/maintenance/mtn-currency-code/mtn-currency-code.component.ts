@@ -113,7 +113,7 @@ export class MtnCurrencyCodeComponent implements OnInit {
               ev: ev
             });
 
-            $('#currencyMdl > #modalBtn').trigger('click');
+            // $('#currencyMdl > #modalBtn').trigger('click');
             this.modal.openNoClose();
           }
           

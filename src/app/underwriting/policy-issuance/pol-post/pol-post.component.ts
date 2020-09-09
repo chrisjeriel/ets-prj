@@ -132,9 +132,9 @@ export class PolPostComponent implements OnInit {
         if(!this.alterationFlag && !coveragaAmts.every(a=>covData[a]>=0)){
           this.loadMsg = 'Invalid amounts. All amounts must be positive. Please go to Coverage tab';
         }else if(
-            ((this.lineCd=='CAR'|| this.lineCd=='EAR') && secCvrs.reduce((a,b)=>a+( (b.section=="I" || b.section=="III") && b.addSi == 'Y' ?b.cumSi:0) , 0) != covData.cumTSi) ||
-            ((this.lineCd=='EEI') && secCvrs.reduce((a,b)=>a+(b.addSi == 'Y' ? b.cumSi:0) , 0)  != covData.cumTSi) ||
-            (['CAR','EAR','EEI'].indexOf(this.lineCd)== -1 && secCvrs.reduce((a,b)=>a+(b.section=="I" && b.addSi == 'Y' ? b.cumSi:0 ), 0) != covData.cumTSi)
+            ((this.lineCd=='CAR'|| this.lineCd=='EAR') && secCvrs.reduce((a,b)=>a+( (b.section=="I" || b.section=="III") && b.addSi == 'Y' ?b.cumSi:0) , 0).toFixed(2) != covData.cumTSi) ||
+            ((this.lineCd=='EEI') && secCvrs.reduce((a,b)=>a+(b.addSi == 'Y' ? b.cumSi:0) , 0).toFixed(2)  != covData.cumTSi) ||
+            (['CAR','EAR','EEI'].indexOf(this.lineCd)== -1 && secCvrs.reduce((a,b)=>a+(b.section=="I" && b.addSi == 'Y' ? b.cumSi:0 ), 0).toFixed(2) != covData.cumTSi)
           ){
           this.loadMsg = 'Total sum insured of Section Covers is not equal to the Total Sum Insured of the policy coverage. Please check Coverage tab.';
         }else if(covData.pctShare >100){

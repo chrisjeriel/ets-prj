@@ -7,8 +7,9 @@ import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol
 import { ModalComponent } from '@app/_components/common/modal/modal.component';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
-import { finalize } from 'rxjs/operators';
-
+import { finalize, map } from 'rxjs/operators';
+import { MtnCurrencyCodeComponent } from '@app/maintenance/mtn-currency-code/mtn-currency-code.component';
+import { forkJoin } from 'rxjs'
 
 @Component({
   selector: 'app-allocate-investment-income',
@@ -23,6 +24,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   @ViewChild('invtTable') tableInvt : CustEditableNonDatatableComponent;
   @ViewChild('successMdl') successMdl : ModalComponent;
   @ViewChild('jvTable') jvTable : CustEditableNonDatatableComponent;
+  @ViewChild('currencyModal') currLov: MtnCurrencyCodeComponent;
   
   byDate: any = '';
   radioVal: any = '';
@@ -48,8 +50,9 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 
    passData: any = {
         tableData: [],
-        tHeader: ['Tran Class', 'Tran No.', 'Tran Date', 'Status', 'Particulars', 'Bank Charges', 'Withholding Taxes', 'Investment Income'],
-        dataTypes: ['text', 'text', 'date', 'text', 'text', 'currency', 'currency', 'currency'],
+        // tHeader: ['Tran Class', 'Tran No.', 'Tran Date', 'Status', 'Particulars', 'Bank Charges', 'Withholding Taxes', 'Investment Income'],
+        tHeader: ['Tran No.', 'Tran Date', 'Tran Type', 'SL Name', 'Credit Amount', 'Debit Amount', 'Net Investment Income', 'Withholding Taxes', 'Bank Charges'],
+        dataTypes: ['text', 'date', 'text', 'text', 'currency', 'currency', 'currency', 'currency', 'currency'],
         pageLength: 10,
         expireFilter: false, 
         checkFlag: true, 
@@ -61,10 +64,12 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         pageID: 1, 
         searchFlag: true,
         infoFlag: true,
-	    paginateFlag: true,
-        keys: ['tranClass','tranNo','tranDate','statusDesc',
-        	   'particulars','bankCharge','whtaxAmt','incomeAmt'],
-        widths: [1,130,150,150,180,150,150,150],
+        deleteFlag: true,
+	      paginateFlag: true,
+        keys: ['tranNo','tranDate','tranTypeName', 'slName', 'creditAmt', 'debitAmt', 'incomeAmt', 'whtaxAmt', 'bankCharge'],
+        widths: [130,1,150,150,140,140,140,140,140],
+        total:[null,null,null,'Total','creditAmt', 'debitAmt', 'incomeAmt', 'whtaxAmt', 'bankCharge'],
+        uneditable: [true,true,true,true,true,true,true,false,false]
     }
 
     searchParams: any[] = [];
@@ -148,7 +153,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    	 tableData: [],
    	 tHeader: ["JV No.","Type","JV Date","Amount"],
    	 resizable: [true,true,true,true],
-   	 dataTypes: ['text','text','text','currency'],
+   	 dataTypes: ['text','text','date','currency'],
    	 addFlag: false,
      disableAdd : false,
      searchFlag: false,
@@ -167,6 +172,11 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    tranIdOut: any;
    result : boolean;
    loading: boolean = false;
+
+   currCd: any = '';
+   currency: any = '';
+   allocTranDate: string = '';
+   tranIdUtil: any = '';
 
 
   constructor(private route: Router, private titleService: Title, private ns: NotesService, private as: AccountingService, private ms: MaintenanceService, private userService: UserService) { }
@@ -195,17 +205,39 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   		  							  var totn_string = a.tranNo;
   		  							  a.tranNo = totn_string.padStart(6, '0');
                                       a.tranDate = this.ns.toDateTimeString(a.tranDate);
-                                      a.uneditable = ['tranClass','tranNo','tranDate','statusDesc',
-                                                        'particulars','bankCharge','whtaxAmt','incomeAmt'];
+                                      // a.uneditable = ['tranClass','tranNo','tranDate','statusDesc',
+                                      //                   'particulars','bankCharge','whtaxAmt','incomeAmt'];
                                    	  return a; });
   		  this.passData.tableData = td;
-        $('.ng-dirty').removeClass('ng-dirty');
+        // $('.ng-dirty').removeClass('ng-dirty');
   		  this.table.refreshTable();
+        this.table.markAsPristine();
   	});
   }
 
   onClickSearch(){
-  	if(this.isEmptyObject(this.radioVal)){
+    if(this.toDate < this.fromDate){
+        this.dialogMessage="To Date must be greater than From Date";
+        this.dialogIcon = "error-message";
+        this.successDialog.open();
+        this.passData.tableData = [];
+      this.table.refreshTable();
+    } else if ((this.isEmptyObject(this.fromDate) && this.isEmptyObject(this.toDate)) || this.isEmptyObject(this.currCd)) {
+      if(this.isEmptyObject(this.fromDate) && this.isEmptyObject(this.toDate)) {
+        this.dialogMessage="To Date and From Date must have a value";
+      } else {
+        this.dialogMessage="Currency required";
+      }
+
+      this.dialogIcon = "error-message";
+      this.successDialog.open();
+      this.passData.tableData = [];
+      this.table.refreshTable();
+    } else {
+      this.searchTransactions();        
+    }
+
+  	/*if(this.isEmptyObject(this.radioVal)){
     }else {
 
     	if(this.radioVal === 'bydate'){
@@ -260,8 +292,8 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
     		} else {
     			this.searchTransactions();    		
     		}	
-    	}
-    }
+    	}*/
+    // }
  }
 
  searchTransactions(){
@@ -270,6 +302,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	        this.fromMonth === null || this.fromMonth === undefined ?'':this.fromMonth;
 	        this.fromYear === null || this.fromYear === undefined ?'':this.fromYear;
 	        this.asOfYear === null || this.asOfYear === undefined ?'':this.asOfYear;
+          this.currCd === null || this.currCd === undefined ?'':this.currCd;
 	        this.passData.tableData = [];
 	        this.table.overlayLoader = true;
 	        this.boolAllocate = false;
@@ -279,6 +312,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	                             {key: "tranMonth", search: this.fromMonth},
 	                             {key: "tranYear", search: this.fromYear },
 	                             {key: "tranDate", search: this.asOfYear },
+                               {key: "currCd", search: this.currCd },
 	                             ]; 
          console.log(this.searchParams);
 	       this.retrieveAllInvtIncome(this.searchParams);
@@ -298,11 +332,12 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
      this.invtId = [];
   	  if(data !== null){
 	      this.selectedData = data;
-        this.invtId.push(data.invtId)
+        this.invtId.push(data.slCd);
         this.tranNo = data.tranNo;
         this.tranDate = data.tranDate;
         this.status = data.statusDesc;
         this.payor = data.payor;
+        this.tranIdUtil = data.tranId;
 	    } else {
 	     this.boolView = true;
 	    }
@@ -346,13 +381,40 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
   showModalViewDetails(obj){
     console.log(obj);
   	obj.map(a => {
-  		this.searchParamsInvt = [ {key: "invtId", search: a},
-                             ]; 
+  		this.searchParamsInvt = [ {key: "invtId", search: a == null ? 0 : a}];
+    });
 
-  		this.as.getAccInvestments(this.searchParamsInvt).pipe(
-  			finalize(() => this.showModDetailsFinal(this.dataAll,obj.length) )
-  			).subscribe( data => {
-	            for(let rec of data['invtList']){
+      var subRes = forkJoin(this.as.getAcitInvestmentsIncArtUtil(this.tranIdUtil),
+                            this.as.getAccInvestments(this.searchParamsInvt))
+                 .pipe(map(([arInvt,jvInvt]) => { return { arInvt, jvInvt }; }));
+
+  		// this.as.getAccInvestments(this.searchParamsInvt).pipe(
+  		// 	finalize(() => this.showModDetailsFinal(this.dataAll,obj.length) )
+  		// 	)
+
+      subRes.subscribe( data => {
+        for(let rec of data['arInvt']['invtList']){
+            this.dataAll.push( {
+                              invtCd: rec.invtCd,
+                                      certNo: rec.certNo,
+                                      invtTypeDesc: rec.invtTypeDesc,
+                                invtSecDesc: rec.invtSecDesc,
+                                      matPeriod: rec.matPeriod,
+                                      durUnit: rec.durUnit,
+                                      intRt: rec.intRt,
+                                      purDate: this.ns.toDateTimeString(rec.purDate),
+                                      matDate: this.ns.toDateTimeString(rec.matDate),
+                                      currCd: rec.currCd,
+                                      currRate: rec.currRate,
+                                      invtAmt: rec.invtAmt,
+                                      incomeAmt: rec.incomeAmt,
+                                      bankCharge: rec.bankCharge,
+                                      whtaxAmt:  rec.whtaxAmt,
+                                      matVal: rec.matVal
+                            });
+        }
+
+	      for(let rec of data['jvInvt']['invtList']){
 		  	 		this.dataAll.push( {
 		  	 										  invtCd: rec.invtCd,
 								                      certNo: rec.certNo,
@@ -371,15 +433,16 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 								                      whtaxAmt:  rec.whtaxAmt,
 								                      matVal: rec.matVal
 		  	 										});
-	  	 	   }
-          this.loading = false;
+	  	 	}
+
+        this.loading = false;
+        this.showModDetailsFinal(this.dataAll,obj.length)
   	 	});
-  	});
   	  
   }
 
   showModDetailsFinal(obj, counter){
-  	if (counter === obj.length ){
+  	// if (counter === obj.length ){
   		this.passDataInvt.tableData = [];
   		for(let rec of obj){
 		  	 		this.passDataInvt.tableData.push( {
@@ -403,7 +466,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	  	}
 	  	this.tableInvt.refreshTable();
   		this.queryModal.openNoClose();	
-  	}  	 
+  	// }  	 
   }
 
   onRowDblClick(){
@@ -414,51 +477,76 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
  }
 
  onClickAllocate(){
+  if(this.allocTranDate == '') {
+    this.dialogMessage="Transaction date required";
+    this.dialogIcon = "error-message";
+    this.successDialog.open();
+    return;
+  }
   
  	 this.selectedTranId = [];
  	 this.sumBankCharge = 0;
  	 this.sumWhtax = 0;
  	 this.sumInvtIncome = 0;
  	 var currCd = null;
- 	 var counter = 0; 
-	  for(var i= 0; i< this.passData.tableData.length; i++){
-	  		if(this.passData.tableData[i].checked){
-	  			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId, currCd : this.passData.tableData[i].currCd , 
-	  									   refTranId :  this.passData.tableData[i].tranId, 
-                         refInvtId :  this.passData.tableData[i].invtId,
-	  									   createDate : this.ns.toDateTimeString(0), 
-    									   createUser : this.ns.getCurrentUser(),
-    									   updateDate : this.ns.toDateTimeString(0), 
-    									   updateUser : this.ns.getCurrentUser()    });
-	  			this.currCode = this.passData.tableData[i].currCd;
-	  			this.currRt = this.passData.tableData[i].currRate;		
-	  			this.sumBankCharge = this.sumBankCharge + this.passData.tableData[i].bankCharge;
-	  			this.sumWhtax = this.sumWhtax + this.passData.tableData[i].whtaxAmt;
-	  			this.sumInvtIncome = this.sumInvtIncome + this.passData.tableData[i].incomeAmt;
-	  		}
-	  }
+ 	 var counter = 0;
+   this.selectedTranId = this.passData.tableData.filter(a => !a.deleted).map(a => {
+    this.currCode = a.currCd;
+    this.currRt = a.currRate;
+    this.sumBankCharge += a.bankCharge;
+    this.sumWhtax += a.whtaxAmt;
+    this.sumInvtIncome += a.incomeAmt;
+    return {
+      tranId: a.tranId,
+      currCd: a.currCd,
+      refTranId: a.tranId,
+      refInvtId: a.slCd,
+      createUser: this.ns.getCurrentUser(),
+      createDate: this.ns.toDateTimeString(0),
+      updateUser: this.ns.getCurrentUser(),
+      updateDate: this.ns.toDateTimeString(0)
+    }
+   });
+	  // for(var i= 0; i< this.passData.tableData.length; i++){
+	  // 		if(this.passData.tableData[i].checked){
+	  // 			this.selectedTranId.push({ tranId : this.passData.tableData[i].tranId, currCd : this.passData.tableData[i].currCd , 
+	  // 									   refTranId :  this.passData.tableData[i].tranId, 
+   //                       refInvtId :  this.passData.tableData[i].invtId,
+	  // 									   createDate : this.ns.toDateTimeString(0), 
+   //  									   createUser : this.ns.getCurrentUser(),
+   //  									   updateDate : this.ns.toDateTimeString(0), 
+   //  									   updateUser : this.ns.getCurrentUser()    });
+	  // 			this.currCode = this.passData.tableData[i].currCd;
+	  // 			this.currRt = this.passData.tableData[i].currRate;		
+	  // 			this.sumBankCharge = this.sumBankCharge + this.passData.tableData[i].bankCharge;
+	  // 			this.sumWhtax = this.sumWhtax + this.passData.tableData[i].whtaxAmt;
+	  // 			this.sumInvtIncome = this.sumInvtIncome + this.passData.tableData[i].incomeAmt;
+	  // 		}
+	  // }
 
-	  if(this.isEmptyObject(this.selectedTranId)){
-	  	this.dialogMessage="Please choose transactions to allocate";
-        this.dialogIcon = "error-message";
-        this.successDialog.open();
-	  } else {
-      console.log(this.selectedTranId);
-	  	currCd = this.selectedTranId[0].currCd;
-      counter = 0;
-	 	this.selectedTranId.forEach( a => {
-	 								if (a.currCd != currCd){
-	 									this.dialogMessage="You cannot allocate transactions with different currency.";
-								        this.dialogIcon = "error-message";
-								        this.successDialog.open();
-								        this.allocateTransaction(null,null,false);
-	 								} else {
-	 									counter = counter + 1;
-		 								this.allocateTransaction(counter,this.selectedTranId.length,true);
-                    this.loading = true;
-		 						    }
-	 								});
-	  }
+    this.allocateTransaction(1,1,true);
+
+	  // if(this.isEmptyObject(this.selectedTranId)){
+	  // 	this.dialogMessage="Please choose transactions to allocate";
+   //      this.dialogIcon = "error-message";
+   //      this.successDialog.open();
+	  // } else {
+   //    console.log(this.selectedTranId);
+	  // 	currCd = this.selectedTranId[0].currCd;
+   //    counter = 0;
+	 	// this.selectedTranId.forEach( a => {
+	 	// 							if (a.currCd != currCd){
+	 	// 								this.dialogMessage="You cannot allocate transactions with different currency.";
+			// 					        this.dialogIcon = "error-message";
+			// 					        this.successDialog.open();
+			// 					        this.allocateTransaction(null,null,false);
+	 	// 							} else {
+	 	// 								counter = counter + 1;
+		 // 								this.allocateTransaction(counter,this.selectedTranId.length,true);
+   //                  this.loading = true;
+		 // 						    }
+	 	// 							});
+	  // }
  }
 
  allocateTransaction(iteration?, limit?, success?){
@@ -513,18 +601,17 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
         this.jvDatasList.saveAcitJvEntryList.push(this.jvDatas);
    },500);
 
-   console.log(this.jvDatasList);
  	 this.saveJV(this.jvDatasList);
 
  }
 
    saveJV(obj){
+    var x;
     setTimeout(()=>{
-       this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result))
+       this.as.saveAccJVEntryList(obj).pipe(finalize(() => this.resultJVAllocation(this.tranIdOut,this.result, x))
           ).subscribe((data:any) => {
           this.tranIdOut = data['tranIdOut'];
-          console.log(data);
-          console.log(this.tranIdOut);
+          x = data['tranIdStr'];
         
           if(data['returnCode'] != -1) {
              this.dialogMessage = data['errorList'][0].errorMessage;
@@ -551,7 +638,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    tranClass : 'JV', 
 	    tranTypeCd: null,
 	    tranClassNo : null,   
-	    tranDate :  this.ns.toDateTimeString(0), 
+	    tranDate :  this.ns.toDateTimeString(this.allocTranDate).split('T')[0], 
 	    tranId : null, 
 	    tranStat : 'O', 
 	    tranYear : null, 
@@ -560,7 +647,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    tranIdJv : null,
 	    jvYear : null,
 	    jvNo : null,
-	    jvDate : this.ns.toDateTimeString(0),
+	    jvDate : this.ns.toDateTimeString(this.allocTranDate).split('T')[0],
 	    jvStatus : 'N',
 	    jvTranTypeCd : jvTranTypeCd,
 	    tranTypeName : null,
@@ -570,7 +657,7 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
 	    particulars :'Investment Allocation',
 	    currCd : currCd,
 	    currRate : currRate,
-	    jvAmt : jvAmt,
+	    jvAmt : jvAmt.toFixed(2),
 	    localAmt : jvAmt * currRate,
 	    allocTag : 'Y',
 	    allocTranId : null,
@@ -588,30 +675,65 @@ export class AllocateInvestmentIncomeComponent implements OnInit {
    
   }
 
-  resultJVAllocation(tranIdout,res){
+  resultJVAllocation(tranIdout,res,tranIdStr?){
 
   	if (res){
-  		this.as.getJVAllocInvtIncListing(tranIdout).pipe(finalize(() => this.successMdl.openNoClose()))
-  			.subscribe(( data:any) => {
-  			this.passDataJv.tableData = [];
-		  		for(let rec of data.allInvtIncomeList){
-				  	 		this.passDataJv.tableData.push( {
-				  	 										  jvNo: rec.jvYear + '-' + rec.jvNo.padStart(6, '0'),
-										                      type: rec.tranTypeName,
-										                      jvDate: this.ns.toDateTimeString(rec.jvDate).split('T')[0],
-										                      amount: rec.jvAmt
-				  	 										});
-			  	}
-			  	this.jvTable.refreshTable();
-			  	this.boolAllocate = false;
-			  	this.onClickSearch();
-  		});
+  		// this.as.getJVAllocInvtIncListing(tranIdout).pipe(finalize(() => this.successMdl.openNoClose()))
+  		// 	.subscribe(( data:any) => {
+  		// 	this.passDataJv.tableData = [];
+		  // 		for(let rec of data.allInvtIncomeList){
+				//   	 		this.passDataJv.tableData.push( {
+				//   	 										  jvNo: rec.jvYear + '-' + rec.jvNo.padStart(6, '0'),
+				// 						                      type: rec.tranTypeName,
+				// 						                      jvDate: this.ns.toDateTimeString(rec.jvDate).split('T')[0],
+				// 						                      amount: rec.jvAmt
+				//   	 										});
+			 //  	}
+			 //  	this.jvTable.refreshTable();
+			 //  	this.boolAllocate = false;
+			 //  	this.onClickSearch();
+  		// });
+      var obs = tranIdStr.split(',').filter(a => a !== "").map(a => {return this.as.getJVEntry(a); });
+
+      var $sub = forkJoin(obs);
+                 // .pipe(map(([arInvt,jvInvt]) => { return { arInvt, jvInvt }; }));
+      $sub.subscribe(data => {
+        this.passDataJv.tableData = [];
+        data.forEach(jv => {
+          var rec = jv['transactions']['jvListings'];
+          this.passDataJv.tableData.push({
+            jvNo: rec.jvYear + '-' + rec.jvNo,
+            type: rec.tranTypeName,
+            jvDate: this.ns.toDateTimeString(rec.jvDate).split('T')[0],
+            amount: rec.jvAmt
+          });
+        });
+
+        this.jvTable.refreshTable();
+        this.boolAllocate = false;
+        this.successMdl.openNoClose();
+      });
   	}else {
   		this.boolAllocate = false;
   	}
   	this.loading = false;
-    $('.ng-dirty').removeClass('ng-dirty');
+    // $('.ng-dirty').removeClass('ng-dirty');
+    this.table.markAsPristine();
   }
 
+  showCurrencyModal(){
+    this.currLov.modal.openNoClose();
+  }
+
+  setCurrency(data){
+    this.currCd = data.currencyCd;
+    this.currency = data.description;
+    this.ns.lovLoader(data.ev, 0);
+  }
+
+  checkCode(ev) {
+    this.ns.lovLoader(ev, 1);
+    this.currLov.checkCode(this.currCd, ev);
+  }
 
 }

@@ -1954,7 +1954,8 @@ export class AccountingService {
 				.set('tranDateTo','')
 				.set('tranMonth','')
 				.set('tranYear','')
-				.set('tranDate','');
+				.set('tranDate','')
+				.set('currCd','');
         	}else{
         		params = new HttpParams();
 	            for(var i of searchParams){
@@ -3625,5 +3626,9 @@ export class AccountingService {
          };
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitJVRiskMgtAlloc',params,header);
+    }
+
+    getAcitInvestmentsIncArtUtil(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInvestmentsIncArtUtil?tranId='+param);
     }
 }
