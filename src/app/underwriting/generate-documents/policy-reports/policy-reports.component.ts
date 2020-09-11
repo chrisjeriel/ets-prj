@@ -1019,10 +1019,12 @@ export class PolicyReportsComponent implements OnInit {
     console.log(this.params.reportId);
     console.log(this.params.byAsOf + ' >> as of');
       console.log(this.ns.getCurrentUser() + ' >> current user');
+      this.loading = true;
       this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,this.params.currCd,this.params.cedingId,null,null,
            null,this.params.byAsOf,null,null,null,null,null,null,null,this.params.lineCd)
       .subscribe(data => {
         console.log(data);
+        this.loading = false;
     
         var months = new Array("Jan", "Feb", "Mar", 
         "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
@@ -1175,8 +1177,8 @@ export class PolicyReportsComponent implements OnInit {
           query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(lineCd) as [LINE CD],'+
           'checkNullNo(policyId) as [POLICY ID],isNull(policyNo) as [POLICY NO],isNull(cedingId) as [CEDING ID],'+
           'isNull(cedingName) as [CEDING NAME],myFormat(inceptDate) as [INCEPT DATE],myFormat(expiryDate) as [EXPIRY DATE],'+
-          'isNull(insuredDesc) as [INSURED DESC],isNull(projectDesc) as [PROJECT DESC],isNull(currencyCd) as [CURRENCY CD],'+
-          'negFmt(siAmt) as [SI AMT],negFmt(premAmt) as [PREM AMT],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE]';
+          'isNull(insuredDesc) as [INSURED DESC], isNull(currencyCd) as [CURRENCY CD],'+
+          'negFmt(siAmt) as [SI AMT],negFmt(premAmt) as [PREM AMT],myFormat(fromDate) as [FROM DATE]';
         }else if(this.params.reportId == 'POLR044OA'){
           this.passDataCsv = data['listPolr044oa'];
           query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],'+
@@ -1256,7 +1258,7 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044v'];
           query = 'SELECT extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE], isNull(lineCd) as [LINE CD],'+
           'checkNullNo(policyId) as [POLICY ID],isNull(policyNo) as [POLICY NO],isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],'+
-          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE],isNull(insuredDesc) as [NAME OF INSURED],isNull(projectDesc) as [NATURE OF PROJ],'+
+          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE],isNull(insuredDesc) as [NAME OF INSURED],'+
           'currencyCd as [CURRENCY], negFmt(currency(siAmt)) as [SUM INSURED], negFmt(currency(premAmt)) as [PREM AMT], checkNullNo(sortSeq) as [SORT SEQ],'+
           'myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE]';
         }else if(this.params.reportId == 'POLR044W'){
