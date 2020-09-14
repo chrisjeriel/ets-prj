@@ -187,7 +187,10 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
   totals: any = {
     debit: 0,
     credit: 0,
-    variance: 0
+    variance: 0,
+    debitLocal: 0,
+    creditLocal: 0,
+    varianceLocal: 0
   }
 
   createUpdate: any = {};
@@ -407,6 +410,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       data.lastEditedRow.debitAmt = isNaN(data.lastEditedRow.foreignDebitAmt) ? 0 : this.record.currRate * data.lastEditedRow.foreignDebitAmt;
       data.lastEditedRow.creditAmt = isNaN(data.lastEditedRow.foreignCreditAmt) ? 0 : this.record.currRate * data.lastEditedRow.foreignCreditAmt;
       this.computeTotals();
+    } else if(data.key == 'debitAmt' || data.key == 'creditAmt') {
+      this.computeTotals();
     } else if(data.key == 'glShortCd') {
       this.lovCheckbox = true;
       this.lovRow = data.lastEditedRow;
@@ -421,7 +426,15 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     console.log(this.acctEntriesData.tableData)
     this.totals.credit = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.foreignCreditAmt == null || Number.isNaN(b.foreignCreditAmt) || b.foreignCreditAmt==undefined || b.foreignCreditAmt.length == 0?0:parseFloat(b.foreignCreditAmt)),0);
     this.totals.debit  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.foreignDebitAmt  == null || Number.isNaN(b.foreignDebitAmt) || b.foreignDebitAmt ==undefined || b.foreignDebitAmt.length  == 0?0:parseFloat( b.foreignDebitAmt)),0);
-    this.totals.variance = this.totals.debit - this.totals.credit;
+    this.totals.variance = (this.totals.debit).toFixed(2) - (this.totals.credit).toFixed(2);
+
+    if(this.record.from.toLowerCase() == 'jv') {
+      this.totals.creditLocal = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.creditAmt == null || Number.isNaN(b.creditAmt) || b.creditAmt==undefined || b.creditAmt.length == 0?0:parseFloat(b.creditAmt)),0);
+      this.totals.debitLocal  = this.acctEntriesData.tableData.reduce((a,b)=>a+(b.debitAmt  == null || Number.isNaN(b.debitAmt) || b.debitAmt ==undefined || b.debitAmt.length  == 0?0:parseFloat( b.debitAmt)),0);
+      this.totals.varianceLocal = (this.totals.debitLocal).toFixed(2) - (this.totals.creditLocal).toFixed(2);
+
+      this.notBalanced = this.totals.variance !== 0 || this.totals.varianceLocal !== 0;
+    }
   }
 
   retrieveAcseOrPreview(){

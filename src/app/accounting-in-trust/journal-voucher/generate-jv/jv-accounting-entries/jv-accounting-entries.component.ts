@@ -105,6 +105,10 @@ export class JvAccountingEntriesComponent implements OnInit {
   errorMessage: any;
   statusType:any;
 
+  debitLocal: any;
+  creditLocal: any;
+  varianceLocal: any;
+
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
   ngOnInit() {
@@ -158,11 +162,16 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.passData.tableData.push(data.list[i]);
         this.debitTotal  += data.list[i].foreignDebitAmt;
         this.creditTotal += data.list[i].foreignCreditAmt;
+        this.debitLocal += data.list[i].debitAmt;
+        this.creditLocal += data.list[i].creditAmt;
       }
 
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100;
-      if(this.variance === 0 && (this.statusType == 'N' || this.statusType == 'F')){
+      this.varianceLocal = this.debitLocal - this.creditLocal;
+      this.varianceLocal = Math.round(this.varianceLocal * 100)/100;
+
+      if(this.variance === 0 && (this.statusType == 'N' || this.statusType == 'F') && this.varianceLocal === 0){
         this.notBalanced = false;
       }else{
         this.notBalanced = true;
@@ -175,6 +184,9 @@ export class JvAccountingEntriesComponent implements OnInit {
     this.debitTotal = 0;
     this.creditTotal = 0;
     this.variance = 0;
+    this.debitLocal = 0;
+    this.creditLocal = 0;
+    this.varianceLocal = 0;
 
     var slCheck = this.passData.tableData.filter(a => ![null, '', undefined].includes(a.slTypeCd) && [null, '', undefined].includes(a.slCd) && !a.deleted);
 
@@ -190,9 +202,13 @@ export class JvAccountingEntriesComponent implements OnInit {
       for (var i = 0; i < this.passData.tableData.length; i++) {
         this.debitTotal += this.passData.tableData[i].foreignDebitAmt;
         this.creditTotal += this.passData.tableData[i].foreignCreditAmt;
+        this.debitLocal += this.passData.tableData[i].debitAmt;
+        this.creditLocal += this.passData.tableData[i].creditAmt;
       }
       this.variance = this.debitTotal - this.creditTotal;
-      this.variance = Math.round(this.variance * 100)/100
+      this.variance = Math.round(this.variance * 100)/100;
+      this.varianceLocal = this.debitLocal - this.creditLocal;
+      this.varianceLocal = Math.round(this.varianceLocal * 100)/100;
 
       /*if(this.variance != 0){
         this.dialogMessage = "Accounting Entries does not tally.";
@@ -687,9 +703,32 @@ export class JvAccountingEntriesComponent implements OnInit {
        this.creditTotal = this.creditTotal;
        this.variance = this.debitTotal - this.creditTotal;
        this.variance = Math.round(this.variance * 100) / 100;
-      if(this.variance === 0){
-        this.notBalanced = false;
+       this.notBalanced = this.variance !== 0;
+      // if(this.variance === 0){
+      //   this.notBalanced = false;
+      // }
+    } else if(data !== undefined && (data.key == 'debitAmt' || data.key == 'creditAmt')) {
+      this.debitLocal = 0;
+      this.creditLocal = 0;
+
+      // data.lastEditedRow.debitAmt = data.lastEditedRow.foreignDebitAmt * this.jvData.currRate;
+      // data.lastEditedRow.creditAmt = data.lastEditedRow.foreignCreditAmt * this.jvData.currRate;
+
+      for (var i = 0; i < this.passData.tableData.length; i++) {
+        this.debitLocal  += this.passData.tableData[i].debitAmt;
+        this.creditLocal += this.passData.tableData[i].creditAmt;
+        // this.passData.tableData[i].debitAmt    = this.passData.tableData[i].foreignDebitAmt * this.jvData.currRate;
+        // this.passData.tableData[i].creditAmt  = this.passData.tableData[i].foreignCreditAmt * this.jvData.currRate;
       }
+
+       this.debitLocal  = this.debitLocal;
+       this.creditLocal = this.creditLocal;
+       this.varianceLocal = this.debitLocal - this.creditLocal;
+       this.varianceLocal = Math.round(this.varianceLocal * 100) / 100;
+       this.notBalanced = this.varianceLocal !== 0;
+      // if(this.varianceLocal === 0){
+      //   this.notBalanced = false;
+      // }
     }
   }
 

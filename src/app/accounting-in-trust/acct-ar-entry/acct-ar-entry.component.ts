@@ -170,6 +170,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     rstrctTranUp: '',
     arDtlSum: '',
     acctEntriesSum: '',
+    acctEntriesSumF: '',
     acctEntDate: '',
     allocTag: 'N',
     reopenTag: '',
@@ -360,6 +361,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       rstrctTranUp: '',
       arDtlSum: '',
       acctEntriesSum: '',
+      acctEntriesSumF: '',
       acctEntDate: '',
       allocTag: '',
       reopenTag: '',
@@ -652,6 +654,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.rstrctTranUp   = data.ar.rstrctTranUp;
           this.arInfo.arDtlSum       = data.ar.arDtlSum;
           this.arInfo.acctEntriesSum = data.ar.acctEntriesSum;
+          this.arInfo.acctEntriesSumF = data.ar.acctEntriesSumF;
           this.arInfo.reopenTag       = data.ar.reopenTag;
           this.arInfo.reopenDate     = this.ns.toDateTimeString(data.ar.reopenDate);
           this.isReopen              = this.arInfo.reopenTag != null;
@@ -1358,7 +1361,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   balanceAcctEntries(): boolean{
-    if(this.arInfo.acctEntriesSum != 0){
+    if(this.arInfo.acctEntriesSum != 0 || this.arInfo.acctEntriesSumF != 0){
       return true;
     }
     return false;

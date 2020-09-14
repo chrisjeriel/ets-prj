@@ -169,6 +169,7 @@ export class AcctOrEntryComponent implements OnInit {
     rstrctTranUp: '',
     orDtlSum: '',
     acctEntriesSum: '',
+    acctEntriesSumF: '',
     allocTag: 'N',
     vatTag: '',
     acctEntDate: ''
@@ -359,6 +360,7 @@ export class AcctOrEntryComponent implements OnInit {
       rstrctTranUp: '',
       orDtlSum: '',
       acctEntriesSum: '',
+      acctEntriesSumF: '',
       allocTag: '',
       vatTag: '',
       acctEntDate: ''
@@ -633,6 +635,7 @@ export class AcctOrEntryComponent implements OnInit {
           this.orInfo.rstrctTranUp   = data.orEntry.rstrctTranUp;
           this.orInfo.orDtlSum       = data.orEntry.orDtlSum;
           this.orInfo.acctEntriesSum = data.orEntry.acctEntriesSum;
+          this.orInfo.acctEntriesSumF = data.orEntry.acctEntriesSumF;
           this.orInfo.vatTag         = data.orEntry.vatTag;
           this.selectedCurrency       = data.orEntry.currCd;
           if(this.orInfo.orStatDesc.toUpperCase() === 'DELETED' || this.orInfo.orStatDesc.toUpperCase() === 'CANCELED'){
@@ -1343,7 +1346,7 @@ export class AcctOrEntryComponent implements OnInit {
   }
 
   balanceAcctEntries(): boolean{
-    if(this.orInfo.acctEntriesSum != 0){
+    if(this.orInfo.acctEntriesSum != 0 || this.orInfo.acctEntriesSumF != 0){
       return true;
     }
     return false;

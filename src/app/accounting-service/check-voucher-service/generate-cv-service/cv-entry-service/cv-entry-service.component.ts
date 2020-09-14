@@ -625,17 +625,19 @@ export class CvEntryServiceComponent implements OnInit {
     forkRes.subscribe(data => {
       console.log(data);
       var totalPrl = arrSum(data['prl']['acseCvPaytReqList'].map(e => e.reqAmt));
-      var totalCredit = arrSum(data['ae']['acctEntries'].map(e => e.foreignCreditAmt));
-      var totalDebit = arrSum(data['ae']['acctEntries'].map(e => e.foreignDebitAmt));
+      var totalCredit = arrSum(data['ae']['acctEntries'].map(e => e.creditAmt));
+      var totalDebit = arrSum(data['ae']['acctEntries'].map(e => e.debitAmt));
+      var totalForeignCredit = arrSum(data['ae']['acctEntries'].map(e => e.foreignCreditAmt));
+      var totalForeignDebit = arrSum(data['ae']['acctEntries'].map(e => e.foreignDebitAmt));
       var cvAmt = data['cv']['acseCvList'][0].cvAmt;
 
-      if((cvAmt != totalPrl) && (totalCredit != totalDebit)){
+      if((cvAmt != totalPrl) && ((totalCredit != totalDebit) || (totalForeignCredit != totalForeignDebit))){
         this.warnMsg = 'Total amount of attached payments must be equal to CV amount and \nTotal Debit and Total Credit amounts in the Accounting Entries must be balanced.';
         this.warnMdl.openNoClose();
-      }else if((cvAmt == totalPrl) && (totalCredit != totalDebit)){
+      }else if((cvAmt == totalPrl) && ((totalCredit != totalDebit) || (totalForeignCredit != totalForeignDebit))){
         this.warnMsg = 'Total Debit and Credit amounts in the Accounting Entries must be balanced.';
         this.warnMdl.openNoClose();
-      }else if((cvAmt != totalPrl) && (totalCredit == totalDebit)){
+      }else if((cvAmt != totalPrl) && ((totalCredit == totalDebit) || (totalForeignCredit == totalForeignDebit))){
         this.warnMsg = 'Total amount of attached payments must be equal to CV amount.';
         this.warnMdl.openNoClose();
       }else{
