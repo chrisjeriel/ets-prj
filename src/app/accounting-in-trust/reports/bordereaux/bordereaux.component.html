@@ -171,7 +171,7 @@
 									<div class="input-group cust-ig">
 										<label class="form-control-sm col-sm-2">Ceding Company</label>
 										<input type="text" class="form-control form-control-sm col-sm-2" [(ngModel)]="params.cedingId" (change)="checkCode($event, 'company'); paramChange();"
-										[disabled]="params.reportId == null || disableCompany">
+										[disabled]="params.reportId == null || disableCompany" [appRequired]="reqCedant">
 										<div class="text-search-ico" [ngStyle]="{'visibility': params.reportId != null && !disableCompany ? 'visible' : 'hidden'}"><a><i class="fa fa-search" (click)="showCedingCompanyLOV()" ></i></a></div>
 										<input type="text" class="form-control form-control-sm col-sm-7" style="margin-left: 2px !important;" [(ngModel)]="params.cedingName" readonly placeholder="ALL COMPANIES">
 									</div>
@@ -255,5 +255,5 @@
 <app-cancel-button (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
-<app-ceding-company id="cedingCompanyLOV"  (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyLOV"  (selectedData)="setCedingcompany($event)" [activeTag]="''" [membershipTag]="''"></app-ceding-company>
 <app-mtn-currency-code #currencyModal (selectedData)="setCurrency($event)"></app-mtn-currency-code>

@@ -314,5 +314,5 @@
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
 <!-- <app-confirm-save (onYes)="saveRange()"></app-confirm-save> -->
-<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)" [activeTag]="''" [membershipTag]="''"></app-ceding-company>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="tableFlag ? null:modalService.dismissAll();"></app-sucess-dialog>

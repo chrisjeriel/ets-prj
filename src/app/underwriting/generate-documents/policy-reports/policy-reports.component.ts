@@ -320,13 +320,13 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
       this.params.dateParam = '5';
     } 
-    else if(this.params.reportId == 'POLR044R'){
+    else if(this.params.reportId == 'POLR044R' || this.params.reportId == 'POLR044RA'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange', 'asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
       this.params.dateParam = '6';
     } 
-    else if(this.params.reportId == 'POLR044S'){
+    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange', 'asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
@@ -374,6 +374,9 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle = ['byDate','byMonthYear','asOf']
         this.params.dateParam = '10';
         this.params.dateRange = '3';
+    } else if(this.params.reportId == 'POLR044WQ') {
+      this.params.dateParam = '1';
+      this.paramsToggle.push('byDate', 'byMonthYear', 'asOf', 'line', 'company', 'currCd');
     } else  {
       this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
                              'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
@@ -385,13 +388,13 @@ export class PolicyReportsComponent implements OnInit {
   }
 
   checkReport(){
-     if(this.params.reportId == 'POLR044R'){
+     if(this.params.reportId == 'POLR044R' || this.params.reportId == 'POLR044RA'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange', 'asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
       this.params.dateParam = '6';
     } 
-    else if(this.params.reportId == 'POLR044S'){
+    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange','asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
@@ -1021,7 +1024,7 @@ export class PolicyReportsComponent implements OnInit {
       console.log(this.ns.getCurrentUser() + ' >> current user');
       this.loading = true;
       this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,null,this.params.currCd,this.params.cedingId,null,null,
-           null,this.params.byAsOf,null,null,null,null,null,null,null,this.params.lineCd)
+           null,this.params.byAsOf,null,null,null,null,null,null,null,this.params.lineCd, this.params.dateParam, this.params.dateRange == 1 ? "D" : (this.params.dateRange == 2 ? "M" : "A"))
       .subscribe(data => {
         console.log(data);
         this.loading = false;
@@ -1311,6 +1314,27 @@ export class PolicyReportsComponent implements OnInit {
           'myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE]';
           // 'isNull(lineCdParam) as [LINE CD PARAM],isNull(cedingIdParam) as [CEDING ID PARAM],isNull(dateParam) as [DATE PARAM],isNull(dateRange) as [DATE RANGE],'+
           // 'isNull(incRecTag) as [INC REC TAG],'
+        } else if(this.params.reportId == 'POLR044RA'){
+          this.passDataCsv = data['listPolr044ra'];
+          query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], ' +
+          'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], negFmt(currency(tsiAmt)) as [TSI AMT], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], ' +
+          'negFmt(currency(premQuotaRet1)) as [PREM QUOTA RET1], negFmt(currency(premQuotaRet2)) as [PREM QUOTA RET2], negFmt(currency(premTotalRet)) as [PREM TOTAL RET], checkNullNo(siRange) as [SI RANGE], ' +
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
+        } else if(this.params.reportId == 'POLR044SA'){
+          this.passDataCsv = data['listPolr044sa'];
+          query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(policyId) as [POLICY ID], ' +
+          'isNull(policyNo) as [POLICY NO], negFmt(currency(tsiAmt)) as [TSI AMT], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], negFmt(currency(siQuotaRet1)) as [SI QUOTA RET1], ' +
+          'negFmt(currency(siQuotaRet2)) as [SI QUOTA RET2], negFmt(currency(siTotalRet)) as [SI TOTAL RET], checkNullNo(siRange) as [SI RANGE], negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], ' +
+          'negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
+        } else if(this.params.reportId == 'POLR044WQ'){
+          this.passDataCsv = data['listPolr044wq'];
+          query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], checkNullNo(quoteId) as [QUOTE ID], isNull(quotationNo) as [QUOTATION NO], isNull(lineCd) as [LINE CD], ' +
+          'checkNullNo(cessionId) as [CESSION ID], isNull(cessionDesc) as [CESSION DESC], isNull(lineClassCd) as [LINE CLASS CD], isNull(lineClassDesc) as [LINE CLASS DESC], isNull(status) as [STATUS], ' +
+          'isNull(statusDesc) as [STATUS DESC], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], isNull(insuredDesc) as [INSURED DESC], checkNullNo(prinId) as [PRIN ID], ' +
+          'isNull(prinName) as [PRIN NAME], checkNullNo(contractorId) as [CONTRACTOR ID], isNull(contractorName) as [CONTRACTOR NAME], checkNullNo(riskId) as [RISK ID], isNull(riskName) as [RISK NAME], ' +
+          'isNull(objectId) as [OBJECT ID], isNull(objectDesc) as [OBJECT DESC], isNull(site) as [SITE], isNull(currencyCd) as [CURRENCY CD], negFmt(currency(totalSi)) as [TOTAL SI], ' +
+          'negFmt(currency(optionRt)) as [OPTION RT], isNull(duration) as [DURATION], myFormat(issueDate) as [ISSUE DATE], myFormat(expiryDate) as [EXPIRY DATE], isNull(reqBy) as [REQ BY], ' +
+          'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], isNull(createUser) as [CREATE USER], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
         }
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);

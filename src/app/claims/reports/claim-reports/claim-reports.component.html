@@ -318,7 +318,7 @@
 
 <app-lov [passData]="passLov" (selectedData)="setReport($event)">
 <app-mtn-line id="lineLOV" (selectedData)="setLine($event)"></app-mtn-line>
-<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)"></app-ceding-company>
+<app-ceding-company id="cedingCompanyLOV" #ceding (selectedData)="setCedingcompany($event)" [activeTag]="''" [membershipTag]="''"></app-ceding-company>
 <app-cancel-button #appCancel (onYes)="extract(true)"></app-cancel-button>
 <app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage" (onOk)="modalService.dismissAll();"></app-sucess-dialog>
 <app-mtn-clm-event #clmEventLOV id="clmEventLOV" (selectedData)="setClmEvent($event)"></app-mtn-clm-event>

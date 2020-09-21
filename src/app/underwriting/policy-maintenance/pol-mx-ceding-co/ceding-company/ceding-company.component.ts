@@ -48,6 +48,8 @@ export class CedingCompanyComponent implements OnInit {
   @Input() lovCheckBox: boolean = false;
   selects: any[] = [];
   @Input() treaty: boolean;
+  @Input() activeTag: string = 'Y';
+  @Input() membershipTag: string = 'Y';
     
   constructor(private underwritingService: UnderwritingService, private modalService: NgbModal ) { }
 
@@ -93,7 +95,7 @@ export class CedingCompanyComponent implements OnInit {
      
      this.table.overlayLoader = true;
 
-     this.underwritingService.getCedingCompanyList('','','','','','','','Y','','Y').subscribe((data: any) => {
+     this.underwritingService.getCedingCompanyList('','','','','','','',this.activeTag,'',this.membershipTag).subscribe((data: any) => {
          for(var i=0; i < data.cedingcompany.length;i++){
            if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {
              this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
@@ -135,7 +137,7 @@ export class CedingCompanyComponent implements OnInit {
         this.modal.openNoClose();  
       }      
     } else {
-      this.underwritingService.getCedingCompanyList(String(code).padStart(3,'0'),'','','','','','','','','Y').subscribe(data => {
+      this.underwritingService.getCedingCompanyList(String(code).padStart(3,'0'),'','','','','','','','',this.membershipTag).subscribe(data => {
         if(this.treaty) {
            data['cedingcompany'] = data['cedingcompany'].filter(a => a.treatyTag == 'Y');
         }
@@ -213,7 +215,7 @@ export class CedingCompanyComponent implements OnInit {
       passToService[param.key] = param.search
     }
 
-    this.underwritingService.getCedingCompanyList('','','','','','','','Y','','Y',passToService).subscribe((data: any) => {
+    this.underwritingService.getCedingCompanyList('','','','','','','',this.activeTag,'',this.membershipTag,passToService).subscribe((data: any) => {
         this.passDataCedingCompanyMember.tableData = [];
         for(var i=0; i < data.cedingcompany.length;i++){
           if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {

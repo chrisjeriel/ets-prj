@@ -86,7 +86,7 @@ export class BordereauxComponent implements OnInit {
 	paramsToggle: Array<string> = [];
 
 	passDataCsv : any[] =[];
-
+	reqCedant: boolean = false;
 
 	constructor(private titleService: Title, private route: ActivatedRoute, private router: Router, private ns: NotesService, private ms: MaintenanceService, private userService: UserService,
 		        private printService: PrintService, public modalService: NgbModal) { }
@@ -257,6 +257,25 @@ export class BordereauxComponent implements OnInit {
 					this.params.osPaidTag = 'P';
 					this.params.dateParam = '7';
 		  			break;
+		  		case 'CLMR052AA':
+		  			this.disableLosses = true;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = false;
+		  			this.params.osPaidTag = 'O';
+		  			this.params.dateParam = '4';
+		  			this.reqCedant = true;
+		  			break;
+		  		case 'CLMR052BA':
+		  			this.disableLosses = false;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = true;
+		  			this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					this.reqCedant = true;
+		  			break;
 				default:
 					this.disableOutstanding = true;
 					this.disableLosses = true;
@@ -323,6 +342,10 @@ export class BordereauxComponent implements OnInit {
 	  this.params.cedingId = data.cedingId;
 	  this.params.cedingName = data.cedingName; 
 	  this.ns.lovLoader(data.ev, 0);
+
+	  if(this.params.reportId == 'CLMR052AA' || this.params.reportId == 'CLMR052BA') {
+	  	this.paramChange();
+	  }
 	}
 
 	checkCode(ev, str) {
@@ -377,6 +400,8 @@ export class BordereauxComponent implements OnInit {
 	  }
 
 	extract(cancel?){
+
+
     	this.loading = true;
     	this.prepareData();
     	let paramsJson = JSON.stringify(this.params);
@@ -385,6 +410,14 @@ export class BordereauxComponent implements OnInit {
 
     	// acit052Params['dateTo'] = acit052Params['dateTo'] == null || acit052Params['dateTo'].length == 0 ? acit052Params['dateToAsOf'] : acit052Params['dateTo'];
     	clm052Params['dateTo'] = clm052Params['dateTo'] == null || clm052Params['dateTo'].length == 0 ? clm052Params['dateToAsOf'] : clm052Params['dateTo'];
+
+    	if((this.params.cedingId == '' || this.params.cedingId == null) && (this.params.reportId == 'CLMR052AA' || this.params.reportId == 'CLMR052BA')) {
+    		this.loading = false;
+    		this.dialogIcon = 'error-message';
+            this.dialogMessage = 'Ceding company required.';
+            this.appDialog.open();
+            return;
+    	}
 
 	    this.printService.extractReport({ reportId: this.params.reportId, clmr052Params: clm052Params }).subscribe((data:any)=>{
 	        if (data.errorList.length > 0) {
@@ -509,6 +542,7 @@ export class BordereauxComponent implements OnInit {
   	    this.params.forceExtract= 'N';
   	    this.params.perLine		= true;
   	    this.params.perCession	= true;
+  	    this.reqCedant = false;
   }
 
   showCurrencyModal() {
@@ -528,9 +562,13 @@ export class BordereauxComponent implements OnInit {
   getExtractToCsv(){
     console.log(this.params.reportId);
       console.log(this.ns.getCurrentUser() + ' >> current user');
-      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId)
+      this.loading = true;
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,
+      	null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+      	this.params.dateParam, this.params.dateRange)
       .subscribe(data => {
         console.log(data);
+        this.loading = false;
         var months = new Array("Jan", "Feb", "Mar", 
         "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
         "Oct", "Nov", "Dec");
@@ -596,7 +634,27 @@ export class BordereauxComponent implements OnInit {
 			'negFmt(mreFacul) as [MRE FACUL],negFmt(mreTotal) as [MRE TOTAL],negFmt(nreQuota) as [NRE QUOTA],'+
 			'negFmt(nre1stSurplus) as [NRE 1ST SURPLUS],negFmt(nre2ndSurplus) as [NRE 2ND SURPLUS],negFmt(nreFacul) as [NRE FACUL],'+
 			'negFmt(nreTotal) as [NRE TOTAL],myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
-        }
+        } else if(this.params.reportId == 'CLMR052AA'){
+          this.passDataCsv = data['listClmr052aa'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], ' +
+          'isNull(shrCedingId) as [SHR CEDING ID], isNull(shrCedingCompany) as [SHR CEDING COMPANY], checkNullNo(claimId) as [CLAIM ID], isNull(claimNo) as [CLAIM NO], ' +
+          'isNull(histCategory) as [HIST CATEGORY], isNull(histCatDesc) as [HIST CAT DESC], negFmt(ret1ClmAmt) as [RET1 CLM AMT], negFmt(ret2ClmAmt) as [RET2 CLM AMT], ' + 
+          'negFmt(totalClmAmt) as [TOTAL CLM AMT], negFmt(ret1Line) as [RET1 LINE], negFmt(ret2Line) as [RET2 LINE], negFmt(totalRetLine) as [TOTAL RET LINE], ' +
+          'negFmt(insuredClm) as [INSURED CLM], isNull(insuredDesc) as [INSURED DESC], negFmt(approvedAmt) as [APPROVED AMT], checkNullNo(adjId) as [ADJ ID], ' +
+          'isNull(adjName) as [ADJ NAME], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], ' +
+          'isNull(polCoRefNo) as [POL CO REF NO], isNull(lossCd) as [LOSS CD], isNull(lossAbbr) as [LOSS ABBR], myFormat(lossDate) as [LOSS DATE], checkNullNo(uwYear) as [UW YEAR], ' +
+          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+      	} else if(this.params.reportId == 'CLMR052BA'){
+          this.passDataCsv = data['listClmr052ba'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(shrCedingId) as [SHR CEDING ID], ' +
+          'isNull(shrCedingCompany) as [SHR CEDING COMPANY], checkNullNo(claimId) as [CLAIM ID], isNull(claimNo) as [CLAIM NO], isNull(histCategory) as [HIST CATEGORY], ' +
+          'isNull(histCatDesc) as [HIST CAT DESC], negFmt(ret1ClmAmt) as [RET1 CLM AMT], negFmt(ret2ClmAmt) as [RET2 CLM AMT], negFmt(totalClmAmt) as [TOTAL CLM AMT], ' +
+          'negFmt(ret1Line) as [RET1 LINE], negFmt(ret2Line) as [RET2 LINE], negFmt(totalRetLine) as [TOTAL RET LINE], negFmt(insuredClm) as [INSURED CLM], isNull(insuredDesc) as [INSURED DESC], ' +
+          'negFmt(approvedAmt) as [APPROVED AMT], checkNullNo(adjId) as [ADJ ID], isNull(adjName) as [ADJ NAME], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], ' +
+          'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], isNull(polCoRefNo) as [POL CO REF NO], isNull(lossCd) as [LOSS CD], isNull(lossAbbr) as [LOSS ABBR], ' +
+          'myFormat(lossDate) as [LOSS DATE], checkNullNo(uwYear) as [UW YEAR], myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], myFormat(dateFrom) as [DATE FROM], ' +
+          'myFormat(dateTo) as [DATE TO]';
+      	}
 
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);

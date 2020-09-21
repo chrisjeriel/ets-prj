@@ -116,7 +116,12 @@ export class PolBordereauxComponent implements OnInit {
                         'POLR052F',
                         'POLR052G',
                         'POLR052H',
-                        'POLR052I'
+                        'POLR052I',
+                        'POLR052AB',
+                        'POLR052BB',
+                        'POLR052CB',
+                        'POLR052J',
+                        'POLR052K'
                         ];
 
   rangeParams :any = {
@@ -219,10 +224,22 @@ export class PolBordereauxComponent implements OnInit {
     } else if(this.params.reportId == 'POLR052H'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
-    }else if(this.params.reportId == 'POLR052I'){
+    } else if(this.params.reportId == 'POLR052I'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
       this.params.faculTag = 'Y';
+    } else if(this.params.reportId == 'POLR052AB'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052BB'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052CB'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052J' || this.params.reportId == 'POLR052K'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
     }
 
     this.ns.lovLoader(data.ev, 0);
@@ -442,9 +459,13 @@ export class PolBordereauxComponent implements OnInit {
    getExtractToCsv(){
     console.log(this.params.reportId);
     console.log(this.ns.getCurrentUser() + ' >> current user');
-    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId)
+    this.loading = true;
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,
+      null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+      this.params.dateParam, this.params.dateRange == 1 ? "D" : (this.params.dateRange == 2 ? "M" : "A"))
       .subscribe(data => {
         console.log(data);
+        this.loading = false;
     
         var months = new Array("Jan", "Feb", "Mar", 
         "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
@@ -674,10 +695,22 @@ export class PolBordereauxComponent implements OnInit {
           'myFormat(inceptDate) as [INCEPT DATE],myFormat(expiryDate) as [EXPIRY DATE],negFmt(premAmt) as [PREM AMT],'+
           'negFmt(commAmt) as [COMM AMT],negFmt(vatRiComm) as [VAT RI COMM],negFmt(netDue) as [NET DUE],'+
           'myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE]';
+        } else if(this.params.reportId == 'POLR052J'){
+          this.passDataCsv = data['listPolr052j'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], ' +
+          'isNull(lineCd) as [LINE CD], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], negFmt(ret1PremAmt) as [RET1 PREM AMT], ' +
+          'negFmt(ret1CommAmt) as [RET1 COMM AMT], negFmt(ret1VatRiComm) as [RET1 VAT RI COMM], negFmt(ret1NetDue) as [RET1 NET DUE], negFmt(ret2PremAmt) as [RET2 PREM AMT], ' +
+          'negFmt(ret2CommAmt) as [RET2 COMM AMT], negFmt(ret2VatRiComm) as [RET2 VAT RI COMM], negFmt(ret2NetDue) as [RET2 NET DUE], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
+        } else if(this.params.reportId == 'POLR052K'){
+          this.passDataCsv = data['listPolr052k'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT_USER], myFormat(extractDate) as [EXTRACT_DATE], isNull(currencyCd) as [CURRENCY_CD], isNull(lineCd) as [LINE_CD], '+
+          'isNull(cedingId) as [CEDING_ID], isNull(cedingName) as [CEDING_NAME], negFmt(ret1PremAmt) as [RET1_PREM_AMT], negFmt(ret1CommAmt) as [RET1_COMM_AMT], ' +
+          'negFmt(ret1VatRiComm) as [RET1_VAT_RI_COMM], negFmt(ret1NetDue) as [RET1_NET_DUE], negFmt(ret2PremAmt) as [RET2_PREM_AMT], negFmt(ret2CommAmt) as [RET2_COMM_AMT], ' +
+          'negFmt(ret2VatRiComm) as [RET2_VAT_RI_COMM], negFmt(ret2NetDue) as [RET2_NET_DUE], myFormat(fromDate) as [FROM_DATE], myFormat(toDate) as [TO_DATE]';
         }
 
         console.log(this.passDataCsv);
-        this.ns.export(name, query, this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv)
 
       });
   }

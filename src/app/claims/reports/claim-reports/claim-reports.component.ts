@@ -242,9 +242,10 @@ export class ClaimReportsComponent implements OnInit {
                                      'byDate', 'byMonthYear', 'accountingDate', 'bookingDate', 'extTypeTag','clmFileDate','lossDate']
       } else if(this.params.reportId == 'CLMR010ZO' || this.params.reportId == 'CLMR010ZP'){
         this.paramsToggle.push('siRange');
-      }
-       else if(this.params.reportId == 'CLMR010HA' || this.params.reportId == 'CLMR010IA'){
+      } else if(this.params.reportId == 'CLMR010HA' || this.params.reportId == 'CLMR010IA'){
         this.paramsToggle.push('clmEvent')
+      } else if(this.params.reportId == 'CLMR010ZAO' || this.params.reportId == 'CLMR010ZAP') {
+        this.paramsToggle.push('siRange');
       }
 
       setTimeout(()=> {
@@ -484,9 +485,13 @@ export class ClaimReportsComponent implements OnInit {
   getExtractToCsv(){
     console.log(this.params.reportId);
       console.log(this.ns.getCurrentUser() + ' >> current user');
-      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId)
+      this.loading = true;
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,
+        null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,
+        this.params.dateParam, this.params.dateRange == 1 ? "D" : (this.params.dateRange == 2 ? "M" : "A"))
       .subscribe(data => {
         console.log(data);
+        this.loading = false;
         var months = new Array("Jan", "Feb", "Mar", 
         "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
         "Oct", "Nov", "Dec");
@@ -807,6 +812,18 @@ export class ClaimReportsComponent implements OnInit {
           'negFmt(currency(clmAmt2ndSurplus)) as [CLM AMT 2ND SURPLUS],negFmt(currency(clmAmtFacul)) as [CLM AMT FACUL],checkNullNo(siRange) as [SI RANGE],'+
           'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM],negFmt(currency(amtRangeTo)) as [AMT RANGE TO],'+
           'myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
+        } else if(this.params.reportId == 'CLMR010ZAO') {
+          this.passDataCsv = data['listClmr010zao'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(claimId) as [CLAIM ID], ' +
+          'isNull(claimNo) as [CLAIM NO], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], negFmt(currency(tsiAmt)) as [TSI AMT], isNull(shrCedId) as [SHR CED ID], isNull(shrCedIdName) as [SHR CED ID NAME], ' +
+          'negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA], negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1], negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2], checkNullNo(siRange) as [SI RANGE], ' +
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+        } else if(this.params.reportId == 'CLMR010ZAP') {
+          this.passDataCsv = data['listClmr010zap'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(claimId) as [CLAIM ID], ' +
+          'isNull(claimNo) as [CLAIM NO], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], tsiAmt as [TSI AMT], isNull(shrCedId) as [SHR CED ID], isNull(shrCedIdName) as [SHR CED ID NAME], ' + 
+          'negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA], negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1], negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2], checkNullNo(siRange) as [SI RANGE], ' +
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
         }
 
         console.log(this.passDataCsv);
