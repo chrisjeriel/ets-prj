@@ -760,7 +760,9 @@ export class DistributionByRiskComponent implements OnInit, OnDestroy {
   //keys: ['treatyAbbr', 'cedingName', 'retOneLines', 'retOneTsiAmt', 'retOnePremAmt', 'retTwoLines', 'retTwoTsiAmt', 'retTwoPremAmt', 'commRt', 'totalCommAmt', 'totalVatRiComm', 'totalNetDue'],
 
   checkLimit(){
-    if(this.riskDistributionData.retLineAmt > this.riskDistributionData.secIIInputLimit && this.riskDistributionData.secIIInputLimit!= null){
+    let tempRetLineAmt = Number(String(this.riskDistributionData.retLineAmt).replace(/\,/g,''));
+
+    if(tempRetLineAmt > this.riskDistributionData.secIIInputLimit && this.riskDistributionData.secIIInputLimit!= null){
       this.riskDistributionData.retLineAmt = this.riskDistributionData.secIIInputLimit;
       this.retLimitReached.openNoClose();
     }

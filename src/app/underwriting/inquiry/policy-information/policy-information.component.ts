@@ -43,14 +43,14 @@ export class PolicyInformationComponent implements OnInit {
     };
 
   passData:any = {
-  	tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status'],
+  	tHeader: ['Policy No / Alt No','Effective Date','Issue Date','Quotation No','Sum Insured','Premium','Status','Posted By'],
   	tableData:[],
-  	dataTypes:['text','datetime','datetime','text','currency','currency','text'],
+  	dataTypes:['text','datetime','datetime','text','currency','currency','text','text'],
   	pageLength:10,
   	infoFlag:true,
   	paginateFlag:true,
-  	uneditable:[true,true,true,true,true,true,true],
-  	keys:['policyNo','effDate','issueDate','quotationNo','sumInsured','premAmt','status']
+  	uneditable:[true,true,true,true,true,true,true,true],
+  	keys:['policyNo','effDate','issueDate','quotationNo','sumInsured','premAmt','status','postedBy']
   }
   policyId:string;
   constructor(private UwService : UnderwritingService, private ns : NotesService, private route: ActivatedRoute, private router: Router) { }
