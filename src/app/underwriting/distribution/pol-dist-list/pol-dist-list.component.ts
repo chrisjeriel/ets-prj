@@ -17,7 +17,7 @@ export class PolDistListComponent implements OnInit {
     passData: any = {
         tHeader: [
             "Dist No.", "Risk Dist No.", "Status", "Line", "Policy No.",
-            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Distribution Date", "Booking Date"
+            "Ceding Company", "Insured", "Risk","Currency","Sum Insured","Premium","Distribution Date", "Booking Date"
         ],
         filters: [
            {
@@ -73,10 +73,10 @@ export class PolDistListComponent implements OnInit {
               },
         ],
         dataTypes: [
-            "sequence-5", "sequence-5", "text","text", "text", "text", "text", "text","text","currency","date", "date"
+            "sequence-5", "sequence-5", "text","text", "text", "text", "text", "text","text","currency","currency","date", "date"
         ],
         tableData: [],
-        keys: ['distId', 'riskDistId', 'status', 'lineCd' ,'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'currencyCd', 'totalSi', 'distDate', 'acctDate'],
+        keys: ['distId', 'riskDistId', 'status', 'lineCd' ,'policyNo', 'cedingName', 'insuredDesc', 'riskName', 'currencyCd', 'totalSi','totalPrem', 'distDate', 'acctDate'],
         pageLength: 20,
         printBtn: false,
         addFlag: false,
@@ -148,7 +148,7 @@ export class PolDistListComponent implements OnInit {
       };
 
       //keys: ['treatyName', 'trtyCedName', 'pctShare', 'siAmt', 'premAmt', 'commRt', 'commAmt', 'vatRiComm', 'netDue'],
-     alasql('SELECT distId AS DistNo,riskDistId AS RiskDistNo,status AS Status,lineCd AS Line,policyNo AS PolicyNo,cedingName AS CedingCompany,insuredDesc AS Insured,riskName AS Risk,currencyCd AS Currency,totalSi AS SumInsured,datetime(distDate) AS DistributionDate,datetime(acctDate) AS BookingDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
+     alasql('SELECT distId AS DistNo,riskDistId AS RiskDistNo,status AS Status,lineCd AS Line,policyNo AS PolicyNo,cedingName AS CedingCompany,insuredDesc AS Insured,riskName AS Risk,currencyCd AS Currency,totalSi AS SumInsured,totalPrem AS Premium,datetime(distDate) AS DistributionDate,datetime(acctDate) AS BookingDate INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
    }
 
 }
