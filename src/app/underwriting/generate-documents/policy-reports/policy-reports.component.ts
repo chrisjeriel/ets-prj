@@ -82,11 +82,13 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044C',
                         'POLR044D',
                         'POLR044E',
+                        'POLR044EA',
                         'POLR044F',
                         'POLR044G',
                         'POLR044H',
                         'POLR044HA',
                         'POLR044I',
+                        'POLR044IA',
                         'POLR044J',
                         'POLR044JA',
                         'POLR044J_ISS',
@@ -225,7 +227,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
       this.params.incRecTag = 'D';
     } 
-    else if(this.params.reportId == 'POLR044E'){
+    else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044EA'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd','siRange');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
@@ -251,7 +253,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
     } 
-    else if(this.params.reportId == 'POLR044I'){
+    else if(this.params.reportId == 'POLR044I' || this.params.reportId == 'POLR044IA'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd','siRange');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
@@ -418,7 +420,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'asOf', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I'){
+    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I' || this.params.reportId == 'POLR044EA' || this.params.reportId == 'POLR044IA'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution','siRange');
@@ -548,7 +550,7 @@ export class PolicyReportsComponent implements OnInit {
           this.params.byMonthToYear = '';
         }
       }
-    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I'){
+    }else if(this.params.reportId == 'POLR044E' || this.params.reportId == 'POLR044I' || this.params.reportId == 'POLR044EA' || this.params.reportId == 'POLR044IA'){
       if(this.params.dateRange == 2){
         this.disableTo = true;
 
@@ -1335,7 +1337,17 @@ export class PolicyReportsComponent implements OnInit {
           'isNull(objectId) as [OBJECT ID], isNull(objectDesc) as [OBJECT DESC], isNull(site) as [SITE], isNull(currencyCd) as [CURRENCY CD], negFmt(currency(totalSi)) as [TOTAL SI], ' +
           'negFmt(currency(optionRt)) as [OPTION RT], isNull(duration) as [DURATION], myFormat(issueDate) as [ISSUE DATE], myFormat(expiryDate) as [EXPIRY DATE], isNull(reqBy) as [REQ BY], ' +
           'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], isNull(createUser) as [CREATE USER], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+        } else if(this.params.reportId == 'POLR044EA'){
+          this.passDataCsv = data['listPolr044ea'];
+          query = 'SELECT extractUser AS [EXTRACT USER],myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currCdParam AS [CURRENCY],'+
+          'negFmt(lineSortSeq) as [LINE SORT SEQ],lineCdParam AS [LINE],negFmt(siRange) AS [SI RANGE],siRangeDesc AS [SI RANGE DESC], negFmt(mthNoPol) AS [No of POLICIES for MTH], negFmt(cumNoPol) AS [CUM No of POLICIES]';
+        } else if(this.params.reportId == 'POLR044IA'){
+          this.passDataCsv = data['listPolr044ia'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY], checkNullNo(lineSortSeq) AS [LINE SORT SEQ],lineCd AS [LINE],'+
+          'negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI RANGE DESC], negFmt(currency(premAmtCum)) as [CUMMULATIVE PREMIUM], negFmt(currency(premAmtMth)) as [PREMIUM FOR THE MONTH]';
         }
+
+
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);
         });
