@@ -47,6 +47,7 @@ export class ByMonthComponent implements OnInit {
     pagination: true,
     pageStatus: true,
     printBtn: false,
+    paginateFlag: true,
     keys: ['glShortCd','glShortDesc','slTypeName','slName','totalBudget','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],
     filters: [
             {

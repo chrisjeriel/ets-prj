@@ -45,7 +45,7 @@ export class ExtractFromLastYearComponent implements OnInit {
     pageLength: 15,
     widths: [1,1,50,1,100,50,50,50,50,50,50,50,50,50,50,50,50],
     uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
-    pagination: true,
+    paginateFlag: true,
     pageStatus: true,
     printBtn: false,
     keys: ['glShortCd','glShortDesc','slTypeName','slName','totalExpense','jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'],

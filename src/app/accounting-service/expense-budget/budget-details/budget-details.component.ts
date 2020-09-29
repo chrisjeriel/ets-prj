@@ -138,7 +138,7 @@ export class BudgetDetailsComponent implements OnInit {
     var isEmpty = 0;
 
     this.budgetYrData.tableData.forEach(e =>{
-      if(this.budgetYear == '' || this.budgetYear == null || e.glShortCd == '' || e.glShortCd == null || e.totalBudget == '' || e.totalBudget == null){
+      if(this.budgetYear == '' || this.budgetYear == null || e.glShortCd == '' || e.glShortCd == null || e.totalBudget === '' || isNaN(e.totalBudget)){
         if(!e.deleted){
           isEmpty = 1;
           e.fromCancel = false;

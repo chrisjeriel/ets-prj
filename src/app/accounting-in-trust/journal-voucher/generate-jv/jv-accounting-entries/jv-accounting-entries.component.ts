@@ -105,9 +105,9 @@ export class JvAccountingEntriesComponent implements OnInit {
   errorMessage: any;
   statusType:any;
 
-  debitLocal: any;
-  creditLocal: any;
-  varianceLocal: any;
+  debitLocal: number = 0;
+  creditLocal: number = 0;
+  varianceLocal: number = 0;
 
   constructor(private accountingService: AccountingService, private ns: NotesService) { }
 
@@ -166,6 +166,12 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.creditLocal += data.list[i].creditAmt;
       }
 
+      console.log(this.debitTotal);
+      console.log(this.creditTotal);
+      console.log(this.debitTotal - this.creditTotal);
+      console.log(this.debitLocal);
+      console.log(this.creditLocal);
+      console.log(this.debitLocal - this.creditLocal);
       this.variance = this.debitTotal - this.creditTotal;
       this.variance = Math.round(this.variance * 100)/100;
       this.varianceLocal = this.debitLocal - this.creditLocal;
