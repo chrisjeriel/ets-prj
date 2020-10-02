@@ -1353,11 +1353,14 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
 
   arAmtEqualsArDtlPayt(): boolean{
     console.log(Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100);
+    console.log(this.arInfo.arAmt);
     console.log(this.arInfo.arDtlSum);
-    if(this.arInfo.arDtlSum != Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100){
-      return true;
-    }
-    return false;
+    // if(this.arInfo.arDtlSum != Math.round((this.arInfo.arAmt * this.arInfo.currRate)*100) / 100){
+    // if(this.arInfor.arDtlSum != this.arInfo.arAmt) {
+    //   return true;
+    // }
+    // return false;
+    return this.arInfo.arDtlSum != this.arInfo.arAmt;
   }
 
   balanceAcctEntries(): boolean{

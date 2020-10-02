@@ -1339,10 +1339,12 @@ export class AcctOrEntryComponent implements OnInit {
     console.log(this.orInfo.orDtlSum);
     console.log(this.orInfo.orAmt);
     console.log(Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100);
-    if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
-      return true;
-    }
-    return false;
+    // if(this.orInfo.orDtlSum != Math.round((this.orInfo.orAmt * this.orInfo.currRate)*100) / 100){
+    //   return true;
+    // }
+    // return false;
+
+    return this.orInfo.orDtlSum != this.orInfo.orAmt;
   }
 
   balanceAcctEntries(): boolean{

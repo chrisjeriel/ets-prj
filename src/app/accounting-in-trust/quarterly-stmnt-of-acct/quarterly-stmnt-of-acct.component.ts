@@ -24,9 +24,12 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	@ViewChild('qsoaAcctRemittanceTbl') qsoaAcctRemittanceTbl: CustEditableNonDatatableComponent;
 	@ViewChild('filtCedingCoLOV') filtCedingCoLOV: CedingCompanyComponent;
 	@ViewChild('gnrtCedingCoLOV') gnrtCedingCoLOV: CedingCompanyComponent;
-	@ViewChild(SucessDialogComponent) successDialog: SucessDialogComponent;
+	@ViewChild('dialog1') successDialog: SucessDialogComponent;
 	@ViewChild('generateMdl') generateMdl: ModalComponent;
 	@ViewChild('confMdl') confMdl: ModalComponent;
+	@ViewChild('messageMdl1') messageMdl1: ModalComponent;
+	@ViewChild('messageMdl2') messageMdl2: ModalComponent;
+	@ViewChild('messageMdl3') messageMdl3: ModalComponent;
 	@ViewChild('combinedStmtOfAcctMdl') combinedStmtOfAcctMdl: ModalComponent;
 	@ViewChild('acctReceivableMdl') acctReceivableMdl: ModalComponent;
 	@ViewChild('acctRemittanceMdl') acctRemittanceMdl: ModalComponent;
@@ -192,9 +195,14 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	allDest: boolean = false;
 	exc: any[] = [];
 	treatyComp: any[] = [];
-	minYear: number = 2020;
+	minYear: number = 1990;
 
-	passDataCsv : any[] =[];
+	passDataCsv : any[] = [];
+	searchSelectedCedants: any[] = [];
+	generateSelectedCedants: any[] = [];
+	existingQsoa: any = [];
+	existingQsoaWithPayts: any[] = [];
+	generatedQsoa: any [] = [];
 
 	constructor(private titleService: Title, public modalService: NgbModal, private route: Router, private as: AccountingService,
 				private ns: NotesService, private userService: UserService, public ps: PrintService, private ms: MaintenanceService,
@@ -210,7 +218,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		  }
 		});
 
-		this.us.getCedingCompanyList('','','','','','','','Y','','Y').subscribe(data => {
+		this.us.getCedingCompanyList('','','','','','','','','','').subscribe(data => {
 			this.treatyComp = data['cedingcompany'].filter(a => a.treatyTag == 'Y').map(a => a.cedingId);
 		});
 
@@ -240,6 +248,8 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 	showGenerateMdl() {
 		setTimeout(() => {
+			this.gnrtCedingName = '';
+			this.generateSelectedCedants = [];
 			this.generateMdl.openNoClose();
 		}, 0);
 	}
@@ -314,14 +324,16 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	onClickSearch() {
+		var cedants = this.searchSelectedCedants.map(a => a.cedingId);
+
 		var param = [
-			{ key: 'cedingId', search: this.filtCedingId },
+			{ key: 'cedingId', search: cedants },
 			{ key: 'fromQtr', search: this.filtFromQtr },
 			{ key: 'fromYear', search: this.filtFromYear },
 			{ key: 'toQtr', search: this.filtToQtr },
 			{ key: 'toYear', search: this.filtToYear }
 		];
-		
+
 		this.getQSOAList(param);
 	}
 
@@ -330,8 +342,24 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	setFiltCedingCo(ev) {
-		this.filtCedingId = ev.cedingId;
-		this.filtCedingName = ev.cedingName;
+		// this.filtCedingId = ev.cedingId;
+		// this.filtCedingName = ev.cedingName;
+		if(ev.length > 0) {
+			if(ev.length == 1) {
+				this.filtCedingName = ev[0].cedingName
+			} else {
+				this.filtCedingName = 'Multiple Companies';
+			}
+		} else {
+			this.filtCedingName = '';
+		}
+
+		this.searchSelectedCedants = ev.map(a => {
+			return {
+				cedingId: a.cedingId,
+				cedingName: a.cedingName
+			}
+		});
 	}
 
 	showGnrtCedingCoLOV() {
@@ -339,12 +367,111 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	setGnrtCedingCo(ev) {
-		this.gnrtCedingId = ev.cedingId;
-		this.gnrtCedingName = ev.cedingName;
+		// this.gnrtCedingId = ev.cedingId;
+		// this.gnrtCedingName = ev.cedingName;
+		if(ev.length > 0) {
+			if(ev.length == 1) {
+				this.gnrtCedingName = ev[0].cedingName
+			} else {
+				this.gnrtCedingName = 'Multiple Companies';
+			}
+		} else {
+			this.gnrtCedingName = '';
+		}
+
+		this.generateSelectedCedants = ev.map(a => {
+			return {
+				cedingId: a.cedingId,
+				cedingName: a.cedingName
+			}
+		});
+	}
+
+	saveAcitQsoaMultiple(overwrite?) {
+		var arr = overwrite == undefined ? this.generateSelectedCedants : this.existingQsoa;
+		for(var i = 0; i < arr.length ; i++) {
+			this.gnrtCedingId = arr[i].cedingId;
+
+			if(overwrite == undefined) {
+				this.saveAcitQsoa();
+			} else {
+				this.saveAcitQsoa(true);
+			}
+		}
 	}
 
 	saveAcitQsoa(force?) {
-		var param = {
+		if(this.generateSelectedCedants.length == 0) {
+			this.dialogIcon = 'error-message';
+			this.dialogMessage = 'Ceding company required.';
+			this.successDialog.open();
+			return;
+		}
+
+		if(force == undefined) {
+			this.generatedQsoa = [];
+			this.existingQsoa = [];
+			this.existingQsoaWithPayts = [];
+		}
+
+		var arr = force == undefined ? this.generateSelectedCedants : this.existingQsoa;
+		var i = 0;
+
+		const _this = this;
+		function recur() {
+			if(i >= arr.length) {
+				return;
+			}
+
+			var param = {
+				force: force === undefined ? 'N' : 'Y',
+				cedingId: arr[i].cedingId,
+				qtr: _this.gnrtQtr,
+				year: _this.gnrtYear,
+				user: _this.ns.getCurrentUser()
+			}
+
+			$('.qsoaLoader').css('display','block');
+			_this.as.saveAcitQsoa(param).subscribe(data => {
+				if(data['returnCode'] == -1) {
+				 	_this.generatedQsoa.push(data['cedingId']);
+				} else if(data['returnCode'] == 1) {
+					_this.existingQsoa.push(data['cedingId']);
+				} else if(data['returnCode'] == 2) {
+					_this.existingQsoaWithPayts.push(data['cedingId']);
+				} else {
+					$('.qsoaLoader').css('display','none');
+					_this.dialogIcon = 'error';
+					_this.successDialog.open();
+					return;
+				}
+
+				if((i + 1) == arr.length) {
+					$('.qsoaLoader').css('display','none');
+					if(_this.existingQsoa.length > 0 && force == undefined) {
+						_this.existingQsoa = _this.generateSelectedCedants.filter(a => _this.existingQsoa.includes(a.cedingId));
+						_this.messageMdl2.openNoClose();
+					}
+
+					if(_this.existingQsoaWithPayts.length > 0) {
+						_this.existingQsoaWithPayts = _this.generateSelectedCedants.filter(a => _this.existingQsoaWithPayts.includes(a.cedingId));
+						_this.messageMdl3.openNoClose();
+					}
+
+					if(_this.generatedQsoa.length > 0) {
+						_this.generatedQsoa = _this.generateSelectedCedants.filter(a => _this.generatedQsoa.includes(a.cedingId));
+						_this.messageMdl1.openNoClose();
+					}
+				} else {
+					i++;
+					recur();
+				}
+			});
+		}
+
+		recur();
+
+		/*var param = {
 			force: force === undefined ? 'N' : 'Y',
 			cedingId: this.gnrtCedingId,
 			qtr: this.gnrtQtr,
@@ -356,28 +483,51 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		this.as.saveAcitQsoa(param).subscribe(data => {
 			$('.qsoaLoader').css('display','none');
 			if(data['returnCode'] == -1) {
-				this.dialogIcon = 'success-message';
-				this.dialogMessage = 'QSOA successfully generated'
-				this.successDialog.open();
 
-				this.viewQsoa();
+				// this.dialogIcon = 'success-message';
+				// this.dialogMessage = 'QSOA successfully generated';
+				// this.successDialog.open();
 
-				var d = new Date();
-				this.gnrtCedingId = '';
-				this.gnrtCedingName = '';
-			    this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
-			    this.gnrtYear = d.getFullYear();
+				// this.viewQsoa();
+
+				// var d = new Date();
+				// this.gnrtCedingId = '';
+				// this.gnrtCedingName = '';
+				// this.gnrtQtr = Math.floor((d.getMonth() / 3) + 1);
+				// this.gnrtYear = d.getFullYear();
+			 	this.generatedQsoa.push(data['cedingId']);
 			} else if(data['returnCode'] == 1) {
-				this.confMdl.openNoClose();
+				// this.confMdl.openNoClose();
+				this.existingQsoa.push(data['cedingId']);
 			} else if(data['returnCode'] == 2) {
-				this.dialogIcon = 'error-message';
-				this.dialogMessage = 'Payments have already been made for this QSOA. Regeneration is not allowed.';
-				this.successDialog.open();
+				// this.dialogIcon = 'error-message';
+				// this.dialogMessage = 'Payments have already been made for this QSOA. Regeneration is not allowed.';
+				// this.successDialog.open();
+				this.existingQsoaWithPayts.push(data['cedingId']);
+
 			} else {
 				this.dialogIcon = 'error';
 				this.successDialog.open();
 			}
-		});
+
+			// if((this.lastElement + 1) == this.generateSelectedCedants.length) {
+			if(this.lastElement) {
+				if(this.existingQsoa.length > 0) {
+					this.existingQsoa = this.generateSelectedCedants.filter(a => this.existingQsoa.includes(a.cedingId));
+					this.messageMdl2.openNoClose();
+				}
+
+				if(this.existingQsoaWithPayts.length > 0) {
+					this.existingQsoaWithPayts = this.generateSelectedCedants.filter(a => this.existingQsoaWithPayts.includes(a.cedingId));
+					this.messageMdl3.openNoClose();
+				}
+
+				if(this.generatedQsoa.length > 0) {
+					this.generatedQsoa = this.generateSelectedCedants.filter(a => this.generatedQsoa.includes(a.cedingId));
+					this.messageMdl1.openNoClose();
+				}
+			}
+		});*/
 	}
 
 	viewQsoa() {
@@ -391,12 +541,14 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 		this.onClickSearch();
 	}
 
-	onChangeCedingName() {
-		if(this.filtCedingName == '') {
+	onChangeCedingName(from) {
+		if(from == 'search' && this.filtCedingName == '') {
 			this.filtCedingId = '';
+			this.searchSelectedCedants = [];
+		} else if(from == 'generate' && this.gnrtCedingName == '') {
+			this.gnrtCedingId = '';
+			this.generateSelectedCedants = [];
 		}
-
-		console.log(this.filtCedingId);
 	}
 
 	onClickPrint() {
@@ -427,10 +579,6 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	print() {
-		
-		console.log(this.treatyComp);
-		console.log(this.params.destination);
-
 		this.ps.printLoader = true;
 		if(this.treatyComp.includes(this.params.cedingId)) {
 			var param = [
@@ -540,7 +688,6 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	 getExtractToCsv(paramDate){	     
 	      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACITR050','',paramDate,this.params.currCd,this.params.cedingId)
 	      .subscribe(data => {
-	        console.log(data);
 	    
 	        var months = new Array("Jan", "Feb", "Mar", 
 	        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     

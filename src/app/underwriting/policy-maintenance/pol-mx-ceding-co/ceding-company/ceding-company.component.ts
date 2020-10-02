@@ -16,6 +16,7 @@ export class CedingCompanyComponent implements OnInit {
 
   @Output() selectedData: EventEmitter<any> = new EventEmitter();
   @ViewChild(CustNonDatatableComponent) table : CustNonDatatableComponent;
+  @Input() checked: any[] = null;
   selected: any = null;
 
   passDataCedingCompanyMember: any = {
@@ -98,6 +99,10 @@ export class CedingCompanyComponent implements OnInit {
      this.underwritingService.getCedingCompanyList('','','','','','','',this.activeTag,'',this.membershipTag).subscribe((data: any) => {
          for(var i=0; i < data.cedingcompany.length;i++){
            if(!this.exclude.includes(String(data.cedingcompany[i].cedingId).padStart(3, '0'))) {
+              if(this.checked.length > 0 && this.checked.map(a => a.cedingId).includes(data.cedingcompany[i].cedingId)) {
+                data.cedingcompany[i].checked = true;
+              }
+
              this.passDataCedingCompanyMember.tableData.push(data.cedingcompany[i]);
            }            
          }

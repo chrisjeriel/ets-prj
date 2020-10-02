@@ -306,7 +306,10 @@ export class MeTrialBalProcComponent implements OnInit {
     alasql('SELECT eomMm AS [Month], eomYear AS [Year], currCd AS [Currency], shortCode AS [GL Account No.], ' +
                   'longDesc AS [GL Account Name], begDebitAmt AS [Beg Debit Amt], begCreditAmt AS [Beg Credit Amt], totalDebitAmt AS [Total Debit Amt], ' +
                   'totalCreditAmt AS [Total Credit Amt], transDebitBal AS [Trans Debit Bal], transCreditBal AS [Trans Credit Bal], transBalance AS [Trans Balance], ' +
-                  'endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt] ' +
+                  'endDebitAmt AS [End Debit Amt], endCreditAmt AS [End Credit Amt], ' +
+                  'localBegDebitAmt AS [Local Beg Debit Amt], localBegCreditAmt AS [Local Beg Credit Amt], localTotalDebitAmt AS [Local Total Debit Amt], ' +
+                  'localTotalCreditAmt AS [Local Total Credit Amt], localTransDebitBal AS [Local Trans Debit Bal], localTransCreditBal AS [Local Trans Credit Bal], localTransBalance AS [Local Trans Balance], ' +
+                  'localEndDebitAmt AS [Local End Debit Amt], localEndCreditAmt AS [Local End Credit Amt] ' +
              'INTO XLSX("'+filename+'",?) FROM ?', [opts, [phpList, usdList]]);
   }
 
