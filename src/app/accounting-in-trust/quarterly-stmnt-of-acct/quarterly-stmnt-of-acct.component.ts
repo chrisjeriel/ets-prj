@@ -531,8 +531,18 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 	viewQsoa() {
-		this.filtCedingId = this.gnrtCedingId;
-		this.filtCedingName = this.gnrtCedingName;
+		// this.filtCedingId = this.gnrtCedingId;
+		this.searchSelectedCedants = this.generateSelectedCedants.filter(a => true);
+		// this.filtCedingName = this.gnrtCedingName;
+		if(this.searchSelectedCedants.length > 0) {
+			if(this.searchSelectedCedants.length == 1) {
+				this.filtCedingName = this.searchSelectedCedants[0].cedingName
+			} else {
+				this.filtCedingName = 'Multiple Companies';
+			}
+		} else {
+			this.filtCedingName = '';
+		}
 		this.filtFromQtr = this.gnrtQtr;
 		this.filtFromYear = this.gnrtYear
 		this.filtToQtr = this.gnrtQtr;

@@ -101,6 +101,7 @@ export class PolicyReportsComponent implements OnInit {
                         'POLR044O',
                         'POLR044P',
                         'POLR044Q',
+                        'POLR044QA',
                         'POLR044R',
                         'POLR044S',
                         'POLR044T',
@@ -317,7 +318,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
       this.params.dateParam = '5';
     } 
-    else if(this.params.reportId == 'POLR044Q'){
+    else if(this.params.reportId == 'POLR044Q' || this.params.reportId == 'POLR044QA'){
       this.paramsToggle.push('accountingDate', 'bookingDate','asOf','line', 'company', 'currCd');
       this.params.dateRange = '3';
       this.params.dateParam = '5';
@@ -514,7 +515,7 @@ export class PolicyReportsComponent implements OnInit {
         // this.paramsToggle.push('issueDate', 'lossDate', 'distributionDate', 'tranDate', 'postingDate',
         //                        'createDate', 'effectiveDate', 'accountingDate', 'bookingDate', 'line', 'company',
         //                        'byDate', 'byMonthYear', 'asOf', 'currCd');
-    }else if(this.params.reportId == 'POLR044V' || this.params.reportId == 'POLR044P' || this.params.reportId == 'POLR044Q' || this.params.reportId == 'POLR044U' ){
+    }else if(this.params.reportId == 'POLR044V' || this.params.reportId == 'POLR044P' || this.params.reportId == 'POLR044Q' || this.params.reportId == 'POLR044QA' || this.params.reportId == 'POLR044U' ){
       // this.paramsToggle.push('line', 'company', 'asOf', 'currCd');
       // this.params.dateRange = '3';
     }else {
@@ -1207,13 +1208,32 @@ export class PolicyReportsComponent implements OnInit {
           'isNull(retName) as [RET NAME],isNull(distGrp) as [DIST GRP],negFmt(distSi) as [DIST SI],negFmt(distPrem) as [DIST PREM],'+
           'negFmt(distAccumSi) as [DIST ACCUM SI],negFmt(distAccumPrem) as [DIST ACCUM PREM]';
         }else if(this.params.reportId == 'POLR044Q'){
-          // this.passDataCsv = data['listPolr044q'];
-          // query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE], isNull(cedingIdParam) as [CEDING ID PARAM], myFormat(inceptDate) as [INCEPT DATE],'+
-          // 'myFormat(expiryDate) as [EXPIRY DATE], lineCd as [LINE], policyId as [POLICY ID], policyNo as [POLICY NO], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME],'+
-          // 'checkNullNo(zoneCd) as [ZONE CD], currencyCd as [CURRENCY], negFmt(currency(pctPml)) as [PCT PML], negFmt(accumNoDays) as [ACCUM NO DAYS], negFmt(totalNoDays) as [TOTAL NO DAYS],'+
-          // 'treatyId as [TREATY ID], treatyName as [TREATY NAME], isNull(trtyCedId) as [TREATY CED ID],isNull(treatyCompany) as [TREATY COMPANY], isNull(retLayer) as [RET LAYER],'+
-          // 'isNull(retName) as [RET NAME], isNull(distGrp) AS [DIST GRP],negFmt(currency(siAmt)) as [SI AMT], negFmt(currency(accumSiAmt)) as [ACCUM SI AMT],'+
-          // 'negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(accumPremAmt)) as [ACCUM PREM AMT]';
+          var tab1 : any[] =[];
+          var tab2 : any[] =[];
+          var res1 =  data['listPolr044q'];
+          var res2 =  data['listPolr044q2'];
+
+          res1.forEach(e => {
+            checkNull(e);
+          });
+
+          res2.forEach(e => {
+            checkNull(e);
+          });
+
+          res1.forEach(e => {
+              tab1.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+           
+          res2.forEach(e => {
+              tab2.push(Object.keys(e).reduce((c, k) => (c[k.replace(/([A-Z])/g, function($1){return " "+$1.toLowerCase()}).toUpperCase()] = e[k], c), {}));
+          });
+
+          console.log(tab1);
+          console.log(tab2);
+
+          this.export(tab1,tab2);
+        }else if(this.params.reportId == 'POLR044QA'){
           var tab1 : any[] =[];
           var tab2 : any[] =[];
           var res1 =  data['listPolr044q'];
