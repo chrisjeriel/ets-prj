@@ -130,8 +130,11 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 
   passDataInvPo: any = {
     tableData: [],
-    tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'],
-    dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
+    // tHeaderWithColspan: [{header:'', span: 1},{header:'Maintenance Information', span: 17},{header: 'Pull-out Details', span: 7}],
+    tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'], //,'Remaining||Income',
+              // 'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
+    dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'], //,'currency',
+                // 'select','currency','currency','currency','currency','currency','currency'],
     total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue'],
     addFlag: true,
     deleteFlag: true,
@@ -169,12 +172,21 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       showMG: 1
     },
     keys: ['invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 
-           'invtAmt' , 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue'],
-    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
+           'invtAmt' , 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue'], //,'remainingIncome',
+           // 'pulloutType',],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true], //true,
+                 // false,true,false,false,false,true,true],
     checkFlag: true,
     pageID: 'multOffInvtout',
     widths: [120,150,127,130,1,83,85,1,1,1,85,120,120,120,120,120,120],
-    disableAdd: false
+    disableAdd: false,
+    opts: [
+      {
+        selector: 'pulloutType',
+        prev: ['Full Pullout', 'Income Only'],
+        vals: ['F', 'I']
+      }
+    ]
   };
 
   passDataInvPl: any = {
@@ -436,6 +448,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    this.passDataInvPo.addFlag = false;
 	    this.passDataInvPo.deleteFlag = false;
 	    this.passDataInvPo.checkFlag = false;
+      // this.passDataInvPo.tHeaderWithColspan = this.passDataInvPo.tHeaderWithColspan.slice(1);
 
 	    this.passDataInvPl.addFlag = false;
 	    this.passDataInvPl.deleteFlag = false;

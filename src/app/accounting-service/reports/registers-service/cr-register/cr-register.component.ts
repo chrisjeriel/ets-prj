@@ -43,6 +43,8 @@ export class CrRegisterComponent implements OnInit {
   selectedPrinter: string = '';
   from: string = '';
 
+  passDataCsv: any[] = [];
+
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
 
   ngOnInit() {
@@ -141,6 +143,12 @@ export class CrRegisterComponent implements OnInit {
       this.params.reportId = "ACSER060A_DTL";
     }
 
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
+
     let params :any = {
       "reportId" : this.params.reportId,
       "acser060Params.reportId" : this.params.reportId,
@@ -183,4 +191,52 @@ export class CrRegisterComponent implements OnInit {
       );
     }
   }
+
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,'','','',this.params.paytMode,this.params.paytType,this.params.fromDate,this.params.toDate,
+                            this.params.incClosedTran,this.params.incCancelTran,this.params.tranPostDate)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+
+        if(this.params.reportId == 'ACSER060A'){
+          this.passDataCsv = data['listAcser060a'];
+          query = 'SELECT printedBy as [PRINTED BY], period AS [PERIOD], checkNullNo(glAcctId) as [ACCOUNT ID],isNull(shortCode) as [ACCOUNT CODE],'+
+          'isNull(shortDesc) as [ACCOUNT DESCRIPTION], negFmt(currency(debitAmt)) as [DEBIT], negFmt(currency(creditAmt)) as [CREDIT]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
 }

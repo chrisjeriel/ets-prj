@@ -46,6 +46,7 @@ export class ChecksRegisterServiceComponent implements OnInit {
   printerList: string[] = [];
   selectedPrinter: string = '';
 
+  passDataCsv: any[] = [];
 
   constructor(private ms: MaintenanceService, private ns: NotesService, private printService: PrintService) { }
 
@@ -78,6 +79,12 @@ export class ChecksRegisterServiceComponent implements OnInit {
     this.params.printedBy = this.ns.getCurrentUser();
     this.params.incClosedTran = this.iCloTag ? 'Y' : 'N';
     this.params.incCancelTran = this.iCanTag ? 'Y' : 'N';
+
+    if(this.params.destination == 'exl'){
+      this.passDataCsv = [];
+      this.getExtractToCsv();
+      return;
+    }
 
     let params :any = {
       "reportId" : this.params.reportId,
@@ -188,4 +195,53 @@ export class ChecksRegisterServiceComponent implements OnInit {
       }*/
     }
   }
+
+  getExtractToCsv(){
+    console.log('extract to csv from trial balance processing');
+    this.ms.getExtractToCsv(this.ns.getCurrentUser(),this.params.reportId,null,'','','',this.params.paytMode,this.params.paytType,this.params.fromDate,this.params.toDate,
+                            this.params.incClosedTran,this.params.incCancelTran,this.params.tranPostDate,this.params.chkDate,this.params.bank,this.params.bankAcct,this.params.sortBy)
+      .subscribe(data => {
+        console.log(data);
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
+
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
+
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
+
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
+
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
+
+        var name = this.params.reportId;
+        var query = '';
+
+        if(this.params.reportId == 'ACSER060D'){
+          this.passDataCsv = data['listAcser060d'];
+          query = 'SELECT printedBy as [PRINTED BY], period AS [PERIOD], myFormat(tranDate) as [DATE], isNull(tranStatDesc) as [TRANS STAT],checkNullNo(cvNo) as [CV NO], payee as [PAYEE], particulars as [PARTICULARS],'+
+          'negFmt(currency(localAmt)) as [AMOUNT], officialName as [BANK], accountNo as [ACCOUNT NO], myFormat(cvDate) as [CV DATE], myFormat(checkDate) as [CHECK DATE], checkNullNo(checkNo) as [CHECK NO]';
+        }
+
+        console.log(this.passDataCsv);
+        this.ns.export(name, query, this.passDataCsv);
+
+      });
+    }
+
 }
