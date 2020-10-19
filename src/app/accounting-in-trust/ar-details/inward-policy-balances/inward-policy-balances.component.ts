@@ -4,6 +4,7 @@ import { AccountingService, NotesService } from '@app/_services';
 import { ARInwdPolBalDetails } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -18,7 +19,7 @@ import { map } from 'rxjs/operators';
 })
 export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(LoadingLovComponent) lovMdl: LoadingLovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -71,7 +72,8 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   passData: any = {};
 
   passLov: any = {
-    selector: 'acitSoaDtlAr',
+    selector: 'acitSoaDtl',
+    from: 'ar',
     payeeNo: '',
     currCd: '',
     hide: []

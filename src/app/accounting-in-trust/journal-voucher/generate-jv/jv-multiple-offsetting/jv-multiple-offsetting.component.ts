@@ -3,6 +3,7 @@ import { NgbModal, NgbTabChangeEvent, NgbTabset } from '@ng-bootstrap/ng-bootstr
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -45,6 +46,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   @ViewChild(ConfirmSaveComponent) confirmSave: ConfirmSaveComponent;
   @ViewChild(ModalComponent) modal: ModalComponent;
   @ViewChild('lovTbl') lovTbl : CustNonDatatableComponent;
+  @ViewChild('loadingLov') loadingLov : LoadingLovComponent;
 
   passDataIpb: any = {};
   passDataClm: any = {
@@ -838,53 +840,57 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       }
     }
 
-  	this.lov.openLOV();
+    if(from == 'ipb') {
+      this.loadingLov.openLOV();
+    } else {
+  	  this.lov.openLOV();
+    }
   }
 
   setLov(ev) {
   	if(ev.selector == 'multOffSoa') {
   	  this.passDataIpb.tableData = this.passDataIpb.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {
-	    this.passDataIpb.tableData.push(JSON.parse(JSON.stringify(this.passDataIpb.nData)));
-	    var len = this.passDataIpb.tableData.length - 1;
-	    var a = ev.data[i];
+  	    this.passDataIpb.tableData.push(JSON.parse(JSON.stringify(this.passDataIpb.nData)));
+  	    var len = this.passDataIpb.tableData.length - 1;
+  	    var a = ev.data[i];
 
-	    this.passDataIpb.tableData[len].tranId          = this.jvDetail.tranId;
-	    this.passDataIpb.tableData[len].showMG          = 0;
-	    this.passDataIpb.tableData[len].edited          = true;
-	    this.passDataIpb.tableData[len].policyId        = a.policyId;
-	    this.passDataIpb.tableData[len].soaNo           = a.soaNo;
-	    this.passDataIpb.tableData[len].policyNo        = a.policyNo;
-	    this.passDataIpb.tableData[len].coRefNo         = a.coRefNo;
-	    this.passDataIpb.tableData[len].instNo          = a.instNo;
-	    this.passDataIpb.tableData[len].effDate         = a.effDate;
-	    this.passDataIpb.tableData[len].dueDate         = a.dueDate;
-	    this.passDataIpb.tableData[len].currCd          = a.currCd;
-	    this.passDataIpb.tableData[len].currRate        = a.currRate;
-	    this.passDataIpb.tableData[len].prevPremAmt     = a.prevPremAmt;
-	    this.passDataIpb.tableData[len].prevRiComm      = a.prevRiComm;
-	    this.passDataIpb.tableData[len].prevRiCommVat 	= a.prevRiCommVat;
-	    this.passDataIpb.tableData[len].prevCharges     = a.prevCharges;
-	    this.passDataIpb.tableData[len].prevNetDue      = a.prevNetDue;
-	    this.passDataIpb.tableData[len].netDue          = a.netDue;
-	    this.passDataIpb.tableData[len].prevPaytAmt     = a.totalPayments;
-	    this.passDataIpb.tableData[len].cumPayment      = a.cumPayment;
-	    this.passDataIpb.tableData[len].balance         = a.prevBalance;
-	    this.passDataIpb.tableData[len].paytAmt         = a.prevBalance;
-	    this.passDataIpb.tableData[len].localAmt        = a.prevBalance * this.jvDetail.currRate;
-	    this.passDataIpb.tableData[len].premAmt         = a.balPremDue;
-	    this.passDataIpb.tableData[len].riComm          = a.balRiComm;
-	    this.passDataIpb.tableData[len].riCommVat       = a.balRiCommVat;
-	    this.passDataIpb.tableData[len].charges         = a.balChargesDue;
-	    this.passDataIpb.tableData[len].totalPayt       = a.cumPayment + a.prevBalance;
-	    this.passDataIpb.tableData[len].remainingBal    = a.prevNetDue - (a.cumPayment + a.prevBalance);
-	    this.passDataIpb.tableData[len].insuredDesc     = a.insuredDesc;
-	    this.passDataIpb.tableData[len].overdueInt      = a.balOverdueInt;
-      this.passDataIpb.tableData[len].cedingId        = a.cedingId;
-      this.passDataIpb.tableData[len].cedingAbbr      = a.cedingAbbr;
-	  }
+  	    this.passDataIpb.tableData[len].tranId          = this.jvDetail.tranId;
+  	    this.passDataIpb.tableData[len].showMG          = 0;
+  	    this.passDataIpb.tableData[len].edited          = true;
+  	    this.passDataIpb.tableData[len].policyId        = a.policyId;
+  	    this.passDataIpb.tableData[len].soaNo           = a.soaNo;
+  	    this.passDataIpb.tableData[len].policyNo        = a.policyNo;
+  	    this.passDataIpb.tableData[len].coRefNo         = a.coRefNo;
+  	    this.passDataIpb.tableData[len].instNo          = a.instNo;
+  	    this.passDataIpb.tableData[len].effDate         = a.effDate;
+  	    this.passDataIpb.tableData[len].dueDate         = a.dueDate;
+  	    this.passDataIpb.tableData[len].currCd          = a.currCd;
+  	    this.passDataIpb.tableData[len].currRate        = a.currRate;
+  	    this.passDataIpb.tableData[len].prevPremAmt     = a.prevPremAmt;
+  	    this.passDataIpb.tableData[len].prevRiComm      = a.prevRiComm;
+  	    this.passDataIpb.tableData[len].prevRiCommVat 	= a.prevRiCommVat;
+  	    this.passDataIpb.tableData[len].prevCharges     = a.prevCharges;
+  	    this.passDataIpb.tableData[len].prevNetDue      = a.prevNetDue;
+  	    this.passDataIpb.tableData[len].netDue          = a.netDue;
+  	    this.passDataIpb.tableData[len].prevPaytAmt     = a.totalPayments;
+  	    this.passDataIpb.tableData[len].cumPayment      = a.cumPayment;
+  	    this.passDataIpb.tableData[len].balance         = a.prevBalance;
+  	    this.passDataIpb.tableData[len].paytAmt         = a.prevBalance;
+  	    this.passDataIpb.tableData[len].localAmt        = a.prevBalance * this.jvDetail.currRate;
+  	    this.passDataIpb.tableData[len].premAmt         = a.balPremDue;
+  	    this.passDataIpb.tableData[len].riComm          = a.balRiComm;
+  	    this.passDataIpb.tableData[len].riCommVat       = a.balRiCommVat;
+  	    this.passDataIpb.tableData[len].charges         = a.balChargesDue;
+  	    this.passDataIpb.tableData[len].totalPayt       = a.cumPayment + a.prevBalance;
+  	    this.passDataIpb.tableData[len].remainingBal    = a.prevNetDue - (a.cumPayment + a.prevBalance);
+  	    this.passDataIpb.tableData[len].insuredDesc     = a.insuredDesc;
+  	    this.passDataIpb.tableData[len].overdueInt      = a.balOverdueInt;
+        this.passDataIpb.tableData[len].cedingId        = a.cedingId;
+        this.passDataIpb.tableData[len].cedingAbbr      = a.cedingAbbr;
+  	  }
 
-	  this.ipbTbl.refreshTable();
+	    this.ipbTbl.refreshTable();
   	} else if(ev.selector == 'multOffClm') {
   	  this.passDataClm.tableData = this.passDataClm.tableData.filter(a => a.showMG != 1);
   	  for(var  i = 0; i < ev.data.length; i++){

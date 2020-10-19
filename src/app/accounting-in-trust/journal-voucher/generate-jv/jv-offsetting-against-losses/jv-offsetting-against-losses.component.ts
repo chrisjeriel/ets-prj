@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AccJvInPolBalAgainstLoss, AgainstLoss } from '@app/_models';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
@@ -23,7 +24,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   @ViewChild('clmTable') clmTable: CustEditableNonDatatableComponent;
   @ViewChild('inwTable') inwTable: CustEditableNonDatatableComponent;
   @ViewChild('clmlovMdl') clmlovMdl: LovComponent;
-  @ViewChild('inwlovMdl') inwlovMdl: LovComponent;
+  @ViewChild('inwlovMdl') inwlovMdl: LoadingLovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;

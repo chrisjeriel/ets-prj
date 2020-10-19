@@ -8,6 +8,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { DatePipe } from '@angular/common';
@@ -29,6 +30,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent; 
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild('lov') lovMdl: LovComponent;
+  @ViewChild('loadingLov') loadingLovMdl: LoadingLovComponent;
   @ViewChild('osQsoaLov') osQsoaLov: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -354,10 +356,12 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
         }
       }
     }
-    this.lovMdl.openLOV();
+    // this.lovMdl.openLOV();
+    this.loadingLovMdl.openLOV();
   }
 
   setSoa(data){
+    console.log(data);
     this.quarterTable.indvSelect.acctOffset = this.quarterTable.indvSelect.acctOffset.filter(a=>a.showMG!=1);
     for (var i = 0; i < data.data.length; i++) {
       this.quarterTable.indvSelect.acctOffset.push(JSON.parse(JSON.stringify(this.passDataOffsetting.nData)));

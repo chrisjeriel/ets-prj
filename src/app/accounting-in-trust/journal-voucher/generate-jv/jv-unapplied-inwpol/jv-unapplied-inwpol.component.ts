@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angu
 import { AccountingService, NotesService, MaintenanceService } from '@app/_services';
 import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-editable-non-datatable/cust-editable-non-datatable.component'
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
@@ -22,7 +23,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
   @ViewChild('tbl') table: CustEditableNonDatatableComponent;
   @ViewChild('inwTbl') inwTbl: CustEditableNonDatatableComponent;
   @ViewChild('lov') lovMdl: LovComponent;
-  @ViewChild('inw') lovInwMdl: LovComponent;
+  @ViewChild('inw') lovInwMdl: LoadingLovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;

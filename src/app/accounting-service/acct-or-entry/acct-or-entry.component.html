@@ -136,7 +136,7 @@
 			</div>
 			<div class="input-group" style="margin-bottom: 6px !important;">
 				<div class="col-sm-12 text-center">
-					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag || !canReprint" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag || !canReprint" (click)="print();">Reprint OR</button>
+					<button class="cust-btn" style="margin-right: 0px !important; width: 100% !important;" [disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag || !canReprint || !allowReprint" [class.cust-btn-disabled]="isAdd || isCancelled || orInfo.orStatDesc.toUpperCase() == 'NEW' || inquiryFlag || !canReprint || !allowReprint" (click)="print();">Reprint OR</button>
 				</div>					
 			</div>
 			<div class="input-group" style="margin-bottom: 2px !important;">

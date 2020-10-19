@@ -1735,7 +1735,7 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
 	}
 
-	getAcitSoaDtlNew(currCd, policyId?, instNo?, cedingId?, payeeNo?, zeroBal?){
+	getAcitSoaDtlNew(currCd, policyId?, instNo?, cedingId?, payeeNo?, zeroBal?, prsr?: any){
 		const params = new HttpParams()
 			.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
 			.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
@@ -1744,6 +1744,25 @@ export class AccountingService {
 			.set('zeroBal', (zeroBal == null || zeroBal == undefined ? '' : zeroBal))
 			.set('currCd', currCd);
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params});	
+	}
+
+	getAcitSoaDtlNew2(param){
+		// const params = new HttpParams()
+		// 	.set('policyId', (policyId == null || policyId == undefined ? '' : policyId))
+		// 	.set('instNo', (instNo == null || instNo == undefined ? '' : instNo))
+		// 	.set('cedingId', (cedingId == null || cedingId == undefined ? '' : cedingId))
+		// 	.set('payeeNo', (payeeNo == null || payeeNo == undefined ? '' : payeeNo))
+		// 	.set('zeroBal', (zeroBal == null || zeroBal == undefined ? '' : zeroBal))
+		// 	.set('currCd', currCd)
+		// 	.set('paginationRequest', {
+		// 								position: prsr.position == null || prsr.position == undefined ? '' : prsr.position,
+		// 								count: prsr.count == null || prsr.count == undefined ? '' : prsr.count
+		// 							  })
+		// 	.set('sortRequest', {
+		// 							sortKey: prsr.sortKey == null || prsr.sortKey == undefined ? '' : prsr.sortKey,
+		// 							order: prsr.order == null || prsr.order == undefined ? '' : prsr.order
+		// 					  	});
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitAgingSoaDtl',{params: param});	
 	}
 
 

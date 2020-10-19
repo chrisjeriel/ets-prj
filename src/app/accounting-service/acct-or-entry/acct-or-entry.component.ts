@@ -212,6 +212,8 @@ export class AcctOrEntryComponent implements OnInit {
     activeTag: ''
   };
 
+  allowReprint: boolean = false;
+
   @Input() inquiryFlag: boolean = false; //added by ENGEL
 
   constructor(private route: ActivatedRoute, private as: AccountingService, private ns: NotesService, private ms: MaintenanceService, private ps : PrintService) { }
@@ -223,6 +225,15 @@ export class AcctOrEntryComponent implements OnInit {
     this.retrievePaymentType();
     this.canUploadAcctEntry();
     this.canReprintMethod();
+
+    this.ms.getMtnParameters('V', 'ALLOW_OR_PRINT_TO_SCREEN').subscribe(
+        (data:any)=>{
+          if(data.parameters.length !== 0){
+            this.allowReprint = data.parameters[0].paramValueV == 'Y';
+          }
+        }
+    );
+
     //this.retrieveCurrency();
     var tranId;
     var orNo;
@@ -917,6 +928,11 @@ export class AcctOrEntryComponent implements OnInit {
 
   print(){
     this.canPrintScreen();
+    if(this.isPrinted && this.allowReprint){ 
+      this.reprintMdl.openNoClose();
+      return;
+    }
+
     if(this.checkOrInfoFields() || this.checkPaytDtlFields() || this.paytModeValidation() || this.passData.tableData.length === 0){ //empty required fields?
       this.dialogIcon = 'error';
       this.successDiag.open();
@@ -949,12 +965,9 @@ export class AcctOrEntryComponent implements OnInit {
       this.dialogMessage = 'OR cannot be printed. Accounting Entries must have zero variance.';
       this.successDiag.open();
     }else{
-      if(this.isPrinted){
-        /*window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_AR' + '&userId=' + 
-                      this.ns.getCurrentUser() + '&tranId=' + this.orInfo.tranId, '_blank');
-        this.printMdl.openNoClose();*/
-        this.reprintMdl.openNoClose();
-      }else{
+      // if(this.isPrinted){
+      //   this.reprintMdl.openNoClose();
+      // }else{
         //this.loading = true;
         //this.printMdl.openNoClose();
         //this.retrieveMtnAcitArSeries();
@@ -974,7 +987,7 @@ export class AcctOrEntryComponent implements OnInit {
             }
           }
         );
-      }
+      // }
     }
   }
 
@@ -1025,7 +1038,7 @@ export class AcctOrEntryComponent implements OnInit {
               }
             }else{
               this.dialogIcon = 'error-message';
-              this.dialogMessage = 'An error has occured. AR was not printed.';
+              this.dialogMessage = 'An error has occured. OR was not printed.';
               this.successDiag.open();
               this.printLoading = false;
             }

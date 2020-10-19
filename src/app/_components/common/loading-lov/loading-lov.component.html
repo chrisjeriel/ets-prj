@@ -1,0 +1,115 @@
+<style>
+    thead tr th {
+        position: relative;
+    }
+    span.ui-column-resizer {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        width: 8px;
+        height: 100%;
+        padding: 0;
+        cursor: col-resize;
+    }
+</style>
+
+
+<app-modal class="d-none" (modalOpened)="openModal()" id="lovMdl">
+    <div header>List of Values</div>
+    <div body *ngIf="modalOpen" style="position: relative;width: 800px;">
+        <div class="row"  *ngIf="loadingFlag">
+            <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+        </div>
+        <div class="input-group mb" *ngIf="passData.selector.indexOf('multOffSoa') == 0">
+        <!-- <span class="col-sm-1"></span> -->
+            <label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Ceding Company</label>
+            <input type="text" class="form-control form-control-sm cust-sm col-sm" style="margin-right: 2px !important; padding-right: 20px !important;" [(ngModel)]="multOffCedingName" [readOnly]="true">
+            <div style="margin-left: -12px !important; margin-right: 10px !important; z-index: 200; font-size: 14px; position: relative;"><a><i class="fa fa-search" (click)="showCedingLov($event)"></i></a></div>
+            <span class="col-sm-2"></span>
+        </div>
+        <div id="cust-table-container" [style.display]="!loadingFlag? 'block':'none'">
+            <div class="w-100 text-right">
+                <div >
+                    <label>Search: &nbsp;
+                        <input type="search" class="form-control-sm cust-search-form" [(ngModel)]="searchString" (keydown.enter)="search()">
+                    </label>
+                </div>
+            </div>
+            
+
+            <div class="row"  *ngIf="loadingTableFlag" style="margin-bottom: -148px;padding-top: 74px;">
+                <img src="app/resources/images/Loading_icon2.gif" alt="loading.gif" id="loading" class="m-auto" style="margin-bottom: 9px!important">
+            </div>
+            <div [class.loading]="loadingTableFlag"> <!-- Div of table -->
+                <div [id]="'special-lov'+passTable.pageID">
+                    <div class="table-scroll table-scroll-unli" id="cust-scroll">
+                        <table id="non-datatable" class="content-container keypress-class margin-table">
+                            <thead >
+                                <tr>
+                                    <th *ngIf="passTable.checkFlag" class="checkbox-container-header"><input type="checkbox" name="" style="width: auto !important;" [(ngModel)]="checked" class="checkbox" (change)="selectAll($event.target.checked)" [checked]="checked"></th>
+                                    <th *ngFor="let tHeader of passTable.tHeader; let i = index" [ngSwitch]="passTable.dataTypes[i]" [ngStyle]="{'width': (passTable.colSize[i] == '' || passTable.colSize.length == 0) ? 'auto' : passTable.colSize[i]}" [ngbTooltip]="passTable.tooltip !== undefined ? passTable.tooltip[i] :null">
+                                        <!-- <i class="fa fa-map-pin" (click)="pinColumn($event,i)"></i> -->
+                                        <span class="ui-column-resizer" (mousedown) = "onMouseDown($event)"></span>
+                                        <span *ngSwitchDefault class="gridHeader" (click)="sort(passTable.dbKeys[i],sortBy);sortIndex=i;">{{tHeader}}</span>
+                                         <i *ngIf="sortBy && i==sortIndex" class="fa fa-caret-down"></i>
+                                         <i *ngIf="!sortBy && i==sortIndex" class="fa fa-caret-up"></i>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let data of passTable.tableData | paginate: { id: 'non-editable'+passTable.pageID, itemsPerPage: passTable.pageLength, currentPage: p }; let a = index;" (click)="onRowClick($event, data, a);" (dblclick)="onRowDblClick($event, data)" [class.selected]="data === indvSelect || selected.includes(data) || data?.checked" (keydown.ArrowUp)="tablePress($event, data, a)" (keydown.ArrowDown)="tablePress($event, data, a)" tabindex="0" style="outline: none" id="tableRow" (keydown.Enter)="enterKey($event, data)">
+                                    <td *ngIf="passTable.checkFlag" class="checkbox-container-body" style="padding: 4px !important; text-align: center !important;"><input type="checkbox" style="width: auto !important;" *ngIf="!(data===fillData)" class="checkbox" (click)="data.preventDefault ? removeSelected($event, data, true) : null;" (change)="removeSelected($event, data)" [checked]="data.checked"></td>
+                                    <td *ngFor="let key of passTable.keys; let i = index" [ngSwitch]="passTable.dataTypes[i]" [ngStyle]="{'max-width': (passTable.colSize[i] == '' || passTable.colSize.length == 0) ? 'auto' : passTable.colSize[i]}">
+                                        <div *ngIf="!(data===fillData)">
+                                            <div  *ngSwitchCase="passTable.dataTypes[i] !== undefined && passTable.dataTypes[i].split('-')[0] === 'sequence' ? passTable.dataTypes[i] : ''" style="text-align: right">
+                                                <span class="unclickable">{{data[key] | number: passTable.dataTypes[i].split('-')[1]+'.0' | sequence}}</span>
+                                            </div>
+                                            <span *ngSwitchCase="'date'" class="unclickable">{{data[key] | date: 'MM/dd/yyyy'}}</span>
+                                            <div *ngSwitchCase="'currency'" style="text-align: right">
+                                                <span class="unclickable" [ngClass]="{'negativeNumber': data[key]<0}">{{data[key] | number: '1.2-2' | negativeAmount}}</span>
+                                            </div>
+                                            <div  *ngSwitchCase="'number'" style="text-align: right">
+                                                <span class="unclickable">{{data[key] | number: '1.0-0'}}</span>
+                                            </div>
+                                            <span *ngSwitchDefault class="unclickable">{{ data[key] }}</span>
+
+                                        </div>
+                                        <div *ngIf="data===fillData" class="filler">
+                                            <span></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="pagingStatus">
+                    <pagination-template #paw="paginationApi" [id]="'non-editable'+passTable.pageID" (pageChange)="p = $event">
+                        <label *ngIf="!paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passTable.pageLength + 1 }} - {{ paw.getCurrent() * passTable.pageLength }} of {{count}} entries </label>
+                        <label *ngIf="paw.isLastPage() && count > 0">Showing {{ (paw.getCurrent() - 1) * passTable.pageLength + 1 }} - {{count}} of {{count}} entries</label>
+                        <label *ngIf="count < 1">Showing 0 - 0 of 0 entries</label>
+                    </pagination-template>
+                </div>
+                <div class="pagination" >
+                    <pagination-controls [id]="'non-editable'+passTable.pageID" class="my-pagination" (pageChange)="p = $event;updatePage()" previousLabel="" nextLabel="" >
+                    </pagination-controls>
+                </div>
+                <div style="height: 42px;float: right;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div footer>
+        <div class="d-flex justify-content-center">
+            <button class="cust-btn" type="button" (click)="modal.closeModal();modalOpen=false;"><a>Cancel</a></button>
+            <!-- <button [disabled]="indvSelect == ''" class="cust-btn" type="button" (click)="modal.closeModal();modalOpen=false;okBtnClick($event);"><a>Ok</a></button> TRBT#PROD_GRADE -->
+            <button [disabled]="selected.length == 0" class="cust-btn" type="button" (click)="modal.closeModal();modalOpen=false;okBtnClick();"><a>Ok</a></button>
+        </div>
+    </div>
+</app-modal>
+
+<app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
+<app-mtn-payee-ceding #cedingLov (selectedData)="setCeding($event)"></app-mtn-payee-ceding>

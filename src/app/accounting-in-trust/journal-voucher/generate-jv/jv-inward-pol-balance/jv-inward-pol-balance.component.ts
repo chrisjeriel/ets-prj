@@ -8,6 +8,7 @@ import { CustEditableNonDatatableComponent } from '@app/_components/common/cust-
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { CancelButtonComponent } from '@app/_components/common/cancel-button/cancel-button.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 
 @Component({
@@ -21,7 +22,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-  @ViewChild(LovComponent) lovMdl: LovComponent;
+  @ViewChild(LoadingLovComponent) lovMdl: LoadingLovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
   @Input() jvDetail:any;

@@ -9,6 +9,7 @@ import { CancelButtonComponent } from '@app/_components/common/cancel-button/can
 import { ConfirmSaveComponent } from '@app/_components/common/confirm-save/confirm-save.component';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { LovComponent } from '@app/_components/common/lov/lov.component';
+import { LoadingLovComponent } from '@app/_components/common/loading-lov/loading-lov.component';
 import { QuarterEndingLovComponent } from '@app/maintenance/quarter-ending-lov/quarter-ending-lov.component';
 import { forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -34,7 +35,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('quarEndLov') quarEndLov         : ModalComponent;
   @ViewChild('servfeeMdl') servfeeMdl         : ModalComponent;
-  @ViewChild('aginSoaLov') aginSoaLov         : LovComponent; 
+  @ViewChild('aginSoaLov') aginSoaLov         : LoadingLovComponent; 
   @ViewChild('invtLov') invtLov               : LovComponent;
   @ViewChild('osQsoaLov') osQsoaLov           : LovComponent;
   @ViewChild('trtyLov') trtyLov               : QuarterEndingLovComponent;
@@ -561,7 +562,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.clmHistLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       this.passData.currCd = this.requestData.currCd;
-      this.passData.selector = 'acitSoaDtlPrq';
+      this.passData.selector = 'acitSoaDtl';
+      this.passData.from = 'prq';
       this.passData.payeeNo = this.requestData.payeeCd;
       this.passData.hide = this.inwardPolBalData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});
       this.aginSoaLov.openLOV();
