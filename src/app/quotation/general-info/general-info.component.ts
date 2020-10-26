@@ -231,11 +231,11 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					this.quoteId = (this.quoteInfo.quoteId === '') ? params['quoteId'] : this.quoteInfo.quoteId;
 
 					if(params['exclude'] != undefined) {
-						this.excludeCedingCo = params['exclude'].split(',');
+						//this.excludeCedingCo = params['exclude'].split(',');
 					}
 
 					if(params['tempQuoteIdInternalComp'] != undefined) {
-						this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
+						//this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
 					}
 				}
 			});

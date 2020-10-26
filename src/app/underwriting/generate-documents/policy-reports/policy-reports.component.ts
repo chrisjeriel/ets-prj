@@ -329,7 +329,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
       this.params.dateParam = '6';
     } 
-    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA'){
+    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA' || this.params.reportId == 'POLR044SB' || this.params.reportId == 'POLR044SC'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange', 'asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
@@ -397,7 +397,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '3';
       this.params.dateParam = '6';
     } 
-    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA'){
+    else if(this.params.reportId == 'POLR044S' || this.params.reportId == 'POLR044SA' || this.params.reportId == 'POLR044SB' || this.params.reportId == 'POLR044SC'){
       this.paramsToggle.push('line', 'company', 'currCd','siRange','asOf');
       this.params.incRecTag = 'D';
       this.params.dateRange = '3';
@@ -1348,6 +1348,12 @@ export class PolicyReportsComponent implements OnInit {
           'isNull(policyNo) as [POLICY NO], negFmt(currency(tsiAmt)) as [TSI AMT], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], negFmt(currency(siQuotaRet1)) as [SI QUOTA RET1], ' +
           'negFmt(currency(siQuotaRet2)) as [SI QUOTA RET2], negFmt(currency(siTotalRet)) as [SI TOTAL RET], checkNullNo(siRange) as [SI RANGE], negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], ' +
           'negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(fromDate) as [FROM DATE], myFormat(toDate) as [TO DATE]';
+        } else if(this.params.reportId == 'POLR044SB'){
+          this.passDataCsv = data['listPolr044sb'];
+          query = 'SELECT isNull(extractUser) AS [EXTRACT USER], isNull(extractDate) AS [EXTRACT DATE], isNull(currencyCd) AS [CURRENCY CD], isNull(lineCd) AS [LINE CD], isNull(policyId) AS [POLICY ID], isNull(policyNo) AS [POLICY NO], negFmt(currency(tsiAmt)) AS [TSI AMT], isNull(cedingId) AS [CEDING ID], isNull(cedingName) AS [CEDING NAME], negFmt(currency(siTotal)) AS [SI TOTAL], negFmt(currency(siQuota)) AS [SI QUOTA], negFmt(currency(siQuotaRet1)) AS [SI QUOTA RET1], negFmt(currency(siQuotaRet2)) AS [SI QUOTA RET2], negFmt(currency(si1stSurplus)) AS [SI 1ST SURPLUS], negFmt(currency(si2ndSurplus)) AS [SI 2ND SURPLUS], negFmt(currency(siFacul)) AS [SI FACUL], checkNullNo(siRange) AS [SI RANGE], negFmt(currency(amtRangeFrom)) AS [AMT RANGE FROM], negFmt(currency(amtRangeTo)) AS [AMT RANGE TO], dateParam AS [DATE PARAM], dateRange AS [DATE RANGE], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], isNull(incRecTag) AS [INC REC TAG]';
+        } else if(this.params.reportId == 'POLR044SC'){
+          this.passDataCsv = data['listPolr044sc'];
+          query = 'SELECT isNull(extractUser) [EXTRACT USER], isNull(extractDate) [EXTRACT DATE], isNull(currencyCd) [CURRENCY CD], isNull(lineCd) [LINE CD], isNull(policyId) [POLICY ID], isNull(policyNo) [POLICY NO], negFmt(currency(tsiAmt)) AS [TSI AMT], isNull(cedingId) [CEDING ID], isNull(cedingName) [CEDING NAME], negFmt(currency(siQuotaRet1)) AS [SI QUOTA RET1], negFmt(currency(siQuotaRet2)) AS [SI QUOTA RET2], negFmt(currency(siTotalRet)) AS [SI TOTAL RET], isNull(siRange) [SI RANGE], negFmt(currency(amtRangeFrom)) AS [AMT RANGE FROM], negFmt(currency(amtRangeTo)) AS [AMT RANGE TO], isNull(dateParam) [DATE PARAM], isNull(dateRange) [DATE RANGE], myFormat(fromDate) [FROM DATE], myFormat(toDate) [TO DATE], isNull(incRecTag) [INC REC TAG]';
         } else if(this.params.reportId == 'POLR044WQ'){
           this.passDataCsv = data['listPolr044wq'];
           query = 'SELECT extractUser as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], checkNullNo(quoteId) as [QUOTE ID], isNull(quotationNo) as [QUOTATION NO], isNull(lineCd) as [LINE CD], ' +
