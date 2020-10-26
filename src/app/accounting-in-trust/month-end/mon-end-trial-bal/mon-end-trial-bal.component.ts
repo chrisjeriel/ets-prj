@@ -400,6 +400,10 @@ export class MonEndTrialBalComponent implements OnInit {
         this.params.destination = 'exl';
       }
 
+      if(this.params.reportId == 'ACITR066J') {
+        this.paramsToggle = ['eomDate', 'destination'];
+      }
+
       this.allDest = this.params.reportId !== 'ACITR066G';
       // this.allDest = this.params.reportId;
     }
@@ -572,6 +576,10 @@ export class MonEndTrialBalComponent implements OnInit {
           'negFmt(localEndCreditAmt) AS [LOCAL END CREDIT AMT],isNull(postTag) AS [POST TAG],isNull(eomUser) AS [EOM USER],'+
           'isNull(tbBase) AS [TB BASE],checkNullNo(glAcctCategory) AS [GL ACCT CATEGORY],checkNullNo(glAcctControl) AS [GL ACCT CONTROL],'+
           'checkNullNo(glAcctSub1) AS [GL ACCT SUB1],checkNullNo(glAcctSub2) AS [GL ACCT SUB2],checkNullNo(glAcctSub3) AS [GL ACCT SUB3]';
+        } else if(this.params.reportId == 'ACITR066J'){
+          this.passDataCsv = data['listAcitr066j'];
+          query = 'SELECT isNull(groupName) AS [GROUP NAME], checkNullNo(itemNo) AS [ITEM NO], myFormat(eomDate) as [DATE], '+
+          'isNull(tranNo) AS [TRAN NO], isNull(itemName) AS [ITEM NAME], negFmt(itemAmt) AS [ITEM AMT], negFmt(localAmt) AS [LOCAL AMT]';
         }
 
         console.log(this.passDataCsv);

@@ -46,11 +46,16 @@ export class TrialBalanceTbComponent implements OnInit {
   ngOnInit() {
   	this.titleService.setTitle("Acc | Trial Balance | Extract");
   	//this.accountCode = 'Total Debits and Credits' ;
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.table.overlayLoader = true;
+    });
     this.getData();
   }
 
   getData(){
     this.accountingService.getAcitTrialBalExt(this.ns.getCurrentUser()).subscribe(data=>{
+      this.table.overlayLoader = false;
       if(data['list'].length == 0){
         this.accountCode= 'N';
       }else{

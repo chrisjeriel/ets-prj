@@ -784,6 +784,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
 	    this.passLov.currCd = this.jvDetail.currCd;
       this.passLov.hide = this.passDataIpb.tableData.filter((a)=>{return a.soaNo !== null && !a.deleted}).map(a=>{return a.soaNo.toString()});
+      this.passLov.from = 'jv';
   	} else if(from == 'clm') {
   	  this.passLov.selector = 'multOffClm';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
@@ -848,6 +849,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   }
 
   setLov(ev) {
+    console.log(ev);
   	if(ev.selector == 'multOffSoa') {
   	  this.passDataIpb.tableData = this.passDataIpb.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {

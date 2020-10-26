@@ -186,6 +186,7 @@ export class LoadingLovComponent implements OnInit {
 	openModal(): void {
         this.modalOpen = true;
         this.fillData = new Object();
+        this.passData.data = [];
         for(let key of this.passTable.keys){
             this.fillData[key] = "";
         }
@@ -407,6 +408,8 @@ export class LoadingLovComponent implements OnInit {
 		  	this.request.cedingId = this.passData.cedingId == undefined ? '' : this.passData.cedingId;
 		  	this.request.payeeNo = this.passData.payeeNo == undefined ? '' : this.passData.payeeNo;
 		  	this.request.zeroBal = this.passData.zeroBal == undefined ? '' : this.passData.zeroBal;
+            this.request.from = this.passData.from == undefined ? '' : this.passData.from;
+            this.request.exclude = this.passData.hide == undefined ? [] : this.passData.hide;
 
             this.accountingService.getAcitSoaDtlNew2(this.request).subscribe((a:any)=>{
               	console.log(this.request);
@@ -415,11 +418,11 @@ export class LoadingLovComponent implements OnInit {
                 this.addFiller();
                 // this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}))
                 if(this.passData.from == 'ar') {
-                    this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1 && data.prevBalance !== 0}));
+                    this.placeData(a.soaDtlList);
                 } else if(this.passData.from == 'prq') {
-                    this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
+                    this.placeData(a.soaDtlList.map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
                 } else {
-                  this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
+                  this.placeData(a.soaDtlList);
                 }
                 this.loadingFlag = false;
                 this.loadingTableFlag = false;
@@ -439,11 +442,13 @@ export class LoadingLovComponent implements OnInit {
             this.request.cedingId = this.multOffCedingId == undefined ? '' : this.multOffCedingId;
             this.request.payeeNo = this.passData.payeeNo == undefined ? '' : this.passData.payeeNo;
             this.request.zeroBal = this.passData.zeroBal == undefined ? '' : this.passData.zeroBal;
+            this.request.from = this.passData.from == undefined ? '' : this.passData.from;
+            this.request.exclude = this.passData.hide == undefined ? [] : this.passData.hide;
 
             this.accountingService.getAcitSoaDtlNew2(this.request).subscribe((a:any)=>{
                 this.count = a['count'];
                 this.addFiller();
-                this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
+                this.placeData(a.soaDtlList);
                 this.loadingFlag = false;
                 this.loadingTableFlag = false;
                 for(var i of this.passTable.tableData) {
@@ -470,11 +475,11 @@ export class LoadingLovComponent implements OnInit {
 	            this.loadingTableFlag = true;
 	            this.accountingService.getAcitSoaDtlNew2(this.request).subscribe((a:any)=>{
                 if(this.passData.from == 'ar') {
-                    this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1 && data.prevBalance !== 0}));
+                    this.placeData(a.soaDtlList);
                 } else if(this.passData.from == 'prq') {
-                    this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
+                    this.placeData(a.soaDtlList.map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
                 } else {
-	              this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}))
+	              this.placeData(a.soaDtlList);
                 }
 	               this.loadingTableFlag = false;
 
@@ -489,7 +494,7 @@ export class LoadingLovComponent implements OnInit {
             if(this.passTable.tableData[(this.p - 1) * this.passTable.pageLength] == this.fillData){
                 this.loadingTableFlag = true;
                 this.accountingService.getAcitSoaDtlNew2(this.request).subscribe((a:any)=>{
-                  this.placeData(a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
+                  this.placeData(a.soaDtlList);
                   this.loadingTableFlag = false;
 
                   for(var i of this.passTable.tableData){
@@ -517,14 +522,13 @@ export class LoadingLovComponent implements OnInit {
       let selects:any[] = [];
       if(!this.passTable.checkFlag){
         this.selectedData.emit(this.passData);
-      }
-      else{
-        // selects = this.passTable.tableData.filter(a=>a.checked);
-        this.passData['data'] = this.selected;
+      } else{
+        selects = this.passTable.tableData.filter(a=>a.checked);
+        this.passData['data'] = selects;
         this.selectedData.emit(this.passData);
       }
 
-      this.passData.data = null;
+      // this.passData.data = null;
       this.resetMultOffCedant();
       this.count = this.passTable.pageLength;
     }

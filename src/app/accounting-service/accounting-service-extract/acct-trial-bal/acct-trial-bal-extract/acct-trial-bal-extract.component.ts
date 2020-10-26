@@ -44,7 +44,7 @@ export class AcctTrialBalExtractComponent implements OnInit {
    currencyDesc:String = '';
    @ViewChild(MtnCurrencyCodeComponent) currCdLov: MtnCurrencyCodeComponent;
 
-   rType:any;
+   rType: string = 'S';
 
    selectedPrinter:any;
    printerList = [];
@@ -124,7 +124,9 @@ export class AcctTrialBalExtractComponent implements OnInit {
    getExtractToCsv(){
     console.log(this.params.reportId);
       console.log(this.ns.getCurrentUser() + ' >> current user');
-      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACSER008')
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACSER008',null,null,null,null,null,null,
+           null,null,null,null,null,null,null,null,null,null,
+           null,null,this.rType)
       .subscribe(data => {
         console.log(data);
         var months = new Array("Jan", "Feb", "Mar", 
@@ -158,7 +160,8 @@ export class AcctTrialBalExtractComponent implements OnInit {
 
         var name = this.params.reportId;
         var query = '';
-        //if(this.params.reportId == 'ACSER008'){
+
+        if(this.rType == 'D'){
           this.passDataCsv = data['listAcser008'];
           this.passDataCsv.forEach(a=>{a.extType = a.extType == 'N' ? 'Net' : 'Total Debit & Total Credits'});
           query = 'SELECT checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
@@ -166,7 +169,13 @@ export class AcctTrialBalExtractComponent implements OnInit {
           'isNull(slTypeName) as [SL TYPE NAME],checkNullNo(slCd) as [SL CD],isNull(slName) as [SL NAME],negFmt(currency(totalCredit)) as [TOTAL CREDIT],'+
           'negFmt(currency(totalDebit)) as [TOTAL DEBIT],myFormat(periodFrom) as [PERIOD FROM],myFormat(periodTo) as [PERIOD TO],isNull(currCdParam) as [CURR CD PARAM],'+
           'isNull(extType) as [EXT TYPE]';
-        //}
+        } else if(this.rType == 'S'){
+          this.passDataCsv = data['listAcser008'];
+          this.passDataCsv.forEach(a=>{a.extType = a.extType == 'N' ? 'Net' : 'Total Debit & Total Credits'});
+          query = 'SELECT checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
+          'negFmt(currency(totalCredit)) as [TOTAL CREDIT], negFmt(currency(totalDebit)) as [TOTAL DEBIT],myFormat(periodFrom) as [PERIOD FROM],myFormat(periodTo) as [PERIOD TO],isNull(currCdParam) as [CURR CD PARAM],'+
+          'isNull(extType) as [EXT TYPE]';
+        }
 
         console.log(this.passDataCsv);
         this.ns.export('ACSER008', query, this.passDataCsv);
