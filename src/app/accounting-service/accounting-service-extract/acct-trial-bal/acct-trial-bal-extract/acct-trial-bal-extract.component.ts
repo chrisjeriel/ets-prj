@@ -173,6 +173,7 @@ export class AcctTrialBalExtractComponent implements OnInit {
           this.passDataCsv = data['listAcser008'];
           this.passDataCsv.forEach(a=>{a.extType = a.extType == 'N' ? 'Net' : 'Total Debit & Total Credits'});
           query = 'SELECT checkNullNo(extractId) as [EXTRACT ID],extractUser as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],checkNullNo(glAcctId) as [GL ACCT ID],'+
+          'isNull(acctCode) as [ACCT CODE],isNull(acctName) as [ACCT NAME],isNull(currCd) as [CURRENCY],' +
           'negFmt(currency(totalCredit)) as [TOTAL CREDIT], negFmt(currency(totalDebit)) as [TOTAL DEBIT],myFormat(periodFrom) as [PERIOD FROM],myFormat(periodTo) as [PERIOD TO],isNull(currCdParam) as [CURR CD PARAM],'+
           'isNull(extType) as [EXT TYPE]';
         }
