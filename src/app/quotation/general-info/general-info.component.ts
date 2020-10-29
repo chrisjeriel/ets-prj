@@ -235,12 +235,12 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					}
 
 					if(params['tempQuoteIdInternalComp'] != undefined) {
-						//this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
+						this.tempQuoteIdInternalComp = params['tempQuoteIdInternalComp'];
 					}
 				}
 			});
 			this.quotationService.getIntCompAdvInfo({quoteId:this.quoteId, quotationNo: this.plainQuotationNo(this.quotationNo)}).subscribe(a=>{
-				this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+				//this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
 			})
 
 
