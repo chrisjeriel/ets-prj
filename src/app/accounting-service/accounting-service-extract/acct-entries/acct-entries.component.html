@@ -26,20 +26,20 @@
             </div>
         </div>
         <div class="col-sm-4"> 
-            <div class="input-group col-sm-6 p-0">
+            <div class="input-group col-sm p-0">
                 <label class="form-control-sm col-sm-4">Tran Type</label>
                 <div class="col-sm-1">
                     <input disabled [ngModel]="extractParams.orTag" type="checkbox" class="form-control-sm " name="" id="or" checked="checked">
                 </div>
-                <label for="or" class="form-control-sm text-left col-sm-1">OR</label>
+                <label for="or" class="form-control-sm text-left col-sm-1" style="padding-left: 0 !important;">OR</label>
                 <div class="col-sm-1">
                     <input disabled [ngModel]="extractParams.cvTag" type="checkbox" class="form-control-sm " name="" id="cv" checked="checked">
                 </div>
-                <label for="cv" class="form-control-sm text-left col-sm-1">CV</label>
+                <label for="cv" class="form-control-sm text-left col-sm-1" style="padding-left: 0 !important;">CV</label>
                 <div class="col-sm-1">
                     <input disabled [ngModel]="extractParams.jvTag" type="checkbox" class="form-control-sm " name="" id="jv" checked="checked">
                 </div>
-                <label for="jv" class="form-control-sm text-left col-sm-1">JV</label>
+                <label for="jv" class="form-control-sm text-left col-sm-1" style="padding-left: 0 !important;">JV</label>
             </div>
             <div class="input-group">
                 <label class="form-control-sm col-sm-2"></label>
@@ -49,7 +49,7 @@
                 <label for="closeTranTag" class="form-control-sm text-left col-sm">Include Closed Transactions Only</label>
             </div>
             <div class="input-group">
-                <label class="form-control-sm col-sm-2">Date Extracted</label>
+                <label class="form-control-sm col-sm-4">Date Extracted</label>
                 <div class="col-sm-5 dp-cont">
                     <datepicker [type]="'date'" [showIcon]="true" [value]="extractParams.extractDate?.split('T')[0]" [disabled]="true"></datepicker>
                 </div>      
