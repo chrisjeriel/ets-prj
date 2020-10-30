@@ -231,7 +231,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 					this.quoteId = (this.quoteInfo.quoteId === '') ? params['quoteId'] : this.quoteInfo.quoteId;
 
 					if(params['exclude'] != undefined) {
-						this.excludeCedingCo = params['exclude'].split(',');
+						//this.excludeCedingCo = params['exclude'].split(',');
 					}
 
 					if(params['tempQuoteIdInternalComp'] != undefined) {
@@ -240,7 +240,7 @@ export class GeneralInfoComponent implements OnInit, AfterViewInit {
 				}
 			});
 			this.quotationService.getIntCompAdvInfo({quoteId:this.quoteId, quotationNo: this.plainQuotationNo(this.quotationNo)}).subscribe(a=>{
-				this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
+				//this.excludeCedingCo = a['quotation'].map(a=>a.competitionsList[0].cedingId);
 			})
 
 
