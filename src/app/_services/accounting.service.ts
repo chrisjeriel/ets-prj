@@ -3650,4 +3650,63 @@ export class AccountingService {
     getAcitInvestmentsIncArtUtil(param) {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInvestmentsIncArtUtil?tranId='+param);
     }
+
+    getArListChangeTrans(searchParams: any[]){
+		var params;
+         if(searchParams.length < 1){
+              params = new HttpParams()
+                     .set('arNo','')
+                     .set('payor', '')
+                     .set('arDateFrom', '')
+                     .set('arDateTo','')
+                     .set('tranTypeName','')
+                     .set('arStatus','')
+                     .set('particulars','')
+                     .set('arAmtFrom','')
+                     .set('arAmtTo','')
+                     .set('tranStat','')
+                     .set('arStat','')
+                     // .set('paginationRequest.position',null)
+                     // .set('paginationRequest.count',null)
+                     // .set('sortRequest.sortKey',null)
+                     // .set('sortRequest.order',null);
+         }
+         else{
+              params = new HttpParams();
+             for(var i of searchParams){
+                 params = params.append(i.key, i.search);
+             }
+         }
+          return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveArListChangeTrans',{params});
+	}
+
+	getJVListingChangeTrans(param) {
+        return this.http.get(environment.prodApiUrl + "/acct-in-trust-service/retrieveAcitJVListingChangeTrans",{params: param});
+	}
+
+	getAcitCvListChangeTrans(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('tranId','')
+				.set('cvGenNo','')
+				.set('cvDateFrom','')
+				.set('cvDateTo','')
+				.set('cvStatusDesc','')
+				.set('payee','')
+				.set('particulars','')
+				.set('cvAmtFrom','')
+				.set('cvAmtTo','')
+				.set('tranStat','')
+				.set('cvStat','')
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvChangeTrans',{params});
+	}
+
 }

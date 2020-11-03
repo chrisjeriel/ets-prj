@@ -250,7 +250,7 @@ export class ChangeToNewArComponent implements OnInit {
     }, 0);
     this.searchParams = this.searchParams.filter(a => a.key !== 'arStat');
     this.searchParams.push({key: 'arStat', search: 'P,X'});
-    this.as.getArList(this.searchParams).subscribe(
+    this.as.getArListChangeTrans(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0){
           console.log(data);
@@ -287,7 +287,7 @@ export class ChangeToNewArComponent implements OnInit {
     param['paginationRequest.count'] = 10;
     param['paginationRequest.position'] = 1;
 
-    this.as.getJVListing(param).subscribe((data:any) => {
+    this.as.getJVListingChangeTrans(param).subscribe((data:any) => {
       for(var i=0; i< data.transactions.length;i++){
         // if (data.transactions[i].jvListings.jvStatusName === 'For Approval' || data.transactions[i].jvListings.jvStatusName === 'Approved'
         //    || data.transactions[i].jvListings.jvStatusName === 'Printed' || data.transactions[i].jvListings.jvStatusName === 'Cancelled'){
@@ -308,7 +308,7 @@ export class ChangeToNewArComponent implements OnInit {
     }, 0);
     this.searchParams = this.searchParams.filter(a => a.key !== 'cvStat');
     this.searchParams.push({key: 'cvStat', search: 'P,X'});
-    this.as.getAcitCvList(this.searchParams).subscribe(data => {
+    this.as.getAcitCvListChangeTrans(this.searchParams).subscribe(data => {
 
       var rec = data['acitCvList'].map(i => { 
         i.createDate     = this.ns.toDateTimeString(i.createDate); 

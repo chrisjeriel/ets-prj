@@ -247,7 +247,7 @@ export class ClaimReportsComponent implements OnInit {
       } else if(this.params.reportId == 'CLMR010ZAO' || this.params.reportId == 'CLMR010ZAP') {
         this.paramsToggle.push('siRange');
       } else if(this.params.reportId == 'CLMR010ZBO' || this.params.reportId == 'CLMR010ZBP') {
-        this.paramsToggle = ['siRange', 'byDate', 'byMonthYear', 'currency'];
+        this.paramsToggle = ['siRange', 'byDate', 'byMonthYear', 'currency','line', 'company'];
         this.params.dateParam = '6';
         this.params.dateRange = '1';
       } 
