@@ -121,7 +121,9 @@ export class PolBordereauxComponent implements OnInit {
                         'POLR052BB',
                         'POLR052CB',
                         'POLR052J',
-                        'POLR052K'
+                        'POLR052K',
+                        'POLR052L',
+                        'POLR052M'
                         ];
 
   rangeParams :any = {
@@ -240,7 +242,14 @@ export class PolBordereauxComponent implements OnInit {
     } else if(this.params.reportId == 'POLR052J' || this.params.reportId == 'POLR052K'){
       this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
       this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052L'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
+    } else if(this.params.reportId == 'POLR052M'){
+      this.paramsToggle.push('accountingDate', 'bookingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd');
+      this.params.dateParam = '5';
     }
+
 
     this.ns.lovLoader(data.ev, 0);
   }
@@ -707,6 +716,12 @@ export class PolBordereauxComponent implements OnInit {
           'isNull(cedingId) as [CEDING_ID], isNull(cedingName) as [CEDING_NAME], negFmt(ret1PremAmt) as [RET1_PREM_AMT], negFmt(ret1CommAmt) as [RET1_COMM_AMT], ' +
           'negFmt(ret1VatRiComm) as [RET1_VAT_RI_COMM], negFmt(ret1NetDue) as [RET1_NET_DUE], negFmt(ret2PremAmt) as [RET2_PREM_AMT], negFmt(ret2CommAmt) as [RET2_COMM_AMT], ' +
           'negFmt(ret2VatRiComm) as [RET2_VAT_RI_COMM], negFmt(ret2NetDue) as [RET2_NET_DUE], myFormat(fromDate) as [FROM_DATE], myFormat(toDate) as [TO_DATE]';
+        } else if(this.params.reportId == 'POLR052L'){
+          this.passDataCsv = data['listPolr052l'];
+          query = 'SELECT isNull(extractUser) AS [EXTRACT_USER], myFormat(extractDate) AS [EXTRACT_DATE], isNull(currencyCd) AS [CURRENCY_CD], isNull(lineCd) AS [LINE_CD], isNull(cedingId) AS [CEDING_ID], isNull(cedingName) AS [CEDING_NAME], isNull(policyId) AS [POLICY_ID], isNull(policyNo) AS [POLICY_NO], negFmt(instNo) AS [INST_NO], myFormat(bookingDate) AS [BOOKING_DATE], isNull(coRefNo) AS [CO_REF_NO], isNull(insuredDesc) AS [INSURED_DESC], negFmt(polPremAmt) AS [POL_PREM_AMT], negFmt(polCommAmt) AS [POL_COMM_AMT], negFmt(polVatAmt) AS [POL_VAT_AMT], negFmt(polNetAmt) AS [POL_NET_AMT], negFmt(osPremAmt) AS [OS_PREM_AMT], negFmt(osCommAmt) AS [OS_COMM_AMT], negFmt(osVatAmt) AS [OS_VAT_AMT], negFmt(osNetAmt) AS [OS_NET_AMT], isNull(remarks) AS [REMARKS], myFormat(fromDate) AS [FROM_DATE], myFormat(toDate) AS [TO_DATE]';
+        } else if(this.params.reportId == 'POLR052M'){
+          this.passDataCsv = data['listPolr052m'];
+          query = 'SELECT isNull(extractUser) AS [EXTRACT_USER], isNull(policyId) AS [POLICY_ID], isNull(instNo) AS [INST_NO], myFormat(extractDate) AS [EXTRACT_DATE], isNull(currencyCd) AS [CURRENCY_CD], isNull(lineCd) AS [LINE_CD], isNull(cedingId) AS [CEDING_ID], isNull(cedingName) AS [CEDING_NAME], isNull(policyNo) AS [POLICY_NO], myFormat(bookingDate) AS [BOOKING_DATE], isNull(coRefNo) AS [CO_REF_NO], isNull(insuredDesc) AS [INSURED_DESC], negFmt(polPremAmt; AS [POL_PREM_AMT], negFmt(polCommAmt; AS [POL_COMM_AMT], negFmt(polVatAmt; AS [POL_VAT_AMT], negFmt(polNetAmt; AS [POL_NET_AMT], negFmt(osPremAmt; AS [OS_PREM_AMT], negFmt(osCommAmt; AS [OS_COMM_AMT], negFmt(osVatAmt; AS [OS_VAT_AMT], negFmt(osNetAmt; AS [OS_NET_AMT], isNull(remarks) AS [REMARKS], myFormat(fromDate) AS [FROM_DATE], myFormat(toDate) AS [TO_DATE], isNull(tranId) AS [TRAN_ID], isNull(tranNo) AS [TRAN_NO], myFormat(tranDate) AS [TRAN_DATE], negFmt(colPremAmt; AS [COL_PREM_AMT], negFmt(colCommAmt; AS [COL_COMM_AMT], negFmt(colVatAmt; AS [COL_VAT_AMT], negFmt(colNetAmt; AS [COL_NET_AMT]';
         }
 
         console.log(this.passDataCsv);
