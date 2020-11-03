@@ -176,22 +176,22 @@
 					</fieldset>
 				</div>
 				<div class="col-sm-4"> 
-					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-bottom: 3px !important">
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-bottom: 10px !important; padding-top: 17px !important;">
 						<div class="form-row custom-row-inline-inset mid">
 							<div class="input-group">
 								<label class="form-control-sm col-sm-4">Destination</label>
 								<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
-									<option value="screen">Screen</option>
-			    					<option value="printPdf">Printer</option>
+									<!-- <option value="screen">Screen</option>
+			    					<option value="printPdf">Printer</option> -->
 			    					<option value="exl">Excel</option>
 								</select>
 							</div>
-							<div class="input-group">
+							<!-- <div class="input-group">
 								<label class="form-control-sm col-sm-4">Printer Name</label>
 								<select class="form-control form-control-sm cust-sm" [(ngModel)]="selectedPrinter" [disabled]="params.destination != 'printPdf'" >
 									<option *ngFor="let printer of printerList" [value]="printer">{{printer}}</option>
 								</select>
-							</div>
+							</div> -->
 						</div>
 						
 					</fieldset>

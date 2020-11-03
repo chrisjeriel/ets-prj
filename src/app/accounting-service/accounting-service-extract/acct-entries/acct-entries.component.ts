@@ -12,17 +12,17 @@ export class AcctEntriesComponent  implements OnInit, AfterViewInit {
   
 
   passData: any={
-    tHeader:['Date','Tran Class', 'Ref. No.', 'Account Code','Account Name', 'Particulars', 'SL Type','SL Name', 'Tran Status', 'Acct Status', 'Debit', 'Credit'],
-    dataTypes:['date','text','text','text','text','text','text','text','text','text','currency','currency'],
-    total:[null,null,null,null,null,null,null,null,null,'Total','debitAmt','creditAmt'],
-    uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true],
+    tHeader:['Date','Tran Class', 'Currency', 'Ref. No.', 'Account Code','Account Name', 'Particulars', 'SL Type','SL Name', 'Tran Status', 'Acct Status', 'Debit', 'Credit', 'Local Debit', 'Local Credit'],
+    dataTypes:['date','text','text','text','text','text','text','text','text','text','text','currency','currency','currency','currency'],
+    total:[null,null,null,null,null,null,null,null,null,null,'Total','debitAmt','creditAmt','localDebitAmt','localCreditAmt'],
+    uneditable:[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],
     searchFlag: true,
-    keys:['tranDate','tranClass','refNo','acctCode','acctName','particulars','slTypeName','slName','tranStatusDesc','acctStatusDesc','debitAmt','creditAmt'],
+    keys:['tranDate','tranClass','currCd','refNo','acctCode','acctName','particulars','slTypeName','slName','tranStatusDesc','acctStatusDesc','debitAmt','creditAmt','localDebitAmt','localCreditAmt'],
     paginateFlag:true,
     infoFlag:true,
     tableData:[],
     pageLength: 15,
-    widths:[1,1,1,1,1,'auto',1,1,1,1,110,110]
+    widths:[1,1,1,1,1,1,'auto',1,1,1,1,110,110,110,110]
   }
   dateExtracted: string;
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
@@ -61,6 +61,10 @@ export class AcctEntriesComponent  implements OnInit, AfterViewInit {
   }
 
   retrieveData(){
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.table.overlayLoader = true;
+    }, 0);
     this.as.getAcseAcctEntriesExt(this.params).subscribe(a=>{
       this.passData.tableData = a['acseAcctEntriesExt'];
       if(this.passData.tableData.length != 0){

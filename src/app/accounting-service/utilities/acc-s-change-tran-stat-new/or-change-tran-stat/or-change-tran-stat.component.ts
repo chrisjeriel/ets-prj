@@ -56,14 +56,16 @@ export class OrChangeTranStatComponent implements OnInit {
   }
 
   retrieveOrList(){
-  	setTimeout(() => {this.table.loadingFlag = true}); 
+  	setTimeout(() => {
+      this.table.refreshTable();
+      this.table.overlayLoader = true;
+    }, 0); 
   	this.accountingService.getOrCancelled(null).subscribe((data:any) => {
   		console.log(data)
   		this.passData.tableData = [];
   		for (var i = 0; i < data.cancelledOR.length; ++i) {
   			this.passData.tableData.push(data.cancelledOR[i]);
   		}
-  		this.table.loadingFlag = false;
   		this.table.refreshTable();
   	});
   }

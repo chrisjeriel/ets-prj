@@ -244,8 +244,12 @@ export class ChangeToNewArComponent implements OnInit {
   }
 
   retrieveArList(){
+    setTimeout(() => {
+      this.ARTable.refreshTable();
+      this.ARTable.overlayLoader = true;
+    }, 0);
     this.searchParams = this.searchParams.filter(a => a.key !== 'arStat');
-    this.searchParams.push({key: 'arStat', search: 'X'});
+    this.searchParams.push({key: 'arStat', search: 'P,X'});
     this.as.getArList(this.searchParams).subscribe(
       (data: any)=>{
         if(data.ar.length !== 0){
@@ -255,9 +259,9 @@ export class ChangeToNewArComponent implements OnInit {
                 this.passDataAR.tableData.push(data.ar[i]);
               // }
           }
-          this.ARTable.refreshTable();
           this.passDataAR.btnDisabled = false;
         }
+        this.ARTable.refreshTable();
       },
       (error)=>{
         this.passDataAR.tableData = [];
@@ -267,6 +271,10 @@ export class ChangeToNewArComponent implements OnInit {
   }
 
   retrieveJVlist() {
+    setTimeout(() => {
+      this.JVTable.refreshTable();
+      this.JVTable.overlayLoader = true;
+    }, 0);
     console.log(this.searchParams);
     var param = {};
 
@@ -294,6 +302,10 @@ export class ChangeToNewArComponent implements OnInit {
 
 
   retrieveCVlist(){
+    setTimeout(() => {
+      this.CVTable.refreshTable();
+      this.CVTable.overlayLoader = true;
+    }, 0);
     this.searchParams = this.searchParams.filter(a => a.key !== 'cvStat');
     this.searchParams.push({key: 'cvStat', search: 'P,X'});
     this.as.getAcitCvList(this.searchParams).subscribe(data => {

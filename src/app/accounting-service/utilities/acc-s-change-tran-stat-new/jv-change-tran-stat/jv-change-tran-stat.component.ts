@@ -48,7 +48,10 @@ export class JvChangeTranStatComponent implements OnInit {
   }
 
   retrieveJV(){
-    setTimeout(() => {this.table.loadingFlag = true});
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.table.overlayLoader = true;
+    }, 0); 
     this.accountingService.getJvCancelled(null).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
@@ -56,7 +59,6 @@ export class JvChangeTranStatComponent implements OnInit {
         this.passData.tableData.push(data.cancelledJV[i]);
       }
       this.table.refreshTable();
-      this.table.loadingFlag = false;
     });
   }
 

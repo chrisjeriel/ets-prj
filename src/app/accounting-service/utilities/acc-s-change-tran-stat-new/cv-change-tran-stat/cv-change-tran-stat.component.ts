@@ -54,7 +54,10 @@ export class CvChangeTranStatComponent implements OnInit {
   }
 
   retrieveCv(){
-    setTimeout(() => {this.table.loadingFlag = true});
+    setTimeout(() => {
+      this.table.refreshTable();
+      this.table.overlayLoader = true;
+    }, 0);
     this.accountingService.getCvCancelled(null).subscribe((data:any) => {
       console.log(data);
       this.passData.tableData = [];
@@ -62,7 +65,6 @@ export class CvChangeTranStatComponent implements OnInit {
         this.passData.tableData.push(data.cancelledOR[i]);
       }
       this.table.refreshTable();
-      this.table.loadingFlag = false;
     });
   }
 
