@@ -3650,4 +3650,10 @@ export class AccountingService {
     getAcitInvestmentsIncArtUtil(param) {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInvestmentsIncArtUtil?tranId='+param);
     }
+
+    getAcitOsPolPrem(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitOsPolPrem',{params:param});
+    }
+
+    
 }

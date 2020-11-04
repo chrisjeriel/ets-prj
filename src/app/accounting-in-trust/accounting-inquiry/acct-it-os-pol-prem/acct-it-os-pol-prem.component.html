@@ -1,0 +1,46 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Inquiry / O/S Policy Premiums</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Inquire">
+			<ng-template ngbTabContent>	
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Filter Options</legend>
+					<div class="custom-row-inline-inset">
+						<div class="input-group">
+							<label class="form-control-sm col-sm-1 text-right">Ceding Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-4" (change)="checkCode($event)" [(ngModel)]="searchParams.cedingName" placeholder="All">
+							<div class="text-search-ico" (click)="showCedCompLOV()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
+							<label class="form-control-sm text-right col-sm-1" style="margin-left: 10px">Period:</label>
+							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [value]="searchParams.from" (valueChange)="searchParams.from=$event; searchParams.to=valChanged(searchParams.from, searchParams.to)"></datepicker>
+							</div>
+							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [(value)]="searchParams.to" [minDate]="searchParams.from"></datepicker>
+							</div>
+							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
+								<button type="button" class="cust-btn" (click)="searchOsPolPrem()"><a>Search</a></button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<fieldset class="scheduler-border" style="margin-top: 5px !important; padding-bottom: 10px !important;">
+				  <legend class="scheduler-border">List of Outstanding Policy Premiums</legend>
+					<div class="custom-row-inline-inset" style="margin-bottom: 30px !important;">
+						<app-cust-editable-non-datatable [passData]="passData" (export)="export()"></app-cust-editable-non-datatable>	
+					</div> 
+				</fieldset>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>	
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+
+<app-ceding-company #cedingComp [exclude]="exc" (selectedData)="setSelectedCedComp($event);"></app-ceding-company>

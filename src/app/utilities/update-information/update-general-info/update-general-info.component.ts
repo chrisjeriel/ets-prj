@@ -481,7 +481,7 @@ export class UpdateGeneralInfoComponent implements OnInit {
       var s = num+"";
       while (s.length < size) s = "0" + s;
 
-      if (num === null){
+      if (!num){
        return s ='';
       } else {
         return s;
