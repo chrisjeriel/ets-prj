@@ -8,7 +8,7 @@
 					<div class="custom-row-inline-inset">
 						<div class="input-group">
 							<label class="form-control-sm col-sm-1 text-right">Ceding Company</label>
-							<input type="text" class="form-control form-control-sm cust-sm col-sm-4" (change)="checkCode($event)" [(ngModel)]="searchParams.cedingName" placeholder="All">
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-4" (change)="checkCode($event)" [(ngModel)]="searchParams.cedingName">
 							<div class="text-search-ico" (click)="showCedCompLOV()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
 							<label class="form-control-sm text-right col-sm-1" style="margin-left: 10px">Period:</label>
 							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
@@ -43,4 +43,4 @@
 </div>
 
 
-<app-ceding-company #cedingComp [exclude]="exc" (selectedData)="setSelectedCedComp($event);"></app-ceding-company>
+<app-ceding-company #cedingComp [exclude]="exc" (selectedData)="setSelectedCedComp($event);" [treaty]="false"></app-ceding-company>

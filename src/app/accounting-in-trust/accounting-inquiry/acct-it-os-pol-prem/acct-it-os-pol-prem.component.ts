@@ -22,12 +22,12 @@ export class AcctItOsPolPremComponent implements OnInit {
 
 	passData:any = {
 		tableData: [],
-		tHeader: ["Booking Date","Policy No", "Inst No","Co Ref No","Insured","Premium","Commission", "VAT on Comm.", "Net Due"],
-		dataTypes:["date","text","number","text","text","currency","currency","currency","currency"],
-		keys: ['bookingDate', 'policyNo', 'instNo', 'coRefNo', 'insured', 'premAmt','commAmt','vatRiComm','amtDue'],
+		tHeader: ["Booking Date","Policy No", "Inst No","Co Ref No","Insured","Currency","Premium","Commission", "VAT on Comm.", "Net Due"],
+		dataTypes:["date","text","number","text","text","text","currency","currency","currency","currency"],
+		keys: ['bookingDate', 'policyNo', 'instNo', 'coRefNo', 'insured','currCd', 'premAmt','commAmt','vatRiComm','amtDue'],
 		pageLength: 15,
-		uneditable: [true,true,true,true,true,true,true,true,true],
-		widths:[1,166,1,1,'auto',150,150,150,150],
+		uneditable: [true,true,true,true,true,true,true,true,true,true],
+		widths:[1,166,1,1,'auto',1,150,150,150,150],
 	  paginateFlag: true,
 		infoFlag: true,
 		searchFlag: true,
@@ -46,7 +46,7 @@ export class AcctItOsPolPremComponent implements OnInit {
   	this.titleService.setTitle("Acct-IT | O/S Policy Premiums");
     this.userService.emitModuleId("ACIT067");
   	/*this.queryModal.openNoClose();*/
-  	this.searchOsPolPrem(this.searchParams);
+  	// this.searchOsPolPrem(this.searchParams);
     this.ms.getMtnParameters('V', 'QS_CEDING_ID').subscribe(data => {
       if(data['parameters'].length > 0) {
         this.exc = [data['parameters'][0].paramValueV];
@@ -77,7 +77,7 @@ export class AcctItOsPolPremComponent implements OnInit {
 
 	checkCode(event){
 	  this.ns.lovLoader(event, 1);
-    this.cedingCoLOV.checkCode(this.searchParams.cedingName, event);
+    this.cedingCoLOV.checkCode(null, event,undefined,this.searchParams.cedingName);
 	}
 
 	valChanged(fromVal, toVal) {
@@ -121,6 +121,6 @@ export class AcctItOsPolPremComponent implements OnInit {
         return n==null?'':n;
       };
 
-      alasql('SELECT datetime(bookingDate) AS [Booking Date], isNull(policyNo) AS [Policy No], isNull(instNo) AS [Inst No], isNull(coRefNo) AS [Co Ref No], isNull(insured) AS [Insured], isNull(premAmt) AS [Premium], isNull(commAmt) AS [Commission], isNull(vatRiComm) AS [VAT on Comm.], isNull(amtDue) AS [Net Due]  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.table.displayData]);
+      alasql('SELECT datetime(bookingDate) AS [Booking Date], isNull(policyNo) AS [Policy No], isNull(instNo) AS [Inst No], isNull(coRefNo) AS [Co Ref No], isNull(currCd) AS [Currency], isNull(insured) AS [Insured], isNull(premAmt) AS [Premium], isNull(commAmt) AS [Commission], isNull(vatRiComm) AS [VAT on Comm.], isNull(amtDue) AS [Net Due]  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.table.displayData]);
   }
 }
