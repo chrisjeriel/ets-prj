@@ -92,7 +92,7 @@ export class ClaimReportsComponent implements OnInit {
     extTypeTag: '',
   };
 
-  repExtractions: Array<string> = ['CLMR010A', 'CLMR010B', 'CLMR010C', 'CLMR010D', 'CLMR010E', 'CLMR010F', 'CLMR010G', 'CLMR010H', 'CLMR010I', 'CLMR010J', 'CLMR010K'];
+  repExtractions: Array<string> = ['CLMR010A', 'CLMR010B', 'CLMR010C', 'CLMR010D', 'CLMR010E', 'CLMR010F', 'CLMR010G', 'CLMR010H', 'CLMR010I', 'CLMR010J', 'CLMR010K', 'CLMR010ZBO', 'CLMR010ZBP'];
 
   paramsToggle: Array<string> = [];
 
@@ -246,7 +246,11 @@ export class ClaimReportsComponent implements OnInit {
         this.paramsToggle.push('clmEvent')
       } else if(this.params.reportId == 'CLMR010ZAO' || this.params.reportId == 'CLMR010ZAP') {
         this.paramsToggle.push('siRange');
-      }
+      } else if(this.params.reportId == 'CLMR010ZBO' || this.params.reportId == 'CLMR010ZBP') {
+        this.paramsToggle = ['siRange', 'byDate', 'byMonthYear', 'currency','line', 'company'];
+        this.params.dateParam = '6';
+        this.params.dateRange = '1';
+      } 
 
       setTimeout(()=> {
       	this.ns.lovLoader(data.ev, 0);
@@ -823,6 +827,22 @@ export class ClaimReportsComponent implements OnInit {
           query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(claimId) as [CLAIM ID], ' +
           'isNull(claimNo) as [CLAIM NO], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], tsiAmt as [TSI AMT], isNull(shrCedId) as [SHR CED ID], isNull(shrCedIdName) as [SHR CED ID NAME], ' + 
           'negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA], negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1], negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2], checkNullNo(siRange) as [SI RANGE], ' +
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+        } else if(this.params.reportId == 'CLMR010ZBO') {
+          this.passDataCsv = data['listClmr010zbo'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(claimId) as [CLAIM ID], ' +
+          'isNull(claimNo) as [CLAIM NO], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], myFormat(distDate) as [DIST DATE], checkNullNo(uwYear) as [UW YEAR],' +
+          'tsiAmt as [TSI AMT], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TRTY CED ID NAME], negFmt(currency(clmAmtTotal)) as [CLM AMT TOTAL],' + 
+          'negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA], negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1], negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2], ' +
+          'negFmt(currency(clmAmt1stSurplus)) as [CLM AMT 1ST SURPLUS], negFmt(currency(clmAmt2ndSurplus)) as [CLM AMT 2ND SURPLUS], negFmt(currency(clmAmtFacul)) as [CLM AMT FACUL], checkNullNo(siRange) as [SI RANGE], ' +
+          'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+        } else if(this.params.reportId == 'CLMR010ZBP') {
+          this.passDataCsv = data['listClmr010zbp'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(lineCd) as [LINE CD], checkNullNo(claimId) as [CLAIM ID], ' +
+          'isNull(claimNo) as [CLAIM NO], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], myFormat(distDate) as [DIST DATE], checkNullNo(uwYear) as [UW YEAR],' +
+          'tsiAmt as [TSI AMT], isNull(trtyCedId) as [TRTY CED ID], isNull(trtyCedIdName) as [TRTY CED ID NAME], negFmt(currency(clmAmtTotal)) as [CLM AMT TOTAL],' + 
+          'negFmt(currency(clmAmtQuota)) as [CLM AMT QUOTA], negFmt(currency(clmAmtQuotaRet1)) as [CLM AMT QUOTA RET1], negFmt(currency(clmAmtQuotaRet2)) as [CLM AMT QUOTA RET2], ' +
+          'negFmt(currency(clmAmt1stSurplus)) as [CLM AMT 1ST SURPLUS], negFmt(currency(clmAmt2ndSurplus)) as [CLM AMT 2ND SURPLUS], negFmt(currency(clmAmtFacul)) as [CLM AMT FACUL], checkNullNo(siRange) as [SI RANGE], ' +
           'negFmt(currency(amtRangeFrom)) as [AMT RANGE FROM], negFmt(currency(amtRangeTo)) as [AMT RANGE TO], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
         }
 
