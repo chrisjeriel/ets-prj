@@ -123,4 +123,10 @@ export class AcctItOsPolPremComponent implements OnInit {
 
       alasql('SELECT datetime(bookingDate) AS [Booking Date], isNull(policyNo) AS [Policy No], isNull(instNo) AS [Inst No], isNull(coRefNo) AS [Co Ref No], isNull(currCd) AS [Currency], isNull(insured) AS [Insured], isNull(premAmt) AS [Premium], isNull(commAmt) AS [Commission], isNull(vatRiComm) AS [VAT on Comm.], isNull(amtDue) AS [Net Due]  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.table.displayData]);
   }
+
+  	onTabChange($event: NgbTabChangeEvent) {
+        if ($event.nextId === 'Exit') {
+          this.route.navigateByUrl('');
+        } 
+    	}
 }
