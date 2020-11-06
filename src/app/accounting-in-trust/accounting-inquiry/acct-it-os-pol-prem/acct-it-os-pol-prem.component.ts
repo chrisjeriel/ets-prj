@@ -106,6 +106,8 @@ export class AcctItOsPolPremComponent implements OnInit {
       	headers:true, 
       	column: {style:{Font:{Bold:"1"}}}
       };
+      var cedingId = this.searchParams.cedingId;
+      var cedingName = this.searchParams.cedingName;
 
       alasql.fn.datetime = function(d) {
       		if(d == null){
@@ -121,7 +123,15 @@ export class AcctItOsPolPremComponent implements OnInit {
         return n==null?'':n;
       };
 
-      alasql('SELECT datetime(bookingDate) AS [Booking Date], isNull(policyNo) AS [Policy No], isNull(instNo) AS [Inst No], isNull(coRefNo) AS [Co Ref No], isNull(currCd) AS [Currency], isNull(insured) AS [Insured], isNull(premAmt) AS [Premium], isNull(commAmt) AS [Commission], isNull(vatRiComm) AS [VAT on Comm.], isNull(amtDue) AS [Net Due]  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.table.displayData]);
+      alasql.fn.cedingId = function(){
+      	return cedingId;
+      }
+
+      alasql.fn.cedingName = function(){
+      	return cedingName;
+      }
+
+      alasql('SELECT cedingId() AS [Ceding Id], cedingName() AS [Ceding Name],datetime(bookingDate) AS [Booking Date], isNull(policyNo) AS [Policy No], isNull(instNo) AS [Inst No], isNull(coRefNo) AS [Co Ref No], isNull(currCd) AS [Currency], isNull(insured) AS [Insured], isNull(premAmt) AS [Premium], isNull(commAmt) AS [Commission], isNull(vatRiComm) AS [VAT on Comm.], isNull(amtDue) AS [Net Due]  INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passData.tableData]);
   }
 
   	onTabChange($event: NgbTabChangeEvent) {

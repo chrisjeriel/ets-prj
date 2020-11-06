@@ -67,7 +67,7 @@
 												<span class="col-sm-2"></span>
 												<label class="form-control-sm col-sm-1">From</label>
 												<div class="col-sm-3 dp-cont">
-													<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [required]="true"></datepicker>
+													<datepicker [type]="'date'" [showIcon]="true" [value]="params.byDateFrom?.split('T')[0]" (valueChange)="params.byDateFrom=$event;" [disabled]="params.dateRange != 1 || paramsToggle.indexOf('byDate') == -1" [dynRequired]="reqFromDate"></datepicker>
 												</div>
 												<label class="form-control-sm col-sm-1">To</label>
 												<div class="col-sm-3 dp-cont">
@@ -83,7 +83,7 @@
 											<div class="input-group">
 												<span class="col-sm-2"></span>
 												<label class="form-control-sm col-sm-1">From</label>
-												<select class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
+												<select class="form-control form-control-sm cust-sm col-sm-2" [ngModel]="params.byMonthFrom" (ngModelChange)="params.byMonthFrom = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" [appRequired]="reqFromDate">
 													<option value="1"> January </option>
 													<option value="2"> February </option>
 													<option value="3"> March </option>
@@ -97,7 +97,7 @@
 													<option value="11"> November </option>
 													<option value="12"> December </option>
 												</select>
-												<input type="text" class="form-control form-control-sm col-sm-1 text-right" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" appRequired>
+												<input type="text" class="form-control form-control-sm col-sm-1 text-right" style="margin-left: 3px !important;" [ngModel]="params.byMonthFromYear" (ngModelChange)="params.byMonthFromYear = $event;checkMonthYear()" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1" [appRequired]="reqFromDate">
 												<label class="form-control-sm col-sm-1">To</label>
 												<select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.byMonthTo" [disabled]="params.dateRange != 2 || paramsToggle.indexOf('byMonthYear') == -1 ||disableTo" appRequired>
 													<option value="1"> January </option>
