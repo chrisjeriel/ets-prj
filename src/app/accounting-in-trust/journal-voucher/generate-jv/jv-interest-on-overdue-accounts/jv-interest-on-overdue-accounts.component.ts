@@ -31,8 +31,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   passData: any = {
     tableData: [],
-    tHeader: ['Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','Actual||Overdue Days','Overdue Days ||w/ Interest','Currency','Currency Rate', 'Interest Rate','Net Due','Overdue Interest'],    
-    dataTypes: ['text','sequence-2','text','date','date','number','number','text','percent','percent','currency','currency'],
+    tHeader: ['Company', 'Policy No.','Inst No.','Co. Ref No.', 'Eff Date','Due Date','Actual||Overdue Days','Overdue Days ||w/ Interest','Currency','Currency Rate', 'Interest Rate','Net Due','Overdue Interest'],    
+    dataTypes: ['text', 'text','sequence-2','text','date','date','number','number','text','percent','percent','currency','currency'],
     nData: {
       showMG : 1,
       tranId : '',
@@ -40,6 +40,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       cedingId : '',
       cedingName : '',
       policyId : '',
+      cedingAbbr: '',
       policyNo : '',
       instNo : '',
       soaNo : '',
@@ -63,7 +64,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     //total:[null,null,null,null,null,null,null,'Total','premAmt','overdueInt'],
     magnifyingGlass: ['policyNo'],
     checkFlag: true,
-    addFlag: true,
+    addFlag: false,
     deleteFlag: true,
     infoFlag: true,
     paginateFlag: true,
@@ -75,8 +76,8 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     disableAdd: true,
     btnDisabled: false,
     //widths: [230,1,140,1,1,1,1,85,120,120],
-    uneditable:[true,true,true,true,true,true,true,true,true,true,false,false],
-    keys: ['policyNo','instNo','coRefNo','effDate','dueDate','actualOverdueDays','overdueDaysWInt','currCd','currRate','interestRate','balanceAmt','overdueInt']
+    uneditable:[true,true,true,true,true,true,true,true,true,true,true,false,false],
+    keys: ['cedingAbbr','policyNo','instNo','coRefNo','effDate','dueDate','actualOverdueDays','overdueDaysWInt','currCd','currRate','interestRate','balanceAmt','overdueInt']
   };
 
   jvDetails: any = {
@@ -112,7 +113,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.checkFlag =  false;
       this.passData.addFlag = false;
       this.passData.deleteFlag = false;
-      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true];
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true];
       this.disable = true;
       this.passData.btnDisabled = true;
       this.passData.disableAdd = true;
@@ -126,9 +127,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
       this.passData.tableData = [];
       if(data.overDueAccts.length != 0){
         this.passData.disableAdd = false;
-        this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
-        this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
-        this.passLov.cedingId = data.overDueAccts[0].cedingId;
+        // this.jvDetails.cedingName = data.overDueAccts[0].cedingName;
+        // this.jvDetails.cedingId = data.overDueAccts[0].cedingId;
+        // this.passLov.cedingId = data.overDueAccts[0].cedingId;
         this.check(this.jvDetails);
         for(var i = 0; i < data.overDueAccts.length; i++){
           this.passData.tableData.push(data.overDueAccts[i]);
@@ -267,7 +268,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
 
   getMtnRate(){
     this.maintenaceService.getMtnParameters('N','OVERDUE_INT_RT').subscribe((data:any) =>{
-      this.interestRate = parseInt(data.parameters[0].paramValueN);
+      this.interestRate = parseFloat(data.parameters[0].paramValueN).toFixed(10);
     });
   }
 
