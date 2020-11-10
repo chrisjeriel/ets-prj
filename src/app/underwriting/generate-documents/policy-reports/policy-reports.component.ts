@@ -374,7 +374,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '2';
       this.checkMonthYear();
     }else if (this.params.reportId == 'POLR044Z') {
-        this.paramsToggle = ['byDate','byMonthYear','asOf', , 'line', 'company',]
+        this.paramsToggle = ['byDate','byMonthYear','asOf','currCd' , 'line', 'company',]
         this.params.dateParam = '10';
         this.params.dateRange = '3';
     } else if(this.params.reportId == 'POLR044WQ') {

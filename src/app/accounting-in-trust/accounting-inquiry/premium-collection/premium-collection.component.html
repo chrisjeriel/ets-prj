@@ -48,7 +48,20 @@
 <app-modal class="d-none" #tranModal>
 	<div header>View Transaction Details</div>
 	<div body>
-		<app-cust-editable-non-datatable #tranTable [passData]="passDataTran" (export)="exportTran()"></app-cust-editable-non-datatable>
+		<fieldset class="scheduler-border">
+			<div class="custom-row-inline-inset">
+				<div class="input-group">
+					<label class="col-sm-3"></label>
+					<label class="form-control-sm col-sm-2 text-right">Policy No / Inst No</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="polcyNoInstNo" disabled="">
+					<label class="col-sm-3"></label>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset class="scheduler-border" style="padding-top: 10px !important;margin-top: 4px !important">
+			<app-cust-editable-non-datatable #tranTable [passData]="passDataTran" (export)="exportTran()"></app-cust-editable-non-datatable>	
+		</fieldset>
+		
 	</div>
 	<div footer>
 		<button class="cust-btn" type="button" (click)="tranModal.closeModal();"><a>Return</a></button>

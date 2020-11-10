@@ -64,6 +64,8 @@ export class PremiumCollectionComponent implements OnInit {
 		cedingName: ''
 	}
 
+	polcyNoInstNo:any = '';
+
   ngOnInit() {
   	this.titleService.setTitle("Acct-IT | Premium Collection");
     this.userService.emitModuleId("ACIT068");
@@ -168,6 +170,7 @@ export class PremiumCollectionComponent implements OnInit {
 	}
 
 	viewTransaction(data){
+		this.polcyNoInstNo = this.table.indvSelect.policyNo + ' / ' + String(this.table.indvSelect.instNo).padStart(2,'0');
 		this.tranModal.openNoClose();
 		this.tranTable.overlayLoader = true;
 		this.as.getAcitInwPolPayts(this.table.indvSelect.policyId,null).subscribe(a=>{
@@ -199,6 +202,7 @@ export class PremiumCollectionComponent implements OnInit {
 		};
 		var cedingId = this.searchParams.cedingId;
 		var cedingName = this.searchParams.cedingName;
+		var policyNo = this.table.indvSelect.policyNo;
 
 		alasql.fn.datetime = function(d) {
 				if(d == null){
@@ -222,6 +226,10 @@ export class PremiumCollectionComponent implements OnInit {
 			return cedingName;
 		}
 
-		alasql('SELECT cedingId() AS [Ceding Id], cedingName() AS [Ceding Name], tranDate AS [Tran Date], tranNo AS [Tran No], premAmt AS [Premium], riComm AS [Commission], riCommVat AS [VAT on Comm.], paytAmt AS [Net Due] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataTran.tableData]);
+		alasql.fn.policyNo = function(){
+			return policyNo;
+		}
+
+		alasql('SELECT cedingId() AS [Ceding Id], cedingName() AS [Ceding Name], policyId as [Policy Id], policyNo() as [Policy No], instNo as [Inst No] , datetime(tranDate) AS [Tran Date], tranNo AS [Tran No], premAmt AS [Premium], riComm AS [Commission], riCommVat AS [VAT on Comm.], paytAmt AS [Net Due] INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.passDataTran.tableData]);
 	}
 }
