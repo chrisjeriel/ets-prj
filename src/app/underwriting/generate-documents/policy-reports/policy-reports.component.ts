@@ -374,7 +374,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.dateRange = '2';
       this.checkMonthYear();
     }else if (this.params.reportId == 'POLR044Z') {
-        this.paramsToggle = ['byDate','byMonthYear','asOf']
+        this.paramsToggle = ['byDate','byMonthYear','asOf', , 'line', 'company',]
         this.params.dateParam = '10';
         this.params.dateRange = '3';
     } else if(this.params.reportId == 'POLR044WQ') {
@@ -1323,7 +1323,7 @@ export class PolicyReportsComponent implements OnInit {
           'negFmt(currency(netDue)) as [NET DUE], myFormat(dueDate) as [DUE DATE], myFormat(bookingDate) as [BOOKING DATE], paramDate as [AS OF]';
         }else if(this.params.reportId == 'POLR044Z'){
           this.passDataCsv = data['listPolr044z'];
-          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], checkNullNo(policyId) as [POLICY ID], policyNo as [POLICY NO],'+
+          query = 'SELECT extractUser as [EXTRACT USER],myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE], getLineFromPolNo(policyNo) as [LINE], checkNullNo(policyId) as [POLICY ID], policyNo as [POLICY NO],'+
           'currencyCd as [CURRENCY CD], myFormat(bookingDate) as [BOOKING DATE],negFmt(pctShare) as [% SHARE],negFmt(currency(premAmt)) as [PREM AMT],negFmt(currency(tsiAmt)) as [TSI AMT],'+
           'negFmt(currency(hundredPremAmt)) as [HUNDRED PREM AMT], negFmt(currency(hundredTsiAmt)) as [HUNDRED TSI AMT],negFmt(currency(mioPremAmt)) as [MIO PREM AMT],'+
           'negFmt(currency(mioTsiAmt)) as [MIO TSI AMT],negFmt(currency(hundredMioPremAmt)) as [HUNDRED MIO PREM AMT], negFmt(currency(hundredMioTsiAmt)) as [HUNDRED MIO TSIAMT]';

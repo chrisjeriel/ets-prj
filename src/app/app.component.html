@@ -605,6 +605,10 @@
                                                 <button (click)="resetListParams()" [routerLink]="['acct-it-os-pol-prem']" class="button btn btn-link">O/S Policy Premiums</button>
                                                 <br />
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT068') > -1">
+                                                <button (click)="resetListParams()" [routerLink]="['premium-collection']" class="button btn btn-link">Premium Collection</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

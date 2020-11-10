@@ -3712,4 +3712,9 @@ export class AccountingService {
         	
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvChangeTrans',{params});
 	}
+
+	
+    getAcitPremCol(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPremCol',{params:param});
+    }
 }

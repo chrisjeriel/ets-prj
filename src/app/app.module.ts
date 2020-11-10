@@ -521,6 +521,7 @@ import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjust
 import { JvRiskMgtAllocComponent } from './accounting-in-trust/journal-voucher/generate-jv/jv-risk-mgt-alloc/jv-risk-mgt-alloc.component';
 import { LoadingLovComponent } from './_components/common/loading-lov/loading-lov.component';
 import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
+import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
 
 
 @NgModule({
@@ -1047,6 +1048,7 @@ import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inqui
         JvRiskMgtAllocComponent,
         LoadingLovComponent,
         AcctItOsPolPremComponent,
+        PremiumCollectionComponent,
     ],
 
   	providers: [

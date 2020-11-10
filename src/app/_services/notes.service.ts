@@ -147,6 +147,10 @@ export class NotesService {
       return str==null ? '' : str.substr(0,10);
     };
 
+    alasql.fn.getLineFromPolNo = function(str){
+      return str ? str.substr(0,3) : '';
+    }
+
      var into = "INTO XLSXML('" + fileName + "', ?)";
      alasql.promise(query + ' ' + into + ' FROM ?', [opts,tableData]);
   }
