@@ -72,6 +72,55 @@
                     </app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
+                  <!-- <div class="row pt-1" >
+                    <div class="col-sm-2" style="margin-right: -30px !important;"></div>
+                    <div class="col-sm-8" style="padding: 0;">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">Premium Written Period:</label>
+                        <label class="form-control-sm col-sm-1" style="padding-left:0px !important;">From</label>
+                        <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.pwFromMm" [disabled]="disableFields">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="params.pwFromYear" style="margin-left: 2px !important;" [disabled]="disableFields">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">To</label>
+                        <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="params.pwToMm" [disabled]="disableFields">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-1" [(ngModel)]="params.pwToYear" style="margin-left: 2px !important;" [disabled]="disableFields">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                  </div> -->
                     <div class="row pt-1" >
                         <div class="col-sm-2" style="margin-right: -30px !important;"></div>
                         <!-- <div class="col-sm-8 input-group">
