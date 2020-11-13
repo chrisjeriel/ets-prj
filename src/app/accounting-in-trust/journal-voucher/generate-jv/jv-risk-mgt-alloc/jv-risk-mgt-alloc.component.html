@@ -61,7 +61,7 @@
 	    	</ng-container>
 	    </select>
 		<label class="form-control-sm col-sm-3" style="padding-left:0px !important;">Total Risk Management Charges</label>
-		<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" [(ngModel)]="params.totalRiskmgtCharge" appCurrency>
+		<input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" [(ngModel)]="params.totalRiskmgtCharge" [disabled]="disableFields" appCurrency>
 	    <button class="cust-btn col-sm-1" (click)="onClickDistribute()" [disabled]="disableFields || params.totalRiskmgtCharge == null || params.totalRiskmgtCharge == ''" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 2px; margin-right: 0;">Distribute</button>
 	</div>
 	<span class="col-sm-2"></span>
