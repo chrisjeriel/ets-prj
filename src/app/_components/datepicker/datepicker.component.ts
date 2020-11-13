@@ -55,6 +55,16 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
   @Input() table: boolean = false;
   @Input() defDateOnNull: string = '';
 
+  @Input()
+      set dynRequired(value: boolean) {
+          this.required = value;
+          if(this.required) {
+            this.inputStyle['backgroundColor'] = '#fffacd85';
+          }else{
+            this.inputStyle['backgroundColor'] = 'white';
+          }
+      }
+
   @ViewChild(Calendar) cal: Calendar;
 
   markAsPristine(){
@@ -69,7 +79,9 @@ export class DatepickerComponent implements OnInit, OnChanges, DoCheck, AfterVie
 
   	if(this.required) {
   		this.inputStyle['backgroundColor'] = '#fffacd85';
-  	}
+  	}else{
+      this.inputStyle['backgroundColor'] = 'white';
+    }
 
   	if(this.type != 'time') {
   		this.spanStyle['position'] = 'relative';

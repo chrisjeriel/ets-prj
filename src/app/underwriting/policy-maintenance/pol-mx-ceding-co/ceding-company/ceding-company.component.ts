@@ -117,8 +117,8 @@ export class CedingCompanyComponent implements OnInit {
      //this.modalOpen = true;
   }
 
-  checkCode(code, ev, id?) {
-    if(String(code).trim() === ''){
+  checkCode(code, ev, id?, name?) {
+    if(String(code).trim() === '' && !name){
       this.selectedData.emit({
         cedingId: '',
         cedingName: '',
@@ -142,7 +142,7 @@ export class CedingCompanyComponent implements OnInit {
         this.modal.openNoClose();  
       }      
     } else {
-      this.underwritingService.getCedingCompanyList(String(code).padStart(3,'0'),'','','','','','','','',this.membershipTag).subscribe(data => {
+      this.underwritingService.getCedingCompanyList(code?String(code).padStart(3,'0'):'',!name?'':name,'','','','','','','',this.membershipTag).subscribe(data => {
         if(this.treaty) {
            data['cedingcompany'] = data['cedingcompany'].filter(a => a.treatyTag == 'Y');
         }

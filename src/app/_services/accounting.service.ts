@@ -3651,6 +3651,10 @@ export class AccountingService {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitInvestmentsIncArtUtil?tranId='+param);
     }
 
+    getAcitOsPolPrem(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitOsPolPrem',{params:param});
+    }
+
     getArListChangeTrans(searchParams: any[]){
 		var params;
          if(searchParams.length < 1){
@@ -3709,4 +3713,8 @@ export class AccountingService {
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitCvChangeTrans',{params});
 	}
 
+	
+    getAcitPremCol(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPremCol',{params:param});
+    }
 }

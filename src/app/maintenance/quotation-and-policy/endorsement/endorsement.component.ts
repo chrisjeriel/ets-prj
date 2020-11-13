@@ -351,14 +351,17 @@ export class EndorsementComponent implements OnInit, AfterViewInit {
     for(let endt of this.passEndtTable.tableData){
       if(endt.edited && !endt.deleted){
         let endtTextSplit = endt.text.match(/(.|[\r\n]){1,1500}/g);
-            if(endtTextSplit!== null)
-                for (var i = 0; i < endtTextSplit.length; ++i) {
-                    endt[this.endtTextKeys[i]] = endtTextSplit[i];
-            }
-            endt.updateDate = this.ns.toDateTimeString(0);
-            endt.createDate = this.ns.toDateTimeString(endt.createDate);
-            endt.updateUser = this.ns.getCurrentUser();
-            params.saveEndorsement.push(endt);
+        if(endtTextSplit!== null)
+          // for (var i = 0; i < endtTextSplit.length; ++i) {
+          //   endt[this.endtTextKeys[i]] = endtTextSplit[i];
+          // }
+          for (var i = 0; i < this.endtTextKeys.length; ++i) {
+            endt[this.endtTextKeys[i]] = endtTextSplit[i]==undefined ? null : endtTextSplit[i];
+          }
+        endt.updateDate = this.ns.toDateTimeString(0);
+        endt.createDate = this.ns.toDateTimeString(endt.createDate);
+        endt.updateUser = this.ns.getCurrentUser();
+        params.saveEndorsement.push(endt);
       }
 
       // if(!endt.deleted){

@@ -212,7 +212,8 @@ import { PostingAmtLimitComponent } from './maintenance/quotation-and-policy/pos
 import { BatchMoveBookingDateComponent } from './underwriting/utilities/batch-move-booking-date/batch-move-booking-date.component';
 import { PremPlanComponent } from './maintenance/quotation-and-policy/prem-plan/prem-plan.component';
 import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjuster-rate.component';
-
+import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
+import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
 
 const appRoutes: Routes = [
 
@@ -862,7 +863,8 @@ const appRoutes: Routes = [
     { path: 'update-booking-date', component: BatchMoveBookingDateComponent},
     { path: 'prem-plan', component: PremPlanComponent},
     { path: 'maintenance-clm-adj-rate', component: AdjusterRateComponent, canDeactivate: [UnsavedChangesGuard] },
-
+    { path: 'acct-it-os-pol-prem', component: AcctItOsPolPremComponent},
+    { path: 'premium-collection', component: PremiumCollectionComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
