@@ -1927,7 +1927,7 @@ export class AccountingService {
          return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveAcitPrqInwPol',params,header);
     }
 
-    getAcctPrqServFee(force, retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?, updateUser?){
+    getAcctPrqServFee(force, retType, reqId, quarter?, year?, servFeeAmt?, currCd?, currRt?, updateUser?, pwMmFrom?, pwYearFrom?, pwMmTo?, pwYearTo?){
 		const params = new HttpParams()
 			.set('force', (force == null || force == undefined ? '' : force))
 			.set('retType', (retType == null || retType == undefined ? '' : retType))
@@ -1937,7 +1937,11 @@ export class AccountingService {
 			.set('servFeeAmt', (servFeeAmt == null || servFeeAmt == undefined ? '' : servFeeAmt))
 			.set('currCd', (currCd == null || currCd == undefined ? '' : currCd))
 			.set('currRt', (currRt == null || currRt == undefined ? '' : currRt))
-			.set('updateUser', (updateUser == null || updateUser == undefined ? '' : updateUser));
+			.set('updateUser', (updateUser == null || updateUser == undefined ? '' : updateUser))
+			.set('pwMmFrom', (pwMmFrom == null || pwMmFrom == undefined ? '' : pwMmFrom))
+			.set('pwYearFrom', (pwYearFrom == null || pwYearFrom == undefined ? '' : pwYearFrom))
+			.set('pwMmTo', (pwMmTo == null || pwMmTo == undefined ? '' : pwMmTo))
+			.set('pwYearTo', (pwYearTo == null || pwYearTo == undefined ? '' : pwYearTo));
 			
 		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcctPrqServFee',{params});
 	}
