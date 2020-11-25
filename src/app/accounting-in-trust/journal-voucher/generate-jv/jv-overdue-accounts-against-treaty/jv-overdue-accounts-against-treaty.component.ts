@@ -30,7 +30,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   @ViewChild(QuarterEndingLovComponent) quarterModal: QuarterEndingLovComponent; 
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild('lov') lovMdl: LovComponent;
-  @ViewChild('loadingLov') loadingLovMdl: LoadingLovComponent;
+  @ViewChild('loadingLov') loadingLovMdl: LovComponent;
   @ViewChild('osQsoaLov') osQsoaLov: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -136,7 +136,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   };
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtl2',
     cedingId: '',
     hide: []
   };

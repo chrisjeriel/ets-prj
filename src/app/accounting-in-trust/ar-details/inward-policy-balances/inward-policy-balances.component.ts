@@ -19,7 +19,7 @@ import { map } from 'rxjs/operators';
 })
 export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
-  @ViewChild(LoadingLovComponent) lovMdl: LoadingLovComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
@@ -72,7 +72,7 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
   passData: any = {};
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtl2',
     from: 'ar',
     payeeNo: '',
     currCd: '',

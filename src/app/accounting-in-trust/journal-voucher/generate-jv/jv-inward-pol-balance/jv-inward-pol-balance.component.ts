@@ -22,7 +22,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   @ViewChild(CustEditableNonDatatableComponent) table: CustEditableNonDatatableComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
-  @ViewChild(LoadingLovComponent) lovMdl: LoadingLovComponent;
+  @ViewChild(LovComponent) lovMdl: LovComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
 
   @Input() jvDetail:any;
@@ -163,7 +163,7 @@ export class JvInwardPolBalanceComponent implements OnInit {
   }
 
   passLov: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtl2',
     cedingId: '',
     hide: []
   }
