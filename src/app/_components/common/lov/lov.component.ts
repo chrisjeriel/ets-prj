@@ -2019,6 +2019,41 @@ export class LovComponent implements OnInit {
         
         this.table.refreshTable(); 
       });
+    }else if(this.passData.selector == 'acitSoaDtl2'){
+      this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+      this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+      this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+      this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+      this.passTable.checkFlag = true;
+
+      var request = {
+        currCd : this.passData.currCd,
+        policyId : this.passData.policyId == undefined ? '' : this.passData.policyId,
+        instNo : this.passData.instNo == undefined ? '' : this.passData.instNo,
+        cedingId : this.passData.cedingId == undefined ? '' : this.passData.cedingId,
+        payeeNo : this.passData.payeeNo == undefined ? '' : this.passData.payeeNo,
+        zeroBal : this.passData.zeroBal == undefined ? '' : this.passData.zeroBal,
+        from : this.passData.from == undefined ? '' : this.passData.from,
+        exclude : this.passData.hide == undefined ? [] : this.passData.hide
+      };
+      this.accountingService.getAcitSoaDtlNew2(request).subscribe((a:any)=>{
+        //this.passTable.tableData = a["soaDtlList"];
+        //this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
+        if(this.passData.from == 'ar') {
+            this.passTable.tableData = (a.soaDtlList);
+        } else if(this.passData.from == 'prq') {
+            this.passTable.tableData = (a.soaDtlList.map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
+        } else {
+          this.passTable.tableData = (a.soaDtlList);
+        }
+        console.log(a["soaDtlList"]);
+        for(var i of this.passTable.tableData){
+          if(i.processing !== null && i.processing !== undefined){
+            i.preventDefault = true;
+          }
+        }
+        this.table.refreshTable();
+      })
     }
 
     this.modalOpen = true;
