@@ -522,6 +522,7 @@ import { JvRiskMgtAllocComponent } from './accounting-in-trust/journal-voucher/g
 import { LoadingLovComponent } from './_components/common/loading-lov/loading-lov.component';
 import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
 import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
+import { UnappliedCollectionInqComponent } from './accounting-in-trust/accounting-inquiry/unapplied-collection-inq/unapplied-collection-inq.component';
 
 
 @NgModule({
@@ -1049,6 +1050,7 @@ import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inq
         LoadingLovComponent,
         AcctItOsPolPremComponent,
         PremiumCollectionComponent,
+        UnappliedCollectionInqComponent
     ],
 
   	providers: [
