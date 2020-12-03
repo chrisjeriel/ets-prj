@@ -63,7 +63,7 @@
                         <div class="col-md-13 text-center">
                             <div class="cust-btn-container" style="margin-top:10px">
                                 <button type="button" class="cust-btn" (click)="onClickCancel();"><a>Cancel</a></button>
-                                <button type="button" (click)="prepareParams()" class="cust-btn"><a>Convert</a></button>
+                                <button type="button" (click)="prepareParams()" class="cust-btn" [disabled]="disableConvert"><a>Convert</a></button>
                             </div>
                         </div>
                     </div>

@@ -609,6 +609,10 @@
                                                 <button (click)="resetListParams()" [routerLink]="['premium-collection']" class="button btn btn-link">Premium Collection</button>
                                                 <br />
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT071') > -1">
+                                                <button (click)="resetListParams()" [routerLink]="['unapplied-collection-inq']" class="button btn btn-link">Unapplied Collection</button>
+                                                <br />
+                                            </ng-container>
                                         </ng-template>
                                     </ngb-panel>
                                 </ngb-accordion>

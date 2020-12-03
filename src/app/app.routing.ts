@@ -214,6 +214,7 @@ import { PremPlanComponent } from './maintenance/quotation-and-policy/prem-plan/
 import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjuster-rate.component';
 import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
 import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
+import { UnappliedCollectionInqComponent } from './accounting-in-trust/accounting-inquiry/unapplied-collection-inq/unapplied-collection-inq.component';
 
 const appRoutes: Routes = [
 
@@ -865,6 +866,7 @@ const appRoutes: Routes = [
     { path: 'maintenance-clm-adj-rate', component: AdjusterRateComponent, canDeactivate: [UnsavedChangesGuard] },
     { path: 'acct-it-os-pol-prem', component: AcctItOsPolPremComponent},
     { path: 'premium-collection', component: PremiumCollectionComponent},
+    { path: 'unapplied-collection-inq', component: UnappliedCollectionInqComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

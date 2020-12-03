@@ -3721,4 +3721,8 @@ export class AccountingService {
     getAcitPremCol(param) {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitPremCol',{params:param});
     }
+
+    getAcitUnappColInquiry(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitUnappColInquiry',{params:param});
+    }
 }

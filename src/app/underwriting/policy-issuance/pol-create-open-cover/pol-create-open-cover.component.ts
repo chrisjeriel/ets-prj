@@ -113,6 +113,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     noDataFound: boolean = false;
     loading: boolean = false;
     btnDisabled: boolean = false;
+    disableConvert: boolean = false;
     
     constructor(private titleService: Title, private router: Router, private ns: NotesService, 
                 private us: UnderwritingService, private qs: QuotationService, public modalService: NgbModal,
@@ -356,6 +357,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
             updateDate: this.ns.toDateTimeString(0)
         };
         //save to DB
+        this.disableConvert = true;
         this.us.saveOpenPolDetails(this.saveParams).subscribe((data: any)=>{
             if(data.returnCode === 0){
               this.dialogIcon = "info";
@@ -367,6 +369,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
               $('#convertPopup > #modalBtn').trigger('click');
               this.form.control.markAsPristine();
             }
+            this.disableConvert = false;
         });
     }
 

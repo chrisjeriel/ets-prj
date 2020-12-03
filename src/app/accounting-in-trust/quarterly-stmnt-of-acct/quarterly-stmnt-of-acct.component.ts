@@ -607,7 +607,7 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 
 					if(this.params.destination == 'exl'){
 				      this.passDataCsv = [];
-				      this.getExtractToCsv(this.ns.toDateTimeString(a.quarterEnding).split('T')[0]);
+				      this.getExtractToCsv(this.ns.toDateTimeString(a.quarterEnding).split('T')[0], a.currCd);
 				      return;
 				    }
 
@@ -695,57 +695,58 @@ export class QuarterlyStmntOfAcctComponent implements OnInit {
 	}
 
 
-	 getExtractToCsv(paramDate){	     
-	      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACITR050','',paramDate,this.params.currCd,this.params.cedingId)
-	      .subscribe(data => {
-	    
-	        var months = new Array("Jan", "Feb", "Mar", 
-	        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
-	        "Oct", "Nov", "Dec");
+	 getExtractToCsv(paramDate, currCd?) {
+      this.ms.getExtractToCsv(this.ns.getCurrentUser(),'ACITR050','',paramDate,currCd,this.params.cedingId)
+      .subscribe(data => {
+      	this.ps.printLoader = false;
+    
+        var months = new Array("Jan", "Feb", "Mar", 
+        "Apr", "May", "Jun", "Jul", "Aug", "Sep",     
+        "Oct", "Nov", "Dec");
 
-	        alasql.fn.myFormat = function(d){
-	          if(d == null){
-	            return '';
-	          }
-	          var date = new Date(d);
-	          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
-	          var mos = months[date.getMonth()];
-	          return day+'-'+mos+'-'+date.getFullYear(); 
-	        };
+        alasql.fn.myFormat = function(d){
+          if(d == null){
+            return '';
+          }
+          var date = new Date(d);
+          var day = (date.getDate()<10)?"0"+date.getDate():date.getDate();
+          var mos = months[date.getMonth()];
+          return day+'-'+mos+'-'+date.getFullYear(); 
+        };
 
-	        alasql.fn.negFmt = function(m){
-	          return (m==null || m=='') ? 0 : Number(m);
-	        };
+        alasql.fn.negFmt = function(m){
+          return (m==null || m=='') ? 0 : Number(m);
+        };
 
-	        alasql.fn.isNull = function(n){
-	          return n==null?'':n;
-	        };
+        alasql.fn.isNull = function(n){
+          return n==null?'':n;
+        };
 
-	        alasql.fn.checkNullNo = function(o){
-	          return (o==null || o=='')?'': Number(o);
-	        };
+        alasql.fn.checkNullNo = function(o){
+          return (o==null || o=='')?'': Number(o);
+        };
 
-	        
-	        var queryB = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(itemNo) as [ITEM NO], isNull(itemName) as [TREATY ITEM NAME], negFmt(currency(carAmt)) as [CAR], '+
-	          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
-	          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
-	          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
-	          
-	        var queryC = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(uwYear) as [UNDERWRITING YEAR], checkNullNo(itemNo) as [ITEM NO], isNull(itemName) as [TREATY ITEM NAME], negFmt(currency(carAmt)) as [CAR], '+
-	          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
-	          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
-	          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
-	        	          
-	        var queryD = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(uwYear) as [UNDERWRITING YEAR], negFmt(currency(carAmt)) as [CAR], '+
-	          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
-	          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
-	          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
-	        
-	          this.ns.export('ACITR050B', queryB, data['listAcitr050b']);
-	          this.ns.export('ACITR050C', queryC, data['listAcitr050c']);
-	          this.ns.export('ACITR050D', queryD, data['listAcitr050d']);
+        
+        var queryB = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(itemNo) as [ITEM NO], isNull(itemName) as [TREATY ITEM NAME], negFmt(currency(carAmt)) as [CAR], '+
+          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
+          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
+          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
+          
+        var queryC = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(uwYear) as [UNDERWRITING YEAR], checkNullNo(itemNo) as [ITEM NO], isNull(itemName) as [TREATY ITEM NAME], negFmt(currency(carAmt)) as [CAR], '+
+          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
+          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
+          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
+        	          
+        var queryD = 'SELECT checkNullNo(grpNo) as [GROUP NO], isNull(grpName) as [TREATY SHR GRP], checkNullNo(uwYear) as [UNDERWRITING YEAR], negFmt(currency(carAmt)) as [CAR], '+
+          'negFmt(currency(earAmt)) as [EAR], negFmt(currency(bpvAmt)) as [BPV], negFmt(currency(mbiAmt)) as [MBI], negFmt(currency(eeiAmt)) as [EEI],'+
+          'negFmt(currency(dosAmt)) as [DOS], negFmt(currency(mlpAmt)) as [MLP], negFmt(currency(cecAmt)) as [CEC], negFmt(currency(totalAmt)) as [TOTAL AMT],'+
+          'myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY], isNull(paramCedingId) as [PARAM CEDING ID]';
+        
+          this.ns.export('ACITR050B', queryB, data['listAcitr050b']);
+          this.ns.export('ACITR050C', queryC, data['listAcitr050c']);
+          this.ns.export('ACITR050D', queryD, data['listAcitr050d']);
 
-	        });
-	  }
+        });
+	}
 
 }
