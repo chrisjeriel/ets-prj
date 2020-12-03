@@ -35,7 +35,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
   @ViewChild('warnMdl') warnMdl               : ModalComponent;
   @ViewChild('quarEndLov') quarEndLov         : ModalComponent;
   @ViewChild('servfeeMdl') servfeeMdl         : ModalComponent;
-  @ViewChild('aginSoaLov') aginSoaLov         : LoadingLovComponent; 
+  @ViewChild('aginSoaLov') aginSoaLov         : LovComponent; 
   @ViewChild('invtLov') invtLov               : LovComponent;
   @ViewChild('osQsoaLov') osQsoaLov           : LovComponent;
   @ViewChild('trtyLov') trtyLov               : QuarterEndingLovComponent;
@@ -562,7 +562,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.clmHistLov.modal.openNoClose();
     }else if(from.toUpperCase() == 'LOVINWARDTBL'){
       this.passData.currCd = this.requestData.currCd;
-      this.passData.selector = 'acitSoaDtl';
+      this.passData.selector = 'acitSoaDtl2';
       this.passData.from = 'prq';
       this.passData.payeeNo = this.requestData.payeeCd;
       this.passData.hide = this.inwardPolBalData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.soaNo});

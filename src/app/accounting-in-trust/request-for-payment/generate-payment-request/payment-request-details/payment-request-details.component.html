@@ -267,8 +267,8 @@
 
 <app-quarter-ending-lov #trtyLov (selectedData)="setData($event,'lovTrtyTbl')"></app-quarter-ending-lov>
 
-<!-- <app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov> -->
-<app-loading-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')"></app-loading-lov>
+<app-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')" [limitContent]="limitContent"></app-lov>
+<!-- <app-loading-lov #aginSoaLov [passData]="passData" (selectedData)="setData($event,'lovInwardTbl')"></app-loading-lov> -->
 <app-lov #invtLov    [passData]="passData" (selectedData)="setData($event,'lovInvtTbl')" [limitContent]="limitContent"></app-lov>
 <app-lov #osQsoaLov  [passData]="passData" (selectedData)="setData($event,'lovOsQsoaTbl')"></app-lov>
 <app-lov #unappliedLov [passData]="passData" (selectedData)="setUnapplied($event)"></app-lov>

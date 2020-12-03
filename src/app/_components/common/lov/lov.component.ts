@@ -2040,11 +2040,11 @@ export class LovComponent implements OnInit {
         //this.passTable.tableData = a["soaDtlList"];
         //this.passTable.tableData = a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1});
         if(this.passData.from == 'ar') {
-            this.passTable.tableData = (a.soaDtlList);
+            this.passTable.tableData = (a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
         } else if(this.passData.from == 'prq') {
-            this.passTable.tableData = (a.soaDtlList.map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
+            this.passTable.tableData = (a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}).map(e => { e.returnAmt = e.cumPayment * (-1); e.edited = true; e.validate = true; return e; }));
         } else {
-          this.passTable.tableData = (a.soaDtlList);
+          this.passTable.tableData = (a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
         }
         console.log(a["soaDtlList"]);
         for(var i of this.passTable.tableData){
