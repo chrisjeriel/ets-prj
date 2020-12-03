@@ -847,7 +847,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 
   setLov(ev) {
     console.log(ev);
-  	if(ev.selector == 'multOffSoa') {
+  	if(ev.selector == 'multOffSoa2') {
   	  this.passDataIpb.tableData = this.passDataIpb.tableData.filter(a => a.showMG != 1);
   	  for (var i = 0; i < ev.data.length; i++) {
   	    this.passDataIpb.tableData.push(JSON.parse(JSON.stringify(this.passDataIpb.nData)));
