@@ -12,23 +12,23 @@
 									<div class="contain">
 										<div class="input group">
 											<label class="col-sm-2"></label>
-											<input type="radio" name="TaxtType" value="Creditable Withholding Tax" [checked]="taxType == 'Creditable Withholding Tax'" (change)="tabController($event)">
-											<label class="form-control-sm col-sm-7 text-left">Creditable Withholding Tax</label>
+											<input type="radio" id="cred-whtax" name="tax-type" value="1" [(ngModel)]="params.taxType" (change)="taxTypeChange($event)">
+											<label class="form-control-sm col-sm-7 text-left" for="cred-whtax">Creditable Withholding Tax</label>
 										</div>
 										<div class="input group top">
 											<label class="col-sm-2"></label>
-											<input type="radio" name="TaxtType" value="Input VAT" [checked]= "taxType == 'Input VAT'" (change)="tabController($event)">
-											<label class="form-control-sm col-sm-7 text-left">Input VAT</label>
+											<input type="radio" id="input-vat" name="tax-type" value="2" [(ngModel)]="params.taxType" (change)="taxTypeChange($event)">
+											<label class="form-control-sm col-sm-7 text-left" for="input-vat">Input VAT</label>
 										</div>
 										<div class="input group top">
 											<label class="col-sm-2"></label>
-											<input type="radio" name="TaxtType" value="Output VAT" [checked]= "taxType == 'Output VAT'" (change)="tabController($event)">
-											<label class="form-control-sm col-sm-7 text-left">Output VAT </label>
+											<input type="radio" id="output-vat" name="tax-type" value="3" [(ngModel)]="params.taxType" (change)="taxTypeChange($event)">
+											<label class="form-control-sm col-sm-7 text-left" for="output-vat">Output VAT</label>
 										</div>
 										<div class="input group top">
 											<label class="col-sm-2"></label>
-											<input type="radio" name="TaxtType" value="Withholding Tax" [checked]= "taxType == 'Withholding Tax'" (change)="tabController($event)">
-											<label class="form-control-sm col-sm-7 text-left ">Withholding Tax </label>
+											<input type="radio" id="whtax" name="tax-type" value="4" [(ngModel)]="params.taxType" (change)="taxTypeChange($event)">
+											<label class="form-control-sm col-sm-7 text-left" for="whtax">Withholding Tax</label>
 										</div>
 									</div>
 							</fieldset>
@@ -41,18 +41,24 @@
 									<div class="form-row custom-row-inline-inset">
 										<div class="input-group" style="margin-bottom: -14px !important;">
 										    <label class="form-control-sm col-sm-1">From</label>
-										    <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm">
+										    <!-- <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm"> -->
+										    <div class="col-sm dp-cont">
+												<datepicker [type]="'date'" [value]="params.fromDate?.split('T')[0]" (valueChange)="params.fromDate=$event;"></datepicker>
+											</div>
 										    <label class="form-control-sm col-sm-1">To</label>
-										    <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm">
+										    <!-- <input type="date" id="xx" class="form-control form-control-sm cust-sm col-sm"> -->
+										    <div class="col-sm dp-cont">
+												<datepicker [type]="'date'" [value]="params.toDate?.split('T')[0]" (valueChange)="params.toDate=$event;"></datepicker>
+											</div>
 										</div>
 									</div>
 							</fieldset>
 						</div>
-						<div class="form-row" style="    margin-bottom: -5px !important;">
+						<div class="form-row" style="margin-bottom: -5px !important;">
 		    		        <div class="form-group col-sm">
-		    		            <div class="col-md-12 text-center">
+		    		            <div class="col-md-12 text-center" style="padding-top: 5px; padding-bottom: 5px;">
 		    		                <div class="cust-btn-container" style="margin-top: 10px;">
-		    		                    <button type="button" class="cust-btn" (click)="extract()"><a>Extract</a></button>
+		    		                    <button type="button" class="cust-btn" (click)="onClickExtract()"><a>Extract</a></button>
 		    		                </div>
 		    		            </div>
 		    		        </div>
@@ -61,160 +67,53 @@
 					<div class="col-sm-2"></div>
 				</div>
 		</fieldset>
-		<!-- <fieldset class="scheduler-border col-sm" style="margin-bottom: 25px !important;">
-			<legend class="scheduler-border">Printing Parameters</legend>
-				<div class="row">
-					<div class="col-sm-6">
-						<fieldset class="scheduler-border bottom">
-							<legend class="scheduler-border">Report Type</legend>
-							<div class="left-contain">
-								<div class="input group" style="margin-top: 12px !important;">
-									<input type="radio" name="reportType" checked>
-									<label class="form-control-sm col-sm-7">Summary</label>
-								</div>
-								<div class="input group top">
-									<input type="radio" name="reportType">
-									<label class="form-control-sm col-sm-7">Detailed</label>
-								</div>
-							</div>
-						</fieldset>
-						<fieldset class="scheduler-border bottom">
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group">
-								<label class="form-control-sm col-sm-3">Extracted By</label>
-								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-							</div>
-								<div class="input-group">
-								<label class="form-control-sm col-sm-3">Detailed</label>
-								<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-							</div>
-							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm-6">
-						<fieldset class="scheduler-border" style="margin-top: 12px !important">
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group" style="margin-top: 17px !important">
-									<label class="form-control-sm col-sm-3">Destination</label>
-									<select class="form-control form-control-sm cust-sm col-sm-8">
-										<option>Printer</option>
-									</select>
-								</div>
-								<div class="input-group">
-									<div class="col-sm-3"></div>
-									<input type="radio" name="fileFormat" style="margin-top: 5px !important;" checked>
-									<label class="form-control-sm col-sm-2 text-left">PDF</label>
-									<input type="radio" name="fileFormat" style="margin-top: 5px !important;">
-									<label class="form-control-sm col-sm-2 text-left">Excel</label>
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-3">Printer Name</label>
-									<select class="form-control form-control-sm cust-sm col-sm-8">
-										<option>EPSON 36000i</option>
-									</select>
-								</div>
-								<div class="input-group" style="margin-bottom: 2px !important">
-									<label class="form-control-sm col-sm-3">No. Of Copies</label>
-									<input type="date" class="form-control form-control-sm cust-sm col-sm-8">
-								</div>
-							</div>
-						</fieldset>
-					</div>
-				</div>
-				<div class="form-row">
-				    <div class="form-group col-sm">
-				        <div class="col-md-13 text-center">
-				            <div class="cust-btn-container">
-				                <button type="button" class="cust-btn"><a>Print</a></button>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-		</fieldset> -->
 
-		<fieldset class="scheduler-border printing-params">
+		<fieldset class="scheduler-border" style="padding-bottom: 5px !important;">
 			<legend class="scheduler-border">Printing Parameters</legend>
-			<div class="form-row custom-row-inline-inset period" style="margin-top: -2px !important">
+			<div class="form-row custom-row-inline-inset">
 				<div class="col-sm-2"></div>
-				<div class="col-sm" style="display: flex;padding: 0">
-					<div class="col-sm" style="padding:0;margin-right: 2px;">
-						<fieldset class="scheduler-border col-sm">
-							<legend class="scheduler-border">Report Type</legend>
-							<div class="form-row custom-row-inline-inset first-row" >
-								<div class="input-group " style="margin-bottom: -10px !important;">
-									<div class=" col-sm-2 ">
-										<input class="form-control-sm" type="radio" name="reportType" id="All" checked="checked">	
+				<div class="col-sm-4">
+					<fieldset class="scheduler-border" >
+						<legend class="scheduler-border">Report Type</legend>
+							<div class="form-row custom-row-inline-inset period">
+								<div class="input-group check-row" style="margin-bottom: -14px !important;">
+									<div class="col-sm-3 text-right" style="padding-right: 5px !important;">
+										<input value="S" [(ngModel)]="rType" id="rType1" type="radio" style="vertical-align: baseline;" name="typeRadio">
 									</div>
-									<label class="form-control-sm col-sm-6 text-left" for="All">&nbsp;Summary</label>
+									<label for="rType1" class="form-control-sm col-sm text-left" style="padding-left: 0 !important;">Summary</label>
 								</div>
-								<div class="input-group " style="margin-bottom: -10px !important;">
-									<div class=" col-sm-2 ">
-										<input class="form-control-sm" type="radio" name="reportType" id="Unbalance">
+								<div class="input-group check-row">
+									<div class="col-sm-3 text-right" style="padding-right: 5px !important;">
+										<input value="D" [(ngModel)]="rType" id="rType2" type="radio" style="vertical-align: baseline;" name="typeRadio">
 									</div>
-									<label class="form-control-sm col-sm-6 text-left" for="Unbalance">&nbsp;Detailed</label>
+									<label for="rType2" class="form-control-sm col-sm text-left" style="padding-left: 0 !important;">Detailed</label>
 								</div>
 							</div>
-						</fieldset>
-						<fieldset class="scheduler-border col-sm" style="margin-top: -12px !important;">
-							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-							<div class="form-row custom-row-inline-inset" style="margin-top: 3px !important;margin-bottom: 3px !important;">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Extracted By</label>
-									<input class="form-control-sm form-control col-sm" type="text" id="from" value="cuaresma">	
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Date Extracted</label>
-									<input class="form-control-sm form-control col-sm" type="datetime-local" id="from" value="2018-01-17T10:38">	
-								</div>
+							
+					</fieldset>
+				</div>
+				<div class="col-sm-4"> 
+					<fieldset class="scheduler-border" style="margin-top: 12px !important; padding-bottom: 10px !important; padding-top: 18px !important;">
+						<div class="form-row custom-row-inline-inset mid">
+							<div class="input-group">
+								<label class="form-control-sm col-sm-4">Destination</label>
+								<select class="form-control form-control-sm cust-sm" [(ngModel)]="params.destination">
+									<!-- <option value="screen">Screen</option>
+			    					<option value="printPdf">Printer</option> -->
+			    					<option value="exl">Excel</option>
+								</select>
 							</div>
-						</fieldset>
-					</div>
-					<div class="col-sm" style="padding:0;margin-left: 2px;">
-						<fieldset class="scheduler-border col-sm">
-							<legend class="scheduler-border" style="visibility: hidden; padding-top: 24px !important; padding-left: 0px !important; padding-right: 0px !important;"></legend>
-							<div class="form-row custom-row-inline-inset">
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Destination</label>
-									<select class="form-control form-control-sm cust-sm col-sm">
-										<option>Printer</option>
-									</select>
-								</div>
-
-								<div class="input-group">
-									<label class="col-sm-4"></label>
-									<div class=" col-sm-1 ">
-										<input class="form-control-sm" type="radio" name="optradio" id="All" checked="checked">	
-									</div>
-									<label class="form-control-sm col-sm text-left" for="All">&nbsp;PDF</label>
-									<div class=" col-sm-1 ">
-										<input class="form-control-sm" type="radio" name="optradio" id="All">	
-									</div>
-									<label class="form-control-sm col-sm text-left" for="All">&nbsp;Excel</label>
-									<label class="col-sm-1"></label>
-								</div>
-
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">Printer Name</label>
-									<select class="form-control form-control-sm cust-sm col-sm">
-										<option>EPSON 3600I</option>
-									</select>
-								</div>
-								<div class="input-group">
-									<label class="form-control-sm col-sm-4">No of Copies</label>
-									<input class="form-control-sm form-control col-sm text-right" type="text" id="from">	
-								</div>
-							</div>	
-						</fieldset>
-					</div>
+						</div>
+						
+					</fieldset>
 				</div>
 				<div class="col-sm-2"></div>
 			</div>
-
 			<div class="form-row">
 				<div class="col-sm" style="margin-bottom: 5px;">
 					<div class="col-md-13 text-center">
 						<div class="cust-btn-container">
-							<button class="cust-btn" type="button"><a>Print</a></button>
+							<button class="cust-btn" type="button" (click)="getExtractToCsv()"><a>Print</a></button>
 						</div>
 					</div>
 				</div>
@@ -223,3 +122,18 @@
 	</div>
 	<div class="col-sm-2"></div>
 </div>
+
+<app-modal class="d-none" id="extract" #mdl>
+    <div header>{{ modalHeader }}</div>  
+    <div body class="w-100 text-center">
+    	<span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+    	<span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal();onClickExtract('f');"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>
+<app-sucess-dialog #appDialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>

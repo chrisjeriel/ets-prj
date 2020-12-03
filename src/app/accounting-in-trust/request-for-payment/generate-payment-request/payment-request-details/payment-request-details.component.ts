@@ -266,7 +266,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
     checkFlag     : false,
     addFlag       : false,
     deleteFlag    : false,
-    uneditable    : [true,true,true,true,true,true,true,true,true,true,true,true],
+    uneditable    : [true,true,true,true,true,true,true,true,false,false,false,true],
     total         : [null,null,null,'Total','grossShrAmt1','grossShrAmt2','grossShrAmt3','grossShrAmt4','netSfee','vatAmt','whtaxAmt','netDue'],
     widths        : ['200','130','130','100','130','130','130','130','130','130','130','130'],
     pageID        : 'serviceFeeSubData',
@@ -343,7 +343,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
   sfeeMdlRefNo: string = '';
   sfeeMdlAmount: any = null;
   sfeeMdlMonthNum: number = 0;
-
+  pwFromMm: any = '';
+  pwFromYear: any = '';
+  pwToMm: any = '';
+  pwToYear: any = '';
 
   constructor(private acctService: AccountingService, private mtnService : MaintenanceService, private ns : NotesService, 
               private clmService: ClaimsService, public modalService: NgbModal, private dp: DatePipe,private decPipe: DecimalPipe) {
@@ -1469,6 +1472,16 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.serviceFeeMainData.tableData = data['mainDistList'];
         this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
+        if(data['mainDistList'].length > 0) {
+          var refFrom = new Date(data['mainDistList'][0].refFromDate);
+          var refTo = new Date(data['mainDistList'][0].refToDate);
+
+          this.pwFromMm = refFrom.getMonth() + 1;
+          this.pwFromYear = refFrom.getFullYear();
+          this.pwToMm = refTo.getMonth() + 1;
+          this.pwToYear = refTo.getFullYear();
+        }
+
         if(data['subDistList'].length > 0) {
 
           this.sfeeAmts = data['subDistList'][0].servFeeTotals;
@@ -1493,7 +1506,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       var x = force === undefined ? 'N' : 'Y';
       this.acctService.getAcctPrqServFee(x, 'generate', this.requestData.reqId, this.qtrParam, this.yearParam,
                                          Number(String(this.sfeeAmts.totalSfeeAmt).replace(/\,/g,'')), this.requestData.currCd,
-                                         this.requestData.currRate, this.ns.getCurrentUser()).subscribe(data => {
+                                         this.requestData.currRate, this.ns.getCurrentUser(),
+                                         this.pwFromMm, this.pwFromYear, this.pwToMm, this.pwToYear).subscribe(data => {
         this.sfeeReturnCode = data['returnCode'];
 
         if(this.sfeeReturnCode == 0) {
@@ -1553,7 +1567,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       createUser: this.ns.getCurrentUser(),
       createDate: this.ns.toDateTimeString(0),
       updateUser: this.ns.getCurrentUser(),
-      updateDate: this.ns.toDateTimeString(0)
+      updateDate: this.ns.toDateTimeString(0),
+      pwMmFrom: this.pwFromMm,
+      pwYearFrom: this.pwFromYear,
+      pwMmTo: this.pwToMm,
+      pwYearTo: this.pwToYear,
+      saveAcctServFeeCedantList: this.serviceFeeSubData.tableData.filter(a => a.edited)
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
@@ -1781,6 +1800,10 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
     this.unColTbl.refreshTable();
     this.unColTbl.onRowClick(null, this.unappliedColData.tableData[0]);
+  }
+
+  servFeeSubDataChange(data) {
+    data.lastEditedRow.netDue = (data.lastEditedRow.netSfee + data.lastEditedRow.vatAmt) - data.lastEditedRow.whtaxAmt;
   }
 
 }

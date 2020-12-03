@@ -155,6 +155,8 @@ export class JvPreniumReserveComponent implements OnInit {
 				edited[edited.length - 1].totalWhtaxAmt      = this.totalWhtaxAmt;
 				edited[edited.length - 1].createDate 		 = this.ns.toDateTimeString(this.passData.tableData[i].createDate);
 				edited[edited.length - 1].updateDate 		 = this.ns.toDateTimeString(this.passData.tableData[i].updateDate);
+				edited[edited.length - 1].interestRt      	 = edited[edited.length - 1].interestRate;
+				edited[edited.length - 1].whtaxRt      	 	 = edited[edited.length - 1].whtaxRate;
 			}
 
 			if(this.passData.tableData[i].deleted){
@@ -226,7 +228,7 @@ export class JvPreniumReserveComponent implements OnInit {
      this.cedingCoLov.checkCode(this.premResData.ceding, ev);
     }
 
-    update(data){
+    update(data) {
     	this.totalWhtaxAmt = 0;
     	this.totalInterestAmt = 0;
     	for(var i = 0 ; i < this.passData.tableData.length; i++){
@@ -236,9 +238,19 @@ export class JvPreniumReserveComponent implements OnInit {
     		}
     	}
 
-    	if(data.key == 'releaseAmt' || data.key == 'interestRate' || data.key == 'whtaxRate') {
+    	if(data.key == 'releaseAmt') { // || data.key == 'interestRate' || data.key == 'whtaxRate') {
     		data.lastEditedRow.interestAmt = data.lastEditedRow.releaseAmt * (data.lastEditedRow.interestRate/100);
     		data.lastEditedRow.whtaxAmt = data.lastEditedRow.interestAmt * (data.lastEditedRow.whtaxRate/100);
+    	} else if(data.key == 'interestRate') {
+    		data.lastEditedRow.interestAmt = data.lastEditedRow.releaseAmt * (data.lastEditedRow.interestRate/100);
+    		data.lastEditedRow.whtaxAmt = data.lastEditedRow.interestAmt * (data.lastEditedRow.whtaxRate/100);
+    	} else if(data.key == 'interestAmt') {
+    		data.lastEditedRow.interestRate = (data.lastEditedRow.interestAmt / data.lastEditedRow.releaseAmt) * 100;
+    		data.lastEditedRow.whtaxAmt = data.lastEditedRow.interestAmt * (data.lastEditedRow.whtaxRate/100);
+    	} else if(data.key == 'whtaxRate') {
+    		data.lastEditedRow.whtaxAmt = data.lastEditedRow.interestAmt * (data.lastEditedRow.whtaxRate/100);
+    	} else if(data.key == 'whtaxAmt') {
+    		data.lastEditedRow.whtaxRate = (data.lastEditedRow.whtaxAmt / data.lastEditedRow.interestAmt) * 100;
     	}
     }
 

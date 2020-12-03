@@ -2,7 +2,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {NgbTabChangeEvent} from '@ng-bootstrap/ng-bootstrap';
 
-
 @Component({
   selector: 'app-extract-bir-tax',
   templateUrl: './extract-bir-tax.component.html',

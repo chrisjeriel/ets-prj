@@ -72,7 +72,60 @@
                     </app-cust-editable-non-datatable>
                 </ng-container>
                 <ng-container *ngSwitchCase ="requestData?.tranTypeCd == 5">
-                    <div class="row pt-1" >
+                  <div class="row pt-1" >
+                    <div class="col-sm-2" style="margin-right: -30px !important;"></div>
+                    <div class="col-sm-4" style="padding: 0;">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">Premium Written Period:</label>
+                        <label class="form-control-sm col-sm-2" style="padding-left:0px !important;">From</label>
+                        <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="pwFromMm" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="pwFromYear" style="margin-left: 3px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-sm-4" style="padding: 0;">
+                      <div class="input-group">
+                        <label class="form-control-sm col-sm-4" style="padding-left:0px !important;">To</label>
+                        <select class="form-control form-control-sm cust-sm col-sm-4" [(ngModel)]="pwToMm" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <option value="1">January</option>
+                            <option value="2">February</option>
+                            <option value="3">March</option>
+                            <option value="4">April</option>
+                            <option value="5">May</option>
+                            <option value="6">June</option>
+                            <option value="7">July</option>
+                            <option value="8">August</option>
+                            <option value="9">September</option>
+                            <option value="10">October</option>
+                            <option value="11">November</option>
+                            <option value="12">December</option>
+                          </select>
+                          <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="pwToYear" style="margin-left: 3px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <ng-container *ngFor="let y of yearParamOpts">
+                              <option [value]="y">{{ y }}</option>
+                            </ng-container>
+                          </select>
+                      </div>
+                    </div>
+                    <div class="col-sm-2"></div>
+                  </div>
+                    <div class="row" >
                         <div class="col-sm-2" style="margin-right: -30px !important;"></div>
                         <!-- <div class="col-sm-8 input-group">
                           <label class="form-control-sm col-sm-2">Service Fee</label>
@@ -101,7 +154,7 @@
                               <option value="3">Third Quarter</option>
                               <option value="4">Fourth Quarter</option>
                             </select>
-                            <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="yearParam" style="margin-left: 2px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
+                            <select class="form-control form-control-sm cust-sm col-sm-2" [(ngModel)]="yearParam" style="margin-left: 3px !important;" [disabled]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'">
                               <ng-container *ngFor="let y of yearParamOpts">
                                 <option [value]="y">{{ y }}</option>
                               </ng-container>
@@ -112,7 +165,7 @@
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">Total Service Fee</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="sfeeAmts.totalSfeeAmt" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" appCurrency>
-                            <button class="cust-btn" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 5px;">Distribute</button>
+                            <button class="cust-btn col-sm-2" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 3px;">Distribute</button>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">MRe Service Fee</label>
@@ -142,7 +195,7 @@
                     </div>
                     <div class="input-group" style="margin-top: 8px; margin-bottom: 0 !important;">
                       <div class="col-sm-12">
-                        <app-cust-editable-non-datatable #servFeeSubTbl [passData]="serviceFeeSubData"></app-cust-editable-non-datatable>
+                        <app-cust-editable-non-datatable #servFeeSubTbl [passData]="serviceFeeSubData" (tableDataChange)="servFeeSubDataChange($event)"></app-cust-editable-non-datatable>
                       </div>
                     </div>
                 </ng-container>
