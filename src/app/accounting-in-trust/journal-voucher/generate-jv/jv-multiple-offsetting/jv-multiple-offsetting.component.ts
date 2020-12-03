@@ -780,7 +780,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 
   showLov(ev?, from?) {
   	if(from == 'ipb') {
-  	  this.passLov.selector = 'multOffSoa';
+  	  this.passLov.selector = 'multOffSoa2';
   	  this.passLov.cedingId = this.multOffDetails.cedingId;
 	    this.passLov.currCd = this.jvDetail.currCd;
       this.passLov.hide = this.passDataIpb.tableData.filter((a)=>{return a.soaNo !== null && !a.deleted}).map(a=>{return a.soaNo.toString()});
@@ -841,11 +841,8 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       }
     }
 
-    if(from == 'ipb') {
-      this.loadingLov.openLOV();
-    } else {
-  	  this.lov.openLOV();
-    }
+    
+	  this.lov.openLOV();
   }
 
   setLov(ev) {

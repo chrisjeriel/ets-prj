@@ -2054,7 +2054,33 @@ export class LovComponent implements OnInit {
         }
         this.table.refreshTable();
       })
-    }
+    }else if(this.passData.selector == 'multOffSoa2') {
+            // this.table.overlayLoader = true;
+            this.passTable.tHeader = ['Memo No.', 'Policy No.', 'Inst No.', 'Co Ref No', 'Insured', 'Due Date', 'Net Due', 'Cumulative Payments', 'Remaining Balance'];
+            this.passTable.colSize =['300px','300px','300px','auto','200px','200px','200px','200px','200px'];
+            this.passTable.dataTypes = ['text', 'text', 'sequence-2', 'text', 'text', 'date', 'currency', 'currency', 'currency'];
+            this.passTable.keys = ['memoNo', 'policyNo', 'instNo', 'coRefNo', 'insuredDesc', 'dueDate', 'netDue', 'totalPayments', 'prevBalance'];
+            this.passTable.checkFlag = true;
+            this.passData.currCd = this.passData.currCd;
+            this.passData.policyId = this.passData.policyId == undefined ? '' : this.passData.policyId;
+            this.passData.instNo = this.passData.instNo == undefined ? '' : this.passData.instNo;
+            this.passData.cedingId = this.multOffCedingId == undefined ? '' : this.multOffCedingId;
+            this.passData.payeeNo = this.passData.payeeNo == undefined ? '' : this.passData.payeeNo;
+            this.passData.zeroBal = this.passData.zeroBal == undefined ? '' : this.passData.zeroBal;
+            this.passData.from = this.passData.from == undefined ? '' : this.passData.from;
+            this.passData.exclude = this.passData.hide == undefined ? [] : this.passData.hide;
+
+            this.accountingService.getAcitSoaDtlNew2(this.passData).subscribe((a:any)=>{
+                this.passTable.tableData = (a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));
+                
+                for(var i of this.passTable.tableData) {
+                    if(i.processing !== null && i.processing !== undefined) {
+                        i.preventDefault = true;
+                    }
+                }
+                this.table.refreshTable();
+            });
+        }
 
     this.modalOpen = true;
 	}
