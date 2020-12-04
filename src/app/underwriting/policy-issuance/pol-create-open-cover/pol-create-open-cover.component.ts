@@ -36,7 +36,7 @@ export class PolCreateOpenCoverComponent implements OnInit {
     }
 
     searchParams: any = {
-        statusArr:['3'],
+        statusArr:['3','5'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,
         openCoverTag  : 'Y'
