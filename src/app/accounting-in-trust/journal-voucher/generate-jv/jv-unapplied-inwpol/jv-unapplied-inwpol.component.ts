@@ -232,7 +232,7 @@ export class JvUnappliedInwpolComponent implements OnInit {
 
   inwLOV(data){
     this.passLov.cedingId = this.jvDetails.ceding;
-    this.passLov.selector = 'acitSoaDtl';
+    this.passLov.selector = 'acitSoaDtl2';
     this.passLov.currCd = this.jvDetail.currCd;
     this.passLov.hide = this.passData.tableData.filter((a)=>{return a.soaNo !== null && !a.deleted}).map(a=>{return a.soaNo.toString()});
     setTimeout(() => {

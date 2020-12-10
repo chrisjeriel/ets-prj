@@ -142,7 +142,7 @@ export class JvOffsettingAgainstLossesComponent implements OnInit {
   }
 
   passLovInw: any = {
-    selector: 'acitSoaDtl',
+    selector: 'acitSoaDtl2',
     cedingId: '',
     hide: []
   };
