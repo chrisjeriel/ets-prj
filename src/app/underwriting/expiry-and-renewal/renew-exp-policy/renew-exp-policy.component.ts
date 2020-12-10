@@ -35,7 +35,8 @@ export class RenewExpPolicyComponent implements OnInit {
         statusArr:['2'],
         'paginationRequest.count':10,
         'paginationRequest.position':1,
-        renTag:'Y'    
+        renTag:'Y',
+        altNo:0
     };
 
 
