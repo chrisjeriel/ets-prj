@@ -523,6 +523,7 @@ import { LoadingLovComponent } from './_components/common/loading-lov/loading-lo
 import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
 import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
 import { UnappliedCollectionInqComponent } from './accounting-in-trust/accounting-inquiry/unapplied-collection-inq/unapplied-collection-inq.component';
+import { LossResDepInqComponent } from './accounting-in-trust/accounting-inquiry/loss-res-dep-inq/loss-res-dep-inq.component';
 
 
 @NgModule({
@@ -1050,7 +1051,8 @@ import { UnappliedCollectionInqComponent } from './accounting-in-trust/accountin
         LoadingLovComponent,
         AcctItOsPolPremComponent,
         PremiumCollectionComponent,
-        UnappliedCollectionInqComponent
+        UnappliedCollectionInqComponent,
+        LossResDepInqComponent
     ],
 
   	providers: [

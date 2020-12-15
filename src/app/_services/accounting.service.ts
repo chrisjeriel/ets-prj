@@ -3725,4 +3725,8 @@ export class AccountingService {
     getAcitUnappColInquiry(param) {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitUnappColInquiry',{params:param});
     }
+
+    getAcitLossResDepInquiry(param) {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitLossResDepInquiry',{params:param});
+    }
 }

@@ -609,6 +609,10 @@
                                                 <button (click)="resetListParams()" [routerLink]="['premium-collection']" class="button btn btn-link">Premium Collection</button>
                                                 <br />
                                             </ng-container>
+                                            <ng-container *ngIf="accessibleModules.indexOf('ACIT069') > -1">
+                                                <button (click)="resetListParams()" [routerLink]="['loss-res-dep-inq']" class="button btn btn-link">Loss Reserve Deposits</button>
+                                                <br />
+                                            </ng-container>
                                             <ng-container *ngIf="accessibleModules.indexOf('ACIT071') > -1">
                                                 <button (click)="resetListParams()" [routerLink]="['unapplied-collection-inq']" class="button btn btn-link">Unapplied Collection</button>
                                                 <br />
@@ -818,8 +822,8 @@
                                             <br />
                                             <button (click)="resetListParams()" [routerLink]="['acc-s-edit-acct-entries']" class="button btn btn-link">Edit Accounting Entries</button>
                                             <br />
-                                            <button (click)="resetListParams()" [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
-                                            <br />
+                                            <!-- <button (click)="resetListParams()" [routerLink]="['acct-srvc-util-catw']" class="button btn btn-link">Consolidate Annual Taxes Withheld</button>
+                                            <br /> -->
                                             <button (click)="resetListParams()" [routerLink]="['acc-s-change-tran-stat-new']" class="button btn btn-link">Change Transaction Status to New</button>
                                             <br />
                                             <button (click)="resetListParams()" [routerLink]="['cancel-transaction-service']" class="button btn btn-link">Cancel Transactions</button>

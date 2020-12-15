@@ -215,6 +215,7 @@ import { AdjusterRateComponent } from './maintenance/claims/adjuster-rate/adjust
 import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inquiry/acct-it-os-pol-prem/acct-it-os-pol-prem.component';
 import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
 import { UnappliedCollectionInqComponent } from './accounting-in-trust/accounting-inquiry/unapplied-collection-inq/unapplied-collection-inq.component';
+import { LossResDepInqComponent } from './accounting-in-trust/accounting-inquiry/loss-res-dep-inq/loss-res-dep-inq.component';
 
 const appRoutes: Routes = [
 
@@ -867,6 +868,7 @@ const appRoutes: Routes = [
     { path: 'acct-it-os-pol-prem', component: AcctItOsPolPremComponent},
     { path: 'premium-collection', component: PremiumCollectionComponent},
     { path: 'unapplied-collection-inq', component: UnappliedCollectionInqComponent},
+    { path: 'loss-res-dep-inq', component: LossResDepInqComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];
