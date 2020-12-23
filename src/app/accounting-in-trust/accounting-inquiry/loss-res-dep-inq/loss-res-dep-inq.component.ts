@@ -78,6 +78,12 @@ export class LossResDepInqComponent implements OnInit {
     	this.getAcitLossResDepInquiry();
 	}
 
+	onTabChange($event: NgbTabChangeEvent) {
+		if ($event.nextId === 'Exit') {
+			this.route.navigateByUrl('');
+		}
+	}
+
 	getAcitLossResDepInquiry() {
 		this.lossResDepListTbl.overlayLoader = true;
 		this.searchParams.from = 'L';
