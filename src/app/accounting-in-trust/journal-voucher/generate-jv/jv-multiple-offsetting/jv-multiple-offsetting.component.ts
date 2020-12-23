@@ -431,7 +431,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	    this.passDataInvPo.addFlag = false;
 	    this.passDataInvPo.deleteFlag = false;
 	    this.passDataInvPo.checkFlag = false;
-      // this.passDataInvPo.tHeaderWithColspan = this.passDataInvPo.tHeaderWithColspan.slice(1);
+      this.passDataInvPo.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true, true,
+                                       true,true,true,true,true,true,true];
+      this.passDataInvPo.tHeaderWithColspan = this.passDataInvPo.tHeaderWithColspan.slice(1);
 
 	    this.passDataInvPl.addFlag = false;
 	    this.passDataInvPl.deleteFlag = false;
@@ -1041,6 +1043,14 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	  this.passDataInvPo.tableData[len].pulloutType 	= 'F';
   	  	  this.passDataInvPo.tableData[len].edited 			= true;
   	  	  this.passDataInvPo.tableData[len].showMG 			= 0;
+          this.passDataInvPo.tableData[len].balIncome      = a.balIncome;
+          this.passDataInvPo.tableData[len].pullInvtAmt = a.invtAmt;
+          this.passDataInvPo.tableData[len].pullIncomeAmt = a.balIncome;
+          this.passDataInvPo.tableData[len].pullBankCharge = a.balIncome * this.passDataInvPo.bankChargeRt;
+          this.passDataInvPo.tableData[len].pullWhtaxAmt = a.balIncome * this.passDataInvPo.whtaxRt;
+          this.passDataInvPo.tableData[len].pullNetValue = (a.invtAmt + a.balIncome) - (a.balIncome * this.passDataInvPo.bankChargeRt) - (a.balIncome * this.passDataInvPo.whtaxRt);
+          this.passDataInvPo.tableData[len].incomeBalance = 0;
+
   	  	}
 
   	  	this.invPoTbl.refreshTable();
@@ -1270,7 +1280,24 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  }
 
   	  proceed = true;
-  	} else if(from == 'invPo' || from == 'invPl') {
+  	} else if(from == 'invPo') { // || from == 'invPl') {
+
+      for(var i = 0; i < this.passDataInvPo.tableData.length; i++) {
+        var a = this.passDataInvPo.tableData[i];
+
+        if(a.edited && !a.deleted && isNaN(a.pullIncomeAmt)) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "Invalid Income Amount";
+          this.successDialog.open();
+          return;
+        } else if(a.edited && !a.deleted && a.pullIncomeAmt > a.balIncome) {
+          this.dialogIcon = "error-message";
+          this.dialogMessage = "Income amount must not exceed income balance";
+          this.successDialog.open();
+          return;
+        }
+      }
+
   	  proceed = true;
   	} else if(from == 'lrd') {
   	  /*var a = this.passDataLrd.php.netLossresdep;
