@@ -1,0 +1,91 @@
+<div class="cust-tabs-container">
+	<h4>Accounting In-Trust / Inquiry / Loss Reserve Deposit</h4>
+	<ngb-tabset (tabChange)="onTabChange($event)">
+		<ngb-tab class="ngb-tab" title="Inquire">
+			<ng-template ngbTabContent>	
+				<fieldset class="scheduler-border">
+					<legend class="scheduler-border">Filter Options</legend>
+					<div class="custom-row-inline-inset">
+						<div class="input-group">
+							<label class="form-control-sm col-sm-4 text-right">Ceding Company</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-3" (change)="checkCode($event, 'cedingId')" [ngModel]="searchParams.cedingName" (ngModelChange)="searchParams.cedingName=$event.toUpperCase()" placeholder="All">
+							<div class="text-search-ico" (click)="cedingCoLOV.modal.openNoClose()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
+							<!-- <label class="form-control-sm text-right col-sm-1" style="margin-left: 10px">Period:</label>
+							<label class="form-control-sm" style="padding-left:10px !important;">From</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [value]="searchParams.from" (valueChange)="searchParams.from=$event; searchParams.to=valChanged(searchParams.from, searchParams.to)"></datepicker>
+							</div>
+							<label class="form-control-sm text-right" style="margin-left: 10px">To</label>
+							<div class="dp-cont col-sm-2">
+								<datepicker type="date" [(value)]="searchParams.to" [minDate]="searchParams.from"></datepicker>
+							</div> -->
+							<label class="form-control-sm col-sm-1 text-right">Currency</label>
+							<input type="text" class="form-control form-control-sm cust-sm col-sm-1" (change)="checkCode($event, 'currCd')" [ngModel]="searchParams.currCd" (ngModelChange)="searchParams.currCd=$event.toUpperCase()" placeholder="All">
+							<div class="text-search-ico" (click)="currencyMdl.modal.openNoClose()" style="height: 0px;"><a><i class="fa fa-search"></i></a></div>
+							<div class="cust-btn-container col-sm-1" style="z-index: 3 !important;margin-left: 3px !important;">
+								<button type="button" class="cust-btn" (click)="getAcitLossResDepInquiry()"><a>Search</a></button>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+
+				<!-- <ngb-tabset (tabChange)="onInnerTabChange($event)">
+					<ngb-tab class="ngb-tab" title="List of Loss Reserve Deposits" id="unappCollListTab">
+						<ng-template ngbTabContent>
+							
+						</ng-template>
+					</ngb-tab>
+					<ngb-tab class="ngb-tab" title="Unapplied Collections Realignment" id="unappCollRealignmentTab">
+						<ng-template ngbTabContent>
+							<div class="input-group cust-border" style="padding-top: 1em">
+								<div class="input-group">
+                    				<div class="col-sm-12">
+										<app-cust-editable-non-datatable #unappCollRealignmentTbl [passData]="unappCollRealignmentData" (export)="export()"></app-cust-editable-non-datatable>
+									</div>
+								</div>
+							</div>
+						</ng-template>
+					</ngb-tab>
+				</ngb-tabset> -->
+
+				<fieldset class="scheduler-border" style="padding-top: 10px !important; padding-bottom: 10px !important;">
+				  <legend class="scheduler-border">List of Loss Reserve Deposits</legend>
+					<div class="custom-row-inline-inset" style="margin-bottom: 30px !important;">
+						<app-cust-editable-non-datatable #lossResDepListTbl [passData]="lossResDepListData" (export)="export('L')" (genericBtn)="viewTransaction($event)" (newClick)="onRowClick($event)"></app-cust-editable-non-datatable>
+					</div>
+				</fieldset>
+			</ng-template>
+		</ngb-tab>
+
+		<ngb-tab class="ngb-tab" title="Exit" id="Exit">
+			<ng-template ngbTabContent>	
+			</ng-template>
+		</ngb-tab>
+	</ngb-tabset>
+</div>
+
+<app-ceding-company #cedingComp (selectedData)="setSelectedCedComp($event);" [treaty]="false"></app-ceding-company>
+<app-mtn-currency-code #currencyMdl (selectedData)="setCurrency($event)"></app-mtn-currency-code>
+
+<app-modal class="d-none" #tranModal>
+	<div header>Loss Reserve Deposit Payments</div>
+	<div body>
+		<fieldset class="scheduler-border">
+			<div class="custom-row-inline-inset">
+				<div class="input-group">
+					<label class="col-sm-2"></label>
+					<label class="form-control-sm col-sm-2 text-right">Company</label>
+					<input type="text" class="form-control form-control-sm cust-sm col-sm" [ngModel]="searchParams.mdlCedingName" disabled="true">
+					<label class="col-sm-3"></label>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset class="scheduler-border" style="padding-top: 10px !important;margin-top: 4px !important">
+			<app-cust-editable-non-datatable #tranTable [passData]="passDataTran" (export)="export('P')"></app-cust-editable-non-datatable>	
+		</fieldset>
+		
+	</div>
+	<div footer>
+		<button class="cust-btn" type="button" (click)="tranModal.closeModal();"><a>Return</a></button>
+	</div>
+</app-modal>

@@ -188,12 +188,12 @@ export class UnappliedCollectionInqComponent implements OnInit {
 		}
 
 		if(this.currentTab == 'unappCollListTab') {
-			filename = 'UnappliedCollections'+currDate+'.xls';
+			filename = 'UnappliedCollections_'+currDate+'.xls';
 			alasql('SELECT cedingId as [Ceding ID], cedingAbbr as [Ceding Name], tranNo as [Entry Transaction No.], transdtlName as [Unapplied Type], itemName as [Item Description], ' +
 				   'isNull(refNo) as [Company Reference No.], isNull(remarks) as [Remarks], currCd as [Currency], currRate as [Currency Rate], totalUnapldAmt as [Unapplied Amount], totalApldAmt as [Applied Amount], balUnapldAmt as [Remaining Amount for Realignment] ' +
 				   'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.unappCollListData.tableData]);
 		} else if(this.currentTab == 'unappCollRealignmentTab') {
-			filename = 'UnappliedCollectionsRealignment'+currDate+'.xls';
+			filename = 'UnappliedCollectionsRealignment_'+currDate+'.xls';
 			alasql('SELECT cedingId as [Ceding ID], cedingAbbr as [Ceding Name], itemName as [Item Description], isNull(refNo) as [Company Reference No.], isNull(remarks) as [Remarks], tranNo as [Transaction No.], datetime(tranDate) as [Transaction Date], ' +
 				   'tranType as [Transaction Type], particulars as [Particulars], currCd as [Currency], currRate as [Currency Rate], paytAmt as [Applied Amount], localAmt as [Local Amount], isNull(returnTag) as [Return to Cedant], balUnapldAmt as [Remaining Amount for Realignment] ' +
 				   'INTO XLSXML("'+filename+'",?) FROM ?',[mystyle,this.unappCollRealignmentData.tableData]);
