@@ -996,11 +996,14 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMsg = 'Please enter amount greater than 0.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
-      }else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
-        this.warnMsg = 'Payment amount must not exceed the Balance amount.';
-        this.warnMdl.openNoClose();
-        this.params.savePrqTrans = [];
-      }else{
+        
+        // temporarily removed as per sir ben
+      // }else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
+        // this.warnMsg = 'Payment amount must not exceed the Balance amount.';
+        // this.warnMdl.openNoClose();
+        // this.params.savePrqTrans = [];
+      }
+      else{
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
             this.treatyTbl.markAsPristine();
             this.conTrty.confirmModal();
