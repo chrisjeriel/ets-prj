@@ -84,6 +84,11 @@ export class RenewExpPolicyComponent implements OnInit {
   doneCheck: boolean = false;
   renewedPolicy: any = {};
 
+  inceptionDate: any = "";
+  inceptionTime: any = "";
+  // expiryDate: any = "";
+  expiryTime: any = "";
+
   constructor(private underwritingService: UnderwritingService, private router: Router,
    public modalService: NgbModal, private titleService: Title, private cs: ClaimsService, private ns: NotesService) { }
 
@@ -192,7 +197,9 @@ export class RenewExpPolicyComponent implements OnInit {
     if(this.selected != null) {
       this.polNo = this.selected.policyNo.split('-');
       this.cedingName = this.selected.cedingName;
-      this.expiryDate = this.ns.toDateTimeString(this.selected.expiryDate);
+      this.inceptionDate = this.ns.toDateTimeString(this.selected.expiryDate).split('T')[0];
+      this.inceptionTime = this.ns.toDateTimeString(this.selected.expiryDate).split('T')[1];
+      this.updateExpiryDate();
       this.insuredDesc = this.selected.insuredDesc;
       this.riskName = this.selected.riskName;
 
@@ -254,7 +261,9 @@ export class RenewExpPolicyComponent implements OnInit {
 
     var renewParam:any = {
       policyId : this.selected.policyId,
-      procBy : this.ns.getCurrentUser()
+      procBy : this.ns.getCurrentUser(),
+      "expiryDate"    : this.expiryDate + 'T' + this.expiryTime,
+      "inceptDate"    : this.inceptionDate + 'T' + this.inceptionTime,
     };
     this.underwritingService.extGenRenExpPolicy(renewParam).subscribe((data :any) => {
       console.log(data);
@@ -333,4 +342,12 @@ export class RenewExpPolicyComponent implements OnInit {
       }
       this.getPolListing();
     }
+
+  updateExpiryDate() {
+    var d = new Date(this.inceptionDate);
+    d.setFullYear(d.getFullYear() + 1);
+
+    this.expiryDate = this.ns.toDateTimeString(d).split('T')[0];
+    this.expiryTime = this.inceptionTime;
+  }
 }

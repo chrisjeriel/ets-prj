@@ -37,12 +37,12 @@
                             <span>&nbsp;</span>
                             <div class="text-search-ico"><a><i (click)="showLOV()" class="fa fa-search"></i></a></div>
                         </div>
-                        <div class="input-group ig-row" style="margin-top: -6px !important; margin-bottom: 0px !important;">
+                        <!-- <div class="input-group ig-row" style="margin-top: -6px !important; margin-bottom: 0px !important;">
                             <label class="form-control-sm col-sm-2">Expiry Date</label>
                             <div class="col-sm dp-cont" style="margin-left: 0px !important;">
                                 <datepicker [disabled]="true" [type]="'date'" [showIcon]="true" [value]="expiryDate?.split('T')[0]" (valueChange)="expiryDate=$event+'T'+expiryDate.split('T')[1];"></datepicker>
                             </div>
-                        </div>                    
+                        </div>    -->                 
                         <div class="input-group ig-row" style="margin-top: -6px !important;">
                             <label class="form-control-sm col-sm-2">Ceding Company</label>
                             <input type="text" class="form-control form-control-sm" [ngModel]="cedingName" readonly tabindex="-1">
@@ -54,6 +54,24 @@
                         <div class="input-group ig-row">
                             <label class="form-control-sm col-sm-2">Risk</label>
                             <input type="text" class="form-control form-control-sm" [ngModel]="riskName" readonly tabindex="-1">
+                        </div>
+                        <div class="input-group ig-row ">
+                            <label class="form-control-sm col-sm-2">Inception Date</label>
+                        
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="inceptionDate" (valueChange)="inceptionDate=$event; updateExpiryDate();"></datepicker>
+                            </div>
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [value]="inceptionTime" (valueChange)="inceptionTime=$event;" [textAlign]="'center'"></datepicker>  
+                            </div>
+                            <label class="form-control-sm col-sm" >Expiry Date</label>
+                            
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'date'" [required]="true" [showIcon]="true" [value]="expiryDate" (valueChange)="expiryDate=$event" [minDate]="inceptionDate"></datepicker>
+                            </div>
+                            <div class="col-sm-2 dp-cont">
+                                <datepicker [type]="'time'" [required]="true" [value]="expiryTime" (valueChange)="expiryTime=$event;" [textAlign]="'center'"></datepicker>  
+                            </div>
                         </div>
                     </div>
                 </div>
