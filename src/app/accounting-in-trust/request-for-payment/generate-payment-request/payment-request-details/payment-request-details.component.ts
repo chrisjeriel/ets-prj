@@ -992,15 +992,15 @@ export class PaymentRequestDetailsComponent implements OnInit {
         this.warnMsg = 'Unable to save the record. Quarter Ending must be unique.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
-      }else if(this.treatyBalanceData.tableData.filter(e => e.newRec == 1).some(e => e.currAmt <= 0)){
+      } /*else if(this.treatyBalanceData.tableData.filter(e => e.newRec == 1).some(e => e.currAmt <= 0)){
         this.warnMsg = 'Please enter amount greater than 0.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
-      }else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
+      } else if(this.treatyBalanceData.tableData.some(e => e.currAmt > e.remainingBal)){
         this.warnMsg = 'Payment amount must not exceed the Balance amount.';
         this.warnMdl.openNoClose();
         this.params.savePrqTrans = [];
-      }else{
+      }*/ else {
           if(this.params.savePrqTrans.length == 0 && this.params.deletePrqTrans.length == 0){
             this.treatyTbl.markAsPristine();
             this.conTrty.confirmModal();
