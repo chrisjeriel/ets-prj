@@ -1163,14 +1163,13 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 
   	  this.unappTbl.refreshTable();
   	} else if(from == 'invPo') {
-      console.log(ev);
       var x = ev.lastEditedRow;
 
       if(ev.key == 'pulloutType') {
         x.pullInvtAmt = x.pulloutType == 'F' ? x.invtAmt : 0;
       }
 
-      if(ev.key == 'pullIncomeAmt') {
+      if(ev.key == 'pullIncomeAmt' || ev.key == 'pulloutType') {
         x.pullBankCharge = x.pullIncomeAmt * this.passDataInvPo.bankChargeRt;
         x.pullWhtaxAmt = x.pullIncomeAmt * this.passDataInvPo.whtaxRt;
         x.pullNetValue = (x.pullInvtAmt + x.pullIncomeAmt) - x.pullBankCharge - x.pullWhtaxAmt;

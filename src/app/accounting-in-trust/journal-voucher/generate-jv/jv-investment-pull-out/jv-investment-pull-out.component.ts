@@ -23,7 +23,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
 
-  passData: any = {
+  /*passData: any = {
     tableData:[],
     tHeader:['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value'],
     dataTypes:['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency'],
@@ -74,6 +74,80 @@ export class JvInvestmentPullOutComponent implements OnInit {
     pageID: 6,
     widths: [140, 150, 127, 130, 90, 83, 85, 1, 1, 1, 85, 120, 120, 120, 120, 120, 120],
     disableAdd: true
+  };*/
+
+  passData: any = {
+    tableData: [],
+    tHeaderWithColspan: [{header:'', span: 1},{header:'Maintenance Information', span: 17},{header: 'Pull-out Details', span: 7}],
+    tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value' ,'Remaining||Income',
+              'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
+    dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency' ,'currency',
+                'select','currency','currency','currency','currency','currency','currency'],
+    total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue',null,
+            null,'pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
+    addFlag: true,
+    deleteFlag: true,
+    infoFlag: true,
+    paginateFlag: true,
+    magnifyingGlass: ['invtCode'],
+    nData: {
+      tranId: '',
+      itemNo: '',
+      invtId: '',
+      invtCode: '',
+      certNo: '',
+      invtType: '',
+      invtTypeDesc: '',
+      invtSecCd: '',
+      securityDesc: '',
+      maturityPeriod: '',
+      durationUnit: '',
+      interestRate: '',
+      purchasedDate: '',
+      maturityDate: '',
+      destInvtId: '',
+      bank: '',
+      bankName: '',
+      bankAcct: '',
+      pulloutType: '',
+      currCd: '',
+      currRate: '',
+      invtAmt: '',
+      incomeAmt: '',
+      bankCharge: '',
+      whtaxAmt: '',
+      maturityValue: '',
+      localAmt: '',
+      showMG: 1,
+      pullInvtAmt: '',
+      pullIncomeAmt: '',
+      pullBankCharge: '',
+      pullWhtaxAmt: '',
+      pullNetValue: '',
+      incomeBalance: '',
+      createUser: this.ns.getCurrentUser(),
+      updateUser: this.ns.getCurrentUser(),
+      createDate: '',
+      updateDate: ''
+    },
+    keys: ['invtCode', 'certNo', 'invtTypeDesc', 'securityDesc', 'maturityPeriod', 'durationUnit', 'interestRate', 'purchasedDate', 'maturityDate', 'currCd', 'currRate', 
+           'invtAmt' , 'incomeAmt', 'bankCharge', 'whtaxAmt', 'maturityValue','balIncome',
+           'pulloutType','pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
+    uneditable: [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true, true,
+                 false,true,false,false,false,true,true],
+    checkFlag: true,
+    pageID: 'multOffInvtout',
+    widths: [120,150,127,130,1,83,85,1,1,1,85,120,120,120,120,120,120],
+    disableAdd: true,
+    opts: [
+      {
+        selector: 'pulloutType',
+        prev: ['Full Pull-out', 'Income Only'],
+        vals: ['F', 'I']
+      }
+    ],
+    bankChargeRt: 0,
+    whtaxRt: 0
   };
 
   passLov: any = {
@@ -111,8 +185,11 @@ export class JvInvestmentPullOutComponent implements OnInit {
       this.passData.deleteFlag = false;
       this.passData.checkFlag =  false;
       this.passData.btnDisabled = true;
-      this.passData.uneditable = [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
+      // this.passData.uneditable = [false, true, true, true, true, true,true, true, true, true, true, true, true, true, true, true ],
       this.disable = true;
+      this.passData.uneditable = [true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true, true,
+                                       true,true,true,true,true,true,true];
+      this.passData.tHeaderWithColspan = this.passData.tHeaderWithColspan.slice(1);
     }
     this.getBank();
     // setTimeout(() => {this.getInvPullout()},0);
@@ -129,12 +206,18 @@ export class JvInvestmentPullOutComponent implements OnInit {
     });*/
 
     var join = forkJoin(this.ms.getMtnBank(null,null,null,'Y'),
-                        this.ms.getMtnBankAcct()).pipe(map(([bank, bankAcct]) => {return {bank, bankAcct}; }));
+                        this.ms.getMtnBankAcct(),
+                        this.jvDetail.currCd == 'PHP' ? this.ms.getMtnParameters('N', 'INVT_BANKCHRG_RT_PHP') : this.ms.getMtnParameters('N', 'INVT_BANKCHRG_RT_USD'),
+                        this.jvDetail.currCd == 'PHP' ? this.ms.getMtnParameters('N', 'INVT_WHTAX_RT_PHP') : this.ms.getMtnParameters('N', 'INVT_WHTAX_RT_USD')
+                            ).pipe(map(([bank, bankAcct, bc, wt]) => {return {bank, bankAcct, bc, wt}; }));
 
     this.forkSub = join.subscribe((data: any) => {
       this.banks = data.bank.bankList;
       this.bankAccts = data.bankAcct.bankAcctList;
       this.getInvPullout();
+
+      this.passData.bankChargeRt = (data['bc']['parameters'][0]['paramValueN'] / 100).toFixed(10);
+      this.passData.whtaxRt = (data['wt']['parameters'][0]['paramValueN'] / 100).toFixed(10);
     });
   }
 
@@ -190,12 +273,13 @@ export class JvInvestmentPullOutComponent implements OnInit {
   }
 
   openInvPulloutLOV(data){
-    this.passLov.searchParams = [{key:'invtStatus', search: 'M%'}];
+    this.passLov.searchParams = [{key:'invtStatus', search: 'M%'},
+                                 {key:'currCd', search: this.jvDetail.currCd}];
     this.passLov.hide = this.passData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }
 
-  setSelectedData(data){
+  setSelectedData(data) {
     let selected = data.data;
     this.passData.tableData = this.passData.tableData.filter(a=>a.showMG!=1);
     for(var i = 0; i < selected.length; i++){
@@ -225,15 +309,38 @@ export class JvInvestmentPullOutComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['invtCode'];
+      this.passData.tableData[this.passData.tableData.length - 1].balIncome      = selected[i].balIncome;
+      this.passData.tableData[this.passData.tableData.length - 1].pullInvtAmt = selected[i].invtAmt;
+      this.passData.tableData[this.passData.tableData.length - 1].pullIncomeAmt = selected[i].balIncome;
+      this.passData.tableData[this.passData.tableData.length - 1].pullBankCharge = selected[i].balIncome * this.passData.bankChargeRt;
+      this.passData.tableData[this.passData.tableData.length - 1].pullWhtaxAmt = selected[i].balIncome * this.passData.whtaxRt;
+      this.passData.tableData[this.passData.tableData.length - 1].pullNetValue = (selected[i].invtAmt + selected[i].balIncome) - (selected[i].balIncome * this.passData.bankChargeRt) - (selected[i].balIncome * this.passData.whtaxRt);
+      this.passData.tableData[this.passData.tableData.length - 1].incomeBalance = 0;
     }
     this.table.refreshTable();
   }
 
-  onClickSave(){
+  onClickSave() {
+    for(var i = 0; i < this.passData.tableData.length; i++) {
+      var a = this.passData.tableData[i];
+
+      if(a.edited && !a.deleted && isNaN(a.pullIncomeAmt)) {
+        this.dialogIcon = "error-message";
+        this.dialogMessage = "Invalid Income Amount";
+        this.successDiag.open();
+        return;
+      } else if(a.edited && !a.deleted && a.pullIncomeAmt > a.balIncome) {
+        this.dialogIcon = "error-message";
+        this.dialogMessage = "Income amount must not exceed income balance";
+        this.successDiag.open();
+        return;
+      }
+    }
+
     this.confirm.confirmModal();
   }
 
-  prepareData(){
+  prepareData() {
     this.jvDetails.saveInvPullOut = [];
     this.jvDetails.delInvPullOut = [];
 
@@ -277,7 +384,25 @@ export class JvInvestmentPullOutComponent implements OnInit {
     this.cancelBtn.clickCancel();
   }
 
-  onTableDataChange(data){
+  onTableDataChange(ev) {
+    var x = ev.lastEditedRow;
+
+    if(ev.key == 'pulloutType') {
+      x.pullInvtAmt = x.pulloutType == 'F' ? x.invtAmt : 0;
+    }
+
+    if(ev.key == 'pullIncomeAmt' || ev.key == 'pulloutType') {
+      x.pullBankCharge = x.pullIncomeAmt * this.passData.bankChargeRt;
+      x.pullWhtaxAmt = x.pullIncomeAmt * this.passData.whtaxRt;
+      x.pullNetValue = (x.pullInvtAmt + x.pullIncomeAmt) - x.pullBankCharge - x.pullWhtaxAmt;
+      x.incomeBalance = x.incomeAmt - x.pullIncomeAmt;
+    }
+
+    if(ev.key == 'pullBankCharge' || ev.key == 'pullWhtaxAmt') {
+      x.pullNetValue = (x.pullInvtAmt + x.pullIncomeAmt) - x.pullBankCharge - x.pullWhtaxAmt;
+    }
+
+    this.table.refreshTable();
   }
 
   onRowClick(data){
