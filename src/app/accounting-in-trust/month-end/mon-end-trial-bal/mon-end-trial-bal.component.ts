@@ -388,7 +388,7 @@ export class MonEndTrialBalComponent implements OnInit {
         this.paramsToggle.push('currCd');
       }
 
-      if(this.params.reportId == 'ACITR066B') {
+      if(this.params.reportId == 'ACITR066B' || this.params.reportId == 'ACITR066BD') {
         this.showUpdateAgingSoa = true;
       }
 
@@ -529,6 +529,13 @@ export class MonEndTrialBalComponent implements OnInit {
           'negFmt(currency(ageGrp7)) as [361-450 DAYS], negFmt(currency(ageGrp8)) as [OVER 450 DAYS], negFmt(currency(intPenalty)) as [INTEREST PENALTY],' +
           'negFmt(currency(totalDueFrom)) as [TOTAL DUE FROM], negFmt(currency(totalDueTo)) as [TOTAL DUE TO], negFmt(currency(trtyDueTo)) as [DUE TO MEMBER],'+
           'negFmt(currency(lossPayable)) as [LOSS PAYABLE], myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
+        }else if(this.params.reportId == 'ACITR066BD'){
+          this.passDataCsv = data['listAcitr066bd'];
+          query = 'SELECT cedingName as [CEDANT],negFmt(currency(ageGrp1)) as [1-30 DAYS],negFmt(currency(ageGrp2)) as [31-60 DAYS],'+
+          'negFmt(currency(ageGrp3)) as [61-90 DAYS], negFmt(currency(ageGrp4)) as [91-180 DAYS], negFmt(currency(ageGrp5)) as [181-270 DAYS], negFmt(currency(ageGrp6)) as [271-360 DAYS],'+
+          'negFmt(currency(ageGrp7)) as [361-450 DAYS], negFmt(currency(ageGrp8)) as [OVER 450 DAYS], negFmt(currency(intPenalty)) as [INTEREST PENALTY],' +
+          'negFmt(currency(totalDueFrom)) as [TOTAL DUE FROM], negFmt(currency(totalDueTo)) as [TOTAL DUE TO], negFmt(currency(trtyDueTo)) as [DUE TO MEMBER],'+
+          'negFmt(currency(lossPayable)) as [LOSS PAYABLE], myFormat(paramDate) as [PARAM DATE], isNull(paramCurrency) as [PARAM CURRENCY]';
         }else if(this.params.reportId == 'ACITR066C'){
           this.passDataCsv = data['listAcitr066c'];
           query = 'SELECT checkNullNo(grpNo) as [GROUP NO], checkNullNo(itemNo) as [ITEM NO], isNull(acctName) as [ACCOUT NAME], negFmt(currency(currMembersTotal)) as [CURR MEMBERS TOTAL],'+
@@ -592,7 +599,12 @@ export class MonEndTrialBalComponent implements OnInit {
 
   onClickUpdateAgingSoa() {
     this.ps.printLoader = true;
-    this.as.updateAgingSoa(this.params.eomDate).subscribe(data => {
+    var param = {
+      eomDate: this.params.eomDate,
+      reportId: this.params.reportId
+    }
+
+    this.as.updateAgingSoa(param).subscribe(data => {
       console.log(data);
       this.ps.printLoader = false;
       if(data['returnCode'] == 0) {
