@@ -3567,7 +3567,13 @@ export class AccountingService {
 	}
 
 	updateAgingSoa(params) {
-    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAgingSoa?eomDate='+params,params);
+		let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+        };
+        
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/updateAgingSoa',params,header);
     }
 
     getAcitMonthEndJV(from, eomDate){
