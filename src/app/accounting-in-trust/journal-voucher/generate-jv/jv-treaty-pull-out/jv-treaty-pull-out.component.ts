@@ -473,7 +473,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   openLOV(data){
-    this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'M%'}, {key:'currCd', search: this.jvDetail.currCd}];
+    this.passLov.searchParams = [{key: 'bankCd', search: ''}, {key:'invtStatus', search: 'M,R,T'}, {key:'currCd', search: this.jvDetail.currCd}];
     this.passLov.hide = this.invesmentData.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
     this.lovMdl.openLOV();
   }

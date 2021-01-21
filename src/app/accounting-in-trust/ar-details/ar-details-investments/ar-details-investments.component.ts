@@ -176,7 +176,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
     this.isReopen = this.record.reopenTag == 'Y';
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M%'}, {key:'currCd', search:this.record.currCd}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M,R,T'}, {key:'currCd', search:this.record.currCd}];
     if(this.invData !== undefined){
       for(var i of this.invData){
         this.passLov.hide.push(i);
@@ -326,7 +326,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     this.totalLocalAmt = 0;
     for (var i = 0 ; this.passData.tableData.length > i; i++) {
       if(!this.passData.tableData[i].deleted){
-        this.totalLocalAmt += this.passData.tableData[i].localAmt;
+        this.totalLocalAmt += (this.passData.tableData[i].pullNetValue * this.passData.tableData[i].currRate);
       }
       if(this.passData.tableData[i].edited && !this.passData.tableData[i].deleted){
           this.savedData.push(this.passData.tableData[i]);
@@ -376,7 +376,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
           }
         }else if(data.returnCode === 0 && data.custReturnCode === 2){
           this.dialogIcon = 'error-message';
-          this.dialogMessage = 'Total Maturity Value of the Investment Pull-outs must not exceed the AR Amount.';
+          this.dialogMessage = 'Total Net Value of the Investment Pull-outs must not exceed the AR Amount.';
           this.successDiag.open();
           if(this.cancelFlag){
             this.cancelFlag = false;

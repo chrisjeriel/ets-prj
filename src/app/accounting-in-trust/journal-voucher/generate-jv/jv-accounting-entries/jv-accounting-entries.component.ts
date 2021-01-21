@@ -555,7 +555,7 @@ export class JvAccountingEntriesComponent implements OnInit {
       this.accountingService.getJvInvPullout(this.jvDetails.tranId).subscribe((data:any) => {
         var datas = data.pullOut;
           for (var i = 0; i < datas.length; i++) {
-            total += datas[i].maturityValue
+            total += datas[i].pullNetValue
           }
           if(total != this.jvDetails.jvAmt){
             this.errorFlag = true;
