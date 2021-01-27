@@ -448,13 +448,17 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
     };
     this.as.cancelAr(params).subscribe(
       (data: any)=>{
-        if(data.returnCode !== 0){
-          this.isCancelled = true;
+        if(data.returnCode !== 0) {
+          if(this.isPrinted && reopen !== undefined) {
+            this.isPrinted = false;
+          }
+
+          this.isCancelled = reopen == undefined;
           this.dialogIcon = 'success';
           this.successDiag.open();
-          this.passData.addFlag = false;
-          this.passData.genericBtn = undefined;
-          this.passData.uneditable = [true,true,true,true,true,true,true,true,true];
+          // this.passData.addFlag = false;
+          // this.passData.genericBtn = undefined;
+          this.passData.uneditable = [false,true,true,false,false,false,false,false,false,false];
           this.retrieveArEntry(this.arInfo.tranId, this.arInfo.arNo);
           this.paytDtlTbl.refreshTable();
         }
@@ -657,7 +661,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
           this.arInfo.acctEntriesSumF = data.ar.acctEntriesSumF;
           this.arInfo.reopenTag       = data.ar.reopenTag;
           this.arInfo.reopenDate     = this.ns.toDateTimeString(data.ar.reopenDate);
-          this.isReopen              = this.arInfo.reopenTag != null;
+          // this.isReopen              = this.arInfo.reopenTag != null;
           this.selectedCurrency       = data.ar.currCd;
           if(this.arInfo.arStatDesc.toUpperCase() === 'DELETED' || this.arInfo.arStatDesc.toUpperCase() === 'CANCELED'){
           //if(this.arInfo.arStatDesc.toUpperCase() !== 'NEW'){

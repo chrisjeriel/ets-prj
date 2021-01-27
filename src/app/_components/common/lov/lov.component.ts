@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { SucessDialogComponent } from '@app/_components/common/sucess-dialog/sucess-dialog.component';
 import { map } from 'rxjs/operators';
 import { MtnPayeeCedingComponent } from '@app/maintenance/mtn-payee-ceding/mtn-payee-ceding.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class LovComponent implements OnInit {
   @ViewChild(ModalComponent) modal : ModalComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild('cedingLov') cedingLov: MtnPayeeCedingComponent;
+  @ViewChild('allCedingLov') allCedingLov: CedingCompanyComponent;
   
   passTable: any = {
         tableData: [],
@@ -2124,13 +2126,23 @@ export class LovComponent implements OnInit {
   }
 
   showCedingLov(ev) {
-    this.cedingLov.modal.openNoClose();
+    if(this.passData.selector == 'multOffTrty') {
+      this.allCedingLov.modal.openNoClose();
+    } else {
+      this.cedingLov.modal.openNoClose();
+    }
   }
 
   setCeding(ev) {
     if(ev !== null) {
-      this.multOffCedingId = ev.payeeCd;
-      this.multOffCedingName = ev.payeeName;
+      if(this.passData.selector == 'multOffTrty') {
+        this.multOffCedingId = ev.cedingId;
+        this.multOffCedingName = ev.cedingName;
+      } else {
+        this.multOffCedingId = ev.payeeCd;
+        this.multOffCedingName = ev.payeeName;
+      }
+      
       this.openModal();
     }
   }
