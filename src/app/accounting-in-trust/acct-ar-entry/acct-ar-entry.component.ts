@@ -11,6 +11,7 @@ import { forkJoin, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-acct-ar-entry',
@@ -33,6 +34,7 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
   @ViewChild('successPrintMdl') successPrintMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
+  @ViewChild('cedingLov') cedingLov: CedingCompanyComponent;
 
   passData: any = {
         tableData: [],
@@ -399,7 +401,10 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
         this.passLov.payeeClassCd = 3;
       }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
         this.passLov.payeeClassCd = null;
-      }else{
+      // } else if(this.arInfo.tranTypeCd == '3') {
+      //   this.cedingLov.modal.openNoClose();
+      //   return;
+      } else{
         this.passLov.payeeClassCd = 1; //get only cedants
       }
     }else if(type === 'business'){
@@ -471,19 +476,24 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
   }
 
   changePayeeNo(event){
-  this.ns.lovLoader(event, 1);
-  this.passLov.selector = 'payee';
-    if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
-      this.passLov.payeeClassCd = 3;
-    }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
-      console.log('test')
-      this.passLov.payeeClassCd = '';
-    }else{
-      this.passLov.payeeClassCd = 1; //get only cedants
-      this.arInfo.payeeNo = this.pad(this.arInfo.payeeNo, 'payeeNo');
+    this.ns.lovLoader(event, 1);
+
+    if(this.arInfo.tranTypeCd == '3') {
+      this.cedingLov.checkCode(this.arInfo.payeeNo, event)
+    } else {
+      this.passLov.selector = 'payee';
+      if(this.arInfo.tranTypeCd == '5'){ //get only the banks if investment pullout
+        this.passLov.payeeClassCd = 3;
+      }else if(this.arInfo.tranTypeCd == '8'){ //get everyone if others
+        console.log('test')
+        this.passLov.payeeClassCd = '';
+      }else{
+        this.passLov.payeeClassCd = 1; //get only cedants
+        this.arInfo.payeeNo = this.pad(this.arInfo.payeeNo, 'payeeNo');
+      }
+      this.passLov.payeeNo = this.arInfo.payeeNo;
+      this.lov.checkCode('payee',null,null,null,null,null,event); 
     }
-    this.passLov.payeeNo = this.arInfo.payeeNo;
-    this.lov.checkCode('payee',null,null,null,null,null,event);
   }
 
   changeCurrency(data){
@@ -550,25 +560,38 @@ export class AcctArEntryComponent implements OnInit, OnDestroy {
       if(data.ev != undefined){
         this.ns.lovLoader(data.ev, 0);
       }
-      if(data.data == null){
-        this.arInfo.payeeNo      = '';
-        this.arInfo.payeeClassCd = '';
-        this.arInfo.payor        = '';
-        this.arInfo.tin          = '';
-        this.arInfo.bussTypeCd   = '';
-        this.arInfo.mailAddress  = '';
-        this.arInfo.cedingId     = '';
-        this.arInfo.bussTypeName = '';
-      }else{
-        this.arInfo.payeeNo = data.data.payeeNo;
-        this.arInfo.payeeClassCd = data.data.payeeClassCd;
-        this.arInfo.payor = data.data.payeeName;
-        this.arInfo.tin = data.data.tin;
-        this.arInfo.bussTypeCd = data.data.bussTypeCd;
-        this.arInfo.mailAddress = data.data.mailAddress;
-        this.arInfo.cedingId = data.data.cedingId;
-        this.arInfo.bussTypeName = data.data.bussTypeName;
-      }
+
+      // if(this.arInfo.tranTypeCd == '3') {
+      //   this.arInfo.payeeNo = data.cedingId;
+      //   this.arInfo.payeeClassCd = 1;
+      //   this.arInfo.payor = data.cedingName;
+      //   this.arInfo.tin = data.tinNo;
+      //   this.arInfo.bussTypeCd = data.bussTypeCd;
+      //   this.arInfo.mailAddress = data.address;
+      //   this.arInfo.cedingId = data.cedingId;
+      //   this.arInfo.bussTypeName = data.bussTypeName;
+      // } else {
+        if(data.data == null){
+          this.arInfo.payeeNo      = '';
+          this.arInfo.payeeClassCd = '';
+          this.arInfo.payor        = '';
+          this.arInfo.tin          = '';
+          this.arInfo.bussTypeCd   = '';
+          this.arInfo.mailAddress  = '';
+          this.arInfo.cedingId     = '';
+          this.arInfo.bussTypeName = '';
+        }else{
+          this.arInfo.payeeNo = data.data.payeeNo;
+          this.arInfo.payeeClassCd = data.data.payeeClassCd;
+          this.arInfo.payor = data.data.payeeName;
+          this.arInfo.tin = data.data.tin;
+          this.arInfo.bussTypeCd = data.data.bussTypeCd;
+          this.arInfo.mailAddress = data.data.mailAddress;
+          this.arInfo.cedingId = data.data.cedingId;
+          this.arInfo.bussTypeName = data.data.bussTypeName;
+        }
+      // }
+      
       this.genAcctEnt = true;
       this.form.control.markAsDirty();
       setTimeout(()=>{

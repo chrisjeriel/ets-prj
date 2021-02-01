@@ -2043,7 +2043,8 @@ export class LovComponent implements OnInit {
         payeeNo : this.passData.payeeNo == undefined ? '' : this.passData.payeeNo,
         zeroBal : this.passData.zeroBal == undefined ? '' : this.passData.zeroBal,
         from : this.passData.from == undefined ? '' : this.passData.from,
-        exclude : this.passData.hide == undefined ? [] : this.passData.hide
+        exclude: ''
+        // exclude : this.passData.hide == undefined ? [] : this.passData.hide
       };
       this.accountingService.getAcitSoaDtlNew2(request).subscribe((a:any)=>{
         //this.passTable.tableData = a["soaDtlList"];
@@ -2077,7 +2078,8 @@ export class LovComponent implements OnInit {
             this.passData.payeeNo = this.passData.payeeNo == undefined ? '' : this.passData.payeeNo;
             this.passData.zeroBal = this.passData.zeroBal == undefined ? '' : this.passData.zeroBal;
             this.passData.from = this.passData.from == undefined ? '' : this.passData.from;
-            this.passData.exclude = this.passData.hide == undefined ? [] : this.passData.hide;
+            this.passData.exclude = '';
+            // this.passData.exclude = this.passData.hide == undefined ? [] : this.passData.hide;
 
             this.accountingService.getAcitSoaDtlNew2(this.passData).subscribe((a:any)=>{
                 this.passTable.tableData = (a.soaDtlList.filter((data)=>{return  this.passData.hide.indexOf(data.soaNo)==-1}));

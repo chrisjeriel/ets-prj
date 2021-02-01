@@ -410,3 +410,4 @@ padding-right: 0px !important;">
 
 <app-override-login [approvalCd]="approvalCd" (isSuccess)="whichProcess($event)" #override></app-override-login>
 <app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>
+<app-ceding-company #cedingLov (selectedData)="setLov($event)" [activeTag]="''" [membershipTag]="''"></app-ceding-company>

@@ -22,4 +22,4 @@
 </app-modal>
 <app-sucess-dialog [icon]="dialogIcon" [message]="dialogMessage"></app-sucess-dialog>
 <app-mtn-payee-ceding #cedingLov (selectedData)="setCeding($event)"></app-mtn-payee-ceding>
-<app-ceding-company #allCedingLov (selectedData)="setCeding($event)" [activeTag]="''" [membershipTag]="''"></app-ceding-company>
+<app-ceding-company #allCedingLov (selectedData)="setCeding($event)" [activeTag]="''" [membershipTag]="''" [exclude]="['000']"></app-ceding-company>

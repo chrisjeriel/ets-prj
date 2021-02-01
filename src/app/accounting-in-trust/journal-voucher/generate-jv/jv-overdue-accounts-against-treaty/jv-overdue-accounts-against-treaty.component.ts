@@ -34,6 +34,7 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   @ViewChild('osQsoaLov') osQsoaLov: LovComponent;
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cedingLov') cedingLov: LovComponent;
 
 //////////////// OLD
   /*passData: any = {
@@ -147,6 +148,13 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
     hide       : []
   };
 
+  passLov3 : any = {
+    selector   : 'payee',
+    payeeClassCd: 1,
+    payeeNo    : '',
+    hide       : []
+  };
+
   quarterNo:any;
   interestRate: number = 0;
   dialogIcon : any;
@@ -197,7 +205,8 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   showCedingCompanyLOV() {
-    $('#cedingCompany #modalBtn').trigger('click');
+    // $('#cedingCompany #modalBtn').trigger('click');
+    this.cedingLov.openLOV();
   }
 
   retrieveAcctBal(){
@@ -223,9 +232,9 @@ export class JvOverdueAccountsAgainstTreatyComponent implements OnInit {
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.payeeCd;
-    this.passLov.cedingId = data.payeeCd;
+    this.jvDetails.cedingName = data.data.payeeName;
+    this.jvDetails.ceding = data.data.payeeNo;
+    this.passLov.cedingId = data.data.payeeNo;
     this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.retrieveAcctBal();

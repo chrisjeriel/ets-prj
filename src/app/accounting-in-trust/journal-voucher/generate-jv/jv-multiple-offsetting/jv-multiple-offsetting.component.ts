@@ -1279,7 +1279,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  }
 
   	  proceed = true;
-  	} else if(from == 'invPo') { // || from == 'invPl') {
+  	} else if(from == 'invPo') {
 
       for(var i = 0; i < this.passDataInvPo.tableData.length; i++) {
         var a = this.passDataInvPo.tableData[i];
@@ -1298,7 +1298,9 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
       }
 
   	  proceed = true;
-  	} else if(from == 'lrd') {
+  	} else if(from =='invPl') {
+      proceed = true;
+    } else if(from == 'lrd') {
   	  /*var a = this.passDataLrd.php.netLossresdep;
   	  var b = this.passDataLrd.usd.netLossresdep;
   	  var aa = (a.indexOf('(') !== -1 ? -1 : 1) * Number(a.replace(/\(|\)|\,/g, ''));

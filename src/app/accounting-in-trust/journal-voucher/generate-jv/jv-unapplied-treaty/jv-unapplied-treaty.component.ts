@@ -28,6 +28,7 @@ export class JvUnappliedTreatyComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
+  @ViewChild('cedingLov') cedingLov: LovComponent;
 
   passDataUnapplied :any = {
   	tableData: [],
@@ -85,6 +86,13 @@ export class JvUnappliedTreatyComponent implements OnInit {
     selector: '',
     cedingId: '',
     hide: []
+  };
+
+  passLov3 : any = {
+    selector   : 'payee',
+    payeeClassCd: 1,
+    payeeNo    : '',
+    hide       : []
   };
 
   params:any = {
@@ -155,12 +163,13 @@ export class JvUnappliedTreatyComponent implements OnInit {
   }
 
   showCedingCompanyLOV(ev) {
-    $('#cedingCompany #modalBtn').trigger('click');
+    // $('#cedingCompany #modalBtn').trigger('click');
+    this.cedingLov.openLOV();
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.ceding = data.payeeCd;
+    this.jvDetails.cedingName = data.data.payeeName;
+    this.jvDetails.ceding = data.data.payeeNo;
     this.passDataUnapplied.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.check(this.jvDetails);

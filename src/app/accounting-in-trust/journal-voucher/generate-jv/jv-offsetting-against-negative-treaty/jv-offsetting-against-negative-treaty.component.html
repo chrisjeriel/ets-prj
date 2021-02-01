@@ -54,3 +54,4 @@
 <app-confirm-save (onYes)="saveNegativeTreatyBal()"></app-confirm-save>
 <app-cancel-button (onYes)="saveNegativeTreatyBal('cancelFlag')" [url]="'/journal-voucher'" ></app-cancel-button>
 <app-lov #osQsoaLov [passData]="passLov2" (selectedData)="setOsQsoa($event)"></app-lov>
+<app-lov #cedingLov [passData]="passLov3" (selectedData)="setCedingcompany($event)"></app-lov>

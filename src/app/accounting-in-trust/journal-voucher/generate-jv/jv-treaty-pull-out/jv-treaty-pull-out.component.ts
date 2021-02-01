@@ -35,6 +35,7 @@ export class JvTreatyPullOutComponent implements OnInit {
   @ViewChild(SucessDialogComponent) successDiag: SucessDialogComponent;
   @ViewChild(ConfirmSaveComponent) confirm: ConfirmSaveComponent;
   @ViewChild(CancelButtonComponent) cancelBtn : CancelButtonComponent;
+  @ViewChild('cedingLov') cedingLov: LovComponent;
 
   /*passData: any = {
       tableData: [],
@@ -216,6 +217,13 @@ export class JvTreatyPullOutComponent implements OnInit {
     hide       : []
   };
 
+  passLov3 : any = {
+    selector   : 'payee',
+    payeeClassCd: 1,
+    payeeNo    : '',
+    hide       : []
+  };
+
   readOnly: boolean = false;
   dialogIcon : any;
   dialogMessage : any;
@@ -305,12 +313,13 @@ export class JvTreatyPullOutComponent implements OnInit {
   }
 
   showCedingCompanyLOV(){
-  	$('#cedingCompany #modalBtn').trigger('click');
+  	// $('#cedingCompany #modalBtn').trigger('click');
+    this.cedingLov.openLOV();
   }
 
   setCedingcompany(data){
-    this.jvDetails.cedingName = data.payeeName;
-    this.jvDetails.cedingId = data.payeeCd;
+    this.jvDetails.cedingName = data.data.payeeName;
+    this.jvDetails.cedingId = data.data.payeeNo;
     this.passData.disableAdd = false;
     this.ns.lovLoader(data.ev, 0);
     this.check(this.jvDetails);
