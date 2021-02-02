@@ -180,9 +180,9 @@ export class ClaimRecoveryComponent implements OnInit {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Payment amount must not exceed the Hist Amount';
       this.successDiag.open();
-    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+    }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
-    }/*else if(this.canRefund()){
+    }*//*else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();

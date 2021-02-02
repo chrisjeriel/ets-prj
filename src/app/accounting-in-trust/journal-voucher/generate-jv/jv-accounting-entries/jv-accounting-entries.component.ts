@@ -379,7 +379,7 @@ export class JvAccountingEntriesComponent implements OnInit {
          inwTotal += this.unappliedData[j].paytAmt;
       }
 
-      if(total - inwTotal == 0){
+      if(total.toFixed(2) == inwTotal.toFixed(2)){
         return true;
       }
 
@@ -587,10 +587,12 @@ export class JvAccountingEntriesComponent implements OnInit {
         this.detailDatas = data.unappliedColl;;
         for (var i = 0; i < datas.length; i++) {
           total += datas[i].actualBalPaid;
+        }
 
-          if(total != this.jvDetails.jvAmt){
-            this.errorFlag = true;
-          }
+        console.log(total);
+        console.log(this.jvDetails.jvAmt);
+        if(total != this.jvDetails.jvAmt){
+          this.errorFlag = true;
         }
 
         this.accountingService.getJvInwUnappliedColl(this.jvDetails.tranId).subscribe((data:any) => {

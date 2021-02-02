@@ -263,9 +263,9 @@ export class InwardPolicyBalancesComponent implements OnInit, OnDestroy {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Net payments must be positive.';
       this.successDiag.open();
-    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+    }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
-    }else if(this.canRefund()){
+    }*/else if(this.canRefund()){
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Refund must not exceed cumulative payments.';
       this.successDiag.open();

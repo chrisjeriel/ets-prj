@@ -182,9 +182,9 @@ export class ArDetailsInvestmentIncomeComponent implements OnInit {
        this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
        this.dialogMessage += this.record.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
        this.successDiag.open();
-     }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+     }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
        this.netMdl.openNoClose();
-     }else{
+     }*/else{
        if(cancel != undefined){
          this.save(cancel);
        }else{

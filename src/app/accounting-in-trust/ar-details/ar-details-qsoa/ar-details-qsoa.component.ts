@@ -181,9 +181,9 @@ export class ArDetailsQsoaComponent implements OnInit {
       this.dialogIcon = 'info';
       this.dialogMessage = 'Payment amount must not be greater than the Balance.';
       this.successDiag.open();
-    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+    }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
         this.netMdl.openNoClose();
-    }else{
+    }*/else{
       if(cancel != undefined){
           this.save(cancel);
         }else{

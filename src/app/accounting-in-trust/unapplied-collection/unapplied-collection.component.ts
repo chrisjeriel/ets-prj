@@ -165,9 +165,9 @@ export class UnappliedCollectionComponent implements OnInit {
       this.dialogMessage = 'A.R. cannot be saved. DCB No. is '; 
       this.dialogMessage += this.arDetails.dcbStatus == 'T' ? 'temporarily closed.' : 'closed.';
       this.successDiag.open();
-    }else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
+    }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
-    } else if(returnArr.length > 0) {
+    }*/ else if(returnArr.length > 0) {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Return amount/s must be negative.';
       this.successDiag.open();
