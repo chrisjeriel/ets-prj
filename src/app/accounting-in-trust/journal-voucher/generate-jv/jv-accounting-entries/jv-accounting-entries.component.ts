@@ -471,7 +471,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         for(var i = 0; i < datas.length; i++){
           total += datas[i].paytAmt;
         }
-        if(total != this.jvDetails.jvAmt){
+        if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
           this.errorFlag = true;
         }
       });
@@ -482,7 +482,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].paytAmt;
         }
 
-        if(total != this.jvDetails.jvAmt){
+        if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
           this.errorFlag = true;
         }
       });
@@ -493,7 +493,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].releaseAmt
         }
 
-        if(total != this.jvDetails.jvAmt){
+        if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
           this.errorFlag = true;
         }
       });
@@ -503,7 +503,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].overdueInt
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -526,7 +526,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -537,7 +537,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].clmPaytAmt
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -547,7 +547,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].srcMaturityValue
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -557,7 +557,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].pullNetValue
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -567,7 +567,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].invtAmt
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -577,7 +577,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           for (var i = 0; i < datas.length; i++) {
             total += datas[i].balanceAmt
           }
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
       });
@@ -589,9 +589,7 @@ export class JvAccountingEntriesComponent implements OnInit {
           total += datas[i].actualBalPaid;
         }
 
-        console.log(total);
-        console.log(this.jvDetails.jvAmt);
-        if(total != this.jvDetails.jvAmt){
+        if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
           this.errorFlag = true;
         }
 
@@ -606,7 +604,7 @@ export class JvAccountingEntriesComponent implements OnInit {
         for (var i = 0; i < datas.length; i++) {
           total += datas[i].actualBalPaid;
 
-          if(total != this.jvDetails.jvAmt){
+          if(total.toFixed(2) != this.jvDetails.jvAmt.toFixed(2)){
             this.errorFlag = true;
           }
         }
