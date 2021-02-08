@@ -3735,4 +3735,8 @@ export class AccountingService {
     getAcitLossResDepInquiry(param) {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitLossResDepInquiry',{params:param});
     }
+
+    getAcitDataCheckScripts() {
+    	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitDataCheckScripts');
+    }
 }

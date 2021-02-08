@@ -444,6 +444,7 @@ export class JvEntryServiceComponent implements OnInit {
     this.jvDatas.updateUserJv   = this.ns.getCurrentUser();
     this.jvDatas.updateDateJv   = this.ns.toDateTimeString(0);
     this.jvDatas.remarks        = this.entryData.remarks;
+    this.jvDatas.tranDate       = this.entryData.jvDate;
   }
 
   saveData(cancel?){

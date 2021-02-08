@@ -164,7 +164,7 @@ export class ArPreviewComponent implements OnInit {
     this.accEntriesData = this.accountingService.getAccEntriesPassData();
     this.accEntriesData.nData.tranId = this.record.tranId;
     this.accEntriesData.nData.autoTag = 'N';
-    if(this.record.arStatDesc.toUpperCase() != 'NEW' || this.record.reopenTag == 'Y'){
+    if(this.record.arStatDesc.toUpperCase() != 'NEW'){
       this.accEntriesData.uneditable = [true, true, true, true, true, true, true, true];
       this.accEntriesData.addFlag = false;
       this.accEntriesData.deleteFlag =  false;
