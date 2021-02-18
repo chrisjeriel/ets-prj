@@ -11,18 +11,18 @@
         			<div class="col-sm-5 d-flex">
                 <label class="form-control-sm col-sm-4 pl-0 pr-1 text-right mb-0" style="font-size: 9.5px !important;">Booking Month / Year</label>
                 <select class="form-control form-control-sm cust-sm col-sm-5" [(ngModel)]="extractParam.bookingMonth">
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
+                  <option value="1" *ngIf="monthOpts.indexOf(1) !== -1">January</option>
+                  <option value="2" *ngIf="monthOpts.indexOf(2) !== -1">February</option>
+                  <option value="3" *ngIf="monthOpts.indexOf(3) !== -1">March</option>
+                  <option value="4" *ngIf="monthOpts.indexOf(4) !== -1">April</option>
+                  <option value="5" *ngIf="monthOpts.indexOf(5) !== -1">May</option>
+                  <option value="6" *ngIf="monthOpts.indexOf(6) !== -1">June</option>
+                  <option value="7" *ngIf="monthOpts.indexOf(7) !== -1">July</option>
+                  <option value="8" *ngIf="monthOpts.indexOf(8) !== -1">August</option>
+                  <option value="9" *ngIf="monthOpts.indexOf(9) !== -1">September</option>
+                  <option value="10" *ngIf="monthOpts.indexOf(10) !== -1">October</option>
+                  <option value="11" *ngIf="monthOpts.indexOf(11) !== -1">November</option>
+                  <option value="12" *ngIf="monthOpts.indexOf(12) !== -1">December</option>
                 </select>
                 <select class="form-control form-control-sm cust-sm col-sm-2 ml-1" [(ngModel)]="extractParam.bookingYear">
                   <ng-container *ngFor="let y of yearOpts">
@@ -35,7 +35,7 @@
             <app-cust-editable-non-datatable #tbl [passData]="passData"></app-cust-editable-non-datatable>
             <div class="input-group" style="margin-top: 28px;">
              <div class="col-sm text-center">   
-              <button type="button" class="cust-btn"><a>Generate to Excel</a></button>
+              <button type="button" class="cust-btn" (click)="onClickGenerate()"><a>Generate to Excel</a></button>
             </div>
           </div>
         </fieldset>
@@ -49,3 +49,17 @@
   </ngb-tab>
 </ngb-tabset>
 </div>
+
+<app-modal class="d-none" id="extract" #mdl>
+    <div header>{{ 'Message' }}</div>  
+    <div body class="w-100 text-center">
+      <span *ngIf="modalMode == 'reExtract'">Extracted records on the specified parameters already exists. <br>Do you want to extract the record again?</span>
+
+      <span *ngIf="modalMode != 'reExtract'">{{ modalBody }}</span>
+    </div>
+    <div footer class="w-100 text-center">
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal(); onClickGenerate(true);"><a>Yes</a></button>
+        <button *ngIf="modalMode == 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal();"><a>No</a></button>
+        <button *ngIf="modalMode != 'reExtract'" type="button" class="cust-btn" (click)="mdl.closeModal();"><a>Ok</a></button>
+    </div>
+</app-modal>

@@ -3739,4 +3739,14 @@ export class AccountingService {
     getAcitDataCheckScripts() {
     	return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveAcitDataCheckScripts');
     }
+
+    extractDataCheck(params) {
+    	let header : any = {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            }),
+         };
+
+    	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/extractDataCheck',params,header);
+    }
 }

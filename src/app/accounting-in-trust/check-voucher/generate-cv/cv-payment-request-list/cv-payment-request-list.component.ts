@@ -226,7 +226,7 @@ export class CvPaymentRequestListComponent implements OnInit {
     //   this.limitContent.push(e);
     // });
     this.passDataLov.selector = 'paytReqList';
-    this.passDataLov.from = 'acit';
+    this.passDataLov.from = 'acit-cv';
     this.passDataLov.hide = this.passDataPaytReqList.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.reqId});
     console.log(this.cvInfo.paytReqType);
     this.passDataLov.paytReqType = this.cvInfo.paytReqType;

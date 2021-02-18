@@ -1633,6 +1633,22 @@ export class LovComponent implements OnInit {
           }
           this.table.refreshTable();
         });
+      } else if(this.passData.from == 'acit-cv'){
+        var params = [
+          {key: 'prqStat', search: 'A'},
+          {key: 'currCd', search: this.passData.currCd},
+        ]
+        this.accountingService.getPaytReqList(params).subscribe((a:any)=>{
+          // var rec = a['acitPaytReq'].filter(e => e.payeeCd == this.passData.payeeCd && e.paytReqType == this.passData.paytReqType);
+          var rec = a['acitPaytReq'].filter(e => (e.payeeCd == this.passData.payeeCd || e.serviceFeeGrp == this.passData.payeeCd) && e.payeeClassCd == this.passData.payeeClassCd && (this.passData.paytReqType == 'O' ? true : e.paytReqType == this.passData.paytReqType));
+          this.passTable.tableData = rec.filter((data)=>{return  this.passData.hide.indexOf(data.reqId)==-1});
+          for(var i of this.passTable.tableData){
+            if(i.processing !== null && i.processing !== undefined){
+              i.preventDefault = true;
+            }
+          }
+          this.table.refreshTable();
+        });
       }
       
     }else if(this.passData.selector == 'mtnBussType'){
