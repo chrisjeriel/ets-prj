@@ -263,7 +263,7 @@ export class AccSRequestEntryComponent implements OnInit {
       if(this.saveAcsePaytReq.tranTypeCd == 3 || this.saveAcsePaytReq.tranTypeCd == 4){
         this.isReqAmtEqDtlAmts = true;
       }else{
-        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;  
+        this.isReqAmtEqDtlAmts = Math.abs(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,''))) == Number(Math.abs(totalReqAmts));  
       }
 
       (this.saveAcsePaytReq.reqStatus != 'X' && this.saveAcsePaytReq.reqId != '')?this.getPrinters():'';
@@ -387,11 +387,11 @@ export class AccSRequestEntryComponent implements OnInit {
         $('.warn').blur();
         this.fromCancel = false;
     }else{
-      if(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) < 0){
-        this.warnMsg = 'Request Amount should be positive.';
-        this.warnMdl.openNoClose();
-        this.fromCancel = false;
-      }else{
+      // if(Number(String(this.saveAcsePaytReq.reqAmt).replace(/\,/g,'')) < 0){
+      //   this.warnMsg = 'Request Amount should be positive.';
+      //   this.warnMdl.openNoClose();
+      //   this.fromCancel = false;
+      // }else{
         this.fromCancel = true;
         if(this.cancelFlag == true){
           this.cs.showLoading(true);
@@ -399,7 +399,7 @@ export class AccSRequestEntryComponent implements OnInit {
         }else{
           this.cs.confirmModal();
         }
-      }
+      // }
     }
   }
 

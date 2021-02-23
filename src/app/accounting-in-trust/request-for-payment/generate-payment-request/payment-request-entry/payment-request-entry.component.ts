@@ -245,10 +245,10 @@ export class PaymentRequestEntryComponent implements OnInit {
         this.isReqAmtEqDtlAmts = true;
       } else if(this.saveAcitPaytReq.tranTypeCd == 6) {
         var unapplied = ((recPrq.filter(x => x.transdtlType !== null).map(e => e.currAmt).reduce((a,b) => a+b,0) * 100)/100) * 2;
-
-        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == (Number(Math.abs(totalReqAmts))-unapplied));
+        
+        this.isReqAmtEqDtlAmts = Math.abs(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,''))) == (Number(Math.abs(totalReqAmts))-unapplied);
       } else {
-        this.isReqAmtEqDtlAmts = (Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) == Number(Math.abs(totalReqAmts)))?true:false;
+        this.isReqAmtEqDtlAmts = Math.abs(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,''))) == Number(Math.abs(totalReqAmts));
       }
 
       (this.saveAcitPaytReq.reqStatus != 'X' && this.saveAcitPaytReq.reqId != '')?this.getPrinters():'';
@@ -370,11 +370,11 @@ export class PaymentRequestEntryComponent implements OnInit {
         $('.warn').blur();
         this.fromCancel = false;
     }else{
-      if(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) < 0){
-        this.warnMsg = 'Request Amount should be positive.';
-        this.warnMdl.openNoClose();
-        this.fromCancel = false;
-      }else{
+      // if(Number(String(this.saveAcitPaytReq.reqAmt).replace(/\,/g,'')) < 0){
+      //   this.warnMsg = 'Request Amount should be positive.';
+      //   this.warnMdl.openNoClose();
+      //   this.fromCancel = false;
+      // }else{
         this.fromCancel = true;
         if(this.cancelFlag == true){
           this.cs.showLoading(true);
@@ -382,7 +382,7 @@ export class PaymentRequestEntryComponent implements OnInit {
         }else{
           this.cs.confirmModal();
         }
-      }
+      // }
     }
   }
 
