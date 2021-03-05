@@ -577,7 +577,11 @@
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT050') > -1">
-                                    <button (click)="resetListParams()" [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account </button>
+                                    <button (click)="resetListParams()" [routerLink]="['quarterly-stmt-of-acct']" class="button btn btn-link">Quarterly Statement of Account</button>
+                                    <br />
+                                </ng-container>
+                                <ng-container *ngIf="accessibleModules.indexOf('ACIT070') > -1">
+                                    <button (click)="resetListParams()" [routerLink]="['qsoa-reinsurance']" class="button btn btn-link">QSOA Reinsurance</button>
                                     <br />
                                 </ng-container>
                                 <ng-container *ngIf="accessibleModules.indexOf('ACIT049') > -1">

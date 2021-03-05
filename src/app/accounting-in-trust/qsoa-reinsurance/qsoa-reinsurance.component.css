@@ -1,0 +1,39 @@
+.input-group{
+	margin-bottom: -14px !important;
+}
+
+.text-search-ico {
+	margin-left: -17px;
+	z-index: 3;
+	font-size: 14px;
+}
+
+.cust {
+	font-size: 11px;
+    font-weight: bold;
+    color: white !important;
+    text-align: center;
+    text-decoration: none !important;
+    outline: none !important;
+    border-style: none;
+    border: 1px solid gray;
+    z-index: 99 !important;
+    border-radius: 2px;
+    background: linear-gradient(to bottom, #4080bf 0%, #2d5986 100%);
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 3px !important;
+    height: 22px;
+}
+
+.cust-lbl {
+    margin-bottom: -1px !important;
+}
+
+
+.cust-fs {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+}

@@ -635,16 +635,43 @@ export class JvEntryComponent implements OnInit {
       window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV' + '&userId=' + 
                         this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&reportType=' + this.printData.reportType, '_blank');
       this.printEntries.openNoClose();
+
+      if(this.entryData.tranTypeCd == 4) {
+        var jvDate = this.ns.toDateTimeString(this.entryData.jvDate).split('T')[0];
+        window.open(environment.prodApiUrl + '/util-service/generateReport?reportName=ACITR_JV_EXT_A' + '&userId=' + 
+                        this.ns.getCurrentUser() + '&tranId=' + this.entryData.tranId + '&jvDate=' + jvDate + '&jvCurrCd=' + this.entryData.currCd);
+      }
     }else if(this.printData.destination == 'printer'){
       this.ps.directPrint(params).subscribe((data:any) => {
         if(data.errorList.length == 0 && data.messageList.length != 0){
-          this.printEntries.openNoClose();
+          if(this.entryData.tranTypeCd !== 4) {
+            this.printEntries.openNoClose();
+          }
         }else{
           this.dialogIcon = 'error-message';
           this.dialogMessage = 'An error has occured. JV was not printed.';
           this.successDiag.open();
         }
+
+        if(this.entryData.tranTypeCd == 4) {
+          params['reportName'] = 'ACITR_JV_EXT_A';
+          params['jvDate'] = this.ns.toDateTimeString(this.entryData.jvDate).split('T')[0];
+          params['jvCurrCd'] = this.entryData.currCd;
+          params['userId'] = this.ns.getCurrentUser();
+          
+          this.ps.directPrint(params).subscribe((data:any) => {
+            if(data.errorList.length == 0 && data.messageList.length != 0){
+              this.printEntries.openNoClose();
+            }else{
+              this.dialogIcon = 'error-message';
+              this.dialogMessage = 'An error has occured. Overdue Interest List was not printed.';
+              this.successDiag.open();
+            }
+          });
+        }
       });
+
+      
     }
   }
 

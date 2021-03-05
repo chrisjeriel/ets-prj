@@ -9,13 +9,14 @@ import { Subject } from 'rxjs';
 })
 export class ConfirmLeaveComponent {
   subject: Subject<boolean>;
+  closeAll: boolean = true;
 
   constructor(public modalService: NgbModal,private activeModal: NgbActiveModal) { }
 
   action(value: boolean) {
   	this.activeModal.close();
     // this.modalService.dismissAll();
-    if(value)
+    if(value && this.closeAll)
     	this.modalService.dismissAll();
     this.subject.next(value);
     this.subject.complete();

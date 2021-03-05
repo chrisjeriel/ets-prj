@@ -1965,7 +1965,7 @@ export class MaintenanceService{
 
   getExtractToCsv(extractUser?,reportName?,prodDate?,paramDate?,paramCurrency?,cedingId?,paymentMode?,paymentType?,
   				 fromDate?,toDate?,incClosedTran?,incCancelTran?,tranpostDate?,chkDate?,bank?,bankAcct?,sortBy?,lineCd?,
-  				 dateParam?, dateRange?,reportType?, taxType?){
+  				 dateParam?, dateRange?,reportType?, taxType?, qsoaId?){
     const params = new HttpParams()
       .set('extractUser', (extractUser == null || extractUser == undefined ? '' : extractUser))
       .set('reportName', (reportName == null || reportName == undefined ? '' : reportName))
@@ -1988,7 +1988,8 @@ export class MaintenanceService{
       .set('dateParam', (dateParam == null || dateParam == undefined ? '' : dateParam))
       .set('dateRange', (dateRange == null || dateRange == undefined ? '' : dateRange))
       .set('reportType', (reportType == null || reportType == undefined ? '' : reportType))
-      .set('taxType', (taxType == null || taxType == undefined ? '' : taxType));
+      .set('taxType', (taxType == null || taxType == undefined ? '' : taxType))
+      .set('qsoaId', (qsoaId == null || qsoaId == undefined ? '' : qsoaId));
 
     return this.http.get(environment.prodApiUrl + '/util-service/retrieveExtractToCsv',{params});  
   }

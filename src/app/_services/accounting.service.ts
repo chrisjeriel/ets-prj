@@ -3749,4 +3749,49 @@ export class AccountingService {
 
     	return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/extractDataCheck',params,header);
     }
+
+    saveAcitQsoaRi(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOARi',JSON.stringify(params),header);
+	}
+
+	getQSOARiList(searchParams: any[]){
+		var params;
+			if(searchParams.length < 1){
+            	params = new HttpParams()
+            	.set('qsoaId','')
+				.set('cedingId','')
+				.set('fromQtr','')
+				.set('fromYear','')
+				.set('toQtr','')
+				.set('toYear','');
+        	}else{
+        		params = new HttpParams();
+	            for(var i of searchParams){
+	                params = params.append(i.key, i.search);
+	            }
+        	}
+        	
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOARiList',{params});
+	}
+
+	getQSOARiDtl(param){
+		return this.http.get(environment.prodApiUrl + '/acct-in-trust-service/retrieveQSOARiDtl',{params:param});
+	}
+
+	saveAcitQsoaRiDtl(params){
+		let header: any = {
+		    headers: new HttpHeaders({
+		        'Content-Type': 'application/json'
+		    })
+		}
+		
+		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOARiDtl',JSON.stringify(params),header);
+	}
+
 }

@@ -216,6 +216,7 @@ import { AcctItOsPolPremComponent } from './accounting-in-trust/accounting-inqui
 import { PremiumCollectionComponent } from './accounting-in-trust/accounting-inquiry/premium-collection/premium-collection.component';
 import { UnappliedCollectionInqComponent } from './accounting-in-trust/accounting-inquiry/unapplied-collection-inq/unapplied-collection-inq.component';
 import { LossResDepInqComponent } from './accounting-in-trust/accounting-inquiry/loss-res-dep-inq/loss-res-dep-inq.component';
+import { QsoaReinsuranceComponent } from './accounting-in-trust/qsoa-reinsurance/qsoa-reinsurance.component';
 
 const appRoutes: Routes = [
 
@@ -869,6 +870,7 @@ const appRoutes: Routes = [
     { path: 'premium-collection', component: PremiumCollectionComponent},
     { path: 'unapplied-collection-inq', component: UnappliedCollectionInqComponent},
     { path: 'loss-res-dep-inq', component: LossResDepInqComponent},
+    { path: 'qsoa-reinsurance', component: QsoaReinsuranceComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

@@ -192,7 +192,7 @@
                      
                      <ng-container controls-l *ngIf="record?.from.toLowerCase() == 'jv' && genTaxData.checkFlag && record?.statusType != 'A' && record?.statusType != 'X' && record?.statusType != 'P'">
                          <label class="form-control-sm">For Approval</label> 
-                         <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="record.statusType === 'F'" (change)="record.forApproval = (record.statusType === 'N') ? 'Y' : 'N';onClickApproval()" [disabled]="notBalanced">
+                         <input type="checkbox" style="margin-right: 0px !important;"  name="jvDetails.approval" [checked]="record.statusType === 'F'" (change)="onClickApproval($event)" [disabled]="notBalanced">
                      </ng-container>
                    </app-cust-editable-non-datatable>
                 <!-- </div> -->
@@ -202,7 +202,7 @@
                     <!-- <label class="form-control-sm cust-sm col-sm-2" style="margin-left: 3px !important;"></label> -->
                     <input type="text" class="form-control form-control-sm cust-sm col-sm-2 text-right" style="margin-left: 3px !important;" [ngModelOptions]="{standalone: true}"  [ngModel]="totals.variance | number:'1.2-2'" disabled="disabled">
                 </div>
-                <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N'">
+                <div class="form-row" style="margin-top: 10px !important" *ngIf="record.orStatDesc?.toUpperCase() == 'NEW' || record.cvStatus?.toUpperCase() == 'F' || record.cvStatus?.toUpperCase() == 'N' || record.statusType == 'N' || record.statusType == 'F'">
                     <div class="form-group col-sm">
                       <div class="col-md-13 text-center">
                         <br>

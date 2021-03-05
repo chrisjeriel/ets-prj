@@ -476,6 +476,12 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
         }
       );
     }else if(this.currentTab == 'acctEntries'){
+      if(this.record.from.toLowerCase() == 'jv') {
+        this.accountingService.getACSEJvEntry(this.record.tranId).subscribe(data => {
+          this.record.jvStatus = data['jvEntry']['statusName'];
+        });
+      }
+      
       this.accountingService.getAcseAcctEntries(this.record.tranId).subscribe(
         (data:any)=>{
            this.acctEntriesData.tableData = data.acctEntries;
@@ -504,7 +510,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
       }else if(this.record.from.toLowerCase() == 'cv'){
             a = (this.record.cvStatus.toUpperCase() != 'N' && this.record.cvStatus.toUpperCase() != 'F')?true:false;
       }else if(this.record.from.toLowerCase() == 'jv'){
-            a = (this.record.statusType.toUpperCase() != 'N');
+            a = (this.record.statusType.toUpperCase() != 'N' && this.record.statusType.toUpperCase() != 'F');
       }
 
           if(a && this.currentTab == 'taxDtl'){
@@ -648,7 +654,7 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
 
       let params = {
         tranId: this.record.tranId,
-        forApproval : this.record.from.toLowerCase() == 'jv' ? (this.record.forApproval === 'Y' ? 'Y':'N'):'',
+        forApproval : this.record.forApproval,
         saveList: this.savedData,
         delList: this.deletedData
       }
@@ -668,7 +674,8 @@ export class OrPreviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickApproval(){
+  onClickApproval(ev) {
+    this.record.forApproval = ev.target.checked ? 'Y' : 'N';
     this.acctEntriesTbl.markAsDirty();
   }
 
