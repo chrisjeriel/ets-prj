@@ -2030,7 +2030,7 @@ export class LovComponent implements OnInit {
       this.passTable.tHeader    = ['Co No','Name','Address'];
       this.passTable.minColSize = ['1px', '1px', '120px'];
       this.passTable.dataTypes  = ['text','text','text'];
-      this.passTable.keys       = ['payeeCd','payeeName','payeeAddress'];
+      this.passTable.keys       = ['cedingId','cedingName','address'];
       this.passTable.checkFlag  = true;
 
       /*this.accountingService.getAcitJVCedRepLoss(this.passData.params).subscribe(data => {
@@ -2039,8 +2039,14 @@ export class LovComponent implements OnInit {
         this.table.refreshTable();
       });*/
 
-      this.mtnService.getMtnPayeeCeding(1, null).subscribe((data: any) => {
-        this.passTable.tableData = data.payeeCeding;
+      // this.mtnService.getMtnPayeeCeding(1, null).subscribe((data: any) => {
+      //   this.passTable.tableData = data.payeeCeding;
+        
+      //   this.table.refreshTable(); 
+      // });
+
+      this.underwritingService.getCedingCompanyList('','','','','','','','','','').subscribe((data: any) => {
+        this.passTable.tableData = data.cedingcompany.filter(a => a.cedingId !== '000');
         
         this.table.refreshTable(); 
       });

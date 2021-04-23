@@ -110,7 +110,9 @@ export class PolicyReportsComponent implements OnInit {
                         'ACITR061G',
                         'ACITR048A',
                         'POLR044W',
-                        'POLR044Y'
+                        'POLR044Y',
+                        'POLR044JB',
+                        'POLR044KB'
                         ];
 
   rangeParams :any = {
@@ -268,7 +270,7 @@ export class PolicyReportsComponent implements OnInit {
       this.extractDisabled = true;
     }  
     //
-    else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA'){
+    else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA' || this.params.reportId == 'POLR044JB'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
       this.params.dateRange = '2';
@@ -290,7 +292,7 @@ export class PolicyReportsComponent implements OnInit {
       this.params.incRecTag = 'D';
       this.checkMonthYear();
     }
-    else if(this.params.reportId == 'POLR044K' || this.params.reportId == 'POLR044KA'){
+    else if(this.params.reportId == 'POLR044K' || this.params.reportId == 'POLR044KA' || this.params.reportId == 'POLR044KB'){
       this.paramsToggle.push('accountingDate', 'line', 'company', 'byDate', 'byMonthYear', 'currCd', 'bookingDate');
       this.params.dateParam = '5';
       this.params.incRecTag = 'D';
@@ -471,7 +473,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA'){
+    }else if(this.params.reportId == 'POLR044J' || this.params.reportId == 'POLR044JA' || this.params.reportId == 'POLR044JB'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -481,7 +483,7 @@ export class PolicyReportsComponent implements OnInit {
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd');
         this.params.incRecTag = this.params.dateParam == 5 ? 'D' : '';
       }
-    }else if(this.params.reportId == 'POLR044K' || this.params.report == 'POLR044KA'){
+    }else if(this.params.reportId == 'POLR044K' || this.params.reportId == 'POLR044KA' || this.params.reportId == 'POLR044KB'){
       this.paramsToggle = [];
       if(this.params.dateParam == 10){
         this.paramsToggle.push('accountingDate', 'bookingDate', 'byDate', 'byMonthYear', 'line', 'company', 'currCd', 'distributed', 'undistributed', 'alldistribution');
@@ -1371,6 +1373,34 @@ export class PolicyReportsComponent implements OnInit {
           this.passDataCsv = data['listPolr044ia'];
           query = 'SELECT extractUser AS [EXTRACT USER], myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE],currencyCd AS [CURRENCY], checkNullNo(lineSortSeq) AS [LINE SORT SEQ],lineCd AS [LINE],'+
           'negFmt(siRange) as [SI RANGE],amtRangeDesc as [SI RANGE DESC], negFmt(currency(premAmtCum)) as [CUMMULATIVE PREMIUM], negFmt(currency(premAmtMth)) as [PREMIUM FOR THE MONTH]';
+        } else if(this.params.reportId == 'POLR044JB') {
+          this.passDataCsv = data['listPolr044jb'];
+          query = 'SELECT extractUser AS [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], currencyCd AS [CURRENCY CD],lineCd AS [LINE CD],'+
+          'isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], isNull(tranType) as [TRAN TYPE], isNull(tranTypeDesc) AS [TRAN TYPE DESC],'+
+          'policyId as [POLICY ID], isNull(policyNo) as [POLICY NO], checkNullNo(instNo) as [INST NO], isNull(insuredDesc) as [INSURED DESC], '+
+          'negFmt(currency(ret1PremAmt)) as [RET1 PREM AMT],negFmt(currency(ret1CommAmt)) as [RET1 COMM AMT], negFmt(currency(ret1VatRiComm)) as [RET1 VAT RI COMM], negFmt(currency(ret1NetDue)) as [RET1 NET DUE],'+
+          'negFmt(currency(ret2PremAmt)) as [RET2 PREM AMT],negFmt(currency(ret2CommAmt)) as [RET2 COMM AMT], negFmt(currency(ret2VatRiComm)) as [RET2 VAT RI COMM], negFmt(currency(ret2NetDue)) as [RET2 NET DUE],'+
+          'isNull(lineCdParam) as [LINE CD PARAM], isNull(cedingIdParam) as [CEDING ID PARAM], isNull(dateParam) as [DATE PARAM], ' + 
+          'isNull(dateParamDesc) as [DATE PARAM DESC], isNull(dateRange) as [DATE RANGE], isNull(dateRangeDesc) as [DATE RANGE DESC], ' +
+          'myFormat(fromDate) AS [FROM DATE], myFormat(toDate) AS [TO DATE], ' +
+          'myFormat(dateFromTo) as [DATE FROM TO], isNull(incRecTag) as [INC REC TAG], isNull(sortSeq) as [SORT SEQ], isNull(dummyRow) as [DUMMY ROW], ' +
+          'checkNullNo(catPerilPct) as [CAT PERIL PCT], negFmt(currency(catRet1PremAmt)) as [CAT RET1 PREM AMT], negFmt(currency(catRet1CommAmt)) as [CAT RET1 COMM AMT], ' +
+          'negFmt(currency(catRet1VatRiComm)) as [CAT RET1 VAT RI COMM], negFmt(currency(catRet1NetDue)) as [CAT RET1 NET DUE], ' +
+          'negFmt(currency(catRet2PremAmt)) as [CAT RET2 PREM AMT], negFmt(currency(catRet2CommAmt)) as [CAT RET2 COMM AMT], ' +
+          'negFmt(currency(catRet2VatRiComm)) as [CAT RET2 VAT RI COMM], negFmt(currency(catRet2NetDue)) as [CAT RET2 NET DUE]';
+        } else if(this.params.reportId == 'POLR044KB') {
+          this.passDataCsv = data['listPolr044kb'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],'+
+          'isNull(lineCd) as [LINE CD],checkNullNo(treatyId) as [TREATY ID],isNull(treatyName) as [TREATY NAME],isNull(trtyCedId) as [TRTY CED ID],'+
+          'isNull(trtyCedIdName) as [TRTY CED ID NAME],checkNullNo(retLayer) as [RET LAYER],isNull(retLayerDesc) as [RET LAYER DESC],'+
+          'isNull(tranType) as [TRAN TYPE],isNull(tranTypeDesc) as [TRAN TYPE DESC], '+
+          'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], checkNullNo(instNo) as [INST NO], ' +
+          'isNull(insuredDesc) as [INSURED DESC], ' +
+          'negFmt(premAmt) as [PREM AMT],negFmt(commAmt) as [COMM AMT],'+
+          'negFmt(vatRiComm) as [VAT RI COMM],negFmt(dueToTrty) as [DUE TO TRTY],negFmt(dueToCedant) as [DUE TO CEDANT],'+
+          'myFormat(fromDate) as [FROM DATE],myFormat(toDate) as [TO DATE],' +
+          'negFmt(catPerilPct) as [CAT PERIL PCT], negFmt(catPremAmt) as [CAT PREM AMT], negFmt(catCommAmt) as [CAT COMM AMT], ' +
+          'negFmt(catVatRiComm) as [CAT VAT RI COMM], negFmt(catDueToTrty) as [CAT DUE TO TRTY], negFmt(catDueToCedant) as [CAT DUE TO CEDANT]';
         }
 
 

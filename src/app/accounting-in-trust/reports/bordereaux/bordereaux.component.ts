@@ -276,6 +276,42 @@ export class BordereauxComponent implements OnInit {
 					this.params.dateParam = '7';
 					this.reqCedant = true;
 		  			break;
+		  		case 'CLMR052C':
+		  			this.disableLosses = true;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = false;
+		  			this.params.osPaidTag = 'O';
+		  			this.params.dateParam = '4';
+		  			break;
+		  		case 'CLMR052CA':
+		  			this.disableLosses = true;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = false;
+		  			this.params.osPaidTag = 'O';
+		  			this.params.dateParam = '4';
+		  			// this.reqCedant = true;
+		  			break;
+		  		case 'CLMR052D':
+		  			this.disableLosses = false;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = true;
+		  			this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+		  			break;
+		  		case 'CLMR052DA':
+		  			this.disableLosses = false;
+		  			this.params.dateRange = 'A';
+		  			this.disableCompany = false;
+		  			this.disableOutstanding = true;
+		  			this.params.dateRange = 'D';
+					this.params.osPaidTag = 'P';
+					this.params.dateParam = '7';
+					// this.reqCedant = true;
+		  			break;
 				default:
 					this.disableOutstanding = true;
 					this.disableLosses = true;
@@ -654,7 +690,85 @@ export class BordereauxComponent implements OnInit {
           'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], isNull(polCoRefNo) as [POL CO REF NO], isNull(lossCd) as [LOSS CD], isNull(lossAbbr) as [LOSS ABBR], ' +
           'myFormat(lossDate) as [LOSS DATE], checkNullNo(uwYear) as [UW YEAR], myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], myFormat(dateFrom) as [DATE FROM], ' +
           'myFormat(dateTo) as [DATE TO]';
-      	}
+      	} else if(this.params.reportId == 'CLMR052C'){
+          this.passDataCsv = data['listClmr052c'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],'+
+			'isNull(lineCd) as [LINE CD],checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],'+
+			'negFmt(insuredClm) as [INSURED CLM],isNull(insuredDesc) as [INSURED DESC],negFmt(approvedAmt) as [APPROVED AMT],'+
+			'negFmt(reserveAmt) as [RESERVE AMT],checkNullNo(adjId) as [ADJ ID],isNull(adjName) as [ADJ NAME],'+
+			'isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],checkNullNo(policyId) as [POLICY ID],'+
+			'isNull(policyNo) as [POLICY NO],isNull(polCoRefNo) as [POL CO REF NO], checkNullNo(adjId) as [CAT PERIL PCT],myFormat(inceptDate) as [INCEPT DATE],'+
+			'myFormat(expiryDate) as [EXPIRY DATE],negFmt(mrePctShr) as [MRE PCT SHR],negFmt(nrePctShr) as [NRE PCT SHR],'+
+			'negFmt(ret1Lines) as [RET1 LINES],negFmt(ret2Lines) as [RET2 LINES],isNull(lossCd) as [LOSS CD],'+
+			'isNull(lossAbbr) as [LOSS ABBR],myFormat(lossDate) as [LOSS DATE],checkNullNo(histNo) as [HIST NO],'+
+			'isNull(histCategory) as [HIST CATEGORY],isNull(histCatDesc) as [HIST CAT DESC],'+
+			'negFmt(reserveQuota) as [RESERVE QUOTA],negFmt(reserve1stRet) as [RESERVE 1ST RET],negFmt(reserve2ndRet) as [RESERVE 2ND RET],'+
+			'negFmt(reserve1stSurplus) as [RESERVE 1ST SURPLUS],negFmt(reserve2ndSurplus) as [RESERVE 2ND SURPLUS],negFmt(reserveFacul) as [RESERVE FACUL],'+
+			'negFmt(mreQuota) as [MRE QUOTA],negFmt(mre1stSurplus) as [MRE 1ST SURPLUS],negFmt(mre2ndSurplus) as [MRE 2ND SURPLUS],'+
+			'negFmt(mreFacul) as [MRE FACUL],negFmt(mreTotal) as [MRE TOTAL],negFmt(nreQuota) as [NRE QUOTA],'+
+			'negFmt(nre1stSurplus) as [NRE 1ST SURPLUS],negFmt(nre2ndSurplus) as [NRE 2ND SURPLUS],negFmt(nreFacul) as [NRE FACUL],'+
+			'negFmt(nreTotal) as [NRE TOTAL], ' +
+			'negFmt(catReserveQuota) as [CAT RESERVE QUOTA], negFmt(catReserve1stRet) as [CAT RESERVE 1ST RET], ' +
+			'negFmt(catReserve2ndRet) as [CAT RESERVE 2ND RET], negFmt(catReserve1stSurplus) as [CAT RESERVE 1ST SURPLUS], ' +
+			'negFmt(catReserve2ndSurplus) as [CAT RESERVE 2ND SURPLUS], negFmt(catReserveFacul) as [CAT RESERVE FACUL], ' +
+			'negFmt(catMreQuota) as [CAT MRE QUOTA], negFmt(catMre1stSurplus) as [CAT MRE 1ST SURPLUS], ' +
+			'negFmt(catMre2ndSurplus) as [CAT MRE 2ND SURPLUS], negFmt(catMreFacul) as [CAT MRE FACUL], ' +
+			'negFmt(catMreTotal) as [CAT MRE TOTAL], negFmt(catNreQuota) as [CAT NRE QUOTA], ' +
+			'negFmt(catNre1stSurplus) as [CAT NRE 1ST SURPLUS], negFmt(catNre2ndSurplus) as [CAT NRE 2ND SURPLUS], ' +
+			'negFmt(catNreFacul) as [CAT NRE FACUL], negFmt(catNreTotal) as [CAT NRE TOTAL], ' +
+			'myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO]';
+		} else if(this.params.reportId == 'CLMR052CA'){
+          this.passDataCsv = data['listClmr052ca'];
+          query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], ' +
+          'isNull(shrCedingId) as [SHR CEDING ID], isNull(shrCedingCompany) as [SHR CEDING COMPANY], checkNullNo(claimId) as [CLAIM ID], isNull(claimNo) as [CLAIM NO], ' +
+          'isNull(histCategory) as [HIST CATEGORY], isNull(histCatDesc) as [HIST CAT DESC], negFmt(ret1ClmAmt) as [RET1 CLM AMT], negFmt(ret2ClmAmt) as [RET2 CLM AMT], ' + 
+          'negFmt(totalClmAmt) as [TOTAL CLM AMT], ' +
+          'negFmt(catPerilPct) as [CAT PERIL PCT], negFmt(catRet1ClmAmt) as [CAT RET1 CLM AMT], negFmt(catRet2ClmAmt) as [CAT RET2 CLM AMT], ' +
+          'negFmt(catTotalClmAmt) as [CAT TOTAL CLM AMT], ' +
+          'negFmt(ret1Line) as [RET1 LINE], negFmt(ret2Line) as [RET2 LINE], negFmt(totalRetLine) as [TOTAL RET LINE], ' +
+          'negFmt(insuredClm) as [INSURED CLM], isNull(insuredDesc) as [INSURED DESC], negFmt(approvedAmt) as [APPROVED AMT], checkNullNo(adjId) as [ADJ ID], ' +
+          'isNull(adjName) as [ADJ NAME], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], ' +
+          'isNull(polCoRefNo) as [POL CO REF NO], isNull(lossCd) as [LOSS CD], isNull(lossAbbr) as [LOSS ABBR], myFormat(lossDate) as [LOSS DATE], checkNullNo(uwYear) as [UW YEAR], ' +
+          'myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], myFormat(dateFrom) as [DATE FROM], myFormat(dateTo) as [DATE TO]';
+		} else if(this.params.reportId == 'CLMR052D') { 
+		  this.passDataCsv = data['listClmr052d'];
+		  query = 'SELECT isNull(extractUser) as [EXTRACT USER],myFormat(extractDate) as [EXTRACT DATE],isNull(currencyCd) as [CURRENCY CD],'+
+			'isNull(lineCd) as [LINE CD],checkNullNo(claimId) as [CLAIM ID],isNull(claimNo) as [CLAIM NO],'+
+			'negFmt(insuredClm) as [INSURED CLM],isNull(insuredDesc) as [INSURED DESC],negFmt(approvedAmt) as [APPROVED AMT],'+
+			'negFmt(reserveAmt) as [RESERVE AMT],checkNullNo(adjId) as [ADJ ID],isNull(adjName) as [ADJ NAME],'+
+			'isNull(cedingId) as [CEDING ID],isNull(cedingName) as [CEDING NAME],checkNullNo(policyId) as [POLICY ID],'+
+			'isNull(policyNo) as [POLICY NO],isNull(polCoRefNo) as [POL CO REF NO], checkNullNo(catPerilPct) as [CAT PERIL PCT], myFormat(inceptDate) as [INCEPT DATE],'+
+			'myFormat(expiryDate) as [EXPIRY DATE],negFmt(mrePctShr) as [MRE PCT SHR],negFmt(nrePctShr) as [NRE PCT SHR],'+
+			'negFmt(ret1Lines) as [RET1 LINES],negFmt(ret2Lines) as [RET2 LINES],isNull(lossCd) as [LOSS CD],'+
+			'isNull(lossAbbr) as [LOSS ABBR],myFormat(lossDate) as [LOSS DATE],checkNullNo(histNo) as [HIST NO],'+
+			'isNull(histCategory) as [HIST CATEGORY],isNull(histCatDesc) as [HIST CAT DESC],'+
+			'negFmt(reserveQuota) as [RESERVE QUOTA],negFmt(reserve1stRet) as [RESERVE 1ST RET],negFmt(reserve2ndRet) as [RESERVE 2ND RET],'+
+			'negFmt(reserve1stSurplus) as [RESERVE 1ST SURPLUS],negFmt(reserve2ndSurplus) as [RESERVE 2ND SURPLUS],negFmt(reserveFacul) as [RESERVE FACUL],'+
+			'negFmt(mreQuota) as [MRE QUOTA],negFmt(mre1stSurplus) as [MRE 1ST SURPLUS],negFmt(mre2ndSurplus) as [MRE 2ND SURPLUS],'+
+			'negFmt(mreFacul) as [MRE FACUL],negFmt(mreTotal) as [MRE TOTAL],negFmt(nreQuota) as [NRE QUOTA],'+
+			'negFmt(nre1stSurplus) as [NRE 1ST SURPLUS],negFmt(nre2ndSurplus) as [NRE 2ND SURPLUS],negFmt(nreFacul) as [NRE FACUL],'+
+			'negFmt(nreTotal) as [NRE TOTAL],myFormat(dateFrom) as [DATE FROM],myFormat(dateTo) as [DATE TO], ' +
+			'negFmt(catReserveQuota) as [CAT RESERVE QUOTA], negFmt(catReserve1stRet) as [CAT RESERVE 1ST RET], ' +
+			'negFmt(catReserve2ndRet) as [CAT RESERVE 2ND RET], negFmt(catReserve1stSurplus) as [CAT RESERVE 1ST SURPLUS], ' +
+			'negFmt(catReserve2ndSurplus) as [CAT RESERVE 2ND SURPLUS], negFmt(catReserveFacul) as [CAT RESERVE FACUL], ' +
+			'negFmt(catMreQuota) as [CAT MRE QUOTA], negFmt(catMre1stSurplus) as [CAT MRE 1ST SURPLUS], ' +
+			'negFmt(catMre2ndSurplus) as [CAT MRE 2ND SURPLUS], negFmt(catMreFacul) as [CAT MRE FACUL], ' +
+			'negFmt(catMreTotal) as [CAT MRE TOTAL], negFmt(catNreQuota) as [CAT NRE QUOTA], ' +
+			'negFmt(catNre1stSurplus) as [CAT NRE 1ST SURPLUS], negFmt(catNre2ndSurplus) as [CAT NRE 2ND SURPLUS], ' +
+			'negFmt(catNreFacul) as [CAT NRE FACUL], negFmt(catNreTotal) as [CAT NRE TOTAL]';
+		} else if(this.params.reportId == 'CLMR052DA') {
+		  this.passDataCsv = data['listClmr052da'];
+		  query = 'SELECT isNull(extractUser) as [EXTRACT USER], myFormat(extractDate) as [EXTRACT DATE], isNull(currencyCd) as [CURRENCY CD], isNull(shrCedingId) as [SHR CEDING ID], ' +
+          'isNull(shrCedingCompany) as [SHR CEDING COMPANY], checkNullNo(claimId) as [CLAIM ID], isNull(claimNo) as [CLAIM NO], isNull(histCategory) as [HIST CATEGORY], ' +
+          'isNull(histCatDesc) as [HIST CAT DESC], negFmt(ret1ClmAmt) as [RET1 CLM AMT], negFmt(ret2ClmAmt) as [RET2 CLM AMT], negFmt(totalClmAmt) as [TOTAL CLM AMT], ' +
+          'negFmt(catPerilPct) as [CAT PERIL PCT], negFmt(catRet1ClmAmt) as [CAT RET1 CLM AMT], negFmt(catRet2ClmAmt) as [CAT RET2 CLM AMT], ' +
+          'negFmt(catTotalClmAmt) as [CAT TOTAL CLM AMT], ' +
+          'negFmt(ret1Line) as [RET1 LINE], negFmt(ret2Line) as [RET2 LINE], negFmt(totalRetLine) as [TOTAL RET LINE], negFmt(insuredClm) as [INSURED CLM], isNull(insuredDesc) as [INSURED DESC], ' +
+          'negFmt(approvedAmt) as [APPROVED AMT], checkNullNo(adjId) as [ADJ ID], isNull(adjName) as [ADJ NAME], isNull(cedingId) as [CEDING ID], isNull(cedingName) as [CEDING NAME], ' +
+          'checkNullNo(policyId) as [POLICY ID], isNull(policyNo) as [POLICY NO], isNull(polCoRefNo) as [POL CO REF NO], isNull(lossCd) as [LOSS CD], isNull(lossAbbr) as [LOSS ABBR], ' +
+          'myFormat(lossDate) as [LOSS DATE], checkNullNo(uwYear) as [UW YEAR], myFormat(inceptDate) as [INCEPT DATE], myFormat(expiryDate) as [EXPIRY DATE], myFormat(dateFrom) as [DATE FROM], ' +
+          'myFormat(dateTo) as [DATE TO]';
+		}
 
         console.log(this.passDataCsv);
         this.ns.export(name, query, this.passDataCsv);

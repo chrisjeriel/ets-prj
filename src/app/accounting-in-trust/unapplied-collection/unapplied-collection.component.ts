@@ -167,11 +167,11 @@ export class UnappliedCollectionComponent implements OnInit {
       this.successDiag.open();
     }/*else if(this.isReopen && this.checkOriginalAmtvsAlteredAmt()){
       this.netMdl.openNoClose();
-    }*/ else if(returnArr.length > 0) {
+    } else if(returnArr.length > 0) {
       this.dialogIcon = 'error-message';
       this.dialogMessage = 'Return amount/s must be negative.';
       this.successDiag.open();
-    } else {
+    }*/ else {
       if(cancel != undefined){
         this.save(cancel);
       }else{
@@ -259,6 +259,7 @@ export class UnappliedCollectionComponent implements OnInit {
         data[i].localAmt = data[i].currAmt * data[i].currRate;
       }
     } else if(data.key === 'returnTag') {
+      this.genAcctEnt = true;
       for(var i = 0; i < data.length; i++) {
         if(data[i].returnTag == 'Y' && data[i].newRec !== undefined && data[i]['return'] !== 2) {
           data[i]['unappliedId'] = '';

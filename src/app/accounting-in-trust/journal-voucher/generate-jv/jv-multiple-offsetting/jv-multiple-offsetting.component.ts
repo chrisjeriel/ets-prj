@@ -1006,7 +1006,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
         
         this.passDataOth.tableData[len].showMG          = 0;
         this.passDataOth.tableData[len].edited          = true;        
-        this.passDataOth.tableData[len].cedingId        = a.payeeCd;
+        this.passDataOth.tableData[len].cedingId        = a.cedingId;
         this.passDataOth.tableData[len].cedingAbbr      = a.cedingAbbr;
       }
 

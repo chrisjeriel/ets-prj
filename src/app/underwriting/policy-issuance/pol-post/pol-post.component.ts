@@ -201,7 +201,7 @@ export class PolPostComponent implements OnInit {
           }
 
         }
-        if(inwBals.reduce((a,b)=>a+b.premAmt,0) != a['policyList'][0].project.coverage.totalPrem){
+        if((inwBals.reduce((a,b)=>a+b.premAmt,0)).toFixed(2) != (a['policyList'][0].project.coverage.totalPrem).toFixed(2)){
           this.loadMsg = 'Total Premium is not equal to the sum of premium per installment. Please check Inward Pol balance tab.';
         }else{
           this.loadMsg = 'Saving.'
