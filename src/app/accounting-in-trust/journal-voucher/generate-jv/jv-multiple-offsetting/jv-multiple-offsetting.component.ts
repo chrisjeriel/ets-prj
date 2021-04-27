@@ -816,7 +816,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
 	     this.passLov.hide = this.passDataUnapp.tableData.filter((a)=>{return a.unappliedId !== null && !a.deleted}).map(a=>{return a.unappliedId});
   	} else if(from == 'invPo') {
   	  this.passLov.selector = 'acitArInvPullout';
-  	  this.passLov.searchParams = [{key:'invtStatus', search: 'M,R,T'},
+  	  this.passLov.searchParams = [{key:'invtStatus', search: 'M,R,T,O'},
   	  							   {key:'currCd', search: this.jvDetail.currCd}];
       this.passLov.hide = this.passDataInvPo.tableData.filter((a)=>{return !a.deleted}).map((a)=>{return a.invtCode});
   	} else if(from == 'invPl') {

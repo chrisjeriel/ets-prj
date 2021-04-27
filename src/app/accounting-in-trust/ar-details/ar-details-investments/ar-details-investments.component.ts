@@ -176,7 +176,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     console.log(this.invData);
     this.passData.nData.tranId = this.record.tranId;
     this.isReopen = this.record.reopenTag == 'Y';
-    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M,R,T'}, {key:'currCd', search:this.record.currCd}];
+    this.passLov.searchParams = [{key: 'bankCd', search: this.record.payeeNo}, {key:'invtStatus', search: 'M,R,T,O'}, {key:'currCd', search:this.record.currCd}];
     if(this.invData !== undefined){
       for(var i of this.invData){
         this.passLov.hide.push(i);
