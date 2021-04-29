@@ -129,7 +129,7 @@ export class JvTreatyPullOutComponent implements OnInit {
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value' ,'Remaining||Income',
               'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
     dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency' ,'currency',
-                'select','currency','currency','currency','currency','currency','currency'],
+                'row-select','currency','currency','currency','currency','currency','currency'],
     total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue',null,
             null,'pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
     addFlag: true,
@@ -279,6 +279,31 @@ export class JvTreatyPullOutComponent implements OnInit {
         this.jvDetails.cedingId = data['invt'].acctTreatyBal[0].cedingId;
         for (var i = 0; i < data['invt'].acctTreatyBal.length; i++) {
           data['invt'].acctTreatyBal[i].quarterEnding = this.dp.transform(this.ns.toDateTimeString(data['invt'].acctTreatyBal[i].quarterEnding), 'MM/dd/yyyy');
+
+          for(var x of data['invt'].acctTreatyBal[i].trtyInvmt) {
+            x.opts = [{
+              selector: 'pulloutType',
+              prev: ['Full Pull-out', 'Income Only'],
+              vals: ['F', 'I']
+            }];
+
+            if(x.invtStatus == 'T') {
+              x.opts = [{
+                selector: 'pulloutType',
+                prev: ['Full Pull-out'],
+                vals: ['F']
+              }];
+            }
+
+            if(x.invtStatus == 'O') {
+              x.opts = [{
+                selector: 'pulloutType',
+                prev: ['Income Only'],
+                vals: ['I']
+              }];
+            }
+          }
+
           this.passData.tableData.push(data['invt'].acctTreatyBal[i]);
         }
         this.quarterTable.refreshTable();
@@ -455,7 +480,6 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].interestRate = data.data[i].intRt;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].purchasedDate = data.data[i].purDate;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].maturityDate = data.data[i].matDate;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType = 'F';
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].currCd = data.data[i].currCd;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].currRate = data.data[i].currRate;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].invtAmt = data.data[i].invtAmt;
@@ -472,6 +496,32 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullWhtaxAmt = data.data[i].balIncome * this.invesmentData.whtaxRt;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullNetValue = (data.data[i].invtAmt + data.data[i].balIncome) - (data.data[i].balIncome * this.invesmentData.bankChargeRt) - (data.data[i].balIncome * this.invesmentData.whtaxRt);
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].incomeBalance = 0;
+
+      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].opts = [{
+        selector: 'pulloutType',
+        prev: ['Full Pull-out', 'Income Only'],
+        vals: ['F', 'I']
+      }];
+
+      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType = 'F';
+
+      if(data.data[i].invtStatus == 'T') {
+        this.invesmentData.tableData[this.invesmentData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Full Pull-out'],
+          vals: ['F']
+        }];
+      }
+
+      if(data.data[i].invtStatus == 'O') {
+        this.invesmentData.tableData[this.invesmentData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Income Only'],
+          vals: ['I']
+        }];
+
+        this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType = 'I';
+      }
     }
     this.invTable.refreshTable();
     this.invTable.onRowClick(null,this.invTable.indvSelect);

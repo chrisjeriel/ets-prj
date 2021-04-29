@@ -136,7 +136,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value' ,'Remaining||Income',
               'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
     dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency' ,'currency',
-                'select','currency','currency','currency','currency','currency','currency'],
+                'row-select','currency','currency','currency','currency','currency','currency'],
     total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue',null,
             null,'pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
     addFlag: true,
@@ -602,7 +602,33 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
                          ).pipe(map(([rec, bc, wt]) => { return { rec, bc, wt }; }));
 
       sub$.subscribe(data => {
-        this.passDataInvPo.tableData  = data['rec']['invPoList'];
+        var x = data['rec']['invPoList'];
+
+        x.forEach(a => {
+          a.opts = [{
+            selector: 'pulloutType',
+            prev: ['Full Pull-out', 'Income Only'],
+            vals: ['F', 'I']
+          }];
+
+          if(a.invtStatus == 'T') {
+            a.opts = [{
+              selector: 'pulloutType',
+              prev: ['Full Pull-out'],
+              vals: ['F']
+            }];
+          }
+
+          if(a.invtStatus == 'O') {
+            a.opts = [{
+              selector: 'pulloutType',
+              prev: ['Income Only'],
+              vals: ['I']
+            }];
+          }
+        });
+
+        this.passDataInvPo.tableData = x;
 
         if(data['rec']['invPoList'].length > 0) {
           this.invPoTbl.onRowClick(null, this.passDataInvPo.tableData[0]);
@@ -1040,7 +1066,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
   	  	  this.passDataInvPo.tableData[len].whtaxAmt 		= a.whtaxAmt;
   	  	  this.passDataInvPo.tableData[len].maturityValue 	= a.matVal;
   	  	  this.passDataInvPo.tableData[len].localAmt 		= a.matVal * this.jvDetail.currRate;
-  	  	  this.passDataInvPo.tableData[len].pulloutType 	= 'F';
+  	  	  
   	  	  this.passDataInvPo.tableData[len].edited 			= true;
   	  	  this.passDataInvPo.tableData[len].showMG 			= 0;
           this.passDataInvPo.tableData[len].balIncome      = a.balIncome;
@@ -1051,6 +1077,31 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
           this.passDataInvPo.tableData[len].pullNetValue = (a.invtAmt + a.balIncome) - (a.balIncome * this.passDataInvPo.bankChargeRt) - (a.balIncome * this.passDataInvPo.whtaxRt);
           this.passDataInvPo.tableData[len].incomeBalance = 0;
 
+          this.passDataInvPo.tableData[len].opts = [{
+            selector: 'pulloutType',
+            prev: ['Full Pull-out', 'Income Only'],
+            vals: ['F', 'I']
+          }];
+
+          this.passDataInvPo.tableData[len].pulloutType = 'F';
+
+          if(a.invtStatus == 'T') {
+            this.passDataInvPo.tableData[len].opts = [{
+              selector: 'pulloutType',
+              prev: ['Full Pull-out'],
+              vals: ['F']
+            }];
+          }
+
+          if(a.invtStatus == 'O') {
+            this.passDataInvPo.tableData[len].opts = [{
+              selector: 'pulloutType',
+              prev: ['Income Only'],
+              vals: ['I']
+            }];
+
+            this.passDataInvPo.tableData[len].pulloutType = 'I';
+          }
   	  	}
 
   	  	this.invPoTbl.refreshTable();

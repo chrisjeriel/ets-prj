@@ -82,7 +82,7 @@ export class JvInvestmentPullOutComponent implements OnInit {
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value' ,'Remaining||Income',
               'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
     dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency' ,'currency',
-                'select','currency','currency','currency','currency','currency','currency'],
+                'row-select','currency','currency','currency','currency','currency','currency'],
     total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue',null,
             null,'pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
     addFlag: true,
@@ -261,6 +261,28 @@ export class JvInvestmentPullOutComponent implements OnInit {
 
         for (var i = 0; i < data.pullOut.length; i++) {
           if(data.pullOut[i].bank === this.selectedBankCd && data.pullOut[i].bankAcct === this.accountNo){
+            data.pullOut[i].opts = [{
+              selector: 'pulloutType',
+              prev: ['Full Pull-out', 'Income Only'],
+              vals: ['F', 'I']
+            }];
+
+            if(data.pullOut[i].invtStatus == 'T') {
+              data.pullOut[i].opts = [{
+                selector: 'pulloutType',
+                prev: ['Full Pull-out'],
+                vals: ['F']
+              }];
+            }
+
+            if(data.pullOut[i].invtStatus == 'O') {
+              data.pullOut[i].opts = [{
+                selector: 'pulloutType',
+                prev: ['Income Only'],
+                vals: ['I']
+              }];
+            }
+
             this.passData.tableData.push(data.pullOut[i]);
           }
         }
@@ -305,7 +327,6 @@ export class JvInvestmentPullOutComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
       this.passData.tableData[this.passData.tableData.length - 1].localAmt = selected[i].matVal * this.jvDetail.currRate;
-      this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['invtCode'];
@@ -316,6 +337,32 @@ export class JvInvestmentPullOutComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].pullWhtaxAmt = selected[i].balIncome * this.passData.whtaxRt;
       this.passData.tableData[this.passData.tableData.length - 1].pullNetValue = (selected[i].invtAmt + selected[i].balIncome) - (selected[i].balIncome * this.passData.bankChargeRt) - (selected[i].balIncome * this.passData.whtaxRt);
       this.passData.tableData[this.passData.tableData.length - 1].incomeBalance = 0;
+
+      this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+        selector: 'pulloutType',
+        prev: ['Full Pull-out', 'Income Only'],
+        vals: ['F', 'I']
+      }];
+
+      this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
+
+      if(selected[i].invtStatus == 'T') {
+        this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Full Pull-out'],
+          vals: ['F']
+        }];
+      }
+
+      if(selected[i].invtStatus == 'O') {
+        this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Income Only'],
+          vals: ['I']
+        }];
+
+        this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'I';
+      }
     }
     this.table.refreshTable();
   }

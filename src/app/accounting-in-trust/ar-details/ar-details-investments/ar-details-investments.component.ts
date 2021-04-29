@@ -83,7 +83,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
     tHeader: ['Investment Code','Certificate No.','Investment Type','Security', 'Maturity Period', 'Duration Unit','Interest Rate','Date Purchased','Maturity Date','Curr','Curr Rate','Investment','Investment Income','Bank Charge','Withholding Tax','Maturity Value' ,'Remaining||Income',
               'Pull-out Type','Investment','Investment Income','Bank Charge','Withholding Tax','Net Value','Income Balance'],
     dataTypes: ['text','text','text','text','number','text','percent','date','date','text','percent','currency','currency','currency','currency','currency' ,'currency',
-                'select','currency','currency','currency','currency','currency','currency'],
+                'row-select','currency','currency','currency','currency','currency','currency'],
     total: [null,null,null,null,null,null,null,null,null,null,'Total','invtAmt','incomeAmt','bankCharge','whtaxAmt','maturityValue',null,
             null,'pullInvtAmt','pullIncomeAmt','pullBankCharge','pullWhtaxAmt','pullNetValue','incomeBalance'],
     addFlag: true,
@@ -207,6 +207,28 @@ export class ArDetailsInvestmentsComponent implements OnInit {
         this.originalNet += i.maturityValue;
         this.passData.tableData.push(i);
         this.passLov.hide.push(i.invtCode);
+
+        i.opts = [{
+          selector: 'pulloutType',
+          prev: ['Full Pull-out', 'Income Only'],
+          vals: ['F', 'I']
+        }];
+
+        if(i.invtStatus == 'T') {
+          i.opts = [{
+            selector: 'pulloutType',
+            prev: ['Full Pull-out'],
+            vals: ['F']
+          }];
+        }
+
+        if(i.invtStatus == 'O') {
+          i.opts = [{
+            selector: 'pulloutType',
+            prev: ['Income Only'],
+            vals: ['I']
+          }];
+        }
       }
       
       this.investment.emit(this.passLov.hide);
@@ -269,8 +291,6 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].whtaxAmt = selected[i].whtaxAmt;
       this.passData.tableData[this.passData.tableData.length - 1].maturityValue = selected[i].matVal;
       this.passData.tableData[this.passData.tableData.length - 1].localAmt = Math.round((selected[i].matVal * selected[i].currRate)*100) / 100;
-      console.log(Math.round((selected[i].matVal * selected[i].currRate)*100) / 100);
-      this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
       this.passData.tableData[this.passData.tableData.length - 1].edited = true;
       this.passData.tableData[this.passData.tableData.length - 1].showMG = 0;
       this.passData.tableData[this.passData.tableData.length - 1].uneditable = ['invtCode'];
@@ -281,6 +301,32 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].pullWhtaxAmt = selected[i].balIncome * this.passData.whtaxRt;
       this.passData.tableData[this.passData.tableData.length - 1].pullNetValue = (selected[i].invtAmt + selected[i].balIncome) - (selected[i].balIncome * this.passData.bankChargeRt) - (selected[i].balIncome * this.passData.whtaxRt);
       this.passData.tableData[this.passData.tableData.length - 1].incomeBalance = 0;
+
+      this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+        selector: 'pulloutType',
+        prev: ['Full Pull-out', 'Income Only'],
+        vals: ['F', 'I']
+      }];
+
+      this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'F';
+
+      if(selected[i].invtStatus == 'T') {
+        this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Full Pull-out'],
+          vals: ['F']
+        }];
+      }
+
+      if(selected[i].invtStatus == 'O') {
+        this.passData.tableData[this.passData.tableData.length - 1].opts = [{
+          selector: 'pulloutType',
+          prev: ['Income Only'],
+          vals: ['I']
+        }];
+
+        this.passData.tableData[this.passData.tableData.length - 1].pulloutType = 'I';
+      }
     }
     this.table.refreshTable();
   }

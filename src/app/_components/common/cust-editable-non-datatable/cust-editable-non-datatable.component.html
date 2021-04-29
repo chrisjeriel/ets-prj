@@ -506,6 +506,16 @@
                                         </ng-template>
                                     </div>
 
+                                    <div *ngSwitchCase="'row-select'">
+                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                            <ng-container *ngFor="let data2 of data.opts">
+                                                <ng-container *ngIf="key == data2.selector">
+                                                    <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                </ng-container>
+                                            </ng-container>
+                                        </select>
+                                    </div>
+
                                     <ng-container *ngSwitchCase="'lovInput'">
                                         <span *ngIf="data.showMG != 1 && !data.others; else lovInp">{{ data[key] }}</span>
                                         <ng-template #lovInp>
@@ -996,6 +1006,16 @@
                                                     </ng-container>
                                                 </select>
                                             </ng-template>
+                                        </div>
+
+                                        <div *ngSwitchCase="'row-select'">
+                                            <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                                <ng-container *ngFor="let data2 of data.opts">
+                                                    <ng-container *ngIf="key == data2.selector">
+                                                        <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                    </ng-container>
+                                                </ng-container>
+                                            </select>
                                         </div>
 
                                         <ng-container *ngSwitchCase="'lovInput'">
@@ -1505,6 +1525,16 @@
                                                 </ng-container>
                                             </select>
                                         </ng-template>
+                                    </div>
+
+                                    <div *ngSwitchCase="'row-select'">
+                                        <select (focus)="focus(data)" [tabindex]="passData?.tabIndexes===undefined || passData?.tabIndexes[i] ? 0 : -1" class="editable-select form-control-sm" [(ngModel)]="data[key]" (change)="onDataChange($event,data,key)" [ngModelOptions]="{standalone: true}" style="padding-top: 0px !important; padding-bottom: 0px !important;">
+                                            <ng-container *ngFor="let data2 of data.opts">
+                                                <ng-container *ngIf="key == data2.selector">
+                                                    <option *ngFor="let prev of data2.prev; let i = index" [value]="data2.vals[i]">{{ prev }}</option>
+                                                </ng-container>
+                                            </ng-container>
+                                        </select>
                                     </div>
 
                                     <ng-container *ngSwitchCase="'lovInput'">
