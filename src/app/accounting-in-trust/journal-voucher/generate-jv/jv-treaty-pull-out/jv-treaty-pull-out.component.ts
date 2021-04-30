@@ -522,6 +522,8 @@ export class JvTreatyPullOutComponent implements OnInit {
 
         this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType = 'I';
       }
+
+      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullInvtAmt = this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType == 'F' ? data.data[i].invtAmt : 0;
     }
     this.invTable.refreshTable();
     this.invTable.onRowClick(null,this.invTable.indvSelect);
@@ -676,7 +678,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       x.pullBankCharge = x.pullIncomeAmt * this.invesmentData.bankChargeRt;
       x.pullWhtaxAmt = x.pullIncomeAmt * this.invesmentData.whtaxRt;
       x.pullNetValue = (x.pullInvtAmt + x.pullIncomeAmt) - x.pullBankCharge - x.pullWhtaxAmt;
-      x.incomeBalance = x.incomeAmt - x.pullIncomeAmt;
+      x.incomeBalance = x.balIncome - x.pullIncomeAmt;
     }
 
     if(ev.key == 'pullBankCharge' || ev.key == 'pullWhtaxAmt') {
