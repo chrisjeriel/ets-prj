@@ -1074,7 +1074,6 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
           this.passDataInvPo.tableData[len].pullIncomeAmt = a.balIncome;
           this.passDataInvPo.tableData[len].pullBankCharge = a.balIncome * this.passDataInvPo.bankChargeRt;
           this.passDataInvPo.tableData[len].pullWhtaxAmt = a.balIncome * this.passDataInvPo.whtaxRt;
-          this.passDataInvPo.tableData[len].pullNetValue = (a.invtAmt + a.balIncome) - (a.balIncome * this.passDataInvPo.bankChargeRt) - (a.balIncome * this.passDataInvPo.whtaxRt);
           this.passDataInvPo.tableData[len].incomeBalance = 0;
 
           this.passDataInvPo.tableData[len].opts = [{
@@ -1104,6 +1103,7 @@ export class JvMultipleOffsettingComponent implements OnInit, OnDestroy {
           }
 
           this.passDataInvPo.tableData[len].pullInvtAmt = this.passDataInvPo.tableData[len].pulloutType == 'F' ? a.invtAmt : 0;
+          this.passDataInvPo.tableData[len].pullNetValue = (this.passDataInvPo.tableData[len].pullInvtAmt + a.balIncome) - (a.balIncome * this.passDataInvPo.bankChargeRt) - (a.balIncome * this.passDataInvPo.whtaxRt);
   	  	}
 
   	  	this.invPoTbl.refreshTable();

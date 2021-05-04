@@ -494,7 +494,6 @@ export class JvTreatyPullOutComponent implements OnInit {
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullIncomeAmt = data.data[i].balIncome;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullBankCharge = data.data[i].balIncome * this.invesmentData.bankChargeRt;
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullWhtaxAmt = data.data[i].balIncome * this.invesmentData.whtaxRt;
-      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullNetValue = (data.data[i].invtAmt + data.data[i].balIncome) - (data.data[i].balIncome * this.invesmentData.bankChargeRt) - (data.data[i].balIncome * this.invesmentData.whtaxRt);
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].incomeBalance = 0;
 
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].opts = [{
@@ -524,6 +523,7 @@ export class JvTreatyPullOutComponent implements OnInit {
       }
 
       this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullInvtAmt = this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pulloutType == 'F' ? data.data[i].invtAmt : 0;
+      this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullNetValue = (this.invesmentData.tableData[this.invesmentData.tableData.length - 1].pullInvtAmt + data.data[i].balIncome) - (data.data[i].balIncome * this.invesmentData.bankChargeRt) - (data.data[i].balIncome * this.invesmentData.whtaxRt);
     }
     this.invTable.refreshTable();
     this.invTable.onRowClick(null,this.invTable.indvSelect);

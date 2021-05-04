@@ -299,7 +299,6 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       this.passData.tableData[this.passData.tableData.length - 1].pullIncomeAmt = selected[i].balIncome;
       this.passData.tableData[this.passData.tableData.length - 1].pullBankCharge = selected[i].balIncome * this.passData.bankChargeRt;
       this.passData.tableData[this.passData.tableData.length - 1].pullWhtaxAmt = selected[i].balIncome * this.passData.whtaxRt;
-      this.passData.tableData[this.passData.tableData.length - 1].pullNetValue = (selected[i].invtAmt + selected[i].balIncome) - (selected[i].balIncome * this.passData.bankChargeRt) - (selected[i].balIncome * this.passData.whtaxRt);
       this.passData.tableData[this.passData.tableData.length - 1].incomeBalance = 0;
 
       this.passData.tableData[this.passData.tableData.length - 1].opts = [{
@@ -329,6 +328,7 @@ export class ArDetailsInvestmentsComponent implements OnInit {
       }
 
       this.passData.tableData[this.passData.tableData.length - 1].pullInvtAmt = this.passData.tableData[this.passData.tableData.length - 1].pulloutType == 'F' ? selected[i].invtAmt : 0;
+      this.passData.tableData[this.passData.tableData.length - 1].pullNetValue = (this.passData.tableData[this.passData.tableData.length - 1].pullInvtAmt + selected[i].balIncome) - (selected[i].balIncome * this.passData.bankChargeRt) - (selected[i].balIncome * this.passData.whtaxRt);
     }
     this.table.refreshTable();
   }
