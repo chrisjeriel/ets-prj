@@ -298,6 +298,7 @@ constructor(private accountingService: AccountingService, private titleService: 
   @ViewChild('printModal') printModal: ModalComponent;
 
   updateReportsList(memoType, memoTranType){
+    console.log(this.memoInfo.refNo);
     this.reportsList = [];
     if(this.memoInfo.refNo.substring(0,2) == 'JV'){
      this.accountingService.getJVEntry(this.memoInfo.refNoTranId).subscribe((a:any)=>{
@@ -310,13 +311,17 @@ constructor(private accountingService: AccountingService, private titleService: 
         }else if(memoType == 'DM' && memoTranType== '5'){
           this.reportsList = [{reportId: 'ACITR046C', reportName:'CMDM-Interest Penalty'}]
         }else if(memoType == 'DM' && memoTranType== '6'){
-          this.reportsList = [{reportId: 'ACITR046D', reportName:'CMDM-Service Feee'}]
+          this.reportsList = [{reportId: 'ACITR046D', reportName:'CMDM-Service Fee'}]
         }else{
           this.reportsList = [{reportId: 'ACITR046B', reportName:'CMDM-Others'}]
         }
         this.printReport = this.reportsList[0].reportId;
      })
-    }else{
+    }else if(this.memoInfo.refNo.substring(0,2) == 'OR') {
+      if(memoType == 'DM' && memoTranType== '6'){
+        this.reportsList = [{reportId: 'ACITR046D', reportName:'CMDM-Service Fee'}]
+      }
+    } else{
       if(memoTranType== '1'){
         this.reportsList = [{reportId: 'ACITR046A', reportName:'CMDM-Policy'}]
       }
