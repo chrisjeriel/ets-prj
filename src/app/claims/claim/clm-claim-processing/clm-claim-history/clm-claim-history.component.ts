@@ -655,7 +655,7 @@ export class ClmClaimHistoryComponent implements OnInit {
         this.passDataHistory.tableData = this.passDataHistory.tableData.filter(a => a.histCategory != '');
       }else{
           if(this.clmHistoryData.mtnParam == 'Y'){
-            if(Number(this.clmHistoryData.allowMaxSi) >= Number(this.clmHistoryData.totalRes)){
+            if(Number(this.clmHistoryData.allowMaxSi).toFixed(2) >= Number(this.clmHistoryData.totalRes).toFixed(2)){
               if(this.cancelFlag == true){
                 this.cs.showLoading(true);
                 setTimeout(() => { try{this.cs.onClickYes();}catch(e){}},500);
@@ -668,7 +668,7 @@ export class ClmClaimHistoryComponent implements OnInit {
               this.params.saveClaimHistory   = [];
             }
           }else{
-            if((Number(sumLossPayt) > Number(this.clmHistoryData.approvedAmt)) && this.passDataApprovedAmt.tableData.length != 0){
+            if((Number(sumLossPayt).toFixed(2) > Number(this.clmHistoryData.approvedAmt).toFixed(2)) && this.passDataApprovedAmt.tableData.length != 0){
               this.warnMsg = 'Unable to save. The total payment for loss must be less than or equal to the approved amount.';
               this.showWarnMsg();
               this.params.saveClaimHistory   = [];
