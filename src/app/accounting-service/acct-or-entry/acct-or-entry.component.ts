@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 import { environment } from '@environments/environment';
 import { OverrideLoginComponent } from '@app/_components/common/override-login/override-login.component';
 import { UploaderComponent } from '@app/_components/common/uploader/uploader.component';
+import { CedingCompanyComponent } from '@app/underwriting/policy-maintenance/pol-mx-ceding-co/ceding-company/ceding-company.component';
 
 @Component({
   selector: 'app-acct-or-entry',
@@ -32,6 +33,7 @@ export class AcctOrEntryComponent implements OnInit {
   @ViewChild('AcctEntries') upAcctEntMdl      : ModalComponent;
   @ViewChild('successPrintMdl') successPrintMdl      : ModalComponent;
   @ViewChild(UploaderComponent) up            : UploaderComponent;
+  @ViewChild('trtyLOV') trtyLOV: CedingCompanyComponent;
 
   passData: any = {
         tableData: [],
@@ -213,6 +215,7 @@ export class AcctOrEntryComponent implements OnInit {
   };
 
   allowReprint: boolean = false;
+  exc: any[] = [];
 
   @Input() inquiryFlag: boolean = false; //added by ENGEL
 
@@ -233,6 +236,12 @@ export class AcctOrEntryComponent implements OnInit {
           }
         }
     );
+
+    this.ms.getMtnParameters('V', 'QS_CEDING_ID').subscribe(data => {
+      if(data['parameters'].length > 0) {
+        this.exc = [data['parameters'][0].paramValueV];
+      }
+    });
 
     //this.retrieveCurrency();
     var tranId;
@@ -416,7 +425,12 @@ export class AcctOrEntryComponent implements OnInit {
       this.passLov.selector = 'mtnBussType';
       this.passLov.activeTag = 'Y';
     }
-    this.lov.openLOV();
+
+    if(this.orInfo.tranTypeCd == 3) {
+      this.trtyLOV.modal.openNoClose();
+    } else {
+      this.lov.openLOV();
+    }
   }
 
   openCancelModal(){
@@ -516,7 +530,6 @@ export class AcctOrEntryComponent implements OnInit {
     this.orInfo.dcbBankAcct = data.bankAcctCd;
     this.orInfo.dcbBankAcctNo = data.accountNo;
     this.dcbBankAcctCurrCd = data.currCd;
-    console.log(data.currCd);
   }
 
   changeOrAmt(data){
@@ -524,14 +537,14 @@ export class AcctOrEntryComponent implements OnInit {
     this.orInfo.orAmt = this.orInfo.orAmt.length == 0 || this.orInfo.orAmt == null ? '' : Math.round(parseFloat(this.orInfo.orAmt.toString().split(',').join(''))*100) / 100;
   }
 
-  setLov(data){
+  setLov(data, trty?){
     console.log(data);
-    if(data.selector === 'payee'){
+    if(data.selector === 'payee' || trty != undefined){
       this.genAcctEnt = true;
       if(data.ev != undefined){
         this.ns.lovLoader(data.ev, 0);
       }
-      if(data.data == null){
+      if((trty == undefined && data.data == null) || Object.entries(data).length === 0){
         this.orInfo.payeeNo      = '';
         this.orInfo.payeeClassCd = '';
         this.orInfo.payor        = '';
@@ -541,14 +554,25 @@ export class AcctOrEntryComponent implements OnInit {
         this.orInfo.cedingId     = '';
         this.orInfo.bussTypeName = '';
       }else{
-        this.orInfo.payeeNo = data.data.payeeNo;
-        this.orInfo.payeeClassCd = data.data.payeeClassCd;
-        this.orInfo.payor = data.data.payeeName;
-        this.orInfo.tin = data.data.tin;
-        this.orInfo.bussTypeCd = data.data.bussTypeCd;
-        this.orInfo.mailAddress = data.data.mailAddress;
-        this.orInfo.cedingId = data.data.cedingId;
-        this.orInfo.bussTypeName = data.data.bussTypeName;
+        if(this.orInfo.tranTypeCd == 3) {
+          this.orInfo.payeeNo = data.cedingId;
+          this.orInfo.payeeClassCd = 1;
+          this.orInfo.payor = data.cedingName;
+          this.orInfo.tin = data.tinNo;
+          this.orInfo.bussTypeCd = data.bussTypeCd;
+          this.orInfo.mailAddress = data.address;
+          this.orInfo.cedingId = data.cedingId;
+          this.orInfo.bussTypeName = data.bussTypeName;
+        } else {
+          this.orInfo.payeeNo = data.data.payeeNo;
+          this.orInfo.payeeClassCd = data.data.payeeClassCd;
+          this.orInfo.payor = data.data.payeeName;
+          this.orInfo.tin = data.data.tin;
+          this.orInfo.bussTypeCd = data.data.bussTypeCd;
+          this.orInfo.mailAddress = data.data.mailAddress;
+          this.orInfo.cedingId = data.data.cedingId;
+          this.orInfo.bussTypeName = data.data.bussTypeName;
+        }
       }
       this.form.control.markAsDirty();
       setTimeout(()=>{
@@ -787,7 +811,7 @@ export class AcctOrEntryComponent implements OnInit {
         this.form2.control.markAsPristine();
         this.loading = false;
 
-        this.disablePayor          = data.orEntry.tranTypeCd == 3;
+        // this.disablePayor          = data.orEntry.tranTypeCd == 3;
         this.disableTab.emit(false);
       },
       (error: any)=>{
@@ -1433,14 +1457,19 @@ export class AcctOrEntryComponent implements OnInit {
       this.passLov.payeeClassCd = 1; //get only cedants
       this.orInfo.payeeNo = this.pad(this.orInfo.payeeNo, 'payeeNo');
     }*/
-    if(this.orInfo.tranTypeCd == 2){
+    if(this.orInfo.tranTypeCd == 2 || this.orInfo.tranTypeCd == 3){
       this.passLov.payeeClassCd = 1;
       this.orInfo.payeeNo = this.pad(this.orInfo.payeeNo, 'payeeNo');
     }else{
       this.passLov.payeeClassCd = '';
     }
-    this.passLov.payeeNo = this.orInfo.payeeNo;
-    this.lov.checkCode('payee',null,null,null,null,null,event);
+
+    if(this.orInfo.tranTypeCd == 3) {
+      this.trtyLOV.checkCode(this.orInfo.payeeNo, event);
+    } else {
+      this.passLov.payeeNo = this.orInfo.payeeNo;
+      this.lov.checkCode('payee',null,null,null,null,null,event);
+    }
   }
 
   changeOrType(data){
@@ -1467,7 +1496,7 @@ export class AcctOrEntryComponent implements OnInit {
       this.orInfo.orType = 'VAT';
     }*/
 
-    if(data == 1 || data == 2){
+    if(data == 1 || data == 2 || data == 3){
       this.disablePayor = false;
       this.selectedCurrency = 'PHP';
       this.passData.nData.currCd = 'PHP';

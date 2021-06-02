@@ -3794,4 +3794,8 @@ export class AccountingService {
 		return this.http.post(environment.prodApiUrl + '/acct-in-trust-service/saveQSOARiDtl',JSON.stringify(params),header);
 	}
 
+	checkServFeeOr(param) {
+		return this.http.get(environment.prodApiUrl + '/acct-serv-service/checkServFeeOr?invoiceId='+param);
+	}
+
 }

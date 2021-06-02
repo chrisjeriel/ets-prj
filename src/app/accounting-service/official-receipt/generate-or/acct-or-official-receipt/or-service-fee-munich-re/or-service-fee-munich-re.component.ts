@@ -405,8 +405,10 @@ export class OrServiceFeeMunichReComponent implements OnInit, OnDestroy {
     this.as.getOrSFeeDtlDist(this.record.payeeNo, qtrYear, qtrMonth).subscribe(
       (servFeeData:any)=>{
         if(servFeeData.servFeeDist !== null && servFeeData.servFeeDist.invoiceId !== null){
-          this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.servFeeDist.invoiceId}]).subscribe((invoiceData:any)=>{
-            if(invoiceData.batchInvoiceList.length !== 0 && invoiceData.batchInvoiceList[0].refNoTranId !== null){ //if selected quarter ending already has an OR
+          // this.as.getAcseBatchInvoice([{key: 'invoiceId', search: servFeeData.servFeeDist.invoiceId}]).subscribe((invoiceData:any)=>{
+          this.as.checkServFeeOr(servFeeData.servFeeDist.invoiceId).subscribe(res => {
+            // if(invoiceData.batchInvoiceList.length !== 0 && invoiceData.batchInvoiceList[0].refNoTranId !== null){ //if selected quarter ending already has an OR
+            if(res == 1) {  
               this.dialogIcon = 'info';
               this.dialogMessage = 'The selected quarter already has an OR.';
               this.successDiag.open();

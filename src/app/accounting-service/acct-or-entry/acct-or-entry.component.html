@@ -408,3 +408,5 @@ padding-right: 0px !important;">
 
 <app-override-login [approvalCd]="approvalCd" (isSuccess)="whichProcess($event)" #override></app-override-login>
 <app-uploader (emitMessage)="uploaderActivity($event)" style="display: none"></app-uploader>
+
+<app-ceding-company #trtyLOV (selectedData)="setLov($event, true)" [activeTag]="''" [membershipTag]="''" [treaty]="true" [exclude]="exc"></app-ceding-company>
