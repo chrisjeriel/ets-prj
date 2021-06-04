@@ -168,16 +168,24 @@
                             <button class="cust-btn col-sm-2" (click)="getAcctPrqServFee(true)" [disabled]="(qtrParam == null || yearParam == null) || (requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F')" style="height: calc(1.3rem + 1px) !important; padding: 0 8px !important; z-index: 1 !important; margin-left: 3px;">Distribute</button>
                           </div>
                           <div class="input-group">
-                            <label class="form-control-sm col-sm-4">MRe Service Fee</label>
+                            <label class="form-control-sm col-sm-4">QTR Net Service Fee</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalNetSfeeAmt | number: '1.2-2'" readonly appCurrency>
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Treaty Service Fee</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.mreSfeeAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
                           </div>
                           <div class="input-group">
-                            <label class="form-control-sm col-sm-4">Total VAT</label>
+                            <label class="form-control-sm col-sm-4">Cedant Total VAT</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalVatAmt | number: '1.2-2'" readonly appCurrency>
                           </div>
                           <div class="input-group">
-                            <label class="form-control-sm col-sm-4">Total WhTax</label>
+                            <label class="form-control-sm col-sm-4">Cedant Total WhTax</label>
                             <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [ngModel]="sfeeAmts.totalWhTaxAmt | number: '1.2-2'" readonly appCurrency style="color: red !important;">
+                          </div>
+                          <div class="input-group">
+                            <label class="form-control-sm col-sm-4">Offset</label>
+                            <input type="text" class="form-control form-control-sm cust-sm col-sm-4 text-right" [(ngModel)]="sfeeAmts.offsetAmt" [readonly]="requestData?.reqStatus !== 'N' && requestData?.reqStatus !== 'F'" (change)="onOffsetChange()" appCurrency>
                           </div>
                           <div class="input-group">
                             <label class="form-control-sm col-sm-4">NET CV AMOUNT</label>

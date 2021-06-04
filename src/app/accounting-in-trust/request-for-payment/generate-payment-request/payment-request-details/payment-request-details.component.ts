@@ -335,7 +335,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     mreSfeeAmt: 0,
     totalVatAmt: 0,
     totalWhTaxAmt: 0,
-    totalDue: 0
+    totalDue: 0,
+    offsetAmt: 0,
+    totalNetSfeeAmt: 0
   }
 
   sfeeReturnCode: number = null;
@@ -1515,19 +1517,19 @@ export class PaymentRequestDetailsComponent implements OnInit {
           this.serviceFeeSubData.tableData = data['subDistList'].sort((a, b) => b.actualShrPct - a.actualShrPct);
 
           this.sfeeAmts.mreSfeeAmt = data['mainDistList'][0].servFeeTotals.mreSfeeAmt;
+          this.sfeeAmts.offsetAmt = data['mainDistList'][0].servFeeTotals.offsetAmt == null ? 0 : data['mainDistList'][0].servFeeTotals.offsetAmt;
           this.sfeeAmts.totalVatAmt = 0;
           this.sfeeAmts.totalWhTaxAmt = 0;
           this.sfeeAmts.totalDue = 0;
 
           this.serviceFeeMainData.tableData.forEach(a => {
-            this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + numParser(a.totalVat);
-            this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + numParser(a.totalWhtax);
-            this.sfeeAmts.totalDue += numParser(a.totalDue);
+            this.sfeeAmts.totalVatAmt = numParser(this.sfeeAmts.totalVatAmt) + (a.groupId == 1 ? 0 : numParser(a.totalVat));
+            this.sfeeAmts.totalWhTaxAmt = numParser(this.sfeeAmts.totalWhTaxAmt) + (a.groupId == 1 ? 0 :  numParser(a.totalWhtax));
+            this.sfeeAmts.totalNetSfeeAmt = numParser(this.sfeeAmts.totalNetSfeeAmt) + numParser(a.netSfee);
+            // this.sfeeAmts.totalDue += numParser(a.totalDue);
           });
 
-          this.sfeeAmts.totalDue -= numParser(this.sfeeAmts.mreSfeeAmt);
-
-          // this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt) + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt);
+          this.onOffsetChange();
 
           this.servFeeMainTbl.refreshTable();
           this.servFeeSubTbl.refreshTable();
@@ -1561,7 +1563,7 @@ export class PaymentRequestDetailsComponent implements OnInit {
       quarter: this.qtrParam,
       year: this.yearParam,
       servFeeAmt: +parseFloat(this.sfeeAmts.totalSfeeAmt).toFixed(2),
-      netServFee: this.sfeeAmts.totalDue,
+      netServFee: +parseFloat(this.sfeeAmts.totalDue).toFixed(2),
       currCd: this.requestData.currCd,
       currRt: this.requestData.currRate,
       createUser: this.ns.getCurrentUser(),
@@ -1572,7 +1574,8 @@ export class PaymentRequestDetailsComponent implements OnInit {
       pwYearFrom: this.pwFromYear,
       pwMmTo: this.pwToMm,
       pwYearTo: this.pwToYear,
-      saveAcctServFeeCedantList: this.serviceFeeSubData.tableData.filter(a => a.edited)
+      saveAcctServFeeCedantList: this.serviceFeeSubData.tableData.filter(a => a.edited),
+      offsetAmt: +parseFloat(this.sfeeAmts.offsetAmt).toFixed(2)
     }
 
     this.acctService.saveAcctPrqServFee(param).subscribe(data => {
@@ -1804,6 +1807,18 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
   servFeeSubDataChange(data) {
     data.lastEditedRow.netDue = (data.lastEditedRow.netSfee + data.lastEditedRow.vatAmt) - data.lastEditedRow.whtaxAmt;
+  }
+
+  onOffsetChange() {
+    function numParser(x) {
+      return +parseFloat(x).toFixed(2);
+    }
+
+    this.sfeeAmts.offsetAmt = this.sfeeAmts.offsetAmt == null || this.sfeeAmts.offsetAmt == '' ? 0 : this.sfeeAmts.offsetAmt;
+
+    this.sfeeAmts.totalDue = numParser(this.sfeeAmts.totalNetSfeeAmt) - numParser(this.sfeeAmts.mreSfeeAmt)
+                             + numParser(this.sfeeAmts.totalVatAmt) - numParser(this.sfeeAmts.totalWhTaxAmt)
+                             + numParser(this.sfeeAmts.offsetAmt);
   }
 
 }
