@@ -327,6 +327,13 @@ export class CvEntryComponent implements OnInit {
   onClickSave(cancelFlag?){
     this.cancelFlag = cancelFlag !== undefined;
 
+    if(this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt < 0) {
+      this.warnMsg = 'Disbursed Amount cannot be negative.';
+      this.warnMdl.openNoClose();
+
+      return;
+    }
+
     if(this.saveAcitCv.cvDate == null || this.saveAcitCv.cvDate == '' || this.saveAcitCv.payeeCd == '' ||  this.saveAcitCv.payeeCd == null || this.saveAcitCv.payee == '' ||  this.saveAcitCv.payee == null || this.saveAcitCv.particulars == '' || 
        this.saveAcitCv.particulars == null || this.saveAcitCv.bank == '' || this.saveAcitCv.bank == null || this.saveAcitCv.bankAcct == '' || this.saveAcitCv.bankAcct == null ||
        this.saveAcitCv.cvAmt == '' || this.saveAcitCv.cvAmt == null || this.saveAcitCv.cvAmt < 0 ||  this.saveAcitCv.currCd == '' || 

@@ -763,10 +763,9 @@ export class PaymentRequestDetailsComponent implements OnInit {
     this.params.savePrqTrans = [];
     this.unappliedColData.tableData.forEach(e => {
       e.reqId    = this.rowData.reqId;
-      if(e.transdtlType == '' || e.transdtlType == null || e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0 ||
-         (e.returnTag == 'Y' && e.currAmt >= 0)){
+      if(e.transdtlType == '' || e.transdtlType == null || e.itemName == '' || e.itemName == null || e.currAmt == '' || e.currAmt == null || isNaN(e.currAmt) || e.currAmt == 0){
         if(!e.deleted){
-          posReturn = e.returnTag == 'Y' && e.currAmt >= 0;
+          // posReturn = e.returnTag == 'Y' && e.currAmt >= 0;
           isEmpty = 1;
           e.fromCancel = false;
         }else{
@@ -791,12 +790,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
 
     console.log(this.unappliedColData.tableData);
     if(isEmpty == 1){
-      if(posReturn) {
+      /*if(posReturn) {
         this.dialogIcon = 'error-message';
         this.dialogMessage = 'Return amount/s must be negative.';
-      } else {
+      } else {*/
         this.dialogIcon = 'error';
-      }
+      // }
 
       this.sucUnCol.open();
       this.params.savePrqTrans   = [];
@@ -1087,12 +1086,12 @@ export class PaymentRequestDetailsComponent implements OnInit {
       this.dialogIcon = 'error';
       this.sucInw.open();
       this.params.savePrqTrans   = [];
-    }else if(Number(returnAmt) > 0){
+    }/*else if(Number(returnAmt) > 0){
       this.warnMsg = 'Net balance payment is positive. No value to be refunded. The net balance payments should be negative.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
       this.params.deletePrqTrans = [];
-    }else if(this.warn.some(e => e == 1)){
+    }*/else if(this.warn.some(e => e == 1)){
       this.warnMsg = 'Refund amount must not exceed the Cumulative Payment.';
       this.warnMdl.openNoClose();
       this.params.savePrqTrans   = [];
