@@ -56,7 +56,7 @@
 				</fieldset>
 				<div class="input-group" style="margin-bottom: 5px !important;margin-top: 5px; margin-left: -4px;">
 					<label class="form-control-sm col-sm-2">Remarks</label>
-					<text-editor class="col-sm-9 px-0" [editorContent]="optionsTable.indvSelect?.remarks" (fetchContent)="optionsTable.indvSelect.remarks = $event;optionsTable.indvSelect.edited = true" [edtrOpnrPos]="2"  [readonly]="inquiryFlag || optionsTable.indvSelect == null">
+					<text-editor class="col-sm-9 px-0" [editorContent]="optionsTable.indvSelect?.remarks" (fetchContent)="optionsTable.indvSelect.remarks = $event;optionsTable.indvSelect.edited = true" [edtrOpnrPos]="2"  [readonly]="inquiryFlag || optionsTable.indvSelect === null" [format]="'html'">
 					</text-editor>
 				</div>
 			</div>
