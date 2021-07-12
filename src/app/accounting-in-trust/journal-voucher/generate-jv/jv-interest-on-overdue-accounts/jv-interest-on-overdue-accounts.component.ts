@@ -98,6 +98,7 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
   totalOverdue: number = 0; 
   disable: boolean = true;
   daysInterest: number;
+  loading: boolean = false;
 
   constructor(private accountingService: AccountingService,private titleService: Title, private ns: NotesService, private maintenaceService: MaintenanceService) { }
 
@@ -238,7 +239,9 @@ export class JvInterestOnOverdueAccountsComponent implements OnInit {
     this.cancelFlag = cancelFlag !== undefined;
     this.prepareData();
 
+    this.loading = true;
     this.accountingService.saveAccJVOverdueAcct(this.jvDetails).subscribe((data: any) => {
+      this.loading = false;
       if(data['returnCode'] != -1) {
         this.dialogMessage = data['errorList'][0].errorMessage;
         this.dialogIcon = "error";
